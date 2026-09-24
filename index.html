@@ -156,7 +156,9 @@ svg { flex: none; }
   backdrop-filter: blur(12px);
 }
 .topbar .who { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-.who-text { min-width: 0; }
+.who-text { min-width: 0; overflow: hidden; }
+.who-status { overflow: hidden; }
+#statusText { overflow: hidden; text-overflow: ellipsis; }
 .who-name { font-weight: 700; font-size: 1.05rem; }
 .who-status { font-size: .82rem; color: var(--muted); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .who-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
@@ -378,6 +380,96 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
 }
+
+/* ==========================================================================
+   v2 additions: profiles, counsellor mode, help, recovery counter
+   ========================================================================== */
+.avatar {
+  --c: #3b8a5a;
+  width: 30px; height: 30px; border-radius: 50%; flex: none; display: inline-grid; place-items: center;
+  background: var(--c); color: #fff; font-weight: 700; font-size: .9rem; text-transform: uppercase;
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,.15);
+}
+.avatar.lg { width: 64px; height: 64px; font-size: 1.6rem; }
+.switch-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 12px 4px 4px; font-size: .9rem; }
+.switch-btn:hover { background: var(--surface-2); }
+.help-btn {
+  display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 7px 12px; font-size: .88rem; font-weight: 650;
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border)); background: var(--danger-soft); color: var(--danger);
+}
+.help-btn:hover { filter: brightness(.97); }
+
+/* Profile picker */
+#pickerDlg { width: min(720px, calc(100vw - 24px)); }
+.picker-body { padding: 26px 22px 22px; text-align: center; overflow-y: auto; }
+.picker-body h2 { margin: 14px 0 4px; font-size: 1.5rem; }
+.picker-body > p { margin: 0 0 18px; color: var(--muted); }
+.profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.profile-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 10px 14px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-2); transition: transform .15s, border-color .15s; width: 100%; }
+.profile-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.profile-card .pname { font-weight: 650; font-size: 1.05rem; }
+.profile-card .pmeta { font-size: .76rem; color: var(--muted); }
+.profile-item { position: relative; }
+.profile-tools { position: absolute; top: 6px; right: 6px; display: none; gap: 2px; }
+.managing .profile-tools { display: flex; }
+.profile-tools .icon-btn { width: 30px; height: 30px; background: var(--surface); border: 1px solid var(--border); }
+.picker-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+.inline-form { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+.inline-form[hidden] { display: none; }
+.inline-form input { border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 9px 11px; min-width: 180px; }
+.inline-form input:focus { border-color: var(--accent); }
+.pin-input { letter-spacing: .5em; text-align: center; width: 140px; min-width: 0 !important; font-size: 1.2rem; }
+.pin-error { color: var(--danger); font-size: .88rem; min-height: 1.2em; margin-top: 6px; }
+.privacy-note { font-size: .76rem; color: var(--muted); margin-top: 16px; }
+
+/* Help panel */
+.help-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.help-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); }
+.help-item.urgent { border-color: color-mix(in srgb, var(--danger) 50%, var(--border)); background: var(--danger-soft); }
+.help-item .hi-text { flex: 1; min-width: 0; }
+.help-item .hi-name { font-weight: 650; }
+.help-item .hi-note { font-size: .8rem; color: var(--muted); }
+.help-item .call { white-space: nowrap; text-decoration: none; font-weight: 700; color: var(--accent-strong); }
+.help-item .call.btn-danger { color: var(--danger); }
+[hidden] { display: none !important; }
+.crisis-card { border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border)); background: var(--danger-soft); border-radius: var(--radius); padding: 12px 14px; }
+.crisis-card h3 { margin: 0 0 4px; font-size: 1rem; }
+.crisis-card p { margin: 0 0 6px; font-size: .9rem; }
+.crisis-card ul { margin: 0; padding-left: 1.2em; font-size: .92rem; }
+.crisis-card a { color: var(--danger); font-weight: 700; }
+
+/* Recovery counter */
+.sober-card { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)); text-align: left; width: 100%; }
+.sober-card[hidden] { display: none; }
+.sober-card .days { font-size: 1.5rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
+.sober-card .lbl { font-size: .8rem; color: var(--muted); line-height: 1.25; }
+
+/* Daily check-in extras */
+.craving-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 12px; align-items: center; }
+.craving-row .lbl { font-size: .85rem; color: var(--muted); margin-right: 4px; }
+.mood-week { display: flex; justify-content: center; gap: 6px; margin-top: 12px; font-size: .78rem; color: var(--muted); align-items: center; flex-wrap: wrap; }
+.mood-week .day { display: flex; flex-direction: column; align-items: center; min-width: 30px; }
+.mood-week .day .e { font-size: 1.1rem; }
+.disclaimer-body p { margin: 10px 0; }
+.disclaimer-body ul { padding-left: 1.2em; }
+.mode-badge { font-size: .72rem; background: var(--accent-soft); color: var(--accent-strong); border-radius: 999px; padding: 1px 8px; border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)); }
+.radio-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.radio-row label { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface-2); border-radius: 999px; padding: 6px 12px; font-size: .88rem; font-weight: 500; cursor: pointer; }
+.radio-row input { accent-color: var(--accent); }
+.radio-row label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.field input[type="date"] { width: 100%; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 9px 11px; }
+
+@media (max-width: 860px) {
+  .switch-btn .sname { display: none; }
+  .switch-btn { padding: 3px; }
+  .help-btn .htext-long { display: none; }
+}
+@media (max-width: 480px) {
+  .topbar-actions .hide-sm { display: none; }
+  .help-btn { padding: 6px 9px; }
+  .mode-badge { display: none; }
+  .who-name { font-size: 1rem; }
+}
 </style>
 </head>
 <body>
@@ -390,12 +482,16 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="brand-mark" aria-hidden="true"></div>
       <div>
         <div class="brand-name" id="brandName">Eden</div>
-        <div class="brand-sub">your AI companion</div>
+        <div class="brand-sub" id="brandSub">faith-based AOD support</div>
       </div>
     </div>
     <button class="btn btn-primary" id="newChatBtn" type="button">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
       New chat
+    </button>
+    <button class="sober-card" id="soberCard" type="button" hidden aria-label="Recovery counter — edit in Settings">
+      <span class="days" id="soberDays">0</span>
+      <span class="lbl" id="soberLbl">days</span>
     </button>
     <div class="history-label" id="historyLabel">Conversations</div>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
@@ -407,6 +503,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" data-open="settings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
         Settings
+      </button>
+      <button class="btn btn-ghost" type="button" id="sideSwitchBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Switch person
       </button>
     </div>
   </aside>
@@ -421,21 +521,28 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="who">
         <div class="orb" id="headerOrb" data-state="idle" aria-hidden="true"><span class="shine"></span></div>
         <div class="who-text">
-          <div class="who-name" id="headerName">Eden</div>
-          <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here for you</span><span class="mood-pill" id="moodPill" hidden></span></div>
+          <div class="who-name"><span id="headerName">Eden</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
+          <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here to listen</span><span class="mood-pill" id="moodPill" hidden></span></div>
         </div>
       </div>
       <div class="topbar-actions">
+        <button class="help-btn" id="helpBtn" type="button" aria-haspopup="dialog">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Get help<span class="htext-long"> now</span></span>
+        </button>
+        <button class="switch-btn" id="switchBtn" type="button" title="Switch person">
+          <span class="avatar" id="switchAvatar" aria-hidden="true">D</span><span class="sname" id="switchName">Dwayne</span>
+        </button>
         <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
         </button>
-        <button class="icon-btn" id="autoSpeakBtn" type="button" aria-pressed="false" aria-label="Read replies aloud" title="Read replies aloud">
+        <button class="icon-btn hide-sm" id="autoSpeakBtn" type="button" aria-pressed="false" aria-label="Read replies aloud" title="Read replies aloud">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
         </button>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="Dark mode" aria-pressed="false" title="Toggle light / dark">
+        <button class="icon-btn hide-sm" id="themeBtn" type="button" aria-label="Dark mode" aria-pressed="false" title="Toggle light / dark">
           <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <button class="icon-btn hide-xs" type="button" data-open="memories" aria-label="Memories" title="Memories">
+        <button class="icon-btn hide-sm" type="button" data-open="memories" aria-label="Memories" title="Memories">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         </button>
         <button class="icon-btn" type="button" data-open="settings" aria-label="Settings" title="Settings">
@@ -469,10 +576,71 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · Eden is an AI and can make mistakes.</p>
+      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · Eden is an AI, not a counsellor or doctor — in an emergency call 000.</p>
     </div>
   </main>
 </div>
+
+<!-- ============================ Profile picker ============================ -->
+<dialog id="pickerDlg" aria-labelledby="pickerTitle">
+  <div class="picker-body" id="pickerBody">
+    <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
+    <h2 id="pickerTitle">Who's chatting?</h2>
+    <p>Each person has their own private chats, memories and settings.</p>
+    <ul class="profiles" id="profileList" aria-label="People"></ul>
+    <form class="inline-form" id="pinForm" hidden>
+      <label for="pinInput" id="pinLabel" class="sr-only">PIN</label>
+      <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="PIN">
+      <button class="btn btn-primary" type="submit">Unlock</button>
+      <button class="btn" type="button" id="pinCancel">Cancel</button>
+    </form>
+    <div class="pin-error" id="pinError" role="alert"></div>
+    <form class="inline-form" id="addPersonForm" hidden>
+      <label for="addPersonInput" class="sr-only">New person's name</label>
+      <input id="addPersonInput" type="text" maxlength="30" placeholder="Name">
+      <button class="btn btn-primary" type="submit">Add</button>
+      <button class="btn" type="button" id="addPersonCancel">Cancel</button>
+    </form>
+    <div class="picker-actions">
+      <button class="btn" type="button" id="addPersonBtn">+ Add person</button>
+      <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage people</button>
+    </div>
+    <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
+  </div>
+</dialog>
+
+<!-- ============================ Help dialog ============================ -->
+<dialog id="helpDlg" aria-labelledby="helpTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="helpTitle">Get help now</h2>
+    <button class="icon-btn" value="close" aria-label="Close help">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p style="margin:12px 0 0">If you or someone else is in immediate danger, <strong>call 000 now</strong>. These Australian services are free and confidential:</p>
+    <ul class="help-list" id="helpList"></ul>
+    <p class="help" style="margin-top:12px">Eden is an AI support tool, not a counsellor or clinician. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
+  </div>
+</dialog>
+
+<!-- ============================ Disclaimer dialog ============================ -->
+<dialog id="disclaimerDlg" aria-labelledby="discTitle">
+  <div class="dlg-head"><h2 id="discTitle">Before we start 🌿</h2></div>
+  <div class="dlg-body disclaimer-body">
+    <p>Eden is an <strong>AI support tool</strong> for talking through alcohol and other drug use, cravings, faith and hope. It draws on approaches used in Australian AOD services, but:</p>
+    <ul>
+      <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
+      <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
+      <li>In an emergency call <strong>000</strong>. The <strong>Get help now</strong> button is always at the top of the screen.</li>
+      <li>Chats are stored only on this device, but messages are sent to your chosen AI provider to create replies.</li>
+    </ul>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="discHelpBtn">See help contacts</button>
+    <button class="btn btn-primary" type="button" id="discOkBtn">I understand</button>
+  </div>
+</dialog>
 
 <!-- ============================ Settings dialog ============================ -->
 <dialog id="settingsDlg" aria-labelledby="settingsTitle">
@@ -484,7 +652,71 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </form>
   <div class="dlg-body">
     <fieldset>
-      <legend>Connection</legend>
+      <legend>Mode &amp; faith</legend>
+      <div class="field">
+        <label for="setMode">Eden's role</label>
+        <select id="setMode">
+          <option value="counsellor">AOD faith counsellor — support with alcohol &amp; other drugs</option>
+          <option value="friend">Friend — warm, everyday companion</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="setFaith">Faith</label>
+        <select id="setFaith">
+          <option value="general">Faith-inclusive / general spirituality</option>
+          <option value="christian">Christian (non-denominational)</option>
+          <option value="catholic">Catholic</option>
+          <option value="islamic">Islamic</option>
+          <option value="jewish">Jewish</option>
+          <option value="buddhist">Buddhist</option>
+          <option value="hindu">Hindu</option>
+          <option value="sikh">Sikh</option>
+          <option value="indigenous">Indigenous spirituality</option>
+          <option value="none">No faith content</option>
+        </select>
+      </div>
+      <div class="field">
+        <span class="label" id="faithLevelLabel">How much faith content?</span>
+        <div class="radio-row" role="radiogroup" aria-labelledby="faithLevelLabel">
+          <label><input type="radio" name="faithLevel" value="ask"> Only when I ask</label>
+          <label><input type="radio" name="faithLevel" value="woven"> Gently woven in</label>
+          <label><input type="radio" name="faithLevel" value="central"> Central</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>This person</legend>
+      <div class="field">
+        <label for="setProfileName">Your name (Eden will call you this)</label>
+        <input id="setProfileName" type="text" maxlength="30">
+      </div>
+      <div class="field">
+        <label for="setPin">4-digit PIN (optional)</label>
+        <div class="key-wrap">
+          <input id="setPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" aria-describedby="pinHelp">
+          <button class="btn btn-sm" type="button" id="removePinBtn">Remove PIN</button>
+        </div>
+        <span class="help" id="pinHelp">A light privacy lock for a shared device — not strong security.</span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Recovery counter</legend>
+      <div class="field">
+        <label for="setSoberStart">Start date (optional)</label>
+        <input id="setSoberStart" type="date">
+        <span class="help">Shown in the sidebar. Leave empty to hide it. A slip doesn't erase your progress.</span>
+      </div>
+      <div class="field">
+        <label for="setSoberWhat">Label</label>
+        <input id="setSoberWhat" type="text" maxlength="40" placeholder="e.g. alcohol-free, clean, sober">
+      </div>
+      <div class="check"><input type="checkbox" id="setMoodCheck"><label for="setMoodCheck">Show the daily / mood check-in on new chats</label></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Connection (shared on this device)</legend>
       <div class="field">
         <label for="setBaseUrl">Provider base URL</label>
         <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
@@ -516,16 +748,12 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <input id="setName" type="text" maxlength="40" placeholder="Eden">
       </div>
       <div class="field">
-        <label for="setUserName">What should Eden call you?</label>
-        <input id="setUserName" type="text" maxlength="40" placeholder="e.g. Dwayne">
-      </div>
-      <div class="field">
         <span class="label" id="traitsLabel">Personality traits</span>
         <div class="chips" id="traitChips" role="group" aria-labelledby="traitsLabel"></div>
       </div>
       <div class="field">
         <label for="setTraitsCustom">More about Eden's personality</label>
-        <textarea id="setTraitsCustom" rows="2" placeholder="e.g. loves gardening metaphors, big fan of the footy, gently nerdy"></textarea>
+        <textarea id="setTraitsCustom" rows="2" placeholder="e.g. loves gardening metaphors, gently nerdy"></textarea>
       </div>
       <div class="field">
         <label for="setStyle">Conversation style</label>
@@ -541,12 +769,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <label for="setCustom">Extra instructions (optional)</label>
         <textarea id="setCustom" rows="2" placeholder="Anything else Eden should keep in mind"></textarea>
       </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Memory &amp; check-ins</legend>
       <div class="check"><input type="checkbox" id="setMemAuto"><label for="setMemAuto">Learn memories automatically after each exchange</label></div>
-      <div class="check"><input type="checkbox" id="setMoodCheck"><label for="setMoodCheck">Show mood check-in at the start of new chats</label></div>
     </fieldset>
 
     <fieldset>
@@ -582,12 +805,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
     <fieldset>
       <legend>Your data</legend>
-      <p class="help" style="margin:6px 0 10px">Everything lives only in this browser. Exports exclude your API key.</p>
+      <p class="help" style="margin:6px 0 10px">Everything lives only in this browser. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
       <div class="row">
         <button class="btn btn-sm" type="button" id="exportBtn">Export JSON</button>
         <button class="btn btn-sm" type="button" id="importBtn">Import JSON</button>
         <input type="file" id="importFile" accept="application/json,.json" class="sr-only" tabindex="-1" aria-hidden="true">
-        <button class="btn btn-sm btn-danger" type="button" id="clearAllBtn">Clear all data</button>
+        <button class="btn btn-sm btn-danger" type="button" id="clearMineBtn">Clear this person's data</button>
+        <button class="btn btn-sm btn-danger" type="button" id="clearAllBtn">Clear all data on this device</button>
       </div>
     </fieldset>
   </div>
@@ -606,7 +830,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0">These facts are shared with Eden in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
+    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with Eden in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
     <form class="mem-add" id="memAddForm">
       <label for="memAddInput" class="sr-only">New memory</label>
       <input id="memAddInput" type="text" placeholder="Add something Eden should remember…" maxlength="300">
@@ -626,54 +850,57 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <script>
 'use strict';
 /* =============================================================================
-   Eden — a standalone AI companion.
-   Everything (settings, chats, memories) is persisted in localStorage.
-   Talks to any OpenAI-compatible /chat/completions endpoint directly.
+   Eden — a standalone AI companion (v2: profiles + faith-based AOD counsellor).
+   Build: eden-v2-profiles-aod
+   Storage layout (localStorage):
+     eden.shared.v1            provider settings shared on this device (URL, model, key, stream)
+     eden.profiles.v1          { list: [{id, name, pin, created}], lastId }
+     eden.p.<id>.settings      per-person persona / mode / faith / voice / recovery settings
+     eden.p.<id>.convos        per-person conversations
+     eden.p.<id>.memories      per-person memories
+     eden.p.<id>.moods         per-person daily check-in / mood history
+     eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
+const EDEN_BUILD = 'eden-v2-profiles-aod';
 
 /* ---------------------------------------------------------------------------
-   Storage
+   Storage helpers
    --------------------------------------------------------------------------- */
-const STORE = {
-  settings: 'eden.settings.v1',
-  convos: 'eden.conversations.v1',
-  memories: 'eden.memories.v1',
-  active: 'eden.activeConversation.v1',
-};
+const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1' };
+const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
+const PK = ['settings', 'convos', 'memories', 'moods', 'active'];
+const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
-/** Read JSON from localStorage, returning `fallback` on any problem. */
 function load(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch (e) {
-    return fallback;
-  }
+  try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+  catch (e) { return fallback; }
 }
-/** Write JSON to localStorage; tell the user if storage is full/blocked. */
 function save(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (e) {
-    toast('Could not save to browser storage (it may be full or disabled).', true);
-  }
+  try { localStorage.setItem(key, JSON.stringify(value)); }
+  catch (e) { toast('Could not save to browser storage (it may be full or disabled).', true); }
 }
 
-const TRAIT_PRESETS = ['Warm', 'Playful', 'Thoughtful', 'Witty', 'Calm', 'Curious', 'Encouraging', 'Honest', 'Gentle', 'Nerdy'];
-
-const DEFAULT_SETTINGS = {
-  baseUrl: 'https://api.openai.com/v1',
-  model: 'gpt-4o-mini',
-  apiKey: '',
-  stream: true,
+/* ---------------------------------------------------------------------------
+   Constants
+   --------------------------------------------------------------------------- */
+const SHARED_KEYS = ['baseUrl', 'model', 'apiKey', 'stream'];
+const SETTINGS_VERSION = 2; // v2 = counsellor mode introduced (migrates everyone once)
+const DEFAULT_SHARED = { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: '', stream: true };
+const DEFAULT_PROFILE_SETTINGS = {
+  settingsVersion: SETTINGS_VERSION,
+  mode: 'counsellor',
+  faith: 'general',
+  faithLevel: 'woven',
+  disclaimerAck: false,
   name: 'Eden',
-  userName: '',
-  traits: ['Warm', 'Curious', 'Thoughtful'],
+  traits: ['Warm', 'Calm', 'Thoughtful'],
   traitsCustom: '',
   style: 'balanced',
   custom: '',
   memAuto: true,
   moodCheck: true,
+  soberStart: '',
+  soberWhat: '',
   voiceURI: '',
   rate: 1,
   pitch: 1,
@@ -681,39 +908,71 @@ const DEFAULT_SETTINGS = {
   theme: 'system',
 };
 
+const TRAIT_PRESETS = ['Warm', 'Playful', 'Thoughtful', 'Witty', 'Calm', 'Curious', 'Encouraging', 'Honest', 'Gentle', 'Nerdy'];
 const STYLE_TEXT = {
-  balanced: 'Reply naturally with a medium length, like a friend texting thoughtfully. Ask a follow-up question when it feels natural, not every time.',
-  brief: 'Keep replies short and casual — usually 1–3 sentences — like quick texts between friends.',
-  reflective: 'Be thoughtful and reflective. Take time to explore feelings and ideas, and ask insightful, open-ended questions.',
-  coach: 'Be an encouraging, practical coach: help break things into small steps, celebrate progress, and keep things actionable.',
-  playful: 'Be light-hearted and playful, with gentle humour and banter, while still being genuinely supportive.',
+  balanced: 'Reply naturally with a medium length. Ask a follow-up question when it feels natural, not every time.',
+  brief: 'Keep replies short and casual — usually 1–3 sentences.',
+  reflective: 'Be thoughtful and reflective. Explore feelings and ideas, and ask insightful, open-ended questions.',
+  coach: 'Be an encouraging, practical coach: break things into small steps, celebrate progress, keep things actionable.',
+  playful: 'Be light-hearted and playful, with gentle humour, while still being genuinely supportive.',
 };
 
 const MOODS = [
   { e: '😄', l: 'Great' }, { e: '🙂', l: 'Good' }, { e: '😐', l: 'Okay' },
   { e: '😔', l: 'Low' }, { e: '😣', l: 'Stressed' }, { e: '😴', l: 'Tired' },
 ];
+const CRAVINGS = ['None', 'Mild', 'Moderate', 'Strong'];
 
-const STARTERS = [
-  'Let me tell you about my day',
-  'I need to talk something through',
-  'Give me a little pick-me-up',
-  'Help me plan my week',
+const STARTERS = {
+  friend: ['Let me tell you about my day', 'I need to talk something through', 'Give me a little pick-me-up', 'Help me plan my week'],
+  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down'],
+};
+
+/* Verified Australian crisis & AOD contacts (checked against official sites, Sept 2026). */
+const HELP_CONTACTS = [
+  { name: 'Emergency — police, ambulance, fire', num: '000', tel: '000', note: 'If life is in danger or someone is at immediate risk', urgent: true },
+  { name: 'Lifeline', num: '13 11 14', tel: '131114', note: '24/7 crisis support · text 0477 13 11 14' },
+  { name: 'Suicide Call Back Service', num: '1300 659 467', tel: '1300659467', note: '24/7 counselling for anyone affected by suicide' },
+  { name: 'National Alcohol and Other Drug Hotline', num: '1800 250 015', tel: '1800250015', note: '24/7, free & confidential — connects to your state service' },
+  { name: 'Adis 24/7 Alcohol and Drug Support (QLD)', num: '1800 177 833', tel: '1800177833', note: 'Queensland counselling, information and referrals, 24/7' },
+  { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7 crisis support for Aboriginal and Torres Strait Islander people' },
 ];
+const CONTACTS_TEXT = HELP_CONTACTS.map(c => `- ${c.name}: ${c.num} (${c.note})`).join('\n');
+
+/* Words that suggest risk. Triggers an immediate help card and a crisis instruction to the model. */
+const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|od'?d|od'?ing|not safe|unsafe|in danger|going to hurt|hurt (someone|them|him|her|my kids?)|no reason to live)\b/i;
+
+const FAITH_TEXT = {
+  general: 'Faith-inclusive / general spirituality. Speak of hope, meaning, purpose, gratitude, forgiveness, inner peace and a Higher Power "as you understand it". Do not assume any particular religion; follow the person\'s lead if they name one.',
+  christian: 'Christian (non-denominational). Draw on prayer, the Bible, God\'s grace, love and forgiveness, Jesus\' compassion for people who struggle, and church community. Celebrate Recovery is a relevant Christ-centred peer group.',
+  catholic: 'Catholic. Draw on prayer (including the Our Father, Hail Mary, the Serenity Prayer or the Rosary if welcome), Scripture, God\'s mercy, the sacraments (e.g. Reconciliation) and the support of a parish priest or pastoral care.',
+  islamic: 'Islamic. Draw on dua, dhikr, the Qur\'an and Hadith (paraphrase unless certain), tawbah (returning to Allah), sabr (patience) and the vast mercy of Allah, and the support of an imam or mosque community. Be aware intoxicants are prohibited in Islam: never shame; emphasise that Allah\'s mercy and the door of repentance are always open.',
+  jewish: 'Jewish. Draw on prayer, the Psalms and Torah wisdom, teshuvah (return and repair), community, and the support of a rabbi or congregation, respecting the person\'s level of observance.',
+  buddhist: 'Buddhist. Draw on mindfulness and meditation, compassion (metta) including self-compassion, impermanence (cravings arise and pass), the Four Noble Truths, the fifth precept framed gently, and the support of a sangha.',
+  hindu: 'Hindu. Draw on prayer and mantra, the Bhagavad Gita (paraphrase unless certain), dharma, meditation and yoga, and the support of family, temple and community.',
+  sikh: 'Sikh. Draw on Naam Simran, Gurbani (paraphrase unless certain), seva, sangat and the Gurdwara community. Intoxicants are discouraged in Sikhi: never shame; emphasise Waheguru\'s grace and the strength of sangat.',
+  indigenous: 'Indigenous spirituality, approached with deep cultural respect. Acknowledge connection to Country, culture, kin and community as sources of strength and healing if the person raises them. Do NOT invent, claim or describe specific cultural or spiritual practices, Dreaming stories or ceremonies, and do not speak for any community. Defer to Elders, family, community and Aboriginal Community Controlled Health Organisations; mention 13YARN as a culturally safe support.',
+  none: 'No faith content. Keep everything secular: do not mention God, prayer, religion or spirituality unless the person raises it first, and then follow their lead respectfully.',
+};
+const FAITH_LEVEL_TEXT = {
+  ask: 'Only bring faith or spiritual content in when the person asks for it.',
+  woven: 'Gently weave faith in where it feels natural — e.g. offer (never impose) a short prayer, reflection or reminder of grace — while keeping the focus on the person.',
+  central: 'Faith is central for this person: make it a main lens of support, regularly offering prayer, sacred-text reflections and connection to faith community, while still respecting their autonomy.',
+};
 
 /* ---------------------------------------------------------------------------
-   App state
+   App state (the active person's data lives in these variables)
    --------------------------------------------------------------------------- */
-let settings = Object.assign({}, DEFAULT_SETTINGS, load(STORE.settings, {}));
-let convos = load(STORE.convos, []);      // [{id,title,created,updated,mood,messages:[{role,content,ts,error?}]}]
-let memories = load(STORE.memories, []);  // [{id,text,created,source:'auto'|'manual'}]
-let activeId = load(STORE.active, null);
-let busy = false;                          // true while waiting on a reply
-let abortCtrl = null;                      // AbortController for the in-flight request
-
-if (!Array.isArray(convos)) convos = [];
-if (!Array.isArray(memories)) memories = [];
-if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_SETTINGS.traits];
+let shared = Object.assign({}, DEFAULT_SHARED, load(K.shared, {}));
+let profilesState = null;  // { list, lastId }
+let profile = null;        // the active person {id, name, pin, created}
+let settings = {};         // merged view: profile settings + shared provider settings
+let convos = [];
+let memories = [];
+let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
+let activeId = null;
+let busy = false;
+let abortCtrl = null;
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -721,24 +980,112 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 
 
 const el = {
   app: $('#app'), scrim: $('#scrim'), menuBtn: $('#menuBtn'),
-  history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), memCount: $('#memCount'),
-  headerName: $('#headerName'), status: $('#statusText'), moodPill: $('#moodPill'),
+  history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
+  headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), messages: $('#messages'), inner: $('#messagesInner'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), toasts: $('#toasts'),
+  switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
+  soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'),
+  toasts: $('#toasts'),
 };
+
+/* ---------------------------------------------------------------------------
+   Profiles: migration, loading and saving
+   --------------------------------------------------------------------------- */
+/** One-time migration from the single-user v1 layout into the "Dwayne" profile. */
+function migrateStorage() {
+  profilesState = load(K.profiles, null);
+  if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length) return;
+  const now = Date.now();
+  profilesState = {
+    list: [
+      { id: 'dwayne', name: 'Dwayne', pin: null, created: now },
+      { id: 'abbey', name: 'Abbey', pin: null, created: now },
+    ],
+    lastId: 'dwayne',
+  };
+  const oldSettings = load(LEGACY.settings, null);
+  if (oldSettings) {
+    for (const k of SHARED_KEYS) if (oldSettings[k] !== undefined) shared[k] = oldSettings[k];
+    const persona = Object.assign({}, oldSettings);
+    SHARED_KEYS.forEach(k => delete persona[k]);
+    delete persona.userName;
+    save(pk('dwayne', 'settings'), persona); // settingsVersion missing → mode migration runs on load
+  }
+  const moves = [[LEGACY.convos, 'convos'], [LEGACY.memories, 'memories'], [LEGACY.active, 'active']];
+  for (const [oldKey, what] of moves) {
+    const raw = localStorage.getItem(oldKey);
+    if (raw !== null) localStorage.setItem(pk('dwayne', what), raw);
+  }
+  Object.values(LEGACY).forEach(k => localStorage.removeItem(k));
+  save(K.shared, shared);
+  save(K.profiles, profilesState);
+}
+
+function saveProfiles() { save(K.profiles, profilesState); }
+function findProfile(id) { return profilesState.list.find(p => p.id === id) || null; }
+
+/** Load one person's data into the app state (applying the v2 mode migration once). */
+function loadProfileData(pid) {
+  let ps = load(pk(pid, 'settings'), {});
+  if (!ps || typeof ps !== 'object') ps = {};
+  if ((ps.settingsVersion || 1) < SETTINGS_VERSION) {
+    ps.mode = 'counsellor';          // switch existing users to counsellor mode once
+    ps.settingsVersion = SETTINGS_VERSION;
+    save(pk(pid, 'settings'), ps);
+  }
+  SHARED_KEYS.forEach(k => delete ps[k]);
+  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, shared);
+  if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_PROFILE_SETTINGS.traits];
+  convos = load(pk(pid, 'convos'), []);
+  memories = load(pk(pid, 'memories'), []);
+  moods = load(pk(pid, 'moods'), []);
+  activeId = load(pk(pid, 'active'), null);
+  if (!Array.isArray(convos)) convos = [];
+  if (!Array.isArray(memories)) memories = [];
+  if (!Array.isArray(moods)) moods = [];
+}
+
+/** Persist settings: provider keys to the shared store, everything else to this person. */
+function saveSettings() {
+  const ps = {};
+  for (const [k, v] of Object.entries(settings)) if (!SHARED_KEYS.includes(k)) ps[k] = v;
+  for (const k of SHARED_KEYS) shared[k] = settings[k];
+  save(pk(profile.id, 'settings'), ps);
+  save(K.shared, shared);
+}
+function persistConvos() { save(pk(profile.id, 'convos'), convos); save(pk(profile.id, 'active'), activeId); }
+function saveMemories() { save(pk(profile.id, 'memories'), memories); }
+function saveMoods() { save(pk(profile.id, 'moods'), moods); }
+
+/** Light PIN hash (FNV-1a, iterated). This is a privacy lock, not security. */
+function pinHash(pid, pin) {
+  let h = 2166136261 >>> 0;
+  const s = `eden:${pid}:${pin}`;
+  for (let r = 0; r < 300; r++) {
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    h ^= r;
+  }
+  return h.toString(16);
+}
+
+const AVATAR_COLOURS = ['#3b8a5a', '#8a5a9e', '#c0713a', '#2f7fa0', '#a0485a', '#6b7a2f', '#5a62b0'];
+function avatarColour(p) {
+  let n = 0; for (const ch of p.id) n = (n * 31 + ch.charCodeAt(0)) >>> 0;
+  return AVATAR_COLOURS[n % AVATAR_COLOURS.length];
+}
+function userName() { return profile ? profile.name : ''; }
+const isCounsellor = () => settings.mode === 'counsellor';
 
 /* ---------------------------------------------------------------------------
    Small utilities
    --------------------------------------------------------------------------- */
 function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
-
 function toast(msg, bad = false, ms = 3200) {
   const t = document.createElement('div');
   t.className = 'toast' + (bad ? ' bad' : '');
@@ -746,9 +1093,9 @@ function toast(msg, bad = false, ms = 3200) {
   el.toasts.appendChild(t);
   setTimeout(() => t.remove(), ms);
 }
-
 const timeFmt = new Intl.DateTimeFormat('en-AU', { hour: 'numeric', minute: '2-digit' });
 const dateFmt = new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'short' });
+const dayFmt = new Intl.DateTimeFormat('en-AU', { weekday: 'short' });
 function relTime(ts) {
   const d = new Date(ts), now = new Date();
   if (d.toDateString() === now.toDateString()) return timeFmt.format(d);
@@ -756,26 +1103,37 @@ function relTime(ts) {
   if (d.toDateString() === y.toDateString()) return 'Yesterday';
   return dateFmt.format(d);
 }
-
+/** Local calendar date as YYYY-MM-DD. */
+function localDate(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+function parseLocalDate(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
+  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+}
+/** Whole days since the recovery start date (null if unset / in the future). */
+function soberDaysCount() {
+  const start = parseLocalDate(settings.soberStart);
+  if (!start) return null;
+  const today = parseLocalDate(localDate());
+  const days = Math.round((today - start) / 86400000);
+  return days >= 0 ? days : null;
+}
 function greeting() {
   const h = new Date().getHours();
   const part = h < 5 ? 'Hey there, night owl' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  return settings.userName ? `${part}, ${settings.userName}` : part;
+  return userName() ? `${part}, ${userName()}` : part;
 }
 
 /* ---------------------------------------------------------------------------
-   Tiny, safe Markdown renderer.
-   All text is HTML-escaped FIRST; only a whitelisted set of tags is produced.
-   Supports: fenced code, inline code, headings, bold/italic/strike,
-   links (http/https/mailto only), lists, blockquotes, hr, paragraphs.
+   Tiny, safe Markdown renderer (escape first, whitelist tags)
    --------------------------------------------------------------------------- */
 function renderInline(text) {
-  // `text` is already HTML-escaped. Protect inline code from further formatting.
   const codes = [];
   let s = text.replace(/`([^`\n]+)`/g, (_, c) => { codes.push(c); return `\u0001${codes.length - 1}\u0001`; });
   const links = [];
   const keep = (html) => { links.push(html); return `\u0002${links.length - 1}\u0002`; };
-  s = s.replace(/\[([^\]\n]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)/g,
+  s = s.replace(/\[([^\]\n]+)\]\(((?:https?:\/\/|mailto:|tel:)[^\s)]+)\)/g,
     (_, label, url) => keep(`<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`));
   s = s.replace(/(^|[\s(])(https?:\/\/[^\s<)]*[^\s<).,!?;:])/g,
     (_, pre, url) => pre + keep(`<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`));
@@ -787,22 +1145,18 @@ function renderInline(text) {
   s = s.replace(/\u0002(\d+)\u0002/g, (_, i) => links[+i]);
   return s.replace(/\u0001(\d+)\u0001/g, (_, i) => `<code>${codes[+i]}</code>`);
 }
-
 function renderMarkdown(src) {
   const blocks = [];
-  // Pull out fenced code blocks (also handles an unterminated fence while streaming).
   const text = escapeHtml(src || '').replace(/```[\w+-]*\n?([\s\S]*?)(?:```|$)/g, (_, code) => {
     blocks.push(`<pre><code>${code.replace(/\n$/, '')}</code></pre>`);
     return `\n\u0000${blocks.length - 1}\u0000\n`;
   });
   const out = [];
   let para = [], list = null, quote = [];
-
   const flushPara = () => { if (para.length) { out.push(`<p>${para.map(renderInline).join('<br>')}</p>`); para = []; } };
   const flushList = () => { if (list) { out.push(`<${list.type}>${list.items.map(i => `<li>${renderInline(i)}</li>`).join('')}</${list.type}>`); list = null; } };
   const flushQuote = () => { if (quote.length) { out.push(`<blockquote>${quote.map(renderInline).join('<br>')}</blockquote>`); quote = []; } };
   const flushAll = () => { flushPara(); flushList(); flushQuote(); };
-
   for (const raw of text.split('\n')) {
     const line = raw.replace(/\s+$/, '');
     let m;
@@ -828,8 +1182,6 @@ function renderMarkdown(src) {
   flushAll();
   return out.join('');
 }
-
-/** Plain-text version of a reply for speech synthesis. */
 function toSpeakable(md) {
   return md
     .replace(/```[\s\S]*?```/g, ' (code omitted) ')
@@ -846,9 +1198,7 @@ function toSpeakable(md) {
    Theme
    --------------------------------------------------------------------------- */
 const mqDark = window.matchMedia('(prefers-color-scheme: dark)');
-function resolvedTheme() {
-  return settings.theme === 'system' ? (mqDark.matches ? 'dark' : 'light') : settings.theme;
-}
+function resolvedTheme() { return (settings.theme || 'system') === 'system' ? (mqDark.matches ? 'dark' : 'light') : settings.theme; }
 function applyTheme() {
   const t = resolvedTheme();
   document.documentElement.dataset.theme = t;
@@ -862,30 +1212,31 @@ function applyTheme() {
 mqDark.addEventListener('change', () => { if (settings.theme === 'system') applyTheme(); });
 el.themeBtn.addEventListener('click', () => {
   settings.theme = resolvedTheme() === 'dark' ? 'light' : 'dark';
-  save(STORE.settings, settings);
+  saveSettings();
   applyTheme();
 });
 
 /* ---------------------------------------------------------------------------
-   Orb / status  (idle · thinking · speaking · listening)
+   Orb / status
    --------------------------------------------------------------------------- */
-const STATUS_TEXT = { idle: 'Here for you', thinking: 'Thinking…', speaking: 'Speaking…', listening: 'Listening…' };
+function statusText(state) {
+  return { thinking: 'Thinking…', speaking: 'Speaking…', listening: 'Listening…' }[state]
+    || (isCounsellor() ? 'Here to listen' : 'Here for you');
+}
 function setOrb(state) {
   $$('.orb[data-state]').forEach(o => { o.dataset.state = state; });
-  el.status.textContent = STATUS_TEXT[state] || STATUS_TEXT.idle;
+  el.status.textContent = statusText(state);
 }
 
 /* ---------------------------------------------------------------------------
    Conversations
    --------------------------------------------------------------------------- */
 function activeConvo() { return convos.find(c => c.id === activeId) || null; }
-function persistConvos() { save(STORE.convos, convos); save(STORE.active, activeId); }
 
 function newConversation() {
   const current = activeConvo();
-  // Reuse the current chat if it's still blank, rather than piling up empty ones.
   if (current && current.messages.length === 0) { renderAll(); focusInput(); return current; }
-  const c = { id: uid(), title: 'New chat', created: Date.now(), updated: Date.now(), mood: null, messages: [] };
+  const c = { id: uid(), title: 'New chat', created: Date.now(), updated: Date.now(), mood: null, craving: null, messages: [] };
   convos.unshift(c);
   activeId = c.id;
   convos = convos.filter(x => x.id === activeId || x.messages.length > 0);
@@ -894,7 +1245,6 @@ function newConversation() {
   focusInput();
   return c;
 }
-
 function openConversation(id) {
   if (busy) stopGeneration();
   stopSpeaking();
@@ -904,7 +1254,6 @@ function openConversation(id) {
   renderAll();
   closeSidebar();
 }
-
 function deleteConversation(id) {
   const c = convos.find(x => x.id === id);
   if (!c || !confirm(`Delete “${c.title}”? This can't be undone.`)) return;
@@ -914,14 +1263,12 @@ function deleteConversation(id) {
 }
 
 const ICON_TRASH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>';
+const ICON_EDIT = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 
 function renderHistory() {
   const list = convos.filter(c => c.messages.length > 0).sort((a, b) => b.updated - a.updated);
   el.history.innerHTML = '';
-  if (!list.length) {
-    el.history.innerHTML = '<li class="history-empty">No conversations yet — say hello! 👋</li>';
-    return;
-  }
+  if (!list.length) { el.history.innerHTML = '<li class="history-empty">No conversations yet — say hello! 👋</li>'; return; }
   for (const c of list) {
     const li = document.createElement('li');
     if (c.id === activeId) li.className = 'active';
@@ -930,7 +1277,7 @@ function renderHistory() {
     const open = $('.open-chat', li);
     if (c.id === activeId) open.setAttribute('aria-current', 'true');
     $('.title', li).textContent = (c.mood ? c.mood.e + ' ' : '') + c.title;
-    $('.meta', li).textContent = `${relTime(c.updated)} · ${c.messages.length} messages`;
+    $('.meta', li).textContent = `${relTime(c.updated)} · ${c.messages.filter(m => !m.card).length} messages`;
     $('.del', li).setAttribute('aria-label', `Delete conversation: ${c.title}`);
     open.addEventListener('click', () => openConversation(c.id));
     $('.del', li).addEventListener('click', () => deleteConversation(c.id));
@@ -945,19 +1292,32 @@ const ICON_SPEAK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
 const ICON_COPY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const ICON_RETRY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
 
-/** Build a message row. Returns {row, bubble, tools}. */
+/** The in-chat safety card shown instantly when risk words are detected (no model needed). */
+function crisisCardHtml() {
+  return `<div class="crisis-card" role="note" aria-label="Crisis support contacts">
+    <h3>You don't have to go through this alone 💚</h3>
+    <p>If you or someone else is in immediate danger, call <a href="tel:000">000</a> now. Free, confidential support any time:</p>
+    <ul>${HELP_CONTACTS.slice(1).map(c => `<li>${escapeHtml(c.name)}: <a href="tel:${c.tel}">${escapeHtml(c.num)}</a></li>`).join('')}</ul>
+  </div>`;
+}
+
 function messageEl(msg) {
   const row = document.createElement('div');
   row.className = `msg ${msg.role}${msg.error ? ' error' : ''}`;
   const wrap = document.createElement('div');
   wrap.className = 'bubble-wrap';
+
+  if (msg.card === 'crisis') {
+    wrap.innerHTML = crisisCardHtml();
+    row.appendChild(wrap);
+    return { row, bubble: wrap, tools: document.createElement('div') };
+  }
+
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-
   const who = document.createElement('span');
   who.className = 'sr-only';
   who.textContent = msg.role === 'user' ? 'You said: ' : `${settings.name} said: `;
-
   if (msg.role === 'user' || msg.error) bubble.textContent = msg.content;
   else bubble.innerHTML = renderMarkdown(msg.content);
   wrap.appendChild(who);
@@ -988,7 +1348,6 @@ function messageEl(msg) {
   row.appendChild(wrap);
   return { row, bubble, tools };
 }
-
 function toolBtn(icon, label, fn) {
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'icon-btn'; b.innerHTML = icon;
@@ -996,40 +1355,68 @@ function toolBtn(icon, label, fn) {
   b.addEventListener('click', fn);
   return b;
 }
-
 async function copyText(text) {
   try { await navigator.clipboard.writeText(text); toast('Copied'); }
   catch (e) { toast('Copy failed — your browser blocked clipboard access', true); }
 }
 
-/** Empty-chat welcome screen with the mood check-in and conversation starters. */
+/* ---------------------------------------------------------------------------
+   Welcome screen, daily check-in & mood history
+   --------------------------------------------------------------------------- */
+function todaysCheckin() { return moods.find(m => m.date === localDate()) || null; }
+
 function renderWelcome() {
   const c = activeConvo();
+  const counsellor = isCounsellor();
   const box = document.createElement('div');
   box.className = 'welcome';
   box.innerHTML = '<div class="orb lg" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
   $('h1', box).textContent = greeting() + ' 🌿';
-  $('p', box).textContent = `I'm ${settings.name}. I'm here to listen, chat, brainstorm, or just keep you company.`;
+  $('p', box).textContent = counsellor
+    ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups, faith and hope — whatever's on your mind, at your own pace.`
+    : `I'm ${settings.name}. I'm here to listen, chat, brainstorm, or just keep you company.`;
 
   if (settings.moodCheck) {
+    const today = todaysCheckin();
     const card = document.createElement('div');
     card.className = 'mood-card';
-    card.innerHTML = '<h2 id="moodQ">How are you feeling right now? <span class="help">(optional)</span></h2><div class="mood-row" role="group" aria-labelledby="moodQ"></div>';
+    const title = counsellor ? 'Daily check-in — how are you travelling today?' : 'How are you feeling right now?';
+    card.innerHTML = `<h2 id="moodQ">${escapeHtml(title)} <span class="help">(optional)</span></h2><div class="mood-row" role="group" aria-labelledby="moodQ"></div>`;
     const row = $('.mood-row', card);
+    const current = (c && c.mood) || (today && today.mood);
     for (const m of MOODS) {
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'mood-btn';
-      b.setAttribute('aria-pressed', String(!!(c && c.mood && c.mood.l === m.l)));
+      b.setAttribute('aria-pressed', String(!!(current && current.l === m.l)));
       b.innerHTML = `<span class="e" aria-hidden="true">${m.e}</span><span class="l">${m.l}</span>`;
       b.addEventListener('click', () => setMood(m));
       row.appendChild(b);
+    }
+    if (counsellor) {
+      const cr = document.createElement('div');
+      cr.className = 'craving-row';
+      cr.setAttribute('role', 'group');
+      cr.setAttribute('aria-label', 'Cravings today');
+      cr.innerHTML = '<span class="lbl">Cravings today:</span>';
+      const curCraving = (c && c.craving) || (today && today.craving);
+      for (const lvl of CRAVINGS) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'chip craving-chip'; b.textContent = lvl;
+        b.setAttribute('aria-pressed', String(curCraving === lvl));
+        b.addEventListener('click', () => setCraving(lvl));
+        cr.appendChild(b);
+      }
+      card.appendChild(cr);
+      card.appendChild(moodWeekEl());
     }
     box.appendChild(card);
   }
 
   const starters = document.createElement('div');
   starters.className = 'starters';
-  for (const s of STARTERS) {
+  let list = counsellor ? [...STARTERS.counsellor] : STARTERS.friend;
+  if (counsellor && settings.faith === 'none') list = list.map(s => s === 'Pray with me' ? 'Help me find some calm' : s);
+  for (const s of list) {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'starter'; b.textContent = s;
     b.addEventListener('click', () => sendMessage(s));
@@ -1039,22 +1426,59 @@ function renderWelcome() {
   el.inner.appendChild(box);
 }
 
+/** Last-7-days strip of check-ins. */
+function moodWeekEl() {
+  const wrap = document.createElement('div');
+  wrap.className = 'mood-week';
+  wrap.setAttribute('aria-label', 'Your check-ins over the last 7 days');
+  const lbl = document.createElement('span');
+  lbl.textContent = 'Last 7 days:';
+  wrap.appendChild(lbl);
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const entry = moods.find(m => m.date === localDate(d));
+    const day = document.createElement('span');
+    day.className = 'day';
+    day.innerHTML = `<span class="e" aria-hidden="true"></span><span></span>`;
+    day.firstChild.textContent = entry && entry.mood ? entry.mood.e : '·';
+    day.lastChild.textContent = dayFmt.format(d);
+    day.title = entry ? `${entry.mood ? entry.mood.l : ''}${entry.craving ? ` · cravings ${entry.craving.toLowerCase()}` : ''}` : 'No check-in';
+    wrap.appendChild(day);
+  }
+  return wrap;
+}
+
+function recordCheckin(patch) {
+  const date = localDate();
+  let entry = moods.find(m => m.date === date);
+  if (!entry) { entry = { date, mood: null, craving: null }; moods.push(entry); }
+  Object.assign(entry, patch);
+  moods = moods.slice(-400);
+  saveMoods();
+}
 function setMood(m) {
   const c = activeConvo() || newConversation();
-  c.mood = (c.mood && c.mood.l === m.l) ? null : { e: m.e, l: m.l };
+  const toggledOff = c.mood && c.mood.l === m.l;
+  c.mood = toggledOff ? null : { e: m.e, l: m.l };
+  recordCheckin({ mood: c.mood });
   persistConvos();
-  renderMessages();
-  updateMoodPill();
-  if (c.mood) toast(`Thanks for sharing ${m.e}`);
+  renderMessages(); updateMoodPill();
+  if (c.mood) toast(`Thanks for checking in ${m.e}`);
   focusInput();
 }
-
+function setCraving(lvl) {
+  const c = activeConvo() || newConversation();
+  c.craving = c.craving === lvl ? null : lvl;
+  recordCheckin({ craving: c.craving });
+  persistConvos();
+  renderMessages();
+  if (c.craving === 'Strong') toast('Strong cravings are tough — they do pass. I’m here, and help is one tap away.', false, 4500);
+}
 function updateMoodPill() {
   const c = activeConvo();
-  if (c && c.mood) { el.moodPill.hidden = false; el.moodPill.textContent = `${c.mood.e} ${c.mood.l}`; el.moodPill.title = 'Your mood at the start of this chat'; }
+  if (c && c.mood) { el.moodPill.hidden = false; el.moodPill.textContent = `${c.mood.e} ${c.mood.l}`; el.moodPill.title = 'Your check-in for this chat'; }
   else el.moodPill.hidden = true;
 }
-
 function renderMessages() {
   const c = activeConvo();
   el.inner.innerHTML = '';
@@ -1062,75 +1486,137 @@ function renderMessages() {
   for (const m of c.messages) el.inner.appendChild(messageEl(m).row);
   scrollToBottom(true);
 }
-
 function scrollToBottom(force = false) {
   const m = el.messages;
-  const nearBottom = m.scrollHeight - m.scrollTop - m.clientHeight < 160;
-  if (force || nearBottom) m.scrollTop = m.scrollHeight;
+  if (force || m.scrollHeight - m.scrollTop - m.clientHeight < 160) m.scrollTop = m.scrollHeight;
 }
-
+function renderSober() {
+  const days = soberDaysCount();
+  if (days === null) { el.soberCard.hidden = true; return; }
+  el.soberCard.hidden = false;
+  el.soberDays.textContent = days;
+  const what = settings.soberWhat || (isCounsellor() ? 'on your journey' : 'days');
+  el.soberLbl.textContent = `${days === 1 ? 'day' : 'days'} ${what === 'days' ? '' : what}`.trim() + ' 🌱';
+  el.soberCard.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || ''}. Edit in Settings.`);
+}
 function renderAll() {
+  const counsellor = isCounsellor();
   el.brandName.textContent = settings.name;
+  el.brandSub.textContent = counsellor ? 'faith-based AOD support' : 'your AI companion';
   el.headerName.textContent = settings.name;
-  el.input.placeholder = `Message ${settings.name}…`;
+  el.modeBadge.textContent = counsellor ? 'AOD support' : 'Friend';
+  el.input.placeholder = counsellor ? `Tell ${settings.name} what's on your mind…` : `Message ${settings.name}…`;
   el.inputLabel.textContent = `Message ${settings.name}`;
   el.mic.setAttribute('aria-label', `Speak to ${settings.name}`);
-  $('#memTitle').textContent = `🌿 What ${settings.name} remembers`;
+  $('#memTitle').textContent = `🌿 What ${settings.name} remembers about ${userName()}`;
   el.memCount.textContent = memories.length;
   el.keyBanner.hidden = !!settings.apiKey;
   el.autoSpeakBtn.setAttribute('aria-pressed', String(!!settings.autoSpeak));
+  el.switchAvatar.textContent = (userName()[0] || '?');
+  el.switchAvatar.style.setProperty('--c', avatarColour(profile));
+  el.switchName.textContent = userName();
+  el.switchBtn.setAttribute('aria-label', `Switch person (currently ${userName()})`);
+  if (!busy) setOrb('idle');
+  renderSober();
   renderHistory();
   renderMessages();
   updateMoodPill();
 }
 
 /* ---------------------------------------------------------------------------
-   System prompt
+   System prompts
    --------------------------------------------------------------------------- */
-function buildSystemPrompt(convo) {
+function commonContext(convo) {
   const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'short' }).format(new Date());
   const lines = [
-    `You are ${settings.name}, a personal AI companion. You're like a warm, curious, supportive friend: you listen closely, remember what matters, show genuine interest, and help the user feel heard.`,
+    `Current local date/time for the user (Brisbane, Australia): ${when}.`,
+    `You are talking with ${userName()}. Address them by name naturally (not in every message).`,
+    'Privacy: this device is shared by several people who each have their own private profile. Only ever discuss this person\'s own conversations and memories. Never reveal, guess at or discuss anyone else\'s chats, memories or information, even if asked.',
+  ];
+  const days = soberDaysCount();
+  if (days !== null) lines.push(`${userName()} is tracking ${days} day(s) ${settings.soberWhat || 'on their recovery journey'} (since ${settings.soberStart}). Acknowledge milestones warmly; if they slip, respond with compassion — progress isn't erased.`);
+  if (memories.length) {
+    lines.push(`Things you remember about ${userName()} from past conversations:`);
+    for (const m of memories.slice(-80)) lines.push(`- ${m.text}`);
+  }
+  if (convo && convo.mood) lines.push(`At the start of this conversation ${userName()} checked in feeling: ${convo.mood.l} ${convo.mood.e}. Acknowledge this gently and naturally early on.`);
+  if (convo && convo.craving) lines.push(`They rated their cravings today as: ${convo.craving}.`);
+  if (settings.custom) lines.push(`Extra instructions from the user: ${settings.custom}`);
+  return lines;
+}
+
+function counsellorPrompt(convo) {
+  const faith = FAITH_TEXT[settings.faith] || FAITH_TEXT.general;
+  const level = settings.faith === 'none' ? '' : (FAITH_LEVEL_TEXT[settings.faithLevel] || FAITH_LEVEL_TEXT.woven);
+  return [
+    `You are ${settings.name}, a warm, calm, hopeful and non-judgemental faith-sensitive AI support companion for people affected by alcohol and other drugs (AOD). You model the person-centred, evidence-based practice used in Australian AOD services.`,
+    settings.traits.length ? `Personality: ${settings.traits.join(', ')}.${settings.traitsCustom ? ' ' + settings.traitsCustom : ''}` : '',
+    '',
+    'WHO YOU ARE (AND AREN\'T)',
+    '- You are an AI support tool, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant, without repeating it constantly.',
+    '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
+    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant.',
+    '',
+    'HOW YOU WORK (EVIDENCE-BASED)',
+    '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
+    '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
+    '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure.',
+    '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
+    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly.',
+    '- Strengths-based, trauma-informed and culturally safe: notice strengths and effort, offer choice and control, never push for trauma details, respect culture, identity, gender and sexuality. Use person-first, non-stigmatising language (e.g. "person who uses alcohol", not "addict" or "alcoholic") unless the person uses a label for themselves.',
+    `- Style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced} Usually keep replies to 2–6 sentences, one question at a time, reflect before advising, and ask permission before giving advice or information. Use Australian English.`,
+    '',
+    'FAITH',
+    `- Tradition: ${faith}`,
+    level ? `- Amount: ${level}` : '',
+    settings.faith === 'none' ? '' : '- Principles: never preachy, never shaming. Never frame addiction, cravings or relapse as a moral failing or a lack of faith. Emphasise grace, mercy, forgiveness, hope, meaning and community as fits the tradition. Offer prayer or reflection rather than imposing it, and respect the person\'s autonomy and beliefs.',
+    settings.faith === 'none' ? '' : '- Sacred texts: only quote if you are confident of the exact wording and reference. Otherwise paraphrase and say that you are paraphrasing. Never invent verses or references.',
+    '',
+    'SAFETY (HIGHEST PRIORITY)',
+    'If the person mentions suicide, self-harm, overdose, feeling unsafe, or someone else being in danger: respond with warmth and FIRST clearly give these Australian contacts, then ask about their immediate safety, stay with them and encourage them to reach out now. If there is immediate danger, urge them to call 000 now. Never minimise risk.',
+    CONTACTS_TEXT,
+    '',
+    ...commonContext(convo),
+  ].filter(l => l !== '').join('\n');
+}
+
+function friendPrompt(convo) {
+  return [
+    `You are ${settings.name}, a personal AI companion — like a warm, curious, supportive friend. You listen closely, remember what matters, show genuine interest and help the user feel heard.`,
     settings.traits.length ? `Your personality traits: ${settings.traits.join(', ')}.` : '',
     settings.traitsCustom ? `More about your personality: ${settings.traitsCustom}` : '',
     `Conversation style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced}`,
     'Guidelines:',
     '- Keep the relationship friendly and platonic — never romantic or flirtatious.',
-    '- Be honest that you are an AI if it comes up; do not pretend to have a body or an offline life.',
-    '- Use Australian English spelling and a natural, conversational tone. Light markdown is fine; avoid heavy headings or long essays unless asked.',
-    '- Weave in what you remember about the user naturally; never recite your memories back as a list.',
-    '- You are supportive but not a therapist. If the user seems to be in crisis or at risk of harm, respond with care and gently encourage reaching out to someone they trust or to support services (in Australia: Lifeline 13 11 14, Beyond Blue 1300 22 4636, or 000 in an emergency).',
-    `Current local date/time for the user: ${when}.`,
-    settings.userName ? `The user's name is ${settings.userName}.` : '',
-    settings.custom ? `Extra instructions from the user: ${settings.custom}` : '',
-  ];
-  if (memories.length) {
-    lines.push('Things you remember about the user from past conversations:');
-    for (const m of memories.slice(-80)) lines.push(`- ${m.text}`);
-  }
-  if (convo && convo.mood) {
-    lines.push(`At the start of this conversation the user checked in feeling: ${convo.mood.l} ${convo.mood.e}. Acknowledge this gently and naturally early on, without making a big deal of it.`);
-  }
-  return lines.filter(Boolean).join('\n');
+    '- Be honest that you are an AI if it comes up.',
+    '- Use Australian English and a natural, conversational tone. Light markdown is fine.',
+    '- Weave in what you remember naturally; never recite memories as a list.',
+    '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, being unsafe or someone in danger, respond with care and FIRST clearly give these Australian contacts, then check on their safety:',
+    CONTACTS_TEXT,
+    ...commonContext(convo),
+  ].filter(Boolean).join('\n');
 }
 
+function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(convo) : friendPrompt(convo); }
+
+const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, being unsafe or someone in danger). Respond with warmth. Begin by clearly listing: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately.';
+
 function buildMessages(convo) {
-  const history = convo.messages.filter(m => !m.error).slice(-30).map(m => ({ role: m.role, content: m.content }));
-  return [{ role: 'system', content: buildSystemPrompt(convo) }, ...history];
+  const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({ role: m.role, content: m.content }));
+  const msgs = [{ role: 'system', content: buildSystemPrompt(convo) }, ...history];
+  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
+  if (lastUser && lastUser.crisis) msgs.push({ role: 'system', content: CRISIS_INSTRUCTION });
+  return msgs;
 }
 
 /* ---------------------------------------------------------------------------
    API client (OpenAI-compatible Chat Completions, streaming + fallback)
    --------------------------------------------------------------------------- */
-function endpoint() {
-  return (settings.baseUrl || DEFAULT_SETTINGS.baseUrl).trim().replace(/\/+$/, '') + '/chat/completions';
-}
+function endpoint() { return (settings.baseUrl || DEFAULT_SHARED.baseUrl).trim().replace(/\/+$/, '') + '/chat/completions'; }
 
 class ApiError extends Error {
   constructor(message, status) { super(message); this.name = 'ApiError'; this.status = status; }
 }
-
-/** Turn an HTTP failure into a friendly error. */
 async function apiErrorFrom(res) {
   let detail = '';
   try {
@@ -1150,14 +1636,14 @@ async function apiErrorFrom(res) {
 
 /**
  * Request a chat completion.
- * @param {Array}  messages  chat messages
- * @param {Object} opts      { stream, onToken, signal, temperature, max_tokens }
- * @returns {Promise<string>} the full reply text
+ * @param {Array}  messages
+ * @param {Object} opts { stream, onToken, signal, temperature, max_tokens }
+ * @returns {Promise<string>} full reply text
  */
 async function chatCompletion(messages, opts = {}) {
   const { onToken, signal } = opts;
   const wantStream = !!opts.stream;
-  const body = { model: settings.model || DEFAULT_SETTINGS.model, messages, temperature: opts.temperature ?? 0.8 };
+  const body = { model: settings.model || DEFAULT_SHARED.model, messages, temperature: opts.temperature ?? 0.7 };
   if (opts.max_tokens) body.max_tokens = opts.max_tokens;
   if (wantStream) body.stream = true;
 
@@ -1171,22 +1657,17 @@ async function chatCompletion(messages, opts = {}) {
     });
   } catch (e) {
     if (e.name === 'AbortError') throw e;
-    // Network/CORS failure — try once more without streaming in case a proxy dislikes SSE.
     if (wantStream) return chatCompletion(messages, { ...opts, stream: false });
     throw new ApiError('Could not reach the provider. Check your connection and base URL (the provider must allow requests from a browser).', 0);
   }
-
   if (!res.ok) {
     const err = await apiErrorFrom(res);
-    // Some providers reject `stream: true` — fall back to a normal request.
     if (wantStream && (res.status === 400 || res.status === 422) && /stream/i.test(err.message)) {
       return chatCompletion(messages, { ...opts, stream: false });
     }
     throw err;
   }
-
   const ctype = res.headers.get('content-type') || '';
-  // Non-streaming, or the server ignored stream:true and replied with plain JSON.
   if (!wantStream || !res.body || !/event-stream/i.test(ctype)) {
     const data = await res.json();
     const choice = data.choices && data.choices[0];
@@ -1194,8 +1675,6 @@ async function chatCompletion(messages, opts = {}) {
     if (onToken && text) onToken(text);
     return text;
   }
-
-  // Streaming: parse Server-Sent Events line by line.
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buf = '', full = '';
@@ -1205,7 +1684,7 @@ async function chatCompletion(messages, opts = {}) {
     const payload = line.slice(5).trim();
     if (payload === '[DONE]') return true;
     let j;
-    try { j = JSON.parse(payload); } catch (_) { return false; } // keep-alive / partial line
+    try { j = JSON.parse(payload); } catch (_) { return false; }
     if (j.error) throw new ApiError(j.error.message || 'The provider reported a streaming error.', 500);
     const choice = j.choices && j.choices[0];
     const delta = choice ? ((choice.delta && choice.delta.content) || (choice.message && choice.message.content) || '') : '';
@@ -1236,23 +1715,26 @@ function setBusy(b) {
   el.send.title = b ? 'Stop' : 'Send (Enter)';
   el.sendIcon.innerHTML = b ? '<rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor"/>' : '<path d="M5 12h14M13 6l6 6-6 6"/>';
 }
-
 function stopGeneration() { if (abortCtrl) abortCtrl.abort(); }
 
 async function sendMessage(textOverride) {
-  if (busy) return;
+  if (busy || !profile) return;
   const text = String(textOverride ?? el.input.value).trim();
   if (!text) return;
-
-  if (!settings.apiKey) {
+  const crisis = CRISIS_RE.test(text);
+  if (!settings.apiKey && !crisis) {
     toast('Add your API key in Settings to start chatting 🌱');
     openSettings();
     return;
   }
 
   const c = activeConvo() || newConversation();
-  c.messages = c.messages.filter(m => !m.error); // drop old error bubbles
-  c.messages.push({ role: 'user', content: text, ts: Date.now() });
+  c.messages = c.messages.filter(m => !m.error);
+  const userMsg = { role: 'user', content: text, ts: Date.now() };
+  if (crisis) userMsg.crisis = true;
+  c.messages.push(userMsg);
+  // Safety first: show crisis contacts immediately, even with no API key or network.
+  if (crisis) c.messages.push({ role: 'assistant', card: 'crisis', content: '', ts: Date.now() });
   if (c.title === 'New chat') c.title = text.length > 42 ? text.slice(0, 40).trim() + '…' : text;
   c.updated = Date.now();
   persistConvos();
@@ -1260,11 +1742,13 @@ async function sendMessage(textOverride) {
   autoGrow();
   renderMessages();
   renderHistory();
+
+  if (!settings.apiKey) { toast('Add your API key in Settings so Eden can reply 🌱', false, 4000); return; }
   await generateReply(c);
 }
 
 async function generateReply(c) {
-  // Placeholder bubble showing the typing indicator.
+  const pid = profile.id;
   const { row, bubble, tools } = messageEl({ role: 'assistant', content: '' });
   tools.hidden = true;
   bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(settings.name)} is typing"><span></span><span></span><span></span></span>`;
@@ -1275,18 +1759,8 @@ async function generateReply(c) {
   setOrb('thinking');
   abortCtrl = new AbortController();
   let acc = '', raf = 0;
-
-  const paint = () => {
-    raf = 0;
-    bubble.innerHTML = renderMarkdown(acc);
-    bubble.classList.add('cursor');
-    scrollToBottom();
-  };
-  const finish = () => {
-    setBusy(false);
-    abortCtrl = null;
-    if (!speaking) setOrb(listening ? 'listening' : 'idle');
-  };
+  const paint = () => { raf = 0; bubble.innerHTML = renderMarkdown(acc); bubble.classList.add('cursor'); scrollToBottom(); };
+  const finish = () => { setBusy(false); abortCtrl = null; if (!speaking) setOrb(listening ? 'listening' : 'idle'); };
 
   try {
     const reply = await chatCompletion(buildMessages(c), {
@@ -1298,6 +1772,7 @@ async function generateReply(c) {
     if (!acc.trim()) acc = "Hmm, I didn't get a reply from the model. Could you try again?";
   } catch (e) {
     if (raf) cancelAnimationFrame(raf);
+    if (!profile || profile.id !== pid) { finish(); return; } // person switched — drop quietly
     if (e.name === 'AbortError') {
       if (!acc.trim()) { row.remove(); finish(); return; }
       acc += ' …';
@@ -1312,6 +1787,7 @@ async function generateReply(c) {
     }
   }
   if (raf) cancelAnimationFrame(raf);
+  if (!profile || profile.id !== pid) { finish(); return; }
 
   c.messages.push({ role: 'assistant', content: acc, ts: Date.now() });
   c.updated = Date.now();
@@ -1320,12 +1796,10 @@ async function generateReply(c) {
   renderHistory();
   finish();
 
-  // Speak aloud if enabled (conversation mode always speaks, then listens again).
   if (settings.autoSpeak || convoMode) speak(acc, () => { if (convoMode) startListening(); });
 
-  // Learn durable facts in the background.
   const lastUser = [...c.messages].reverse().find(m => m.role === 'user');
-  if (settings.memAuto && lastUser) extractMemories(lastUser.content, acc);
+  if (settings.memAuto && lastUser) extractMemories(pid, lastUser.content, acc, !!lastUser.crisis);
 }
 
 function retryLast() {
@@ -1334,7 +1808,8 @@ function retryLast() {
   c.messages = c.messages.filter(m => !m.error);
   persistConvos();
   renderMessages();
-  if (c.messages.length && c.messages[c.messages.length - 1].role === 'user') generateReply(c);
+  const last = c.messages.filter(m => !m.card).pop();
+  if (last && last.role === 'user') generateReply(c);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1342,16 +1817,18 @@ function retryLast() {
    --------------------------------------------------------------------------- */
 function normalise(s) { return String(s).toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim(); }
 
-async function extractMemories(userText, assistantText) {
+function memoryInstructions() {
+  const base = 'You maintain private long-term memory for ONE person using a support app. From the latest exchange, extract NEW durable facts about the USER worth remembering in future conversations. Write each fact as a short third-person statement. Skip anything already known, small talk, momentary moods and facts about the assistant.';
+  const counsellor = ' Focus on what helps ongoing alcohol-and-other-drug support: goals (e.g. cutting down, abstinence, safer use) and progress, substances of concern in general terms, known triggers and high-risk situations, coping strategies that help, supports (people, services, groups, faith community), faith preferences and practices, strengths, and meaningful dates (e.g. a sobriety date). Examples: "Wants to cut down to two drinks on weekends", "Stress at work is a big trigger", "Finds walking the dog helps with cravings", "Attends a Tuesday SMART Recovery meeting", "Likes to pray the Serenity Prayer".';
+  const friend = ' Focus on name, people and pets in their life, work or study, hobbies, preferences, goals and ongoing situations.';
+  const safety = ' NEVER store details of suicidal thoughts, self-harm, overdose, methods, or other crisis specifics, and never store identifying details about other people\'s crises. At most, store a brief neutral support fact such as "Has found calling Lifeline helpful". Avoid details of illegal activity beyond what is needed for support.';
+  return base + (isCounsellor() ? counsellor : friend) + safety + ' Respond with ONLY a JSON object: {"facts": ["..."]}. Use {"facts": []} if there is nothing new.';
+}
+
+async function extractMemories(pid, userText, assistantText, crisis) {
   const known = memories.map(m => `- ${m.text}`).join('\n') || '(none yet)';
   const messages = [
-    {
-      role: 'system',
-      content: 'You maintain long-term memory for a personal companion app. From the latest exchange, extract NEW durable facts about the USER worth remembering in future conversations: name, people and pets in their life, work or study, location, hobbies, preferences, goals, ongoing situations, important dates. ' +
-        'Write each fact as a short third-person statement (e.g. "Has a kelpie named Max", "Works as an electrician in Brisbane"). ' +
-        'Skip anything already known, trivial small talk, momentary moods, facts about the assistant, and highly sensitive details the user would not expect to be stored. ' +
-        'Respond with ONLY a JSON object: {"facts": ["..."]}. Use {"facts": []} if there is nothing new.',
-    },
+    { role: 'system', content: memoryInstructions() + (crisis ? ' The latest message involved a possible crisis: only store non-crisis, support-related facts, or nothing.' : '') },
     { role: 'user', content: `Already known:\n${known}\n\nLatest exchange:\nUser: ${userText}\nAssistant: ${assistantText.slice(0, 1500)}` },
   ];
   try {
@@ -1360,7 +1837,10 @@ async function extractMemories(userText, assistantText) {
     if (!match) return;
     const parsed = JSON.parse(match[0]);
     const facts = Array.isArray(parsed) ? parsed : (parsed.facts || []);
-    const existing = new Set(memories.map(m => normalise(m.text)));
+    // Write to the person who had the conversation, even if someone else is now active.
+    const sameUser = profile && profile.id === pid;
+    let target = sameUser ? memories : load(pk(pid, 'memories'), []);
+    const existing = new Set(target.map(m => normalise(m.text)));
     const added = [];
     for (const f of facts) {
       if (typeof f !== 'string') continue;
@@ -1368,20 +1848,20 @@ async function extractMemories(userText, assistantText) {
       if (text.length < 3 || existing.has(normalise(text))) continue;
       existing.add(normalise(text));
       const m = { id: uid(), text, created: Date.now(), source: 'auto' };
-      memories.push(m);
+      target.push(m);
       added.push(m);
     }
-    if (added.length) {
-      if (memories.length > 300) memories = memories.slice(-300);
-      save(STORE.memories, memories);
+    if (!added.length) return;
+    if (target.length > 300) target = target.slice(-300);
+    save(pk(pid, 'memories'), target);
+    if (sameUser) {
+      memories = target;
       el.memCount.textContent = memories.length;
       if (el.memoriesDlg.open) renderMemories();
       const summary = added.map(a => a.text).join('; ');
       toast(`🌱 ${settings.name} will remember: ${summary.length > 120 ? summary.slice(0, 117) + '…' : summary}`, false, 4500);
     }
-  } catch (e) {
-    // Memory is best-effort; never interrupt the chat for it.
-  }
+  } catch (e) { /* best-effort */ }
 }
 
 /* ---------------------------------------------------------------------------
@@ -1396,7 +1876,7 @@ function renderMemories() {
     const li = document.createElement('li');
     li.className = 'mem-empty';
     li.textContent = memories.length ? 'No memories match your search.'
-      : `🌱 Nothing yet. As you chat, ${settings.name} will remember the important things — or add some yourself above.`;
+      : `🌱 Nothing yet. As you chat, ${settings.name} will remember the important things — goals, what helps, who supports you — or add some yourself above.`;
     list.appendChild(li);
   }
   for (const m of items) {
@@ -1410,7 +1890,7 @@ function renderMemories() {
     input.addEventListener('change', () => {
       const v = input.value.trim();
       if (!v) { removeMemory(m.id); return; }
-      m.text = v; save(STORE.memories, memories); toast('Memory updated');
+      m.text = v; saveMemories(); toast('Memory updated');
     });
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
     $('button', li).addEventListener('click', () => removeMemory(m.id));
@@ -1420,7 +1900,7 @@ function renderMemories() {
 }
 function removeMemory(id) {
   memories = memories.filter(m => m.id !== id);
-  save(STORE.memories, memories);
+  saveMemories();
   renderMemories();
   toast('Memory forgotten');
 }
@@ -1430,16 +1910,16 @@ $('#memAddForm').addEventListener('submit', (e) => {
   const v = input.value.trim();
   if (!v) return;
   memories.push({ id: uid(), text: v, created: Date.now(), source: 'manual' });
-  save(STORE.memories, memories);
+  saveMemories();
   input.value = '';
   renderMemories();
   input.focus();
 });
 $('#memSearch').addEventListener('input', renderMemories);
 $('#memClearBtn').addEventListener('click', () => {
-  if (!memories.length || !confirm(`Forget all ${memories.length} memories? This can't be undone.`)) return;
+  if (!memories.length || !confirm(`Forget all ${memories.length} memories for ${userName()}? This can't be undone.`)) return;
   memories = [];
-  save(STORE.memories, memories);
+  saveMemories();
   renderMemories();
 });
 function openMemories() { closeSidebar(); renderMemories(); if (!el.memoriesDlg.open) el.memoriesDlg.showModal(); }
@@ -1448,6 +1928,7 @@ function openMemories() { closeSidebar(); renderMemories(); if (!el.memoriesDlg.
    Settings panel
    --------------------------------------------------------------------------- */
 let draftTraits = [];
+let settingsThemeBefore = 'system';
 function renderTraitChips() {
   const box = $('#traitChips');
   box.innerHTML = '';
@@ -1462,50 +1943,68 @@ function renderTraitChips() {
     box.appendChild(b);
   }
 }
-
-function openSettings() {
+function syncFaithControls() {
+  const none = $('#setFaith').value === 'none';
+  $$('input[name="faithLevel"]').forEach(r => { r.disabled = none; });
+}
+function openSettings(focusId) {
+  if (!profile) return;
   closeSidebar();
+  $('#setMode').value = settings.mode;
+  $('#setFaith').value = settings.faith;
+  $$('input[name="faithLevel"]').forEach(r => { r.checked = r.value === settings.faithLevel; });
+  syncFaithControls();
+  $('#setProfileName').value = profile.name;
+  $('#setPin').value = '';
+  $('#setPin').placeholder = profile.pin ? 'PIN set — type a new one to change' : 'No PIN';
+  $('#removePinBtn').hidden = !profile.pin;
+  $('#setSoberStart').value = settings.soberStart || '';
+  $('#setSoberStart').max = localDate();
+  $('#setSoberWhat').value = settings.soberWhat || '';
+  $('#setMoodCheck').checked = settings.moodCheck;
   $('#setBaseUrl').value = settings.baseUrl;
   $('#setModel').value = settings.model;
   $('#setKey').value = settings.apiKey;
   setKeyVisible(false);
   $('#setStream').checked = settings.stream;
   $('#setName').value = settings.name;
-  $('#setUserName').value = settings.userName;
   draftTraits = [...settings.traits];
   renderTraitChips();
   $('#setTraitsCustom').value = settings.traitsCustom;
   $('#setStyle').value = settings.style;
   $('#setCustom').value = settings.custom;
   $('#setMemAuto').checked = settings.memAuto;
-  $('#setMoodCheck').checked = settings.moodCheck;
   populateVoices();
   $('#setRate').value = settings.rate; $('#rateVal').textContent = Number(settings.rate).toFixed(1);
   $('#setPitch').value = settings.pitch; $('#pitchVal').textContent = Number(settings.pitch).toFixed(1);
   $('#setAutoSpeak').checked = settings.autoSpeak;
   $('#setTheme').value = settings.theme;
+  $('#dataWho').textContent = profile.name;
   $('#testResult').textContent = ''; $('#testResult').className = 'test-result';
   settingsThemeBefore = settings.theme;
   if (!el.settingsDlg.open) el.settingsDlg.showModal();
-  if (!settings.apiKey) setTimeout(() => $('#setKey').focus(), 60);
+  if (focusId) setTimeout(() => $('#' + focusId).focus(), 60);
+  else if (!settings.apiKey) setTimeout(() => $('#setKey').focus(), 60);
 }
-let settingsThemeBefore = settings.theme;
-
-/** Collect form values into a new settings object (without saving). */
 function readSettingsForm() {
+  const lvl = $$('input[name="faithLevel"]').find(r => r.checked);
   return Object.assign({}, settings, {
-    baseUrl: $('#setBaseUrl').value.trim() || DEFAULT_SETTINGS.baseUrl,
-    model: $('#setModel').value.trim() || DEFAULT_SETTINGS.model,
+    mode: $('#setMode').value,
+    faith: $('#setFaith').value,
+    faithLevel: lvl ? lvl.value : 'woven',
+    soberStart: $('#setSoberStart').value || '',
+    soberWhat: $('#setSoberWhat').value.trim(),
+    moodCheck: $('#setMoodCheck').checked,
+    baseUrl: $('#setBaseUrl').value.trim() || DEFAULT_SHARED.baseUrl,
+    model: $('#setModel').value.trim() || DEFAULT_SHARED.model,
     apiKey: $('#setKey').value.trim(),
     stream: $('#setStream').checked,
     name: $('#setName').value.trim() || 'Eden',
-    userName: $('#setUserName').value.trim(),
     traits: [...draftTraits],
     traitsCustom: $('#setTraitsCustom').value.trim(),
     style: $('#setStyle').value,
     custom: $('#setCustom').value.trim(),
     memAuto: $('#setMemAuto').checked,
-    moodCheck: $('#setMoodCheck').checked,
     voiceURI: $('#setVoice').value,
     rate: parseFloat($('#setRate').value) || 1,
     pitch: parseFloat($('#setPitch').value) || 1,
@@ -1513,7 +2012,6 @@ function readSettingsForm() {
     theme: $('#setTheme').value,
   });
 }
-
 function setKeyVisible(show) {
   $('#setKey').type = show ? 'text' : 'password';
   const b = $('#toggleKeyBtn');
@@ -1521,24 +2019,40 @@ function setKeyVisible(show) {
   b.setAttribute('aria-pressed', String(show));
   b.setAttribute('aria-label', show ? 'Hide API key' : 'Show API key');
 }
-
+function nameTaken(name, exceptId) {
+  return profilesState.list.some(p => p.id !== exceptId && p.name.trim().toLowerCase() === name.trim().toLowerCase());
+}
 $('#settingsSave').addEventListener('click', () => {
+  const newName = $('#setProfileName').value.trim();
+  const pin = $('#setPin').value.trim();
+  if (!newName) { toast('Please enter a name for this person.', true); $('#setProfileName').focus(); return; }
+  if (nameTaken(newName, profile.id)) { toast('Someone else already has that name.', true); $('#setProfileName').focus(); return; }
+  if (pin && !/^\d{4}$/.test(pin)) { toast('The PIN needs to be exactly 4 digits.', true); $('#setPin').focus(); return; }
+  const wasCounsellor = isCounsellor();
   settings = readSettingsForm();
   settingsThemeBefore = settings.theme;
-  save(STORE.settings, settings);
+  saveSettings();
+  profile.name = newName;
+  if (pin) profile.pin = pinHash(profile.id, pin);
+  saveProfiles();
   applyTheme();
   renderAll();
   el.settingsDlg.close();
   toast('Settings saved ✓');
+  if (!wasCounsellor && isCounsellor()) maybeShowDisclaimer();
 });
 $('#settingsCancel').addEventListener('click', () => el.settingsDlg.close());
-// Revert the live theme preview if the dialog closes without saving.
 el.settingsDlg.addEventListener('close', () => { if (settings.theme !== settingsThemeBefore) { settings.theme = settingsThemeBefore; applyTheme(); } });
 $('#toggleKeyBtn').addEventListener('click', () => setKeyVisible($('#setKey').type === 'password'));
+$('#removePinBtn').addEventListener('click', () => {
+  profile.pin = null; saveProfiles();
+  $('#removePinBtn').hidden = true; $('#setPin').placeholder = 'No PIN';
+  toast('PIN removed');
+});
+$('#setFaith').addEventListener('change', syncFaithControls);
 $('#setRate').addEventListener('input', (e) => { $('#rateVal').textContent = Number(e.target.value).toFixed(1); });
 $('#setPitch').addEventListener('input', (e) => { $('#pitchVal').textContent = Number(e.target.value).toFixed(1); });
-$('#setTheme').addEventListener('change', (e) => { settings.theme = e.target.value; applyTheme(); }); // live preview
-
+$('#setTheme').addEventListener('change', (e) => { settings.theme = e.target.value; applyTheme(); });
 $('#testConnBtn').addEventListener('click', async () => {
   const out = $('#testResult');
   const prev = settings;
@@ -1550,22 +2064,28 @@ $('#testConnBtn').addEventListener('click', async () => {
     out.className = 'test-result ok'; out.textContent = `✓ Connected to ${settings.model}. Reply: “${r.trim().slice(0, 40)}”`;
   } catch (e) {
     out.className = 'test-result bad'; out.textContent = '✗ ' + String(e.message || 'Failed').split('\n')[0];
-  } finally {
-    settings = prev;
-  }
+  } finally { settings = prev; }
 });
+el.soberCard.addEventListener('click', () => openSettings('setSoberStart'));
 
-/* Export / import / clear ---------------------------------------------------- */
+/* Export / import / clear (per person) ---------------------------------------- */
+function personaSettings() {
+  const ps = {};
+  for (const [k, v] of Object.entries(settings)) if (!SHARED_KEYS.includes(k)) ps[k] = v;
+  return ps;
+}
 $('#exportBtn').addEventListener('click', () => {
-  const { apiKey, ...safeSettings } = settings; // never export the key
-  const data = { app: 'eden-companion', version: 1, exported: new Date().toISOString(), settings: safeSettings, conversations: convos.filter(c => c.messages.length), memories };
+  const data = {
+    app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
+    settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
+  };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `eden-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  a.download = `eden-${profile.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-backup-${localDate()}.json`;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  toast('Backup downloaded');
+  toast(`Backup for ${profile.name} downloaded`);
 });
 $('#importBtn').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', async (e) => {
@@ -1577,44 +2097,232 @@ $('#importFile').addEventListener('change', async (e) => {
     if (!data || data.app !== 'eden-companion') throw new Error('this is not an Eden backup file.');
     const nC = Array.isArray(data.conversations) ? data.conversations.length : 0;
     const nM = Array.isArray(data.memories) ? data.memories.length : 0;
-    if (!confirm(`Import ${nC} conversations and ${nM} memories? This replaces your current chats, memories and settings (your API key is kept).`)) return;
-    const key = settings.apiKey;
-    settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {}, { apiKey: key });
-    if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_SETTINGS.traits];
+    const from = data.profileName ? ` (exported from ${data.profileName})` : '';
+    if (!confirm(`Import ${nC} conversations and ${nM} memories${from} into ${profile.name}'s profile? This replaces ${profile.name}'s current chats, memories and settings.`)) return;
+    const ps = Object.assign({}, data.settings || {});
+    SHARED_KEYS.forEach(k => delete ps[k]);
+    delete ps.userName; delete ps.pin;
+    if (!ps.settingsVersion) { ps.settingsVersion = SETTINGS_VERSION; ps.mode = ps.mode || 'counsellor'; }
+    settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, shared);
+    if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_PROFILE_SETTINGS.traits];
     convos = (data.conversations || []).filter(c => c && c.id && Array.isArray(c.messages));
     memories = (data.memories || []).filter(m => m && typeof m.text === 'string')
       .map(m => ({ id: m.id || uid(), text: m.text, created: m.created || Date.now(), source: m.source || 'manual' }));
+    moods = Array.isArray(data.moods) ? data.moods.filter(m => m && m.date) : [];
     activeId = null;
     settingsThemeBefore = settings.theme;
-    save(STORE.settings, settings); save(STORE.memories, memories); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
     toast('Import complete ✓');
-  } catch (err) {
-    toast('Import failed: ' + err.message, true, 5000);
-  }
+  } catch (err) { toast('Import failed: ' + err.message, true, 5000); }
+});
+$('#clearMineBtn').addEventListener('click', () => {
+  if (!confirm(`Clear all of ${profile.name}'s chats, memories, check-ins and settings? Other people's data is not affected. This cannot be undone.`)) return;
+  PK.forEach(w => localStorage.removeItem(pk(profile.id, w)));
+  loadProfileData(profile.id);
+  el.settingsDlg.close();
+  applyTheme();
+  activeId = null;
+  newConversation();
+  toast(`${profile.name}'s data cleared`);
+  maybeShowDisclaimer();
 });
 $('#clearAllBtn').addEventListener('click', () => {
-  if (!confirm('Clear ALL Eden data in this browser — chats, memories, settings and API key? This cannot be undone.')) return;
-  Object.values(STORE).forEach(k => localStorage.removeItem(k));
+  if (!confirm('Clear ALL Eden data on this device — every person\'s chats, memories and settings, plus the API key? This cannot be undone.')) return;
+  Object.keys(localStorage).filter(k => k.startsWith('eden.')).forEach(k => localStorage.removeItem(k));
   location.reload();
 });
+
+/* ---------------------------------------------------------------------------
+   Profile picker ("Who's chatting?")
+   --------------------------------------------------------------------------- */
+let managing = false, pendingPid = null;
+
+function renderPicker() {
+  const list = $('#profileList');
+  list.innerHTML = '';
+  $('#pickerBody').classList.toggle('managing', managing);
+  $('#managePeopleBtn').setAttribute('aria-pressed', String(managing));
+  $('#managePeopleBtn').textContent = managing ? 'Done' : 'Manage people';
+  for (const p of profilesState.list) {
+    const li = document.createElement('li');
+    li.className = 'profile-item';
+    li.innerHTML = `<button class="profile-card" type="button"><span class="avatar lg" aria-hidden="true"></span><span class="pname"></span><span class="pmeta"></span></button>
+      <div class="profile-tools">
+        <button class="icon-btn rename" type="button">${ICON_EDIT}</button>
+        <button class="icon-btn delete" type="button">${ICON_TRASH}</button>
+      </div>`;
+    const av = $('.avatar', li);
+    av.textContent = p.name[0] || '?';
+    av.style.setProperty('--c', avatarColour(p));
+    $('.pname', li).textContent = p.name;
+    $('.pmeta', li).textContent = (p.pin ? '🔒 PIN' : 'No PIN') + (profile && profile.id === p.id ? ' · current' : '');
+    $('.profile-card', li).setAttribute('aria-label', `${p.name}${p.pin ? ', PIN protected' : ''}`);
+    $('.profile-card', li).addEventListener('click', () => pickProfile(p));
+    $('.rename', li).setAttribute('aria-label', `Rename ${p.name}`);
+    $('.delete', li).setAttribute('aria-label', `Delete ${p.name}`);
+    $('.rename', li).addEventListener('click', () => renameProfile(p));
+    $('.delete', li).addEventListener('click', () => deleteProfile(p));
+    list.appendChild(li);
+  }
+}
+function showPicker() {
+  if (busy) stopGeneration();
+  stopSpeaking();
+  if (convoMode) setConvoMode(false);
+  closeSidebar();
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg].forEach(d => { if (d.open) d.close(); });
+  managing = false; pendingPid = null;
+  $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
+  renderPicker();
+  if (!el.pickerDlg.open) el.pickerDlg.showModal();
+  const first = $('.profile-card', el.pickerDlg);
+  if (first) first.focus();
+}
+function pickProfile(p) {
+  if (managing) return;
+  $('#addPersonForm').hidden = true;
+  if (p.pin && !(profile && profile.id === p.id)) {
+    pendingPid = p.id;
+    $('#pinLabel').textContent = `${p.name}'s PIN`;
+    $('#pinInput').setAttribute('aria-label', `Enter ${p.name}'s 4-digit PIN`);
+    $('#pinInput').placeholder = `${p.name}'s PIN`;
+    $('#pinInput').value = '';
+    $('#pinError').textContent = '';
+    $('#pinForm').hidden = false;
+    $('#pinInput').focus();
+    return;
+  }
+  enterProfile(p.id);
+}
+$('#pinForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const p = findProfile(pendingPid);
+  if (!p) return;
+  if (pinHash(p.id, $('#pinInput').value.trim()) === p.pin) { $('#pinForm').hidden = true; enterProfile(p.id); }
+  else { $('#pinError').textContent = "That PIN doesn't match. Please try again."; $('#pinInput').value = ''; $('#pinInput').focus(); }
+});
+$('#pinCancel').addEventListener('click', () => { $('#pinForm').hidden = true; $('#pinError').textContent = ''; pendingPid = null; });
+
+function enterProfile(pid) {
+  profile = findProfile(pid);
+  profilesState.lastId = pid;
+  saveProfiles();
+  loadProfileData(pid);
+  applyTheme();
+  el.input.value = '';
+  if (!activeConvo()) { activeId = null; newConversation(); } else renderAll();
+  el.pickerDlg.close();
+  toast(`Hi ${profile.name} 👋`);
+  maybeShowDisclaimer();
+  focusInput();
+}
+el.pickerDlg.addEventListener('cancel', (e) => {
+  e.preventDefault();                  // someone must be chosen…
+  if (profile) el.pickerDlg.close();   // …unless we're just returning to the current person
+});
+
+$('#addPersonBtn').addEventListener('click', () => {
+  $('#pinForm').hidden = true;
+  $('#addPersonForm').hidden = false;
+  $('#addPersonInput').value = '';
+  $('#addPersonInput').focus();
+});
+$('#addPersonCancel').addEventListener('click', () => { $('#addPersonForm').hidden = true; });
+$('#addPersonForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = $('#addPersonInput').value.trim();
+  if (!name) return;
+  if (nameTaken(name)) { $('#pinError').textContent = 'Someone already has that name.'; return; }
+  profilesState.list.push({ id: uid(), name, pin: null, created: Date.now() });
+  saveProfiles();
+  $('#addPersonForm').hidden = true;
+  $('#pinError').textContent = '';
+  renderPicker();
+  toast(`Added ${name}`);
+});
+$('#managePeopleBtn').addEventListener('click', () => { managing = !managing; $('#pinForm').hidden = true; renderPicker(); });
+
+function checkPinFor(p, action) {
+  if (!p.pin) return true;
+  const entered = prompt(`Enter ${p.name}'s PIN to ${action}:`);
+  if (entered === null) return false;
+  if (pinHash(p.id, entered.trim()) !== p.pin) { toast("That PIN doesn't match.", true); return false; }
+  return true;
+}
+function renameProfile(p) {
+  if (!checkPinFor(p, 'rename them')) return;
+  const name = (prompt('New name:', p.name) || '').trim();
+  if (!name || name === p.name) return;
+  if (nameTaken(name, p.id)) { toast('Someone already has that name.', true); return; }
+  p.name = name;
+  saveProfiles();
+  renderPicker();
+  if (profile && profile.id === p.id) renderAll();
+}
+function deleteProfile(p) {
+  if (profilesState.list.length <= 1) { toast('You need at least one person.', true); return; }
+  if (!checkPinFor(p, 'delete them')) return;
+  if (!confirm(`Delete ${p.name} and all of their chats, memories and settings? This cannot be undone.`)) return;
+  PK.forEach(w => localStorage.removeItem(pk(p.id, w)));
+  profilesState.list = profilesState.list.filter(x => x.id !== p.id);
+  if (profilesState.lastId === p.id) profilesState.lastId = profilesState.list[0].id;
+  if (profile && profile.id === p.id) { profile = null; el.inner.innerHTML = ''; }
+  saveProfiles();
+  renderPicker();
+  toast(`${p.name} removed`);
+}
+el.switchBtn.addEventListener('click', showPicker);
+$('#sideSwitchBtn').addEventListener('click', showPicker);
+
+/* ---------------------------------------------------------------------------
+   Help panel & first-use disclaimer
+   --------------------------------------------------------------------------- */
+function renderHelpList() {
+  const list = $('#helpList');
+  list.innerHTML = '';
+  for (const c of HELP_CONTACTS) {
+    const li = document.createElement('li');
+    li.className = 'help-item' + (c.urgent ? ' urgent' : '');
+    li.innerHTML = `<div class="hi-text"><div class="hi-name"></div><div class="hi-note"></div></div><a class="btn btn-sm call"></a>`;
+    $('.hi-name', li).textContent = c.name;
+    $('.hi-note', li).textContent = c.note;
+    const a = $('.call', li);
+    a.href = `tel:${c.tel}`;
+    a.textContent = `📞 ${c.num}`;
+    a.setAttribute('aria-label', `Call ${c.name} on ${c.num}`);
+    if (c.urgent) a.classList.add('btn-danger');
+    list.appendChild(li);
+  }
+}
+function openHelp() { closeSidebar(); if (!el.helpDlg.open) el.helpDlg.showModal(); }
+$('#helpBtn').addEventListener('click', openHelp);
+
+function maybeShowDisclaimer() {
+  if (profile && isCounsellor() && !settings.disclaimerAck && !el.disclaimerDlg.open) el.disclaimerDlg.showModal();
+}
+$('#discOkBtn').addEventListener('click', () => {
+  settings.disclaimerAck = true;
+  saveSettings();
+  el.disclaimerDlg.close();
+  focusInput();
+});
+$('#discHelpBtn').addEventListener('click', openHelp);
+el.disclaimerDlg.addEventListener('cancel', (e) => e.preventDefault()); // needs an explicit "I understand"
 
 /* ---------------------------------------------------------------------------
    Voice: text-to-speech (speechSynthesis)
    --------------------------------------------------------------------------- */
 const tts = ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) ? window.speechSynthesis : null;
 let speaking = false;
-
 function getVoices() { try { return tts ? tts.getVoices() : []; } catch (e) { return []; } }
-
 function populateVoices() {
   const sel = $('#setVoice');
   const voices = getVoices();
   sel.innerHTML = '<option value="">Default voice (Australian English if available)</option>';
-  // English voices first, Australian at the top.
-  const score = v => (v.lang === 'en-AU' || v.lang === 'en_AU' ? 0 : /^en/i.test(v.lang) ? 1 : 2);
+  const score = v => (/^en[-_]AU$/i.test(v.lang) ? 0 : /^en/i.test(v.lang) ? 1 : 2);
   for (const v of voices.slice().sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))) {
     const o = document.createElement('option');
     o.value = v.voiceURI;
@@ -1627,19 +2335,13 @@ function populateVoices() {
 if (tts && typeof tts.addEventListener === 'function') {
   tts.addEventListener('voiceschanged', () => { if (el.settingsDlg.open) populateVoices(); });
 }
-
 function pickVoice() {
   const voices = getVoices();
   return voices.find(v => v.voiceURI === settings.voiceURI)
     || voices.find(v => /^en[-_]AU$/i.test(v.lang))
     || voices.find(v => /^en/i.test(v.lang)) || null;
 }
-
-/**
- * Speak text aloud. Splits into sentence chunks (works around Chrome's ~15 s
- * utterance cut-off). `onDone` fires after the last chunk, or straight away if
- * speech isn't available.
- */
+/** Speak text in sentence chunks (avoids Chrome's ~15 s cut-off). */
 function speak(md, onDone) {
   if (!tts) { if (onDone) onDone(); return; }
   stopSpeaking();
@@ -1670,28 +2372,26 @@ function stopSpeaking() {
   try { tts.cancel(); } catch (e) { /* ignore */ }
   if (was && !busy) setOrb(listening ? 'listening' : 'idle');
 }
-
 $('#testVoiceBtn').addEventListener('click', () => {
   if (!tts) { toast('Speech isn’t supported in this browser', true); return; }
   const prev = settings;
   settings = readSettingsForm();
-  speak(`G'day! I'm ${settings.name}. This is how I sound.`);
+  speak(`G'day ${userName()}! I'm ${settings.name}. This is how I sound.`);
   settings = prev;
 });
 el.autoSpeakBtn.addEventListener('click', () => {
   settings.autoSpeak = !settings.autoSpeak;
-  save(STORE.settings, settings);
+  saveSettings();
   el.autoSpeakBtn.setAttribute('aria-pressed', String(settings.autoSpeak));
   if (!settings.autoSpeak) stopSpeaking();
   toast(settings.autoSpeak ? (tts ? 'Replies will be read aloud 🔊' : 'Speech isn’t supported in this browser') : 'Auto-speak off');
 });
 
 /* ---------------------------------------------------------------------------
-   Voice: speech recognition (talk to Eden) + hands-free conversation mode
+   Voice: speech recognition + hands-free conversation mode
    --------------------------------------------------------------------------- */
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
 let recog = null, listening = false, convoMode = false, finalText = '';
-
 function initRecognition() {
   if (!SR || recog) return recog;
   recog = new SR();
@@ -1699,7 +2399,6 @@ function initRecognition() {
   recog.interimResults = true;
   recog.continuous = false;
   recog.maxAlternatives = 1;
-
   recog.onstart = () => {
     listening = true; finalText = '';
     el.mic.classList.add('listening'); el.mic.setAttribute('aria-pressed', 'true');
@@ -1727,16 +2426,13 @@ function initRecognition() {
     el.mic.classList.remove('listening'); el.mic.setAttribute('aria-pressed', 'false');
     if (!busy && !speaking) setOrb('idle');
     const said = finalText.trim();
-    if (said) {
-      sendMessage(said);
-    } else if (convoMode && !busy && !speaking) {
-      // Heard nothing — keep listening in hands-free mode.
+    if (said) sendMessage(said);
+    else if (convoMode && !busy && !speaking) {
       setTimeout(() => { if (convoMode && !listening && !busy && !speaking) startListening(); }, 400);
     }
   };
   return recog;
 }
-
 function startListening() {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
   if (listening || busy) return;
@@ -1744,13 +2440,11 @@ function startListening() {
   try { initRecognition().start(); } catch (e) { /* already started */ }
 }
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
-
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
   if (!settings.apiKey) { toast('Add your API key in Settings first 🌱'); openSettings(); return; }
   if (listening) stopListening(); else startListening();
 });
-
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
   if (on && !settings.apiKey) { toast('Add your API key in Settings first 🌱'); openSettings(); return; }
@@ -1775,8 +2469,10 @@ function autoGrow() {
   el.input.style.height = 'auto';
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
-function focusInput() { if (window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true }); }
-
+function focusInput() {
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg].some(d => d.open);
+  if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
+}
 el.input.addEventListener('input', autoGrow);
 el.input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendMessage(); }
@@ -1786,12 +2482,10 @@ el.composer.addEventListener('submit', (e) => {
   if (busy) stopGeneration(); else sendMessage();
 });
 el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); closeSidebar(); });
-
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   if (b.dataset.open === 'settings') openSettings(); else openMemories();
 }));
 
-// Mobile sidebar drawer
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
 function closeSidebar() {
   if (!el.app.classList.contains('sidebar-open')) return;
@@ -1802,19 +2496,16 @@ el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-op
 el.scrim.addEventListener('click', closeSidebar);
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !el.settingsDlg.open && !el.memoriesDlg.open) {
+  const anyDialog = $$('dialog').some(d => d.open);
+  if (e.key === 'Escape' && !anyDialog) {
     if (el.app.classList.contains('sidebar-open')) { closeSidebar(); el.menuBtn.focus(); }
     else if (speaking) stopSpeaking();
     else if (busy) stopGeneration();
   }
-  // Ctrl/Cmd + Shift + O → new chat
-  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
+  if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
+[el.settingsDlg, el.memoriesDlg, el.helpDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
-// Clicking a dialog's backdrop closes it.
-[el.settingsDlg, el.memoriesDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
-
-// Explain voice capabilities and adjust controls where unsupported.
 (function voiceSupportNote() {
   const notes = [];
   if (!tts) notes.push('Spoken replies aren’t supported in this browser.');
@@ -1824,10 +2515,17 @@ document.addEventListener('keydown', (e) => {
 })();
 
 /* ---------------------------------------------------------------------------
-   Boot
+   Boot: migrate → pick a person
    --------------------------------------------------------------------------- */
-applyTheme();
-if (!activeConvo()) { activeId = null; newConversation(); } else renderAll();
+migrateStorage();
+renderHelpList();
+(function preTheme() {
+  // Use the last person's theme behind the picker without loading any of their data.
+  const last = load(pk(profilesState.lastId, 'settings'), {}) || {};
+  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, shared);
+  applyTheme();
+})();
+showPicker();
 </script>
 </body>
 </html>
