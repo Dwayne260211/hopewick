@@ -1,12 +1,12 @@
-# Eden — faith-based AOD support & AI companion 🌿
+# Hopewick — faith-based AOD support & AI companion 🕯️
 
-Eden is a warm, non-judgemental AI companion that runs entirely in your browser. By default it acts as a **faith-sensitive Alcohol and Other Drugs (AOD) support companion**. It can also switch to an everyday **Friend** mode.
+**Hopewick** (a small light that keeps burning) is a warm, non-judgemental AI companion that runs entirely in your browser. By default it acts as a **faith-sensitive Alcohol and Other Drugs (AOD) support companion**. It can also switch to an everyday **Friend** mode.
 There's no build step, no server and no external CDNs.
 
 **Live:**
-- Website (landing page): https://dwayne260211.github.io/eden/
-- App: https://dwayne260211.github.io/eden/app/
-- Demo (no API key needed, nothing saved): https://dwayne260211.github.io/eden/app/?demo=1
+- Website (landing page): https://dwayne260211.github.io/hopewick/
+- App: https://dwayne260211.github.io/hopewick/app/
+- Demo (no API key needed, nothing saved): https://dwayne260211.github.io/hopewick/app/?demo=1
 
 ## Project layout
 
@@ -18,17 +18,19 @@ There's no build step, no server and no external CDNs.
 | `LICENSE` | Proprietary licence (all rights reserved) |
 | `tests/` | Headless Playwright tests |
 
-If you used the old address (`/eden/`) you'll now see the landing page. It shows a **Welcome back** banner with a button to reopen the app. Your chats and settings are still there, because they live in this browser under the same site and the same `eden.*` storage keys.
+The companion inside the app is called **Hope** by default. Each person can rename it in Settings. Profiles that still had the old default name "Eden" switch to Hope automatically, and custom names are kept.
+
+The old addresses (`https://dwayne260211.github.io/eden/` and `/eden/app/`) redirect to the matching Hopewick pages, keeping any `?demo=1`. If you open the site you'll see the landing page. It shows a **Welcome back** banner with a button to reopen the app. Your chats and settings are still there, because they live in this browser under the same site and the same `eden.*` storage keys.
 
 ## Rebranding (name, tagline, company)
 
-The product name, tagline and company live in **one** `BRAND` constant at the top of each page:
+The product name, the companion's default name, the tagline and the company live in **one** `BRAND` constant at the top of each page:
 
 ```js
-const BRAND = { name:'Eden', tagline:'Faith-sensitive AOD support, between sessions', company:'BRIDGE&BITE.CO PTY LTD', abn:'83 692 080 792', year:2026, ... };
+const BRAND = { name:'Hopewick', companion:'Hope', tagline:'Faith-sensitive AOD support, between sessions', company:'BRIDGE&BITE.CO PTY LTD', abn:'83 692 080 792', year:2026, ... };
 ```
 
-To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html`, then run `python3 tools/make_og.py` to redraw the share image. Also update the static fallback text in the `<head>` meta tags of `index.html` (social-media crawlers don't run JavaScript). Storage keys stay `eden.*`, so existing users keep their data.
+To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html`, then run `python3 tools/make_og.py` to redraw the share image. Also update the static fallback text in the `<head>` meta tags of `index.html` (social-media crawlers don't run JavaScript). Storage keys stay `eden.*` on purpose, so existing users keep their data.
 
 ## Demo mode
 
@@ -45,7 +47,7 @@ A **DEMO** badge and banner are always visible.
 
 The landing page has a "Pilot with us" section for services. **TODO:** the contact details there are a clearly marked placeholder. Add the real contact method in `index.html` (search for `TODO`).
 
-> ⚠️ Eden is an **AI support tool, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
+> ⚠️ Hope is an **AI support tool, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
 
 ## Getting help (Australia)
 
@@ -77,14 +79,14 @@ The **Get help now** button is always at the top of the screen. All numbers were
 ## Features
 
 - **Two modes.** *AOD faith counsellor* (the default) or *Friend*. The counsellor draws on motivational interviewing (OARS, working with mixed feelings, stages of change), harm reduction, relapse prevention (triggers, HALT, urge surfing, coping plans), CBT-style reframing and SMART goals. Its approach is strengths-based, trauma-informed and culturally safe. It also encourages real-world support: a GP, your local AOD service, your faith community, SMART Recovery, AA/NA or Celebrate Recovery.
-- **Faith settings.** Choose Faith-inclusive / general spirituality (the default), Christian, Catholic, Islamic, Jewish, Buddhist, Hindu, Sikh, Indigenous spirituality (respectful, and defers to Elders and community) or No faith content. You can also set how much faith content you want: *Only when I ask*, *Gently woven in* (the default) or *Central*. Eden is never preachy or shaming, and it paraphrases sacred texts, saying so, rather than risk misquoting them.
-- **Safety first.** Words that suggest risk (suicide, self-harm, overdose, feeling unsafe, someone in danger) instantly show a crisis card with the contacts above. This works even offline or without an API key. Eden is also told to give those contacts first.
+- **Faith settings.** Choose Faith-inclusive / general spirituality (the default), Christian, Catholic, Islamic, Jewish, Buddhist, Hindu, Sikh, Indigenous spirituality (respectful, and defers to Elders and community) or No faith content. You can also set how much faith content you want: *Only when I ask*, *Gently woven in* (the default) or *Central*. Hope is never preachy or shaming, and it paraphrases sacred texts, saying so, rather than risk misquoting them.
+- **Safety first.** Words that suggest risk (suicide, self-harm, overdose, feeling unsafe, someone in danger) instantly show a crisis card with the contacts above. This works even offline or without an API key. Hope is also told to give those contacts first.
 - **Recovery counter.** Set a start date and a label (e.g. "alcohol-free") and the day count shows in the sidebar.
 - **Daily check-in.** Pick a mood and rate your cravings, with a strip showing the last 7 days. Quick-start chips include *I'm having a craving*, *I slipped up*, *Help me make a plan*, *Pray with me* and *I want to cut down*.
-- **Memory.** After each exchange Eden notes useful facts for each person, such as goals, triggers, supports, what helps and faith preferences. It never stores crisis details. You can view, edit, add or delete memories in the **Memories** panel.
-- **Profiles and privacy.** Each person's data is stored separately, and Eden only ever sees the active person's chats and memories. There's an optional **4-digit PIN** per person, which is a *light privacy lock, not strong security*. Use **Switch person** in the header or sidebar to change who's chatting.
+- **Memory.** After each exchange Hope notes useful facts for each person, such as goals, triggers, supports, what helps and faith preferences. It never stores crisis details. You can view, edit, add or delete memories in the **Memories** panel.
+- **Profiles and privacy.** Each person's data is stored separately, and Hope only ever sees the active person's chats and memories. There's an optional **4-digit PIN** per person, which is a *light privacy lock, not strong security*. Use **Switch person** in the header or sidebar to change who's chatting.
 - **Chat.** Replies stream in (falling back to normal requests if streaming isn't supported), with a safe markdown renderer, an animated orb, a typing indicator, and stop/retry/copy/read-aloud buttons.
-- **Voice.** Talk to Eden (Web Speech API, en-AU), have replies read aloud (pick the voice, rate and pitch, or turn on auto-speak), or use hands-free conversation mode.
+- **Voice.** Talk to Hope (Web Speech API, en-AU), have replies read aloud (pick the voice, rate and pitch, or turn on auto-speak), or use hands-free conversation mode.
 - **Light and dark mode**, and it works on desktop and mobile.
 - **Your data.** Export and import **per person** (never includes the API key or PIN). You can clear one person's data or everything on the device.
 - **Accessible.** Labelled controls, a skip link, focus rings, keyboard support and reduced-motion support.

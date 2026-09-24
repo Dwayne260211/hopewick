@@ -8,7 +8,7 @@
    tagline and copyright owner are defined for the app.
    (Internal storage keys stay "eden.*" on purpose so existing data survives.)
    ============================================================================ */
-const BRAND = { name: 'Eden', tagline: 'Faith-sensitive AOD support, between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026 };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Faith-sensitive AOD support, between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026 };
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Faith-sensitive AOD support, between sessions.">
@@ -176,7 +176,7 @@ svg { flex: none; }
 .topbar-actions { display: flex; gap: 2px; }
 
 /* ==========================================================================
-   Eden's orb avatar (states: idle / thinking / speaking / listening)
+   The companion's orb avatar (states: idle / thinking / speaking / listening)
    ========================================================================== */
 .orb {
   --size: 44px;
@@ -543,7 +543,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="who">
         <div class="orb" id="headerOrb" data-state="idle" aria-hidden="true"><span class="shine"></span></div>
         <div class="who-text">
-          <div class="who-name"><span id="headerName" data-brand></span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
+          <div class="who-name"><span id="headerName" data-companion></span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
           <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here to listen</span><span class="mood-pill" id="moodPill" hidden></span></div>
         </div>
       </div>
@@ -574,7 +574,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </header>
 
     <div class="demo-banner" id="demoBanner" hidden role="note">
-      <p><strong>Demo mode</strong> — these replies are <strong>pre-written examples, not live AI</strong>. Nothing you type is sent anywhere, and the demo resets when you leave. Tap a scenario to see how <span data-brand></span> supports someone.</p>
+      <p><strong>Demo mode</strong> — these replies are <strong>pre-written examples, not live AI</strong>. Nothing you type is sent anywhere, and the demo resets when you leave. Tap a scenario to see how <span data-companion></span> supports someone.</p>
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
@@ -602,7 +602,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · <span data-brand></span> is an AI, not a counsellor or doctor — in an emergency call 000.<br><span class="copyright" data-copyright></span></p>
+      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · <span data-companion></span> is an AI, not a counsellor or doctor — in an emergency call 000.<br><span class="copyright" data-copyright></span></p>
     </div>
   </main>
 </div>
@@ -684,7 +684,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <fieldset>
       <legend>Mode &amp; faith</legend>
       <div class="field">
-        <label for="setMode"><span data-brand></span>'s role</label>
+        <label for="setMode"><span data-companion></span>'s role</label>
         <select id="setMode">
           <option value="counsellor">AOD faith counsellor — support with alcohol &amp; other drugs</option>
           <option value="friend">Friend — warm, everyday companion</option>
@@ -718,7 +718,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <fieldset>
       <legend>This person</legend>
       <div class="field">
-        <label for="setProfileName">Your name (<span data-brand></span> will call you this)</label>
+        <label for="setProfileName">Your name (<span data-companion></span> will call you this)</label>
         <input id="setProfileName" type="text" maxlength="30">
       </div>
       <div class="field">
@@ -782,7 +782,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div class="chips" id="traitChips" role="group" aria-labelledby="traitsLabel"></div>
       </div>
       <div class="field">
-        <label for="setTraitsCustom">More about <span data-brand></span>'s personality</label>
+        <label for="setTraitsCustom">More about <span data-companion></span>'s personality</label>
         <textarea id="setTraitsCustom" rows="2" placeholder="e.g. loves gardening metaphors, gently nerdy"></textarea>
       </div>
       <div class="field">
@@ -806,7 +806,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <legend>Voice</legend>
       <p class="help" id="voiceSupport" style="margin:6px 0 0"></p>
       <div class="field">
-        <label for="setVoice"><span data-brand></span>'s voice</label>
+        <label for="setVoice"><span data-companion></span>'s voice</label>
         <select id="setVoice"><option value="">Default voice</option></select>
       </div>
       <div class="field">
@@ -860,7 +860,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with <span data-brand></span> in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
+    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with <span data-companion></span> in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
     <form class="mem-add" id="memAddForm">
       <label for="memAddInput" class="sr-only">New memory</label>
       <input id="memAddInput" type="text" data-ph="Add something {name} should remember…" maxlength="300">
@@ -880,7 +880,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <script>
 'use strict';
 /* =============================================================================
-   Eden — a standalone AI companion (v2: profiles + faith-based AOD counsellor).
+   Hopewick — a standalone AI companion (v3: profiles, AOD counsellor, demo mode).
    Build: eden-v2-profiles-aod
    Storage layout (localStorage):
      eden.shared.v1            provider settings shared on this device (URL, model, key, stream)
@@ -891,10 +891,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.moods         per-person daily check-in / mood history
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'eden-v3-demo-landing';
+const EDEN_BUILD = 'hopewick-v3';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
-const LEGACY_DEFAULT_NAMES = ['Eden'];
+const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
 
 /* ---------------------------------------------------------------------------
    Storage helpers
@@ -925,7 +925,7 @@ const DEFAULT_PROFILE_SETTINGS = {
   faith: 'general',
   faithLevel: 'woven',
   disclaimerAck: false,
-  name: BRAND.name,
+  name: BRAND.companion,
   traits: ['Warm', 'Calm', 'Thoughtful'],
   traitsCustom: '',
   style: 'balanced',
@@ -1043,6 +1043,10 @@ function migrateStorage() {
     lastId: 'dwayne',
   };
   const oldSettings = load(LEGACY.settings, null);
+  const hasLegacy = Object.values(LEGACY).some(k => localStorage.getItem(k) !== null);
+  // Opening straight into the demo on a fresh device must not write anything:
+  // keep the default people in memory until someone actually picks a person.
+  if (!hasLegacy && new URLSearchParams(location.search).get('demo') === '1') return;
   if (oldSettings) {
     for (const k of SHARED_KEYS) if (oldSettings[k] !== undefined) shared[k] = oldSettings[k];
     const persona = Object.assign({}, oldSettings);
@@ -1090,7 +1094,7 @@ function saveSettings() {
   if (isDemo) return; // demo never touches storage
   const ps = {};
   for (const [k, v] of Object.entries(settings)) if (!SHARED_KEYS.includes(k)) ps[k] = v;
-  if (ps.name === BRAND.name) delete ps.name; // keep following the brand name
+  if (ps.name === BRAND.companion) delete ps.name; // keep following the default companion name
   for (const k of SHARED_KEYS) shared[k] = settings[k];
   save(pk(profile.id, 'settings'), ps);
   save(K.shared, shared);
@@ -1540,7 +1544,8 @@ function renderSober() {
 }
 function renderAll() {
   const counsellor = isCounsellor();
-  el.brandName.textContent = settings.name;
+  el.brandName.textContent = BRAND.name;
+  $$('[data-companion]').forEach(e => { e.textContent = settings.name; });
   el.brandSub.textContent = counsellor ? 'faith-based AOD support' : 'your AI companion';
   el.headerName.textContent = settings.name;
   el.modeBadge.textContent = counsellor ? 'AOD support' : 'Friend';
@@ -2043,7 +2048,7 @@ function readSettingsForm() {
     model: $('#setModel').value.trim() || DEFAULT_SHARED.model,
     apiKey: $('#setKey').value.trim(),
     stream: $('#setStream').checked,
-    name: $('#setName').value.trim() || BRAND.name,
+    name: $('#setName').value.trim() || BRAND.companion,
     traits: [...draftTraits],
     traitsCustom: $('#setTraitsCustom').value.trim(),
     style: $('#setStyle').value,
@@ -2567,7 +2572,8 @@ function applyBrand() {
   const md = $('meta[name="description"]');
   if (md) md.content = `${BRAND.name} — ${BRAND.tagline}.`;
   $$('[data-brand]').forEach(e => { e.textContent = BRAND.name; });
-  $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.name); });
+  $$('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
+  $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.companion); });
   $$('[data-copyright]').forEach(e => { e.textContent = COPYRIGHT; });
 }
 
