@@ -1,9 +1,49 @@
 # Eden — faith-based AOD support & AI companion 🌿
 
 Eden is a warm, non-judgemental AI companion that runs entirely in your browser. By default it acts as a **faith-sensitive Alcohol and Other Drugs (AOD) support companion**. It can also switch to an everyday **Friend** mode.
-Everything is in one self-contained file, `index.html`. There's no build step, no server and no external CDNs.
+There's no build step, no server and no external CDNs.
 
-**Live:** https://dwayne260211.github.io/eden/
+**Live:**
+- Website (landing page): https://dwayne260211.github.io/eden/
+- App: https://dwayne260211.github.io/eden/app/
+- Demo (no API key needed, nothing saved): https://dwayne260211.github.io/eden/app/?demo=1
+
+## Project layout
+
+| Path | What it is |
+|---|---|
+| `index.html` | Marketing landing page for rehabs, AOD services and clinicians |
+| `app/index.html` | The app itself (one self-contained file) |
+| `og-image.png` | Social share image (1200×630), made by `tools/make_og.py` |
+| `LICENSE` | Proprietary licence (all rights reserved) |
+| `tests/` | Headless Playwright tests |
+
+If you used the old address (`/eden/`) you'll now see the landing page. It shows a **Welcome back** banner with a button to reopen the app. Your chats and settings are still there, because they live in this browser under the same site and the same `eden.*` storage keys.
+
+## Rebranding (name, tagline, company)
+
+The product name, tagline and company live in **one** `BRAND` constant at the top of each page:
+
+```js
+const BRAND = { name:'Eden', tagline:'Faith-sensitive AOD support, between sessions', company:'BRIDGE&BITE.CO PTY LTD', abn:'83 692 080 792', year:2026, ... };
+```
+
+To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html`, then run `python3 tools/make_og.py` to redraw the share image. Also update the static fallback text in the `<head>` meta tags of `index.html` (social-media crawlers don't run JavaScript). Storage keys stay `eden.*`, so existing users keep their data.
+
+## Demo mode
+
+Open `app/?demo=1`, or click **Try the demo** on the landing page or the person picker. The demo:
+- makes **no API calls** and needs no key;
+- uses a sample person ("Alex") with a sample recovery counter and a week of check-ins;
+- plays scripted conversations with a streaming animation: a craving (HALT and urge surfing), a slip-up, cutting down, *Pray with me*, and a crisis example that shows the crisis card;
+- gives a scripted reply to anything you type;
+- never reads or writes your real data, and everything resets when you leave (**Exit demo**).
+
+A **DEMO** badge and banner are always visible.
+
+## Pilot with us
+
+The landing page has a "Pilot with us" section for services. **TODO:** the contact details there are a clearly marked placeholder. Add the real contact method in `index.html` (search for `TODO`).
 
 > ⚠️ Eden is an **AI support tool, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
 
@@ -22,10 +62,10 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 ## Open it
 
-- Go to the live site, or double-click `index.html` to open it from disk.
+- Go to the live site, or double-click `app/index.html` to open the app from disk.
 - Or serve it locally (this is best for voice input, because browsers only allow the microphone on localhost or HTTPS):
   ```bash
-  python3 -m http.server 8765   # then visit http://localhost:8765
+  python3 -m http.server 8765   # then visit http://localhost:8765 (landing) or http://localhost:8765/app/
   ```
 
 ## First run
@@ -55,5 +95,11 @@ If you used the earlier single-user version, your chats, memories and settings m
 
 ## Tests
 
-- `tests/test_eden.py` runs 67 headless Chromium (Playwright) checks against a fake API. It covers profiles, PINs, privacy, migration, mode and faith, the crisis path, the help panel, the counter, check-ins, streaming, memory, export/import, mobile and loading from file://.
+- `tests/test_eden.py` runs headless Chromium (Playwright) checks against a fake API. It covers profiles, PINs, privacy, migration, mode and faith, the crisis path, the help panel, the counter, check-ins, streaming, memory, export/import, mobile, loading from file://, demo mode (no network calls, no storage changes, scenarios, crisis card), central branding, and the landing page (links, welcome-back banner, TODO contact, copyright, meta tags).
 - `tests/test_real_e2e.py` runs a live test using `OPENAI_API_KEY` from the environment. The key goes into the headless browser only and is never written to a file.
+
+## Copyright and licence
+
+© 2026 BRIDGE&BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.
+
+This is proprietary software. It is published for demonstration purposes only. You may not copy, modify, distribute or use it without written permission from BRIDGE&BITE.CO PTY LTD. See [LICENSE](LICENSE).

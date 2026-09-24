@@ -2,2530 +2,367 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Eden — a warm, personal AI companion.">
+<script>
+/* ============================================================================
+   PRODUCT CONFIG — rebrand here. The ONLY place the product name, tagline and
+   copyright owner are defined for the landing page. (Static <meta> tags below
+   are fallbacks for crawlers; they are updated from this config at runtime.)
+   ============================================================================ */
+const BRAND = { name: 'Eden', tagline: 'Faith-sensitive AOD support, between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, siteUrl: 'https://dwayne260211.github.io/eden/' };
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eden · Faith-sensitive AOD support, between sessions</title>
+<meta name="description" content="Eden is a faith-sensitive AI support companion for people affected by alcohol and other drugs — designed to support Australian rehabs, AOD services and counsellors between sessions.">
+<meta name="build" content="eden-v3-demo-landing">
 <meta name="theme-color" content="#3f8f5f">
-<title>Eden · your AI companion</title>
-<!-- Inline favicon (avoids a 404 when served statically) -->
+<link rel="canonical" href="https://dwayne260211.github.io/eden/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Eden">
+<meta property="og:title" content="Eden · Faith-sensitive AOD support, between sessions">
+<meta property="og:description" content="An AI support companion for people affected by alcohol and other drugs, built around evidence-based approaches and verified Australian crisis contacts.">
+<meta property="og:url" content="https://dwayne260211.github.io/eden/">
+<meta property="og:image" content="https://dwayne260211.github.io/eden/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Eden · Faith-sensitive AOD support, between sessions">
+<meta name="twitter:image" content="https://dwayne260211.github.io/eden/og-image.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='35%25' cy='30%25'%3E%3Cstop offset='0' stop-color='%23d9f7c8'/%3E%3Cstop offset='.5' stop-color='%237cc49a'/%3E%3Cstop offset='1' stop-color='%232f7a50'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='28' fill='url(%23g)'/%3E%3C/svg%3E">
 <style>
-/* ==========================================================================
-   Theme tokens
-   ========================================================================== */
 :root {
-  --bg: #f3f7f1;
-  --bg-glow-1: rgba(124, 196, 154, .28);
-  --bg-glow-2: rgba(232, 214, 150, .22);
-  --surface: #ffffff;
-  --surface-2: #edf4ea;
-  --surface-3: #e2ede0;
-  --text: #1d2b22;
-  --muted: #5d7064;
-  --accent: #3b8a5a;
-  --accent-strong: #2c6e46;
-  --accent-soft: #d6ecdc;
-  --accent-contrast: #ffffff;
-  --border: #d8e5d9;
-  --danger: #b4443a;
-  --danger-soft: #f8e1dd;
-  --shadow: 0 10px 30px rgba(35, 70, 45, .10), 0 2px 6px rgba(35, 70, 45, .06);
-  --radius: 18px;
-  --radius-sm: 11px;
-  --focus: 0 0 0 3px rgba(59, 138, 90, .45);
-  --sidebar-w: 280px;
+  --bg: #f3f7f1; --surface: #fff; --surface-2: #edf4ea; --text: #1d2b22; --muted: #56695d;
+  --accent: #3b8a5a; --accent-strong: #2c6e46; --accent-soft: #d6ecdc; --accent-contrast: #fff;
+  --border: #d8e5d9; --danger: #b4443a; --danger-soft: #f8e1dd; --gold: #f2c94c;
+  --shadow: 0 10px 30px rgba(35,70,45,.10), 0 2px 6px rgba(35,70,45,.06);
+  --focus: 0 0 0 3px rgba(59,138,90,.45);
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color-scheme: light;
 }
-:root[data-theme="dark"] {
-  --bg: #0e1612;
-  --bg-glow-1: rgba(80, 160, 115, .16);
-  --bg-glow-2: rgba(170, 150, 80, .08);
-  --surface: #151f19;
-  --surface-2: #1b2821;
-  --surface-3: #223228;
-  --text: #e3eee6;
-  --muted: #93a99a;
-  --accent: #6cc190;
-  --accent-strong: #8fd6ab;
-  --accent-soft: #1f3a2a;
-  --accent-contrast: #0c1a12;
-  --border: #26372d;
-  --danger: #ef8a7f;
-  --danger-soft: #3a1f1c;
-  --shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 2px 6px rgba(0, 0, 0, .25);
-  --focus: 0 0 0 3px rgba(108, 193, 144, .5);
-  color-scheme: dark;
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0e1612; --surface: #151f19; --surface-2: #1b2821; --text: #e3eee6; --muted: #9ab0a1;
+    --accent: #6cc190; --accent-strong: #8fd6ab; --accent-soft: #1f3a2a; --accent-contrast: #0c1a12;
+    --border: #26372d; --danger: #ef8a7f; --danger-soft: #3a1f1c; --shadow: 0 10px 30px rgba(0,0,0,.35); color-scheme: dark; }
 }
-
-/* ==========================================================================
-   Base
-   ========================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
-body {
-  font-family: var(--font);
-  font-size: 16px;
-  line-height: 1.55;
-  color: var(--text);
-  background:
-    radial-gradient(900px 600px at 0% 0%, var(--bg-glow-1), transparent 60%),
-    radial-gradient(800px 500px at 100% 100%, var(--bg-glow-2), transparent 60%),
-    var(--bg);
-  background-attachment: fixed;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color .3s, color .3s;
-}
-button, input, select, textarea { font: inherit; color: inherit; }
-button { cursor: pointer; }
-:focus-visible { outline: none; box-shadow: var(--focus); }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.skip-link { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--accent); color: var(--accent-contrast); padding: 8px 14px; border-radius: 10px; text-decoration: none; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--font); line-height: 1.6; color: var(--text); font-size: 17px;
+  background: radial-gradient(1000px 600px at 0% 0%, rgba(124,196,154,.22), transparent 60%),
+              radial-gradient(900px 600px at 100% 30%, rgba(232,214,150,.18), transparent 60%), var(--bg); }
+a { color: var(--accent-strong); }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 8px; }
+.skip-link { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--accent-contrast); padding: 8px 14px; border-radius: 10px; z-index: 100; }
 .skip-link:focus { top: 12px; }
-svg { flex: none; }
-
-/* ==========================================================================
-   Layout
-   ========================================================================== */
-.app { display: flex; height: 100vh; height: 100dvh; overflow: hidden; }
-
-.sidebar {
-  width: var(--sidebar-w);
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px 12px;
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
-  border-right: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  z-index: 30;
-  transition: transform .28s ease;
-}
-.brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 8px; }
-.brand-mark { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e3f9d2, #7cc49a 50%, #2f7a50); box-shadow: 0 0 14px rgba(124,196,154,.6); }
-.brand-name { font-weight: 700; font-size: 1.2rem; letter-spacing: .02em; }
-.brand-sub { font-size: .75rem; color: var(--muted); }
-
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  border: 1px solid var(--border); background: var(--surface);
-  padding: 9px 14px; border-radius: var(--radius-sm);
-  transition: background .15s, border-color .15s, transform .1s, color .15s;
-}
-.btn:hover { background: var(--surface-2); }
-.btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); font-weight: 600; }
-.btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
-.btn-danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, var(--border)); }
-.btn-danger:hover { background: var(--danger-soft); }
-.btn-ghost { border-color: transparent; background: transparent; }
-.btn-ghost:hover { background: var(--surface-2); }
-.btn-sm { padding: 6px 10px; font-size: .88rem; }
-.icon-btn {
-  display: inline-grid; place-items: center; width: 40px; height: 40px;
-  border-radius: 12px; border: 1px solid transparent; background: transparent; color: var(--muted);
-  transition: background .15s, color .15s;
-}
-.icon-btn:hover { background: var(--surface-2); color: var(--text); }
-.icon-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); }
-
-.history-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 8px 10px 0; }
-.history { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.history li { display: flex; align-items: center; border-radius: 10px; }
-.history li:hover, .history li.active { background: var(--surface-2); }
-.history li.active { box-shadow: inset 3px 0 0 var(--accent); }
-.history .open-chat { flex: 1; min-width: 0; text-align: left; background: none; border: 0; padding: 9px 10px; border-radius: 10px; }
-.history .title { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .93rem; }
-.history .meta { display: block; font-size: .74rem; color: var(--muted); }
-.history .del { opacity: 0; width: 32px; height: 32px; }
-.history li:hover .del, .history li.active .del, .history .del:focus-visible { opacity: 1; }
-.history-empty { color: var(--muted); font-size: .88rem; padding: 10px; }
-.sidebar-foot { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border); padding-top: 10px; }
-.sidebar-foot .btn { justify-content: flex-start; }
-
-.scrim { display: none; }
-
-.main { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Header */
-.topbar {
-  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
-  border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
-  backdrop-filter: blur(12px);
-}
-.topbar .who { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
-.who-text { min-width: 0; overflow: hidden; }
-.who-status { overflow: hidden; }
-#statusText { overflow: hidden; text-overflow: ellipsis; }
-.who-name { font-weight: 700; font-size: 1.05rem; }
-.who-status { font-size: .82rem; color: var(--muted); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-.who-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-.mood-pill { font-size: .78rem; background: var(--surface-2); border: 1px solid var(--border); padding: 1px 8px; border-radius: 999px; }
-.mood-pill[hidden] { display: none; }
-.menu-btn { display: none; }
-.topbar-actions { display: flex; gap: 2px; }
+.site-header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+.nav { display: flex; align-items: center; gap: 18px; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); }
+.orb { width: 30px; height: 30px; border-radius: 50%; flex: none; background: radial-gradient(circle at 34% 28%, #eafbe0 0%, #a5dcb6 28%, #4fa373 62%, #256a43 100%); box-shadow: 0 0 16px rgba(124,196,154,.55), inset -3px -5px 10px rgba(20,60,35,.35); }
+.nav-links { display: flex; gap: 18px; margin-left: auto; list-style: none; padding: 0; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: .95rem; }
+.nav-links a:hover { color: var(--text); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 14px; font-weight: 650; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: transform .12s, background .15s; font-size: 1rem; }
+.btn:hover { transform: translateY(-1px); background: var(--surface-2); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.btn-primary:hover { background: var(--accent-strong); }
+.btn-sm { padding: 8px 14px; font-size: .92rem; border-radius: 12px; }
 
-/* ==========================================================================
-   Eden's orb avatar (states: idle / thinking / speaking / listening)
-   ========================================================================== */
-.orb {
-  --size: 44px;
-  width: var(--size); height: var(--size); border-radius: 50%; position: relative; flex: none;
-  background: radial-gradient(circle at 34% 28%, #eafbe0 0%, #a5dcb6 28%, #4fa373 62%, #256a43 100%);
-  box-shadow: 0 0 18px rgba(124, 196, 154, .55), inset -4px -6px 12px rgba(20, 60, 35, .35);
-  animation: breathe 5s ease-in-out infinite;
-}
-.orb::before, .orb::after {
-  content: ""; position: absolute; inset: -6px; border-radius: 50%;
-  border: 2px solid rgba(124, 196, 154, .45); opacity: 0; pointer-events: none;
-}
-.orb .shine { position: absolute; inset: 14% 40% 52% 18%; border-radius: 50%; background: rgba(255,255,255,.55); filter: blur(2px); }
-.orb.lg { --size: 116px; margin: 0 auto; }
-.orb.sm { --size: 30px; box-shadow: 0 0 10px rgba(124,196,154,.45), inset -2px -3px 6px rgba(20,60,35,.35); animation: none; }
-.orb[data-state="thinking"] { animation: think 1.4s ease-in-out infinite; background: radial-gradient(circle at 60% 30%, #f3fbe6 0%, #b8e3a6 30%, #53a576 62%, #22603d 100%); }
-.orb[data-state="thinking"]::before { opacity: 1; border-style: dashed; animation: spin 3s linear infinite; }
-.orb[data-state="speaking"] { animation: speak .45s ease-in-out infinite alternate; }
-.orb[data-state="speaking"]::before { animation: ripple 1.2s ease-out infinite; }
-.orb[data-state="speaking"]::after { animation: ripple 1.2s ease-out .6s infinite; }
-.orb[data-state="listening"] { background: radial-gradient(circle at 34% 28%, #fff7dd 0%, #f0d98e 30%, #7fb77a 64%, #2e6f47 100%); }
-.orb[data-state="listening"]::before { border-color: rgba(240, 200, 100, .6); animation: ripple 1.6s ease-out infinite; }
-.orb[data-state="listening"]::after { border-color: rgba(240, 200, 100, .6); animation: ripple 1.6s ease-out .8s infinite; }
-@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
-@keyframes think { 0%,100% { transform: scale(.95) rotate(0deg); filter: hue-rotate(0deg); } 50% { transform: scale(1.05) rotate(8deg); filter: hue-rotate(-18deg); } }
-@keyframes speak { from { transform: scale(.97); } to { transform: scale(1.09); } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes ripple { 0% { opacity: .9; transform: scale(.9); } 100% { opacity: 0; transform: scale(1.6); } }
+/* Welcome back */
+.welcome-back { display: none; background: var(--accent-soft); border-bottom: 1px solid var(--border); }
+.welcome-back.show { display: block; }
+.welcome-back .wrap { display: flex; align-items: center; gap: 14px; padding-top: 10px; padding-bottom: 10px; flex-wrap: wrap; }
+.welcome-back p { margin: 0; flex: 1; min-width: 220px; }
 
-/* ==========================================================================
-   Messages
-   ========================================================================== */
-.banner {
-  margin: 12px 16px 0; padding: 12px 14px; border-radius: var(--radius-sm);
-  background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-}
-.banner p { margin: 0; flex: 1; min-width: 200px; font-size: .93rem; }
-.banner[hidden] { display: none; }
+/* Hero */
+.hero { padding: 72px 0 56px; }
+.hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+.eyebrow { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-strong); background: var(--accent-soft); padding: 4px 12px; border-radius: 999px; }
+.hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.08; margin: 16px 0 12px; letter-spacing: -.02em; }
+.hero h1 .name { display: block; color: var(--accent-strong); }
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 560px; margin: 0 0 26px; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.cta-note { font-size: .88rem; color: var(--muted); margin-top: 14px; }
+.mock { background: var(--surface); border: 1px solid var(--border); border-radius: 26px; box-shadow: var(--shadow); padding: 18px; }
+.mock-head { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 14px; font-weight: 700; }
+.mock-head .tag { margin-left: auto; font-size: .7rem; font-weight: 800; letter-spacing: .06em; background: var(--gold); color: #3d2f00; padding: 2px 8px; border-radius: 999px; }
+.bubble { padding: 10px 14px; border-radius: 16px; margin: 8px 0; max-width: 88%; font-size: .95rem; }
+.bubble.u { margin-left: auto; background: var(--accent); color: var(--accent-contrast); border-bottom-right-radius: 5px; }
+.bubble.a { background: var(--surface-2); border: 1px solid var(--border); border-bottom-left-radius: 5px; }
+.mock-note { font-size: .76rem; color: var(--muted); text-align: center; margin: 10px 0 0; }
 
-.messages { flex: 1; overflow-y: auto; padding: 22px 16px 10px; }
-.messages-inner { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+/* Sections */
+section { padding: 56px 0; }
+section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-spacing: -.01em; }
+.section-lede { color: var(--muted); max-width: 720px; margin: 0 0 28px; }
+.grid { display: grid; gap: 16px; }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px; box-shadow: 0 1px 2px rgba(0,0,0,.03); }
+.card h3 { margin: 6px 0 6px; font-size: 1.12rem; }
+.card p { margin: 0; color: var(--muted); font-size: .97rem; }
+.icon { font-size: 1.6rem; }
+.alt { background: color-mix(in srgb, var(--surface) 55%, transparent); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.checklist li { padding-left: 30px; position: relative; }
+.checklist li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; font-size: .8rem; display: grid; place-items: center; }
+.hotlines { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.hotlines li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; }
+.hotlines li.urgent { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
+.hotlines a { font-weight: 800; text-decoration: none; white-space: nowrap; }
+.hotlines li.urgent a { color: var(--danger); }
+.callout { border-left: 4px solid var(--accent); background: var(--surface); padding: 14px 18px; border-radius: 0 14px 14px 0; margin-top: 18px; color: var(--muted); }
+.callout.warn { border-left-color: var(--danger); }
+.pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.pill { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: .92rem; }
+.roadmap { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .05em; background: var(--gold); color: #3d2f00; padding: 2px 8px; border-radius: 999px; vertical-align: middle; margin-left: 6px; }
+.pilot { text-align: center; }
+.pilot .card { max-width: 720px; margin: 0 auto; padding: 34px; }
+.todo-contact { margin: 20px auto 0; max-width: 520px; border: 2px dashed #d0a52c; background: #fdf3d3; color: #4a3a05; border-radius: 14px; padding: 14px 18px; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .todo-contact { background: #3a3013; color: #f6e6b0; border-color: #8a7330; } }
 
-.welcome { text-align: center; padding: 28px 8px 12px; animation: fadeUp .5s ease both; }
-.welcome h1 { font-size: clamp(1.4rem, 3.5vw, 1.9rem); margin: 18px 0 4px; font-weight: 700; }
-.welcome p { color: var(--muted); margin: 0 auto; max-width: 480px; }
-.mood-card { margin: 22px auto 0; max-width: 560px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-.mood-card h2 { font-size: 1rem; margin: 0 0 10px; font-weight: 600; }
-.mood-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.mood-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 70px;
-  border: 1px solid var(--border); background: var(--surface-2); border-radius: 14px; padding: 8px 6px;
-  transition: transform .15s, background .15s, border-color .15s;
-}
-.mood-btn .e { font-size: 1.6rem; line-height: 1.2; }
-.mood-btn .l { font-size: .78rem; color: var(--muted); }
-.mood-btn:hover { transform: translateY(-2px); border-color: var(--accent); }
-.mood-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
-.starters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 18px; }
-.starter { border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 7px 14px; font-size: .9rem; }
-.starter:hover { border-color: var(--accent); background: var(--surface-2); }
+/* Footer */
+.site-footer { border-top: 1px solid var(--border); padding: 30px 0 40px; font-size: .9rem; color: var(--muted); }
+.foot-grid { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.foot-links { display: flex; gap: 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
+.site-footer p { margin: 6px 0; }
 
-.msg { display: flex; gap: 10px; align-items: flex-end; animation: fadeUp .25s ease both; }
-.msg.user { justify-content: flex-end; }
-.bubble-wrap { display: flex; flex-direction: column; max-width: min(82%, 640px); min-width: 0; }
-.msg.user .bubble-wrap { align-items: flex-end; }
-.bubble {
-  padding: 11px 15px; border-radius: var(--radius); overflow-wrap: anywhere;
-  background: var(--surface); border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,.04);
+@media (max-width: 900px) {
+  .hero-grid, .g2 { grid-template-columns: 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .nav .btn { margin-left: auto; }
+  .hero { padding: 40px 0 30px; }
 }
-.msg.assistant .bubble { border-bottom-left-radius: 6px; }
-.msg.user .bubble {
-  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #2a6d8a));
-  color: var(--accent-contrast); border-color: transparent; border-bottom-right-radius: 6px; white-space: pre-wrap;
+@media (max-width: 600px) {
+  .g3 { grid-template-columns: 1fr; }
+  body { font-size: 16px; }
+  section { padding: 40px 0; }
+  .cta-row .btn { flex: 1 1 100%; }
 }
-.msg.error .bubble { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 40%, var(--border)); white-space: pre-wrap; }
-.msg-tools { display: flex; align-items: center; gap: 2px; margin-top: 2px; opacity: 0; transition: opacity .15s; }
-.msg-tools[hidden] { display: none; }
-.msg:hover .msg-tools, .msg:focus-within .msg-tools, .msg.error .msg-tools { opacity: 1; }
-.msg-tools .icon-btn { width: 30px; height: 30px; border-radius: 8px; }
-.msg-time { font-size: .72rem; color: var(--muted); padding: 2px 6px; }
-
-/* Rendered markdown */
-.bubble > :first-child { margin-top: 0; }
-.bubble > :last-child { margin-bottom: 0; }
-.bubble p { margin: 0 0 .7em; }
-.bubble h2, .bubble h3, .bubble h4 { margin: .8em 0 .4em; line-height: 1.3; }
-.bubble h2 { font-size: 1.18rem; } .bubble h3 { font-size: 1.08rem; } .bubble h4 { font-size: 1rem; }
-.bubble ul, .bubble ol { margin: 0 0 .7em; padding-left: 1.4em; }
-.bubble li { margin: .15em 0; }
-.bubble blockquote { margin: 0 0 .7em; padding: .2em .9em; border-left: 3px solid var(--accent); color: var(--muted); }
-.bubble code { font-family: var(--mono); font-size: .88em; background: var(--surface-2); padding: .1em .35em; border-radius: 6px; }
-.bubble pre { background: var(--surface-2); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; overflow-x: auto; margin: 0 0 .7em; }
-.bubble pre code { background: none; padding: 0; font-size: .85em; }
-.bubble a { color: var(--accent-strong); }
-.bubble hr { border: 0; border-top: 1px solid var(--border); margin: .8em 0; }
-
-/* Typing indicator */
-.typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
-.typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: .4; animation: blink 1.2s infinite; }
-.typing span:nth-child(2) { animation-delay: .2s; }
-.typing span:nth-child(3) { animation-delay: .4s; }
-@keyframes blink { 0%,80%,100% { opacity: .25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
-.cursor > :last-child::after, .cursor:empty::after { content: "▍"; color: var(--accent); animation: caret 1s steps(2) infinite; margin-left: 1px; }
-@keyframes caret { 50% { opacity: 0; } }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-/* ==========================================================================
-   Composer
-   ========================================================================== */
-.composer-wrap { padding: 8px 16px calc(14px + env(safe-area-inset-bottom)); }
-.composer {
-  max-width: 780px; margin: 0 auto; display: flex; align-items: flex-end; gap: 6px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 6px;
-  box-shadow: var(--shadow); transition: border-color .15s, box-shadow .15s;
-}
-.composer:focus-within { border-color: var(--accent); }
-.composer textarea {
-  flex: 1; resize: none; border: 0; background: transparent; padding: 9px 8px; max-height: 180px; min-height: 42px; line-height: 1.45;
-}
-.composer textarea:focus-visible { box-shadow: none; }
-.composer .icon-btn { width: 42px; height: 42px; border-radius: 16px; }
-.send-btn { background: var(--accent) !important; color: var(--accent-contrast) !important; }
-.send-btn:hover { background: var(--accent-strong) !important; }
-.mic-btn.listening { background: #f3d77f !important; color: #3d2f00 !important; animation: micpulse 1.4s infinite; }
-@keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(240,200,100,.6); } 50% { box-shadow: 0 0 0 7px rgba(240,200,100,0); } }
-.composer-hint { max-width: 780px; margin: 6px auto 0; font-size: .74rem; color: var(--muted); text-align: center; }
-.convo-mode-bar {
-  max-width: 780px; margin: 0 auto 8px; display: flex; align-items: center; gap: 10px; justify-content: center;
-  background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
-  padding: 8px 12px; border-radius: 14px; font-size: .9rem;
-}
-.convo-mode-bar[hidden] { display: none; }
-
-/* ==========================================================================
-   Dialogs (Settings / Memories)
-   ========================================================================== */
-dialog {
-  width: min(640px, calc(100vw - 24px)); max-height: min(88vh, 900px); padding: 0;
-  border: 1px solid var(--border); border-radius: 22px; background: var(--surface); color: var(--text);
-  box-shadow: 0 30px 80px rgba(0,0,0,.3);
-}
-dialog[open] { display: flex; flex-direction: column; animation: pop .2s ease; }
-dialog::backdrop { background: rgba(12, 25, 18, .45); backdrop-filter: blur(3px); }
-@keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
-.dlg-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px 10px; border-bottom: 1px solid var(--border); margin: 0; }
-.dlg-head h2 { margin: 0; font-size: 1.15rem; }
-.dlg-body { padding: 8px 18px 18px; overflow-y: auto; }
-.dlg-foot { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
-fieldset { border: 1px solid var(--border); border-radius: 14px; margin: 14px 0 0; padding: 10px 14px 14px; }
-legend { font-weight: 650; padding: 0 6px; font-size: .95rem; }
-.field { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; }
-.field label, .field .label { font-size: .86rem; font-weight: 600; }
-.help { font-size: .8rem; color: var(--muted); }
-.field input[type="text"], .field input[type="password"], .field input[type="url"], .field select, .field textarea, .mem-add input, .mem-search {
-  width: 100%; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 9px 11px;
-}
-.field textarea { resize: vertical; min-height: 64px; }
-.field input:focus, .field select:focus, .field textarea:focus, .mem-add input:focus, .mem-search:focus, .mem-item input:focus { border-color: var(--accent); }
-.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.check { display: flex; gap: 10px; align-items: center; margin-top: 10px; font-size: .92rem; }
-.check input { width: 18px; height: 18px; accent-color: var(--accent); flex: none; }
-input[type="range"] { accent-color: var(--accent); width: 100%; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { border: 1px solid var(--border); background: var(--surface-2); border-radius: 999px; padding: 5px 12px; font-size: .88rem; transition: background .15s, border-color .15s; }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
-.key-wrap { display: flex; gap: 6px; }
-.key-wrap input { flex: 1; }
-.test-result { font-size: .85rem; margin-top: 6px; min-height: 1.2em; }
-.test-result.ok { color: var(--accent-strong); } .test-result.bad { color: var(--danger); }
-
-/* Memories */
-.mem-toolbar { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
-.mem-toolbar .mem-search { flex: 1; min-width: 160px; }
-.mem-add { display: flex; gap: 8px; margin: 12px 0; }
-.mem-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.mem-item { display: flex; align-items: center; gap: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 4px 4px 4px 10px; }
-.mem-item input { flex: 1; min-width: 0; background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 6px 8px; }
-.mem-item input:hover { border-color: var(--border); }
-.mem-item .src { font-size: .7rem; color: var(--muted); white-space: nowrap; }
-.mem-empty { text-align: center; color: var(--muted); padding: 24px 10px; }
-
-/* Toasts */
-.toasts { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 200; pointer-events: none; width: max-content; max-width: calc(100vw - 24px); }
-.toast { background: var(--text); color: var(--bg); padding: 9px 16px; border-radius: 12px; font-size: .9rem; box-shadow: var(--shadow); animation: fadeUp .25s ease both; }
-.toast.bad { background: var(--danger); color: #fff; }
-
-/* ==========================================================================
-   Responsive
-   ========================================================================== */
-@media (max-width: 860px) {
-  .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-105%); box-shadow: var(--shadow); background: var(--surface); visibility: hidden; transition: transform .28s ease, visibility 0s .28s; }
-  .app.sidebar-open .sidebar { transform: none; visibility: visible; transition: transform .28s ease; }
-  .app.sidebar-open .scrim { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 25; }
-  .menu-btn { display: inline-grid; }
-  .bubble-wrap { max-width: 88%; }
-  .msg.assistant .orb.sm { display: none; }
-  .topbar { padding: 8px 10px; gap: 6px; }
-  .messages { padding: 16px 10px 8px; }
-  .composer-wrap { padding-left: 10px; padding-right: 10px; }
-  .msg-tools { opacity: 1; }
-}
-@media (max-width: 480px) {
-  .topbar-actions .icon-btn { width: 34px; height: 34px; }
-  .topbar-actions .hide-xs { display: none; }
-  .mood-btn { min-width: 58px; }
-  .orb:not(.lg):not(.sm) { --size: 36px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
-}
-
-/* ==========================================================================
-   v2 additions: profiles, counsellor mode, help, recovery counter
-   ========================================================================== */
-.avatar {
-  --c: #3b8a5a;
-  width: 30px; height: 30px; border-radius: 50%; flex: none; display: inline-grid; place-items: center;
-  background: var(--c); color: #fff; font-weight: 700; font-size: .9rem; text-transform: uppercase;
-  box-shadow: inset 0 -2px 4px rgba(0,0,0,.15);
-}
-.avatar.lg { width: 64px; height: 64px; font-size: 1.6rem; }
-.switch-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 12px 4px 4px; font-size: .9rem; }
-.switch-btn:hover { background: var(--surface-2); }
-.help-btn {
-  display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 7px 12px; font-size: .88rem; font-weight: 650;
-  border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border)); background: var(--danger-soft); color: var(--danger);
-}
-.help-btn:hover { filter: brightness(.97); }
-
-/* Profile picker */
-#pickerDlg { width: min(720px, calc(100vw - 24px)); }
-.picker-body { padding: 26px 22px 22px; text-align: center; overflow-y: auto; }
-.picker-body h2 { margin: 14px 0 4px; font-size: 1.5rem; }
-.picker-body > p { margin: 0 0 18px; color: var(--muted); }
-.profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
-.profile-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 10px 14px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-2); transition: transform .15s, border-color .15s; width: 100%; }
-.profile-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-.profile-card .pname { font-weight: 650; font-size: 1.05rem; }
-.profile-card .pmeta { font-size: .76rem; color: var(--muted); }
-.profile-item { position: relative; }
-.profile-tools { position: absolute; top: 6px; right: 6px; display: none; gap: 2px; }
-.managing .profile-tools { display: flex; }
-.profile-tools .icon-btn { width: 30px; height: 30px; background: var(--surface); border: 1px solid var(--border); }
-.picker-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
-.inline-form { display: flex; gap: 8px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
-.inline-form[hidden] { display: none; }
-.inline-form input { border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 9px 11px; min-width: 180px; }
-.inline-form input:focus { border-color: var(--accent); }
-.pin-input { letter-spacing: .5em; text-align: center; width: 140px; min-width: 0 !important; font-size: 1.2rem; }
-.pin-error { color: var(--danger); font-size: .88rem; min-height: 1.2em; margin-top: 6px; }
-.privacy-note { font-size: .76rem; color: var(--muted); margin-top: 16px; }
-
-/* Help panel */
-.help-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.help-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); }
-.help-item.urgent { border-color: color-mix(in srgb, var(--danger) 50%, var(--border)); background: var(--danger-soft); }
-.help-item .hi-text { flex: 1; min-width: 0; }
-.help-item .hi-name { font-weight: 650; }
-.help-item .hi-note { font-size: .8rem; color: var(--muted); }
-.help-item .call { white-space: nowrap; text-decoration: none; font-weight: 700; color: var(--accent-strong); }
-.help-item .call.btn-danger { color: var(--danger); }
-[hidden] { display: none !important; }
-.crisis-card { border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border)); background: var(--danger-soft); border-radius: var(--radius); padding: 12px 14px; }
-.crisis-card h3 { margin: 0 0 4px; font-size: 1rem; }
-.crisis-card p { margin: 0 0 6px; font-size: .9rem; }
-.crisis-card ul { margin: 0; padding-left: 1.2em; font-size: .92rem; }
-.crisis-card a { color: var(--danger); font-weight: 700; }
-
-/* Recovery counter */
-.sober-card { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)); text-align: left; width: 100%; }
-.sober-card[hidden] { display: none; }
-.sober-card .days { font-size: 1.5rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
-.sober-card .lbl { font-size: .8rem; color: var(--muted); line-height: 1.25; }
-
-/* Daily check-in extras */
-.craving-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 12px; align-items: center; }
-.craving-row .lbl { font-size: .85rem; color: var(--muted); margin-right: 4px; }
-.mood-week { display: flex; justify-content: center; gap: 6px; margin-top: 12px; font-size: .78rem; color: var(--muted); align-items: center; flex-wrap: wrap; }
-.mood-week .day { display: flex; flex-direction: column; align-items: center; min-width: 30px; }
-.mood-week .day .e { font-size: 1.1rem; }
-.disclaimer-body p { margin: 10px 0; }
-.disclaimer-body ul { padding-left: 1.2em; }
-.mode-badge { font-size: .72rem; background: var(--accent-soft); color: var(--accent-strong); border-radius: 999px; padding: 1px 8px; border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)); }
-.radio-row { display: flex; flex-wrap: wrap; gap: 8px; }
-.radio-row label { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface-2); border-radius: 999px; padding: 6px 12px; font-size: .88rem; font-weight: 500; cursor: pointer; }
-.radio-row input { accent-color: var(--accent); }
-.radio-row label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
-.field input[type="date"] { width: 100%; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 9px 11px; }
-
-@media (max-width: 860px) {
-  .switch-btn .sname { display: none; }
-  .switch-btn { padding: 3px; }
-  .help-btn .htext-long { display: none; }
-}
-@media (max-width: 480px) {
-  .topbar-actions .hide-sm { display: none; }
-  .help-btn { padding: 6px 9px; }
-  .mode-badge { display: none; }
-  .who-name { font-size: 1rem; }
-}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
 </style>
 </head>
 <body>
-<a class="skip-link" href="#input">Skip to message box</a>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<div class="app" id="app">
-  <!-- ============================ Sidebar ============================ -->
-  <aside class="sidebar" id="sidebar" aria-label="Conversations">
-    <div class="brand">
-      <div class="brand-mark" aria-hidden="true"></div>
-      <div>
-        <div class="brand-name" id="brandName">Eden</div>
-        <div class="brand-sub" id="brandSub">faith-based AOD support</div>
-      </div>
-    </div>
-    <button class="btn btn-primary" id="newChatBtn" type="button">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-      New chat
-    </button>
-    <button class="sober-card" id="soberCard" type="button" hidden aria-label="Recovery counter — edit in Settings">
-      <span class="days" id="soberDays">0</span>
-      <span class="lbl" id="soberLbl">days</span>
-    </button>
-    <div class="history-label" id="historyLabel">Conversations</div>
-    <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
-    <div class="sidebar-foot">
-      <button class="btn btn-ghost" type="button" data-open="memories">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-        Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
-      </button>
-      <button class="btn btn-ghost" type="button" data-open="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
-        Settings
-      </button>
-      <button class="btn btn-ghost" type="button" id="sideSwitchBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Switch person
-      </button>
-    </div>
-  </aside>
-  <div class="scrim" id="scrim" aria-hidden="true"></div>
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span data-brand>Eden</span></a>
+    <ul class="nav-links">
+      <li><a href="#who">Who it's for</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#clinicians">For clinicians</a></li>
+      <li><a href="#safety">Safety</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+      <li><a href="#pilot">Pilot with us</a></li>
+    </ul>
+    <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Open the app</a>
+  </nav>
+</header>
 
-  <!-- ============================ Main ============================ -->
-  <main class="main" id="main">
-    <header class="topbar">
-      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open conversations" aria-controls="sidebar" aria-expanded="false">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
-      <div class="who">
-        <div class="orb" id="headerOrb" data-state="idle" aria-hidden="true"><span class="shine"></span></div>
-        <div class="who-text">
-          <div class="who-name"><span id="headerName">Eden</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
-          <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here to listen</span><span class="mood-pill" id="moodPill" hidden></span></div>
-        </div>
-      </div>
-      <div class="topbar-actions">
-        <button class="help-btn" id="helpBtn" type="button" aria-haspopup="dialog">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span>Get help<span class="htext-long"> now</span></span>
-        </button>
-        <button class="switch-btn" id="switchBtn" type="button" title="Switch person">
-          <span class="avatar" id="switchAvatar" aria-hidden="true">D</span><span class="sname" id="switchName">Dwayne</span>
-        </button>
-        <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-        </button>
-        <button class="icon-btn hide-sm" id="autoSpeakBtn" type="button" aria-pressed="false" aria-label="Read replies aloud" title="Read replies aloud">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        </button>
-        <button class="icon-btn hide-sm" id="themeBtn" type="button" aria-label="Dark mode" aria-pressed="false" title="Toggle light / dark">
-          <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button class="icon-btn hide-sm" type="button" data-open="memories" aria-label="Memories" title="Memories">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-        </button>
-        <button class="icon-btn" type="button" data-open="settings" aria-label="Settings" title="Settings">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
-        </button>
-      </div>
-    </header>
-
-    <div class="banner" id="keyBanner" hidden>
-      <p>🌱 <strong>Welcome!</strong> To start chatting, add your API key in Settings. It's stored only in this browser.</p>
-      <button class="btn btn-primary btn-sm" type="button" data-open="settings">Add API key</button>
-    </div>
-
-    <section class="messages" id="messages" aria-label="Conversation">
-      <div class="messages-inner" id="messagesInner" role="log" aria-live="polite" aria-relevant="additions"></div>
-    </section>
-
-    <div class="composer-wrap">
-      <div class="convo-mode-bar" id="convoBar" hidden>
-        <span aria-hidden="true">🎧</span>
-        <span id="convoBarText">Conversation mode is on — just talk.</span>
-        <button class="btn btn-sm" type="button" id="convoStopBtn">End</button>
-      </div>
-      <form class="composer" id="composer" autocomplete="off">
-        <label for="input" class="sr-only" id="inputLabel">Message Eden</label>
-        <button class="icon-btn mic-btn" id="micBtn" type="button" aria-label="Speak to Eden" aria-pressed="false" title="Speak (voice input)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>
-        </button>
-        <textarea id="input" rows="1" placeholder="Message Eden…" aria-describedby="composerHint"></textarea>
-        <button class="icon-btn send-btn" id="sendBtn" type="submit" aria-label="Send message" title="Send (Enter)">
-          <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </form>
-      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · Eden is an AI, not a counsellor or doctor — in an emergency call 000.</p>
-    </div>
-  </main>
+<div class="welcome-back" id="welcomeBack" role="region" aria-label="Welcome back">
+  <div class="wrap">
+    <p>👋 <strong>Welcome back!</strong> Your chats and settings are saved in this browser.</p>
+    <a class="btn btn-primary btn-sm" href="app/" id="continueApp">Continue to the app →</a>
+  </div>
 </div>
 
-<!-- ============================ Profile picker ============================ -->
-<dialog id="pickerDlg" aria-labelledby="pickerTitle">
-  <div class="picker-body" id="pickerBody">
-    <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
-    <h2 id="pickerTitle">Who's chatting?</h2>
-    <p>Each person has their own private chats, memories and settings.</p>
-    <ul class="profiles" id="profileList" aria-label="People"></ul>
-    <form class="inline-form" id="pinForm" hidden>
-      <label for="pinInput" id="pinLabel" class="sr-only">PIN</label>
-      <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="PIN">
-      <button class="btn btn-primary" type="submit">Unlock</button>
-      <button class="btn" type="button" id="pinCancel">Cancel</button>
-    </form>
-    <div class="pin-error" id="pinError" role="alert"></div>
-    <form class="inline-form" id="addPersonForm" hidden>
-      <label for="addPersonInput" class="sr-only">New person's name</label>
-      <input id="addPersonInput" type="text" maxlength="30" placeholder="Name">
-      <button class="btn btn-primary" type="submit">Add</button>
-      <button class="btn" type="button" id="addPersonCancel">Cancel</button>
-    </form>
-    <div class="picker-actions">
-      <button class="btn" type="button" id="addPersonBtn">+ Add person</button>
-      <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage people</button>
+<main id="main">
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">For Australian rehabs &amp; AOD services</span>
+        <h1 id="heroTitle"><span class="name" data-brand>Eden</span><span data-tagline>Faith-sensitive AOD support, between sessions</span></h1>
+        <p class="lede">A warm, non-judgemental AI support companion for people affected by alcohol and other drugs. It's built on evidence-based approaches, respects each person's faith, and puts verified Australian crisis contacts one tap away.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="app/?demo=1" id="tryDemo">✨ Try the demo</a>
+          <a class="btn" href="app/" id="launchApp">Launch app</a>
+        </div>
+        <p class="cta-note">The demo uses pre-written example conversations. No sign-up and no API key needed.</p>
+      </div>
+      <div class="mock" aria-label="Example conversation (pre-written)">
+        <div class="mock-head"><span class="orb" aria-hidden="true"></span><span data-brand>Eden</span><span class="tag">EXAMPLE</span></div>
+        <div class="bubble u">It's nearly midnight and I'm really craving a drink.</div>
+        <div class="bubble a">Thanks for reaching out right now — that's a real strength. Cravings are like waves: they build, peak and pass, usually within 20–30 minutes. Quick check-in: are you hungry, angry, lonely or tired right now?</div>
+        <div class="bubble u">Tired and a bit lonely.</div>
+        <div class="bubble a">That makes sense after a long day. Want to try urge surfing together? It takes about ten minutes…</div>
+        <p class="mock-note">Illustrative example from the demo, not a real client conversation.</p>
+      </div>
     </div>
-    <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
-  </div>
-</dialog>
+  </section>
 
-<!-- ============================ Help dialog ============================ -->
-<dialog id="helpDlg" aria-labelledby="helpTitle">
-  <form method="dialog" class="dlg-head">
-    <h2 id="helpTitle">Get help now</h2>
-    <button class="icon-btn" value="close" aria-label="Close help">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </form>
-  <div class="dlg-body">
-    <p style="margin:12px 0 0">If you or someone else is in immediate danger, <strong>call 000 now</strong>. These Australian services are free and confidential:</p>
-    <ul class="help-list" id="helpList"></ul>
-    <p class="help" style="margin-top:12px">Eden is an AI support tool, not a counsellor or clinician. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
-  </div>
-</dialog>
-
-<!-- ============================ Disclaimer dialog ============================ -->
-<dialog id="disclaimerDlg" aria-labelledby="discTitle">
-  <div class="dlg-head"><h2 id="discTitle">Before we start 🌿</h2></div>
-  <div class="dlg-body disclaimer-body">
-    <p>Eden is an <strong>AI support tool</strong> for talking through alcohol and other drug use, cravings, faith and hope. It draws on approaches used in Australian AOD services, but:</p>
-    <ul>
-      <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
-      <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
-      <li>In an emergency call <strong>000</strong>. The <strong>Get help now</strong> button is always at the top of the screen.</li>
-      <li>Chats are stored only on this device, but messages are sent to your chosen AI provider to create replies.</li>
-    </ul>
-  </div>
-  <div class="dlg-foot">
-    <button class="btn" type="button" id="discHelpBtn">See help contacts</button>
-    <button class="btn btn-primary" type="button" id="discOkBtn">I understand</button>
-  </div>
-</dialog>
-
-<!-- ============================ Settings dialog ============================ -->
-<dialog id="settingsDlg" aria-labelledby="settingsTitle">
-  <form method="dialog" class="dlg-head">
-    <h2 id="settingsTitle">Settings</h2>
-    <button class="icon-btn" value="close" aria-label="Close settings">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </form>
-  <div class="dlg-body">
-    <fieldset>
-      <legend>Mode &amp; faith</legend>
-      <div class="field">
-        <label for="setMode">Eden's role</label>
-        <select id="setMode">
-          <option value="counsellor">AOD faith counsellor — support with alcohol &amp; other drugs</option>
-          <option value="friend">Friend — warm, everyday companion</option>
-        </select>
+  <!-- Who it's for -->
+  <section id="who" class="alt" aria-labelledby="whoTitle">
+    <div class="wrap">
+      <h2 id="whoTitle">Who it's for</h2>
+      <p class="section-lede">Designed to complement treatment, not replace it. It's there in the hours between appointments, when cravings and hard moments often happen.</p>
+      <div class="grid g3">
+        <div class="card"><div class="icon" aria-hidden="true">🏡</div><h3>Rehabs &amp; AOD services</h3><p>Offer clients a consistent, values-aligned support tool they can use between sessions, after discharge, or while waiting for a place.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🧑‍⚕️</div><h3>Counsellors &amp; clinicians</h3><p>Reinforce the skills you teach, like urge surfing, HALT checks, coping plans and SMART goals, with a companion that uses the same language.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">💚</div><h3>Clients &amp; families</h3><p>A private, judgement-free space to talk through cravings, slips, goals, faith and hope, any time of day or night.</p></div>
       </div>
-      <div class="field">
-        <label for="setFaith">Faith</label>
-        <select id="setFaith">
-          <option value="general">Faith-inclusive / general spirituality</option>
-          <option value="christian">Christian (non-denominational)</option>
-          <option value="catholic">Catholic</option>
-          <option value="islamic">Islamic</option>
-          <option value="jewish">Jewish</option>
-          <option value="buddhist">Buddhist</option>
-          <option value="hindu">Hindu</option>
-          <option value="sikh">Sikh</option>
-          <option value="indigenous">Indigenous spirituality</option>
-          <option value="none">No faith content</option>
-        </select>
-      </div>
-      <div class="field">
-        <span class="label" id="faithLevelLabel">How much faith content?</span>
-        <div class="radio-row" role="radiogroup" aria-labelledby="faithLevelLabel">
-          <label><input type="radio" name="faithLevel" value="ask"> Only when I ask</label>
-          <label><input type="radio" name="faithLevel" value="woven"> Gently woven in</label>
-          <label><input type="radio" name="faithLevel" value="central"> Central</label>
-        </div>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>This person</legend>
-      <div class="field">
-        <label for="setProfileName">Your name (Eden will call you this)</label>
-        <input id="setProfileName" type="text" maxlength="30">
-      </div>
-      <div class="field">
-        <label for="setPin">4-digit PIN (optional)</label>
-        <div class="key-wrap">
-          <input id="setPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" aria-describedby="pinHelp">
-          <button class="btn btn-sm" type="button" id="removePinBtn">Remove PIN</button>
-        </div>
-        <span class="help" id="pinHelp">A light privacy lock for a shared device — not strong security.</span>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Recovery counter</legend>
-      <div class="field">
-        <label for="setSoberStart">Start date (optional)</label>
-        <input id="setSoberStart" type="date">
-        <span class="help">Shown in the sidebar. Leave empty to hide it. A slip doesn't erase your progress.</span>
-      </div>
-      <div class="field">
-        <label for="setSoberWhat">Label</label>
-        <input id="setSoberWhat" type="text" maxlength="40" placeholder="e.g. alcohol-free, clean, sober">
-      </div>
-      <div class="check"><input type="checkbox" id="setMoodCheck"><label for="setMoodCheck">Show the daily / mood check-in on new chats</label></div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Connection (shared on this device)</legend>
-      <div class="field">
-        <label for="setBaseUrl">Provider base URL</label>
-        <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
-        <span class="help" id="baseUrlHelp">Any OpenAI-compatible Chat Completions endpoint (OpenAI, OpenRouter, Groq, xAI, a local server…).</span>
-      </div>
-      <div class="field">
-        <label for="setModel">Model</label>
-        <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false">
-      </div>
-      <div class="field">
-        <label for="setKey">API key</label>
-        <div class="key-wrap">
-          <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp">
-          <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key">Show</button>
-        </div>
-        <span class="help" id="keyHelp">Stored only in this browser's localStorage and sent only to the base URL above.</span>
-      </div>
-      <div class="check"><input type="checkbox" id="setStream"><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn btn-sm" type="button" id="testConnBtn">Test connection</button>
-      </div>
-      <div class="test-result" id="testResult" role="status" aria-live="polite"></div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Personality</legend>
-      <div class="field">
-        <label for="setName">Companion name</label>
-        <input id="setName" type="text" maxlength="40" placeholder="Eden">
-      </div>
-      <div class="field">
-        <span class="label" id="traitsLabel">Personality traits</span>
-        <div class="chips" id="traitChips" role="group" aria-labelledby="traitsLabel"></div>
-      </div>
-      <div class="field">
-        <label for="setTraitsCustom">More about Eden's personality</label>
-        <textarea id="setTraitsCustom" rows="2" placeholder="e.g. loves gardening metaphors, gently nerdy"></textarea>
-      </div>
-      <div class="field">
-        <label for="setStyle">Conversation style</label>
-        <select id="setStyle">
-          <option value="balanced">Balanced — natural, medium-length replies</option>
-          <option value="brief">Brief &amp; casual — short, chatty messages</option>
-          <option value="reflective">Deep &amp; reflective — thoughtful, asks good questions</option>
-          <option value="coach">Encouraging coach — practical, goal-focused</option>
-          <option value="playful">Light &amp; playful — humour and banter</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="setCustom">Extra instructions (optional)</label>
-        <textarea id="setCustom" rows="2" placeholder="Anything else Eden should keep in mind"></textarea>
-      </div>
-      <div class="check"><input type="checkbox" id="setMemAuto"><label for="setMemAuto">Learn memories automatically after each exchange</label></div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Voice</legend>
-      <p class="help" id="voiceSupport" style="margin:6px 0 0"></p>
-      <div class="field">
-        <label for="setVoice">Eden's voice</label>
-        <select id="setVoice"><option value="">Default voice</option></select>
-      </div>
-      <div class="field">
-        <label for="setRate">Speaking rate: <span id="rateVal">1.0</span>×</label>
-        <input id="setRate" type="range" min="0.5" max="2" step="0.1">
-      </div>
-      <div class="field">
-        <label for="setPitch">Pitch: <span id="pitchVal">1.0</span></label>
-        <input id="setPitch" type="range" min="0.5" max="1.5" step="0.1">
-      </div>
-      <div class="check"><input type="checkbox" id="setAutoSpeak"><label for="setAutoSpeak">Auto-speak replies</label></div>
-      <div class="row" style="margin-top:10px"><button class="btn btn-sm" type="button" id="testVoiceBtn">Test voice</button></div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Appearance</legend>
-      <div class="field">
-        <label for="setTheme">Theme</label>
-        <select id="setTheme">
-          <option value="system">Match system</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Your data</legend>
-      <p class="help" style="margin:6px 0 10px">Everything lives only in this browser. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
-      <div class="row">
-        <button class="btn btn-sm" type="button" id="exportBtn">Export JSON</button>
-        <button class="btn btn-sm" type="button" id="importBtn">Import JSON</button>
-        <input type="file" id="importFile" accept="application/json,.json" class="sr-only" tabindex="-1" aria-hidden="true">
-        <button class="btn btn-sm btn-danger" type="button" id="clearMineBtn">Clear this person's data</button>
-        <button class="btn btn-sm btn-danger" type="button" id="clearAllBtn">Clear all data on this device</button>
-      </div>
-    </fieldset>
-  </div>
-  <div class="dlg-foot">
-    <button class="btn" type="button" id="settingsCancel">Cancel</button>
-    <button class="btn btn-primary" type="button" id="settingsSave">Save</button>
-  </div>
-</dialog>
-
-<!-- ============================ Memories dialog ============================ -->
-<dialog id="memoriesDlg" aria-labelledby="memTitle">
-  <form method="dialog" class="dlg-head">
-    <h2 id="memTitle">🌿 What Eden remembers</h2>
-    <button class="icon-btn" value="close" aria-label="Close memories">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </form>
-  <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with Eden in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
-    <form class="mem-add" id="memAddForm">
-      <label for="memAddInput" class="sr-only">New memory</label>
-      <input id="memAddInput" type="text" placeholder="Add something Eden should remember…" maxlength="300">
-      <button class="btn btn-primary" type="submit">Add</button>
-    </form>
-    <div class="mem-toolbar">
-      <label for="memSearch" class="sr-only">Search memories</label>
-      <input id="memSearch" class="mem-search" type="search" placeholder="Search memories">
-      <button class="btn btn-sm btn-danger" type="button" id="memClearBtn">Forget all</button>
     </div>
-    <ul class="mem-list" id="memList" aria-label="Memories"></ul>
-  </div>
-</dialog>
+  </section>
 
-<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+  <!-- Features -->
+  <section id="features" aria-labelledby="featTitle">
+    <div class="wrap">
+      <h2 id="featTitle">Key features</h2>
+      <p class="section-lede">Everything runs in the browser on desktop or mobile, with nothing to install.</p>
+      <div class="grid g3">
+        <div class="card"><div class="icon" aria-hidden="true">🌊</div><h3>Craving &amp; slip support</h3><p>Guided urge surfing, HALT checks and relapse-prevention planning. A slip is treated as something to learn from, not a failure.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Goals &amp; cut-down plans</h3><p>Helps people set small SMART goals, whether that's abstinence, cutting down or safer use, and review them kindly.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">📅</div><h3>Daily check-in &amp; counter</h3><p>A quick mood and craving check-in, a 7-day history, and an optional sober/clean-days counter.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🕊️</div><h3>Faith-inclusive</h3><p>Choose general spirituality, a specific tradition, or no faith content at all, and how much faith is woven in.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🌿</div><h3>Remembers what matters</h3><p>Keeps track of goals, triggers, supports and what helps, so conversations build over time. People can view, edit or delete every memory.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">👥</div><h3>Shared-device profiles</h3><p>Separate private profiles for each person on a device, with an optional PIN lock.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🎙️</div><h3>Voice</h3><p>Talk instead of type, hear replies read aloud, or use hands-free conversation mode where the browser supports it.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🆘</div><h3>Help always one tap away</h3><p>A permanent "Get help now" button and an automatic crisis card with verified Australian hotlines.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">♿</div><h3>Accessible &amp; calm</h3><p>Keyboard and screen-reader friendly, light and dark modes, reduced-motion support, and a calm garden-green design.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clinicians -->
+  <section id="clinicians" class="alt" aria-labelledby="clinTitle">
+    <div class="wrap grid g2" style="align-items:start">
+      <div>
+        <h2 id="clinTitle">How it supports clinicians</h2>
+        <p class="section-lede">Between-session support that echoes evidence-based practice used in Australian AOD services, so clients hear consistent messages.</p>
+        <ul class="checklist">
+          <li><strong>Motivational interviewing:</strong> open questions, affirmations, reflections and summaries. It works with ambivalence and follows the stages of change.</li>
+          <li><strong>Harm reduction:</strong> meets people where they are. Abstinence, cutting down and safer use all count.</li>
+          <li><strong>Relapse prevention:</strong> triggers and high-risk situations, HALT, urge surfing, coping plans and support networks.</li>
+          <li><strong>CBT-style skills:</strong> gently noticing and reframing unhelpful thoughts, and planning alternatives.</li>
+          <li><strong>Strengths-based, trauma-informed, culturally safe:</strong> person-first, non-stigmatising language, with choice and control.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Designed to point back to you</h3>
+        <p><span data-brand>Eden</span> regularly encourages people to stay connected with their GP, counsellor, AOD service, faith community and peer groups such as SMART Recovery, AA/NA or Celebrate Recovery. It's a bridge between sessions, not a substitute for them.</p>
+        <div class="callout">Service-level features such as clinician-configured goals and plans, and optional summaries shared with the client's consent, are ideas we'd like to shape with pilot partners.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety -->
+  <section id="safety" aria-labelledby="safetyTitle">
+    <div class="wrap grid g2" style="align-items:start">
+      <div>
+        <h2 id="safetyTitle">Safety first</h2>
+        <p class="section-lede">If someone mentions suicide, self-harm, overdose, being unsafe or someone else in danger, a crisis card with Australian contacts appears straight away. This works even without an internet connection to the AI. The companion is also instructed to give these contacts first.</p>
+        <div class="callout warn"><strong>Not a replacement for clinical care.</strong> It's an AI support tool, not a registered counsellor, doctor or crisis service. It doesn't diagnose, and it doesn't give medical advice on withdrawal, detox or medications. It explains that stopping alcohol or benzodiazepines suddenly can be dangerous and needs a doctor.</div>
+      </div>
+      <div class="card">
+        <h3>Verified Australian contacts</h3>
+        <p style="margin-bottom:12px">Checked against the official services' websites in September 2026.</p>
+        <ul class="hotlines">
+          <li class="urgent"><span>Emergency</span><a href="tel:000">000</a></li>
+          <li><span>Lifeline</span><a href="tel:131114">13 11 14</a></li>
+          <li><span>Suicide Call Back Service</span><a href="tel:1300659467">1300 659 467</a></li>
+          <li><span>National Alcohol &amp; Other Drug Hotline</span><a href="tel:1800250015">1800 250 015</a></li>
+          <li><span>Adis 24/7 Alcohol &amp; Drug Support (QLD)</span><a href="tel:1800177833">1800 177 833</a></li>
+          <li><span>13YARN (Aboriginal &amp; Torres Strait Islander)</span><a href="tel:139276">13 92 76</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section id="privacy" class="alt" aria-labelledby="privTitle">
+    <div class="wrap">
+      <h2 id="privTitle">Privacy: how it works today</h2>
+      <p class="section-lede">We'd rather be plain about this than overpromise.</p>
+      <div class="grid g3">
+        <div class="card"><h3>Stays on the device</h3><p>Chats, memories, check-ins and settings are stored only in the browser on the device being used. There are no accounts and no server of ours holding conversations.</p></div>
+        <div class="card"><h3>AI replies come from a provider</h3><p>To generate replies, each message is sent directly from the browser to the AI provider configured in Settings (for example OpenAI), using an API key entered on that device. The demo sends nothing anywhere.</p></div>
+        <div class="card"><h3>Service-ready hosting <span class="roadmap">ROADMAP</span></h3><p>A hosted version for services, with Australian data storage, managed access and no need for clients to handle API keys, is on the roadmap. It isn't available yet.</p></div>
+      </div>
+      <p class="callout">Profile PINs are a light privacy lock for shared devices, not strong security. Anyone with access to the browser's storage could still read the data. People can export or delete their own data at any time.</p>
+    </div>
+  </section>
+
+  <!-- Faith -->
+  <section id="faith" aria-labelledby="faithTitle">
+    <div class="wrap">
+      <h2 id="faithTitle">Faith-inclusive by design</h2>
+      <p class="section-lede">For many people, faith is a real source of strength in recovery. For others it isn't. Each person chooses what feels right:</p>
+      <div class="pill-row" aria-label="Faith options">
+        <span class="pill">General spirituality</span><span class="pill">Christian</span><span class="pill">Catholic</span><span class="pill">Islamic</span><span class="pill">Jewish</span><span class="pill">Buddhist</span><span class="pill">Hindu</span><span class="pill">Sikh</span><span class="pill">Indigenous spirituality</span><span class="pill">No faith content</span>
+      </div>
+      <ul class="checklist">
+        <li>Faith can come up <em>only when asked</em>, be <em>gently woven in</em>, or be <em>central</em>.</li>
+        <li>Never preachy or shaming, and never treats addiction or relapse as a moral failing.</li>
+        <li>Paraphrases sacred texts, and says so, rather than risk misquoting them.</li>
+        <li>For Indigenous spirituality, it respects culture without appropriating it and defers to Elders, community and 13YARN.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Pilot -->
+  <section id="pilot" class="pilot alt" aria-labelledby="pilotTitle">
+    <div class="wrap">
+      <div class="card">
+        <h2 id="pilotTitle">Pilot with us</h2>
+        <p class="section-lede" style="margin:0 auto 18px">We're looking for Australian rehabs, AOD services and counsellors to help shape <span data-brand>Eden</span> for real-world use, including the hosted, service-ready version.</p>
+        <div class="cta-row" style="justify-content:center">
+          <a class="btn btn-primary" href="app/?demo=1">Try the demo first</a>
+          <a class="btn" href="app/">Launch app</a>
+        </div>
+        <!-- TODO: replace this placeholder with your preferred business contact (email/phone/form link). -->
+        <div class="todo-contact" id="pilotContact">📬 TODO — pilot contact details coming soon.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <div>
+      <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span data-brand>Eden</span></a>
+      <p data-tagline>Faith-sensitive AOD support, between sessions</p>
+      <p><strong>Not a crisis service.</strong> In an emergency call <a href="tel:000">000</a>.</p>
+    </div>
+    <div>
+      <ul class="foot-links">
+        <li><a href="app/?demo=1">Demo</a></li>
+        <li><a href="app/">App</a></li>
+        <li><a href="https://github.com/Dwayne260211/eden/blob/main/LICENSE">Licence</a></li>
+      </ul>
+      <p class="copyright" data-copyright>© 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.</p>
+    </div>
+  </div>
+</footer>
 
 <script>
 'use strict';
-/* =============================================================================
-   Eden — a standalone AI companion (v2: profiles + faith-based AOD counsellor).
-   Build: eden-v2-profiles-aod
-   Storage layout (localStorage):
-     eden.shared.v1            provider settings shared on this device (URL, model, key, stream)
-     eden.profiles.v1          { list: [{id, name, pin, created}], lastId }
-     eden.p.<id>.settings      per-person persona / mode / faith / voice / recovery settings
-     eden.p.<id>.convos        per-person conversations
-     eden.p.<id>.memories      per-person memories
-     eden.p.<id>.moods         per-person daily check-in / mood history
-     eden.p.<id>.active        per-person active conversation id
-   ============================================================================= */
-const EDEN_BUILD = 'eden-v2-profiles-aod';
-
-/* ---------------------------------------------------------------------------
-   Storage helpers
-   --------------------------------------------------------------------------- */
-const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1' };
-const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'active'];
-const pk = (pid, what) => `eden.p.${pid}.${what}`;
-
-function load(key, fallback) {
-  try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
-  catch (e) { return fallback; }
-}
-function save(key, value) {
-  try { localStorage.setItem(key, JSON.stringify(value)); }
-  catch (e) { toast('Could not save to browser storage (it may be full or disabled).', true); }
-}
-
-/* ---------------------------------------------------------------------------
-   Constants
-   --------------------------------------------------------------------------- */
-const SHARED_KEYS = ['baseUrl', 'model', 'apiKey', 'stream'];
-const SETTINGS_VERSION = 2; // v2 = counsellor mode introduced (migrates everyone once)
-const DEFAULT_SHARED = { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: '', stream: true };
-const DEFAULT_PROFILE_SETTINGS = {
-  settingsVersion: SETTINGS_VERSION,
-  mode: 'counsellor',
-  faith: 'general',
-  faithLevel: 'woven',
-  disclaimerAck: false,
-  name: 'Eden',
-  traits: ['Warm', 'Calm', 'Thoughtful'],
-  traitsCustom: '',
-  style: 'balanced',
-  custom: '',
-  memAuto: true,
-  moodCheck: true,
-  soberStart: '',
-  soberWhat: '',
-  voiceURI: '',
-  rate: 1,
-  pitch: 1,
-  autoSpeak: false,
-  theme: 'system',
-};
-
-const TRAIT_PRESETS = ['Warm', 'Playful', 'Thoughtful', 'Witty', 'Calm', 'Curious', 'Encouraging', 'Honest', 'Gentle', 'Nerdy'];
-const STYLE_TEXT = {
-  balanced: 'Reply naturally with a medium length. Ask a follow-up question when it feels natural, not every time.',
-  brief: 'Keep replies short and casual — usually 1–3 sentences.',
-  reflective: 'Be thoughtful and reflective. Explore feelings and ideas, and ask insightful, open-ended questions.',
-  coach: 'Be an encouraging, practical coach: break things into small steps, celebrate progress, keep things actionable.',
-  playful: 'Be light-hearted and playful, with gentle humour, while still being genuinely supportive.',
-};
-
-const MOODS = [
-  { e: '😄', l: 'Great' }, { e: '🙂', l: 'Good' }, { e: '😐', l: 'Okay' },
-  { e: '😔', l: 'Low' }, { e: '😣', l: 'Stressed' }, { e: '😴', l: 'Tired' },
-];
-const CRAVINGS = ['None', 'Mild', 'Moderate', 'Strong'];
-
-const STARTERS = {
-  friend: ['Let me tell you about my day', 'I need to talk something through', 'Give me a little pick-me-up', 'Help me plan my week'],
-  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down'],
-};
-
-/* Verified Australian crisis & AOD contacts (checked against official sites, Sept 2026). */
-const HELP_CONTACTS = [
-  { name: 'Emergency — police, ambulance, fire', num: '000', tel: '000', note: 'If life is in danger or someone is at immediate risk', urgent: true },
-  { name: 'Lifeline', num: '13 11 14', tel: '131114', note: '24/7 crisis support · text 0477 13 11 14' },
-  { name: 'Suicide Call Back Service', num: '1300 659 467', tel: '1300659467', note: '24/7 counselling for anyone affected by suicide' },
-  { name: 'National Alcohol and Other Drug Hotline', num: '1800 250 015', tel: '1800250015', note: '24/7, free & confidential — connects to your state service' },
-  { name: 'Adis 24/7 Alcohol and Drug Support (QLD)', num: '1800 177 833', tel: '1800177833', note: 'Queensland counselling, information and referrals, 24/7' },
-  { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7 crisis support for Aboriginal and Torres Strait Islander people' },
-];
-const CONTACTS_TEXT = HELP_CONTACTS.map(c => `- ${c.name}: ${c.num} (${c.note})`).join('\n');
-
-/* Words that suggest risk. Triggers an immediate help card and a crisis instruction to the model. */
-const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|od'?d|od'?ing|not safe|unsafe|in danger|going to hurt|hurt (someone|them|him|her|my kids?)|no reason to live)\b/i;
-
-const FAITH_TEXT = {
-  general: 'Faith-inclusive / general spirituality. Speak of hope, meaning, purpose, gratitude, forgiveness, inner peace and a Higher Power "as you understand it". Do not assume any particular religion; follow the person\'s lead if they name one.',
-  christian: 'Christian (non-denominational). Draw on prayer, the Bible, God\'s grace, love and forgiveness, Jesus\' compassion for people who struggle, and church community. Celebrate Recovery is a relevant Christ-centred peer group.',
-  catholic: 'Catholic. Draw on prayer (including the Our Father, Hail Mary, the Serenity Prayer or the Rosary if welcome), Scripture, God\'s mercy, the sacraments (e.g. Reconciliation) and the support of a parish priest or pastoral care.',
-  islamic: 'Islamic. Draw on dua, dhikr, the Qur\'an and Hadith (paraphrase unless certain), tawbah (returning to Allah), sabr (patience) and the vast mercy of Allah, and the support of an imam or mosque community. Be aware intoxicants are prohibited in Islam: never shame; emphasise that Allah\'s mercy and the door of repentance are always open.',
-  jewish: 'Jewish. Draw on prayer, the Psalms and Torah wisdom, teshuvah (return and repair), community, and the support of a rabbi or congregation, respecting the person\'s level of observance.',
-  buddhist: 'Buddhist. Draw on mindfulness and meditation, compassion (metta) including self-compassion, impermanence (cravings arise and pass), the Four Noble Truths, the fifth precept framed gently, and the support of a sangha.',
-  hindu: 'Hindu. Draw on prayer and mantra, the Bhagavad Gita (paraphrase unless certain), dharma, meditation and yoga, and the support of family, temple and community.',
-  sikh: 'Sikh. Draw on Naam Simran, Gurbani (paraphrase unless certain), seva, sangat and the Gurdwara community. Intoxicants are discouraged in Sikhi: never shame; emphasise Waheguru\'s grace and the strength of sangat.',
-  indigenous: 'Indigenous spirituality, approached with deep cultural respect. Acknowledge connection to Country, culture, kin and community as sources of strength and healing if the person raises them. Do NOT invent, claim or describe specific cultural or spiritual practices, Dreaming stories or ceremonies, and do not speak for any community. Defer to Elders, family, community and Aboriginal Community Controlled Health Organisations; mention 13YARN as a culturally safe support.',
-  none: 'No faith content. Keep everything secular: do not mention God, prayer, religion or spirituality unless the person raises it first, and then follow their lead respectfully.',
-};
-const FAITH_LEVEL_TEXT = {
-  ask: 'Only bring faith or spiritual content in when the person asks for it.',
-  woven: 'Gently weave faith in where it feels natural — e.g. offer (never impose) a short prayer, reflection or reminder of grace — while keeping the focus on the person.',
-  central: 'Faith is central for this person: make it a main lens of support, regularly offering prayer, sacred-text reflections and connection to faith community, while still respecting their autonomy.',
-};
-
-/* ---------------------------------------------------------------------------
-   App state (the active person's data lives in these variables)
-   --------------------------------------------------------------------------- */
-let shared = Object.assign({}, DEFAULT_SHARED, load(K.shared, {}));
-let profilesState = null;  // { list, lastId }
-let profile = null;        // the active person {id, name, pin, created}
-let settings = {};         // merged view: profile settings + shared provider settings
-let convos = [];
-let memories = [];
-let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
-let activeId = null;
-let busy = false;
-let abortCtrl = null;
-
-const $ = (sel, root = document) => root.querySelector(sel);
-const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-
-const el = {
-  app: $('#app'), scrim: $('#scrim'), menuBtn: $('#menuBtn'),
-  history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
-  headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
-  keyBanner: $('#keyBanner'), messages: $('#messages'), inner: $('#messagesInner'),
-  composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
-  convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
-  autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
-  switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
-  soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'),
-  toasts: $('#toasts'),
-};
-
-/* ---------------------------------------------------------------------------
-   Profiles: migration, loading and saving
-   --------------------------------------------------------------------------- */
-/** One-time migration from the single-user v1 layout into the "Dwayne" profile. */
-function migrateStorage() {
-  profilesState = load(K.profiles, null);
-  if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length) return;
-  const now = Date.now();
-  profilesState = {
-    list: [
-      { id: 'dwayne', name: 'Dwayne', pin: null, created: now },
-      { id: 'abbey', name: 'Abbey', pin: null, created: now },
-    ],
-    lastId: 'dwayne',
-  };
-  const oldSettings = load(LEGACY.settings, null);
-  if (oldSettings) {
-    for (const k of SHARED_KEYS) if (oldSettings[k] !== undefined) shared[k] = oldSettings[k];
-    const persona = Object.assign({}, oldSettings);
-    SHARED_KEYS.forEach(k => delete persona[k]);
-    delete persona.userName;
-    save(pk('dwayne', 'settings'), persona); // settingsVersion missing → mode migration runs on load
-  }
-  const moves = [[LEGACY.convos, 'convos'], [LEGACY.memories, 'memories'], [LEGACY.active, 'active']];
-  for (const [oldKey, what] of moves) {
-    const raw = localStorage.getItem(oldKey);
-    if (raw !== null) localStorage.setItem(pk('dwayne', what), raw);
-  }
-  Object.values(LEGACY).forEach(k => localStorage.removeItem(k));
-  save(K.shared, shared);
-  save(K.profiles, profilesState);
-}
-
-function saveProfiles() { save(K.profiles, profilesState); }
-function findProfile(id) { return profilesState.list.find(p => p.id === id) || null; }
-
-/** Load one person's data into the app state (applying the v2 mode migration once). */
-function loadProfileData(pid) {
-  let ps = load(pk(pid, 'settings'), {});
-  if (!ps || typeof ps !== 'object') ps = {};
-  if ((ps.settingsVersion || 1) < SETTINGS_VERSION) {
-    ps.mode = 'counsellor';          // switch existing users to counsellor mode once
-    ps.settingsVersion = SETTINGS_VERSION;
-    save(pk(pid, 'settings'), ps);
-  }
-  SHARED_KEYS.forEach(k => delete ps[k]);
-  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, shared);
-  if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_PROFILE_SETTINGS.traits];
-  convos = load(pk(pid, 'convos'), []);
-  memories = load(pk(pid, 'memories'), []);
-  moods = load(pk(pid, 'moods'), []);
-  activeId = load(pk(pid, 'active'), null);
-  if (!Array.isArray(convos)) convos = [];
-  if (!Array.isArray(memories)) memories = [];
-  if (!Array.isArray(moods)) moods = [];
-}
-
-/** Persist settings: provider keys to the shared store, everything else to this person. */
-function saveSettings() {
-  const ps = {};
-  for (const [k, v] of Object.entries(settings)) if (!SHARED_KEYS.includes(k)) ps[k] = v;
-  for (const k of SHARED_KEYS) shared[k] = settings[k];
-  save(pk(profile.id, 'settings'), ps);
-  save(K.shared, shared);
-}
-function persistConvos() { save(pk(profile.id, 'convos'), convos); save(pk(profile.id, 'active'), activeId); }
-function saveMemories() { save(pk(profile.id, 'memories'), memories); }
-function saveMoods() { save(pk(profile.id, 'moods'), moods); }
-
-/** Light PIN hash (FNV-1a, iterated). This is a privacy lock, not security. */
-function pinHash(pid, pin) {
-  let h = 2166136261 >>> 0;
-  const s = `eden:${pid}:${pin}`;
-  for (let r = 0; r < 300; r++) {
-    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-    h ^= r;
-  }
-  return h.toString(16);
-}
-
-const AVATAR_COLOURS = ['#3b8a5a', '#8a5a9e', '#c0713a', '#2f7fa0', '#a0485a', '#6b7a2f', '#5a62b0'];
-function avatarColour(p) {
-  let n = 0; for (const ch of p.id) n = (n * 31 + ch.charCodeAt(0)) >>> 0;
-  return AVATAR_COLOURS[n % AVATAR_COLOURS.length];
-}
-function userName() { return profile ? profile.name : ''; }
-const isCounsellor = () => settings.mode === 'counsellor';
-
-/* ---------------------------------------------------------------------------
-   Small utilities
-   --------------------------------------------------------------------------- */
-function escapeHtml(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
-function toast(msg, bad = false, ms = 3200) {
-  const t = document.createElement('div');
-  t.className = 'toast' + (bad ? ' bad' : '');
-  t.textContent = msg;
-  el.toasts.appendChild(t);
-  setTimeout(() => t.remove(), ms);
-}
-const timeFmt = new Intl.DateTimeFormat('en-AU', { hour: 'numeric', minute: '2-digit' });
-const dateFmt = new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'short' });
-const dayFmt = new Intl.DateTimeFormat('en-AU', { weekday: 'short' });
-function relTime(ts) {
-  const d = new Date(ts), now = new Date();
-  if (d.toDateString() === now.toDateString()) return timeFmt.format(d);
-  const y = new Date(now); y.setDate(now.getDate() - 1);
-  if (d.toDateString() === y.toDateString()) return 'Yesterday';
-  return dateFmt.format(d);
-}
-/** Local calendar date as YYYY-MM-DD. */
-function localDate(d = new Date()) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-function parseLocalDate(s) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
-  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
-}
-/** Whole days since the recovery start date (null if unset / in the future). */
-function soberDaysCount() {
-  const start = parseLocalDate(settings.soberStart);
-  if (!start) return null;
-  const today = parseLocalDate(localDate());
-  const days = Math.round((today - start) / 86400000);
-  return days >= 0 ? days : null;
-}
-function greeting() {
-  const h = new Date().getHours();
-  const part = h < 5 ? 'Hey there, night owl' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  return userName() ? `${part}, ${userName()}` : part;
-}
-
-/* ---------------------------------------------------------------------------
-   Tiny, safe Markdown renderer (escape first, whitelist tags)
-   --------------------------------------------------------------------------- */
-function renderInline(text) {
-  const codes = [];
-  let s = text.replace(/`([^`\n]+)`/g, (_, c) => { codes.push(c); return `\u0001${codes.length - 1}\u0001`; });
-  const links = [];
-  const keep = (html) => { links.push(html); return `\u0002${links.length - 1}\u0002`; };
-  s = s.replace(/\[([^\]\n]+)\]\(((?:https?:\/\/|mailto:|tel:)[^\s)]+)\)/g,
-    (_, label, url) => keep(`<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`));
-  s = s.replace(/(^|[\s(])(https?:\/\/[^\s<)]*[^\s<).,!?;:])/g,
-    (_, pre, url) => pre + keep(`<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`));
-  s = s.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>')
-       .replace(/__([^_\n]+?)__/g, '<strong>$1</strong>')
-       .replace(/(^|[^*\w])\*([^*\s][^*\n]*?)\*(?!\w)/g, '$1<em>$2</em>')
-       .replace(/(^|[^_\w])_([^_\s][^_\n]*?)_(?!\w)/g, '$1<em>$2</em>')
-       .replace(/~~([^~\n]+?)~~/g, '<del>$1</del>');
-  s = s.replace(/\u0002(\d+)\u0002/g, (_, i) => links[+i]);
-  return s.replace(/\u0001(\d+)\u0001/g, (_, i) => `<code>${codes[+i]}</code>`);
-}
-function renderMarkdown(src) {
-  const blocks = [];
-  const text = escapeHtml(src || '').replace(/```[\w+-]*\n?([\s\S]*?)(?:```|$)/g, (_, code) => {
-    blocks.push(`<pre><code>${code.replace(/\n$/, '')}</code></pre>`);
-    return `\n\u0000${blocks.length - 1}\u0000\n`;
-  });
-  const out = [];
-  let para = [], list = null, quote = [];
-  const flushPara = () => { if (para.length) { out.push(`<p>${para.map(renderInline).join('<br>')}</p>`); para = []; } };
-  const flushList = () => { if (list) { out.push(`<${list.type}>${list.items.map(i => `<li>${renderInline(i)}</li>`).join('')}</${list.type}>`); list = null; } };
-  const flushQuote = () => { if (quote.length) { out.push(`<blockquote>${quote.map(renderInline).join('<br>')}</blockquote>`); quote = []; } };
-  const flushAll = () => { flushPara(); flushList(); flushQuote(); };
-  for (const raw of text.split('\n')) {
-    const line = raw.replace(/\s+$/, '');
-    let m;
-    if ((m = line.match(/^\u0000(\d+)\u0000$/))) { flushAll(); out.push(blocks[+m[1]]); continue; }
-    if (!line.trim()) { flushAll(); continue; }
-    if ((m = line.match(/^(#{1,6})\s+(.*)$/))) { flushAll(); const n = Math.min(m[1].length + 1, 4); out.push(`<h${n}>${renderInline(m[2])}</h${n}>`); continue; }
-    if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(line)) { flushAll(); out.push('<hr>'); continue; }
-    if ((m = line.match(/^&gt;\s?(.*)$/))) { flushPara(); flushList(); quote.push(m[1]); continue; }
-    if ((m = line.match(/^\s*[-*+•]\s+(.*)$/))) {
-      flushPara(); flushQuote();
-      if (!list || list.type !== 'ul') { flushList(); list = { type: 'ul', items: [] }; }
-      list.items.push(m[1]); continue;
-    }
-    if ((m = line.match(/^\s*\d+[.)]\s+(.*)$/))) {
-      flushPara(); flushQuote();
-      if (!list || list.type !== 'ol') { flushList(); list = { type: 'ol', items: [] }; }
-      list.items.push(m[1]); continue;
-    }
-    if (list && /^\s{2,}\S/.test(raw)) { list.items[list.items.length - 1] += ' ' + line.trim(); continue; }
-    flushList(); flushQuote();
-    para.push(line);
-  }
-  flushAll();
-  return out.join('');
-}
-function toSpeakable(md) {
-  return md
-    .replace(/```[\s\S]*?```/g, ' (code omitted) ')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .replace(/https?:\/\/\S+/g, 'link')
-    .replace(/[*_~#>]+/g, '')
-    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-/* ---------------------------------------------------------------------------
-   Theme
-   --------------------------------------------------------------------------- */
-const mqDark = window.matchMedia('(prefers-color-scheme: dark)');
-function resolvedTheme() { return (settings.theme || 'system') === 'system' ? (mqDark.matches ? 'dark' : 'light') : settings.theme; }
-function applyTheme() {
-  const t = resolvedTheme();
-  document.documentElement.dataset.theme = t;
-  el.themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
-  el.themeIcon.innerHTML = t === 'dark'
-    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>'
-    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-  const meta = $('meta[name="theme-color"]');
-  if (meta) meta.content = t === 'dark' ? '#0e1612' : '#3f8f5f';
-}
-mqDark.addEventListener('change', () => { if (settings.theme === 'system') applyTheme(); });
-el.themeBtn.addEventListener('click', () => {
-  settings.theme = resolvedTheme() === 'dark' ? 'light' : 'dark';
-  saveSettings();
-  applyTheme();
-});
-
-/* ---------------------------------------------------------------------------
-   Orb / status
-   --------------------------------------------------------------------------- */
-function statusText(state) {
-  return { thinking: 'Thinking…', speaking: 'Speaking…', listening: 'Listening…' }[state]
-    || (isCounsellor() ? 'Here to listen' : 'Here for you');
-}
-function setOrb(state) {
-  $$('.orb[data-state]').forEach(o => { o.dataset.state = state; });
-  el.status.textContent = statusText(state);
-}
-
-/* ---------------------------------------------------------------------------
-   Conversations
-   --------------------------------------------------------------------------- */
-function activeConvo() { return convos.find(c => c.id === activeId) || null; }
-
-function newConversation() {
-  const current = activeConvo();
-  if (current && current.messages.length === 0) { renderAll(); focusInput(); return current; }
-  const c = { id: uid(), title: 'New chat', created: Date.now(), updated: Date.now(), mood: null, craving: null, messages: [] };
-  convos.unshift(c);
-  activeId = c.id;
-  convos = convos.filter(x => x.id === activeId || x.messages.length > 0);
-  persistConvos();
-  renderAll();
-  focusInput();
-  return c;
-}
-function openConversation(id) {
-  if (busy) stopGeneration();
-  stopSpeaking();
-  activeId = id;
-  convos = convos.filter(x => x.id === activeId || x.messages.length > 0);
-  persistConvos();
-  renderAll();
-  closeSidebar();
-}
-function deleteConversation(id) {
-  const c = convos.find(x => x.id === id);
-  if (!c || !confirm(`Delete “${c.title}”? This can't be undone.`)) return;
-  convos = convos.filter(x => x.id !== id);
-  if (activeId === id) { activeId = null; newConversation(); } else { persistConvos(); renderHistory(); }
-  toast('Conversation deleted');
-}
-
-const ICON_TRASH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>';
-const ICON_EDIT = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
-
-function renderHistory() {
-  const list = convos.filter(c => c.messages.length > 0).sort((a, b) => b.updated - a.updated);
-  el.history.innerHTML = '';
-  if (!list.length) { el.history.innerHTML = '<li class="history-empty">No conversations yet — say hello! 👋</li>'; return; }
-  for (const c of list) {
-    const li = document.createElement('li');
-    if (c.id === activeId) li.className = 'active';
-    li.innerHTML = `<button class="open-chat" type="button"><span class="title"></span><span class="meta"></span></button>
-      <button class="icon-btn del" type="button" title="Delete">${ICON_TRASH}</button>`;
-    const open = $('.open-chat', li);
-    if (c.id === activeId) open.setAttribute('aria-current', 'true');
-    $('.title', li).textContent = (c.mood ? c.mood.e + ' ' : '') + c.title;
-    $('.meta', li).textContent = `${relTime(c.updated)} · ${c.messages.filter(m => !m.card).length} messages`;
-    $('.del', li).setAttribute('aria-label', `Delete conversation: ${c.title}`);
-    open.addEventListener('click', () => openConversation(c.id));
-    $('.del', li).addEventListener('click', () => deleteConversation(c.id));
-    el.history.appendChild(li);
-  }
-}
-
-/* ---------------------------------------------------------------------------
-   Message rendering
-   --------------------------------------------------------------------------- */
-const ICON_SPEAK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-const ICON_COPY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-const ICON_RETRY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
-
-/** The in-chat safety card shown instantly when risk words are detected (no model needed). */
-function crisisCardHtml() {
-  return `<div class="crisis-card" role="note" aria-label="Crisis support contacts">
-    <h3>You don't have to go through this alone 💚</h3>
-    <p>If you or someone else is in immediate danger, call <a href="tel:000">000</a> now. Free, confidential support any time:</p>
-    <ul>${HELP_CONTACTS.slice(1).map(c => `<li>${escapeHtml(c.name)}: <a href="tel:${c.tel}">${escapeHtml(c.num)}</a></li>`).join('')}</ul>
-  </div>`;
-}
-
-function messageEl(msg) {
-  const row = document.createElement('div');
-  row.className = `msg ${msg.role}${msg.error ? ' error' : ''}`;
-  const wrap = document.createElement('div');
-  wrap.className = 'bubble-wrap';
-
-  if (msg.card === 'crisis') {
-    wrap.innerHTML = crisisCardHtml();
-    row.appendChild(wrap);
-    return { row, bubble: wrap, tools: document.createElement('div') };
-  }
-
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  const who = document.createElement('span');
-  who.className = 'sr-only';
-  who.textContent = msg.role === 'user' ? 'You said: ' : `${settings.name} said: `;
-  if (msg.role === 'user' || msg.error) bubble.textContent = msg.content;
-  else bubble.innerHTML = renderMarkdown(msg.content);
-  wrap.appendChild(who);
-  wrap.appendChild(bubble);
-
-  const tools = document.createElement('div');
-  tools.className = 'msg-tools';
-  if (msg.ts) {
-    const t = document.createElement('span');
-    t.className = 'msg-time';
-    t.textContent = timeFmt.format(new Date(msg.ts));
-    tools.appendChild(t);
-  }
-  if (msg.role === 'assistant' && !msg.error) {
-    tools.appendChild(toolBtn(ICON_SPEAK, 'Read aloud', () => speak(msg.content)));
-    tools.appendChild(toolBtn(ICON_COPY, 'Copy message', () => copyText(msg.content)));
-  }
-  if (msg.error) tools.appendChild(toolBtn(ICON_RETRY, 'Try again', () => retryLast()));
-  wrap.appendChild(tools);
-
-  if (msg.role !== 'user') {
-    const orb = document.createElement('div');
-    orb.className = 'orb sm';
-    orb.setAttribute('aria-hidden', 'true');
-    orb.innerHTML = '<span class="shine"></span>';
-    row.appendChild(orb);
-  }
-  row.appendChild(wrap);
-  return { row, bubble, tools };
-}
-function toolBtn(icon, label, fn) {
-  const b = document.createElement('button');
-  b.type = 'button'; b.className = 'icon-btn'; b.innerHTML = icon;
-  b.setAttribute('aria-label', label); b.title = label;
-  b.addEventListener('click', fn);
-  return b;
-}
-async function copyText(text) {
-  try { await navigator.clipboard.writeText(text); toast('Copied'); }
-  catch (e) { toast('Copy failed — your browser blocked clipboard access', true); }
-}
-
-/* ---------------------------------------------------------------------------
-   Welcome screen, daily check-in & mood history
-   --------------------------------------------------------------------------- */
-function todaysCheckin() { return moods.find(m => m.date === localDate()) || null; }
-
-function renderWelcome() {
-  const c = activeConvo();
-  const counsellor = isCounsellor();
-  const box = document.createElement('div');
-  box.className = 'welcome';
-  box.innerHTML = '<div class="orb lg" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
-  $('h1', box).textContent = greeting() + ' 🌿';
-  $('p', box).textContent = counsellor
-    ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups, faith and hope — whatever's on your mind, at your own pace.`
-    : `I'm ${settings.name}. I'm here to listen, chat, brainstorm, or just keep you company.`;
-
-  if (settings.moodCheck) {
-    const today = todaysCheckin();
-    const card = document.createElement('div');
-    card.className = 'mood-card';
-    const title = counsellor ? 'Daily check-in — how are you travelling today?' : 'How are you feeling right now?';
-    card.innerHTML = `<h2 id="moodQ">${escapeHtml(title)} <span class="help">(optional)</span></h2><div class="mood-row" role="group" aria-labelledby="moodQ"></div>`;
-    const row = $('.mood-row', card);
-    const current = (c && c.mood) || (today && today.mood);
-    for (const m of MOODS) {
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'mood-btn';
-      b.setAttribute('aria-pressed', String(!!(current && current.l === m.l)));
-      b.innerHTML = `<span class="e" aria-hidden="true">${m.e}</span><span class="l">${m.l}</span>`;
-      b.addEventListener('click', () => setMood(m));
-      row.appendChild(b);
-    }
-    if (counsellor) {
-      const cr = document.createElement('div');
-      cr.className = 'craving-row';
-      cr.setAttribute('role', 'group');
-      cr.setAttribute('aria-label', 'Cravings today');
-      cr.innerHTML = '<span class="lbl">Cravings today:</span>';
-      const curCraving = (c && c.craving) || (today && today.craving);
-      for (const lvl of CRAVINGS) {
-        const b = document.createElement('button');
-        b.type = 'button'; b.className = 'chip craving-chip'; b.textContent = lvl;
-        b.setAttribute('aria-pressed', String(curCraving === lvl));
-        b.addEventListener('click', () => setCraving(lvl));
-        cr.appendChild(b);
-      }
-      card.appendChild(cr);
-      card.appendChild(moodWeekEl());
-    }
-    box.appendChild(card);
-  }
-
-  const starters = document.createElement('div');
-  starters.className = 'starters';
-  let list = counsellor ? [...STARTERS.counsellor] : STARTERS.friend;
-  if (counsellor && settings.faith === 'none') list = list.map(s => s === 'Pray with me' ? 'Help me find some calm' : s);
-  for (const s of list) {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'starter'; b.textContent = s;
-    b.addEventListener('click', () => sendMessage(s));
-    starters.appendChild(b);
-  }
-  box.appendChild(starters);
-  el.inner.appendChild(box);
-}
-
-/** Last-7-days strip of check-ins. */
-function moodWeekEl() {
-  const wrap = document.createElement('div');
-  wrap.className = 'mood-week';
-  wrap.setAttribute('aria-label', 'Your check-ins over the last 7 days');
-  const lbl = document.createElement('span');
-  lbl.textContent = 'Last 7 days:';
-  wrap.appendChild(lbl);
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const entry = moods.find(m => m.date === localDate(d));
-    const day = document.createElement('span');
-    day.className = 'day';
-    day.innerHTML = `<span class="e" aria-hidden="true"></span><span></span>`;
-    day.firstChild.textContent = entry && entry.mood ? entry.mood.e : '·';
-    day.lastChild.textContent = dayFmt.format(d);
-    day.title = entry ? `${entry.mood ? entry.mood.l : ''}${entry.craving ? ` · cravings ${entry.craving.toLowerCase()}` : ''}` : 'No check-in';
-    wrap.appendChild(day);
-  }
-  return wrap;
-}
-
-function recordCheckin(patch) {
-  const date = localDate();
-  let entry = moods.find(m => m.date === date);
-  if (!entry) { entry = { date, mood: null, craving: null }; moods.push(entry); }
-  Object.assign(entry, patch);
-  moods = moods.slice(-400);
-  saveMoods();
-}
-function setMood(m) {
-  const c = activeConvo() || newConversation();
-  const toggledOff = c.mood && c.mood.l === m.l;
-  c.mood = toggledOff ? null : { e: m.e, l: m.l };
-  recordCheckin({ mood: c.mood });
-  persistConvos();
-  renderMessages(); updateMoodPill();
-  if (c.mood) toast(`Thanks for checking in ${m.e}`);
-  focusInput();
-}
-function setCraving(lvl) {
-  const c = activeConvo() || newConversation();
-  c.craving = c.craving === lvl ? null : lvl;
-  recordCheckin({ craving: c.craving });
-  persistConvos();
-  renderMessages();
-  if (c.craving === 'Strong') toast('Strong cravings are tough — they do pass. I’m here, and help is one tap away.', false, 4500);
-}
-function updateMoodPill() {
-  const c = activeConvo();
-  if (c && c.mood) { el.moodPill.hidden = false; el.moodPill.textContent = `${c.mood.e} ${c.mood.l}`; el.moodPill.title = 'Your check-in for this chat'; }
-  else el.moodPill.hidden = true;
-}
-function renderMessages() {
-  const c = activeConvo();
-  el.inner.innerHTML = '';
-  if (!c || c.messages.length === 0) { renderWelcome(); return; }
-  for (const m of c.messages) el.inner.appendChild(messageEl(m).row);
-  scrollToBottom(true);
-}
-function scrollToBottom(force = false) {
-  const m = el.messages;
-  if (force || m.scrollHeight - m.scrollTop - m.clientHeight < 160) m.scrollTop = m.scrollHeight;
-}
-function renderSober() {
-  const days = soberDaysCount();
-  if (days === null) { el.soberCard.hidden = true; return; }
-  el.soberCard.hidden = false;
-  el.soberDays.textContent = days;
-  const what = settings.soberWhat || (isCounsellor() ? 'on your journey' : 'days');
-  el.soberLbl.textContent = `${days === 1 ? 'day' : 'days'} ${what === 'days' ? '' : what}`.trim() + ' 🌱';
-  el.soberCard.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || ''}. Edit in Settings.`);
-}
-function renderAll() {
-  const counsellor = isCounsellor();
-  el.brandName.textContent = settings.name;
-  el.brandSub.textContent = counsellor ? 'faith-based AOD support' : 'your AI companion';
-  el.headerName.textContent = settings.name;
-  el.modeBadge.textContent = counsellor ? 'AOD support' : 'Friend';
-  el.input.placeholder = counsellor ? `Tell ${settings.name} what's on your mind…` : `Message ${settings.name}…`;
-  el.inputLabel.textContent = `Message ${settings.name}`;
-  el.mic.setAttribute('aria-label', `Speak to ${settings.name}`);
-  $('#memTitle').textContent = `🌿 What ${settings.name} remembers about ${userName()}`;
-  el.memCount.textContent = memories.length;
-  el.keyBanner.hidden = !!settings.apiKey;
-  el.autoSpeakBtn.setAttribute('aria-pressed', String(!!settings.autoSpeak));
-  el.switchAvatar.textContent = (userName()[0] || '?');
-  el.switchAvatar.style.setProperty('--c', avatarColour(profile));
-  el.switchName.textContent = userName();
-  el.switchBtn.setAttribute('aria-label', `Switch person (currently ${userName()})`);
-  if (!busy) setOrb('idle');
-  renderSober();
-  renderHistory();
-  renderMessages();
-  updateMoodPill();
-}
-
-/* ---------------------------------------------------------------------------
-   System prompts
-   --------------------------------------------------------------------------- */
-function commonContext(convo) {
-  const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'short' }).format(new Date());
-  const lines = [
-    `Current local date/time for the user (Brisbane, Australia): ${when}.`,
-    `You are talking with ${userName()}. Address them by name naturally (not in every message).`,
-    'Privacy: this device is shared by several people who each have their own private profile. Only ever discuss this person\'s own conversations and memories. Never reveal, guess at or discuss anyone else\'s chats, memories or information, even if asked.',
-  ];
-  const days = soberDaysCount();
-  if (days !== null) lines.push(`${userName()} is tracking ${days} day(s) ${settings.soberWhat || 'on their recovery journey'} (since ${settings.soberStart}). Acknowledge milestones warmly; if they slip, respond with compassion — progress isn't erased.`);
-  if (memories.length) {
-    lines.push(`Things you remember about ${userName()} from past conversations:`);
-    for (const m of memories.slice(-80)) lines.push(`- ${m.text}`);
-  }
-  if (convo && convo.mood) lines.push(`At the start of this conversation ${userName()} checked in feeling: ${convo.mood.l} ${convo.mood.e}. Acknowledge this gently and naturally early on.`);
-  if (convo && convo.craving) lines.push(`They rated their cravings today as: ${convo.craving}.`);
-  if (settings.custom) lines.push(`Extra instructions from the user: ${settings.custom}`);
-  return lines;
-}
-
-function counsellorPrompt(convo) {
-  const faith = FAITH_TEXT[settings.faith] || FAITH_TEXT.general;
-  const level = settings.faith === 'none' ? '' : (FAITH_LEVEL_TEXT[settings.faithLevel] || FAITH_LEVEL_TEXT.woven);
-  return [
-    `You are ${settings.name}, a warm, calm, hopeful and non-judgemental faith-sensitive AI support companion for people affected by alcohol and other drugs (AOD). You model the person-centred, evidence-based practice used in Australian AOD services.`,
-    settings.traits.length ? `Personality: ${settings.traits.join(', ')}.${settings.traitsCustom ? ' ' + settings.traitsCustom : ''}` : '',
-    '',
-    'WHO YOU ARE (AND AREN\'T)',
-    '- You are an AI support tool, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant, without repeating it constantly.',
-    '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
-    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant.',
-    '',
-    'HOW YOU WORK (EVIDENCE-BASED)',
-    '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
-    '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
-    '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure.',
-    '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
-    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly.',
-    '- Strengths-based, trauma-informed and culturally safe: notice strengths and effort, offer choice and control, never push for trauma details, respect culture, identity, gender and sexuality. Use person-first, non-stigmatising language (e.g. "person who uses alcohol", not "addict" or "alcoholic") unless the person uses a label for themselves.',
-    `- Style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced} Usually keep replies to 2–6 sentences, one question at a time, reflect before advising, and ask permission before giving advice or information. Use Australian English.`,
-    '',
-    'FAITH',
-    `- Tradition: ${faith}`,
-    level ? `- Amount: ${level}` : '',
-    settings.faith === 'none' ? '' : '- Principles: never preachy, never shaming. Never frame addiction, cravings or relapse as a moral failing or a lack of faith. Emphasise grace, mercy, forgiveness, hope, meaning and community as fits the tradition. Offer prayer or reflection rather than imposing it, and respect the person\'s autonomy and beliefs.',
-    settings.faith === 'none' ? '' : '- Sacred texts: only quote if you are confident of the exact wording and reference. Otherwise paraphrase and say that you are paraphrasing. Never invent verses or references.',
-    '',
-    'SAFETY (HIGHEST PRIORITY)',
-    'If the person mentions suicide, self-harm, overdose, feeling unsafe, or someone else being in danger: respond with warmth and FIRST clearly give these Australian contacts, then ask about their immediate safety, stay with them and encourage them to reach out now. If there is immediate danger, urge them to call 000 now. Never minimise risk.',
-    CONTACTS_TEXT,
-    '',
-    ...commonContext(convo),
-  ].filter(l => l !== '').join('\n');
-}
-
-function friendPrompt(convo) {
-  return [
-    `You are ${settings.name}, a personal AI companion — like a warm, curious, supportive friend. You listen closely, remember what matters, show genuine interest and help the user feel heard.`,
-    settings.traits.length ? `Your personality traits: ${settings.traits.join(', ')}.` : '',
-    settings.traitsCustom ? `More about your personality: ${settings.traitsCustom}` : '',
-    `Conversation style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced}`,
-    'Guidelines:',
-    '- Keep the relationship friendly and platonic — never romantic or flirtatious.',
-    '- Be honest that you are an AI if it comes up.',
-    '- Use Australian English and a natural, conversational tone. Light markdown is fine.',
-    '- Weave in what you remember naturally; never recite memories as a list.',
-    '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, being unsafe or someone in danger, respond with care and FIRST clearly give these Australian contacts, then check on their safety:',
-    CONTACTS_TEXT,
-    ...commonContext(convo),
-  ].filter(Boolean).join('\n');
-}
-
-function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(convo) : friendPrompt(convo); }
-
-const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, being unsafe or someone in danger). Respond with warmth. Begin by clearly listing: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately.';
-
-function buildMessages(convo) {
-  const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({ role: m.role, content: m.content }));
-  const msgs = [{ role: 'system', content: buildSystemPrompt(convo) }, ...history];
-  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
-  if (lastUser && lastUser.crisis) msgs.push({ role: 'system', content: CRISIS_INSTRUCTION });
-  return msgs;
-}
-
-/* ---------------------------------------------------------------------------
-   API client (OpenAI-compatible Chat Completions, streaming + fallback)
-   --------------------------------------------------------------------------- */
-function endpoint() { return (settings.baseUrl || DEFAULT_SHARED.baseUrl).trim().replace(/\/+$/, '') + '/chat/completions'; }
-
-class ApiError extends Error {
-  constructor(message, status) { super(message); this.name = 'ApiError'; this.status = status; }
-}
-async function apiErrorFrom(res) {
-  let detail = '';
-  try {
-    const txt = await res.text();
-    try { const j = JSON.parse(txt); detail = (j.error && (j.error.message || j.error)) || j.message || txt; }
-    catch (_) { detail = txt; }
-  } catch (_) { /* ignore */ }
-  if (typeof detail !== 'string') detail = JSON.stringify(detail);
-  const friendly = {
-    401: 'Your API key was rejected. Please check it in Settings.',
-    403: 'Access denied by the provider. Check your key and model permissions.',
-    404: 'Endpoint or model not found. Check the base URL and model name in Settings.',
-    429: 'Rate limit or quota reached. Take a breather and try again shortly.',
-  }[res.status] || `The provider returned an error (${res.status}).`;
-  return new ApiError(detail ? `${friendly}\n${String(detail).slice(0, 300)}` : friendly, res.status);
-}
-
-/**
- * Request a chat completion.
- * @param {Array}  messages
- * @param {Object} opts { stream, onToken, signal, temperature, max_tokens }
- * @returns {Promise<string>} full reply text
- */
-async function chatCompletion(messages, opts = {}) {
-  const { onToken, signal } = opts;
-  const wantStream = !!opts.stream;
-  const body = { model: settings.model || DEFAULT_SHARED.model, messages, temperature: opts.temperature ?? 0.7 };
-  if (opts.max_tokens) body.max_tokens = opts.max_tokens;
-  if (wantStream) body.stream = true;
-
-  let res;
-  try {
-    res = await fetch(endpoint(), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` },
-      body: JSON.stringify(body),
-      signal,
-    });
-  } catch (e) {
-    if (e.name === 'AbortError') throw e;
-    if (wantStream) return chatCompletion(messages, { ...opts, stream: false });
-    throw new ApiError('Could not reach the provider. Check your connection and base URL (the provider must allow requests from a browser).', 0);
-  }
-  if (!res.ok) {
-    const err = await apiErrorFrom(res);
-    if (wantStream && (res.status === 400 || res.status === 422) && /stream/i.test(err.message)) {
-      return chatCompletion(messages, { ...opts, stream: false });
-    }
-    throw err;
-  }
-  const ctype = res.headers.get('content-type') || '';
-  if (!wantStream || !res.body || !/event-stream/i.test(ctype)) {
-    const data = await res.json();
-    const choice = data.choices && data.choices[0];
-    const text = (choice && ((choice.message && choice.message.content) ?? choice.text)) || '';
-    if (onToken && text) onToken(text);
-    return text;
-  }
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buf = '', full = '';
-  const handleLine = (line) => {
-    line = line.trim();
-    if (!line.startsWith('data:')) return false;
-    const payload = line.slice(5).trim();
-    if (payload === '[DONE]') return true;
-    let j;
-    try { j = JSON.parse(payload); } catch (_) { return false; }
-    if (j.error) throw new ApiError(j.error.message || 'The provider reported a streaming error.', 500);
-    const choice = j.choices && j.choices[0];
-    const delta = choice ? ((choice.delta && choice.delta.content) || (choice.message && choice.message.content) || '') : '';
-    if (delta) { full += delta; if (onToken) onToken(delta); }
-    return false;
-  };
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buf += decoder.decode(value, { stream: true });
-    let idx;
-    while ((idx = buf.indexOf('\n')) >= 0) {
-      const line = buf.slice(0, idx);
-      buf = buf.slice(idx + 1);
-      if (handleLine(line)) { reader.cancel().catch(() => {}); return full; }
-    }
-  }
-  if (buf) handleLine(buf);
-  return full;
-}
-
-/* ---------------------------------------------------------------------------
-   Sending messages
-   --------------------------------------------------------------------------- */
-function setBusy(b) {
-  busy = b;
-  el.send.setAttribute('aria-label', b ? 'Stop generating' : 'Send message');
-  el.send.title = b ? 'Stop' : 'Send (Enter)';
-  el.sendIcon.innerHTML = b ? '<rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor"/>' : '<path d="M5 12h14M13 6l6 6-6 6"/>';
-}
-function stopGeneration() { if (abortCtrl) abortCtrl.abort(); }
-
-async function sendMessage(textOverride) {
-  if (busy || !profile) return;
-  const text = String(textOverride ?? el.input.value).trim();
-  if (!text) return;
-  const crisis = CRISIS_RE.test(text);
-  if (!settings.apiKey && !crisis) {
-    toast('Add your API key in Settings to start chatting 🌱');
-    openSettings();
-    return;
-  }
-
-  const c = activeConvo() || newConversation();
-  c.messages = c.messages.filter(m => !m.error);
-  const userMsg = { role: 'user', content: text, ts: Date.now() };
-  if (crisis) userMsg.crisis = true;
-  c.messages.push(userMsg);
-  // Safety first: show crisis contacts immediately, even with no API key or network.
-  if (crisis) c.messages.push({ role: 'assistant', card: 'crisis', content: '', ts: Date.now() });
-  if (c.title === 'New chat') c.title = text.length > 42 ? text.slice(0, 40).trim() + '…' : text;
-  c.updated = Date.now();
-  persistConvos();
-  el.input.value = '';
-  autoGrow();
-  renderMessages();
-  renderHistory();
-
-  if (!settings.apiKey) { toast('Add your API key in Settings so Eden can reply 🌱', false, 4000); return; }
-  await generateReply(c);
-}
-
-async function generateReply(c) {
-  const pid = profile.id;
-  const { row, bubble, tools } = messageEl({ role: 'assistant', content: '' });
-  tools.hidden = true;
-  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(settings.name)} is typing"><span></span><span></span><span></span></span>`;
-  el.inner.appendChild(row);
-  scrollToBottom(true);
-
-  setBusy(true);
-  setOrb('thinking');
-  abortCtrl = new AbortController();
-  let acc = '', raf = 0;
-  const paint = () => { raf = 0; bubble.innerHTML = renderMarkdown(acc); bubble.classList.add('cursor'); scrollToBottom(); };
-  const finish = () => { setBusy(false); abortCtrl = null; if (!speaking) setOrb(listening ? 'listening' : 'idle'); };
-
-  try {
-    const reply = await chatCompletion(buildMessages(c), {
-      stream: settings.stream,
-      signal: abortCtrl.signal,
-      onToken: (t) => { acc += t; if (!raf) raf = requestAnimationFrame(paint); },
-    });
-    acc = reply || acc;
-    if (!acc.trim()) acc = "Hmm, I didn't get a reply from the model. Could you try again?";
-  } catch (e) {
-    if (raf) cancelAnimationFrame(raf);
-    if (!profile || profile.id !== pid) { finish(); return; } // person switched — drop quietly
-    if (e.name === 'AbortError') {
-      if (!acc.trim()) { row.remove(); finish(); return; }
-      acc += ' …';
-    } else {
-      row.remove();
-      c.messages.push({ role: 'assistant', content: `⚠️ ${e.message || 'Something went wrong.'}`, ts: Date.now(), error: true });
-      persistConvos();
-      renderMessages();
-      finish();
-      if (convoMode) { setConvoMode(false); toast('Conversation mode paused because of an error', true); }
-      return;
-    }
-  }
-  if (raf) cancelAnimationFrame(raf);
-  if (!profile || profile.id !== pid) { finish(); return; }
-
-  c.messages.push({ role: 'assistant', content: acc, ts: Date.now() });
-  c.updated = Date.now();
-  persistConvos();
-  renderMessages();
-  renderHistory();
-  finish();
-
-  if (settings.autoSpeak || convoMode) speak(acc, () => { if (convoMode) startListening(); });
-
-  const lastUser = [...c.messages].reverse().find(m => m.role === 'user');
-  if (settings.memAuto && lastUser) extractMemories(pid, lastUser.content, acc, !!lastUser.crisis);
-}
-
-function retryLast() {
-  const c = activeConvo();
-  if (!c || busy) return;
-  c.messages = c.messages.filter(m => !m.error);
-  persistConvos();
-  renderMessages();
-  const last = c.messages.filter(m => !m.card).pop();
-  if (last && last.role === 'user') generateReply(c);
-}
-
-/* ---------------------------------------------------------------------------
-   Memory extraction (lightweight extra call after each exchange)
-   --------------------------------------------------------------------------- */
-function normalise(s) { return String(s).toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim(); }
-
-function memoryInstructions() {
-  const base = 'You maintain private long-term memory for ONE person using a support app. From the latest exchange, extract NEW durable facts about the USER worth remembering in future conversations. Write each fact as a short third-person statement. Skip anything already known, small talk, momentary moods and facts about the assistant.';
-  const counsellor = ' Focus on what helps ongoing alcohol-and-other-drug support: goals (e.g. cutting down, abstinence, safer use) and progress, substances of concern in general terms, known triggers and high-risk situations, coping strategies that help, supports (people, services, groups, faith community), faith preferences and practices, strengths, and meaningful dates (e.g. a sobriety date). Examples: "Wants to cut down to two drinks on weekends", "Stress at work is a big trigger", "Finds walking the dog helps with cravings", "Attends a Tuesday SMART Recovery meeting", "Likes to pray the Serenity Prayer".';
-  const friend = ' Focus on name, people and pets in their life, work or study, hobbies, preferences, goals and ongoing situations.';
-  const safety = ' NEVER store details of suicidal thoughts, self-harm, overdose, methods, or other crisis specifics, and never store identifying details about other people\'s crises. At most, store a brief neutral support fact such as "Has found calling Lifeline helpful". Avoid details of illegal activity beyond what is needed for support.';
-  return base + (isCounsellor() ? counsellor : friend) + safety + ' Respond with ONLY a JSON object: {"facts": ["..."]}. Use {"facts": []} if there is nothing new.';
-}
-
-async function extractMemories(pid, userText, assistantText, crisis) {
-  const known = memories.map(m => `- ${m.text}`).join('\n') || '(none yet)';
-  const messages = [
-    { role: 'system', content: memoryInstructions() + (crisis ? ' The latest message involved a possible crisis: only store non-crisis, support-related facts, or nothing.' : '') },
-    { role: 'user', content: `Already known:\n${known}\n\nLatest exchange:\nUser: ${userText}\nAssistant: ${assistantText.slice(0, 1500)}` },
-  ];
-  try {
-    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300 });
-    const match = raw.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
-    if (!match) return;
-    const parsed = JSON.parse(match[0]);
-    const facts = Array.isArray(parsed) ? parsed : (parsed.facts || []);
-    // Write to the person who had the conversation, even if someone else is now active.
-    const sameUser = profile && profile.id === pid;
-    let target = sameUser ? memories : load(pk(pid, 'memories'), []);
-    const existing = new Set(target.map(m => normalise(m.text)));
-    const added = [];
-    for (const f of facts) {
-      if (typeof f !== 'string') continue;
-      const text = f.trim().slice(0, 300);
-      if (text.length < 3 || existing.has(normalise(text))) continue;
-      existing.add(normalise(text));
-      const m = { id: uid(), text, created: Date.now(), source: 'auto' };
-      target.push(m);
-      added.push(m);
-    }
-    if (!added.length) return;
-    if (target.length > 300) target = target.slice(-300);
-    save(pk(pid, 'memories'), target);
-    if (sameUser) {
-      memories = target;
-      el.memCount.textContent = memories.length;
-      if (el.memoriesDlg.open) renderMemories();
-      const summary = added.map(a => a.text).join('; ');
-      toast(`🌱 ${settings.name} will remember: ${summary.length > 120 ? summary.slice(0, 117) + '…' : summary}`, false, 4500);
-    }
-  } catch (e) { /* best-effort */ }
-}
-
-/* ---------------------------------------------------------------------------
-   Memories panel
-   --------------------------------------------------------------------------- */
-function renderMemories() {
-  const list = $('#memList');
-  const q = normalise($('#memSearch').value || '');
-  list.innerHTML = '';
-  const items = memories.filter(m => !q || normalise(m.text).includes(q)).slice().reverse();
-  if (!items.length) {
-    const li = document.createElement('li');
-    li.className = 'mem-empty';
-    li.textContent = memories.length ? 'No memories match your search.'
-      : `🌱 Nothing yet. As you chat, ${settings.name} will remember the important things — goals, what helps, who supports you — or add some yourself above.`;
-    list.appendChild(li);
-  }
-  for (const m of items) {
-    const li = document.createElement('li');
-    li.className = 'mem-item';
-    li.innerHTML = `<span aria-hidden="true">🍃</span><input type="text" maxlength="300" aria-label="Edit memory"><span class="src"></span>
-      <button class="icon-btn" type="button" aria-label="Delete memory" title="Delete">${ICON_TRASH}</button>`;
-    const input = $('input', li);
-    input.value = m.text;
-    $('.src', li).textContent = `${m.source === 'auto' ? 'learnt' : 'added'} ${relTime(m.created)}`;
-    input.addEventListener('change', () => {
-      const v = input.value.trim();
-      if (!v) { removeMemory(m.id); return; }
-      m.text = v; saveMemories(); toast('Memory updated');
-    });
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
-    $('button', li).addEventListener('click', () => removeMemory(m.id));
-    list.appendChild(li);
-  }
-  el.memCount.textContent = memories.length;
-}
-function removeMemory(id) {
-  memories = memories.filter(m => m.id !== id);
-  saveMemories();
-  renderMemories();
-  toast('Memory forgotten');
-}
-$('#memAddForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const input = $('#memAddInput');
-  const v = input.value.trim();
-  if (!v) return;
-  memories.push({ id: uid(), text: v, created: Date.now(), source: 'manual' });
-  saveMemories();
-  input.value = '';
-  renderMemories();
-  input.focus();
-});
-$('#memSearch').addEventListener('input', renderMemories);
-$('#memClearBtn').addEventListener('click', () => {
-  if (!memories.length || !confirm(`Forget all ${memories.length} memories for ${userName()}? This can't be undone.`)) return;
-  memories = [];
-  saveMemories();
-  renderMemories();
-});
-function openMemories() { closeSidebar(); renderMemories(); if (!el.memoriesDlg.open) el.memoriesDlg.showModal(); }
-
-/* ---------------------------------------------------------------------------
-   Settings panel
-   --------------------------------------------------------------------------- */
-let draftTraits = [];
-let settingsThemeBefore = 'system';
-function renderTraitChips() {
-  const box = $('#traitChips');
-  box.innerHTML = '';
-  for (const t of TRAIT_PRESETS) {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'chip'; b.textContent = t;
-    b.setAttribute('aria-pressed', String(draftTraits.includes(t)));
-    b.addEventListener('click', () => {
-      draftTraits = draftTraits.includes(t) ? draftTraits.filter(x => x !== t) : [...draftTraits, t];
-      b.setAttribute('aria-pressed', String(draftTraits.includes(t)));
-    });
-    box.appendChild(b);
-  }
-}
-function syncFaithControls() {
-  const none = $('#setFaith').value === 'none';
-  $$('input[name="faithLevel"]').forEach(r => { r.disabled = none; });
-}
-function openSettings(focusId) {
-  if (!profile) return;
-  closeSidebar();
-  $('#setMode').value = settings.mode;
-  $('#setFaith').value = settings.faith;
-  $$('input[name="faithLevel"]').forEach(r => { r.checked = r.value === settings.faithLevel; });
-  syncFaithControls();
-  $('#setProfileName').value = profile.name;
-  $('#setPin').value = '';
-  $('#setPin').placeholder = profile.pin ? 'PIN set — type a new one to change' : 'No PIN';
-  $('#removePinBtn').hidden = !profile.pin;
-  $('#setSoberStart').value = settings.soberStart || '';
-  $('#setSoberStart').max = localDate();
-  $('#setSoberWhat').value = settings.soberWhat || '';
-  $('#setMoodCheck').checked = settings.moodCheck;
-  $('#setBaseUrl').value = settings.baseUrl;
-  $('#setModel').value = settings.model;
-  $('#setKey').value = settings.apiKey;
-  setKeyVisible(false);
-  $('#setStream').checked = settings.stream;
-  $('#setName').value = settings.name;
-  draftTraits = [...settings.traits];
-  renderTraitChips();
-  $('#setTraitsCustom').value = settings.traitsCustom;
-  $('#setStyle').value = settings.style;
-  $('#setCustom').value = settings.custom;
-  $('#setMemAuto').checked = settings.memAuto;
-  populateVoices();
-  $('#setRate').value = settings.rate; $('#rateVal').textContent = Number(settings.rate).toFixed(1);
-  $('#setPitch').value = settings.pitch; $('#pitchVal').textContent = Number(settings.pitch).toFixed(1);
-  $('#setAutoSpeak').checked = settings.autoSpeak;
-  $('#setTheme').value = settings.theme;
-  $('#dataWho').textContent = profile.name;
-  $('#testResult').textContent = ''; $('#testResult').className = 'test-result';
-  settingsThemeBefore = settings.theme;
-  if (!el.settingsDlg.open) el.settingsDlg.showModal();
-  if (focusId) setTimeout(() => $('#' + focusId).focus(), 60);
-  else if (!settings.apiKey) setTimeout(() => $('#setKey').focus(), 60);
-}
-function readSettingsForm() {
-  const lvl = $$('input[name="faithLevel"]').find(r => r.checked);
-  return Object.assign({}, settings, {
-    mode: $('#setMode').value,
-    faith: $('#setFaith').value,
-    faithLevel: lvl ? lvl.value : 'woven',
-    soberStart: $('#setSoberStart').value || '',
-    soberWhat: $('#setSoberWhat').value.trim(),
-    moodCheck: $('#setMoodCheck').checked,
-    baseUrl: $('#setBaseUrl').value.trim() || DEFAULT_SHARED.baseUrl,
-    model: $('#setModel').value.trim() || DEFAULT_SHARED.model,
-    apiKey: $('#setKey').value.trim(),
-    stream: $('#setStream').checked,
-    name: $('#setName').value.trim() || 'Eden',
-    traits: [...draftTraits],
-    traitsCustom: $('#setTraitsCustom').value.trim(),
-    style: $('#setStyle').value,
-    custom: $('#setCustom').value.trim(),
-    memAuto: $('#setMemAuto').checked,
-    voiceURI: $('#setVoice').value,
-    rate: parseFloat($('#setRate').value) || 1,
-    pitch: parseFloat($('#setPitch').value) || 1,
-    autoSpeak: $('#setAutoSpeak').checked,
-    theme: $('#setTheme').value,
-  });
-}
-function setKeyVisible(show) {
-  $('#setKey').type = show ? 'text' : 'password';
-  const b = $('#toggleKeyBtn');
-  b.textContent = show ? 'Hide' : 'Show';
-  b.setAttribute('aria-pressed', String(show));
-  b.setAttribute('aria-label', show ? 'Hide API key' : 'Show API key');
-}
-function nameTaken(name, exceptId) {
-  return profilesState.list.some(p => p.id !== exceptId && p.name.trim().toLowerCase() === name.trim().toLowerCase());
-}
-$('#settingsSave').addEventListener('click', () => {
-  const newName = $('#setProfileName').value.trim();
-  const pin = $('#setPin').value.trim();
-  if (!newName) { toast('Please enter a name for this person.', true); $('#setProfileName').focus(); return; }
-  if (nameTaken(newName, profile.id)) { toast('Someone else already has that name.', true); $('#setProfileName').focus(); return; }
-  if (pin && !/^\d{4}$/.test(pin)) { toast('The PIN needs to be exactly 4 digits.', true); $('#setPin').focus(); return; }
-  const wasCounsellor = isCounsellor();
-  settings = readSettingsForm();
-  settingsThemeBefore = settings.theme;
-  saveSettings();
-  profile.name = newName;
-  if (pin) profile.pin = pinHash(profile.id, pin);
-  saveProfiles();
-  applyTheme();
-  renderAll();
-  el.settingsDlg.close();
-  toast('Settings saved ✓');
-  if (!wasCounsellor && isCounsellor()) maybeShowDisclaimer();
-});
-$('#settingsCancel').addEventListener('click', () => el.settingsDlg.close());
-el.settingsDlg.addEventListener('close', () => { if (settings.theme !== settingsThemeBefore) { settings.theme = settingsThemeBefore; applyTheme(); } });
-$('#toggleKeyBtn').addEventListener('click', () => setKeyVisible($('#setKey').type === 'password'));
-$('#removePinBtn').addEventListener('click', () => {
-  profile.pin = null; saveProfiles();
-  $('#removePinBtn').hidden = true; $('#setPin').placeholder = 'No PIN';
-  toast('PIN removed');
-});
-$('#setFaith').addEventListener('change', syncFaithControls);
-$('#setRate').addEventListener('input', (e) => { $('#rateVal').textContent = Number(e.target.value).toFixed(1); });
-$('#setPitch').addEventListener('input', (e) => { $('#pitchVal').textContent = Number(e.target.value).toFixed(1); });
-$('#setTheme').addEventListener('change', (e) => { settings.theme = e.target.value; applyTheme(); });
-$('#testConnBtn').addEventListener('click', async () => {
-  const out = $('#testResult');
-  const prev = settings;
-  settings = readSettingsForm();
-  out.className = 'test-result'; out.textContent = 'Testing…';
-  try {
-    if (!settings.apiKey) throw new Error('Enter an API key first.');
-    const r = await chatCompletion([{ role: 'user', content: 'Reply with just the word: ok' }], { stream: false, temperature: 0, max_tokens: 5 });
-    out.className = 'test-result ok'; out.textContent = `✓ Connected to ${settings.model}. Reply: “${r.trim().slice(0, 40)}”`;
-  } catch (e) {
-    out.className = 'test-result bad'; out.textContent = '✗ ' + String(e.message || 'Failed').split('\n')[0];
-  } finally { settings = prev; }
-});
-el.soberCard.addEventListener('click', () => openSettings('setSoberStart'));
-
-/* Export / import / clear (per person) ---------------------------------------- */
-function personaSettings() {
-  const ps = {};
-  for (const [k, v] of Object.entries(settings)) if (!SHARED_KEYS.includes(k)) ps[k] = v;
-  return ps;
-}
-$('#exportBtn').addEventListener('click', () => {
-  const data = {
-    app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
-    settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `eden-${profile.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-backup-${localDate()}.json`;
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  toast(`Backup for ${profile.name} downloaded`);
-});
-$('#importBtn').addEventListener('click', () => $('#importFile').click());
-$('#importFile').addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  e.target.value = '';
-  if (!file) return;
-  try {
-    const data = JSON.parse(await file.text());
-    if (!data || data.app !== 'eden-companion') throw new Error('this is not an Eden backup file.');
-    const nC = Array.isArray(data.conversations) ? data.conversations.length : 0;
-    const nM = Array.isArray(data.memories) ? data.memories.length : 0;
-    const from = data.profileName ? ` (exported from ${data.profileName})` : '';
-    if (!confirm(`Import ${nC} conversations and ${nM} memories${from} into ${profile.name}'s profile? This replaces ${profile.name}'s current chats, memories and settings.`)) return;
-    const ps = Object.assign({}, data.settings || {});
-    SHARED_KEYS.forEach(k => delete ps[k]);
-    delete ps.userName; delete ps.pin;
-    if (!ps.settingsVersion) { ps.settingsVersion = SETTINGS_VERSION; ps.mode = ps.mode || 'counsellor'; }
-    settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, shared);
-    if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_PROFILE_SETTINGS.traits];
-    convos = (data.conversations || []).filter(c => c && c.id && Array.isArray(c.messages));
-    memories = (data.memories || []).filter(m => m && typeof m.text === 'string')
-      .map(m => ({ id: m.id || uid(), text: m.text, created: m.created || Date.now(), source: m.source || 'manual' }));
-    moods = Array.isArray(data.moods) ? data.moods.filter(m => m && m.date) : [];
-    activeId = null;
-    settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); persistConvos();
-    applyTheme();
-    el.settingsDlg.close();
-    newConversation();
-    toast('Import complete ✓');
-  } catch (err) { toast('Import failed: ' + err.message, true, 5000); }
-});
-$('#clearMineBtn').addEventListener('click', () => {
-  if (!confirm(`Clear all of ${profile.name}'s chats, memories, check-ins and settings? Other people's data is not affected. This cannot be undone.`)) return;
-  PK.forEach(w => localStorage.removeItem(pk(profile.id, w)));
-  loadProfileData(profile.id);
-  el.settingsDlg.close();
-  applyTheme();
-  activeId = null;
-  newConversation();
-  toast(`${profile.name}'s data cleared`);
-  maybeShowDisclaimer();
-});
-$('#clearAllBtn').addEventListener('click', () => {
-  if (!confirm('Clear ALL Eden data on this device — every person\'s chats, memories and settings, plus the API key? This cannot be undone.')) return;
-  Object.keys(localStorage).filter(k => k.startsWith('eden.')).forEach(k => localStorage.removeItem(k));
-  location.reload();
-});
-
-/* ---------------------------------------------------------------------------
-   Profile picker ("Who's chatting?")
-   --------------------------------------------------------------------------- */
-let managing = false, pendingPid = null;
-
-function renderPicker() {
-  const list = $('#profileList');
-  list.innerHTML = '';
-  $('#pickerBody').classList.toggle('managing', managing);
-  $('#managePeopleBtn').setAttribute('aria-pressed', String(managing));
-  $('#managePeopleBtn').textContent = managing ? 'Done' : 'Manage people';
-  for (const p of profilesState.list) {
-    const li = document.createElement('li');
-    li.className = 'profile-item';
-    li.innerHTML = `<button class="profile-card" type="button"><span class="avatar lg" aria-hidden="true"></span><span class="pname"></span><span class="pmeta"></span></button>
-      <div class="profile-tools">
-        <button class="icon-btn rename" type="button">${ICON_EDIT}</button>
-        <button class="icon-btn delete" type="button">${ICON_TRASH}</button>
-      </div>`;
-    const av = $('.avatar', li);
-    av.textContent = p.name[0] || '?';
-    av.style.setProperty('--c', avatarColour(p));
-    $('.pname', li).textContent = p.name;
-    $('.pmeta', li).textContent = (p.pin ? '🔒 PIN' : 'No PIN') + (profile && profile.id === p.id ? ' · current' : '');
-    $('.profile-card', li).setAttribute('aria-label', `${p.name}${p.pin ? ', PIN protected' : ''}`);
-    $('.profile-card', li).addEventListener('click', () => pickProfile(p));
-    $('.rename', li).setAttribute('aria-label', `Rename ${p.name}`);
-    $('.delete', li).setAttribute('aria-label', `Delete ${p.name}`);
-    $('.rename', li).addEventListener('click', () => renameProfile(p));
-    $('.delete', li).addEventListener('click', () => deleteProfile(p));
-    list.appendChild(li);
-  }
-}
-function showPicker() {
-  if (busy) stopGeneration();
-  stopSpeaking();
-  if (convoMode) setConvoMode(false);
-  closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg].forEach(d => { if (d.open) d.close(); });
-  managing = false; pendingPid = null;
-  $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
-  renderPicker();
-  if (!el.pickerDlg.open) el.pickerDlg.showModal();
-  const first = $('.profile-card', el.pickerDlg);
-  if (first) first.focus();
-}
-function pickProfile(p) {
-  if (managing) return;
-  $('#addPersonForm').hidden = true;
-  if (p.pin && !(profile && profile.id === p.id)) {
-    pendingPid = p.id;
-    $('#pinLabel').textContent = `${p.name}'s PIN`;
-    $('#pinInput').setAttribute('aria-label', `Enter ${p.name}'s 4-digit PIN`);
-    $('#pinInput').placeholder = `${p.name}'s PIN`;
-    $('#pinInput').value = '';
-    $('#pinError').textContent = '';
-    $('#pinForm').hidden = false;
-    $('#pinInput').focus();
-    return;
-  }
-  enterProfile(p.id);
-}
-$('#pinForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const p = findProfile(pendingPid);
-  if (!p) return;
-  if (pinHash(p.id, $('#pinInput').value.trim()) === p.pin) { $('#pinForm').hidden = true; enterProfile(p.id); }
-  else { $('#pinError').textContent = "That PIN doesn't match. Please try again."; $('#pinInput').value = ''; $('#pinInput').focus(); }
-});
-$('#pinCancel').addEventListener('click', () => { $('#pinForm').hidden = true; $('#pinError').textContent = ''; pendingPid = null; });
-
-function enterProfile(pid) {
-  profile = findProfile(pid);
-  profilesState.lastId = pid;
-  saveProfiles();
-  loadProfileData(pid);
-  applyTheme();
-  el.input.value = '';
-  if (!activeConvo()) { activeId = null; newConversation(); } else renderAll();
-  el.pickerDlg.close();
-  toast(`Hi ${profile.name} 👋`);
-  maybeShowDisclaimer();
-  focusInput();
-}
-el.pickerDlg.addEventListener('cancel', (e) => {
-  e.preventDefault();                  // someone must be chosen…
-  if (profile) el.pickerDlg.close();   // …unless we're just returning to the current person
-});
-
-$('#addPersonBtn').addEventListener('click', () => {
-  $('#pinForm').hidden = true;
-  $('#addPersonForm').hidden = false;
-  $('#addPersonInput').value = '';
-  $('#addPersonInput').focus();
-});
-$('#addPersonCancel').addEventListener('click', () => { $('#addPersonForm').hidden = true; });
-$('#addPersonForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = $('#addPersonInput').value.trim();
-  if (!name) return;
-  if (nameTaken(name)) { $('#pinError').textContent = 'Someone already has that name.'; return; }
-  profilesState.list.push({ id: uid(), name, pin: null, created: Date.now() });
-  saveProfiles();
-  $('#addPersonForm').hidden = true;
-  $('#pinError').textContent = '';
-  renderPicker();
-  toast(`Added ${name}`);
-});
-$('#managePeopleBtn').addEventListener('click', () => { managing = !managing; $('#pinForm').hidden = true; renderPicker(); });
-
-function checkPinFor(p, action) {
-  if (!p.pin) return true;
-  const entered = prompt(`Enter ${p.name}'s PIN to ${action}:`);
-  if (entered === null) return false;
-  if (pinHash(p.id, entered.trim()) !== p.pin) { toast("That PIN doesn't match.", true); return false; }
-  return true;
-}
-function renameProfile(p) {
-  if (!checkPinFor(p, 'rename them')) return;
-  const name = (prompt('New name:', p.name) || '').trim();
-  if (!name || name === p.name) return;
-  if (nameTaken(name, p.id)) { toast('Someone already has that name.', true); return; }
-  p.name = name;
-  saveProfiles();
-  renderPicker();
-  if (profile && profile.id === p.id) renderAll();
-}
-function deleteProfile(p) {
-  if (profilesState.list.length <= 1) { toast('You need at least one person.', true); return; }
-  if (!checkPinFor(p, 'delete them')) return;
-  if (!confirm(`Delete ${p.name} and all of their chats, memories and settings? This cannot be undone.`)) return;
-  PK.forEach(w => localStorage.removeItem(pk(p.id, w)));
-  profilesState.list = profilesState.list.filter(x => x.id !== p.id);
-  if (profilesState.lastId === p.id) profilesState.lastId = profilesState.list[0].id;
-  if (profile && profile.id === p.id) { profile = null; el.inner.innerHTML = ''; }
-  saveProfiles();
-  renderPicker();
-  toast(`${p.name} removed`);
-}
-el.switchBtn.addEventListener('click', showPicker);
-$('#sideSwitchBtn').addEventListener('click', showPicker);
-
-/* ---------------------------------------------------------------------------
-   Help panel & first-use disclaimer
-   --------------------------------------------------------------------------- */
-function renderHelpList() {
-  const list = $('#helpList');
-  list.innerHTML = '';
-  for (const c of HELP_CONTACTS) {
-    const li = document.createElement('li');
-    li.className = 'help-item' + (c.urgent ? ' urgent' : '');
-    li.innerHTML = `<div class="hi-text"><div class="hi-name"></div><div class="hi-note"></div></div><a class="btn btn-sm call"></a>`;
-    $('.hi-name', li).textContent = c.name;
-    $('.hi-note', li).textContent = c.note;
-    const a = $('.call', li);
-    a.href = `tel:${c.tel}`;
-    a.textContent = `📞 ${c.num}`;
-    a.setAttribute('aria-label', `Call ${c.name} on ${c.num}`);
-    if (c.urgent) a.classList.add('btn-danger');
-    list.appendChild(li);
-  }
-}
-function openHelp() { closeSidebar(); if (!el.helpDlg.open) el.helpDlg.showModal(); }
-$('#helpBtn').addEventListener('click', openHelp);
-
-function maybeShowDisclaimer() {
-  if (profile && isCounsellor() && !settings.disclaimerAck && !el.disclaimerDlg.open) el.disclaimerDlg.showModal();
-}
-$('#discOkBtn').addEventListener('click', () => {
-  settings.disclaimerAck = true;
-  saveSettings();
-  el.disclaimerDlg.close();
-  focusInput();
-});
-$('#discHelpBtn').addEventListener('click', openHelp);
-el.disclaimerDlg.addEventListener('cancel', (e) => e.preventDefault()); // needs an explicit "I understand"
-
-/* ---------------------------------------------------------------------------
-   Voice: text-to-speech (speechSynthesis)
-   --------------------------------------------------------------------------- */
-const tts = ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) ? window.speechSynthesis : null;
-let speaking = false;
-function getVoices() { try { return tts ? tts.getVoices() : []; } catch (e) { return []; } }
-function populateVoices() {
-  const sel = $('#setVoice');
-  const voices = getVoices();
-  sel.innerHTML = '<option value="">Default voice (Australian English if available)</option>';
-  const score = v => (/^en[-_]AU$/i.test(v.lang) ? 0 : /^en/i.test(v.lang) ? 1 : 2);
-  for (const v of voices.slice().sort((a, b) => score(a) - score(b) || a.name.localeCompare(b.name))) {
-    const o = document.createElement('option');
-    o.value = v.voiceURI;
-    o.textContent = `${v.name} (${v.lang})`;
-    sel.appendChild(o);
-  }
-  sel.value = settings.voiceURI && voices.some(v => v.voiceURI === settings.voiceURI) ? settings.voiceURI : '';
-  sel.disabled = !tts;
-}
-if (tts && typeof tts.addEventListener === 'function') {
-  tts.addEventListener('voiceschanged', () => { if (el.settingsDlg.open) populateVoices(); });
-}
-function pickVoice() {
-  const voices = getVoices();
-  return voices.find(v => v.voiceURI === settings.voiceURI)
-    || voices.find(v => /^en[-_]AU$/i.test(v.lang))
-    || voices.find(v => /^en/i.test(v.lang)) || null;
-}
-/** Speak text in sentence chunks (avoids Chrome's ~15 s cut-off). */
-function speak(md, onDone) {
-  if (!tts) { if (onDone) onDone(); return; }
-  stopSpeaking();
-  const text = toSpeakable(md);
-  if (!text) { if (onDone) onDone(); return; }
-  const chunks = text.match(/[^.!?…]+[.!?…]+["')\]]*|[^.!?…]+$/g) || [text];
-  const voice = pickVoice();
-  let i = 0;
-  speaking = true;
-  setOrb('speaking');
-  const next = () => {
-    if (!speaking) return;
-    if (i >= chunks.length) { speaking = false; setOrb(busy ? 'thinking' : 'idle'); if (onDone) onDone(); return; }
-    const u = new SpeechSynthesisUtterance(chunks[i++].trim());
-    if (voice) u.voice = voice;
-    u.lang = voice ? voice.lang : 'en-AU';
-    u.rate = settings.rate; u.pitch = settings.pitch;
-    u.onend = next;
-    u.onerror = (e) => { if (e.error !== 'interrupted' && e.error !== 'canceled') next(); };
-    tts.speak(u);
-  };
-  next();
-}
-function stopSpeaking() {
-  if (!tts) return;
-  const was = speaking;
-  speaking = false;
-  try { tts.cancel(); } catch (e) { /* ignore */ }
-  if (was && !busy) setOrb(listening ? 'listening' : 'idle');
-}
-$('#testVoiceBtn').addEventListener('click', () => {
-  if (!tts) { toast('Speech isn’t supported in this browser', true); return; }
-  const prev = settings;
-  settings = readSettingsForm();
-  speak(`G'day ${userName()}! I'm ${settings.name}. This is how I sound.`);
-  settings = prev;
-});
-el.autoSpeakBtn.addEventListener('click', () => {
-  settings.autoSpeak = !settings.autoSpeak;
-  saveSettings();
-  el.autoSpeakBtn.setAttribute('aria-pressed', String(settings.autoSpeak));
-  if (!settings.autoSpeak) stopSpeaking();
-  toast(settings.autoSpeak ? (tts ? 'Replies will be read aloud 🔊' : 'Speech isn’t supported in this browser') : 'Auto-speak off');
-});
-
-/* ---------------------------------------------------------------------------
-   Voice: speech recognition + hands-free conversation mode
-   --------------------------------------------------------------------------- */
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
-let recog = null, listening = false, convoMode = false, finalText = '';
-function initRecognition() {
-  if (!SR || recog) return recog;
-  recog = new SR();
-  recog.lang = 'en-AU';
-  recog.interimResults = true;
-  recog.continuous = false;
-  recog.maxAlternatives = 1;
-  recog.onstart = () => {
-    listening = true; finalText = '';
-    el.mic.classList.add('listening'); el.mic.setAttribute('aria-pressed', 'true');
-    setOrb('listening');
-  };
-  recog.onresult = (e) => {
-    let interim = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      const r = e.results[i];
-      if (r.isFinal) finalText += r[0].transcript; else interim += r[0].transcript;
-    }
-    el.input.value = (finalText + interim).trim();
-    autoGrow();
-  };
-  recog.onerror = (e) => {
-    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-      toast('Microphone access was blocked. Allow it in your browser to talk out loud.', true, 5000);
-      if (convoMode) setConvoMode(false);
-    } else if (e.error !== 'no-speech' && e.error !== 'aborted') {
-      toast(`Voice input problem: ${e.error}`, true);
-    }
-  };
-  recog.onend = () => {
-    listening = false;
-    el.mic.classList.remove('listening'); el.mic.setAttribute('aria-pressed', 'false');
-    if (!busy && !speaking) setOrb('idle');
-    const said = finalText.trim();
-    if (said) sendMessage(said);
-    else if (convoMode && !busy && !speaking) {
-      setTimeout(() => { if (convoMode && !listening && !busy && !speaking) startListening(); }, 400);
-    }
-  };
-  return recog;
-}
-function startListening() {
-  if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (listening || busy) return;
-  stopSpeaking();
-  try { initRecognition().start(); } catch (e) { /* already started */ }
-}
-function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
-el.mic.addEventListener('click', () => {
-  if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey) { toast('Add your API key in Settings first 🌱'); openSettings(); return; }
-  if (listening) stopListening(); else startListening();
-});
-function setConvoMode(on) {
-  if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey) { toast('Add your API key in Settings first 🌱'); openSettings(); return; }
-  convoMode = on;
-  el.convoBtn.setAttribute('aria-pressed', String(on));
-  el.convoBar.hidden = !on;
-  if (on) {
-    el.convoBarText.textContent = tts ? 'Conversation mode is on — just talk, and I’ll answer out loud.' : 'Conversation mode is on (spoken replies aren’t available in this browser).';
-    startListening();
-  } else {
-    if (recog && listening) { try { recog.abort(); } catch (e) { /* ignore */ } }
-    stopSpeaking();
-  }
-}
-el.convoBtn.addEventListener('click', () => setConvoMode(!convoMode));
-el.convoStop.addEventListener('click', () => setConvoMode(false));
-
-/* ---------------------------------------------------------------------------
-   Composer & global UI wiring
-   --------------------------------------------------------------------------- */
-function autoGrow() {
-  el.input.style.height = 'auto';
-  el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
-}
-function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg].some(d => d.open);
-  if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
-}
-el.input.addEventListener('input', autoGrow);
-el.input.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); sendMessage(); }
-});
-el.composer.addEventListener('submit', (e) => {
-  e.preventDefault();
-  if (busy) stopGeneration(); else sendMessage();
-});
-el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); closeSidebar(); });
-$$('[data-open]').forEach(b => b.addEventListener('click', () => {
-  if (b.dataset.open === 'settings') openSettings(); else openMemories();
-}));
-
-function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
-function closeSidebar() {
-  if (!el.app.classList.contains('sidebar-open')) return;
-  el.app.classList.remove('sidebar-open');
-  el.menuBtn.setAttribute('aria-expanded', 'false');
-}
-el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-open') ? closeSidebar() : openSidebar());
-el.scrim.addEventListener('click', closeSidebar);
-
-document.addEventListener('keydown', (e) => {
-  const anyDialog = $$('dialog').some(d => d.open);
-  if (e.key === 'Escape' && !anyDialog) {
-    if (el.app.classList.contains('sidebar-open')) { closeSidebar(); el.menuBtn.focus(); }
-    else if (speaking) stopSpeaking();
-    else if (busy) stopGeneration();
-  }
-  if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
-});
-[el.settingsDlg, el.memoriesDlg, el.helpDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
-
-(function voiceSupportNote() {
-  const notes = [];
-  if (!tts) notes.push('Spoken replies aren’t supported in this browser.');
-  if (!SR) notes.push('Voice input isn’t supported in this browser (Chrome, Edge and Safari support it).');
-  $('#voiceSupport').textContent = notes.join(' ') || 'Voice input and spoken replies are available in this browser.';
-  if (!SR) { el.mic.title = 'Voice input isn’t supported in this browser'; el.convoBtn.title = 'Hands-free mode isn’t supported in this browser'; }
+/* Apply BRAND to text, title and meta tags. */
+(function applyBrand() {
+  const title = `${BRAND.name} · ${BRAND.tagline}`;
+  document.title = title;
+  const setMeta = (sel, val) => { const m = document.querySelector(sel); if (m) m.setAttribute('content', val); };
+  setMeta('meta[property="og:title"]', title);
+  setMeta('meta[name="twitter:title"]', title);
+  setMeta('meta[property="og:site_name"]', BRAND.name);
+  setMeta('meta[name="description"]', `${BRAND.name} is a faith-sensitive AI support companion for people affected by alcohol and other drugs — designed to support Australian rehabs, AOD services and counsellors between sessions.`);
+  document.querySelectorAll('[data-brand]').forEach(e => { e.textContent = BRAND.name; });
+  document.querySelectorAll('[data-tagline]').forEach(e => { e.textContent = BRAND.tagline; });
+  document.querySelectorAll('[data-copyright]').forEach(e => { e.textContent = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`; });
 })();
 
-/* ---------------------------------------------------------------------------
-   Boot: migrate → pick a person
-   --------------------------------------------------------------------------- */
-migrateStorage();
-renderHelpList();
-(function preTheme() {
-  // Use the last person's theme behind the picker without loading any of their data.
-  const last = load(pk(profilesState.lastId, 'settings'), {}) || {};
-  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, shared);
-  applyTheme();
+/* Returning users: if this browser already has app data, offer a quick way back in. */
+(function welcomeBack() {
+  let returning = false;
+  try {
+    const profiles = JSON.parse(localStorage.getItem('eden.profiles.v1') || 'null');
+    returning = !!(profiles && Array.isArray(profiles.list) && profiles.list.length) || localStorage.getItem('eden.settings.v1') !== null;
+  } catch (e) { returning = false; }
+  if (returning) document.getElementById('welcomeBack').classList.add('show');
 })();
-showPicker();
 </script>
 </body>
 </html>
