@@ -409,6 +409,33 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .help-btn:hover { filter: brightness(.97); }
 
+
+/* Onboarding + About */
+#onboardingDlg, #aboutDlg { width: min(440px, calc(100vw - 24px)); }
+.onboard-body, .about-body { padding: 26px 22px 18px; text-align: center; }
+.onboard-body h2, .about-body h2 { margin: 12px 0 8px; font-size: 1.35rem; }
+.onboard-body > p, .about-body > p { margin: 0 0 12px; color: var(--muted); line-height: 1.45; }
+.onboard-body .lead { color: var(--text); font-size: 1.05rem; font-weight: 550; }
+.onboard-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+.onboard-actions .btn { width: 100%; justify-content: center; }
+.about-body { text-align: left; }
+.about-body ul { margin: 8px 0 14px; padding-left: 1.15em; color: var(--text); }
+.about-body li { margin: 6px 0; line-height: 1.4; }
+.about-body .about-foot { margin-top: 12px; text-align: center; }
+.picker-guide { margin: 0 0 14px !important; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border)); color: var(--text); font-size: .9rem; line-height: 1.4; text-align: left; }
+.picker-guide strong { font-weight: 700; }
+.settings-tabs { display: flex; gap: 4px; padding: 8px 14px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.settings-tabs [role="tab"] {
+  flex: 1; min-width: 0; border: 0; background: transparent; color: var(--muted); font-weight: 650;
+  padding: 10px 8px; border-radius: 10px 10px 0 0; font-size: .88rem; cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.settings-tabs [role="tab"][aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent-soft); }
+.settings-tabs [role="tab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.settings-panel[hidden] { display: none !important; }
+.conn-hint { margin: 10px 0 0; font-size: .85rem; color: var(--muted); text-align: center; }
+.conn-hint button { color: var(--accent); background: none; border: 0; font: inherit; font-weight: 650; text-decoration: underline; cursor: pointer; padding: 0; }
+
 /* Profile picker */
 #pickerDlg { width: min(720px, calc(100vw - 24px)); }
 .picker-body { padding: 26px 22px 22px; text-align: center; overflow-y: auto; }
@@ -629,15 +656,20 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
       </button>
-      <button class="btn btn-ghost" type="button" data-open="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
-        Settings
+      <button class="btn btn-ghost" type="button" data-open="prefs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
+        Preferences
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="connection">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        Your AI key
       </button>
       <button class="btn btn-ghost" type="button" id="sideSwitchBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Switch person
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+        Switch profile
       </button>
-      <p class="side-copy"><a href="../">About <span data-brand></span></a><br><span data-copyright></span></p>
+      <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
+      <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
     </div>
   </aside>
   <div class="scrim" id="scrim" aria-hidden="true"></div>
@@ -660,7 +692,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span>Get help<span class="htext-long"> now</span></span>
         </button>
-        <button class="switch-btn" id="switchBtn" type="button" title="Switch person">
+        <button class="switch-btn" id="switchBtn" type="button" title="Switch profile">
           <span class="avatar" id="switchAvatar" aria-hidden="true">D</span><span class="sname" id="switchName">Dwayne</span>
         </button>
         <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
@@ -686,8 +718,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>🌱 <strong>Welcome!</strong> To start chatting, add your API key in Settings. It's stored only in this browser.</p>
-      <button class="btn btn-primary btn-sm" type="button" data-open="settings">Add API key</button>
+      <p>🌱 <strong>Ready when you are.</strong> Add your own AI key to chat with <span data-companion></span> for real — or try the demo first. Keys stay in this browser only.</p>
+      <button class="btn btn-primary btn-sm" type="button" data-open="connection">Add your AI key</button>
     </div>
 
     <section class="messages" id="messages" aria-label="Conversation">
@@ -719,9 +751,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="pickerDlg" aria-labelledby="pickerTitle">
   <div class="picker-body" id="pickerBody">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
-    <h2 id="pickerTitle">Who's chatting?</h2>
-    <p>Each person has their own private chats, memories and settings.</p>
-    <ul class="profiles" id="profileList" aria-label="People"></ul>
+    <h2 id="pickerTitle">Chat with <span data-companion></span></h2>
+    <p class="picker-guide"><strong><span data-companion></span> is your private AI companion</strong> — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
+    <ul class="profiles" id="profileList" aria-label="Your profiles"></ul>
     <form class="inline-form" id="pinForm" hidden>
       <label for="pinInput" id="pinLabel" class="sr-only">PIN</label>
       <input id="pinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" placeholder="PIN">
@@ -730,20 +762,64 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </form>
     <div class="pin-error" id="pinError" role="alert"></div>
     <form class="inline-form" id="addPersonForm" hidden>
-      <label for="addPersonInput" class="sr-only">New person's name</label>
-      <input id="addPersonInput" type="text" maxlength="30" placeholder="Name">
+      <label for="addPersonInput" class="sr-only">Your name for this profile</label>
+      <input id="addPersonInput" type="text" maxlength="30" placeholder="Your name">
       <button class="btn btn-primary" type="submit">Add</button>
       <button class="btn" type="button" id="addPersonCancel">Cancel</button>
     </form>
     <div class="picker-actions">
-      <button class="btn" type="button" id="addPersonBtn">+ Add person</button>
-      <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage people</button>
+      <button class="btn" type="button" id="addPersonBtn">+ Add your profile</button>
+      <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage profiles</button>
     </div>
     <div class="picker-demo">
       <button class="btn btn-primary" type="button" id="tryDemoBtn">✨ Try the demo <span class="help" style="color:inherit;opacity:.85">— no API key needed</span></button>
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
-    <p class="privacy-note"><a href="../" id="aboutLink">About <span data-brand></span></a> · <span data-copyright></span></p>
+    <p class="privacy-note">
+      <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand></span></button>
+      · <a href="../" id="aboutLink">Landing page</a> · <span data-copyright></span>
+    </p>
+  </div>
+</dialog>
+
+<!-- ============================ Soft onboarding ============================ -->
+<dialog id="onboardingDlg" aria-labelledby="onboardTitle">
+  <div class="onboard-body">
+    <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
+    <h2 id="onboardTitle">Welcome to <span data-brand></span></h2>
+    <p class="lead">Want a private space to talk through cravings and hard days between sessions?</p>
+    <p><span data-companion></span> is an <strong>AI companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
+    <div class="onboard-actions">
+      <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
+      <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
+      <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand></span></button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ============================ About panel ============================ -->
+<dialog id="aboutDlg" aria-labelledby="aboutTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="aboutTitle">About <span data-brand></span></h2>
+    <button class="icon-btn" value="close" aria-label="Close about">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body about-body">
+    <p><strong><span data-brand></span></strong> is a between-sessions support companion from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI companion, not a counsellor, doctor, or person in rehab.</p>
+    <ul>
+      <li><strong>Not a crisis service.</strong> If you are in danger, call <strong>000</strong>. Use <strong>Get help now</strong> in the app for Australian helplines.</li>
+      <li><strong>Between sessions.</strong> Built for cravings, hard days, and gentle check-ins — alongside your real-world support, not instead of it.</li>
+      <li><strong>Faith optional.</strong> Choose how much (if any) faith content you want in Preferences.</li>
+      <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Messages go to your chosen AI provider only when you use a real key.</li>
+      <li><strong>Demo vs your key.</strong> Try the demo with pre-written examples (nothing sent). For live replies, add your own API key under Connection.</li>
+    </ul>
+    <div class="about-foot">
+      <a href="../">Full landing page</a> · <span data-copyright></span>
+    </div>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn btn-primary" type="button" id="aboutCloseBtn">Got it</button>
   </div>
 </dialog>
 
@@ -791,7 +867,43 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
+  <div class="settings-tabs" role="tablist" aria-label="Settings sections">
+    <button type="button" role="tab" id="tabConnection" data-settings-tab="connection" aria-controls="panelConnection" aria-selected="true">Your AI key</button>
+    <button type="button" role="tab" id="tabPrefs" data-settings-tab="prefs" aria-controls="panelPrefs" aria-selected="false">Preferences</button>
+    <button type="button" role="tab" id="tabMore" data-settings-tab="more" aria-controls="panelMore" aria-selected="false">More</button>
+  </div>
   <div class="dlg-body">
+    <div class="settings-panel" id="panelConnection" data-tab-panel="connection" role="tabpanel" aria-labelledby="tabConnection">
+
+    <fieldset>
+      <legend>Connection <span class="help" style="font-weight:500">(shared on this device)</span></legend>
+        <p class="help" style="margin:6px 0 0">Only needed for live AI replies. Demo mode works without a key. Your key stays in this browser.</p>
+      <div class="field">
+        <label for="setBaseUrl">Provider base URL</label>
+        <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
+        <span class="help" id="baseUrlHelp">Any OpenAI-compatible Chat Completions endpoint (OpenAI, OpenRouter, Groq, xAI, a local server…).</span>
+      </div>
+      <div class="field">
+        <label for="setModel">Model</label>
+        <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="setKey">API key</label>
+        <div class="key-wrap">
+          <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp">
+          <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key">Show</button>
+        </div>
+        <span class="help" id="keyHelp">Stored only in this browser's localStorage and sent only to the base URL above.</span>
+      </div>
+      <div class="check"><input type="checkbox" id="setStream"><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn btn-sm" type="button" id="testConnBtn">Test connection</button>
+      </div>
+      <div class="test-result" id="testResult" role="status" aria-live="polite"></div>
+    </fieldset>
+      <p class="conn-hint">Faith, mode and clean time live under <button type="button" id="gotoPrefsBtn">Preferences</button>.</p>
+    </div>
+    <div class="settings-panel" id="panelPrefs" data-tab-panel="prefs" role="tabpanel" aria-labelledby="tabPrefs" hidden>
     <fieldset>
       <legend>Mode &amp; faith</legend>
       <div class="field">
@@ -827,7 +939,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
 
     <fieldset>
-      <legend>This person</legend>
+      <legend>Your profile</legend>
       <div class="field">
         <label for="setProfileName">Your name (<span data-companion></span> will call you this)</label>
         <input id="setProfileName" type="text" maxlength="30">
@@ -861,32 +973,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="check"><input type="checkbox" id="setGratCheck"><label for="setGratCheck">Show morning gratitude on new chats</label></div>
     </fieldset>
 
-    <fieldset>
-      <legend>Connection (shared on this device)</legend>
-      <div class="field">
-        <label for="setBaseUrl">Provider base URL</label>
-        <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
-        <span class="help" id="baseUrlHelp">Any OpenAI-compatible Chat Completions endpoint (OpenAI, OpenRouter, Groq, xAI, a local server…).</span>
-      </div>
-      <div class="field">
-        <label for="setModel">Model</label>
-        <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false">
-      </div>
-      <div class="field">
-        <label for="setKey">API key</label>
-        <div class="key-wrap">
-          <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp">
-          <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key">Show</button>
-        </div>
-        <span class="help" id="keyHelp">Stored only in this browser's localStorage and sent only to the base URL above.</span>
-      </div>
-      <div class="check"><input type="checkbox" id="setStream"><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn btn-sm" type="button" id="testConnBtn">Test connection</button>
-      </div>
-      <div class="test-result" id="testResult" role="status" aria-live="polite"></div>
-    </fieldset>
-
+    </div>
+    <div class="settings-panel" id="panelMore" data-tab-panel="more" role="tabpanel" aria-labelledby="tabMore" hidden>
     <fieldset>
       <legend>Personality</legend>
       <div class="field">
@@ -960,6 +1048,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <button class="btn btn-sm btn-danger" type="button" id="clearAllBtn">Clear all data on this device</button>
       </div>
     </fieldset>
+    </div>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="settingsCancel">Cancel</button>
@@ -1204,7 +1293,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.bible         per-person SOAP Bible study { entries, planDay, completed }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v4';
+const EDEN_BUILD = 'hopewick-v5';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -1212,7 +1301,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
 /* ---------------------------------------------------------------------------
    Storage helpers
    --------------------------------------------------------------------------- */
-const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1' };
+const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
 const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
@@ -1443,7 +1532,7 @@ const el = {
   autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   toasts: $('#toasts'),
@@ -3392,9 +3481,35 @@ function syncFaithControls() {
   const none = $('#setFaith').value === 'none';
   $$('input[name="faithLevel"]').forEach(r => { r.disabled = none; });
 }
-function openSettings(focusId) {
+const SETTINGS_TITLES = { connection: 'Your AI key', prefs: 'Preferences', more: 'More settings' };
+const FOCUS_TAB = {
+  setKey: 'connection', setBaseUrl: 'connection', setModel: 'connection', setStream: 'connection',
+  setMode: 'prefs', setFaith: 'prefs', setProfileName: 'prefs', setPin: 'prefs',
+  setSoberStart: 'prefs', setSoberWhat: 'prefs', setSoberWhy: 'prefs',
+  setName: 'more', setStyle: 'more', setTheme: 'more', setVoice: 'more',
+};
+function setSettingsTab(tab) {
+  const t = SETTINGS_TITLES[tab] ? tab : 'prefs';
+  $$('.settings-tabs [role="tab"]').forEach(btn => {
+    const on = btn.dataset.settingsTab === t;
+    btn.setAttribute('aria-selected', String(on));
+  });
+  $$('.settings-panel').forEach(p => { p.hidden = p.dataset.tabPanel !== t; });
+  $('#settingsTitle').textContent = SETTINGS_TITLES[t] || 'Settings';
+  const panel = $(`#panel${t[0].toUpperCase()}${t.slice(1)}`) || $(`[data-tab-panel="${t}"]`);
+  if (panel) panel.scrollTop = 0;
+  const body = $('#settingsDlg .dlg-body');
+  if (body) body.scrollTop = 0;
+}
+$$('.settings-tabs [role="tab"]').forEach(btn => {
+  btn.addEventListener('click', () => setSettingsTab(btn.dataset.settingsTab));
+});
+const gotoPrefs = $('#gotoPrefsBtn');
+if (gotoPrefs) gotoPrefs.addEventListener('click', () => setSettingsTab('prefs'));
+
+function openSettings(focusId, tabHint) {
   if (!profile) return;
-  if (isDemo) { toast('Settings are turned off in the demo — choose a person to set things up for real.', false, 4000); return; }
+  if (isDemo) { toast('Settings are turned off in the demo — choose a profile to set things up for real.', false, 4000); return; }
   closeSidebar();
   $('#setMode').value = settings.mode;
   $('#setFaith').value = settings.faith;
@@ -3430,9 +3545,11 @@ function openSettings(focusId) {
   $('#dataWho').textContent = profile.name;
   $('#testResult').textContent = ''; $('#testResult').className = 'test-result';
   settingsThemeBefore = settings.theme;
+  let tab = tabHint || (focusId && FOCUS_TAB[focusId]) || 'prefs';
+  setSettingsTab(tab);
   if (!el.settingsDlg.open) el.settingsDlg.showModal();
-  if (focusId) setTimeout(() => $('#' + focusId).focus(), 60);
-  else if (!settings.apiKey) setTimeout(() => $('#setKey').focus(), 60);
+  if (focusId) setTimeout(() => { const n = $('#' + focusId); if (n) n.focus(); }, 60);
+  else if (tab === 'connection') setTimeout(() => $('#setKey').focus(), 60);
 }
 function readSettingsForm() {
   const lvl = $$('input[name="faithLevel"]').find(r => r.checked);
@@ -3475,8 +3592,8 @@ function nameTaken(name, exceptId) {
 $('#settingsSave').addEventListener('click', () => {
   const newName = $('#setProfileName').value.trim();
   const pin = $('#setPin').value.trim();
-  if (!newName) { toast('Please enter a name for this person.', true); $('#setProfileName').focus(); return; }
-  if (nameTaken(newName, profile.id)) { toast('Someone else already has that name.', true); $('#setProfileName').focus(); return; }
+  if (!newName) { toast('Please enter a name for your profile.', true); $('#setProfileName').focus(); return; }
+  if (nameTaken(newName, profile.id)) { toast('Another profile already has that name.', true); $('#setProfileName').focus(); return; }
   if (pin && !/^\d{4}$/.test(pin)) { toast('The PIN needs to be exactly 4 digits.', true); $('#setPin').focus(); return; }
   const wasCounsellor = isCounsellor();
   settings = readSettingsForm();
@@ -3591,7 +3708,7 @@ $('#clearAllBtn').addEventListener('click', () => {
 });
 
 /* ---------------------------------------------------------------------------
-   Profile picker ("Who's chatting?")
+   Profile picker ("Chat with Hope")
    --------------------------------------------------------------------------- */
 let managing = false, pendingPid = null;
 
@@ -3600,7 +3717,7 @@ function renderPicker() {
   list.innerHTML = '';
   $('#pickerBody').classList.toggle('managing', managing);
   $('#managePeopleBtn').setAttribute('aria-pressed', String(managing));
-  $('#managePeopleBtn').textContent = managing ? 'Done' : 'Manage people';
+  $('#managePeopleBtn').textContent = managing ? 'Done' : 'Manage profiles';
   for (const p of profilesState.list) {
     const li = document.createElement('li');
     li.className = 'profile-item';
@@ -3629,7 +3746,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].forEach(d => { if (d.open) d.close(); });
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
@@ -3691,13 +3808,14 @@ $('#addPersonForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const name = $('#addPersonInput').value.trim();
   if (!name) return;
-  if (nameTaken(name)) { $('#pinError').textContent = 'Someone already has that name.'; return; }
-  profilesState.list.push({ id: uid(), name, pin: null, created: Date.now() });
+  if (nameTaken(name)) { $('#pinError').textContent = 'A profile already has that name.'; return; }
+  const id = uid();
+  profilesState.list.push({ id, name, pin: null, created: Date.now() });
   saveProfiles();
   $('#addPersonForm').hidden = true;
   $('#pinError').textContent = '';
-  renderPicker();
-  toast(`Added ${name}`);
+  toast(`Profile ready for ${name}`);
+  enterProfile(id);
 });
 $('#managePeopleBtn').addEventListener('click', () => { managing = !managing; $('#pinForm').hidden = true; renderPicker(); });
 
@@ -3712,14 +3830,14 @@ function renameProfile(p) {
   if (!checkPinFor(p, 'rename them')) return;
   const name = (prompt('New name:', p.name) || '').trim();
   if (!name || name === p.name) return;
-  if (nameTaken(name, p.id)) { toast('Someone already has that name.', true); return; }
+  if (nameTaken(name, p.id)) { toast('A profile already has that name.', true); return; }
   p.name = name;
   saveProfiles();
   renderPicker();
   if (profile && profile.id === p.id) renderAll();
 }
 function deleteProfile(p) {
-  if (profilesState.list.length <= 1) { toast('You need at least one person.', true); return; }
+  if (profilesState.list.length <= 1) { toast('You need at least one profile.', true); return; }
   if (!checkPinFor(p, 'delete them')) return;
   if (!confirm(`Delete ${p.name} and all of their chats, memories and settings? This cannot be undone.`)) return;
   PK.forEach(w => localStorage.removeItem(pk(p.id, w)));
@@ -3898,12 +4016,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { toast('Add your API key in Settings first 🌱'); openSettings(); return; }
+  if (!settings.apiKey && !isDemo) { toast(`Add your AI key to chat with ${settings.name || BRAND.companion} 🌱`); openSettings('setKey', 'connection'); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { toast('Add your API key in Settings first 🌱'); openSettings(); return; }
+  if (on && !settings.apiKey && !isDemo) { toast(`Add your AI key to chat with ${settings.name || BRAND.companion} 🌱`); openSettings('setKey', 'connection'); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -3941,6 +4059,8 @@ el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpe
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
+  else if (o === 'connection') openSettings('setKey', 'connection');
+  else if (o === 'prefs') openSettings(null, 'prefs');
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
   else if (o === 'steps') openSteps();
@@ -4022,6 +4142,7 @@ function applyBrand() {
   $$('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.companion); });
   $$('[data-copyright]').forEach(e => { e.textContent = COPYRIGHT; });
+  $$('[data-company]').forEach(e => { e.textContent = BRAND.company; });
 }
 
 /* ---------------------------------------------------------------------------
@@ -4267,18 +4388,61 @@ async function playScenario(turns, fresh) {
 }
 
 /* ---------------------------------------------------------------------------
-   Boot: migrate → pick a person
+   About panel + soft onboarding
+   --------------------------------------------------------------------------- */
+function openAbout() {
+  if (!el.aboutDlg.open) el.aboutDlg.showModal();
+}
+function closeAbout() { if (el.aboutDlg.open) el.aboutDlg.close(); }
+$('#aboutCloseBtn').addEventListener('click', closeAbout);
+$('#pickerAboutBtn').addEventListener('click', openAbout);
+$('#sideAboutBtn').addEventListener('click', () => { closeSidebar(); openAbout(); });
+$('#onboardAboutBtn').addEventListener('click', openAbout);
+
+function onboardingSeen() {
+  const o = load(K.onboarding, null);
+  return !!(o && o.seen);
+}
+function markOnboardingSeen(extra) {
+  save(K.onboarding, Object.assign({ seen: true, at: Date.now() }, extra || {}));
+}
+function finishOnboarding(extra) {
+  markOnboardingSeen(extra);
+  if (el.onboardingDlg.open) el.onboardingDlg.close();
+  showPicker();
+}
+$('#onboardYesBtn').addEventListener('click', () => finishOnboarding({ continued: true }));
+$('#onboardLaterBtn').addEventListener('click', () => finishOnboarding({ continued: false }));
+el.onboardingDlg.addEventListener('cancel', (e) => {
+  e.preventDefault();
+  finishOnboarding({ continued: false, dismissed: true });
+});
+
+function showOnboarding() {
+  if (!el.onboardingDlg.open) el.onboardingDlg.showModal();
+  const yes = $('#onboardYesBtn');
+  if (yes) yes.focus();
+}
+
+/* ---------------------------------------------------------------------------
+   Boot: migrate → soft onboarding (first visit) → profile picker
    --------------------------------------------------------------------------- */
 applyBrand();
 migrateStorage();
 renderHelpList();
 (function preTheme() {
-  // Use the last person's theme behind the picker without loading any of their data.
+  // Use the last profile's theme behind the picker without loading any of their data.
   const last = load(pk(profilesState.lastId, 'settings'), {}) || {};
   settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, shared);
   applyTheme();
 })();
-if (new URLSearchParams(location.search).get('demo') === '1') enterDemo(); else showPicker();
+if (new URLSearchParams(location.search).get('demo') === '1') {
+  enterDemo();
+} else if (!onboardingSeen()) {
+  showOnboarding();
+} else {
+  showPicker();
+}
 </script>
 </body>
 </html>
