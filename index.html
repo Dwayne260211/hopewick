@@ -13,7 +13,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Faith-sensitive A
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hopewick · Faith-sensitive AOD support, between sessions</title>
 <meta name="description" content="Hopewick is a faith-sensitive AI support companion for people affected by alcohol and other drugs — designed to support Australian rehabs, AOD services and counsellors between sessions.">
-<meta name="build" content="hopewick-v4">
+<meta name="build" content="hopewick-v5.3">
 <meta name="theme-color" content="#3f8f5f">
 <link rel="canonical" href="https://dwayne260211.github.io/hopewick/">
 <meta property="og:type" content="website">
@@ -123,6 +123,27 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .todo-contact { margin: 20px auto 0; max-width: 520px; border: 2px dashed #d0a52c; background: #fdf3d3; color: #4a3a05; border-radius: 14px; padding: 14px 18px; font-weight: 600; }
 @media (prefers-color-scheme: dark) { .todo-contact { background: #3a3013; color: #f6e6b0; border-color: #8a7330; } }
 
+
+/* Waitlist / early access */
+.waitlist { text-align: center; }
+.waitlist .card { max-width: 640px; margin: 0 auto; padding: 34px; text-align: left; }
+.waitlist h2 { text-align: center; }
+.waitlist .section-lede { text-align: center; }
+.waitlist-form { display: grid; gap: 12px; margin-top: 18px; }
+.waitlist-form label { display: grid; gap: 4px; font-size: .92rem; font-weight: 600; }
+.waitlist-form label span.hint { font-weight: 500; color: var(--muted); font-size: .82rem; }
+.waitlist-form input, .waitlist-form select, .waitlist-form textarea {
+  font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); width: 100%;
+}
+.waitlist-form input:focus, .waitlist-form select:focus, .waitlist-form textarea:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
+.waitlist-form .role-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.waitlist-form .role-row label { display: flex; align-items: center; gap: 6px; font-weight: 500; padding: 8px 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); cursor: pointer; font-size: .88rem; }
+.waitlist-form .role-row input { width: auto; accent-color: var(--accent); }
+.waitlist-form .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 4px; }
+.waitlist-note { margin-top: 14px; font-size: .88rem; color: var(--muted); text-align: center; }
+.waitlist-note a { font-weight: 600; }
+
 /* Footer */
 .site-footer { border-top: 1px solid var(--border); padding: 30px 0 40px; font-size: .9rem; color: var(--muted); }
 .foot-grid { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
@@ -157,6 +178,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
       <li><a href="#clinicians">For clinicians</a></li>
       <li><a href="#safety">Safety</a></li>
       <li><a href="#privacy">Privacy</a></li>
+      <li><a href="#waitlist">Get early access</a></li>
       <li><a href="#pilot">Pilot with us</a></li>
     </ul>
     <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Open the app</a>
@@ -180,9 +202,10 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <p class="lede">A warm, non-judgemental AI support companion for people affected by alcohol and other drugs. It's built on evidence-based approaches, respects each person's faith, and puts verified Australian crisis contacts one tap away.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="app/?demo=1" id="tryDemo">✨ Try the demo</a>
+          <a class="btn" href="#waitlist" id="heroWaitlist">Get early access</a>
           <a class="btn" href="app/" id="launchApp">Launch app</a>
         </div>
-        <p class="cta-note">The demo uses pre-written example conversations. No sign-up and no API key needed.</p>
+        <p class="cta-note">Free demo now — no sign-up. Paid accounts and hosted service access are coming; join the waitlist to hear first.</p>
       </div>
       <div class="mock" aria-label="Example conversation (pre-written)">
         <div class="mock-head"><span class="orb" aria-hidden="true"></span><span data-companion>Hope</span><span class="tag">EXAMPLE</span></div>
@@ -308,6 +331,42 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     </div>
   </section>
 
+
+  <!-- Waitlist / early access -->
+  <section id="waitlist" class="waitlist" aria-labelledby="waitlistTitle">
+    <div class="wrap">
+      <div class="card">
+        <h2 id="waitlistTitle">Get early access</h2>
+        <p class="section-lede" style="margin:0 auto 6px">Try the free demo today. Paid accounts and hosted service access are on the way — leave your details and we’ll be in touch. No fake logins, no payments yet.</p>
+        <form class="waitlist-form" id="waitlistForm" novalidate>
+          <label for="wlName">Your name
+            <input id="wlName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="First name or preferred name">
+          </label>
+          <label for="wlEmail">Email
+            <input id="wlEmail" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+          </label>
+          <fieldset style="border:0;padding:0;margin:0">
+            <legend style="font-size:.92rem;font-weight:600;margin-bottom:4px">I am… <span class="hint" style="font-weight:500;color:var(--muted);font-size:.82rem">(pick one)</span></legend>
+            <div class="role-row" role="radiogroup" aria-label="How you relate to Hopewick">
+              <label><input type="radio" name="role" value="Person in recovery" required> Person in recovery</label>
+              <label><input type="radio" name="role" value="Family / support person"> Family / support person</label>
+              <label><input type="radio" name="role" value="AOD service / clinician"> AOD service / clinician</label>
+              <label><input type="radio" name="role" value="Other"> Other</label>
+            </div>
+          </fieldset>
+          <label for="wlNote">Anything you’d like us to know <span class="hint">(optional)</span>
+            <textarea id="wlNote" name="note" rows="3" maxlength="500" placeholder="e.g. interested for our rehab clients, or for myself after discharge"></textarea>
+          </label>
+          <div class="actions">
+            <button class="btn btn-primary" type="submit" id="waitlistSubmit">Join the waitlist</button>
+            <a class="btn" href="app/?demo=1">Try the free demo</a>
+          </div>
+        </form>
+        <p class="waitlist-note" id="waitlistContact">Opens your email app to contact <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20early%20access%20%2F%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD. If the form is awkward on mobile, tap that address anytime.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Pilot -->
   <section id="pilot" class="pilot alt" aria-labelledby="pilotTitle">
     <div class="wrap">
@@ -316,6 +375,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <p class="section-lede" style="margin:0 auto 18px">We're looking for Australian rehabs, AOD services and counsellors to help shape <span data-brand>Hopewick</span> for real-world use, including the hosted, service-ready version.</p>
         <div class="cta-row" style="justify-content:center">
           <a class="btn btn-primary" href="app/?demo=1">Try the demo first</a>
+          <a class="btn" href="#waitlist">Join the waitlist</a>
           <a class="btn" href="app/">Launch app</a>
         </div>
         <p class="pilot-contact" id="pilotContact" style="margin:20px auto 0;max-width:520px;font-weight:600">Pilot enquiries: <a href="mailto:Admin@bridge-bite-co.com">Admin@bridge-bite-co.com</a></p>
@@ -334,6 +394,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     <div>
       <ul class="foot-links">
         <li><a href="app/?demo=1">Demo</a></li>
+        <li><a href="#waitlist">Get early access</a></li>
         <li><a href="app/">App</a></li>
         <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
       </ul>
@@ -367,6 +428,42 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     returning = !!(profiles && Array.isArray(profiles.list) && profiles.list.length) || localStorage.getItem('eden.settings.v1') !== null;
   } catch (e) { returning = false; }
   if (returning) document.getElementById('welcomeBack').classList.add('show');
+})();
+
+/* Waitlist form → mailto (works on static GitHub Pages; no backend). */
+(function waitlistMailto() {
+  const form = document.getElementById('waitlistForm');
+  if (!form) return;
+  const TO = 'Admin@bridge-bite-co.com';
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = (document.getElementById('wlName').value || '').trim();
+    const email = (document.getElementById('wlEmail').value || '').trim();
+    const note = (document.getElementById('wlNote').value || '').trim();
+    const roleEl = form.querySelector('input[name="role"]:checked');
+    const role = roleEl ? roleEl.value : '';
+    if (!name || !email || !role) {
+      form.reportValidity();
+      return;
+    }
+    const subject = 'Hopewick early access / waitlist';
+    const body = [
+      'Hello BRIDGE&BITE.CO,',
+      '',
+      'I would like early access / to join the Hopewick waitlist.',
+      '',
+      'Name: ' + name,
+      'Email: ' + email,
+      'I am: ' + role,
+      note ? ('Note: ' + note) : '',
+      '',
+      '— Sent from the Hopewick waitlist form'
+    ].filter(Boolean).join('\n');
+    const href = 'mailto:' + TO
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+    window.location.href = href;
+  });
 })();
 </script>
 </body>

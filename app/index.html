@@ -602,6 +602,29 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .meeting-card h3 { margin: 0 0 4px; font-size: 1rem; }
 .meeting-card p { margin: 0 0 10px; font-size: .88rem; color: var(--muted); line-height: 1.4; }
 .meeting-card .row { gap: 8px; flex-wrap: wrap; }
+
+/* v5.3: early access / waitlist (mailto, no accounts) */
+.waitlist-dlg { width: min(480px, calc(100vw - 24px)); }
+.waitlist-dlg .dlg-body { padding: 8px 18px 4px; }
+.waitlist-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
+.waitlist-form { display: grid; gap: 10px; }
+.waitlist-form label { display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
+.waitlist-form label .hint { font-weight: 500; color: var(--muted); font-size: .8rem; }
+.waitlist-form input, .waitlist-form select, .waitlist-form textarea {
+  font: inherit; padding: 9px 11px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); width: 100%;
+}
+.waitlist-form input:focus, .waitlist-form select:focus, .waitlist-form textarea:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
+.waitlist-form .role-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.waitlist-form .role-row label { display: flex; align-items: center; gap: 6px; font-weight: 500; padding: 7px 11px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); cursor: pointer; font-size: .82rem; }
+.waitlist-form .role-row input { width: auto; accent-color: var(--accent); }
+.waitlist-mail { margin: 12px 0 0; font-size: .85rem; color: var(--muted); text-align: center; }
+.waitlist-mail a { font-weight: 600; color: var(--accent-strong); }
+.access-banner { margin: 10px 16px 0; padding: 10px 14px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--accent-soft); color: var(--text); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.access-banner p { margin: 0; flex: 1; min-width: 200px; font-size: .9rem; }
+.about-body .waitlist-cta { margin: 14px 0 4px; text-align: center; }
+
 /* v3: demo mode + copyright */
 .demo-badge { font-size: .7rem; font-weight: 800; letter-spacing: .08em; background: #f2c94c; color: #3d2f00; border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
 .demo-banner { margin: 12px 16px 0; padding: 10px 14px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
@@ -610,7 +633,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .demo-banner p { margin: 0; flex: 1; min-width: 220px; font-size: .9rem; }
 .demo-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 6px 0 4px; }
 .demo-chips .lbl { width: 100%; text-align: center; font-size: .8rem; color: var(--muted); }
-.picker-demo { margin-top: 14px; display: flex; justify-content: center; }
+.picker-demo { margin-top: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
 .copyright, .side-copy { font-size: .72rem; color: var(--muted); }
 .side-copy { margin: 8px 10px 0; line-height: 1.5; }
 .side-copy a, .privacy-note a { color: var(--accent-strong); }
@@ -704,6 +727,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
         Switch profile
       </button>
+      <button class="btn btn-ghost" type="button" id="sideWaitlistBtn">🌱 Get early access</button>
       <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
       <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
     </div>
@@ -752,6 +776,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="demo-banner" id="demoBanner" hidden role="note">
       <p><strong>Demo mode</strong> — these replies are <strong>pre-written examples, not live AI</strong>. Nothing you type is sent anywhere, and the demo resets when you leave. Tap a scenario to see how <span data-companion></span> supports someone.</p>
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
+    </div>
+    <div class="access-banner" id="accessBanner" hidden role="note">
+      <p>Like what you see? <strong>Paid accounts aren’t open yet</strong> — join the waitlist and we’ll email you when access is ready.</p>
+      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Get early access</button>
+      <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
       <p>🌱 <strong>Ready when you are.</strong> Add your own AI key to chat with <span data-companion></span> for real — or try the demo first. Keys stay in this browser only.</p>
@@ -809,6 +838,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </div>
     <div class="picker-demo">
       <button class="btn btn-primary" type="button" id="tryDemoBtn">✨ Try the demo <span class="help" style="color:inherit;opacity:.85">— no API key needed</span></button>
+      <button class="btn" type="button" id="pickerWaitlistBtn">Get early access / Join waitlist</button>
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
@@ -828,6 +858,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
       <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
+      <button class="btn btn-ghost" type="button" id="onboardWaitlistBtn">Get early access</button>
       <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand></span></button>
     </div>
   </div>
@@ -850,12 +881,55 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Messages go to your chosen AI provider only when you use a real key.</li>
       <li><strong>Demo vs your key.</strong> Try the demo with pre-written examples (nothing sent). For live replies, add your own API key under Connection.</li>
     </ul>
+    <div class="waitlist-cta">
+      <button class="btn btn-primary" type="button" id="aboutWaitlistBtn">Get early access / Join waitlist</button>
+      <p class="help" style="margin:8px 0 0">Free demo now. Paid accounts coming — no fake logins.</p>
+    </div>
     <div class="about-foot">
       <a href="../">Full landing page</a> · <span data-copyright></span>
     </div>
   </div>
   <div class="dlg-foot">
     <button class="btn btn-primary" type="button" id="aboutCloseBtn">Got it</button>
+  </div>
+</dialog>
+
+
+<!-- ============================ Early access / waitlist ============================ -->
+<dialog id="waitlistDlg" class="waitlist-dlg" aria-labelledby="waitlistTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="waitlistTitle">Get early access</h2>
+    <button class="icon-btn" value="close" aria-label="Close waitlist">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="lede">Try the free demo now. Paid accounts and hosted service access are coming — leave your name and email and we’ll be in touch. No accounts to create, no payments yet.</p>
+    <form class="waitlist-form" id="appWaitlistForm" novalidate>
+      <label for="appWlName">Your name
+        <input id="appWlName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="First name or preferred name">
+      </label>
+      <label for="appWlEmail">Email
+        <input id="appWlEmail" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+      </label>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend style="font-size:.9rem;font-weight:600;margin-bottom:4px">I am… <span class="hint" style="font-weight:500;color:var(--muted);font-size:.8rem">(pick one)</span></legend>
+        <div class="role-row" role="radiogroup" aria-label="How you relate to Hopewick">
+          <label><input type="radio" name="role" value="Person in recovery" required> Person in recovery</label>
+          <label><input type="radio" name="role" value="Family / support person"> Family / support person</label>
+          <label><input type="radio" name="role" value="AOD service / clinician"> AOD service / clinician</label>
+          <label><input type="radio" name="role" value="Other"> Other</label>
+        </div>
+      </fieldset>
+      <label for="appWlNote">Anything you’d like us to know <span class="hint">(optional)</span>
+        <textarea id="appWlNote" name="note" rows="2" maxlength="500" placeholder="Optional note"></textarea>
+      </label>
+      <button class="btn btn-primary" type="submit" id="appWaitlistSubmit">Join the waitlist</button>
+    </form>
+    <p class="waitlist-mail" id="appWaitlistContact">Or email <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20early%20access%20%2F%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD anytime.</p>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="waitlistCloseBtn">Close</button>
   </div>
 </dialog>
 
@@ -1442,7 +1516,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.2';
+const EDEN_BUILD = 'hopewick-v5.3';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -1718,7 +1792,7 @@ const el = {
   autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'),
@@ -4780,7 +4854,7 @@ function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg].forEach(d => { if (d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg, el.waitlistDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -4802,6 +4876,7 @@ function enterDemo() {
 function exitDemo() {
   demoRun++;
   isDemo = false;
+  hideAccessBanner();
   profile = null;
   convos = []; memories = []; moods = []; gratitude = []; journal = [];
   stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
@@ -4901,8 +4976,78 @@ async function playScenario(turns, fresh) {
     if (e !== 'cancelled') throw e;
   } finally {
     setBusy(false);
-    if (isDemo) { if (!speaking) setOrb('idle'); renderMessages(); }
+    if (isDemo) { if (!speaking) setOrb('idle'); renderMessages(); maybeShowAccessPrompt(); }
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Early access / waitlist (mailto — no accounts, no payments)
+   --------------------------------------------------------------------------- */
+const WAITLIST_TO = 'Admin@bridge-bite-co.com';
+const ACCESS_PROMPT_KEY = 'hopewick.waitlistPrompt.v1';
+
+function openWaitlist() {
+  if (el.aboutDlg.open) el.aboutDlg.close();
+  if (!el.waitlistDlg.open) el.waitlistDlg.showModal();
+}
+function closeWaitlist() { if (el.waitlistDlg.open) el.waitlistDlg.close(); }
+
+function buildWaitlistMailto(name, email, role, note) {
+  const subject = 'Hopewick early access / waitlist';
+  const lines = [
+    'Hello BRIDGE&BITE.CO,',
+    '',
+    'I would like early access / to join the Hopewick waitlist.',
+    '',
+    'Name: ' + name,
+    'Email: ' + email,
+    'I am: ' + role,
+  ];
+  if (note) lines.push('Note: ' + note);
+  lines.push('', '— Sent from the Hopewick app waitlist form');
+  return 'mailto:' + WAITLIST_TO
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body=' + encodeURIComponent(lines.join('\n'));
+}
+
+$('#appWaitlistForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = ($('#appWlName').value || '').trim();
+  const email = ($('#appWlEmail').value || '').trim();
+  const note = ($('#appWlNote').value || '').trim();
+  const roleEl = $('#appWaitlistForm').querySelector('input[name="role"]:checked');
+  const role = roleEl ? roleEl.value : '';
+  if (!name || !email || !role) { $('#appWaitlistForm').reportValidity(); return; }
+  try { sessionStorage.setItem(ACCESS_PROMPT_KEY, 'joined'); } catch (_) {}
+  hideAccessBanner();
+  window.location.href = buildWaitlistMailto(name, email, role, note);
+});
+$('#waitlistCloseBtn').addEventListener('click', closeWaitlist);
+$('#pickerWaitlistBtn').addEventListener('click', openWaitlist);
+$('#sideWaitlistBtn').addEventListener('click', () => { closeSidebar(); openWaitlist(); });
+$('#onboardWaitlistBtn').addEventListener('click', openWaitlist);
+$('#aboutWaitlistBtn').addEventListener('click', openWaitlist);
+$('#accessBannerBtn').addEventListener('click', openWaitlist);
+$('#accessBannerDismiss').addEventListener('click', () => {
+  try { sessionStorage.setItem(ACCESS_PROMPT_KEY, 'dismissed'); } catch (_) {}
+  hideAccessBanner();
+});
+
+function hideAccessBanner() {
+  const b = $('#accessBanner');
+  if (b) b.hidden = true;
+}
+function maybeShowAccessPrompt() {
+  if (!isDemo) return;
+  let flag = '';
+  try { flag = sessionStorage.getItem(ACCESS_PROMPT_KEY) || ''; } catch (_) {}
+  if (flag === 'dismissed' || flag === 'joined' || flag === 'shown') return;
+  const c = activeConvo();
+  const userTurns = c ? c.messages.filter(m => m.role === 'user').length : 0;
+  if (userTurns < 2) return;
+  try { sessionStorage.setItem(ACCESS_PROMPT_KEY, 'shown'); } catch (_) {}
+  const b = $('#accessBanner');
+  if (b) b.hidden = false;
 }
 
 /* ---------------------------------------------------------------------------
