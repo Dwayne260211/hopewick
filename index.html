@@ -149,6 +149,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .foot-grid { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
 .foot-links { display: flex; gap: 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
 .site-footer p { margin: 6px 0; }
+.founder-credit { font-size: .85rem; margin-top: 4px !important; }
 
 @media (max-width: 900px) {
   .hero-grid, .g2 { grid-template-columns: 1fr; }
@@ -398,6 +399,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
       </ul>
       <p class="copyright" data-copyright>© 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.</p>
+      <p class="founder-credit" data-founder>Created by Dwayne Stevens</p>
     </div>
   </div>
 </footer>
@@ -417,6 +419,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   document.querySelectorAll('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   document.querySelectorAll('[data-tagline]').forEach(e => { e.textContent = BRAND.tagline; });
   document.querySelectorAll('[data-copyright]').forEach(e => { e.textContent = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`; });
+  document.querySelectorAll('[data-founder]').forEach(e => { e.textContent = 'Created by Dwayne Stevens'; });
 })();
 
 /* Returning users: if this browser already has app data, offer a quick way back in. */

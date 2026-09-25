@@ -981,6 +981,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </form>
   <div class="dlg-body about-body">
     <p><strong><span data-brand></span></strong> is a between-sessions support companion from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI companion, not a counsellor, doctor, or person in rehab.</p>
+    <p class="founder-credit" data-founder>Created by Dwayne Stevens</p>
     <ul>
       <li><strong>Not a crisis service.</strong> If you are in danger, call <strong>000</strong>. Use <strong>Get help now</strong> in the app for Australian helplines.</li>
       <li><strong>Between sessions.</strong> Built for cravings, hard days, and gentle check-ins — alongside your real-world support, not instead of it.</li>
@@ -5343,6 +5344,7 @@ function applyBrand() {
   $$('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.companion); });
   $$('[data-copyright]').forEach(e => { e.textContent = COPYRIGHT; });
+  $$('[data-founder]').forEach(e => { e.textContent = 'Created by Dwayne Stevens'; });
   $$('[data-company]').forEach(e => { e.textContent = BRAND.company; });
 }
 
