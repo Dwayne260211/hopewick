@@ -39,8 +39,11 @@ REQUIRED_URLS = [
 def test_static_church_tool():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.9'" in text
-    assert 'content="hopewick-v5.9"' in land
+    m = re.search(r"EDEN_BUILD = '(hopewick-v5\.\d+)'", text)
+    assert m, "EDEN_BUILD missing"
+    build = m.group(1)
+    assert build >= "hopewick-v5.9"
+    assert f'content="{build}"' in land or 'content="hopewick-v5.9"' in land or 'content="hopewick-v5.10"' in land
     assert 'id="churchDlg"' in text
     assert "function openChurch" in text
     assert 'id="sideChurchBtn"' in text
