@@ -78,7 +78,7 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 ## Features
 
-- **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. Optional He Reads Truth / CSB links stay external — no commercial Bible text is pasted.
+- **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
 
 
 - **Two modes.** *AOD faith counsellor* (the default) or *Friend*. The counsellor draws on motivational interviewing (OARS, working with mixed feelings, stages of change), harm reduction, relapse prevention (triggers, HALT, urge surfing, coping plans), CBT-style reframing and SMART goals. Its approach is strengths-based, trauma-informed and culturally safe. It also encourages real-world support: a GP, your local AOD service, your faith community, SMART Recovery, AA/NA or Celebrate Recovery.
@@ -110,5 +110,9 @@ If you used the earlier single-user version, your chats, memories and settings m
 This is proprietary software. It is published for demonstration purposes only. You may not copy, modify, distribute or use it without written permission from BRIDGE&BITE.CO PTY LTD. See [LICENSE](LICENSE).
 
 
-### In-app Bible (v5.5)
-Open **Demo** → sidebar **Bible & SOAP**. SOAP Day 1 shows Matthew 1 embedded (WEB). Use the **Read Bible** tab for the full Protestant canon (WEB via bible-api.com, cached).
+### In-app Bible (v5.6)
+Open **Demo** → sidebar **Bible & SOAP**. Tabs: **SOAP daily** | **Diving Deeper Finding Jesus** | **Read Bible**.
+
+- SOAP Day 1 shows Matthew 1 embedded (WEB).
+- **Diving Deeper Finding Jesus**: 483 days / 97 weeks across all 66 Protestant books. Genesis opens with the founder’s photo plan (25 days); then Exodus → Revelation. Pick a **section** (Genesis, Law, History, Wisdom, Prophets, Gospels, Church letters, Revelation), tick days, open a row for main + Going Deeper WEB text, expand **Finding Jesus**, or **Talk with Hope**.
+- **Read Bible**: full Protestant canon (WEB via bible-api.com, cached).
