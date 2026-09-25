@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hopewick.com.au/sitemap.xml
