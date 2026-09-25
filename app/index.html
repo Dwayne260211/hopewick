@@ -578,6 +578,23 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .prog-bar { height: 6px; background: var(--surface-3); border-radius: 999px; overflow: hidden; margin: 8px 0 12px; }
 .prog-bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
 
+
+/* v5.1: circuit breakers + self-care checklist */
+.check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); background: var(--surface-2); border-radius: 12px; }
+.check-item.done { border-color: var(--accent); background: var(--accent-soft); }
+.check-item input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+.check-item .ci-body { flex: 1; min-width: 0; }
+.check-item .ci-label { font-size: .95rem; font-weight: 560; line-height: 1.35; }
+.check-item .ci-meta { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+.check-item .ci-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.check-item.unsafe { border-color: color-mix(in srgb, var(--danger) 35%, var(--border)); }
+.breaker-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.messages > .tool-suggest { margin-bottom: 8px; }
+.tool-suggest { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 12px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--border)); background: var(--accent-soft); font-size: .9rem; }
+.tool-suggest .lbl { color: var(--muted); }
+.selfcare-prog { font-size: .88rem; color: var(--muted); margin: 8px 0 4px; text-align: center; }
+.selfcare-warm { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); font-size: .9rem; color: var(--muted); text-align: center; }
 /* v3: demo mode + copyright */
 .demo-badge { font-size: .7rem; font-weight: 800; letter-spacing: .08em; background: #f2c94c; color: #3d2f00; border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
 .demo-banner { margin: 12px 16px 0; padding: 10px 14px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
@@ -631,6 +648,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" data-open="skills">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
         Skills
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="breakers">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Circuit breakers
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="selfcare">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Self-care
       </button>
       <button class="btn btn-ghost" type="button" data-open="journal">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
@@ -1273,6 +1298,66 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
+
+<!-- ============================ Circuit breakers ============================ -->
+<dialog id="circuitBreakerDlg" aria-labelledby="breakerTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="breakerTitle">⚡ Circuit breakers</h2>
+    <button class="icon-btn" value="close" aria-label="Close circuit breakers">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="help" style="margin:10px 0 0">When a craving or stuck feeling hits, pick one small thing that interrupts the urge. Free and low-cost ideas — nothing here enables substance use.</p>
+    <p class="selfcare-prog" id="breakerTriedCount" aria-live="polite"></p>
+    <ul class="check-list" id="breakerList" aria-label="Circuit breaker activities"></ul>
+    <div class="field" style="margin-top:14px">
+      <label for="breakerCustom">Add your own</label>
+      <div class="key-wrap">
+        <input id="breakerCustom" type="text" maxlength="80" placeholder="e.g. Call my sponsor, water the plants" autocomplete="off">
+        <button class="btn btn-sm" type="button" id="breakerAddBtn">Add</button>
+      </div>
+    </div>
+    <h3 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 8px">Find something local / free</h3>
+    <div class="breaker-links" id="breakerLinks">
+      <a class="btn btn-sm" href="https://askizzy.org.au/" target="_blank" rel="noopener noreferrer">Ask Izzy — free help nearby</a>
+      <a class="btn btn-sm" href="https://www.meetup.com/find/?source=EVENTS&amp;categoryId=9" target="_blank" rel="noopener noreferrer">Meetup — free local events</a>
+      <a class="btn btn-sm" href="https://www.eventbrite.com.au/d/australia--free--events/" target="_blank" rel="noopener noreferrer">Eventbrite — free events</a>
+      <button class="btn btn-sm" type="button" data-open="nearby">Find nearby help (meals, shelter)</button>
+    </div>
+    <div class="crisis-card" role="note" style="margin-top:16px">
+      <h3>If you feel unsafe</h3>
+      <p>These are for crisis support — not casual “activities”. Call <a href="tel:000">000</a> in immediate danger. <a href="tel:131114">Lifeline 13 11 14</a> · AOD: <a href="tel:1800250015">1800 250 015</a> · Adis QLD: <a href="tel:1800177833">1800 177 833</a>.</p>
+    </div>
+  </div>
+</dialog>
+
+<!-- ============================ Self-care checklist ============================ -->
+<dialog id="selfCareDlg" aria-labelledby="selfCareTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="selfCareTitle">💚 Self-care today</h2>
+    <button class="icon-btn" value="close" aria-label="Close self-care">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="help" style="margin:10px 0 0">Small cares add up. Tick what you’ve done today — no score, no shame. The list resets each day.</p>
+    <p class="selfcare-prog" id="selfCareProg" aria-live="polite"></p>
+    <ul class="check-list" id="selfCareList" aria-label="Today’s self-care checklist"></ul>
+    <div id="selfCareWarm" class="selfcare-warm" hidden></div>
+    <div class="field" style="margin-top:14px">
+      <label for="selfCareCustom">Add an item</label>
+      <div class="key-wrap">
+        <input id="selfCareCustom" type="text" maxlength="80" placeholder="e.g. Take prescribed meds, feed the dog" autocomplete="off">
+        <button class="btn btn-sm" type="button" id="selfCareAddBtn">Add</button>
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" type="button" id="selfCareResetDefaults">Restore starter list</button>
+    </div>
+  </div>
+</dialog>
+
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
 <script>
@@ -1291,9 +1376,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.journal       per-person journal entries
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person SOAP Bible study { entries, planDay, completed }
+     eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
+     eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5';
+const EDEN_BUILD = 'hopewick-v5.1';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -1303,7 +1390,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'breakers', 'selfcare', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -1376,6 +1463,40 @@ const CRAVING_SKILLS = [
   { id: 'stop', chip: 'STOP / wise mind', starter: 'Help me use STOP and wise mind', blurb: 'Stop, Take a breath, Observe, Proceed — balance emotion and reason.' },
   { id: 'opposite', chip: 'Opposite action', starter: "Let's try opposite action", blurb: 'When the emotion fits, act opposite to the urge in a small, safe way.' },
 ];
+
+/* Circuit breakers — urge-interrupt activities (AOD-appropriate, AU-friendly). */
+const DEFAULT_BREAKERS = [
+  { id: 'walk', label: 'Go for a short walk', hint: 'Even 5–10 minutes around the block' },
+  { id: 'water', label: 'Drink a glass of water', hint: 'Slow sips count' },
+  { id: 'text', label: 'Text a safe person', hint: 'A mate, sponsor, family — just “hi” is enough' },
+  { id: 'cold', label: 'Cool water on wrists / cool cloth', hint: 'TIPP-style temperature — not extreme cold' },
+  { id: 'tidy', label: 'Five-minute tidy', hint: 'One surface or one sink' },
+  { id: 'song', label: 'Put on a song', hint: 'Something that shifts the mood' },
+  { id: 'outside', label: 'Step outside for fresh air', hint: 'Feel the ground under your feet' },
+  { id: 'breathe', label: 'Breathe / urge-surf with Hope', hint: 'Opens a short skill in chat', action: 'skill:urge-surf' },
+  { id: 'stretch', label: 'Stretch for a few minutes', hint: 'Shoulders, neck, legs' },
+  { id: 'shower', label: 'Have a shower', hint: 'Warm or cool — whatever helps' },
+  { id: 'cuppa', label: 'Make a cuppa', hint: 'Tea, coffee, or a soft drink' },
+  { id: 'funny', label: 'Watch a short funny clip', hint: 'One video, then check in with yourself' },
+  { id: 'game', label: 'Play a simple game', hint: 'Solitaire, a puzzle, a phone game' },
+  { id: 'journal', label: 'Journal one line', hint: 'Opens your journal', action: 'open:journal' },
+  { id: 'pray', label: 'Pray or reflect', hint: 'Optional — only if faith feels right', faith: true, action: 'skill:ground' },
+];
+
+/* Self-care starter checklist — ticks reset daily. */
+const DEFAULT_SELFCARE = [
+  { id: 'sleep', label: 'Got some sleep / rest' },
+  { id: 'eat', label: 'Ate something' },
+  { id: 'hydrate', label: 'Drank water' },
+  { id: 'meds', label: 'Took prescribed meds (if any)' },
+  { id: 'shower', label: 'Showered or freshened up' },
+  { id: 'move', label: 'Moved my body a little' },
+  { id: 'connect', label: 'Connected with someone' },
+  { id: 'outdoors', label: 'Got outdoors / daylight' },
+  { id: 'quiet', label: 'Quiet time / faith practice', faith: true },
+];
+
+const CRAVING_LANG_RE = /\b(craving|crave|urge|itching for|want(ing)? (a |to )?drink|want(ing)? (a |to )?hit|bottle shop|gotta use|need a drink|fiending)\b/i;
 
 
 /* Verified Australian crisis & AOD contacts (checked against official sites, Sept 2026). */
@@ -1511,6 +1632,8 @@ let journal = [];          // [{id, title, body, refined?, emotions?, created, u
 let stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
 let bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, updated: 0 };
 let bibleTab = 'soap';
+let breakersState = { custom: [], tried: { date: '', ids: [] } };
+let selfCareState = { items: null, done: { date: '', ids: [] } }; // items null → use defaults
 let activeId = null;
 let journalEditId = null;
 let busy = false;
@@ -1535,6 +1658,7 @@ const el = {
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
+  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'),
   toasts: $('#toasts'),
 };
 
@@ -1598,6 +1722,8 @@ function loadProfileData(pid) {
   journal = load(pk(pid, 'journal'), []);
   stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, load(pk(pid, 'steps'), {}));
   bibleProgress = normalizeBible(load(pk(pid, 'bible'), {}));
+  breakersState = normalizeBreakers(load(pk(pid, 'breakers'), {}));
+  selfCareState = normalizeSelfCare(load(pk(pid, 'selfcare'), {}));
   activeId = load(pk(pid, 'active'), null);
   if (!Array.isArray(convos)) convos = [];
   if (!Array.isArray(memories)) memories = [];
@@ -1623,6 +1749,8 @@ function saveGratitude() { if (isDemo) return; save(pk(profile.id, 'gratitude'),
 function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), journal); }
 function saveSteps() { if (isDemo) return; save(pk(profile.id, 'steps'), stepsProgress); }
 function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), bibleProgress); }
+function saveBreakers() { if (isDemo) return; save(pk(profile.id, 'breakers'), breakersState); }
+function saveSelfCare() { if (isDemo) return; save(pk(profile.id, 'selfcare'), selfCareState); }
 
 /** Light PIN hash (FNV-1a, iterated). This is a privacy lock, not security. */
 function pinHash(pid, pin) {
@@ -2005,6 +2133,11 @@ function renderWelcome() {
       b.addEventListener('click', () => startSkill(sk));
       skillsRow.appendChild(b);
     }
+    const brk = document.createElement('button');
+    brk.type = 'button'; brk.className = 'starter skill-chip'; brk.textContent = 'Try a circuit breaker';
+    brk.dataset.openTool = 'breakers';
+    brk.addEventListener('click', openBreakers);
+    skillsRow.appendChild(brk);
     box.appendChild(skillsRow);
   }
 
@@ -2072,7 +2205,7 @@ function setCraving(lvl) {
   persistConvos();
   renderMessages();
   if (c.craving === 'Strong') {
-    toast('Strong cravings are tough — they do pass. Try a craving skill below, or tap Get help now.', false, 4500);
+    toast('Strong cravings are tough — they do pass. Try a circuit breaker or a craving skill below, or tap Get help now.', false, 4500);
     renderMessages();
   }
 }
@@ -2084,8 +2217,14 @@ function updateMoodPill() {
 function renderMessages() {
   const c = activeConvo();
   el.inner.innerHTML = '';
-  if (!c || c.messages.length === 0) { renderWelcome(); return; }
+  if (!c || c.messages.length === 0) {
+    hideBreakerSuggest();
+    renderWelcome();
+    return;
+  }
   for (const m of c.messages) el.inner.appendChild(messageEl(m).row);
+  if (shouldSuggestBreakers(c)) appendBreakerSuggest();
+  else hideBreakerSuggest();
   if (isDemo && !busy) el.inner.appendChild(demoChipsEl());
   scrollToBottom(true);
 }
@@ -2175,7 +2314,7 @@ function counsellorPrompt(convo) {
     '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly.',
     '',
     'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
-    '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet.',
+    '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also suggest they open Circuit breakers (urge-interrupt activities) or Self-care in the sidebar.',
     '- Skills you can run interactively: urge surfing; delay–distract–decide; HALT check; DBT TIPP (Temperature with a cool drink or cool cloth on wrists/face — NEVER ice-bath / ice-dive / extreme cold that could harm; Intense exercise = brief safe movement like walking stairs; Paced breathing; Paired muscle relaxation); DBT opposite action (when the emotion fits the facts); DBT STOP + wise mind (brief); CBT thought record / catch–check–change for urge thoughts; urge surfing + values reminder; 5-4-3-2-1 grounding.',
     '- Frame clearly as skills practice / support tool — you are not delivering therapy and are not a psychologist. Encourage real counselling when longer work is needed.',
     '- Stay trauma-informed and non-shaming. If crisis language appears, use the crisis path first.',
@@ -2410,9 +2549,9 @@ async function generateReply(c) {
   c.messages.push({ role: 'assistant', content: acc, ts: Date.now() });
   c.updated = Date.now();
   persistConvos();
+  finish();
   renderMessages();
   renderHistory();
-  finish();
 
   if (settings.autoSpeak || convoMode) speak(acc, () => { if (convoMode) startListening(); });
 
@@ -3270,6 +3409,267 @@ const NUT_HYDRATE = {
   l: 'Rough guide: about 2.5–3 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
 };
 
+
+/* ---------------------------------------------------------------------------
+   Circuit breakers + self-care checklist (v5.1)
+   --------------------------------------------------------------------------- */
+function normalizeBreakers(raw) {
+  const o = raw && typeof raw === 'object' ? raw : {};
+  const custom = Array.isArray(o.custom) ? o.custom.filter(x => x && x.id && x.label).slice(0, 40) : [];
+  const tried = (o.tried && typeof o.tried === 'object') ? o.tried : { date: '', ids: [] };
+  return {
+    custom,
+    tried: { date: typeof tried.date === 'string' ? tried.date : '', ids: Array.isArray(tried.ids) ? tried.ids.filter(Boolean).slice(0, 80) : [] },
+  };
+}
+function normalizeSelfCare(raw) {
+  const o = raw && typeof raw === 'object' ? raw : {};
+  let items = null;
+  if (Array.isArray(o.items)) {
+    items = o.items.filter(x => x && x.id && x.label).slice(0, 40);
+  }
+  const done = (o.done && typeof o.done === 'object') ? o.done : { date: '', ids: [] };
+  return {
+    items,
+    done: { date: typeof done.date === 'string' ? done.date : '', ids: Array.isArray(done.ids) ? done.ids.filter(Boolean).slice(0, 80) : [] },
+  };
+}
+function breakersTriedToday() {
+  const today = localDate();
+  if (breakersState.tried.date !== today) {
+    breakersState.tried = { date: today, ids: [] };
+  }
+  return breakersState.tried;
+}
+function selfCareDoneToday() {
+  const today = localDate();
+  if (selfCareState.done.date !== today) {
+    selfCareState.done = { date: today, ids: [] };
+  }
+  return selfCareState.done;
+}
+function selfCareItems() {
+  if (Array.isArray(selfCareState.items) && selfCareState.items.length) return selfCareState.items;
+  return DEFAULT_SELFCARE.map(x => Object.assign({}, x));
+}
+function allBreakerItems() {
+  const faithOk = settings.faith !== 'none';
+  const defaults = DEFAULT_BREAKERS.filter(b => !b.faith || faithOk).map(b => Object.assign({ custom: false }, b));
+  const custom = (breakersState.custom || []).map(c => ({ id: c.id, label: c.label, hint: 'Your own', custom: true }));
+  return defaults.concat(custom);
+}
+function runBreakerAction(item) {
+  if (!item || !item.action) return;
+  const a = item.action;
+  if (a.startsWith('skill:')) {
+    const sk = CRAVING_SKILLS.find(s => s.id === a.slice(6));
+    if (sk) { el.circuitBreakerDlg.close(); startSkill(sk); }
+  } else if (a === 'open:journal') {
+    el.circuitBreakerDlg.close();
+    openJournal();
+  }
+}
+function toggleBreakerTried(id) {
+  const t = breakersTriedToday();
+  const i = t.ids.indexOf(id);
+  if (i >= 0) t.ids.splice(i, 1); else t.ids.push(id);
+  saveBreakers();
+  renderBreakers();
+}
+function addCustomBreaker() {
+  const input = $('#breakerCustom');
+  const label = (input.value || '').trim();
+  if (!label) { toast('Type a short activity first'); return; }
+  if (breakersState.custom.length >= 30) { toast('That’s plenty of custom ones — remove one first', true); return; }
+  breakersState.custom.push({ id: 'c-' + uid(), label });
+  input.value = '';
+  saveBreakers();
+  renderBreakers();
+  toast('Added ✓');
+}
+function removeCustomBreaker(id) {
+  breakersState.custom = breakersState.custom.filter(c => c.id !== id);
+  const t = breakersTriedToday();
+  t.ids = t.ids.filter(x => x !== id);
+  saveBreakers();
+  renderBreakers();
+}
+function renderBreakers() {
+  const list = $('#breakerList');
+  list.innerHTML = '';
+  const tried = breakersTriedToday();
+  const items = allBreakerItems();
+  for (const item of items) {
+    const li = document.createElement('li');
+    const isTried = tried.ids.includes(item.id);
+    li.className = 'check-item' + (isTried ? ' done' : '');
+    const cbId = 'brk-' + item.id;
+    li.innerHTML = `<input type="checkbox"><div class="ci-body"><label class="ci-label"></label><div class="ci-meta"></div></div><div class="ci-actions"></div>`;
+    const cb = $('input', li);
+    cb.id = cbId; cb.checked = isTried;
+    cb.setAttribute('aria-label', 'Tried today: ' + item.label);
+    cb.addEventListener('change', () => toggleBreakerTried(item.id));
+    const lab = $('.ci-label', li);
+    lab.htmlFor = cbId;
+    lab.textContent = item.label;
+    $('.ci-meta', li).textContent = item.hint || (item.custom ? 'Your own' : '');
+    const actions = $('.ci-actions', li);
+    if (item.action) {
+      const go = document.createElement('button');
+      go.type = 'button'; go.className = 'btn btn-sm'; go.textContent = 'Try';
+      go.addEventListener('click', () => { if (!isTried) toggleBreakerTried(item.id); runBreakerAction(item); });
+      actions.appendChild(go);
+    }
+    if (item.custom) {
+      const del = document.createElement('button');
+      del.type = 'button'; del.className = 'icon-btn'; del.setAttribute('aria-label', 'Remove ' + item.label);
+      del.innerHTML = ICON_TRASH;
+      del.addEventListener('click', () => { if (confirm('Remove this custom activity?')) removeCustomBreaker(item.id); });
+      actions.appendChild(del);
+    }
+    list.appendChild(li);
+  }
+  const n = tried.ids.length;
+  $('#breakerTriedCount').textContent = n ? `${n} tried today — every interrupt counts 🌱` : 'Optional: tick ones you’ve tried today';
+}
+function openBreakers() {
+  if (!profile) return;
+  closeSidebar();
+  renderBreakers();
+  if (!el.circuitBreakerDlg.open) el.circuitBreakerDlg.showModal();
+}
+
+function toggleSelfCareDone(id) {
+  const d = selfCareDoneToday();
+  const i = d.ids.indexOf(id);
+  if (i >= 0) d.ids.splice(i, 1); else d.ids.push(id);
+  saveSelfCare();
+  renderSelfCare();
+}
+function addSelfCareItem() {
+  const input = $('#selfCareCustom');
+  const label = (input.value || '').trim();
+  if (!label) { toast('Type a short item first'); return; }
+  const items = selfCareItems().map(x => Object.assign({}, x));
+  if (items.length >= 30) { toast('That’s a full list — remove one first', true); return; }
+  items.push({ id: 'sc-' + uid(), label, custom: true });
+  selfCareState.items = items;
+  input.value = '';
+  saveSelfCare();
+  renderSelfCare();
+  toast('Added ✓');
+}
+function removeSelfCareItem(id) {
+  const items = selfCareItems().filter(x => x.id !== id);
+  selfCareState.items = items;
+  const d = selfCareDoneToday();
+  d.ids = d.ids.filter(x => x !== id);
+  saveSelfCare();
+  renderSelfCare();
+}
+function editSelfCareItem(id) {
+  const items = selfCareItems().map(x => Object.assign({}, x));
+  const it = items.find(x => x.id === id);
+  if (!it) return;
+  const next = prompt('Edit self-care item:', it.label);
+  if (next === null) return;
+  const label = next.trim();
+  if (!label) { toast('Keep a short label'); return; }
+  it.label = label.slice(0, 80);
+  it.custom = true;
+  selfCareState.items = items;
+  saveSelfCare();
+  renderSelfCare();
+}
+function resetSelfCareDefaults() {
+  if (!confirm('Restore the starter self-care list? Your ticks for today stay; custom items are cleared.')) return;
+  selfCareState.items = null;
+  saveSelfCare();
+  renderSelfCare();
+  toast('Starter list restored');
+}
+function renderSelfCare() {
+  const list = $('#selfCareList');
+  list.innerHTML = '';
+  const done = selfCareDoneToday();
+  const faithOk = settings.faith !== 'none';
+  const items = selfCareItems().filter(it => !it.faith || faithOk);
+  for (const item of items) {
+    const li = document.createElement('li');
+    const isDone = done.ids.includes(item.id);
+    li.className = 'check-item' + (isDone ? ' done' : '');
+    const cbId = 'sc-' + item.id;
+    li.innerHTML = `<input type="checkbox"><div class="ci-body"><label class="ci-label"></label></div><div class="ci-actions"></div>`;
+    const cb = $('input', li);
+    cb.id = cbId; cb.checked = isDone;
+    cb.setAttribute('aria-label', item.label);
+    cb.addEventListener('change', () => toggleSelfCareDone(item.id));
+    const lab = $('.ci-label', li);
+    lab.htmlFor = cbId;
+    lab.textContent = item.label;
+    const actions = $('.ci-actions', li);
+    const edit = document.createElement('button');
+    edit.type = 'button'; edit.className = 'icon-btn'; edit.setAttribute('aria-label', 'Edit ' + item.label);
+    edit.innerHTML = ICON_EDIT;
+    edit.addEventListener('click', () => editSelfCareItem(item.id));
+    actions.appendChild(edit);
+    const del = document.createElement('button');
+    del.type = 'button'; del.className = 'icon-btn'; del.setAttribute('aria-label', 'Remove ' + item.label);
+    del.innerHTML = ICON_TRASH;
+    del.addEventListener('click', () => { if (confirm('Remove this item from your list?')) removeSelfCareItem(item.id); });
+    actions.appendChild(del);
+    list.appendChild(li);
+  }
+  const n = items.filter(it => done.ids.includes(it.id)).length;
+  const total = items.length;
+  $('#selfCareProg').textContent = total ? `${n} of ${total} today` : '';
+  const warm = $('#selfCareWarm');
+  if (n === 0) {
+    warm.hidden = false;
+    warm.textContent = 'Nothing ticked yet — that’s okay. One small care is enough when you’re ready. 💚';
+  } else if (n === total && total > 0) {
+    warm.hidden = false;
+    warm.textContent = 'You cared for yourself in every way on this list today. That’s worth noticing.';
+  } else {
+    warm.hidden = true;
+  }
+}
+function openSelfCare() {
+  if (!profile) return;
+  closeSidebar();
+  renderSelfCare();
+  if (!el.selfCareDlg.open) el.selfCareDlg.showModal();
+}
+
+function shouldSuggestBreakers(convo) {
+  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
+  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
+  if (lastUser && CRAVING_LANG_RE.test(lastUser.content || '')) return true;
+  const craving = convo.craving || (todaysCheckin() && todaysCheckin().craving);
+  return craving === 'Moderate' || craving === 'Strong';
+}
+function appendBreakerSuggest() {
+  let bar = $('#breakerSuggest');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'breakerSuggest';
+    bar.className = 'tool-suggest';
+    bar.setAttribute('role', 'note');
+    bar.innerHTML = `<span class="lbl">Urge showing up?</span>`;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Try a circuit breaker';
+    b.addEventListener('click', openBreakers);
+    bar.appendChild(b);
+    // Sibling of messagesInner — keep .msg.assistant:last-child selectors working
+    el.messages.appendChild(bar);
+  }
+  bar.hidden = false;
+}
+function hideBreakerSuggest() {
+  const bar = $('#breakerSuggest');
+  if (bar) bar.hidden = true;
+}
+
 function startSkill(sk) {
   if (!sk) return;
   sendMessage(sk.starter);
@@ -3645,7 +4045,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, steps: stepsProgress, bible: bibleProgress,
+    gratitude, journal, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -3681,9 +4081,11 @@ $('#importFile').addEventListener('change', async (e) => {
     journal = Array.isArray(data.journal) ? data.journal.filter(j => j && j.id) : [];
     stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, data.steps || {});
     bibleProgress = normalizeBible(data.bible || {});
+    breakersState = normalizeBreakers(data.breakers || {});
+    selfCareState = normalizeSelfCare(data.selfcare || {});
     activeId = null;
     settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveSteps(); saveBible(); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
@@ -3746,7 +4148,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
@@ -4044,7 +4446,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].some(d => d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg].some(d => d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -4068,6 +4470,8 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'nearby') openNearby();
   else if (o === 'nutrition') openNutrition();
   else if (o === 'skills') openSkills();
+  else if (o === 'breakers') openBreakers();
+  else if (o === 'selfcare') openSelfCare();
 }));
 
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
@@ -4088,7 +4492,14 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+
+$('#breakerAddBtn').addEventListener('click', addCustomBreaker);
+$('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
+$('#selfCareAddBtn').addEventListener('click', addSelfCareItem);
+$('#selfCareCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addSelfCareItem(); } });
+$('#selfCareResetDefaults').addEventListener('click', resetSelfCareDefaults);
+$$('#breakerLinks [data-open=nearby]').forEach(b => b.addEventListener('click', () => { el.circuitBreakerDlg.close(); openNearby(); }));
 $$('[data-bible-tab]').forEach(btn => btn.addEventListener('click', () => setBibleTab(btn.getAttribute('data-bible-tab'))));
 $('#bibleStartSoap')?.addEventListener('click', () => startTodaysSoap());
 $('#soapLogForm')?.addEventListener('submit', (e) => {
@@ -4258,14 +4669,16 @@ function demoSampleData() {
       ts: now,
     }],
   };
-  return { soberStart: localDate(start), moods: sampleMoods, memories: sampleMemories, journal: sampleJournal, gratitude: sampleGrat, steps: sampleSteps, bible: sampleBible };
+  const sampleBreakers = { custom: [{ id: 'demo-b1', label: 'Walk the dog around the block' }], tried: { date: localDate(), ids: ['water', 'walk'] } };
+  const sampleSelfCare = { items: null, done: { date: localDate(), ids: ['sleep', 'hydrate', 'eat'] } };
+  return { soberStart: localDate(start), moods: sampleMoods, memories: sampleMemories, journal: sampleJournal, gratitude: sampleGrat, steps: sampleSteps, bible: sampleBible, breakers: sampleBreakers, selfcare: sampleSelfCare };
 }
 
 function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].forEach(d => { if (d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg].forEach(d => { if (d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -4277,6 +4690,7 @@ function enterDemo() {
   convos = []; memories = sample.memories; moods = sample.moods;
   journal = sample.journal; gratitude = sample.gratitude;
   stepsProgress = sample.steps; bibleProgress = sample.bible;
+  breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
   activeId = null;
   applyTheme();
   newConversation();
@@ -4290,6 +4704,8 @@ function exitDemo() {
   convos = []; memories = []; moods = []; gratitude = []; journal = [];
   stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
   bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, updated: 0 };
+  breakersState = { custom: [], tried: { date: '', ids: [] } };
+  selfCareState = { items: null, done: { date: '', ids: [] } };
   activeId = null;
   el.inner.innerHTML = '';
   if (new URLSearchParams(location.search).has('demo')) {
