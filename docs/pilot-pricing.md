@@ -23,7 +23,7 @@
 | Included | Company-held AI key, invite codes, fair usage caps, email support |
 | Cost | Free for the pilot period |
 
-## Paid plans after pilot (AUD / month, ex GST)
+## Ongoing plans after pilot (AUD / month, ex GST)
 
 | Tier | Price | Client invites |
 |------|------:|------:|

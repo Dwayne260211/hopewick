@@ -31,7 +31,12 @@
     .brand span { color: var(--accent); }
     .meta { color: var(--muted); font-size: .85rem; }
     h1 { font-size: 1.15rem; margin: 0 0 6px; font-weight: 700; }
-    .pitch { margin: 0 0 18px; color: var(--muted); font-size: .98rem; }
+    .pitch { margin: 0 0 10px; color: var(--muted); font-size: .98rem; }
+    .positioning {
+      margin: 0 0 18px; padding: 12px 14px; border-left: 3px solid var(--accent);
+      background: var(--accent-soft); border-radius: 0 10px 10px 0;
+      font-size: 1.02rem; font-weight: 600; color: var(--ink); line-height: 1.4;
+    }
     h2 { font-size: .95rem; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin: 20px 0 10px; }
     .card {
       border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--accent-soft);
@@ -76,7 +81,8 @@
     </header>
 
     <h1>How Hopewick fits in an AOD service</h1>
-    <p class="pitch"><strong>Hope</strong> is a companion for people in recovery <em>between</em> sessions — not a clinician tool and not a crisis line. Your service stays in charge of care; Hopewick fills the quiet hours when people are on their own.</p>
+    <p class="pitch"><strong>Hope</strong> is a companion for people in recovery <em>between</em> sessions — not a clinical decision-making tool and not a crisis line. Clinicians and workers can still recommend it; Hope does not make treatment decisions for them.</p>
+    <p class="positioning">Your service stays in charge of care; Hopewick fills the quiet hours when people are on their own.</p>
 
     <h2>Who does what</h2>
     <div class="grid">
@@ -86,7 +92,7 @@
       </div>
       <div class="role">
         <h3>Staff / service</h3>
-        <p>Decide who gets a code, brief them in one conversation, and decide whether to keep the pilot. You do <strong>not</strong> need a second staff dashboard to run a small pilot.</p>
+        <p>Decide who gets a code, brief them in one conversation, and decide whether to continue or extend the pilot. You do <strong>not</strong> need a second staff dashboard to run a small pilot.</p>
       </div>
     </div>
 
@@ -99,7 +105,7 @@
         <li><strong>Bridge&amp;Bite issues codes</strong> — emailed to your contact (company holds the AI key; no personal OpenAI keys).</li>
         <li><strong>Staff brief clients</strong> — “This is Hope, between sessions. It’s not counselling and not for emergencies. If you’re in crisis, call 000 / your usual pathways.”</li>
         <li><strong>Clients use Hope on their own phone</strong> — home-screen PWA; chat, reflection, and support-oriented resources in the app.</li>
-        <li><strong>You check in once</strong> — mid-pilot: any issues? anyone using it? then decide continue / pause / paid seats.</li>
+        <li><strong>You check in once</strong> — mid-pilot review of how the pilot is going, then decide whether to continue the service, extend the pilot, or move to an ongoing licence. Bridge&amp;Bite can share privacy-preserving summaries (for example: codes activated, general feature use, retention, anonymous satisfaction) — never a feed of private conversations.</li>
       </ol>
     </div>
 
@@ -108,8 +114,8 @@
       <ul>
         <li><strong>Complements</strong> counselling, case work, peer support, and residential programs — the gap between face-to-face contact.</li>
         <li><strong>Does not replace</strong> clinical judgement, risk assessment, medication decisions, or after-hours duty.</li>
-        <li><strong>Does not monitor</strong> clients for you — no staff surveillance feed in the current product.</li>
-        <li><strong>Fits</strong> outpatient, community, residential step-down, and youth AOD settings that already brief people on safe self-help tools.</li>
+        <li><strong>Private by design</strong> — staff do not receive a feed of client conversations. Any future exception would be spelled out clearly before a pilot starts (none in the current product).</li>
+        <li><strong>Fits</strong> adult outpatient, community, and residential step-down AOD settings that already brief people on safe self-help tools. Youth settings need separate consent, safeguarding, and age-appropriate safety work before we recommend them.</li>
       </ul>
     </div>
 
@@ -121,6 +127,19 @@
         <li>Mid-pilot check with Bridge&amp;Bite: one short email or call.</li>
         <li>No daily login required for workers.</li>
       </ul>
+    </div>
+
+    <h2>What success looks like</h2>
+    <div class="card plain">
+      <p style="margin:0 0 8px;color:var(--muted)">For a small pilot, useful signs of value look like this — not claims about relapse or hospitalisations until you have evidence:</p>
+      <ul>
+        <li>Clients have another option during cravings or difficult periods between appointments</li>
+        <li>More practice of coping / reflection strategies between sessions</li>
+        <li>Better preparation for appointments (what to bring up with their worker)</li>
+        <li>Greater connection with recovery activities already offered by your service</li>
+        <li>Positive participant and staff feedback on the briefing and the experience</li>
+      </ul>
+      <p style="margin:10px 0 0;color:var(--muted);font-size:.9rem">We do not claim reductions in relapse, hospitalisation, or clinical treatment outcomes without a properly documented pilot.</p>
     </div>
 
     <p class="note"><strong>Safety:</strong> Hopewick is not medical advice and not a crisis service. In an emergency call <strong>000</strong>. National Alcohol and Other Drug Hotline: <strong>1800 250 015</strong>. Your service’s existing escalation pathways still apply.</p>
