@@ -1,6 +1,6 @@
-# Hopewick — faith-based AOD support & AI companion 🕯️
+# Hopewick — AOD recovery support & AI recovery companion 🕯️
 
-**Hopewick** (a small light that keeps burning) is a warm, non-judgemental AI companion that runs entirely in your browser. By default it acts as a **faith-sensitive Alcohol and Other Drugs (AOD) support companion**. It can also switch to an everyday **Friend** mode.
+**Hopewick** (a small light that keeps burning) is a warm, non-judgemental **AI recovery companion** that runs entirely in your browser. The product tagline is **AOD recovery support between sessions**. Faith content is optional (Preferences / About). It can also switch to an everyday **Friend** mode.
 There's no build step, no server and no external CDNs.
 
 **Live:**
@@ -27,7 +27,7 @@ The old addresses (`https://dwayne260211.github.io/eden/` and `/eden/app/`) redi
 The product name, the companion's default name, the tagline and the company live in **one** `BRAND` constant at the top of each page:
 
 ```js
-const BRAND = { name:'Hopewick', companion:'Hope', tagline:'Faith-sensitive AOD support, between sessions', company:'BRIDGE&BITE.CO PTY LTD', abn:'83 692 080 792', year:2026, ... };
+const BRAND = { name:'Hopewick', companion:'Hope', tagline:'AOD recovery support between sessions', company:'BRIDGE&BITE.CO PTY LTD', abn:'83 692 080 792', year:2026, ... };
 ```
 
 To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html`, then run `python3 tools/make_og.py` to redraw the share image. Also update the static fallback text in the `<head>` meta tags of `index.html` (social-media crawlers don't run JavaScript). Storage keys stay `eden.*` on purpose, so existing users keep their data.
@@ -47,7 +47,7 @@ A **DEMO** badge and banner are always visible.
 
 The landing page has a "Pilot with us" section for services. **TODO:** the contact details there are a clearly marked placeholder. Add the real contact method in `index.html` (search for `TODO`).
 
-> ⚠️ Hope is an **AI support tool, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
+> ⚠️ Hope is an **AI recovery companion, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
 
 ## Getting help (Australia)
 
@@ -60,6 +60,7 @@ The **Get help now** button is always at the top of the screen. All numbers were
 | Suicide Call Back Service | **1300 659 467** |
 | National Alcohol and Other Drug Hotline | **1800 250 015** |
 | Adis 24/7 Alcohol and Drug Support (QLD) | **1800 177 833** |
+| 1800RESPECT (domestic, family and sexual violence) | **1800 737 732** |
 | 13YARN (Aboriginal and Torres Strait Islander crisis support) | **13 92 76** |
 
 ## Open it
@@ -74,19 +75,20 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 1. **Who's chatting?** Pick **Dwayne** or **Abbey**, or add a person. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings.
 2. Read the short one-time disclaimer.
-3. **Visitors:** use **Try the demo** (no key, nothing sent) or **Get early access**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
+3. **Visitors:** use **Try the demo** (no key, nothing sent) or **Join waitlist**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
 
 ## Features
 
+- **Product copy + crisis UX (v5.10).** Tagline **AOD recovery support between sessions**; Hope standardised as an **AI recovery companion**; CTA **Join waitlist**; About uses progressive disclosure; crisis card leads with moment-first actions (incl. **1800RESPECT**).
 - **Find a church (v5.8).** Official Australian denominational finders (ACC, Catholic free parish lookup, Anglican dioceses, Uniting, Baptist state unions, Salvation Army, Presbyterian, Lutheran, Churches of Christ) plus AusChurches directory and maps. Hopewick does **not** scrape or host a church database — link-outs only. Soft-hidden when faith preference is “none” (same pattern as Bible); chat chip if someone asks for a church.
-- **Info & training (v5.9).** Curated official Australian AOD **workforce training** and public information sites (Insight eLearning & webinars first, plus Dovetail, NCETA, Cracks in the Ice worker resources, ADF, Positive Choices, AIHW, Counselling Online). Hopewick **does not** run these courses — link-outs only. Useful for rehab/AOD workers exploring Hopewick as a pilot tool. Faith-independent; visible in demo.
+- **Info & training (v5.9 / samples in v5.10).** Curated official Australian AOD **workforce training** and public information sites (Insight eLearning & webinars first, plus Dovetail, NCETA, Cracks in the Ice worker resources, ADF, Positive Choices, AIHW, Counselling Online). Featured Insight card lists **sample courses** with deep links (trauma-informed care pathways; Understanding Drugs — Methamphetamine/Alcohol/Cannabis/Opioids; Meth Check). Hopewick **does not** host or enrol — link-outs only; catalogue may change. Faith-independent; visible in demo.
 - **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; visible in demo.
 - **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
 
 
 - **Two modes.** *AOD faith counsellor* (the default) or *Friend*. The counsellor draws on motivational interviewing (OARS, working with mixed feelings, stages of change), harm reduction, relapse prevention (triggers, HALT, urge surfing, coping plans), CBT-style reframing and SMART goals. Its approach is strengths-based, trauma-informed and culturally safe. It also encourages real-world support: a GP, your local AOD service, your faith community, SMART Recovery, AA/NA or Celebrate Recovery.
 - **Faith settings.** Choose Faith-inclusive / general spirituality (the default), Christian, Catholic, Islamic, Jewish, Buddhist, Hindu, Sikh, Indigenous spirituality (respectful, and defers to Elders and community) or No faith content. You can also set how much faith content you want: *Only when I ask*, *Gently woven in* (the default) or *Central*. Hope is never preachy or shaming, and it paraphrases sacred texts, saying so, rather than risk misquoting them.
-- **Safety first.** Words that suggest risk (suicide, self-harm, overdose, feeling unsafe, someone in danger) instantly show a crisis card with the contacts above. This works even offline or without an API key. Hope is also told to give those contacts first.
+- **Safety first.** Words that suggest risk (suicide, self-harm, overdose, about to use / extreme craving, domestic violence, feeling unsafe, someone in danger) instantly show a crisis card that leads with **what to do in this moment** and call buttons, then notes that Hope is an AI recovery companion. This works even offline or without an API key. Hope is also told to give those contacts first.
 - **Recovery counter.** Set a start date and a label (e.g. "alcohol-free") and the day count shows in the sidebar.
 - **Daily check-in.** Pick a mood and rate your cravings, with a strip showing the last 7 days. Quick-start chips include *I'm having a craving*, *I slipped up*, *Help me make a plan*, *Pray with me* and *I want to cut down*.
 - **Memory.** After each exchange Hope notes useful facts for each person, such as goals, triggers, supports, what helps and faith preferences. It never stores crisis details. You can view, edit, add or delete memories in the **Memories** panel.

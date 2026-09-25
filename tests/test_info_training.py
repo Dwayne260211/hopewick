@@ -15,6 +15,16 @@ LAND = ROOT / "index.html"
 REQUIRED_URLS = [
     "https://insight.qld.edu.au/",
     "https://insight.qld.edu.au/dovetail",
+    "https://insight.qld.edu.au/toolkits/trauma-informed-care/detail",
+    "https://insight.qld.edu.au/training/methamphetamine/landing",
+    "https://insight.qld.edu.au/training/alcohol/landing",
+    "https://insight.qld.edu.au/training/cannabis/landing",
+    "https://insight.qld.edu.au/training/understanding-drugs-opioids/landing",
+    "https://insight.qld.edu.au/toolkits/understanding-drugs/detail",
+    "https://insight.qld.edu.au/toolkits/meth-check/detail",
+    "https://insight.qld.edu.au/training/psychostimulants-withdrawal-management/landing",
+    "https://insight.qld.edu.au/training/elearning/course-guide",
+    "https://insight.qld.edu.au/training/elearning",
     "https://nceta.flinders.edu.au/",
     "https://cracksintheice.org.au/health-professionals/online-resources",
     "https://adf.org.au/",
@@ -27,8 +37,8 @@ REQUIRED_URLS = [
 def test_static_info_training_tool():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.9'" in text
-    assert 'content="hopewick-v5.9"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.10'" in text
+    assert 'content="hopewick-v5.10"' in land
     assert 'id="infoDlg"' in text
     assert "function openInfoTraining" in text
     assert 'id="sideInfoBtn"' in text
@@ -43,6 +53,14 @@ def test_static_info_training_tool():
     dlg = re.search(r'<dialog id="infoDlg".*?</dialog>', text, re.S).group(0)
     assert dlg.find("insight.qld.edu.au") < dlg.find("adf.org.au")
     assert "Featured" in dlg
+    assert "Sample courses" in dlg
+    assert "Trauma-informed care" in dlg or "trauma-informed care" in dlg
+    assert "Foundations of Trauma-Informed Care" in dlg
+    assert "Applying Trauma-Informed Care in Practice" in dlg
+    assert "Methamphetamine" in dlg
+    assert "Understanding Drugs" in dlg or "Understanding drugs" in dlg
+    assert "Meth Check" in dlg
+    assert "Alcohol" in dlg and "Cannabis" in dlg and "Opioids" in dlg
     assert "Jesus" not in dlg
     assert "pray" not in dlg.lower()
 
@@ -82,9 +100,16 @@ def test_info_training_ui():
             assert "adf" in low or "alcohol and drug foundation" in low
             assert "dovetail" in low
             assert "nceta" in low
+            assert "sample courses" in low
+            assert "trauma" in low
+            assert "methamphetamine" in low
+            assert "understanding drugs" in low
+            assert "meth check" in low
             page.screenshot(path=str(shot_dir / "v59-info-training.png"))
             page.locator("#infoStaffSection").scroll_into_view_if_needed()
             page.screenshot(path=str(shot_dir / "v59-info-training-staff.png"))
+            page.locator("#infoInsightSamples").scroll_into_view_if_needed()
+            page.screenshot(path=str(shot_dir / "v510-info-insight-samples.png"))
             page.locator("#infoEveryoneSection").scroll_into_view_if_needed()
             page.screenshot(path=str(shot_dir / "v59-info-training-everyone.png"))
             browser.close()

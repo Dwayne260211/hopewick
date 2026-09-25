@@ -806,6 +806,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .info-hub-bullets { margin: 10px 0 0; padding-left: 1.15rem; color: var(--muted); font-size: .88rem; line-height: 1.45; }
 .info-hub-bullets li { margin: 0 0 4px; }
+.info-hub-samples { margin: 12px 0 0; padding: 10px 12px; border: 1px dashed var(--border); border-radius: 10px; background: var(--surface, transparent); }
+.info-hub-samples > h4 { margin: 0 0 6px; font-size: .92rem; }
+.info-hub-samples > p { margin: 0 0 8px; font-size: .82rem; color: var(--muted); line-height: 1.4; }
+.info-hub-samples-group { margin: 0 0 10px; }
+.info-hub-samples-group:last-child { margin-bottom: 0; }
+.info-hub-samples-group > strong { display: block; font-size: .8rem; margin: 0 0 4px; color: var(--text); }
+.info-hub-samples-list { margin: 0; padding-left: 1.1rem; font-size: .82rem; line-height: 1.45; color: var(--muted); }
+.info-hub-samples-list li { margin: 0 0 4px; }
+.info-hub-samples-list a { color: var(--accent, #3f8f5f); }
 .treatment-state-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -857,7 +866,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .treatment-helpline a { color: inherit; text-decoration: none; }
 .treatment-helpline a:hover { text-decoration: underline; }
 
-/* v5.3: early access / waitlist (mailto, no accounts) */
+/* v5.3/v5.10: Join waitlist (mailto, no accounts) */
 /* v5.4: demo-first UX; own API key under Advanced */
 /* v5.5: in-app WEB Bible (public domain) + SOAP deep-link */
 /* v5.6: Diving Deeper Finding Jesus — whole Bible + Hope connections */
@@ -1154,7 +1163,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <ul class="about-short">
       <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
       <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
-      <li><strong>If you’re in danger.</strong> Call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
+      <li><strong>Not a crisis service.</strong> If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
       <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
@@ -1181,7 +1190,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 </dialog>
 
 
-<!-- ============================ Early access / waitlist ============================ -->
+<!-- ============================ Join waitlist ============================ -->
 <dialog id="waitlistDlg" class="waitlist-dlg" aria-labelledby="waitlistTitle">
   <form method="dialog" class="dlg-head">
     <h2 id="waitlistTitle">Join waitlist</h2>
@@ -1932,12 +1941,35 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="info-hub-section" id="infoStaffSection">
       <h3>For AOD staff &amp; students</h3>
       <div class="meeting-cards">
-        <div class="info-hub-featured meeting-card">
+        <div class="info-hub-featured meeting-card" id="infoInsightFeatured">
           <div class="badge">Featured · QLD Health workforce</div>
           <h3>Insight — AOD training &amp; eLearning</h3>
-          <p>Queensland’s specialist AOD workforce development centre: free eLearning, webinars, workshops and practice toolkits for workers and students.</p>
+          <p>Queensland’s specialist AOD workforce development centre: free self-paced eLearning, webinars, workshops and practice toolkits for AOD, mental health and SEWB workers and students. <span data-brand></span> does not host or enrol you — these are sample deep links into Insight’s catalogue (titles and URLs can change).</p>
           <div class="row">
             <a class="btn btn-primary btn-sm" href="https://insight.qld.edu.au/" target="_blank" rel="noopener noreferrer">Open Insight</a>
+            <a class="btn btn-sm" href="https://insight.qld.edu.au/training/elearning" target="_blank" rel="noopener noreferrer">Browse eLearning</a>
+            <a class="btn btn-sm" href="https://insight.qld.edu.au/training/elearning/course-guide" target="_blank" rel="noopener noreferrer">Course guide</a>
+          </div>
+          <div class="info-hub-samples" id="infoInsightSamples">
+            <h4>Sample courses</h4>
+            <p>Named examples only — open Insight to enrol. Free and self-paced for AOD / MH / SEWB workers.</p>
+            <div class="info-hub-samples-group">
+              <strong>Trauma-informed care</strong>
+              <ul class="info-hub-samples-list">
+                <li><a href="https://insight.qld.edu.au/toolkits/trauma-informed-care/detail" target="_blank" rel="noopener noreferrer">Trauma-informed care toolkit</a> — pathways: <em>Foundations of Trauma-Informed Care</em> (4 modules); <em>Applying Trauma-Informed Care in Practice</em> (7 modules)</li>
+              </ul>
+            </div>
+            <div class="info-hub-samples-group">
+              <strong>Substance effects (Understanding Drugs + Meth Check)</strong>
+              <ul class="info-hub-samples-list">
+                <li><a href="https://insight.qld.edu.au/training/methamphetamine/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Methamphetamine</a> (1.03, Level 1 Core AOD Knowledge) — effects, harms, dependence, harm reduction, intoxication</li>
+                <li><a href="https://insight.qld.edu.au/training/alcohol/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Alcohol</a></li>
+                <li><a href="https://insight.qld.edu.au/training/cannabis/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Cannabis</a></li>
+                <li><a href="https://insight.qld.edu.au/training/understanding-drugs-opioids/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Opioids</a></li>
+                <li><a href="https://insight.qld.edu.au/toolkits/understanding-drugs/detail" target="_blank" rel="noopener noreferrer">Understanding drugs toolkit</a> (full series)</li>
+                <li><a href="https://insight.qld.edu.au/toolkits/meth-check/detail" target="_blank" rel="noopener noreferrer">Meth Check toolkit</a> — clinician tools for methamphetamine; includes <a href="https://insight.qld.edu.au/training/psychostimulants-withdrawal-management/landing" target="_blank" rel="noopener noreferrer">Psychostimulant withdrawal management</a> (2.04)</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="meeting-card">
@@ -2000,7 +2032,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         </div>
         <div class="meeting-card">
           <h3>Cracks in the Ice (public)</h3>
-          <p>Clear, evidence-based information about ice for individuals, families and communities.</p>
+          <p>Clear, evidence-based information about ice for individuals, families and communities. For workforce meth training samples, see Insight above (and ADF for general drug facts).</p>
           <div class="row">
             <a class="btn btn-primary btn-sm" href="https://cracksintheice.org.au/" target="_blank" rel="noopener noreferrer">Open Cracks in the Ice</a>
           </div>
@@ -2143,7 +2175,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.9';
+const EDEN_BUILD = 'hopewick-v5.10';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -3128,7 +3160,7 @@ function counsellorPrompt(convo) {
     settings.traits.length ? `Personality: ${settings.traits.join(', ')}.${settings.traitsCustom ? ' ' + settings.traitsCustom : ''}` : '',
     '',
     'WHO YOU ARE (AND AREN\'T)',
-    '- You are an AI support tool, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant, without repeating it constantly.',
+    '- You are an AI recovery companion, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant (especially after crisis action steps), without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
     '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers. When they ask about AOD training, eLearning, workforce development or reliable drug information sites, suggest opening Info & training in the sidebar (Insight, Dovetail, NCETA, ADF and similar official AU link-outs) — do not invent course catalogues. When they ask about finding a church, parish or congregation, suggest opening Find a church in the sidebar (official Australian denominational finders and maps) — do not invent church lists or claim Hopewick runs churches.',
     '',
@@ -3305,8 +3337,9 @@ async function sendMessage(textOverride) {
   if (!text) return;
   if (isDemo) { demoHandle(text); return; }
   const crisis = CRISIS_RE.test(text);
+  const crisisKind = crisis ? classifyCrisis(text) : null;
   if (!settings.apiKey && !crisis) {
-    promptNeedAi('To chat with live AI need to join the waitlist (coming soon) or an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
+    promptNeedAi('To chat with live AI, join the waitlist (coming soon) or use an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
     return;
   }
 
@@ -3316,7 +3349,7 @@ async function sendMessage(textOverride) {
   if (crisis) userMsg.crisis = true;
   c.messages.push(userMsg);
   // Safety first: show crisis contacts immediately, even with no API key or network.
-  if (crisis) c.messages.push({ role: 'assistant', card: 'crisis', content: '', ts: Date.now() });
+  if (crisis) c.messages.push({ role: 'assistant', card: 'crisis', crisisKind, content: '', ts: Date.now() });
   if (c.title === 'New chat') c.title = text.length > 42 ? text.slice(0, 40).trim() + '…' : text;
   c.updated = Date.now();
   persistConvos();
@@ -6586,9 +6619,10 @@ async function playScenario(turns, fresh) {
         if (i > 0) await demoSleep(1300, run);
         const msg = { role: 'user', content: text, ts: Date.now() };
         const crisis = CRISIS_RE.test(text);
+        const crisisKind = crisis ? classifyCrisis(text) : null;
         if (crisis) msg.crisis = true;
         c.messages.push(msg);
-        if (crisis) c.messages.push({ role: 'assistant', card: 'crisis', content: '', ts: Date.now() });
+        if (crisis) c.messages.push({ role: 'assistant', card: 'crisis', crisisKind, content: '', ts: Date.now() });
         if (c.title === 'New chat') c.title = text.length > 42 ? text.slice(0, 40).trim() + '…' : text;
         c.updated = Date.now();
         renderMessages(); renderHistory(); updateMoodPill();
@@ -6609,7 +6643,7 @@ async function playScenario(turns, fresh) {
 }
 
 /* ---------------------------------------------------------------------------
-   Early access / waitlist (mailto — no accounts, no payments)
+   Join waitlist (mailto — no accounts, no payments)
    --------------------------------------------------------------------------- */
 const WAITLIST_TO = 'Admin@bridge-bite-co.com';
 const ACCESS_PROMPT_KEY = 'hopewick.waitlistPrompt.v1';
