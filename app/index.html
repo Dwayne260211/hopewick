@@ -459,6 +459,21 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .need-ai-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 14px; line-height: 1.45; }
 .need-ai-actions { display: flex; flex-direction: column; gap: 8px; }
 .need-ai-actions .btn { width: 100%; justify-content: center; }
+.invite-dlg { width: min(440px, calc(100vw - 24px)); }
+.invite-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
+.invite-form { display: grid; gap: 10px; }
+.invite-form label { display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
+.invite-form input {
+  font: inherit; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); color: inherit;
+}
+.invite-form input:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
+.invite-status { min-height: 1.2em; font-size: .85rem; color: var(--muted); margin: 0; }
+.invite-status.bad { color: #b42318; }
+.invite-status.ok { color: var(--accent-strong); }
+.invite-privacy, .hosted-privacy {
+  font-size: .76rem; color: var(--muted); margin: 10px 0 0; line-height: 1.4;
+}
 .banner .banner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* Profile picker */
@@ -1110,6 +1125,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <p>🌱 <strong>Try <span data-brand></span> free.</strong> Live AI accounts aren’t open yet — explore the demo (pre-written examples, nothing sent), or <strong>Join waitlist</strong> to hear when accounts open.</p>
       <div class="banner-actions">
         <button class="btn btn-primary btn-sm" type="button" id="keyBannerDemo">✨ Try the demo</button>
+        <button class="btn btn-sm" type="button" id="keyBannerInvite">Enter invite code</button>
         <button class="btn btn-sm" type="button" id="keyBannerWaitlist">Join waitlist</button>
       </div>
     </div>
@@ -1321,15 +1337,41 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede" id="needAiLede">Live AI chat needs a hosted account (coming soon) or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.</p>
+    <p class="lede" id="needAiLede">Live AI chat needs a hosted account (coming soon), an invite code, or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.</p>
     <div class="need-ai-actions">
       <button class="btn btn-primary" type="button" id="needAiDemoBtn">✨ Try the demo</button>
+      <button class="btn" type="button" id="needAiInviteBtn">Enter invite code</button>
       <button class="btn" type="button" id="needAiWaitlistBtn">Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
     </div>
+    <p class="hosted-privacy">With a hosted invite, messages go via Bridge&amp;Bite then the model provider — not stored as an account chat history in this app.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="needAiCloseBtn">Not now</button>
+  </div>
+</dialog>
+
+<!-- ============================ Invite code ============================ -->
+<dialog id="inviteDlg" class="invite-dlg" aria-labelledby="inviteTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="inviteTitle">Enter invite code</h2>
+    <button class="icon-btn" value="close" aria-label="Close invite">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="lede">If Bridge&amp;Bite or a partner gave you a pilot invite, enter it here. You’ll get a session token for live AI on this device — no need for your own API key.</p>
+    <form class="invite-form" id="inviteForm" novalidate>
+      <label for="inviteCodeInput">Invite code
+        <input id="inviteCodeInput" type="text" autocomplete="off" spellcheck="false" placeholder="e.g. HOPE-DEMO-001" required>
+      </label>
+      <button class="btn btn-primary" type="submit" id="inviteSubmitBtn">Redeem invite</button>
+    </form>
+    <p class="invite-status" id="inviteStatus" role="status" aria-live="polite"></p>
+    <p class="invite-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Demo mode still sends nothing.</p>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="inviteCloseBtn">Close</button>
   </div>
 </dialog>
 
@@ -1494,12 +1536,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
     </div>
     <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
-      <p class="advanced-lede">Most visitors use the <strong>free demo</strong> or <strong>Join waitlist</strong> to hear when accounts open. Live hosted accounts aren’t open yet.
+      <p class="advanced-lede">Most visitors use the <strong>free demo</strong>, an <strong>invite code</strong>, or <strong>Join waitlist</strong>. Live public accounts aren’t open yet.
         <span class="adv-actions">
           <button class="btn btn-sm btn-primary" type="button" id="advTryDemoBtn">✨ Try the demo</button>
+          <button class="btn btn-sm" type="button" id="advInviteBtn">Enter invite code</button>
           <button class="btn btn-sm" type="button" id="advWaitlistBtn">Join waitlist</button>
         </span>
       </p>
+      <p class="hosted-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Own-key Advanced still talks only to the URL you set.</p>
       <details class="own-key-details" id="ownKeyDetails">
         <summary>Use my own API key</summary>
         <div class="own-key-body">
@@ -2278,6 +2322,27 @@ function save(key, value) {
 const SHARED_KEYS = ['baseUrl', 'model', 'apiKey', 'stream'];
 const SETTINGS_VERSION = 2; // v2 = counsellor mode introduced (migrates everyone once)
 const DEFAULT_SHARED = { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: '', stream: true };
+/* Hopewick company-held API (Azure Functions).
+   Redeem POSTs to {HOPEWICK_INVITE_API}/redeem; response baseUrl is used for /chat/completions.
+   Production Azure is the default so invite flow works on hopewick.com.au without a personal OpenAI key.
+   Local-dev override: ?hopewickApi=local  OR  localStorage.setItem('hopewick.inviteApi','local')
+   (also accepts hopewickApi=prod or a full https base URL). */
+const HOPEWICK_INVITE_API_PROD = 'https://hopewick-api.azurewebsites.net/api';
+const HOPEWICK_INVITE_API_LOCAL = 'http://127.0.0.1:7071/api';
+function resolveHopewickInviteApi() {
+  try {
+    const q = new URLSearchParams(location.search).get('hopewickApi');
+    if (q === 'local') return HOPEWICK_INVITE_API_LOCAL;
+    if (q === 'prod') return HOPEWICK_INVITE_API_PROD;
+    if (q && /^https?:\/\//i.test(q)) return String(q).replace(/\/+$/, '');
+    const ls = localStorage.getItem('hopewick.inviteApi');
+    if (ls === 'local') return HOPEWICK_INVITE_API_LOCAL;
+    if (ls === 'prod') return HOPEWICK_INVITE_API_PROD;
+    if (ls && /^https?:\/\//i.test(ls)) return String(ls).replace(/\/+$/, '');
+  } catch (_) {}
+  return HOPEWICK_INVITE_API_PROD;
+}
+const HOPEWICK_INVITE_API = resolveHopewickInviteApi();
 const DEFAULT_PROFILE_SETTINGS = {
   settingsVersion: SETTINGS_VERSION,
   mode: 'counsellor',
@@ -2554,7 +2619,7 @@ const el = {
   autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'), infoDlg: $('#infoDlg'),
@@ -6547,7 +6612,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.infoDlg, el.needAiDlg, el.waitlistDlg, el.aboutDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.infoDlg, el.needAiDlg, el.waitlistDlg, el.inviteDlg, el.aboutDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -6873,10 +6938,78 @@ $('#needAiDemoBtn').addEventListener('click', () => { closeNeedAi(); enterDemo()
 $('#needAiWaitlistBtn').addEventListener('click', () => { closeNeedAi(); openWaitlist('need-ai'); });
 $('#needAiAdvancedBtn').addEventListener('click', () => { closeNeedAi(); openSettings('setKey', 'advanced'); });
 $('#needAiCloseBtn').addEventListener('click', closeNeedAi);
+const needAiInviteBtn = $('#needAiInviteBtn');
+if (needAiInviteBtn) needAiInviteBtn.addEventListener('click', () => { closeNeedAi(); openInviteDlg(); });
+const keyBannerInvite = $('#keyBannerInvite');
+if (keyBannerInvite) keyBannerInvite.addEventListener('click', () => openInviteDlg());
 const advTry = $('#advTryDemoBtn');
 if (advTry) advTry.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); enterDemo(); });
+const advInvite = $('#advInviteBtn');
+if (advInvite) advInvite.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openInviteDlg(); });
 const advWl = $('#advWaitlistBtn');
 if (advWl) advWl.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openWaitlist('advanced'); });
+
+/* ---------------------------------------------------------------------------
+   Invite code redeem → eden.shared.v1 (baseUrl, apiKey=token, model)
+   Prefer invite session when token present; Advanced own-key path unchanged.
+   --------------------------------------------------------------------------- */
+function openInviteDlg() {
+  if (isDemo) { toast('Exit the demo first to redeem an invite.', false, 3500); return; }
+  const st = $('#inviteStatus');
+  if (st) { st.textContent = ''; st.className = 'invite-status'; }
+  const inp = $('#inviteCodeInput');
+  if (el.inviteDlg && !el.inviteDlg.open) el.inviteDlg.showModal();
+  if (inp) setTimeout(() => inp.focus(), 40);
+}
+function closeInviteDlg() { if (el.inviteDlg && el.inviteDlg.open) el.inviteDlg.close(); }
+async function redeemInviteCode(code) {
+  const cleaned = String(code || '').trim();
+  if (!cleaned) throw new Error('Enter an invite code.');
+  const r = await fetch(`${HOPEWICK_INVITE_API}/redeem`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ code: cleaned }),
+  });
+  let data = {};
+  try { data = await r.json(); } catch (_) { data = {}; }
+  if (!r.ok) {
+    const msg = data.message || (data.error && (data.error.message || data.error)) || `Redeem failed (${r.status})`;
+    throw new Error(typeof msg === 'string' ? msg : 'Redeem failed');
+  }
+  if (!data.token || !data.baseUrl) throw new Error('Invite response missing token or baseUrl.');
+  // Write into shared store — same fields Advanced uses; invite preferred when present.
+  settings.baseUrl = String(data.baseUrl).replace(/\/+$/, '');
+  settings.apiKey = String(data.token);
+  settings.model = String(data.model || settings.model || DEFAULT_SHARED.model);
+  for (const k of SHARED_KEYS) shared[k] = settings[k];
+  save(K.shared, shared);
+  if (profile && !isDemo) saveSettings();
+  renderAll();
+  return data;
+}
+const inviteForm = $('#inviteForm');
+if (inviteForm) inviteForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const st = $('#inviteStatus');
+  const btn = $('#inviteSubmitBtn');
+  const code = ($('#inviteCodeInput') || {}).value || '';
+  if (st) { st.className = 'invite-status'; st.textContent = 'Redeeming…'; }
+  if (btn) btn.disabled = true;
+  try {
+    const data = await redeemInviteCode(code);
+    if (st) { st.className = 'invite-status ok'; st.textContent = `Connected${data.org ? ' · ' + data.org : ''}. You can chat with live AI.`; }
+    toast('Invite redeemed — live AI ready on this device', false, 4000);
+    setTimeout(() => closeInviteDlg(), 600);
+  } catch (err) {
+    const msg = String(err && err.message ? err.message : err);
+    if (st) { st.className = 'invite-status bad'; st.textContent = msg; }
+    toast(msg, true, 5000);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+});
+const inviteCloseBtn = $('#inviteCloseBtn');
+if (inviteCloseBtn) inviteCloseBtn.addEventListener('click', closeInviteDlg);
 
 
 function demoChipsEl() {

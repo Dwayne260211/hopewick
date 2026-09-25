@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Hopewick — Pilot pricing | BRIDGE&amp;BITE.CO</title>
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #e7e5e4;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
+      --paper: #fff;
+      --wash: #fafaf9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px 16px 40px;
+      font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink); background: var(--wash);
+    }
+    .sheet {
+      max-width: 760px; margin: 0 auto; background: var(--paper);
+      border: 1px solid var(--line); border-radius: 14px; padding: 28px 28px 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+    .brand { font-size: 1.35rem; font-weight: 750; letter-spacing: -.02em; }
+    .brand span { color: var(--accent); }
+    .meta { color: var(--muted); font-size: .85rem; }
+    h1 { font-size: 1.15rem; margin: 0 0 6px; font-weight: 700; }
+    .pitch { margin: 0 0 18px; color: var(--muted); font-size: .98rem; }
+    h2 { font-size: .95rem; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin: 20px 0 10px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--accent-soft);
+      margin-bottom: 12px;
+    }
+    .card.plain { background: #fff; }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card .price { font-size: 1.25rem; font-weight: 750; margin: 4px 0 8px; }
+    .card .price small { font-size: .75rem; font-weight: 600; color: var(--muted); }
+    ul { margin: 8px 0 0; padding-left: 1.15em; }
+    li { margin: 3px 0; }
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    @media (max-width: 640px) { .tiers { grid-template-columns: 1fr; } }
+    .tier { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: #fff; }
+    .tier.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .tier h3 { margin: 0 0 4px; font-size: 1rem; }
+    .note, .disclaimer, .contact {
+      font-size: .82rem; color: var(--muted); margin: 12px 0 0; line-height: 1.4;
+    }
+    .contact { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink); }
+    .contact a { color: var(--accent); }
+    .badge {
+      display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .05em; background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .sheet { box-shadow: none; border: none; border-radius: 0; max-width: none; padding: 0; }
+      a { color: inherit; text-decoration: none; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <article class="sheet">
+    <header>
+      <div class="brand">Hopewick <span>🕯️</span></div>
+      <div class="meta">BRIDGE&amp;BITE.CO PTY LTD · ABN 83 692 080 792</div>
+    </header>
+
+    <h1>Pilot price sheet</h1>
+    <p class="pitch"><strong>Hopewick</strong> is an AI AOD recovery companion (Hope) that helps keep hope lit between sessions — for clients and the staff who walk with them. No in-app ads. Bridge&amp;Bite holds the AI key and usage caps; access is via invite codes.</p>
+
+    <h2>Starting offer — free pilot</h2>
+    <div class="card">
+      <span class="badge">Evaluate fit</span>
+      <h3>Free pilot for QLD AOD services</h3>
+      <p style="margin:0;color:var(--muted)">A no-obligation trial so your team can see whether Hopewick fits your setting. Soft offer for evaluation — not a sponsored program.</p>
+      <ul>
+        <li><strong>Duration:</strong> 4–6 weeks (agree start/end with us)</li>
+        <li><strong>Seats:</strong> 5–10 active invites (staff and/or clients — you choose the mix)</li>
+        <li><strong>Included:</strong> company-held AI access, invite codes, fair usage caps, email support from Bridge&amp;Bite</li>
+        <li><strong>Not included:</strong> clinical oversight, crisis response, or medical advice — Hopewick supports recovery conversations between sessions</li>
+      </ul>
+    </div>
+
+    <h2>After the pilot — simple monthly plans (AUD)</h2>
+    <div class="tiers">
+      <div class="tier">
+        <h3>Starter</h3>
+        <div class="price">$149 <small>/ month</small></div>
+        <ul>
+          <li>Up to <strong>10</strong> active seats</li>
+          <li>Invite codes + usage caps</li>
+          <li>Email support</li>
+          <li>Best for a small team or single program</li>
+        </ul>
+      </div>
+      <div class="tier featured">
+        <h3>Service</h3>
+        <div class="price">$349 <small>/ month</small></div>
+        <ul>
+          <li>Up to <strong>40</strong> active seats</li>
+          <li>Invite codes + higher caps</li>
+          <li>Priority email support</li>
+          <li>Best for a typical NGO site</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <h3>Multi-site</h3>
+        <div class="price">$749 <small>/ month</small></div>
+        <ul>
+          <li>Up to <strong>100</strong> seats across sites</li>
+          <li>Per-site invite pools on request</li>
+          <li>Named contact at Bridge&amp;Bite</li>
+          <li>Best for networks / multi-campus</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note"><strong>How access works:</strong> Bridge&amp;Bite.Co holds the AI provider key. Your people redeem invite codes in the Hopewick app — no personal OpenAI keys required for normal pilot or paid seats. Fair monthly usage caps apply; we can discuss higher caps if needed. Prices are round starting offers for small Australian AOD NGOs and can be adjusted for your seat mix.</p>
+    <p class="note"><strong>GST:</strong> All figures in Australian dollars (AUD). GST will be added on invoices if/when BRIDGE&amp;BITE.CO PTY LTD is GST-registered; we will confirm on your quote.</p>
+
+    <p class="disclaimer"><strong>Disclaimer:</strong> Hopewick is not medical advice and is not a crisis service. In an emergency call <strong>000</strong>. For AOD support, Australia’s National Alcohol and Other Drug Hotline is <strong>1800 250 015</strong>.</p>
+
+    <p class="contact">
+      <strong>Pilot &amp; pricing enquiries</strong><br>
+      BRIDGE&amp;BITE.CO PTY LTD · ABN 83 692 080 792<br>
+      <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a> ·
+      <a href="https://hopewick.com.au/">hopewick.com.au</a>
+    </p>
+    <p class="note no-print">Print this page (Ctrl/Cmd+P) or share the URL. A short email paste version lives in <code>docs/pilot-pricing-email.txt</code>.</p>
+  </article>
+</body>
+</html>

@@ -1,4 +1,8 @@
-
 __pycache__/
 *.pyc
+.pytest_cache/
 
+# Never commit local Azure Functions secrets / keys
+**/local.settings.json
+**/.env
+**/.env.local
