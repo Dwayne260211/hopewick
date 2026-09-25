@@ -37,12 +37,13 @@ REQUIRED_URLS = [
 def test_static_info_training_tool():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.11'" in text
-    assert 'content="hopewick-v5.11"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.12'" in text
+    assert 'content="hopewick-v5.12"' in land
     assert 'id="infoDlg"' in text
     assert "function openInfoTraining" in text
     assert 'id="sideInfoBtn"' in text
-    assert "Info &amp; training" in text or "Info & training" in text
+    assert "overflow-y: auto" in text  # sidebar must scroll on long menus
+    assert ("Info &amp; AOD training" in text or "Info & AOD training" in text)
     assert "For AOD staff" in text
     assert "For everyone" in text
     assert "insight.qld.edu.au" in text

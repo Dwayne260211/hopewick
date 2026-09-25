@@ -109,6 +109,13 @@ svg { flex: none; }
   backdrop-filter: blur(12px);
   z-index: 30;
   transition: transform .28s ease;
+  height: 100%;
+  max-height: 100dvh;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 8px; }
 .brand-mark { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e3f9d2, #7cc49a 50%, #2f7a50); box-shadow: 0 0 14px rgba(124,196,154,.6); }
@@ -139,7 +146,7 @@ svg { flex: none; }
 .icon-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); }
 
 .history-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 8px 10px 0; }
-.history { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.history { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 0 1 auto; max-height: 28vh; min-height: 0; display: flex; flex-direction: column; gap: 2px; }
 .history li { display: flex; align-items: center; border-radius: 10px; }
 .history li:hover, .history li.active { background: var(--surface-2); }
 .history li.active { box-shadow: inset 3px 0 0 var(--accent); }
@@ -149,7 +156,7 @@ svg { flex: none; }
 .history .del { opacity: 0; width: 32px; height: 32px; }
 .history li:hover .del, .history li.active .del, .history .del:focus-visible { opacity: 1; }
 .history-empty { color: var(--muted); font-size: .88rem; padding: 10px; }
-.sidebar-foot { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border); padding-top: 10px; }
+.sidebar-foot { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border); padding-top: 10px; flex: 0 0 auto; padding-bottom: 12px; }
 .sidebar-foot .btn { justify-content: flex-start; }
 
 .scrim { display: none; }
@@ -370,7 +377,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
    Responsive
    ========================================================================== */
 @media (max-width: 860px) {
-  .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-105%); box-shadow: var(--shadow); background: var(--surface); visibility: hidden; transition: transform .28s ease, visibility 0s .28s; }
+  .sidebar { position: fixed; inset: 0 auto 0 0; width: min(var(--sidebar-w), 88vw); height: 100%; max-height: 100dvh; overflow-y: auto; -webkit-overflow-scrolling: touch; transform: translateX(-105%); box-shadow: var(--shadow); background: var(--surface); visibility: hidden; transition: transform .28s ease, visibility 0s .28s; }
   .app.sidebar-open .sidebar { transform: none; visibility: visible; transition: transform .28s ease; }
   .app.sidebar-open .scrim { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 25; }
   .menu-btn { display: inline-grid; }
@@ -1020,15 +1027,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Find AOD services
       </button>
+      <button class="btn btn-ghost" type="button" data-open="info" id="sideInfoBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        Info &amp; AOD training
+      </button>
       <button class="btn btn-ghost" type="button" data-open="church" id="sideChurchBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2H6v4H2v16h20V6h-4V2z"/><path d="M12 2v4"/><path d="M12 10v8"/><path d="M8 14h8"/></svg>
         Find a church
       </button>
-      <button class="btn btn-ghost" type="button" data-open="info" id="sideInfoBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-        Info &amp; training
-      </button>
-      <button class="btn btn-ghost" type="button" data-open="memories">
+            <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
       </button>
@@ -1279,7 +1286,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
-      <button class="btn" type="button" id="helpInfoBtn">Info &amp; training — Insight &amp; AU AOD links</button>
+      <button class="btn" type="button" id="helpInfoBtn">Info &amp; AOD training — Insight &amp; staff courses</button>
       <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
     </div>
     <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
@@ -1993,7 +2000,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ Info & training ============================ -->
 <dialog id="infoDlg" aria-labelledby="infoTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="infoTitle">📚 Info &amp; training</h2>
+    <h2 id="infoTitle">📚 Info &amp; AOD training</h2>
     <button class="icon-btn" value="close" aria-label="Close info and training">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
@@ -2243,7 +2250,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.11';
+const EDEN_BUILD = 'hopewick-v5.12';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion

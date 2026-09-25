@@ -118,7 +118,7 @@ This is proprietary software. It is published for demonstration purposes only. Y
 
 
 ### Info & training (v5.9)
-Open **Demo** → sidebar **Info & training** (near Find treatment / Nutrition). Groups: **For AOD staff & students** (Insight featured, Dovetail, NCETA, Cracks in the Ice worker training) and **For everyone** (ADF, Positive Choices, AIHW, Counselling Online). Educational link-outs only — not medical advice; crisis → **Get help now**.
+Open **Demo** → sidebar **Info & AOD training** (near Find treatment / Nutrition). Groups: **For AOD staff & students** (Insight featured, Dovetail, NCETA, Cracks in the Ice worker training) and **For everyone** (ADF, Positive Choices, AIHW, Counselling Online). Educational link-outs only — not medical advice; crisis → **Get help now**.
 
 ### Find a church (v5.8)
 Open **Demo** → sidebar **Find a church** (near Find a meeting / Find treatment). Cards by tradition + maps near me + AusChurches. Or tap the chip when chat asks for a church/parish. Hidden when faith preference is **No faith content**. Also under **Get help now**.
