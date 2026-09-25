@@ -236,6 +236,8 @@ svg { flex: none; }
 .mood-btn:hover { transform: translateY(-2px); border-color: var(--accent); }
 .mood-btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
 .starters { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 18px; }
+.skills-chips { margin-top: 14px; padding-top: 4px; }
+.skill-chip { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); background: var(--accent-soft); }
 .starter { border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 7px 14px; font-size: .9rem; }
 .starter:hover { border-color: var(--accent); background: var(--surface-2); }
 
@@ -467,6 +469,47 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .radio-row label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
 .field input[type="date"] { width: 100%; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 9px 11px; }
 
+
+/* v4: clean time, gratitude, journal, steps, bible */
+.clean-hero { text-align: center; padding: 18px 8px 8px; }
+.clean-hero .big { font-size: 3.2rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
+.clean-hero .sub { color: var(--muted); margin-top: 6px; font-size: .95rem; }
+.milestone-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px 0; }
+.milestone { border: 1px solid var(--border); background: var(--surface-2); border-radius: 12px; padding: 8px 12px; font-size: .82rem; min-width: 72px; text-align: center; }
+.milestone.hit { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); font-weight: 600; }
+.milestone .n { display: block; font-size: 1.1rem; font-weight: 800; }
+.grat-card { margin: 16px auto 0; max-width: 560px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); text-align: left; }
+.grat-card h2 { font-size: 1rem; margin: 0 0 8px; font-weight: 600; }
+.grat-card .grat-inputs { display: flex; flex-direction: column; gap: 6px; }
+.grat-card input { width: 100%; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 8px 11px; }
+.grat-card .row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.journal-list, .steps-list, .bible-list, .entry-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.j-item, .step-card, .bible-card { border: 1px solid var(--border); background: var(--surface-2); border-radius: 14px; padding: 12px 14px; }
+.j-item h3, .step-card h3, .bible-card h3 { margin: 0 0 4px; font-size: 1rem; }
+.j-item .meta, .step-card .meta, .bible-card .meta { font-size: .78rem; color: var(--muted); margin-bottom: 6px; }
+.j-item .body, .step-card .body, .bible-card .body { font-size: .92rem; white-space: pre-wrap; }
+.j-item .actions, .step-card .actions, .bible-card .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.refine-box { margin-top: 12px; padding: 12px; border-radius: 12px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)); }
+.refine-box h4 { margin: 0 0 6px; font-size: .9rem; }
+.refine-cols { display: grid; gap: 10px; }
+@media (min-width: 640px) { .refine-cols { grid-template-columns: 1fr 1fr; } }
+.step-card.done { border-color: var(--accent); }
+.step-card .badge { font-size: .72rem; font-weight: 700; color: var(--accent-strong); }
+.dlg-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
+.dlg-tabs .chip { cursor: pointer; }
+.side-tools { display: flex; flex-direction: column; gap: 2px; }
+.empty-hint { color: var(--muted); font-size: .9rem; padding: 12px 4px; text-align: center; }
+.nut-panel h3 { font-size: 1rem; margin: 14px 0 6px; }
+.nut-panel ul { margin: 0 0 8px; padding-left: 1.2em; font-size: .92rem; }
+.nut-check { list-style: none; padding: 0; margin: 0; }
+.nut-check li { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: .92rem; }
+.nut-check input { margin-top: 3px; accent-color: var(--accent); }
+.meal-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.meal-chips .chip { cursor: pointer; }
+.meal-chips .chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.prog-bar { height: 6px; background: var(--surface-3); border-radius: 999px; overflow: hidden; margin: 8px 0 12px; }
+.prog-bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+
 /* v3: demo mode + copyright */
 .demo-badge { font-size: .7rem; font-weight: 800; letter-spacing: .08em; background: #f2c94c; color: #3d2f00; border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
 .demo-banner { margin: 12px 16px 0; padding: 10px 14px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
@@ -510,13 +553,37 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
       New chat
     </button>
-    <button class="sober-card" id="soberCard" type="button" hidden aria-label="Recovery counter — edit in Settings">
+    <button class="sober-card" id="soberCard" type="button" hidden aria-label="Clean time — open tracker">
       <span class="days" id="soberDays">0</span>
       <span class="lbl" id="soberLbl">days</span>
     </button>
     <div class="history-label" id="historyLabel">Conversations</div>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
     <div class="sidebar-foot">
+      <button class="btn btn-ghost" type="button" data-open="skills">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
+        Skills
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="journal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Journal
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="steps">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        12 Steps
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="bible">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 6v10"/><path d="M8 8h8"/></svg>
+        Bible study
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="nutrition">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
+        Nutrition
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="nearby">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Find nearby help
+      </button>
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
@@ -650,6 +717,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   <div class="dlg-body">
     <p style="margin:12px 0 0">If you or someone else is in immediate danger, <strong>call 000 now</strong>. These Australian services are free and confidential:</p>
     <ul class="help-list" id="helpList"></ul>
+    <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
+    </div>
     <p class="help" style="margin-top:12px"><span data-brand></span> is an AI support tool, not a counsellor or clinician. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
 </dialog>
@@ -732,17 +802,22 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
 
     <fieldset>
-      <legend>Recovery counter</legend>
+      <legend>Clean time</legend>
       <div class="field">
         <label for="setSoberStart">Start date (optional)</label>
         <input id="setSoberStart" type="date">
-        <span class="help">Shown in the sidebar. Leave empty to hide it. A slip doesn't erase your progress.</span>
+        <span class="help">Shown in the sidebar. Leave empty to hide it. A slip doesn't erase your journal or gratitude.</span>
       </div>
       <div class="field">
         <label for="setSoberWhat">Label</label>
-        <input id="setSoberWhat" type="text" maxlength="40" placeholder="e.g. alcohol-free, clean, sober">
+        <input id="setSoberWhat" type="text" maxlength="40" placeholder="e.g. clean, alcohol-free, sober">
+      </div>
+      <div class="field">
+        <label for="setSoberWhy">Why I'm choosing this (optional)</label>
+        <textarea id="setSoberWhy" rows="2" maxlength="400" placeholder="e.g. for my kids, for my health, for my faith"></textarea>
       </div>
       <div class="check"><input type="checkbox" id="setMoodCheck"><label for="setMoodCheck">Show the daily / mood check-in on new chats</label></div>
+      <div class="check"><input type="checkbox" id="setGratCheck"><label for="setGratCheck">Show morning gratitude on new chats</label></div>
     </fieldset>
 
     <fieldset>
@@ -875,6 +950,161 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
+<!-- ============================ Clean time dialog ============================ -->
+<dialog id="cleanTimeDlg" aria-labelledby="cleanTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="cleanTitle">🌱 Clean time</h2>
+    <button class="icon-btn" value="close" aria-label="Close clean time">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body" id="cleanBody"></div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="cleanEditSettings">Edit in Settings</button>
+    <button class="btn btn-primary" type="button" id="cleanCloseBtn">Close</button>
+  </div>
+</dialog>
+
+<!-- ============================ Journal dialog ============================ -->
+<dialog id="journalDlg" aria-labelledby="journalTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="journalTitle">📓 Journal</h2>
+    <button class="icon-btn" value="close" aria-label="Close journal">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="help" style="margin:10px 0 0">A private place for your thoughts. Deepen reflection with <span data-companion></span> when you want more emotional depth — never a diagnosis.</p>
+    <div id="journalCompose">
+      <div class="field">
+        <label for="jTitle">Title <span class="help">(optional)</span></label>
+        <input id="jTitle" type="text" maxlength="120" placeholder="What's on your mind?">
+      </div>
+      <div class="field">
+        <label for="jBody">Entry</label>
+        <textarea id="jBody" rows="5" maxlength="8000" placeholder="Write freely…"></textarea>
+      </div>
+      <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" type="button" id="jSaveBtn">Save entry</button>
+        <button class="btn" type="button" id="jRefineBtn">Deepen reflection</button>
+        <button class="btn btn-ghost" type="button" id="jCancelEdit" hidden>Cancel edit</button>
+      </div>
+      <div id="jRefineOut" hidden></div>
+    </div>
+    <h3 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 8px">Your entries</h3>
+    <ul class="journal-list" id="journalList" aria-label="Journal entries"></ul>
+  </div>
+</dialog>
+
+<!-- ============================ 12 Steps dialog ============================ -->
+<dialog id="stepsDlg" aria-labelledby="stepsTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="stepsTitle">✝️ 12 Steps</h2>
+    <button class="icon-btn" value="close" aria-label="Close steps">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="help" id="stepsIntro" style="margin:10px 0 0"></p>
+    <div class="prog-bar" id="stepsProg" aria-hidden="true"><span style="width:0%"></span></div>
+    <ul class="steps-list" id="stepsList" aria-label="Twelve steps"></ul>
+  </div>
+</dialog>
+
+<!-- ============================ Bible study dialog ============================ -->
+<dialog id="bibleDlg" aria-labelledby="bibleTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="bibleTitle">📖 Bible study</h2>
+    <button class="icon-btn" value="close" aria-label="Close Bible study">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="help" id="bibleIntro" style="margin:10px 0 0"></p>
+    <div class="prog-bar" id="bibleProg" aria-hidden="true"><span style="width:0%"></span></div>
+    <ul class="bible-list" id="bibleList" aria-label="Bible study lessons"></ul>
+  </div>
+</dialog>
+
+
+
+<!-- ============================ Find nearby help ============================ -->
+<dialog id="nearbyDlg" aria-labelledby="nearbyTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="nearbyTitle">📍 Find nearby help</h2>
+    <button class="icon-btn" value="close" aria-label="Close nearby help">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p style="margin:12px 0 0">Looking for free meals, a shower, a bed for the night, health care or money help? <strong>Ask Izzy</strong> lists free and low-cost services across Australia.</p>
+    <p class="help" id="nearbyPrivacyNote">Location is optional and only used if you tap the button below — we never request it on load, and we don’t save your precise GPS.</p>
+    <div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" type="button" id="nearbyUseLoc">Use my location</button>
+      <a class="btn" id="nearbyAskIzzy" href="https://askizzy.org.au/" target="_blank" rel="noopener noreferrer">Open Ask Izzy</a>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="nearbySuburb">Or type a suburb / postcode</label>
+      <div class="key-wrap">
+        <input id="nearbySuburb" type="text" maxlength="80" placeholder="e.g. Fortitude Valley, 4006" autocomplete="off">
+        <button class="btn btn-sm" type="button" id="nearbySuburbGo">Search</button>
+      </div>
+    </div>
+    <p class="help" id="nearbyStatus" role="status" aria-live="polite" style="margin-top:10px"></p>
+    <div id="nearbyLinks" class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap"></div>
+    <p class="help" style="margin-top:16px"><strong>In immediate danger?</strong> Call <a href="tel:000">000</a>. Crisis support: <a href="tel:131114">Lifeline 13 11 14</a> · AOD: <a href="tel:1800250015">1800 250 015</a>.</p>
+  </div>
+</dialog>
+
+
+<!-- ============================ Craving skills ============================ -->
+<dialog id="skillsDlg" aria-labelledby="skillsTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="skillsTitle">🛠️ Craving skills</h2>
+    <button class="icon-btn" value="close" aria-label="Close skills">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="help" style="margin:10px 0 0">Short DBT- and CBT-informed exercises you can practise with <span data-companion></span> in chat. This is <strong>skills practice</strong>, not therapy or a substitute for a psychologist.</p>
+    <ul class="steps-list" id="skillsList" aria-label="Craving skills"></ul>
+  </div>
+</dialog>
+
+<!-- ============================ Nutrition / recovery ============================ -->
+<dialog id="nutritionDlg" aria-labelledby="nutritionTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="nutritionTitle">🥗 Nutrition &amp; recovery</h2>
+    <button class="icon-btn" value="close" aria-label="Close nutrition">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <div class="crisis-card" id="nutritionSafety" role="note" style="margin-top:12px">
+      <h3>Support education only — not medical advice</h3>
+      <p>This is general information for recovery and comedown care. It is <strong>not</strong> a substitute for a GP, dietitian or withdrawal management service. Nutrition alone does not “counter” a substance.</p>
+      <p><strong>Alcohol and benzodiazepine withdrawal can be dangerous</strong> (including seizures). Please see a doctor or AOD service — call <a href="tel:000">000</a> for severe symptoms (confusion, seizures, chest pain, trouble breathing).</p>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="nutritionSelect">What are you recovering from / supporting?</label>
+      <select id="nutritionSelect">
+        <option value="">Choose one…</option>
+      </select>
+    </div>
+    <div id="nutritionPanel" hidden></div>
+    <div id="nutritionHydration" style="margin-top:16px" hidden>
+      <h3 style="font-size:1rem;margin:0 0 8px">Simple hydration reminder</h3>
+      <p class="help" style="margin:0 0 8px">Rough guide only — sip water through the day; seek care if you can’t keep fluids down.</p>
+      <div class="radio-row" role="radiogroup" aria-label="Body weight band">
+        <label><input type="radio" name="nutWeight" value="s"> Under ~60 kg</label>
+        <label><input type="radio" name="nutWeight" value="m" checked> ~60–85 kg</label>
+        <label><input type="radio" name="nutWeight" value="l"> Over ~85 kg</label>
+      </div>
+      <p id="nutHydrateMsg" class="help" style="margin-top:8px"></p>
+    </div>
+  </div>
+</dialog>
+
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
 <script>
@@ -889,9 +1119,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.convos        per-person conversations
      eden.p.<id>.memories      per-person memories
      eden.p.<id>.moods         per-person daily check-in / mood history
+     eden.p.<id>.gratitude     per-person morning gratitude entries
+     eden.p.<id>.journal       per-person journal entries
+     eden.p.<id>.steps         per-person 12-step progress
+     eden.p.<id>.bible         per-person Bible study progress
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v3';
+const EDEN_BUILD = 'hopewick-v4';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -901,7 +1135,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -932,8 +1166,10 @@ const DEFAULT_PROFILE_SETTINGS = {
   custom: '',
   memAuto: true,
   moodCheck: true,
+  gratCheck: true,
   soberStart: '',
   soberWhat: '',
+  soberWhy: '',
   voiceURI: '',
   rate: 1,
   pitch: 1,
@@ -958,8 +1194,21 @@ const CRAVINGS = ['None', 'Mild', 'Moderate', 'Strong'];
 
 const STARTERS = {
   friend: ['Let me tell you about my day', 'I need to talk something through', 'Give me a little pick-me-up', 'Help me plan my week'],
-  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down'],
+  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down', 'I need food or a place to stay'],
 };
+
+/* Interactive craving / urge skills (DBT + CBT-informed). Skills practice — not therapy. */
+const CRAVING_SKILLS = [
+  { id: 'urge-surf', chip: 'Urge surfing', starter: "Let's do urge surfing together", blurb: 'Ride the craving like a wave until it peaks and passes.' },
+  { id: 'tipp', chip: 'TIPP calm-down', starter: "Let's try a TIPP calm-down", blurb: 'Temperature, intense movement, paced breathing, paired muscle relaxation — short and safe.' },
+  { id: 'thought', chip: 'Check this thought', starter: 'Help me check this urge thought', blurb: 'Catch–check–change a thought that is feeding the urge.' },
+  { id: 'halt', chip: 'HALT check', starter: "Let's do a HALT check", blurb: 'Hungry, Angry, Lonely, Tired — what needs care underneath the urge?' },
+  { id: 'ground', chip: 'Ground me (5-4-3-2-1)', starter: 'Ground me with 5-4-3-2-1', blurb: 'Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.' },
+  { id: 'delay', chip: 'Delay–distract–decide', starter: 'Walk me through delay–distract–decide', blurb: 'Buy time, shift attention, then choose with a clearer head.' },
+  { id: 'stop', chip: 'STOP / wise mind', starter: 'Help me use STOP and wise mind', blurb: 'Stop, Take a breath, Observe, Proceed — balance emotion and reason.' },
+  { id: 'opposite', chip: 'Opposite action', starter: "Let's try opposite action", blurb: 'When the emotion fits, act opposite to the urge in a small, safe way.' },
+];
+
 
 /* Verified Australian crisis & AOD contacts (checked against official sites, Sept 2026). */
 const HELP_CONTACTS = [
@@ -993,6 +1242,50 @@ const FAITH_LEVEL_TEXT = {
   central: 'Faith is central for this person: make it a main lens of support, regularly offering prayer, sacred-text reflections and connection to faith community, while still respecting their autonomy.',
 };
 
+
+/* Faith-based 12-step outline (Celebrate Recovery / Christian AA-influenced).
+   Support tool only — not affiliated with AA, NA or Celebrate Recovery. */
+const TWELVE_STEPS = [
+  { n: 1, title: 'We admit we are powerless', principle: 'Honesty — admitting we cannot control alcohol or other drugs on our own.', scripture: 'Romans 7:18–19 (suggested reading)', prompts: ['Where do you feel powerless right now?', 'What have you already tried on your own?'] },
+  { n: 2, title: 'We come to believe', principle: 'Hope — believing a Power greater than ourselves can restore us.', scripture: 'Psalm 121:1–2', prompts: ['What does “Higher Power” mean for you?', 'Where have you glimpsed hope lately?'] },
+  { n: 3, title: 'We turn our will over', principle: 'Faith — deciding to trust God (as we understand God) with our will and life.', scripture: 'Proverbs 3:5–6', prompts: ['What would it look like to hand one worry over today?', 'What still feels hard to surrender?'] },
+  { n: 4, title: 'We make a searching inventory', principle: 'Courage — looking honestly at our patterns, harms and strengths.', scripture: 'Lamentations 3:40', prompts: ['What patterns keep showing up?', 'What strengths have carried you this far?'] },
+  { n: 5, title: 'We admit to God, ourselves and another', principle: 'Integrity — sharing our inventory with a trusted person (sponsor, pastor, counsellor).', scripture: 'James 5:16', prompts: ['Who is a safe person to share with?', 'What feels hardest to say out loud?'] },
+  { n: 6, title: 'We are ready for God to remove defects', principle: 'Willingness — becoming ready for change without self-hate.', scripture: 'Psalm 51:10', prompts: ['Which character trait are you ready to release?', 'How can you be gentle with yourself in this?'] },
+  { n: 7, title: 'We humbly ask', principle: 'Humility — asking for help to change.', scripture: '1 Peter 5:6–7', prompts: ['What help are you asking for?', 'Where do you notice pride getting in the way?'] },
+  { n: 8, title: 'We list those we have harmed', principle: 'Responsibility — naming who was hurt, including ourselves.', scripture: 'Matthew 5:23–24', prompts: ['Who comes to mind on your amends list?', 'Have you included yourself with compassion?'] },
+  { n: 9, title: 'We make direct amends', principle: 'Justice — making amends where possible, except when it would injure them or others.', scripture: 'Luke 19:8', prompts: ['Which amend feels ready?', 'Where might an amend cause more harm?'] },
+  { n: 10, title: 'We continue to take inventory', principle: 'Perseverance — a daily check on our attitudes and actions.', scripture: '1 Corinthians 10:12', prompts: ['What went well today?', 'What would you like to repair tomorrow?'] },
+  { n: 11, title: 'We seek through prayer and meditation', principle: 'Spirituality — growing closer to God through prayer, stillness and listening.', scripture: 'Philippians 4:6–7', prompts: ['What helps you feel connected?', 'How might a short daily practice look?'] },
+  { n: 12, title: 'We carry the message and practise these principles', principle: 'Service — living the principles and offering hope to others.', scripture: 'Galatians 6:2', prompts: ['How have you already helped someone else?', 'What principle do you most want to live this week?'] },
+];
+
+/* Simple recovery-themed Bible study — references + prompts only (no lengthy quotes). */
+const BIBLE_LESSONS = [
+  { id: 'hope-1', week: 1, theme: 'Hope', title: 'A future and a hope', ref: 'Jeremiah 29:11–14', questions: ['What does hope look like for you in recovery right now?', 'Where do you need courage to believe change is possible?'] },
+  { id: 'hope-2', week: 1, theme: 'Hope', title: 'Light in the darkness', ref: 'John 1:1–5', questions: ['Where has light shown up in a dark season for you?', 'What darkness are you asking God (or your Higher Power) to meet?'] },
+  { id: 'strength-1', week: 2, theme: 'Strength', title: 'Strength in weakness', ref: '2 Corinthians 12:9–10', questions: ['Where do you feel weak — and how might that be a starting place for strength?', 'Who helps carry you when you cannot carry yourself?'] },
+  { id: 'strength-2', week: 2, theme: 'Strength', title: 'Renewed strength', ref: 'Isaiah 40:28–31', questions: ['What renews you when you are weary?', 'What would “waiting on the Lord” look like this week?'] },
+  { id: 'forgive-1', week: 3, theme: 'Forgiveness', title: 'Forgiven and freeing', ref: 'Luke 15:11–24 (the lost son)', questions: ['Where do you need to receive grace?', 'Is there someone (including yourself) you are ready to forgive a little more?'] },
+  { id: 'forgive-2', week: 3, theme: 'Forgiveness', title: 'As we forgive', ref: 'Matthew 6:9–15', questions: ['What makes forgiveness hard for you?', 'What is one small step toward release?'] },
+  { id: 'identity-1', week: 4, theme: 'Identity', title: 'You are not your worst day', ref: 'Romans 8:1–2', questions: ['What labels are you ready to lay down?', 'How would you describe yourself with kindness today?'] },
+  { id: 'identity-2', week: 4, theme: 'Identity', title: 'Beloved', ref: 'Isaiah 43:1–4', questions: ['What does it mean to be called by name?', 'How does being loved change how you face cravings or shame?'] },
+  { id: 'rest-1', week: 5, theme: 'Rest', title: 'Come to me', ref: 'Matthew 11:28–30', questions: ['Where are you carrying a heavy load?', 'What rest do you need — body, mind or spirit?'] },
+  { id: 'rest-2', week: 5, theme: 'Rest', title: 'Quiet waters', ref: 'Psalm 23', questions: ['Where do you find green pastures in your week?', 'How can you protect a little Sabbath rest?'] },
+];
+
+const CLEAN_MILESTONES = [1, 7, 30, 90, 180, 365];
+const MILESTONE_COPY = {
+  1: 'Day one — showing up counts.',
+  7: 'A whole week. That takes real grit.',
+  30: 'A month of choosing again and again.',
+  90: 'Ninety days — new habits taking root.',
+  180: 'Half a year. Look how far you’ve come.',
+  365: 'A full year. This is worth celebrating.',
+};
+
+
+
 /* ---------------------------------------------------------------------------
    App state (the active person's data lives in these variables)
    --------------------------------------------------------------------------- */
@@ -1003,7 +1296,12 @@ let settings = {};         // merged view: profile settings + shared provider se
 let convos = [];
 let memories = [];
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
+let gratitude = [];        // [{date, items:[...], ts}]
+let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
+let stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
+let bibleProgress = { completed: {}, notes: {}, updated: 0 };
 let activeId = null;
+let journalEditId = null;
 let busy = false;
 let abortCtrl = null;
 let isDemo = false;   // demo mode: scripted replies, no API, no storage
@@ -1024,6 +1322,8 @@ const el = {
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'),
+  cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
+  nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   toasts: $('#toasts'),
 };
 
@@ -1083,10 +1383,16 @@ function loadProfileData(pid) {
   convos = load(pk(pid, 'convos'), []);
   memories = load(pk(pid, 'memories'), []);
   moods = load(pk(pid, 'moods'), []);
+  gratitude = load(pk(pid, 'gratitude'), []);
+  journal = load(pk(pid, 'journal'), []);
+  stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, load(pk(pid, 'steps'), {}));
+  bibleProgress = Object.assign({ completed: {}, notes: {}, updated: 0 }, load(pk(pid, 'bible'), {}));
   activeId = load(pk(pid, 'active'), null);
   if (!Array.isArray(convos)) convos = [];
   if (!Array.isArray(memories)) memories = [];
   if (!Array.isArray(moods)) moods = [];
+  if (!Array.isArray(gratitude)) gratitude = [];
+  if (!Array.isArray(journal)) journal = [];
 }
 
 /** Persist settings: provider keys to the shared store, everything else to this person. */
@@ -1102,6 +1408,10 @@ function saveSettings() {
 function persistConvos() { if (isDemo) return; save(pk(profile.id, 'convos'), convos); save(pk(profile.id, 'active'), activeId); }
 function saveMemories() { if (isDemo) return; save(pk(profile.id, 'memories'), memories); }
 function saveMoods() { if (isDemo) return; save(pk(profile.id, 'moods'), moods); }
+function saveGratitude() { if (isDemo) return; save(pk(profile.id, 'gratitude'), gratitude); }
+function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), journal); }
+function saveSteps() { if (isDemo) return; save(pk(profile.id, 'steps'), stepsProgress); }
+function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), bibleProgress); }
 
 /** Light PIN hash (FNV-1a, iterated). This is a privacy lock, not security. */
 function pinHash(pid, pin) {
@@ -1454,14 +1764,50 @@ function renderWelcome() {
     box.appendChild(card);
   }
 
+  if (settings.gratCheck !== false && !todaysGratitude()) {
+    box.appendChild(gratitudeCardEl());
+  } else if (settings.gratCheck !== false && todaysGratitude()) {
+    const g = todaysGratitude();
+    const note = document.createElement('p');
+    note.className = 'help';
+    note.style.marginTop = '14px';
+    note.textContent = 'Today you’re grateful for: ' + g.items.join(' · ');
+    box.appendChild(note);
+  }
+
+  if (counsellor) {
+    const skillsRow = document.createElement('div');
+    skillsRow.className = 'starters skills-chips';
+    skillsRow.setAttribute('aria-label', 'Craving skills');
+    const lbl = document.createElement('span');
+    lbl.className = 'help';
+    lbl.style.width = '100%';
+    lbl.style.textAlign = 'center';
+    lbl.textContent = 'Craving skills — practise with ' + settings.name + ':';
+    skillsRow.appendChild(lbl);
+    const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
+    const chips = showAll ? CRAVING_SKILLS : CRAVING_SKILLS.slice(0, 5);
+    for (const sk of chips) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'starter skill-chip'; b.textContent = sk.chip;
+      b.dataset.skill = sk.id;
+      b.addEventListener('click', () => startSkill(sk));
+      skillsRow.appendChild(b);
+    }
+    box.appendChild(skillsRow);
+  }
+
   const starters = document.createElement('div');
   starters.className = 'starters';
   let list = isDemo ? DEMO_CHIPS : (counsellor ? [...STARTERS.counsellor] : STARTERS.friend);
   if (counsellor && settings.faith === 'none') list = list.map(s => s === 'Pray with me' ? 'Help me find some calm' : s);
-  for (const s of list) {
+  for (const stub of list) {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'starter'; b.textContent = s;
-    b.addEventListener('click', () => sendMessage(s));
+    b.type = 'button'; b.className = 'starter'; b.textContent = stub;
+    b.addEventListener('click', () => {
+      if (/food or a place to stay|shower|shelter|homeless/i.test(stub)) { openNearby(); return; }
+      sendMessage(stub);
+    });
     starters.appendChild(b);
   }
   box.appendChild(starters);
@@ -1514,7 +1860,10 @@ function setCraving(lvl) {
   recordCheckin({ craving: c.craving });
   persistConvos();
   renderMessages();
-  if (c.craving === 'Strong') toast('Strong cravings are tough — they do pass. I’m here, and help is one tap away.', false, 4500);
+  if (c.craving === 'Strong') {
+    toast('Strong cravings are tough — they do pass. Try a craving skill below, or tap Get help now.', false, 4500);
+    renderMessages();
+  }
 }
 function updateMoodPill() {
   const c = activeConvo();
@@ -1540,7 +1889,7 @@ function renderSober() {
   el.soberDays.textContent = days;
   const what = settings.soberWhat || (isCounsellor() ? 'on your journey' : 'days');
   el.soberLbl.textContent = `${days === 1 ? 'day' : 'days'} ${what === 'days' ? '' : what}`.trim() + ' 🌱';
-  el.soberCard.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || ''}. Edit in Settings.`);
+  el.soberCard.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || 'clean'}. Open clean time tracker.`);
 }
 function renderAll() {
   const counsellor = isCounsellor();
@@ -1587,6 +1936,10 @@ function commonContext(convo) {
   }
   if (convo && convo.mood) lines.push(`At the start of this conversation ${userName()} checked in feeling: ${convo.mood.l} ${convo.mood.e}. Acknowledge this gently and naturally early on.`);
   if (convo && convo.craving) lines.push(`They rated their cravings today as: ${convo.craving}.`);
+  const todaysGrat = gratitude.find(g => g.date === localDate());
+  if (todaysGrat && todaysGrat.items && todaysGrat.items.length) {
+    lines.push(`This morning ${userName()} named gratitude for: ${todaysGrat.items.join('; ')}. Acknowledge briefly if natural.`);
+  }
   if (settings.custom) lines.push(`Extra instructions from the user: ${settings.custom}`);
   return lines;
 }
@@ -1609,6 +1962,12 @@ function counsellorPrompt(convo) {
     '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure.',
     '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
     '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly.',
+    '',
+    'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
+    '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet.',
+    '- Skills you can run interactively: urge surfing; delay–distract–decide; HALT check; DBT TIPP (Temperature with a cool drink or cool cloth on wrists/face — NEVER ice-bath / ice-dive / extreme cold that could harm; Intense exercise = brief safe movement like walking stairs; Paced breathing; Paired muscle relaxation); DBT opposite action (when the emotion fits the facts); DBT STOP + wise mind (brief); CBT thought record / catch–check–change for urge thoughts; urge surfing + values reminder; 5-4-3-2-1 grounding.',
+    '- Frame clearly as skills practice / support tool — you are not delivering therapy and are not a psychologist. Encourage real counselling when longer work is needed.',
+    '- Stay trauma-informed and non-shaming. If crisis language appears, use the crisis path first.',
     '- Strengths-based, trauma-informed and culturally safe: notice strengths and effort, offer choice and control, never push for trauma details, respect culture, identity, gender and sexuality. Use person-first, non-stigmatising language (e.g. "person who uses alcohol", not "addict" or "alcoholic") unless the person uses a label for themselves.',
     `- Style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced} Usually keep replies to 2–6 sentences, one question at a time, reflect before advising, and ask permission before giving advice or information. Use Australian English.`,
     '',
@@ -1970,7 +2329,790 @@ $('#memClearBtn').addEventListener('click', () => {
   saveMemories();
   renderMemories();
 });
+
+/* ---------------------------------------------------------------------------
+   Clean time tracker
+   --------------------------------------------------------------------------- */
+function openCleanTime() {
+  if (!profile) return;
+  closeSidebar();
+  renderCleanTime();
+  if (!el.cleanTimeDlg.open) el.cleanTimeDlg.showModal();
+}
+function renderCleanTime() {
+  const body = $('#cleanBody');
+  const days = soberDaysCount();
+  const what = settings.soberWhat || (isCounsellor() ? 'clean' : 'on your journey');
+  const start = settings.soberStart;
+  let html = '';
+  if (days === null) {
+    html = `<p class="empty-hint">No start date yet. Set one in Settings to track your clean time — whatever “clean” means for you.</p>
+      <div class="row" style="justify-content:center;margin-top:12px"><button class="btn btn-primary" type="button" id="cleanSetStart">Set start date</button></div>`;
+  } else {
+    const startLabel = start ? new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }).format(parseLocalDate(start)) : '';
+    html = `<div class="clean-hero"><div class="big">${days}</div><div class="sub">${days === 1 ? 'day' : 'days'} ${escapeHtml(what)}${startLabel ? ` · since ${escapeHtml(startLabel)}` : ''}</div></div>`;
+    if (settings.soberWhy) html += `<p style="text-align:center;font-size:.92rem;color:var(--muted);margin:8px 0 0">“${escapeHtml(settings.soberWhy)}”</p>`;
+    html += '<div class="milestone-row" role="list" aria-label="Milestones">';
+    for (const m of CLEAN_MILESTONES) {
+      const hit = days >= m;
+      const copy = MILESTONE_COPY[m] || '';
+      html += `<div class="milestone${hit ? ' hit' : ''}" role="listitem" title="${escapeHtml(copy)}"><span class="n">${m}</span>${m === 1 ? 'day' : 'days'}${hit ? ' ✓' : ''}</div>`;
+    }
+    html += '</div>';
+    const next = CLEAN_MILESTONES.find(m => m > days);
+    if (next) html += `<p class="help" style="text-align:center">${next - days} day${next - days === 1 ? '' : 's'} until your ${next}-day milestone. ${escapeHtml(MILESTONE_COPY[next] || '')}</p>`;
+    else if (days >= 365) html += `<p class="help" style="text-align:center">${escapeHtml(MILESTONE_COPY[365])}</p>`;
+    html += `<div class="row" style="justify-content:center;margin-top:16px;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-danger btn-sm" type="button" id="cleanSlipBtn">I had a slip — reset to today</button>
+    </div>
+    <p class="help" style="text-align:center;margin-top:8px">A slip doesn’t erase your journal, gratitude or how far you’ve already come.</p>`;
+  }
+  body.innerHTML = html;
+  const setBtn = $('#cleanSetStart', body);
+  if (setBtn) setBtn.addEventListener('click', () => { el.cleanTimeDlg.close(); openSettings('setSoberStart'); });
+  const slip = $('#cleanSlipBtn', body);
+  if (slip) slip.addEventListener('click', () => {
+    if (!confirm('Reset your clean-time start date to today? Your journal and gratitude stay. This is a fresh start, not a failure.')) return;
+    settings.soberStart = localDate();
+    saveSettings();
+    renderSober();
+    renderCleanTime();
+    toast('Start date reset to today. You’re still on the path 🌱');
+  });
+}
+$('#cleanCloseBtn').addEventListener('click', () => el.cleanTimeDlg.close());
+$('#cleanEditSettings').addEventListener('click', () => { el.cleanTimeDlg.close(); if (isDemo) { toast('Settings are off in the demo.'); return; } openSettings('setSoberStart'); });
+
+/* ---------------------------------------------------------------------------
+   Morning gratitude
+   --------------------------------------------------------------------------- */
+function todaysGratitude() { return gratitude.find(g => g.date === localDate()) || null; }
+
+function gratitudeCardEl() {
+  const card = document.createElement('div');
+  card.className = 'grat-card';
+  card.innerHTML = `<h2>What are you grateful for today? <span class="help">(optional)</span></h2>
+    <div class="grat-inputs">
+      <input type="text" maxlength="120" placeholder="1. Something small or large…" data-gi="0" aria-label="Gratitude item 1">
+      <input type="text" maxlength="120" placeholder="2. Optional" data-gi="1" aria-label="Gratitude item 2">
+      <input type="text" maxlength="120" placeholder="3. Optional" data-gi="2" aria-label="Gratitude item 3">
+    </div>
+    <div class="row">
+      <button class="btn btn-primary btn-sm" type="button" data-grat-save>Save</button>
+      <button class="btn btn-ghost btn-sm" type="button" data-grat-skip>Not now</button>
+    </div>`;
+  $('[data-grat-save]', card).addEventListener('click', () => {
+    const items = $$('[data-gi]', card).map(i => i.value.trim()).filter(Boolean).slice(0, 3);
+    if (!items.length) { toast('Add at least one thing, or tap Not now.'); return; }
+    saveTodaysGratitude(items);
+    toast('Noted with thanks 🌿');
+    renderMessages();
+  });
+  $('[data-grat-skip]', card).addEventListener('click', () => {
+    // Mark skipped for today in-session only (don't pollute storage with empty)
+    card.remove();
+  });
+  return card;
+}
+function saveTodaysGratitude(items) {
+  const date = localDate();
+  let entry = gratitude.find(g => g.date === date);
+  if (!entry) { entry = { date, items: [], ts: Date.now() }; gratitude.push(entry); }
+  entry.items = items; entry.ts = Date.now();
+  gratitude = gratitude.slice(-400);
+  saveGratitude();
+}
+
+/* ---------------------------------------------------------------------------
+   Journal + deepen reflection
+   --------------------------------------------------------------------------- */
+function openJournal() {
+  if (!profile) return;
+  closeSidebar();
+  journalEditId = null;
+  $('#jTitle').value = '';
+  $('#jBody').value = '';
+  $('#jCancelEdit').hidden = true;
+  $('#jRefineOut').hidden = true;
+  $('#jRefineOut').innerHTML = '';
+  $('#jSaveBtn').textContent = 'Save entry';
+  renderJournalList();
+  if (!el.journalDlg.open) el.journalDlg.showModal();
+  setTimeout(() => $('#jBody').focus(), 60);
+}
+function renderJournalList() {
+  const list = $('#journalList');
+  list.innerHTML = '';
+  const sorted = [...journal].sort((a, b) => (b.updated || b.created) - (a.updated || a.created));
+  if (!sorted.length) {
+    list.innerHTML = '<li class="empty-hint">No entries yet — write whatever is on your mind.</li>';
+    return;
+  }
+  for (const e of sorted) {
+    const li = document.createElement('li');
+    li.className = 'j-item';
+    const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(e.updated || e.created));
+    li.innerHTML = `<h3></h3><div class="meta"></div><div class="body"></div>
+      ${e.refined ? `<div class="refine-box"><h4>Deepened reflection</h4><div class="body refined"></div>${e.emotions ? `<p class="help" style="margin:6px 0 0">Emotions noticed: ${escapeHtml(e.emotions)}</p>` : ''}</div>` : ''}
+      <div class="actions">
+        <button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button>
+        <button class="btn btn-sm" type="button" data-act="edit">Edit</button>
+        <button class="btn btn-sm btn-danger" type="button" data-act="del">Delete</button>
+      </div>`;
+    $('h3', li).textContent = e.title || 'Untitled entry';
+    $('.meta', li).textContent = when;
+    $('.body', li).textContent = e.body;
+    const refEl = $('.refined', li);
+    if (refEl) refEl.textContent = e.refined;
+    $('[data-act="refine"]', li).addEventListener('click', () => refineJournalEntry(e));
+    $('[data-act="edit"]', li).addEventListener('click', () => {
+      journalEditId = e.id;
+      $('#jTitle').value = e.title || '';
+      $('#jBody').value = e.body || '';
+      $('#jCancelEdit').hidden = false;
+      $('#jSaveBtn').textContent = 'Update entry';
+      $('#jTitle').focus();
+    });
+    $('[data-act="del"]', li).addEventListener('click', () => {
+      if (!confirm('Delete this journal entry?')) return;
+      journal = journal.filter(x => x.id !== e.id);
+      saveJournal();
+      renderJournalList();
+      toast('Entry deleted');
+    });
+    list.appendChild(li);
+  }
+}
+$('#jCancelEdit').addEventListener('click', () => {
+  journalEditId = null;
+  $('#jTitle').value = '';
+  $('#jBody').value = '';
+  $('#jCancelEdit').hidden = true;
+  $('#jSaveBtn').textContent = 'Save entry';
+  $('#jRefineOut').hidden = true;
+});
+$('#jSaveBtn').addEventListener('click', () => {
+  const title = $('#jTitle').value.trim();
+  const body = $('#jBody').value.trim();
+  if (!body) { toast('Write something first.', true); $('#jBody').focus(); return; }
+  const now = Date.now();
+  if (journalEditId) {
+    const e = journal.find(x => x.id === journalEditId);
+    if (e) { e.title = title; e.body = body; e.updated = now; }
+    journalEditId = null;
+    $('#jCancelEdit').hidden = true;
+    $('#jSaveBtn').textContent = 'Save entry';
+    toast('Entry updated');
+  } else {
+    journal.unshift({ id: uid(), title, body, created: now, updated: now });
+    toast('Entry saved');
+  }
+  journal = journal.slice(0, 200);
+  saveJournal();
+  $('#jTitle').value = '';
+  $('#jBody').value = '';
+  $('#jRefineOut').hidden = true;
+  renderJournalList();
+});
+$('#jRefineBtn').addEventListener('click', async () => {
+  const title = $('#jTitle').value.trim();
+  const body = $('#jBody').value.trim();
+  if (!body) { toast('Write an entry first, then deepen it.', true); return; }
+  // Save draft if needed, then refine
+  let entry;
+  if (journalEditId) entry = journal.find(x => x.id === journalEditId);
+  if (!entry) {
+    const now = Date.now();
+    entry = { id: uid(), title, body, created: now, updated: now };
+    journal.unshift(entry);
+    journalEditId = entry.id;
+    $('#jCancelEdit').hidden = false;
+    $('#jSaveBtn').textContent = 'Update entry';
+    saveJournal();
+  } else {
+    entry.title = title; entry.body = body; entry.updated = Date.now();
+    saveJournal();
+  }
+  await refineJournalEntry(entry, true);
+});
+
+function journalRefineSystemPrompt(crisis) {
+  return [
+    `You are ${settings.name}, helping ${userName()} deepen a private journal reflection.`,
+    'Keep their meaning and voice. Do not preach. Do not diagnose. Australian English. Warm, trauma-informed.',
+    'Respond in this exact structure (plain text, use the headings):',
+    'REFINED:',
+    '(2–5 sentences that keep their meaning with more emotional depth)',
+    'EMOTIONS:',
+    '(comma-separated likely emotions / thought–feeling links)',
+    'QUESTION:',
+    '(one gentle reflective question)',
+    crisis ? 'The entry may involve crisis language: be especially gentle, do not dig into methods or plans, and remind them help is available (000, Lifeline 13 11 14) if needed — briefly.' : '',
+  ].filter(Boolean).join('\n');
+}
+
+function parseRefineResponse(raw) {
+  const text = String(raw || '').trim();
+  const refined = (text.match(/REFINED:\s*([\s\S]*?)(?=\nEMOTIONS:|$)/i) || [])[1]?.trim() || text;
+  const emotions = (text.match(/EMOTIONS:\s*([\s\S]*?)(?=\nQUESTION:|$)/i) || [])[1]?.trim() || '';
+  const question = (text.match(/QUESTION:\s*([\s\S]*?)$/i) || [])[1]?.trim() || '';
+  return { refined, emotions, question };
+}
+
+const DEMO_REFINE = {
+  refined: 'You’re noticing both the pull of the craving and the choice you made to reach out instead. Underneath the urge there seems to be tiredness and a need for connection — and naming that is already a kind of strength.',
+  emotions: 'anxiety, loneliness, pride, relief',
+  question: 'What helped you choose the text to your brother in that moment?',
+};
+
+async function refineJournalEntry(entry, showInCompose) {
+  const crisis = CRISIS_RE.test(entry.body || '');
+  if (crisis) {
+    // Soften: show help card tip
+    toast('If you’re in danger call 000. Lifeline 13 11 14 is there 24/7.', false, 5000);
+  }
+  let parsed;
+  if (isDemo) {
+    parsed = DEMO_REFINE;
+  } else if (!settings.apiKey) {
+    toast('Add your API key in Settings to deepen reflections 🌱');
+    openSettings();
+    return;
+  } else {
+    try {
+      toast('Deepening your reflection…');
+      const raw = await chatCompletion([
+        { role: 'system', content: journalRefineSystemPrompt(crisis) },
+        { role: 'user', content: `Title: ${entry.title || '(none)'}\n\nEntry:\n${entry.body}` },
+      ], { stream: false, temperature: 0.6, max_tokens: 500 });
+      parsed = parseRefineResponse(raw);
+    } catch (e) {
+      toast('Couldn’t deepen right now: ' + (e.message || 'error'), true);
+      return;
+    }
+  }
+  const out = $('#jRefineOut');
+  out.hidden = false;
+  out.innerHTML = `<div class="refine-box"><h4>Deepened reflection</h4>
+    <div class="refine-cols">
+      <div><h4 class="help">Your words</h4><div class="body" id="jOrigPreview"></div></div>
+      <div><h4 class="help">Deepened</h4><div class="body" id="jRefPreview"></div></div>
+    </div>
+    ${parsed.emotions ? `<p class="help" style="margin-top:8px">Emotions / links: ${escapeHtml(parsed.emotions)}</p>` : ''}
+    ${parsed.question ? `<p style="margin-top:6px"><em>${escapeHtml(parsed.question)}</em></p>` : ''}
+    <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" type="button" id="jKeepRefined">Keep refined</button>
+      <button class="btn btn-sm" type="button" id="jKeepBoth">Keep both</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="jDismissRefine">Dismiss</button>
+    </div></div>`;
+  $('#jOrigPreview').textContent = entry.body;
+  $('#jRefPreview').textContent = parsed.refined;
+  $('#jKeepRefined').addEventListener('click', () => {
+    entry.body = parsed.refined;
+    entry.refined = parsed.refined;
+    entry.emotions = parsed.emotions;
+    entry.updated = Date.now();
+    saveJournal();
+    $('#jBody').value = entry.body;
+    out.hidden = true;
+    renderJournalList();
+    toast('Kept the deepened version');
+  });
+  $('#jKeepBoth').addEventListener('click', () => {
+    entry.refined = parsed.refined;
+    entry.emotions = parsed.emotions;
+    entry.updated = Date.now();
+    saveJournal();
+    out.hidden = true;
+    renderJournalList();
+    toast('Saved both original and deepened');
+  });
+  $('#jDismissRefine').addEventListener('click', () => { out.hidden = true; });
+  if (!showInCompose) renderJournalList();
+}
+
+/* ---------------------------------------------------------------------------
+   Faith-based 12 Steps + Working the steps AI
+   --------------------------------------------------------------------------- */
+function openSteps() {
+  if (!profile) return;
+  closeSidebar();
+  renderSteps();
+  if (!el.stepsDlg.open) el.stepsDlg.showModal();
+}
+function renderSteps() {
+  const faithNone = settings.faith === 'none';
+  const intro = $('#stepsIntro');
+  intro.textContent = faithNone
+    ? 'A faith-friendly 12-step outline you can use as recovery principles. Language leans Christian / Celebrate Recovery by default — take what helps, leave the rest. Support tool only — not affiliated with AA, NA or Celebrate Recovery.'
+    : 'A faith-based 12-step outline for AOD recovery (Celebrate Recovery / Christian AA-influenced language). Support tool only — not affiliated with AA, NA or Celebrate Recovery. Work each step with a real sponsor, pastor or counsellor where you can.';
+  const done = Object.keys(stepsProgress.completed || {}).filter(k => stepsProgress.completed[k]).length;
+  $('#stepsProg').innerHTML = `<span style="width:${Math.round(done / 12 * 100)}%"></span>`;
+  const list = $('#stepsList');
+  list.innerHTML = '';
+  for (const step of TWELVE_STEPS) {
+    const li = document.createElement('li');
+    const isDone = !!(stepsProgress.completed || {})[String(step.n)];
+    li.className = 'step-card' + (isDone ? ' done' : '');
+    const note = (stepsProgress.notes || {})[String(step.n)] || '';
+    li.innerHTML = `<h3>Step ${step.n}: ${escapeHtml(step.title)} ${isDone ? '<span class="badge">Done</span>' : ''}</h3>
+      <div class="body"><strong>${escapeHtml(step.principle)}</strong></div>
+      <p class="meta">Suggested reading: ${escapeHtml(step.scripture)}</p>
+      <ul class="help" style="margin:6px 0 0;padding-left:1.2em">${step.prompts.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
+      <div class="field" style="margin-top:8px"><label class="sr-only">Notes for step ${step.n}</label>
+        <textarea rows="2" data-step-note="${step.n}" placeholder="Your notes (private)…">${escapeHtml(note)}</textarea></div>
+      <div class="actions">
+        <button class="btn btn-primary btn-sm" type="button" data-work="${step.n}">Work this step with ${escapeHtml(settings.name)}</button>
+        <button class="btn btn-sm" type="button" data-toggle="${step.n}">${isDone ? 'Mark not done' : 'Mark done'}</button>
+      </div>
+      <p class="help" style="margin-top:8px">No obligation to disclose trauma details to the AI. For amends that could harm someone, talk with a sponsor, pastor or counsellor first.</p>`;
+    $('[data-work]', li).addEventListener('click', () => startStepChat(step));
+    $('[data-toggle]', li).addEventListener('click', () => {
+      stepsProgress.completed = stepsProgress.completed || {};
+      stepsProgress.completed[String(step.n)] = !isDone;
+      if (!isDone) stepsProgress.currentStep = Math.min(12, step.n + 1);
+      stepsProgress.updated = Date.now();
+      saveSteps();
+      renderSteps();
+    });
+    const ta = $('[data-step-note]', li);
+    ta.addEventListener('change', () => {
+      stepsProgress.notes = stepsProgress.notes || {};
+      stepsProgress.notes[String(step.n)] = ta.value.trim();
+      stepsProgress.updated = Date.now();
+      saveSteps();
+    });
+    list.appendChild(li);
+  }
+}
+function stepSystemExtra(step) {
+  return [
+    `You are helping ${userName()} work Step ${step.n} of a faith-based 12-step recovery program: “${step.title}”.`,
+    `Principle: ${step.principle}`,
+    `Suggested Scripture (invite them to read in their own Bible): ${step.scripture}`,
+    `Reflection prompts: ${step.prompts.join(' | ')}`,
+    'Trauma-informed, non-shaming, Australian English. Never pressure them to disclose trauma details to you.',
+    'For inventory/amends (steps 4–9): stress that amends that could harm others should be done with a real sponsor, pastor or counsellor — not alone via AI.',
+    'Keep replies to 2–6 sentences, one question at a time. You are a support tool, not a sponsor or clinician.',
+    settings.faith === 'none' ? 'They prefer little or no faith content in general chat — frame Higher Power language gently as optional principles, and follow their lead.' : '',
+  ].filter(Boolean).join('\n');
+}
+function startStepChat(step) {
+  el.stepsDlg.close();
+  const c = newConversation();
+  c.kind = 'steps';
+  c.step = step.n;
+  c.title = `Step ${step.n} — ${step.title}`;
+  c.systemExtra = stepSystemExtra(step);
+  persistConvos();
+  renderAll();
+  // Seed with a gentle opening from Hope (local, no API needed for the prompt seed)
+  const opener = `I'm here to walk Step ${step.n} with you — ${step.title}.\n\n${step.principle}\n\nThere's no rush and nothing you must share with me. A suggested reading is ${step.scripture} (in your own Bible or app).\n\n${step.prompts[0]}\n\nWhenever you're ready.`;
+  c.messages.push({ role: 'assistant', content: opener, ts: Date.now() });
+  persistConvos();
+  renderAll();
+  focusInput();
+  toast(`Working Step ${step.n} with ${settings.name}`);
+}
+
+/* ---------------------------------------------------------------------------
+   Bible study program
+   --------------------------------------------------------------------------- */
+function openBible() {
+  if (!profile) return;
+  closeSidebar();
+  renderBible();
+  if (!el.bibleDlg.open) el.bibleDlg.showModal();
+}
+function renderBible() {
+  const intro = $('#bibleIntro');
+  if (settings.faith === 'none') {
+    intro.textContent = 'Optional Scripture study themed around hope and recovery. You’re welcome to use it as reflective reading, or skip it — no pressure.';
+  } else {
+    intro.textContent = 'A simple multi-week starter on Hope, Strength, Forgiveness, Identity and Rest. Read each passage in your own Bible or app — we share references and questions only.';
+  }
+  const ids = BIBLE_LESSONS.map(l => l.id);
+  const done = ids.filter(id => (bibleProgress.completed || {})[id]).length;
+  $('#bibleProg').innerHTML = `<span style="width:${Math.round(done / ids.length * 100)}%"></span>`;
+  const list = $('#bibleList');
+  list.innerHTML = '';
+  for (const lesson of BIBLE_LESSONS) {
+    const li = document.createElement('li');
+    const isDone = !!(bibleProgress.completed || {})[lesson.id];
+    li.className = 'bible-card' + (isDone ? ' done' : '');
+    li.innerHTML = `<h3>Week ${lesson.week} · ${escapeHtml(lesson.theme)}: ${escapeHtml(lesson.title)} ${isDone ? '<span class="badge">Done</span>' : ''}</h3>
+      <p class="meta">Read: ${escapeHtml(lesson.ref)}</p>
+      <ul class="help" style="margin:6px 0 0;padding-left:1.2em">${lesson.questions.map(q => `<li>${escapeHtml(q)}</li>`).join('')}</ul>
+      <div class="actions">
+        <button class="btn btn-primary btn-sm" type="button" data-study="${lesson.id}">Study with ${escapeHtml(settings.name)}</button>
+        <button class="btn btn-sm" type="button" data-btoggle="${lesson.id}">${isDone ? 'Mark not done' : 'Mark done'}</button>
+      </div>`;
+    $('[data-study]', li).addEventListener('click', () => startBibleChat(lesson));
+    $('[data-btoggle]', li).addEventListener('click', () => {
+      bibleProgress.completed = bibleProgress.completed || {};
+      bibleProgress.completed[lesson.id] = !isDone;
+      bibleProgress.updated = Date.now();
+      saveBible();
+      renderBible();
+    });
+    list.appendChild(li);
+  }
+}
+function bibleSystemExtra(lesson) {
+  return [
+    `You are studying Scripture with ${userName()} for recovery-themed lesson “${lesson.title}” (${lesson.theme}).`,
+    `Passage reference: ${lesson.ref}. Invite them to read it in their own Bible or app. Do NOT invent lengthy quotes; paraphrase briefly only if helpful and say you are paraphrasing.`,
+    `Open questions: ${lesson.questions.join(' | ')}`,
+    'Connect gently to recovery, hope and daily life. Respect their faithLevel. Never preachy or shaming. Australian English. 2–6 sentences, one question at a time.',
+    settings.faith === 'none' ? 'They usually prefer no faith content — keep this optional and exploratory; follow their lead.' : '',
+  ].filter(Boolean).join('\n');
+}
+function startBibleChat(lesson) {
+  el.bibleDlg.close();
+  const c = newConversation();
+  c.kind = 'bible';
+  c.lessonId = lesson.id;
+  c.title = `Bible · ${lesson.theme}: ${lesson.title}`;
+  c.systemExtra = bibleSystemExtra(lesson);
+  const opener = `Let's sit with **${lesson.ref}** together — “${lesson.title}”.\n\nWhen you've had a chance to read it in your own Bible or app: ${lesson.questions[0]}\n\nNo rush — take what speaks to you.`;
+  c.messages.push({ role: 'assistant', content: opener, ts: Date.now() });
+  persistConvos();
+  renderAll();
+  focusInput();
+  toast(`Studying with ${settings.name}`);
+}
+
+/* Patch buildSystemPrompt to honour tagged step/bible conversations */
+const _buildSystemPromptBase = buildSystemPrompt;
+buildSystemPrompt = function(convo) {
+  let base = _buildSystemPromptBase(convo);
+  if (convo && convo.systemExtra) base += '\n\nSPECIAL FOCUS FOR THIS CONVERSATION:\n' + convo.systemExtra;
+  return base;
+};
+
+/* ---------------------------------------------------------------------------
+   Find nearby help (Ask Izzy) — opt-in geolocation only
+   --------------------------------------------------------------------------- */
+let nearbyLastCoarse = ''; // in-memory only; never precise GPS in localStorage
+
+
+/* ---------------------------------------------------------------------------
+   Nutrition & recovery (educational, food-first — not medical advice)
+   --------------------------------------------------------------------------- */
+const NUTRITION_TOPICS = [
+  {
+    id: 'alcohol',
+    label: 'Alcohol',
+    body: 'Alcohol can dehydrate you, disturb sleep, irritate the gut and deplete B-vitamins (especially thiamine/B1), magnesium and zinc over time. Heavy or dependent use needs medical advice — withdrawal can include tremors, seizures and confusion.',
+    nutrients: [
+      { n: 'Fluids & electrolytes', food: 'Water, oral rehydration (Hydralyte-style), soup, banana, yoghurt' },
+      { n: 'Thiamine (B1)', food: 'Wholegrain bread, fortified cereals, legumes, pork, nuts — ask a pharmacist/GP before any thiamine supplement after heavy drinking' },
+      { n: 'Other B-vitamins', food: 'Eggs, leafy greens, dairy, meat or fortified alternatives' },
+      { n: 'Magnesium', food: 'Nuts, seeds, leafy greens, wholegrains' },
+      { n: 'Protein', food: 'Eggs, yoghurt, lentils, fish, tofu, lean meat' },
+    ],
+    checklist: ['Sip water regularly today', 'Eat something with protein and carbs', 'Prioritise sleep tonight', 'Avoid more alcohol while recovering', 'If shaking, confused or seizing — call 000 / see a doctor'],
+    meals: ['Vegemite on toast + banana', 'Eggs on toast', 'Yoghurt with fruit and oats', 'Chicken and rice soup', 'Baked beans on toast'],
+  },
+  {
+    id: 'cannabis',
+    label: 'Cannabis',
+    body: 'Cannabis can affect motivation, sleep rhythm and appetite (sometimes increasing it, sometimes suppressing it). After heavy use, the body mainly needs routine: food, hydration, movement and sleep — not a special “detox”.',
+    nutrients: [
+      { n: 'Hydration', food: 'Water, herbal tea, fruit' },
+      { n: 'Fibre & steady energy', food: 'Oats, fruit, vegetables, wholegrains' },
+      { n: 'Protein', food: 'Eggs, yoghurt, nuts, legumes' },
+      { n: 'Magnesium (for restlessness)', food: 'Nuts, seeds, leafy greens — food first' },
+    ],
+    checklist: ['Drink water through the day', 'Eat regular simple meals', 'Get some daylight and a short walk', 'Keep a calm sleep routine', 'Be kind if appetite or mood wobbles for a few days'],
+    meals: ['Overnight oats with fruit', 'Toast with peanut butter', 'Rice and stir-fried veg', 'Handful of nuts + apple'],
+  },
+  {
+    id: 'stimulants',
+    label: 'Stimulants / amphetamines',
+    body: 'Stimulants often suppress appetite, raise heart rate and body temperature, and can leave you dehydrated and sleep-deprived. Afterward, the priority is rest, fluids, and gentle re-feeding — not megadoses or “stacks”.',
+    nutrients: [
+      { n: 'Hydration & electrolytes', food: 'Water, oral rehydration, coconut water, banana' },
+      { n: 'Easy protein + carbs', food: 'Smoothie with milk/yoghurt, toast, eggs, soup' },
+      { n: 'Vitamin C & colourful plants', food: 'Citrus, berries, capsicum, kiwi' },
+      { n: 'Magnesium & potassium', food: 'Banana, potato, nuts, leafy greens' },
+    ],
+    checklist: ['Cool down and sip water (not energy drinks)', 'Eat something small even if appetite is low', 'Prioritise long sleep when you can', 'Avoid more stimulants while recovering', 'Chest pain, severe agitation or overheating — call 000'],
+    meals: ['Banana smoothie', 'Toast and scrambled eggs', 'Misoshiru / clear soup', 'Rice porridge', 'Yoghurt cup'],
+  },
+  {
+    id: 'mdma',
+    label: 'MDMA / ecstasy',
+    body: 'MDMA can raise body temperature and deplete fluids and electrolytes; the days after (“come down”) often bring low mood and fatigue. Cool environments, rest and ordinary food help — serotonin “boost” supplement stacks are not recommended here.',
+    nutrients: [
+      { n: 'Cooling & hydration', food: 'Water sipped steadily; oral rehydration if sweaty' },
+      { n: 'Electrolytes', food: 'Banana, yoghurt, soup — avoid overdoing salt tablets without advice' },
+      { n: 'Tryptophan-rich foods (gentle)', food: 'Turkey, eggs, dairy, oats, seeds — as normal meals, not megadoses' },
+      { n: 'Vitamin C & antioxidants from food', food: 'Fruit and vegetables' },
+    ],
+    checklist: ['Rest in a cool place', 'Sip water; don’t force litres at once', 'Eat light, familiar food', 'Plan quiet recovery days', 'Low mood lasting weeks — talk to a GP'],
+    meals: ['Banana + yoghurt', 'Oat porridge', 'Veggie soup', 'Rice and eggs'],
+  },
+  {
+    id: 'opioids',
+    label: 'Opioids',
+    body: 'Opioids slow the gut (constipation), can reduce appetite and affect hormones and sleep. Nutrition support is about gentle fibre, fluids and regular meals — not a detox kit. Withdrawal is uncomfortable; medical and AOD support can help.',
+    nutrients: [
+      { n: 'Fluids', food: 'Water, herbal tea, broth' },
+      { n: 'Fibre (gradual)', food: 'Fruit, veg, oats, legumes — increase slowly' },
+      { n: 'Protein', food: 'Eggs, dairy, legumes, fish' },
+      { n: 'Potassium & magnesium from food', food: 'Banana, potato, greens, nuts' },
+    ],
+    checklist: ['Drink water through the day', 'Move gently if you can (helps the gut)', 'Eat fibre-rich foods gradually', 'Soft foods if nauseous', 'Severe withdrawal or overdose risk — call 000; ask about naloxone'],
+    meals: ['Porridge with fruit', 'Scrambled eggs', 'Lentil soup', 'Stewed apple and yoghurt'],
+  },
+  {
+    id: 'nicotine',
+    label: 'Nicotine / tobacco',
+    body: 'Stopping nicotine can increase appetite and affect mood and concentration. Focusing on regular meals, water instead of “hand-to-mouth” habits, and colourful plants supports the change — quit support (Quitline 13 7848) helps too.',
+    nutrients: [
+      { n: 'Hydration', food: 'Water, flavoured sparkling water' },
+      { n: 'Crunchy substitutes', food: 'Carrot, apple, nuts (portion-aware)' },
+      { n: 'Vitamin C rich foods', food: 'Citrus, berries, kiwi, capsicum' },
+      { n: 'Steady blood sugar', food: 'Regular meals with protein + fibre' },
+    ],
+    checklist: ['Drink water when a craving hits', 'Keep healthy snacks handy', 'Move for 5–10 minutes during urges', 'Celebrate smoke-free hours/days', 'Consider Quitline 13 7848'],
+    meals: ['Apple and handful of almonds', 'Veggie sticks and hummus', 'Grain bowl with beans'],
+  },
+  {
+    id: 'benzos',
+    label: 'Benzodiazepines',
+    body: 'Benzodiazepine withdrawal can be medically serious (including seizures). Do not stop suddenly after regular use — talk to a GP or AOD service about a planned taper. Nutrition can support comfort (food, fluids, sleep routine) but does not replace medical care.',
+    nutrients: [
+      { n: 'Regular meals', food: 'Simple carbs + protein to steady energy' },
+      { n: 'Magnesium-rich foods', food: 'Greens, nuts, seeds — ask GP before supplements' },
+      { n: 'Hydration', food: 'Water, herbal tea' },
+      { n: 'Calming routine foods', food: 'Warm milk or milky alternatives, oats, banana' },
+    ],
+    checklist: ['Do not DIY a rapid stop after regular use', 'Book GP / AOD advice for any taper', 'Keep meals and bedtime steady', 'Limit extra caffeine/alcohol', 'Seizure, severe confusion — call 000'],
+    meals: ['Oats and banana', 'Toast and egg', 'Warm soup'],
+  },
+  {
+    id: 'comedown',
+    label: 'General comedown / after a big night',
+    body: 'After a big night the body often needs sleep, water, electrolytes and easy food. Hangover or comedown symptoms overlap with dehydration and low blood sugar. Go gently — this is care, not punishment.',
+    nutrients: [
+      { n: 'Fluids', food: 'Water, oral rehydration, weak tea' },
+      { n: 'Electrolytes & potassium', food: 'Banana, yoghurt, soup' },
+      { n: 'Easy energy', food: 'Toast, rice, crackers' },
+      { n: 'Protein when ready', food: 'Eggs, yoghurt, leftover dinner' },
+    ],
+    checklist: ['Sip fluids for a few hours', 'Eat something plain', 'Rest or nap safely', 'Skip “hair of the dog”', 'Vomiting blood, chest pain or collapse — call 000'],
+    meals: ['Toast and banana', 'Chicken noodle soup', 'Rice and scrambled egg', 'Hydralyte + crackers'],
+  },
+  {
+    id: 'early-recovery',
+    label: 'Poor appetite in early recovery',
+    body: 'Early recovery can bring nausea, low appetite or chaotic eating. Small, frequent, familiar foods beat perfect meal plans. Rebuild trust with food slowly; a dietitian via your GP or AOD service can help if weight or vitamins are a concern.',
+    nutrients: [
+      { n: 'Small frequent eats', food: 'Yoghurt, smoothies, toast, soup' },
+      { n: 'Protein in every snack', food: 'Cheese, eggs, nuts, hummus' },
+      { n: 'Multivitamin food pattern', food: 'Fruit or veg once or twice a day when possible' },
+      { n: 'Healthy fats', food: 'Avocado, nut butter, olive oil on veg' },
+    ],
+    checklist: ['Aim for 3 mini-meals rather than one big one', 'Keep easy options in the fridge', 'Drink nourishing fluids (milk, smoothie, soup)', 'Tell your GP if weight drops quickly', 'Be patient — appetite often returns'],
+    meals: ['Smoothie', 'Cheese toastie', 'Cup of soup', 'Yoghurt and honey', 'Rice with soy sauce and egg'],
+  },
+];
+
+const NUT_HYDRATE = {
+  s: 'Rough guide: about 1.5–2 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
+  m: 'Rough guide: about 2–2.5 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
+  l: 'Rough guide: about 2.5–3 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
+};
+
+function startSkill(sk) {
+  if (!sk) return;
+  sendMessage(sk.starter);
+}
+function openSkills() {
+  if (!profile) return;
+  closeSidebar();
+  const list = $('#skillsList');
+  list.innerHTML = '';
+  for (const sk of CRAVING_SKILLS) {
+    const li = document.createElement('li');
+    li.className = 'step-card';
+    li.innerHTML = `<h3></h3><p class="body"></p><div class="actions"><button class="btn btn-primary btn-sm" type="button">Try with ${escapeHtml(settings.name)}</button></div>`;
+    $('h3', li).textContent = sk.chip;
+    $('.body', li).textContent = sk.blurb;
+    $('button', li).addEventListener('click', () => { el.skillsDlg.close(); startSkill(sk); });
+    list.appendChild(li);
+  }
+  if (!el.skillsDlg.open) el.skillsDlg.showModal();
+}
+
+function openNutrition() {
+  if (!profile) return;
+  closeSidebar();
+  const sel = $('#nutritionSelect');
+  if (sel.options.length <= 1) {
+    for (const t of NUTRITION_TOPICS) {
+      const o = document.createElement('option');
+      o.value = t.id; o.textContent = t.label;
+      sel.appendChild(o);
+    }
+  }
+  if (isDemo && !sel.value) sel.value = 'alcohol';
+  renderNutritionPanel();
+  updateNutHydration();
+  $('#nutritionHydration').hidden = false;
+  if (!el.nutritionDlg.open) el.nutritionDlg.showModal();
+}
+function renderNutritionPanel() {
+  const id = $('#nutritionSelect').value;
+  const panel = $('#nutritionPanel');
+  if (!id) { panel.hidden = true; panel.innerHTML = ''; return; }
+  const t = NUTRITION_TOPICS.find(x => x.id === id);
+  if (!t) { panel.hidden = true; return; }
+  panel.hidden = false;
+  panel.className = 'nut-panel';
+  panel.innerHTML = `
+    <h3>How the body can be affected</h3>
+    <p style="font-size:.92rem;margin:0">${escapeHtml(t.body)}</p>
+    <h3>Food-first nutrients that may help support recovery</h3>
+    <ul>${t.nutrients.map(n => `<li><strong>${escapeHtml(n.n)}:</strong> ${escapeHtml(n.food)}</li>`).join('')}</ul>
+    <p class="help">Prefer food sources. If a pharmacist or GP suggests a supplement (for example thiamine after heavy drinking), ask them about dose — we don’t recommend DIY high-dose stacks or detox kits.</p>
+    <h3>Simple daily checklist</h3>
+    <ul class="nut-check">${t.checklist.map((c, i) => `<li><input type="checkbox" id="nutc-${t.id}-${i}"><label for="nutc-${t.id}-${i}">${escapeHtml(c)}</label></li>`).join('')}</ul>
+    <h3>Simple meal ideas (pick 2–3)</h3>
+    <div class="meal-chips" id="nutMeals"></div>
+    <p class="help" id="nutMealPicks" style="margin-top:8px"></p>`;
+  const chips = $('#nutMeals', panel);
+  const picks = new Set();
+  for (const m of t.meals) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = m;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => {
+      if (picks.has(m)) picks.delete(m); else { if (picks.size >= 3) picks.delete([...picks][0]); picks.add(m); }
+      b.setAttribute('aria-pressed', String(picks.has(m)));
+      $$('#nutMeals .chip', panel).forEach(ch => ch.setAttribute('aria-pressed', String(picks.has(ch.textContent))));
+      $('#nutMealPicks', panel).textContent = picks.size ? 'Your picks: ' + [...picks].join(' · ') : '';
+    });
+    chips.appendChild(b);
+  }
+}
+function updateNutHydration() {
+  const band = ($$('input[name="nutWeight"]').find(r => r.checked) || {}).value || 'm';
+  $('#nutHydrateMsg').textContent = NUT_HYDRATE[band] || NUT_HYDRATE.m;
+}
+$('#nutritionSelect').addEventListener('change', renderNutritionPanel);
+$$('input[name="nutWeight"]').forEach(r => r.addEventListener('change', updateNutHydration));
+
+function openNearby() {
+  closeSidebar();
+  if (el.helpDlg.open) el.helpDlg.close();
+  $('#nearbyStatus').textContent = '';
+  $('#nearbyLinks').innerHTML = '';
+  $('#nearbySuburb').value = nearbyLastCoarse || '';
+  if (isDemo) {
+    $('#nearbyStatus').textContent = 'Demo: pretend you’re around Brisbane CBD. Use the links below — nothing is sent from this device.';
+    renderNearbyLinks({ label: 'Brisbane CBD (demo)', lat: -27.4698, lng: 153.0251, suburb: 'Brisbane' });
+  }
+  if (!el.nearbyDlg.open) el.nearbyDlg.showModal();
+}
+function askIzzyUrl(opts) {
+  // Ask Izzy: open the Australia-wide hub. Category shortcuts help; suburb/postcode
+  // is shown on-screen so the person can enter it on Ask Izzy (their location step).
+  const suburb = opts && opts.suburb ? String(opts.suburb).trim() : '';
+  const m = suburb.match(/\b(\d{4})\b/);
+  if (m) {
+    // Postcode deep link (state unknown — QLD default for Brisbane-first; Ask Izzy still lets them correct).
+    return 'https://askizzy.org.au/search/food/' + encodeURIComponent(m[1] + '-QLD') + '/personalise/page/location';
+  }
+  if (suburb) return 'https://askizzy.org.au/'; // user will type suburb on Ask Izzy
+  return 'https://askizzy.org.au/';
+}
+function mapsMealsUrl(opts) {
+  if (opts && opts.lat != null && opts.lng != null) {
+    return `https://www.google.com/maps/search/free+meals+near+me/@${opts.lat},${opts.lng},14z`;
+  }
+  if (opts && opts.suburb) {
+    return 'https://www.google.com/maps/search/' + encodeURIComponent('free meals near ' + opts.suburb);
+  }
+  return 'https://www.google.com/maps/search/free+meals+near+me';
+}
+function renderNearbyLinks(opts) {
+  const box = $('#nearbyLinks');
+  box.innerHTML = '';
+  const izzy = document.createElement('a');
+  izzy.className = 'btn btn-primary';
+  izzy.target = '_blank';
+  izzy.rel = 'noopener noreferrer';
+  izzy.href = askIzzyUrl(opts);
+  izzy.textContent = opts && opts.suburb ? `Ask Izzy near ${opts.suburb}` : 'Open Ask Izzy';
+  box.appendChild(izzy);
+  const maps = document.createElement('a');
+  maps.className = 'btn';
+  maps.target = '_blank';
+  maps.rel = 'noopener noreferrer';
+  maps.href = mapsMealsUrl(opts);
+  maps.textContent = 'Google Maps: free meals near me';
+  box.appendChild(maps);
+  if (opts && opts.lat != null) {
+    const note = document.createElement('p');
+    note.className = 'help';
+    note.style.width = '100%';
+    note.textContent = `Approx. location for search: ${opts.label || ''} (${Number(opts.lat).toFixed(3)}, ${Number(opts.lng).toFixed(3)}) — not saved.`;
+    box.appendChild(note);
+  }
+}
+$('#nearbyUseLoc').addEventListener('click', () => {
+  if (isDemo) {
+    $('#nearbyStatus').textContent = 'Demo uses a sample Brisbane location — no real GPS requested.';
+    renderNearbyLinks({ label: 'Brisbane CBD (demo)', lat: -27.4698, lng: 153.0251, suburb: 'Brisbane' });
+    return;
+  }
+  if (!navigator.geolocation) {
+    $('#nearbyStatus').textContent = 'Location isn’t available in this browser. Try typing a suburb, or open Ask Izzy without a location.';
+    renderNearbyLinks({});
+    return;
+  }
+  $('#nearbyStatus').textContent = 'Asking for your location… (you can deny — we’ll still open Ask Izzy)';
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      // Do NOT store precise GPS. Coarse display only in-session.
+      $('#nearbyStatus').textContent = 'Location received for this search only — not saved on this device.';
+      renderNearbyLinks({ label: 'Near you', lat, lng });
+      // Also open Ask Izzy hub so they can browse categories
+      $('#nearbyAskIzzy').href = 'https://askizzy.org.au/';
+    },
+    (err) => {
+      const msg = err && err.code === 1
+        ? 'Location permission denied — no worries. Type a suburb or open Ask Izzy without a location.'
+        : 'Couldn’t get your location. Type a suburb or open Ask Izzy without a location.';
+      $('#nearbyStatus').textContent = msg;
+      renderNearbyLinks({});
+    },
+    { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+  );
+});
+$('#nearbySuburbGo').addEventListener('click', () => {
+  const suburb = $('#nearbySuburb').value.trim();
+  if (!suburb) { toast('Enter a suburb or postcode, or use Open Ask Izzy.', true); return; }
+  // Cache only the typed suburb/postcode (coarse), never GPS
+  nearbyLastCoarse = suburb;
+  $('#nearbyStatus').textContent = `Searching Ask Izzy around “${suburb}”.`;
+  renderNearbyLinks({ suburb, label: suburb });
+  window.open(askIzzyUrl({ suburb }), '_blank', 'noopener,noreferrer');
+});
+$('#nearbyAskIzzy').addEventListener('click', () => {
+  // ensure base URL if nothing set
+  if (!$('#nearbyAskIzzy').getAttribute('href')) $('#nearbyAskIzzy').href = 'https://askizzy.org.au/';
+});
+$('#helpNearbyBtn').addEventListener('click', () => openNearby());
+
 function openMemories() { closeSidebar(); renderMemories(); if (!el.memoriesDlg.open) el.memoriesDlg.showModal(); }
+
+
 
 /* ---------------------------------------------------------------------------
    Settings panel
@@ -2010,7 +3152,9 @@ function openSettings(focusId) {
   $('#setSoberStart').value = settings.soberStart || '';
   $('#setSoberStart').max = localDate();
   $('#setSoberWhat').value = settings.soberWhat || '';
+  $('#setSoberWhy').value = settings.soberWhy || '';
   $('#setMoodCheck').checked = settings.moodCheck;
+  $('#setGratCheck').checked = settings.gratCheck !== false;
   $('#setBaseUrl').value = settings.baseUrl;
   $('#setModel').value = settings.model;
   $('#setKey').value = settings.apiKey;
@@ -2043,7 +3187,9 @@ function readSettingsForm() {
     faithLevel: lvl ? lvl.value : 'woven',
     soberStart: $('#setSoberStart').value || '',
     soberWhat: $('#setSoberWhat').value.trim(),
+    soberWhy: $('#setSoberWhy').value.trim(),
     moodCheck: $('#setMoodCheck').checked,
+    gratCheck: $('#setGratCheck').checked,
     baseUrl: $('#setBaseUrl').value.trim() || DEFAULT_SHARED.baseUrl,
     model: $('#setModel').value.trim() || DEFAULT_SHARED.model,
     apiKey: $('#setKey').value.trim(),
@@ -2115,7 +3261,7 @@ $('#testConnBtn').addEventListener('click', async () => {
     out.className = 'test-result bad'; out.textContent = '✗ ' + String(e.message || 'Failed').split('\n')[0];
   } finally { settings = prev; }
 });
-el.soberCard.addEventListener('click', () => openSettings('setSoberStart'));
+el.soberCard.addEventListener('click', () => openCleanTime());
 
 /* Export / import / clear (per person) ---------------------------------------- */
 function personaSettings() {
@@ -2127,6 +3273,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
+    gratitude, journal, steps: stepsProgress, bible: bibleProgress,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -2158,9 +3305,13 @@ $('#importFile').addEventListener('change', async (e) => {
     memories = (data.memories || []).filter(m => m && typeof m.text === 'string')
       .map(m => ({ id: m.id || uid(), text: m.text, created: m.created || Date.now(), source: m.source || 'manual' }));
     moods = Array.isArray(data.moods) ? data.moods.filter(m => m && m.date) : [];
+    gratitude = Array.isArray(data.gratitude) ? data.gratitude.filter(g => g && g.date) : [];
+    journal = Array.isArray(data.journal) ? data.journal.filter(j => j && j.id) : [];
+    stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, data.steps || {});
+    bibleProgress = Object.assign({ completed: {}, notes: {}, updated: 0 }, data.bible || {});
     activeId = null;
     settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveSteps(); saveBible(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
@@ -2223,7 +3374,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg].forEach(d => { if (d.open) d.close(); });
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].forEach(d => { if (d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
@@ -2520,7 +3671,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg].some(d => d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].some(d => d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -2533,7 +3684,15 @@ el.composer.addEventListener('submit', (e) => {
 });
 el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); closeSidebar(); });
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
-  if (b.dataset.open === 'settings') openSettings(); else openMemories();
+  const o = b.dataset.open;
+  if (o === 'settings') openSettings();
+  else if (o === 'memories') openMemories();
+  else if (o === 'journal') openJournal();
+  else if (o === 'steps') openSteps();
+  else if (o === 'bible') openBible();
+  else if (o === 'nearby') openNearby();
+  else if (o === 'nutrition') openNutrition();
+  else if (o === 'skills') openSkills();
 }));
 
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
@@ -2554,7 +3713,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 (function voiceSupportNote() {
   const notes = [];
@@ -2583,7 +3742,7 @@ function applyBrand() {
    on exit.
    --------------------------------------------------------------------------- */
 const DEMO_PERSON = { id: 'demo', name: 'Alex', pin: null, demo: true };
-const DEMO_CHIPS = [...STARTERS.counsellor, 'Show a crisis example'];
+const DEMO_CHIPS = [...STARTERS.counsellor, "Let's try a TIPP calm-down", 'Show a crisis example'];
 const DEMO_SPEED = Math.max(0.1, Number(new URLSearchParams(location.search).get('demospeed')) || 1);
 
 const DEMO_CUTDOWN_REST = [
@@ -2619,6 +3778,14 @@ const DEMO_SCENARIOS = {
     ['u', "Mostly guilt about how I've treated my family."],
     ['a', "That guilt shows how much you love them. In many faith traditions, guilt isn't meant to crush us — it points us back towards repair, and there's always grace for starting again.\n\nMaybe one small step this week: a sincere apology, or simply showing up for one thing that matters to them. When you're ready, it could help to talk with someone from your faith community, or your counsellor, about making amends.\n\nNo rush — healing happens one step at a time. 🌿"],
   ],
+  "let's try a tipp calm-down": [
+    ['u', "Let's try a TIPP calm-down"],
+    ['a', "Good call, Alex — TIPP is a short DBT skill for when the urge or emotion feels huge. We'll do **one piece at a time**. This is skills practice, not therapy. 💚\n\n**T — Temperature (safe):** Hold a cool glass of water, or rest a cool (not freezing) cloth on your wrists or the back of your neck for 30–60 seconds. Skip anything extreme like ice baths.\n\nHave a go, then tell me when you're ready for the next letter."],
+    ['u', 'Done — cool cloth on my wrists. Feeling a bit clearer.'],
+    ['a', "Nice work.\n\n**I — Intense exercise (brief):** Stand up and march on the spot, or walk to the letterbox and back — about 60–90 seconds. Just enough to shift the adrenaline.\n\nWhen you've done that, we'll pace the breath."],
+    ['u', 'Marched on the spot. Heart rate came up a bit then settled.'],
+    ['a', "**P — Paced breathing:** Breathe in for 4, out for 6, for about a minute. Longer out-breaths help the body settle.\n\n**P — Paired muscle relaxation:** Gently tense your shoulders for 5 seconds, then drop them soft. Repeat once.\n\nWhere's the craving out of 10 now? If it's still strong, we can urge-surf next — or text someone in your crew."],
+  ],
   'show a crisis example': [
     ['u', "Some nights I just don't want to be here anymore."],
     ['a', "Alex, thank you for telling me. I'm really glad you did, and I'm taking what you've said seriously. 💚\n\nIf you're in immediate danger or might act on these thoughts, please call **000** now. You can also talk to someone right now, any time:\n\n- **Lifeline:** 13 11 14 (or text 0477 13 11 14)\n- **Suicide Call Back Service:** 1300 659 467\n- **13YARN:** 13 92 76 (for Aboriginal and Torres Strait Islander people)\n- **National Alcohol and Other Drug Hotline:** 1800 250 015\n\nAre you safe right now? Is there someone nearby — family or a friend — who could be with you tonight?"],
@@ -2647,14 +3814,21 @@ function demoSampleData() {
     'Walking the dog helps when cravings hit',
     'Finds the Serenity Prayer comforting',
   ].map((text, i) => ({ id: 'demo-m' + i, text, created: now - i * 86400000, source: 'auto' }));
-  return { soberStart: localDate(start), moods: sampleMoods, memories: sampleMemories };
+  const sampleJournal = [
+    { id: 'demo-j1', title: 'After the craving', body: 'Nearly went to the bottle shop last night. Texted my brother instead. Still shaky but proud I reached out.', refined: 'Last night a strong craving nearly pulled me to the bottle shop. Underneath the urge I can sense loneliness and tiredness after a hard day. Choosing to text my brother was me choosing connection over the craving — and that matters.', emotions: 'anxiety, loneliness, pride, relief', created: now - 86400000, updated: now - 86400000 },
+    { id: 'demo-j2', title: '', body: 'Grateful for a quiet morning and a walk with the dog. Feeling a bit more like myself.', created: now - 172800000, updated: now - 172800000 },
+  ];
+  const sampleGrat = [{ date: localDate(), items: ['My brother’s late-night texts', 'A clear head this morning', 'Walking the dog'], ts: now }];
+  const sampleSteps = { currentStep: 2, notes: { '1': 'Admitted I cannot control drinking on my own anymore.' }, completed: { '1': true }, updated: now };
+  const sampleBible = { completed: { 'hope-1': true }, notes: {}, updated: now };
+  return { soberStart: localDate(start), moods: sampleMoods, memories: sampleMemories, journal: sampleJournal, gratitude: sampleGrat, steps: sampleSteps, bible: sampleBible };
 }
 
 function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg].forEach(d => { if (d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg].forEach(d => { if (d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -2663,7 +3837,10 @@ function enterDemo() {
     theme: settings.theme || 'system', disclaimerAck: true, soberStart: sample.soberStart, soberWhat: 'alcohol-free',
     faith: 'general', faithLevel: 'woven', apiKey: '',
   });
-  convos = []; memories = sample.memories; moods = sample.moods; activeId = null;
+  convos = []; memories = sample.memories; moods = sample.moods;
+  journal = sample.journal; gratitude = sample.gratitude;
+  stepsProgress = sample.steps; bibleProgress = sample.bible;
+  activeId = null;
   applyTheme();
   newConversation();
   toast('Welcome to the demo 🌿 — replies are pre-written examples', false, 3500);
@@ -2673,7 +3850,10 @@ function exitDemo() {
   demoRun++;
   isDemo = false;
   profile = null;
-  convos = []; memories = []; moods = []; activeId = null;
+  convos = []; memories = []; moods = []; gratitude = []; journal = [];
+  stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
+  bibleProgress = { completed: {}, notes: {}, updated: 0 };
+  activeId = null;
   el.inner.innerHTML = '';
   if (new URLSearchParams(location.search).has('demo')) {
     const url = new URL(location.href); url.searchParams.delete('demo'); url.searchParams.delete('demospeed');
