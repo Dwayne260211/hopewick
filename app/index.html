@@ -8,12 +8,12 @@
    tagline and copyright owner are defined for the app.
    (Internal storage keys stay "eden.*" on purpose so existing data survives.)
    ============================================================================ */
-const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Faith-sensitive AOD support, between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026 };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026 };
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Faith-sensitive AOD support, between sessions.">
+<meta name="description" content="AOD recovery support between sessions.">
 <meta name="theme-color" content="#3f8f5f">
-<title>AOD support companion</title>
+<title>Hopewick · AI recovery companion</title>
 <!-- Inline favicon (avoids a 404 when served statically) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='35%25' cy='30%25'%3E%3Cstop offset='0' stop-color='%23d9f7c8'/%3E%3Cstop offset='.5' stop-color='%237cc49a'/%3E%3Cstop offset='1' stop-color='%232f7a50'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='28' fill='url(%23g)'/%3E%3C/svg%3E">
 <style>
@@ -492,6 +492,42 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .crisis-card p { margin: 0 0 6px; font-size: .9rem; }
 .crisis-card ul { margin: 0; padding-left: 1.2em; font-size: .92rem; }
 .crisis-card a { color: var(--danger); font-weight: 700; }
+.crisis-card .crisis-now { font-weight: 650; margin: 0 0 8px; }
+.crisis-card .crisis-actions {
+  list-style: none; margin: 0 0 10px; padding: 0;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.crisis-card .crisis-actions li { margin: 0; }
+.crisis-card .crisis-actions a.crisis-call {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  text-decoration: none; font-weight: 700; color: var(--danger);
+  background: var(--surface); border: 1px solid color-mix(in srgb, var(--danger) 35%, var(--border));
+  border-radius: 10px; padding: 10px 12px; font-size: .92rem;
+}
+.crisis-card .crisis-actions a.crisis-call.urgent {
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+}
+.crisis-card .crisis-actions .cn-name { font-weight: 650; color: var(--text); }
+.crisis-card .crisis-actions .cn-num { white-space: nowrap; }
+.crisis-card .crisis-about {
+  margin: 8px 0 0; font-size: .8rem; color: var(--muted); line-height: 1.35;
+}
+.about-body .about-short { margin: 8px 0 14px; padding-left: 1.15em; }
+.about-more {
+  margin: 12px 0 4px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface-2); padding: 0;
+}
+.about-more > summary {
+  cursor: pointer; list-style: none; padding: 10px 14px; font-weight: 650; font-size: .92rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.about-more > summary::-webkit-details-marker { display: none; }
+.about-more > summary::before { content: '▸'; color: var(--muted); font-size: .85rem; }
+.about-more[open] > summary::before { content: '▾'; }
+.about-more ul { margin: 0; padding: 0 14px 12px 1.35em; border-top: 1px solid var(--border); }
+.about-more li { margin: 8px 0; line-height: 1.4; font-size: .9rem; color: var(--text); }
+/* v5.10: product copy + crisis UX (Join waitlist, AI recovery companion, moment-first crisis card) */
 
 /* Recovery counter */
 .sober-card { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)); text-align: left; width: 100%; }
@@ -750,6 +786,26 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 
 /* v5.7: Find treatment / rehab (official AU link-outs) */
+/* v5.8: Find a church (official AU denominational finders) */
+/* v5.9: Info & training (official AU AOD info + workforce training link-outs) */
+/* v5.10: product copy + crisis UX pass */
+.info-hub-section { margin-top: 18px; }
+.info-hub-section > h3 {
+  font-size: .85rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); margin: 0 0 8px;
+}
+.info-hub-featured {
+  padding: 14px 16px; border: 2px solid var(--accent, #3f8f5f);
+  background: var(--surface-2); border-radius: 14px; margin-bottom: 10px;
+}
+.info-hub-featured h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.info-hub-featured .badge {
+  display: inline-block; font-size: .72rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .04em;
+  color: var(--accent, #3f8f5f); margin-bottom: 6px;
+}
+.info-hub-bullets { margin: 10px 0 0; padding-left: 1.15rem; color: var(--muted); font-size: .88rem; line-height: 1.45; }
+.info-hub-bullets li { margin: 0 0 4px; }
 .treatment-state-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -806,6 +862,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 /* v5.5: in-app WEB Bible (public domain) + SOAP deep-link */
 /* v5.6: Diving Deeper Finding Jesus — whole Bible + Hope connections */
 /* v5.7: Find treatment / rehab — official AU AOD finders + helplines */
+/* v5.8: Find a church — official AU denominational finders */
+/* v5.9: Info & training — Insight + AU AOD workforce / public info link-outs */
+/* v5.10: product copy + crisis UX — AOD recovery tagline, Join waitlist, moment-first crisis */
 .waitlist-dlg { width: min(480px, calc(100vw - 24px)); }
 .waitlist-dlg .dlg-body { padding: 8px 18px 4px; }
 .waitlist-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
@@ -863,7 +922,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="brand-mark" aria-hidden="true"></div>
       <div>
         <div class="brand-name" id="brandName" data-brand></div>
-        <div class="brand-sub" id="brandSub">faith-based AOD support</div>
+        <div class="brand-sub" id="brandSub">AI recovery companion</div>
       </div>
     </div>
     <button class="btn btn-primary" id="newChatBtn" type="button">
@@ -917,6 +976,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Find treatment / rehab
       </button>
+      <button class="btn btn-ghost" type="button" data-open="church" id="sideChurchBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2H6v4H2v16h20V6h-4V2z"/><path d="M12 2v4"/><path d="M12 10v8"/><path d="M8 14h8"/></svg>
+        Find a church
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="info" id="sideInfoBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        Info &amp; training
+      </button>
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
@@ -933,7 +1000,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
         Switch profile
       </button>
-      <button class="btn btn-ghost" type="button" id="sideWaitlistBtn">🌱 Get early access</button>
+      <button class="btn btn-ghost" type="button" id="sideWaitlistBtn">🌱 Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
       <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
     </div>
@@ -985,14 +1052,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
       <p>Like what you see? <strong>Paid accounts aren’t open yet</strong> — join the waitlist and we’ll email you when access is ready.</p>
-      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Get early access</button>
+      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Join waitlist</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>🌱 <strong>Try <span data-brand></span> free.</strong> Live AI accounts aren’t open yet — explore the demo (pre-written examples, nothing sent), or join the waitlist for early access.</p>
+      <p>🌱 <strong>Try <span data-brand></span> free.</strong> Live AI accounts aren’t open yet — explore the demo (pre-written examples, nothing sent), or <strong>Join waitlist</strong> to hear when accounts open.</p>
       <div class="banner-actions">
         <button class="btn btn-primary btn-sm" type="button" id="keyBannerDemo">✨ Try the demo</button>
-        <button class="btn btn-sm" type="button" id="keyBannerWaitlist">Get early access</button>
+        <button class="btn btn-sm" type="button" id="keyBannerWaitlist">Join waitlist</button>
       </div>
     </div>
 
@@ -1016,7 +1083,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · <span data-companion></span> is an AI, not a counsellor or doctor — in an emergency call 000.<br><span class="copyright" data-copyright></span></p>
+      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · <span data-companion></span> is an AI recovery companion, not a counsellor or doctor — in an emergency call 000.<br><span class="copyright" data-copyright></span></p>
     </div>
   </main>
 </div>
@@ -1026,7 +1093,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   <div class="picker-body" id="pickerBody">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
     <h2 id="pickerTitle">Chat with <span data-companion></span></h2>
-    <p class="picker-guide"><strong><span data-companion></span> is your private AI companion</strong> — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
+    <p class="picker-guide"><strong><span data-companion></span> — an AI recovery companion</strong> private to you — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
     <ul class="profiles" id="profileList" aria-label="Your profiles"></ul>
     <form class="inline-form" id="pinForm" hidden>
       <label for="pinInput" id="pinLabel" class="sr-only">PIN</label>
@@ -1047,7 +1114,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </div>
     <div class="picker-demo">
       <button class="btn btn-primary" type="button" id="tryDemoBtn">✨ Try the demo <span class="help" style="color:inherit;opacity:.85">— no API key needed</span></button>
-      <button class="btn" type="button" id="pickerWaitlistBtn">Get early access / Join waitlist</button>
+      <button class="btn" type="button" id="pickerWaitlistBtn">Join waitlist</button>
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
@@ -1063,11 +1130,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
     <h2 id="onboardTitle">Welcome to <span data-brand></span></h2>
     <p class="lead">Want a private space to talk through cravings and hard days between sessions?</p>
-    <p><span data-companion></span> is an <strong>AI companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
+    <p><span data-companion></span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
       <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
-      <button class="btn btn-ghost" type="button" id="onboardWaitlistBtn">Get early access</button>
+      <button class="btn btn-ghost" type="button" id="onboardWaitlistBtn">Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand></span></button>
     </div>
   </div>
@@ -1082,21 +1149,28 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body about-body">
-    <p><strong><span data-brand></span></strong> is a between-sessions support companion from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI companion, not a counsellor, doctor, or person in rehab.</p>
+    <p><strong><span data-brand></span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
     <p class="founder-credit" data-founder>Created by Dwayne Stevens</p>
-    <ul>
-      <li><strong>Not a crisis service.</strong> If you are in danger, call <strong>000</strong>. Use <strong>Get help now</strong> in the app for Australian helplines.</li>
-      <li><strong>Between sessions.</strong> Built for cravings, hard days, and gentle check-ins — alongside your real-world support, not instead of it.</li>
-      <li><strong>Faith optional.</strong> Choose how much (if any) faith content you want in Preferences.</li>
-      <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-      <li><strong>Demo first.</strong> Try the free demo with pre-written examples. Paid / hosted access is coming — use <strong>Get early access</strong>.</li>
-      <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
-      <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> still accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
+    <ul class="about-short">
+      <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
+      <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
+      <li><strong>If you’re in danger.</strong> Call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
+      <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
-      <button class="btn btn-primary" type="button" id="aboutWaitlistBtn">Get early access / Join waitlist</button>
+      <button class="btn btn-primary" type="button" id="aboutWaitlistBtn">Join waitlist</button>
       <p class="help" style="margin:8px 0 0">Free demo now. Paid accounts coming — no fake logins.</p>
     </div>
+    <details class="about-more" id="aboutMore">
+      <summary>Learn more · Privacy · Advanced</summary>
+      <ul>
+        <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
+        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hosted accounts are coming — use <strong>Join waitlist</strong>.</li>
+        <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
+        <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
+        <li><strong>Architecture note.</strong> Hopewick is a static browser app (no Hopewick account server today). Live AI, when used, goes to the provider you choose under Advanced.</li>
+      </ul>
+    </details>
     <div class="about-foot">
       <a href="../">Full landing page</a> · <span data-copyright></span>
     </div>
@@ -1110,7 +1184,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ Early access / waitlist ============================ -->
 <dialog id="waitlistDlg" class="waitlist-dlg" aria-labelledby="waitlistTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="waitlistTitle">Get early access</h2>
+    <h2 id="waitlistTitle">Join waitlist</h2>
     <button class="icon-btn" value="close" aria-label="Close waitlist">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
@@ -1136,9 +1210,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <label for="appWlNote">Anything you’d like us to know <span class="hint">(optional)</span>
         <textarea id="appWlNote" name="note" rows="2" maxlength="500" placeholder="Optional note"></textarea>
       </label>
-      <button class="btn btn-primary" type="submit" id="appWaitlistSubmit">Join the waitlist</button>
+      <button class="btn btn-primary" type="submit" id="appWaitlistSubmit">Join waitlist</button>
     </form>
-    <p class="waitlist-mail" id="appWaitlistContact">Or email <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20early%20access%20%2F%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD anytime.</p>
+    <p class="waitlist-mail" id="appWaitlistContact">Or email <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD anytime.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="waitlistCloseBtn">Close</button>
@@ -1154,14 +1228,16 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0">If you or someone else is in immediate danger, <strong>call 000 now</strong>. These Australian services are free and confidential:</p>
+    <p style="margin:12px 0 0"><strong>Here’s what you can do now.</strong> If you or someone else is in immediate danger, <strong>call 000 now</strong>. Then use a free, confidential Australian line below:</p>
     <ul class="help-list" id="helpList"></ul>
     <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
       <button class="btn btn-primary" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
+      <button class="btn" type="button" id="helpInfoBtn">Info &amp; training — Insight &amp; AU AOD links</button>
+      <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
     </div>
-    <p class="help" style="margin-top:12px"><span data-brand></span> is an AI support tool, not a counsellor or clinician. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
+    <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
 </dialog>
 
@@ -1169,7 +1245,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="disclaimerDlg" aria-labelledby="discTitle">
   <div class="dlg-head"><h2 id="discTitle">Before we start 🌿</h2></div>
   <div class="dlg-body disclaimer-body">
-    <p><span data-brand></span> is an <strong>AI support tool</strong> for talking through alcohol and other drug use, cravings, faith and hope. It draws on approaches used in Australian AOD services, but:</p>
+    <p><span data-brand></span> offers <strong><span data-companion></span> — an AI recovery companion</strong> for talking through alcohol and other drug use, cravings, and hard days. Faith content is optional. It draws on approaches used in Australian AOD services, but:</p>
     <ul>
       <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
       <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
@@ -1196,7 +1272,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <p class="lede" id="needAiLede">Live AI chat needs a hosted account (coming soon) or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.</p>
     <div class="need-ai-actions">
       <button class="btn btn-primary" type="button" id="needAiDemoBtn">✨ Try the demo</button>
-      <button class="btn" type="button" id="needAiWaitlistBtn">Get early access</button>
+      <button class="btn" type="button" id="needAiWaitlistBtn">Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
     </div>
   </div>
@@ -1366,10 +1442,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
     </div>
     <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
-      <p class="advanced-lede">Most visitors use the <strong>free demo</strong> or join the waitlist for early access. Live hosted accounts aren’t open yet.
+      <p class="advanced-lede">Most visitors use the <strong>free demo</strong> or <strong>Join waitlist</strong> to hear when accounts open. Live hosted accounts aren’t open yet.
         <span class="adv-actions">
           <button class="btn btn-sm btn-primary" type="button" id="advTryDemoBtn">✨ Try the demo</button>
-          <button class="btn btn-sm" type="button" id="advWaitlistBtn">Get early access</button>
+          <button class="btn btn-sm" type="button" id="advWaitlistBtn">Join waitlist</button>
         </span>
       </p>
       <details class="own-key-details" id="ownKeyDetails">
@@ -1726,6 +1802,217 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
+
+<!-- ============================ Find a church ============================ -->
+<dialog id="churchDlg" aria-labelledby="churchTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="churchTitle">⛪ Find a church</h2>
+    <button class="icon-btn" value="close" aria-label="Close church finder">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run churches.</strong> These are official Australian denominational finders and a broad directory. Open a finder when you feel ready — no pressure. This is <strong>not a crisis service</strong>.</p>
+    <p class="help" style="margin-top:8px">We don’t scrape or host a church database (those go stale). After a finder opens, search by suburb or postcode on their site.</p>
+
+    <div class="meeting-cards" id="churchCards">
+      <div class="meeting-card">
+        <h3>Search near me (maps)</h3>
+        <p>Quick location search — then check the parish or congregation site for service times.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.google.com/maps/search/church+near+me" target="_blank" rel="noopener noreferrer">Google Maps — church near me</a>
+          <a class="btn btn-sm" href="https://www.openstreetmap.org/search?query=church" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>AusChurches directory</h3>
+        <p>Browse Christian churches across Australia by suburb (independent directory — verify times with the church).</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://auschurches.com.au/" target="_blank" rel="noopener noreferrer">Open AusChurches</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>ACC — Australian Christian Churches</h3>
+        <p>Pentecostal churches across Australia (official national finder).</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.acc.org.au/find-a-church" target="_blank" rel="noopener noreferrer">ACC find a church</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Catholic</h3>
+        <p>Official Catholic Church in Australia site, plus a free public parish lookup (National Council of Priests). The official Directory at directory.catholic.au needs a paid subscription — we don’t link that as the default.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.catholic.org.au/" target="_blank" rel="noopener noreferrer">catholic.org.au</a>
+          <a class="btn btn-sm" href="http://www.catholicdirectory.com.au/findachurch/findChurch.php" target="_blank" rel="noopener noreferrer">Free parish lookup (NCP)</a>
+          <a class="btn btn-sm" href="https://www.google.com/maps/search/catholic+church+near+me" target="_blank" rel="noopener noreferrer">Maps — Catholic near me</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Anglican Church of Australia</h3>
+        <p>National dioceses &amp; parishes list — open your diocese site for a local parish finder.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://anglican.org.au/anglican-church-community/dioceses-and-parishes/" target="_blank" rel="noopener noreferrer">Dioceses &amp; parishes</a>
+          <a class="btn btn-sm" href="https://anglican.org.au/" target="_blank" rel="noopener noreferrer">anglican.org.au</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Uniting Church in Australia</h3>
+        <p>National “Find your church” hub linking to state synod finders.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://uniting.church/findyourchurch/" target="_blank" rel="noopener noreferrer">Find your church</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Baptist</h3>
+        <p>Australian Baptist Ministries points to state associations; state unions run local finders.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.baptist.org.au/state-ministries" target="_blank" rel="noopener noreferrer">State Baptist ministries</a>
+          <a class="btn btn-sm" href="https://nswactbaptists.org.au/churches/" target="_blank" rel="noopener noreferrer">NSW &amp; ACT churches</a>
+          <a class="btn btn-sm" href="https://www.buv.com.au/find-a-church/" target="_blank" rel="noopener noreferrer">Victoria finder</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Salvation Army (corps)</h3>
+        <p>Official locations search — filter for church / corps near you.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.salvationarmy.org.au/locations/" target="_blank" rel="noopener noreferrer">Salvos locations</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Presbyterian Church of Australia</h3>
+        <p>National Presbyterian site — use it to reach your state church or local congregation.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://presbyterian.org.au/" target="_blank" rel="noopener noreferrer">presbyterian.org.au</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Lutheran Church of Australia</h3>
+        <p>Official suburb / postcode / location finder.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.lca.org.au/find-a/find-a-church/" target="_blank" rel="noopener noreferrer">LCA find a church</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Churches of Christ</h3>
+        <p>State conference finders (no single national map). Pick your state:</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://ccnswact.org.au/find-a-church/" target="_blank" rel="noopener noreferrer">NSW &amp; ACT</a>
+          <a class="btn btn-sm" href="https://churchesofchrist.org.au/find-a-church/" target="_blank" rel="noopener noreferrer">Victoria &amp; Tasmania</a>
+          <a class="btn btn-sm" href="https://www.cocwa.com.au/cocwa-family" target="_blank" rel="noopener noreferrer">Western Australia</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Celebrate Recovery (faith-friendly)</h3>
+        <p>Christ-centred recovery groups — also listed under Find a meeting. Optional if faith support helps you.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.celebraterecovery.com.au/about-cr/locations" target="_blank" rel="noopener noreferrer">CR Australia locations</a>
+        </div>
+      </div>
+    </div>
+    <p class="help" style="margin-top:16px"><strong>In immediate danger?</strong> Call <a href="tel:000">000</a>. Crisis support: <a href="tel:131114">Lifeline 13 11 14</a> · AOD: <a href="tel:1800250015">1800 250 015</a>. Use <strong>Get help now</strong> for more contacts.</p>
+  </div>
+</dialog>
+
+<!-- ============================ Info & training ============================ -->
+<dialog id="infoDlg" aria-labelledby="infoTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="infoTitle">📚 Info &amp; training</h2>
+    <button class="icon-btn" value="close" aria-label="Close info and training">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run these courses or websites.</strong> They are curated official Australian AOD information and workforce-training sites. We only open their pages so content stays current. This is <strong>education, not medical advice</strong>, and <strong>not a crisis service</strong>.</p>
+    <ul class="info-hub-bullets">
+      <li>Useful for AOD / rehab workers and students exploring <span data-brand></span> as a pilot tool</li>
+      <li>Also handy for anyone wanting reliable public information</li>
+      <li>Trainings and fact sheets are run by those organisations — <span data-brand></span> only links out</li>
+    </ul>
+
+    <div class="info-hub-section" id="infoStaffSection">
+      <h3>For AOD staff &amp; students</h3>
+      <div class="meeting-cards">
+        <div class="info-hub-featured meeting-card">
+          <div class="badge">Featured · QLD Health workforce</div>
+          <h3>Insight — AOD training &amp; eLearning</h3>
+          <p>Queensland’s specialist AOD workforce development centre: free eLearning, webinars, workshops and practice toolkits for workers and students.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://insight.qld.edu.au/" target="_blank" rel="noopener noreferrer">Open Insight</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>Dovetail — youth AOD practice (part of Insight)</h3>
+          <p>Youth-focused training, eLearning and toolkits for workers supporting young people who use alcohol and other drugs.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://insight.qld.edu.au/dovetail" target="_blank" rel="noopener noreferrer">Open Dovetail</a>
+            <a class="btn btn-sm" href="https://insight.qld.edu.au/" target="_blank" rel="noopener noreferrer">Insight home</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>NCETA — National Centre for Education and Training on Addiction</h3>
+          <p>Flinders University research centre for AOD workforce development, training packages and workplace resources.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://nceta.flinders.edu.au/" target="_blank" rel="noopener noreferrer">Open NCETA</a>
+            <a class="btn btn-sm" href="https://nceta.flinders.edu.au/about-us/AOD-training" target="_blank" rel="noopener noreferrer">AOD training overview</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>Cracks in the Ice — frontline worker training</h3>
+          <p>Evidence-based ice (methamphetamine) resources and free online training modules for frontline health and community workers.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://cracksintheice.org.au/health-professionals/online-resources" target="_blank" rel="noopener noreferrer">Worker training &amp; resources</a>
+            <a class="btn btn-sm" href="https://cracksintheice.org.au/" target="_blank" rel="noopener noreferrer">Cracks in the Ice home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-hub-section" id="infoEveryoneSection">
+      <h3>For everyone</h3>
+      <div class="meeting-cards">
+        <div class="meeting-card">
+          <h3>Alcohol and Drug Foundation (ADF)</h3>
+          <p>Trusted Australian drug facts, community programs and evidence-based information for the public.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://adf.org.au/" target="_blank" rel="noopener noreferrer">Open ADF</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>Positive Choices</h3>
+          <p>Evidence-based AOD education for schools, parents, families and young people.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://positivechoices.org.au/" target="_blank" rel="noopener noreferrer">Open Positive Choices</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>AIHW — alcohol and other drugs</h3>
+          <p>National statistics and reports on illicit drug and alcohol use in Australia (Australian Institute of Health and Welfare).</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://www.aihw.gov.au/reports-data/behaviours-risk-factors/illicit-use-of-drugs/overview" target="_blank" rel="noopener noreferrer">Open AIHW AOD overview</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>Counselling Online</h3>
+          <p>Free, confidential alcohol and drug counselling for Australians — phone, chat and a service finder.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://www.counsellingonline.org.au/" target="_blank" rel="noopener noreferrer">Open Counselling Online</a>
+          </div>
+        </div>
+        <div class="meeting-card">
+          <h3>Cracks in the Ice (public)</h3>
+          <p>Clear, evidence-based information about ice for individuals, families and communities.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://cracksintheice.org.au/" target="_blank" rel="noopener noreferrer">Open Cracks in the Ice</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="help" style="margin-top:16px"><strong>In immediate danger?</strong> Call <a href="tel:000">000</a>. Crisis support: <a href="tel:131114">Lifeline 13 11 14</a> · AOD: <a href="tel:1800250015">1800 250 015</a>. Use <strong>Get help now</strong> for more contacts.</p>
+  </div>
+</dialog>
+
+
 <!-- ============================ Craving skills ============================ -->
 <dialog id="skillsDlg" aria-labelledby="skillsTitle">
   <form method="dialog" class="dlg-head">
@@ -1856,7 +2143,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.7';
+const EDEN_BUILD = 'hopewick-v5.9';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -1925,7 +2212,7 @@ const CRAVINGS = ['None', 'Mild', 'Moderate', 'Strong'];
 
 const STARTERS = {
   friend: ['Let me tell you about my day', 'I need to talk something through', 'Give me a little pick-me-up', 'Help me plan my week'],
-  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down', 'I need food or a place to stay', 'Find a meeting near me', 'Find treatment or rehab'],
+  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down', 'I need food or a place to stay', 'Find a meeting near me', 'Find treatment or rehab', 'Find a church near me'],
 };
 
 /* Interactive craving / urge skills (DBT + CBT-informed). Skills practice — not therapy. */
@@ -1975,21 +2262,54 @@ const DEFAULT_SELFCARE = [
 const CRAVING_LANG_RE = /\b(craving|crave|urge|itching for|want(ing)? (a |to )?drink|want(ing)? (a |to )?hit|bottle shop|gotta use|need a drink|fiending)\b/i;
 const MEETING_LANG_RE = /\b(find(ing)? a meeting|where('?s| is) a meeting|aa meeting|na meeting|smart recovery|alcoholics anonymous|narcotics anonymous|go to (an? )?(aa|na)|peer(-| )?support meeting|12[- ]step meeting)\b/i;
 const TREATMENT_LANG_RE = /\b(find(ing)? (treatment|rehab|a rehab|detox|withdrawal)|need (rehab|detox|treatment)|residential (rehab|treatment)|where.*(rehab|detox|treatment)|go to (rehab|detox)|AOD (service|treatment)|alcohol.?and.?other.?drug (service|treatment))\b/i;
+const CHURCH_LANG_RE = /\b(find(ing)? a (church|parish|congregation)|where('?s| is) (a |the )?(church|parish)|local (church|parish|congregation)|go to (church|mass)|attend(ing)? (church|mass)|new church|church near me|find(ing)? (mass|sunday service)|catholic parish|anglican parish)\b/i;
 
 
 /* Verified Australian crisis & AOD contacts (checked against official sites, Sept 2026). */
 const HELP_CONTACTS = [
-  { name: 'Emergency — police, ambulance, fire', num: '000', tel: '000', note: 'If life is in danger or someone is at immediate risk', urgent: true },
-  { name: 'Lifeline', num: '13 11 14', tel: '131114', note: '24/7 crisis support · text 0477 13 11 14' },
-  { name: 'Suicide Call Back Service', num: '1300 659 467', tel: '1300659467', note: '24/7 counselling for anyone affected by suicide' },
-  { name: 'National Alcohol and Other Drug Hotline', num: '1800 250 015', tel: '1800250015', note: '24/7, free & confidential — connects to your state service' },
-  { name: 'Adis 24/7 Alcohol and Drug Support (QLD)', num: '1800 177 833', tel: '1800177833', note: 'Queensland counselling, information and referrals, 24/7' },
-  { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7 crisis support for Aboriginal and Torres Strait Islander people' },
+  { name: 'Emergency — police, ambulance, fire', num: '000', tel: '000', note: 'If life is in danger or someone is at immediate risk', urgent: true, kinds: ['all'] },
+  { name: 'Lifeline', num: '13 11 14', tel: '131114', note: '24/7 crisis support · text 0477 13 11 14', kinds: ['all', 'suicide', 'danger', 'dv'] },
+  { name: 'Suicide Call Back Service', num: '1300 659 467', tel: '1300659467', note: '24/7 counselling for anyone affected by suicide', kinds: ['all', 'suicide'] },
+  { name: 'National Alcohol and Other Drug Hotline', num: '1800 250 015', tel: '1800250015', note: '24/7, free & confidential — connects to your state service', kinds: ['all', 'overdose', 'use', 'craving'] },
+  { name: 'Adis 24/7 Alcohol and Drug Support (QLD)', num: '1800 177 833', tel: '1800177833', note: 'Queensland counselling, information and referrals, 24/7', kinds: ['all', 'overdose', 'use', 'craving'] },
+  { name: '1800RESPECT', num: '1800 737 732', tel: '1800737732', note: '24/7 domestic, family and sexual violence counselling', kinds: ['all', 'dv'] },
+  { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7 crisis support for Aboriginal and Torres Strait Islander people', kinds: ['all'] },
 ];
 const CONTACTS_TEXT = HELP_CONTACTS.map(c => `- ${c.name}: ${c.num} (${c.note})`).join('\n');
 
-/* Words that suggest risk. Triggers an immediate help card and a crisis instruction to the model. */
-const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|od'?d|od'?ing|not safe|unsafe|in danger|going to hurt|hurt (someone|them|him|her|my kids?)|no reason to live)\b/i;
+/* Words that suggest risk. Triggers an immediate help card and a crisis instruction to the model.
+   Covers: suicide/self-harm, overdose, about-to-use / extreme craving, domestic violence, someone else in danger. */
+const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|od'?d|od'?ing|about to (use|relapse|drink|score)|going to (use|relapse|drink|score)|can'?t stop myself (from )?(using|drinking|scoring)|extreme craving|craving is (so )?(bad|extreme|out of control)|not safe|unsafe|in danger|going to hurt|hurt (someone|them|him|her|my kids?)|someone (else )?(is |in )?danger|partner (is )?(hurting|hitting|abusing) (me|us)|my (partner|husband|wife|boyfriend|girlfriend|ex) (hurt|hit|hits|hurting|hitting|abused|abusing)|domestic violence|family violence|he'?s hurting me|she'?s hurting me|no reason to live)\b/i;
+
+const CRISIS_KIND = {
+  suicide: /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|no reason to live)\b/i,
+  overdose: /\b(overdos\w*|over dose|od'?d|od'?ing)\b/i,
+  dv: /\b(partner (is )?(hurting|hitting|abusing) (me|us)|my (partner|husband|wife|boyfriend|girlfriend|ex) (hurt|hit|hits|hurting|hitting|abused|abusing)|domestic violence|family violence|he'?s hurting me|she'?s hurting me)\b/i,
+  danger: /\b(someone (else )?(is |in )?danger|going to hurt|hurt (someone|them|him|her|my kids?)|in danger|not safe|unsafe)\b/i,
+  use: /\b(about to (use|relapse|drink|score)|going to (use|relapse|drink|score)|can'?t stop myself (from )?(using|drinking|scoring)|extreme craving|craving is (so )?(bad|extreme|out of control))\b/i,
+};
+
+function classifyCrisis(text) {
+  const t = String(text || '');
+  if (CRISIS_KIND.suicide.test(t)) return 'suicide';
+  if (CRISIS_KIND.overdose.test(t)) return 'overdose';
+  if (CRISIS_KIND.dv.test(t)) return 'dv';
+  if (CRISIS_KIND.danger.test(t)) return 'danger';
+  if (CRISIS_KIND.use.test(t)) return 'use';
+  return 'all';
+}
+
+function crisisMomentCopy(kind) {
+  const map = {
+    suicide: 'If you might act on these thoughts, call <a href="tel:000">000</a> now. Otherwise pick a line below and talk to a real person — you don’t have to hold this alone.',
+    overdose: 'If someone is unresponsive, not breathing well, or you’re unsure — call <a href="tel:000">000</a> now. Stay with them if it’s safe. Then use a line below.',
+    dv: 'If you or kids are in immediate danger, call <a href="tel:000">000</a> now. For private support about domestic or family violence, call <strong>1800RESPECT</strong> below.',
+    danger: 'If someone is in immediate danger, call <a href="tel:000">000</a> now. Then use a line below so you’re not carrying this alone.',
+    use: 'You’re reaching out before using — that matters. If you’re unsafe or overdosing, call <a href="tel:000">000</a>. Otherwise call an AOD line below right now, before the urge decides for you.',
+    all: 'If you or someone else is in immediate danger, call <a href="tel:000">000</a> now. Then pick a free, confidential line below.',
+  };
+  return map[kind] || map.all;
+}
 
 const FAITH_TEXT = {
   general: 'Faith-inclusive / general spirituality. Speak of hope, meaning, purpose, gratitude, forgiveness, inner peace and a Higher Power "as you understand it". Do not assume any particular religion; follow the person\'s lead if they name one.',
@@ -2129,7 +2449,7 @@ const el = {
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
-  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'),
+  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), churchDlg: $('#churchDlg'), infoDlg: $('#infoDlg'),
   toasts: $('#toasts'),
 };
 
@@ -2454,12 +2774,29 @@ const ICON_SPEAK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
 const ICON_COPY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const ICON_RETRY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
 
-/** The in-chat safety card shown instantly when risk words are detected (no model needed). */
-function crisisCardHtml() {
-  return `<div class="crisis-card" role="note" aria-label="Crisis support contacts">
-    <h3>You don't have to go through this alone 💚</h3>
-    <p>If you or someone else is in immediate danger, call <a href="tel:000">000</a> now. Free, confidential support any time:</p>
-    <ul>${HELP_CONTACTS.slice(1).map(c => `<li>${escapeHtml(c.name)}: <a href="tel:${c.tel}">${escapeHtml(c.num)}</a></li>`).join('')}</ul>
+/** The in-chat safety card shown instantly when risk words are detected (no model needed).
+ *  Leads with what to do in this moment; Hope disclaimer is secondary. */
+function crisisCardHtml(kind) {
+  const k = kind || 'all';
+  const primary = HELP_CONTACTS.filter(c => (c.kinds || ['all']).includes(k) || (c.kinds || []).includes('all'));
+  // Always show 000 first, then kind-relevant lines (dedupe by tel)
+  const seen = new Set();
+  const ordered = [];
+  for (const c of HELP_CONTACTS) {
+    const match = (c.kinds || ['all']).includes('all') || (c.kinds || []).includes(k);
+    if (!match || seen.has(c.tel)) continue;
+    seen.add(c.tel);
+    ordered.push(c);
+  }
+  const actions = ordered.map(c => {
+    const urg = c.urgent ? ' urgent' : '';
+    return `<li><a class="crisis-call${urg}" href="tel:${c.tel}"><span class="cn-name">${escapeHtml(c.name)}</span><span class="cn-num">📞 ${escapeHtml(c.num)}</span></a></li>`;
+  }).join('');
+  return `<div class="crisis-card" role="note" aria-label="Crisis support — what to do now">
+    <h3>Here’s what you can do now 💚</h3>
+    <p class="crisis-now">${crisisMomentCopy(k)}</p>
+    <ul class="crisis-actions">${actions}</ul>
+    <p class="crisis-about"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. These are real Australian services — tap to call.</p>
   </div>`;
 }
 
@@ -2470,7 +2807,8 @@ function messageEl(msg) {
   wrap.className = 'bubble-wrap';
 
   if (msg.card === 'crisis') {
-    wrap.innerHTML = crisisCardHtml();
+    wrap.innerHTML = crisisCardHtml(msg.crisisKind);
+    wrap.querySelectorAll('[data-companion]').forEach(e => { e.textContent = settings.name || BRAND.companion; });
     row.appendChild(wrap);
     return { row, bubble: wrap, tools: document.createElement('div') };
   }
@@ -2615,7 +2953,10 @@ function renderWelcome() {
   const starters = document.createElement('div');
   starters.className = 'starters';
   let list = isDemo ? DEMO_CHIPS : (counsellor ? [...STARTERS.counsellor] : STARTERS.friend);
-  if (counsellor && settings.faith === 'none') list = list.map(s => s === 'Pray with me' ? 'Help me find some calm' : s);
+  if (counsellor && settings.faith === 'none') {
+    list = list.map(s => s === 'Pray with me' ? 'Help me find some calm' : s);
+    list = list.filter(s => !/find a church/i.test(s));
+  }
   for (const stub of list) {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'starter'; b.textContent = stub;
@@ -2623,6 +2964,8 @@ function renderWelcome() {
       if (/food or a place to stay|shower|shelter|homeless/i.test(stub)) { openNearby(); return; }
       if (/find a meeting/i.test(stub)) { openMeetings(); return; }
       if (/find treatment|rehab/i.test(stub)) { openTreatment(); return; }
+      if (/info (&|and )?training|aod training|insight (qld|training)|workforce training/i.test(stub)) { openInfoTraining(); return; }
+      if (/find a church/i.test(stub)) { openChurch(); return; }
       sendMessage(stub);
     });
     starters.appendChild(b);
@@ -2694,6 +3037,7 @@ function renderMessages() {
     hideBreakerSuggest();
     hideMeetingSuggest();
     hideTreatmentSuggest();
+    hideChurchSuggest();
     renderWelcome();
     return;
   }
@@ -2704,6 +3048,8 @@ function renderMessages() {
   else hideMeetingSuggest();
   if (shouldSuggestTreatment(c)) appendTreatmentSuggest();
   else hideTreatmentSuggest();
+  if (shouldSuggestChurch(c)) appendChurchSuggest();
+  else hideChurchSuggest();
   if (isDemo && !busy) el.inner.appendChild(demoChipsEl());
   scrollToBottom(true);
 }
@@ -2724,7 +3070,7 @@ function renderAll() {
   const counsellor = isCounsellor();
   el.brandName.textContent = BRAND.name;
   $$('[data-companion]').forEach(e => { e.textContent = settings.name; });
-  el.brandSub.textContent = counsellor ? 'faith-based AOD support' : 'your AI companion';
+  el.brandSub.textContent = counsellor ? 'AI recovery companion' : 'your AI recovery companion';
   el.headerName.textContent = settings.name;
   el.modeBadge.textContent = counsellor ? 'AOD support' : 'Friend';
   el.input.placeholder = counsellor ? `Tell ${settings.name} what's on your mind…` : `Message ${settings.name}…`;
@@ -2778,13 +3124,13 @@ function counsellorPrompt(convo) {
   const faith = FAITH_TEXT[settings.faith] || FAITH_TEXT.general;
   const level = settings.faith === 'none' ? '' : (FAITH_LEVEL_TEXT[settings.faithLevel] || FAITH_LEVEL_TEXT.woven);
   return [
-    `You are ${settings.name}, a warm, calm, hopeful and non-judgemental faith-sensitive AI support companion for people affected by alcohol and other drugs (AOD). You model the person-centred, evidence-based practice used in Australian AOD services.`,
+    `You are ${settings.name}, a warm, calm, hopeful and non-judgemental AI recovery companion for people affected by alcohol and other drugs (AOD). Faith content is optional and follows the person's Preferences. You model the person-centred, evidence-based practice used in Australian AOD services.`,
     settings.traits.length ? `Personality: ${settings.traits.join(', ')}.${settings.traitsCustom ? ' ' + settings.traitsCustom : ''}` : '',
     '',
     'WHO YOU ARE (AND AREN\'T)',
     '- You are an AI support tool, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant, without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
-    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers.',
+    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers. When they ask about AOD training, eLearning, workforce development or reliable drug information sites, suggest opening Info & training in the sidebar (Insight, Dovetail, NCETA, ADF and similar official AU link-outs) — do not invent course catalogues. When they ask about finding a church, parish or congregation, suggest opening Find a church in the sidebar (official Australian denominational finders and maps) — do not invent church lists or claim Hopewick runs churches.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -2808,7 +3154,7 @@ function counsellorPrompt(convo) {
     settings.faith === 'none' ? '' : '- Sacred texts: only quote if you are confident of the exact wording and reference. Otherwise paraphrase and say that you are paraphrasing. Never invent verses or references.',
     '',
     'SAFETY (HIGHEST PRIORITY)',
-    'If the person mentions suicide, self-harm, overdose, feeling unsafe, or someone else being in danger: respond with warmth and FIRST clearly give these Australian contacts, then ask about their immediate safety, stay with them and encourage them to reach out now. If there is immediate danger, urge them to call 000 now. Never minimise risk.',
+    'If the person mentions suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, feeling unsafe, or someone else being in danger: respond with warmth and FIRST tell them what to do in this moment and clearly give these Australian contacts (including 1800RESPECT 1800 737 732 for domestic/family violence), then ask about their immediate safety, stay with them and encourage them to reach out now. If there is immediate danger, urge them to call 000 now. You are an AI recovery companion — say that only after the action steps. Never minimise risk.',
     CONTACTS_TEXT,
     '',
     ...commonContext(convo),
@@ -2826,7 +3172,7 @@ function friendPrompt(convo) {
     '- Be honest that you are an AI if it comes up.',
     '- Use Australian English and a natural, conversational tone. Light markdown is fine.',
     '- Weave in what you remember naturally; never recite memories as a list.',
-    '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, being unsafe or someone in danger, respond with care and FIRST clearly give these Australian contacts, then check on their safety:',
+    '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, about to use, domestic violence, being unsafe or someone in danger, respond with care and FIRST tell them what to do now and clearly give these Australian contacts (including 1800RESPECT 1800 737 732), then check on their safety:',
     CONTACTS_TEXT,
     ...commonContext(convo),
   ].filter(Boolean).join('\n');
@@ -2834,7 +3180,7 @@ function friendPrompt(convo) {
 
 function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(convo) : friendPrompt(convo); }
 
-const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, being unsafe or someone in danger). Respond with warmth. Begin by clearly listing: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately.';
+const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor — say that only after the action steps. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately.';
 
 function buildMessages(convo) {
   const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({ role: m.role, content: m.content }));
@@ -2960,7 +3306,7 @@ async function sendMessage(textOverride) {
   if (isDemo) { demoHandle(text); return; }
   const crisis = CRISIS_RE.test(text);
   if (!settings.apiKey && !crisis) {
-    promptNeedAi('To chat with live AI you need early access (coming soon) or an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
+    promptNeedAi('To chat with live AI need to join the waitlist (coming soon) or an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
     return;
   }
 
@@ -3404,7 +3750,7 @@ async function refineJournalEntry(entry, showInCompose) {
   if (isDemo) {
     parsed = DEMO_REFINE;
   } else if (!settings.apiKey) {
-    promptNeedAi('Deepen reflection needs live AI. Try the demo, get early access, or open Advanced if you use your own key.');
+    promptNeedAi('Deepen reflection needs live AI. Try the demo, join the waitlist, or open Advanced if you use your own key.');
     return;
   } else {
     try {
@@ -3868,10 +4214,20 @@ async function fillSoapPassage() {
 }
 function syncFaithBibleVisibility() {
   const btn = $('#sideBibleBtn');
-  if (!btn) return;
   const show = settings.faith !== 'none';
-  btn.hidden = !show;
-  if (!show && el.bibleDlg && el.bibleDlg.open) el.bibleDlg.close();
+  if (btn) {
+    btn.hidden = !show;
+    if (!show && el.bibleDlg && el.bibleDlg.open) el.bibleDlg.close();
+  }
+  syncFaithChurchVisibility();
+}
+function syncFaithChurchVisibility() {
+  const btn = $('#sideChurchBtn');
+  const helpBtn = $('#helpChurchBtn');
+  const show = settings.faith !== 'none';
+  if (btn) btn.hidden = !show;
+  if (helpBtn) helpBtn.hidden = !show;
+  if (!show && el.churchDlg && el.churchDlg.open) el.churchDlg.close();
 }
 function openBibleReader(book, chapter, verse) {
   if (book) readerState.book = book;
@@ -4981,6 +5337,56 @@ function openTreatment() {
 }
 
 
+/* ---------------------------------------------------------------------------
+   Find a church — official AU denominational finders (v5.8)
+   No scraped church database. Soft-hidden when faith preference is "none"
+   (sidebar / help); chat chip still appears if the person asks for a church.
+   --------------------------------------------------------------------------- */
+function shouldSuggestChurch(convo) {
+  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
+  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
+  return !!(lastUser && CHURCH_LANG_RE.test(lastUser.content || ''));
+}
+function appendChurchSuggest() {
+  let bar = $('#churchSuggest');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'churchSuggest';
+    bar.className = 'tool-suggest';
+    bar.setAttribute('role', 'note');
+    bar.innerHTML = `<span class="lbl">Looking for a church?</span>`;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Find a church';
+    b.addEventListener('click', openChurch);
+    bar.appendChild(b);
+    el.messages.appendChild(bar);
+  }
+  bar.hidden = false;
+}
+function hideChurchSuggest() {
+  const bar = $('#churchSuggest');
+  if (bar) bar.hidden = true;
+}
+function openChurch() {
+  if (!profile) return;
+  closeSidebar();
+  hideChurchSuggest();
+  if (!el.churchDlg.open) el.churchDlg.showModal();
+}
+
+/* ---------------------------------------------------------------------------
+   Info & training — official AU AOD info + workforce training link-outs (v5.9)
+   Hopewick does not run these courses. Faith-independent.
+   --------------------------------------------------------------------------- */
+function openInfoTraining() {
+  if (!profile) return;
+  closeSidebar();
+  if (!el.infoDlg.open) el.infoDlg.showModal();
+}
+
+
+
+
 function startSkill(sk) {
   if (!sk) return;
   sendMessage(sk.starter);
@@ -5166,6 +5572,8 @@ $('#nearbyAskIzzy').addEventListener('click', () => {
 $('#helpNearbyBtn').addEventListener('click', () => openNearby());
 $('#helpMeetingBtn').addEventListener('click', () => { el.helpDlg.close(); openMeetings(); });
 $('#helpTreatmentBtn').addEventListener('click', () => { el.helpDlg.close(); openTreatment(); });
+$('#helpChurchBtn').addEventListener('click', () => { el.helpDlg.close(); openChurch(); });
+$('#helpInfoBtn').addEventListener('click', () => { el.helpDlg.close(); openInfoTraining(); });
 $('#treatmentBackBtn').addEventListener('click', showTreatmentHome);
 
 function openMemories() { closeSidebar(); renderMemories(); if (!el.memoriesDlg.open) el.memoriesDlg.showModal(); }
@@ -5477,7 +5885,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.churchDlg, el.infoDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
@@ -5747,12 +6155,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live AI. Try the demo or get early access.`); return; }
+  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live AI. Try the demo or join the waitlist.`); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live AI. Try the demo or get early access.`); return; }
+  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live AI. Try the demo or join the waitlist.`); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -5775,7 +6183,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.needAiDlg, el.waitlistDlg, el.aboutDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.churchDlg, el.infoDlg, el.needAiDlg, el.waitlistDlg, el.aboutDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -5803,6 +6211,8 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'selfcare') openSelfCare();
   else if (o === 'meetings') openMeetings();
   else if (o === 'treatment') openTreatment();
+  else if (o === 'church') openChurch();
+  else if (o === 'info') openInfoTraining();
 }));
 
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
@@ -5823,7 +6233,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.churchDlg, el.infoDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -6114,6 +6524,8 @@ function demoChipsEl() {
     b.addEventListener('click', () => {
       if (/find a meeting/i.test(s)) { openMeetings(); return; }
       if (/find treatment|rehab/i.test(s)) { openTreatment(); return; }
+      if (/info (&|and )?training|aod training|insight (qld|training)|workforce training/i.test(s)) { openInfoTraining(); return; }
+      if (/find a church/i.test(s)) { openChurch(); return; }
       if (/food or a place to stay|shower|shelter|homeless/i.test(s)) { openNearby(); return; }
       sendMessage(s);
     });
@@ -6209,11 +6621,11 @@ function openWaitlist() {
 function closeWaitlist() { if (el.waitlistDlg.open) el.waitlistDlg.close(); }
 
 function buildWaitlistMailto(name, email, role, note) {
-  const subject = 'Hopewick early access / waitlist';
+  const subject = 'Hopewick waitlist';
   const lines = [
     'Hello BRIDGE&BITE.CO,',
     '',
-    'I would like early access / to join the Hopewick waitlist.',
+    'I would like to join the Hopewick waitlist.',
     '',
     'Name: ' + name,
     'Email: ' + email,

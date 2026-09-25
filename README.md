@@ -78,6 +78,8 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 ## Features
 
+- **Find a church (v5.8).** Official Australian denominational finders (ACC, Catholic free parish lookup, Anglican dioceses, Uniting, Baptist state unions, Salvation Army, Presbyterian, Lutheran, Churches of Christ) plus AusChurches directory and maps. Hopewick does **not** scrape or host a church database — link-outs only. Soft-hidden when faith preference is “none” (same pattern as Bible); chat chip if someone asks for a church.
+- **Info & training (v5.9).** Curated official Australian AOD **workforce training** and public information sites (Insight eLearning & webinars first, plus Dovetail, NCETA, Cracks in the Ice worker resources, ADF, Positive Choices, AIHW, Counselling Online). Hopewick **does not** run these courses — link-outs only. Useful for rehab/AOD workers exploring Hopewick as a pilot tool. Faith-independent; visible in demo.
 - **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; visible in demo.
 - **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
 
@@ -111,6 +113,12 @@ If you used the earlier single-user version, your chats, memories and settings m
 This is proprietary software. It is published for demonstration purposes only. You may not copy, modify, distribute or use it without written permission from BRIDGE&BITE.CO PTY LTD. See [LICENSE](LICENSE).
 
 
+
+### Info & training (v5.9)
+Open **Demo** → sidebar **Info & training** (near Find treatment / Nutrition). Groups: **For AOD staff & students** (Insight featured, Dovetail, NCETA, Cracks in the Ice worker training) and **For everyone** (ADF, Positive Choices, AIHW, Counselling Online). Educational link-outs only — not medical advice; crisis → **Get help now**.
+
+### Find a church (v5.8)
+Open **Demo** → sidebar **Find a church** (near Find a meeting / Find treatment). Cards by tradition + maps near me + AusChurches. Or tap the chip when chat asks for a church/parish. Hidden when faith preference is **No faith content**. Also under **Get help now**.
 
 ### Find treatment / rehab (v5.7)
 Open **Demo** → sidebar **Find treatment / rehab** (near Find a meeting / Find nearby help). Pick a state for the helpline + Open service finder. Or tap the chip when chat mentions rehab/detox/treatment. Also under **Get help now**.

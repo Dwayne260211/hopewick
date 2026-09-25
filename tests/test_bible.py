@@ -17,8 +17,8 @@ LAND = ROOT / "index.html"
 def test_static_build_and_copyright_guard():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.7'" in text
-    assert 'content="hopewick-v5.7"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.9'" in text
+    assert 'content="hopewick-v5.9"' in land
     assert "WEB_CANON" in text
     assert "WEB_EMBED_DAY1" in text
     assert "fillSoapPassage" in text
