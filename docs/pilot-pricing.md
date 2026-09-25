@@ -25,7 +25,7 @@
 
 Bridge&Bite holds the AI key and caps; access is via invite codes. No in-app ads.
 
-**GST:** AUD figures; GST added if/when BRIDGE&BITE.CO PTY LTD is GST-registered (confirm on quote).
+**GST:** AUD figures excluding GST. BRIDGE&BITE.CO PTY LTD is GST-registered (ABN 83 692 080 792); 10% GST is added on invoices.
 
 **Contact:** admin@bridge-bite-co.com · BRIDGE&BITE.CO PTY LTD · ABN 83 692 080 792
 
