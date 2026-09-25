@@ -74,7 +74,7 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 1. **Who's chatting?** Pick **Dwayne** or **Abbey**, or add a person. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings.
 2. Read the short one-time disclaimer.
-3. Open **Settings** (the sliders icon), add your **API key** under *Connection*, then click **Test connection** and **Save**. The provider settings and key are shared by everyone on the device and stored only in this browser. The default provider is `https://api.openai.com/v1` with model `gpt-4o-mini`. Any OpenAI-compatible endpoint that allows browser (CORS) requests works.
+3. **Visitors:** use **Try the demo** (no key, nothing sent) or **Get early access**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
 
 ## Features
 

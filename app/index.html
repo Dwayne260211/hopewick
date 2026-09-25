@@ -435,6 +435,24 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .settings-panel[hidden] { display: none !important; }
 .conn-hint { margin: 10px 0 0; font-size: .85rem; color: var(--muted); text-align: center; }
 .conn-hint button { color: var(--accent); background: none; border: 0; font: inherit; font-weight: 650; text-decoration: underline; cursor: pointer; padding: 0; }
+.advanced-lede { margin: 0 0 12px; color: var(--muted); font-size: .92rem; line-height: 1.45; }
+.advanced-lede .adv-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.own-key-details { margin: 8px 0 0; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); padding: 0; }
+.own-key-details > summary {
+  cursor: pointer; list-style: none; padding: 12px 14px; font-weight: 650; font-size: .95rem;
+  display: flex; align-items: center; gap: 8px; user-select: none;
+}
+.own-key-details > summary::-webkit-details-marker { display: none; }
+.own-key-details > summary::before { content: '▸'; color: var(--muted); font-size: .85rem; transition: transform .15s ease; }
+.own-key-details[open] > summary::before { transform: rotate(90deg); }
+.own-key-details .own-key-body { padding: 0 14px 14px; border-top: 1px solid var(--border); }
+.own-key-details .own-key-note { margin: 10px 0 0; font-size: .8rem; color: var(--muted); }
+.need-ai-dlg { width: min(440px, calc(100vw - 24px)); }
+.need-ai-dlg .dlg-body { padding: 8px 18px 4px; }
+.need-ai-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 14px; line-height: 1.45; }
+.need-ai-actions { display: flex; flex-direction: column; gap: 8px; }
+.need-ai-actions .btn { width: 100%; justify-content: center; }
+.banner .banner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* Profile picker */
 #pickerDlg { width: min(720px, calc(100vw - 24px)); }
@@ -604,6 +622,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .meeting-card .row { gap: 8px; flex-wrap: wrap; }
 
 /* v5.3: early access / waitlist (mailto, no accounts) */
+/* v5.4: demo-first UX; own API key under Advanced */
 .waitlist-dlg { width: min(480px, calc(100vw - 24px)); }
 .waitlist-dlg .dlg-body { padding: 8px 18px 4px; }
 .waitlist-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
@@ -719,9 +738,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
         Preferences
       </button>
-      <button class="btn btn-ghost" type="button" data-open="connection">
+      <button class="btn btn-ghost" type="button" data-open="advanced">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        Your AI key
+        Advanced
       </button>
       <button class="btn btn-ghost" type="button" id="sideSwitchBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
@@ -783,8 +802,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>🌱 <strong>Ready when you are.</strong> Add your own AI key to chat with <span data-companion></span> for real — or try the demo first. Keys stay in this browser only.</p>
-      <button class="btn btn-primary btn-sm" type="button" data-open="connection">Add your AI key</button>
+      <p>🌱 <strong>Try <span data-brand></span> free.</strong> Live AI accounts aren’t open yet — explore the demo (pre-written examples, nothing sent), or join the waitlist for early access.</p>
+      <div class="banner-actions">
+        <button class="btn btn-primary btn-sm" type="button" id="keyBannerDemo">✨ Try the demo</button>
+        <button class="btn btn-sm" type="button" id="keyBannerWaitlist">Get early access</button>
+      </div>
     </div>
 
     <section class="messages" id="messages" aria-label="Conversation">
@@ -878,8 +900,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <li><strong>Not a crisis service.</strong> If you are in danger, call <strong>000</strong>. Use <strong>Get help now</strong> in the app for Australian helplines.</li>
       <li><strong>Between sessions.</strong> Built for cravings, hard days, and gentle check-ins — alongside your real-world support, not instead of it.</li>
       <li><strong>Faith optional.</strong> Choose how much (if any) faith content you want in Preferences.</li>
-      <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Messages go to your chosen AI provider only when you use a real key.</li>
-      <li><strong>Demo vs your key.</strong> Try the demo with pre-written examples (nothing sent). For live replies, add your own API key under Connection.</li>
+      <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
+      <li><strong>Demo first.</strong> Try the free demo with pre-written examples. Paid / hosted access is coming — use <strong>Get early access</strong>.</li>
+      <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
+      <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> still accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
     </ul>
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutWaitlistBtn">Get early access / Join waitlist</button>
@@ -970,6 +994,28 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
+
+<!-- ============================ Need AI / no key prompt ============================ -->
+<dialog id="needAiDlg" class="need-ai-dlg" aria-labelledby="needAiTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="needAiTitle">Try the demo</h2>
+    <button class="icon-btn" value="close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p class="lede" id="needAiLede">Live AI chat needs a hosted account (coming soon) or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.</p>
+    <div class="need-ai-actions">
+      <button class="btn btn-primary" type="button" id="needAiDemoBtn">✨ Try the demo</button>
+      <button class="btn" type="button" id="needAiWaitlistBtn">Get early access</button>
+      <button class="btn btn-ghost" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
+    </div>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="needAiCloseBtn">Not now</button>
+  </div>
+</dialog>
+
 <!-- ============================ Settings dialog ============================ -->
 <dialog id="settingsDlg" aria-labelledby="settingsTitle">
   <form method="dialog" class="dlg-head">
@@ -979,42 +1025,12 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="settings-tabs" role="tablist" aria-label="Settings sections">
-    <button type="button" role="tab" id="tabConnection" data-settings-tab="connection" aria-controls="panelConnection" aria-selected="true">Your AI key</button>
-    <button type="button" role="tab" id="tabPrefs" data-settings-tab="prefs" aria-controls="panelPrefs" aria-selected="false">Preferences</button>
+    <button type="button" role="tab" id="tabPrefs" data-settings-tab="prefs" aria-controls="panelPrefs" aria-selected="true">Preferences</button>
     <button type="button" role="tab" id="tabMore" data-settings-tab="more" aria-controls="panelMore" aria-selected="false">More</button>
+    <button type="button" role="tab" id="tabAdvanced" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false">Advanced</button>
   </div>
   <div class="dlg-body">
-    <div class="settings-panel" id="panelConnection" data-tab-panel="connection" role="tabpanel" aria-labelledby="tabConnection">
-
-    <fieldset>
-      <legend>Connection <span class="help" style="font-weight:500">(shared on this device)</span></legend>
-        <p class="help" style="margin:6px 0 0">Only needed for live AI replies. Demo mode works without a key. Your key stays in this browser.</p>
-      <div class="field">
-        <label for="setBaseUrl">Provider base URL</label>
-        <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
-        <span class="help" id="baseUrlHelp">Any OpenAI-compatible Chat Completions endpoint (OpenAI, OpenRouter, Groq, xAI, a local server…).</span>
-      </div>
-      <div class="field">
-        <label for="setModel">Model</label>
-        <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false">
-      </div>
-      <div class="field">
-        <label for="setKey">API key</label>
-        <div class="key-wrap">
-          <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp">
-          <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key">Show</button>
-        </div>
-        <span class="help" id="keyHelp">Stored only in this browser's localStorage and sent only to the base URL above.</span>
-      </div>
-      <div class="check"><input type="checkbox" id="setStream"><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn btn-sm" type="button" id="testConnBtn">Test connection</button>
-      </div>
-      <div class="test-result" id="testResult" role="status" aria-live="polite"></div>
-    </fieldset>
-      <p class="conn-hint">Faith, mode and clean time live under <button type="button" id="gotoPrefsBtn">Preferences</button>.</p>
-    </div>
-    <div class="settings-panel" id="panelPrefs" data-tab-panel="prefs" role="tabpanel" aria-labelledby="tabPrefs" hidden>
+    <div class="settings-panel" id="panelPrefs" data-tab-panel="prefs" role="tabpanel" aria-labelledby="tabPrefs">
     <fieldset>
       <legend>Mode &amp; faith</legend>
       <div class="field">
@@ -1159,6 +1175,46 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <button class="btn btn-sm btn-danger" type="button" id="clearAllBtn">Clear all data on this device</button>
       </div>
     </fieldset>
+    </div>
+    <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
+      <p class="advanced-lede">Most visitors use the <strong>free demo</strong> or join the waitlist for early access. Live hosted accounts aren’t open yet.
+        <span class="adv-actions">
+          <button class="btn btn-sm btn-primary" type="button" id="advTryDemoBtn">✨ Try the demo</button>
+          <button class="btn btn-sm" type="button" id="advWaitlistBtn">Get early access</button>
+        </span>
+      </p>
+      <details class="own-key-details" id="ownKeyDetails">
+        <summary>Use my own API key</summary>
+        <div class="own-key-body">
+          <fieldset>
+            <legend>Connection <span class="help" style="font-weight:500">(shared on this device)</span></legend>
+            <p class="help" style="margin:6px 0 0">For device testing only. Your key stays in this browser’s localStorage (<code>eden.*</code> keys unchanged).</p>
+            <div class="field">
+              <label for="setBaseUrl">Provider base URL</label>
+              <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
+              <span class="help" id="baseUrlHelp">Any OpenAI-compatible Chat Completions endpoint (OpenAI, OpenRouter, Groq, xAI, a local server…).</span>
+            </div>
+            <div class="field">
+              <label for="setModel">Model</label>
+              <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false">
+            </div>
+            <div class="field">
+              <label for="setKey">API key</label>
+              <div class="key-wrap">
+                <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp">
+                <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key">Show</button>
+              </div>
+              <span class="help" id="keyHelp">Stored only in this browser's localStorage and sent only to the base URL above.</span>
+            </div>
+            <div class="check"><input type="checkbox" id="setStream"><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
+            <div class="row" style="margin-top:10px">
+              <button class="btn btn-sm" type="button" id="testConnBtn">Test connection</button>
+            </div>
+            <div class="test-result" id="testResult" role="status" aria-live="polite"></div>
+          </fieldset>
+          <p class="own-key-note">Faith, mode and clean time live under Preferences.</p>
+        </div>
+      </details>
     </div>
   </div>
   <div class="dlg-foot">
@@ -1516,7 +1572,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.3';
+const EDEN_BUILD = 'hopewick-v5.4';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -1792,7 +1848,7 @@ const el = {
   autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'),
@@ -2621,8 +2677,7 @@ async function sendMessage(textOverride) {
   if (isDemo) { demoHandle(text); return; }
   const crisis = CRISIS_RE.test(text);
   if (!settings.apiKey && !crisis) {
-    toast('Add your API key in Settings to start chatting 🌱');
-    openSettings();
+    promptNeedAi('To chat with live AI you need early access (coming soon) or an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
     return;
   }
 
@@ -2641,7 +2696,7 @@ async function sendMessage(textOverride) {
   renderMessages();
   renderHistory();
 
-  if (!settings.apiKey) { toast(`Add your API key in Settings so ${settings.name} can reply 🌱`, false, 4000); return; }
+  if (!settings.apiKey) { return; } // crisis card already shown; don't wall with key/demo prompts
   await generateReply(c);
 }
 
@@ -3066,8 +3121,7 @@ async function refineJournalEntry(entry, showInCompose) {
   if (isDemo) {
     parsed = DEMO_REFINE;
   } else if (!settings.apiKey) {
-    toast('Add your API key in Settings to deepen reflections 🌱');
-    openSettings();
+    promptNeedAi('Deepen reflection needs live AI. Try the demo, get early access, or open Advanced if you use your own key.');
     return;
   } else {
     try {
@@ -4056,15 +4110,16 @@ function syncFaithControls() {
   const none = $('#setFaith').value === 'none';
   $$('input[name="faithLevel"]').forEach(r => { r.disabled = none; });
 }
-const SETTINGS_TITLES = { connection: 'Your AI key', prefs: 'Preferences', more: 'More settings' };
+const SETTINGS_TITLES = { prefs: 'Preferences', more: 'More settings', advanced: 'Advanced' };
 const FOCUS_TAB = {
-  setKey: 'connection', setBaseUrl: 'connection', setModel: 'connection', setStream: 'connection',
+  setKey: 'advanced', setBaseUrl: 'advanced', setModel: 'advanced', setStream: 'advanced',
   setMode: 'prefs', setFaith: 'prefs', setProfileName: 'prefs', setPin: 'prefs',
   setSoberStart: 'prefs', setSoberWhat: 'prefs', setSoberWhy: 'prefs',
   setName: 'more', setStyle: 'more', setTheme: 'more', setVoice: 'more',
 };
 function setSettingsTab(tab) {
-  const t = SETTINGS_TITLES[tab] ? tab : 'prefs';
+  let t = tab === 'connection' ? 'advanced' : tab;
+  t = SETTINGS_TITLES[t] ? t : 'prefs';
   $$('.settings-tabs [role="tab"]').forEach(btn => {
     const on = btn.dataset.settingsTab === t;
     btn.setAttribute('aria-selected', String(on));
@@ -4079,8 +4134,19 @@ function setSettingsTab(tab) {
 $$('.settings-tabs [role="tab"]').forEach(btn => {
   btn.addEventListener('click', () => setSettingsTab(btn.dataset.settingsTab));
 });
-const gotoPrefs = $('#gotoPrefsBtn');
-if (gotoPrefs) gotoPrefs.addEventListener('click', () => setSettingsTab('prefs'));
+function expandOwnKey(open) {
+  const d = $('#ownKeyDetails');
+  if (d) d.open = !!open;
+}
+function promptNeedAi(reason) {
+  if (isDemo) return;
+  const lede = $('#needAiLede');
+  if (lede) {
+    lede.textContent = reason || 'Live AI chat needs a hosted account (coming soon) or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.';
+  }
+  if (el.needAiDlg && !el.needAiDlg.open) el.needAiDlg.showModal();
+}
+function closeNeedAi() { if (el.needAiDlg && el.needAiDlg.open) el.needAiDlg.close(); }
 
 function openSettings(focusId, tabHint) {
   if (!profile) return;
@@ -4121,10 +4187,13 @@ function openSettings(focusId, tabHint) {
   $('#testResult').textContent = ''; $('#testResult').className = 'test-result';
   settingsThemeBefore = settings.theme;
   let tab = tabHint || (focusId && FOCUS_TAB[focusId]) || 'prefs';
+  if (tab === 'connection') tab = 'advanced'; // legacy alias
   setSettingsTab(tab);
+  if (tab === 'advanced') expandOwnKey(!!(focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel' || tabHint === 'advanced' || tabHint === 'connection'));
+  else expandOwnKey(false);
   if (!el.settingsDlg.open) el.settingsDlg.showModal();
-  if (focusId) setTimeout(() => { const n = $('#' + focusId); if (n) n.focus(); }, 60);
-  else if (tab === 'connection') setTimeout(() => $('#setKey').focus(), 60);
+  if (focusId) setTimeout(() => { const n = $('#' + focusId); if (n) { expandOwnKey(true); n.focus(); } }, 60);
+  else if (tab === 'advanced') setTimeout(() => { expandOwnKey(true); const k = $('#setKey'); if (k) k.focus(); }, 60);
 }
 function readSettingsForm() {
   const lvl = $$('input[name="faithLevel"]').find(r => r.checked);
@@ -4593,12 +4662,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { toast(`Add your AI key to chat with ${settings.name || BRAND.companion} 🌱`); openSettings('setKey', 'connection'); return; }
+  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live AI. Try the demo or get early access.`); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { toast(`Add your AI key to chat with ${settings.name || BRAND.companion} 🌱`); openSettings('setKey', 'connection'); return; }
+  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live AI. Try the demo or get early access.`); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -4621,7 +4690,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg].some(d => d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.needAiDlg, el.waitlistDlg, el.aboutDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -4636,7 +4705,7 @@ el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpe
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
-  else if (o === 'connection') openSettings('setKey', 'connection');
+  else if (o === 'connection' || o === 'advanced') openSettings('setKey', 'advanced');
   else if (o === 'prefs') openSettings(null, 'prefs');
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
@@ -4892,6 +4961,19 @@ function exitDemo() {
 }
 $('#exitDemoBtn').addEventListener('click', showPicker);
 $('#tryDemoBtn').addEventListener('click', enterDemo);
+const keyBannerDemo = $('#keyBannerDemo');
+if (keyBannerDemo) keyBannerDemo.addEventListener('click', enterDemo);
+const keyBannerWaitlist = $('#keyBannerWaitlist');
+if (keyBannerWaitlist) keyBannerWaitlist.addEventListener('click', () => openWaitlist('banner'));
+$('#needAiDemoBtn').addEventListener('click', () => { closeNeedAi(); enterDemo(); });
+$('#needAiWaitlistBtn').addEventListener('click', () => { closeNeedAi(); openWaitlist('need-ai'); });
+$('#needAiAdvancedBtn').addEventListener('click', () => { closeNeedAi(); openSettings('setKey', 'advanced'); });
+$('#needAiCloseBtn').addEventListener('click', closeNeedAi);
+const advTry = $('#advTryDemoBtn');
+if (advTry) advTry.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); enterDemo(); });
+const advWl = $('#advWaitlistBtn');
+if (advWl) advWl.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openWaitlist('advanced'); });
+
 
 function demoChipsEl() {
   const box = document.createElement('div');

@@ -13,7 +13,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Faith-sensitive A
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hopewick · Faith-sensitive AOD support, between sessions</title>
 <meta name="description" content="Hopewick is a faith-sensitive AI support companion for people affected by alcohol and other drugs — designed to support Australian rehabs, AOD services and counsellors between sessions.">
-<meta name="build" content="hopewick-v5.3">
+<meta name="build" content="hopewick-v5.4">
 <meta name="theme-color" content="#3f8f5f">
 <link rel="canonical" href="https://dwayne260211.github.io/hopewick/">
 <meta property="og:type" content="website">
@@ -181,7 +181,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
       <li><a href="#waitlist">Get early access</a></li>
       <li><a href="#pilot">Pilot with us</a></li>
     </ul>
-    <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Open the app</a>
+    <a class="btn btn-primary btn-sm" href="app/?demo=1" id="navLaunch">Try the demo</a>
   </nav>
 </header>
 
@@ -203,9 +203,8 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <div class="cta-row">
           <a class="btn btn-primary" href="app/?demo=1" id="tryDemo">✨ Try the demo</a>
           <a class="btn" href="#waitlist" id="heroWaitlist">Get early access</a>
-          <a class="btn" href="app/" id="launchApp">Launch app</a>
         </div>
-        <p class="cta-note">Free demo now — no sign-up. Paid accounts and hosted service access are coming; join the waitlist to hear first.</p>
+        <p class="cta-note">Free demo now — no sign-up, no API key. Paid accounts and hosted service access are coming; join the waitlist to hear first.<br><a href="app/" id="launchApp" style="font-size:.9em;opacity:.85">Open the app</a> <span style="opacity:.65">(returning visitors)</span></p>
       </div>
       <div class="mock" aria-label="Example conversation (pre-written)">
         <div class="mock-head"><span class="orb" aria-hidden="true"></span><span data-companion>Hope</span><span class="tag">EXAMPLE</span></div>
@@ -307,10 +306,11 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
       <p class="section-lede">We'd rather be plain about this than overpromise.</p>
       <div class="grid g3">
         <div class="card"><h3>Stays on the device</h3><p>Chats, memories, check-ins and settings are stored only in the browser on the device being used. There are no accounts and no server of ours holding conversations.</p></div>
-        <div class="card"><h3>AI replies come from a provider</h3><p>To generate replies, each message is sent directly from the browser to the AI provider configured in Settings (for example OpenAI), using an API key entered on that device. The demo sends nothing anywhere.</p></div>
-        <div class="card"><h3>Service-ready hosting <span class="roadmap">ROADMAP</span></h3><p>A hosted version for services, with Australian data storage, managed access and no need for clients to handle API keys, is on the roadmap. It isn't available yet.</p></div>
+        <div class="card"><h3>Demo sends nothing</h3><p>The public demo uses pre-written examples only — nothing you type is sent to an AI provider. When hosted accounts open, replies will use our managed service instead of asking visitors for keys.</p></div>
+        <div class="card"><h3>Service-ready hosting <span class="roadmap">ROADMAP</span></h3><p>A hosted version for services, with Australian data storage and managed access, is on the roadmap. It isn't available yet.</p></div>
       </div>
       <p class="callout">Profile PINs are a light privacy lock for shared devices, not strong security. Anyone with access to the browser's storage could still read the data. People can export or delete their own data at any time.</p>
+      <p class="help" style="margin:14px auto 0;max-width:720px;text-align:center;font-size:.85rem;color:var(--muted)">Advanced (in the app): optional own OpenAI-compatible API key for device testing — tucked under Settings → Advanced, not the main path.</p>
     </div>
   </section>
 
@@ -376,7 +376,6 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <div class="cta-row" style="justify-content:center">
           <a class="btn btn-primary" href="app/?demo=1">Try the demo first</a>
           <a class="btn" href="#waitlist">Join the waitlist</a>
-          <a class="btn" href="app/">Launch app</a>
         </div>
         <p class="pilot-contact" id="pilotContact" style="margin:20px auto 0;max-width:520px;font-weight:600">Pilot enquiries: <a href="mailto:Admin@bridge-bite-co.com">Admin@bridge-bite-co.com</a></p>
       </div>
