@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Hopewick — How it fits in an AOD service | BRIDGE&amp;BITE.CO</title>
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #e7e5e4;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
+      --paper: #fff;
+      --wash: #fafaf9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px 16px 40px;
+      font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink); background: var(--wash);
+    }
+    .sheet {
+      max-width: 760px; margin: 0 auto; background: var(--paper);
+      border: 1px solid var(--line); border-radius: 14px; padding: 28px 28px 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+    .brand { font-size: 1.35rem; font-weight: 750; letter-spacing: -.02em; }
+    .brand span { color: var(--accent); }
+    .meta { color: var(--muted); font-size: .85rem; }
+    h1 { font-size: 1.15rem; margin: 0 0 6px; font-weight: 700; }
+    .pitch { margin: 0 0 18px; color: var(--muted); font-size: .98rem; }
+    h2 { font-size: .95rem; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin: 20px 0 10px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--accent-soft);
+      margin-bottom: 12px;
+    }
+    .card.plain { background: #fff; }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    .role { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: #fff; }
+    .role h3 { margin: 0 0 6px; font-size: 1rem; }
+    .role p { margin: 0; color: var(--muted); font-size: .92rem; }
+    ol.steps { margin: 8px 0 0; padding-left: 1.25em; }
+    ol.steps li { margin: 6px 0; }
+    ul { margin: 8px 0 0; padding-left: 1.15em; }
+    li { margin: 3px 0; }
+    .note, .disclaimer, .contact {
+      font-size: .82rem; color: var(--muted); margin: 12px 0 0; line-height: 1.4;
+    }
+    .contact { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink); }
+    .contact a { color: var(--accent); }
+    .badge {
+      display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .05em; background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 999px;
+      margin-bottom: 6px;
+    }
+    .links { font-size: .9rem; margin: 14px 0 0; }
+    .links a { color: var(--accent); }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .sheet { box-shadow: none; border: none; border-radius: 0; max-width: none; padding: 0; }
+      a { color: inherit; text-decoration: none; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <article class="sheet">
+    <header>
+      <div class="brand">Hopewick <span>🕯️</span></div>
+      <div class="meta">BRIDGE&amp;BITE.CO PTY LTD · ABN 83 692 080 792</div>
+    </header>
+
+    <h1>How Hopewick fits in an AOD service</h1>
+    <p class="pitch"><strong>Hope</strong> is a companion for people in recovery <em>between</em> sessions — not a clinician tool and not a crisis line. Your service stays in charge of care; Hopewick fills the quiet hours when people are on their own.</p>
+
+    <h2>Who does what</h2>
+    <div class="grid">
+      <div class="role">
+        <h3>Client / participant</h3>
+        <p>Opens Hopewick on their phone, redeems an invite code, and talks with Hope when they need encouragement, reflection, or a calm next step between appointments.</p>
+      </div>
+      <div class="role">
+        <h3>Staff / service</h3>
+        <p>Decide who gets a code, brief them in one conversation, and decide whether to keep the pilot. You do <strong>not</strong> need a second staff dashboard to run a small pilot.</p>
+      </div>
+    </div>
+
+    <h2>A simple week in your organisation</h2>
+    <div class="card">
+      <span class="badge">Pilot shape</span>
+      <h3>Light lift for the service</h3>
+      <ol class="steps">
+        <li><strong>Agree the pilot</strong> — 4–6 weeks, 5–10 client invite codes, one named contact at your service.</li>
+        <li><strong>Bridge&amp;Bite issues codes</strong> — emailed to your contact (company holds the AI key; no personal OpenAI keys).</li>
+        <li><strong>Staff brief clients</strong> — “This is Hope, between sessions. It’s not counselling and not for emergencies. If you’re in crisis, call 000 / your usual pathways.”</li>
+        <li><strong>Clients use Hope on their own phone</strong> — home-screen PWA; chat, reflection, and support-oriented resources in the app.</li>
+        <li><strong>You check in once</strong> — mid-pilot: any issues? anyone using it? then decide continue / pause / paid seats.</li>
+      </ol>
+    </div>
+
+    <h2>Where it sits in the sector</h2>
+    <div class="card plain">
+      <ul>
+        <li><strong>Complements</strong> counselling, case work, peer support, and residential programs — the gap between face-to-face contact.</li>
+        <li><strong>Does not replace</strong> clinical judgement, risk assessment, medication decisions, or after-hours duty.</li>
+        <li><strong>Does not monitor</strong> clients for you — no staff surveillance feed in the current product.</li>
+        <li><strong>Fits</strong> outpatient, community, residential step-down, and youth AOD settings that already brief people on safe self-help tools.</li>
+      </ul>
+    </div>
+
+    <h2>What staff actually do (time)</h2>
+    <div class="card plain">
+      <ul>
+        <li>Kick-off briefing: about <strong>15–30 minutes</strong> once for the team.</li>
+        <li>Handing a code to a client: about <strong>2–5 minutes</strong>.</li>
+        <li>Mid-pilot check with Bridge&amp;Bite: one short email or call.</li>
+        <li>No daily login required for workers.</li>
+      </ul>
+    </div>
+
+    <p class="note"><strong>Safety:</strong> Hopewick is not medical advice and not a crisis service. In an emergency call <strong>000</strong>. National Alcohol and Other Drug Hotline: <strong>1800 250 015</strong>. Your service’s existing escalation pathways still apply.</p>
+
+    <p class="links no-print">Also see: <a href="/pilot-pricing.html">Pilot pricing</a> · <a href="/">hopewick.com.au</a></p>
+
+    <p class="contact">
+      <strong>Pilot enquiries</strong><br>
+      BRIDGE&amp;BITE.CO PTY LTD · ABN 83 692 080 792<br>
+      <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a> ·
+      <a href="https://hopewick.com.au/">hopewick.com.au</a>
+    </p>
+  </article>
+</body>
+</html>
