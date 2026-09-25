@@ -78,6 +78,7 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 ## Features
 
+- **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; visible in demo.
 - **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
 
 
@@ -109,6 +110,10 @@ If you used the earlier single-user version, your chats, memories and settings m
 
 This is proprietary software. It is published for demonstration purposes only. You may not copy, modify, distribute or use it without written permission from BRIDGE&BITE.CO PTY LTD. See [LICENSE](LICENSE).
 
+
+
+### Find treatment / rehab (v5.7)
+Open **Demo** → sidebar **Find treatment / rehab** (near Find a meeting / Find nearby help). Pick a state for the helpline + Open service finder. Or tap the chip when chat mentions rehab/detox/treatment. Also under **Get help now**.
 
 ### In-app Bible (v5.6)
 Open **Demo** → sidebar **Bible & SOAP**. Tabs: **SOAP daily** | **Diving Deeper Finding Jesus** | **Read Bible**.

@@ -748,10 +748,64 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .meeting-card p { margin: 0 0 10px; font-size: .88rem; color: var(--muted); line-height: 1.4; }
 .meeting-card .row { gap: 8px; flex-wrap: wrap; }
 
+
+/* v5.7: Find treatment / rehab (official AU link-outs) */
+.treatment-state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.treatment-state-btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 16px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.25;
+  min-height: 64px;
+}
+.treatment-state-btn:hover, .treatment-state-btn:focus-visible {
+  border-color: var(--accent);
+  box-shadow: var(--focus);
+  outline: none;
+}
+.treatment-state-btn .sub {
+  display: block;
+  font-weight: 500;
+  font-size: .72rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.treatment-national {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: 12px;
+}
+.treatment-national h3 { margin: 0 0 6px; font-size: 1rem; }
+.treatment-national p { margin: 0 0 10px; font-size: .88rem; color: var(--muted); line-height: 1.4; }
+.treatment-detail { margin-top: 12px; }
+.treatment-detail .back-row { margin-bottom: 10px; }
+.treatment-helpline {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 4px 0 10px;
+}
+.treatment-helpline a { color: inherit; text-decoration: none; }
+.treatment-helpline a:hover { text-decoration: underline; }
+
 /* v5.3: early access / waitlist (mailto, no accounts) */
 /* v5.4: demo-first UX; own API key under Advanced */
 /* v5.5: in-app WEB Bible (public domain) + SOAP deep-link */
 /* v5.6: Diving Deeper Finding Jesus — whole Bible + Hope connections */
+/* v5.7: Find treatment / rehab — official AU AOD finders + helplines */
 .waitlist-dlg { width: min(480px, calc(100vw - 24px)); }
 .waitlist-dlg .dlg-body { padding: 8px 18px 4px; }
 .waitlist-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
@@ -858,6 +912,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" data-open="meetings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Find a meeting
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="treatment" id="sideTreatmentBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Find treatment / rehab
       </button>
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
@@ -1101,6 +1159,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
       <button class="btn btn-primary" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
+      <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
     </div>
     <p class="help" style="margin-top:12px"><span data-brand></span> is an AI support tool, not a counsellor or clinician. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
@@ -1625,6 +1684,48 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
+<!-- ============================ Find treatment / rehab ============================ -->
+<dialog id="treatmentDlg" aria-labelledby="treatmentTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="treatmentTitle">🏥 Find treatment / rehab</h2>
+    <button class="icon-btn" value="close" aria-label="Close treatment finder">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run rehabs or treatment services.</strong> These are official government and peak-body finders and helplines across Australia. Numbers change — if a call fails, check their site. This is <strong>not a crisis service</strong>.</p>
+    <p class="help" style="margin-top:8px">We don’t scrape or host a list of every facility (those go out of date fast). Open the official finder for your state, or call the helpline.</p>
+
+    <div id="treatmentHome">
+      <div class="treatment-national">
+        <h3>National Alcohol &amp; Other Drug Hotline</h3>
+        <p>Free &amp; confidential — routes you to your state or territory service (24/7; SA hours shorter).</p>
+        <div class="row" style="gap:8px;flex-wrap:wrap">
+          <a class="btn btn-primary btn-sm" href="tel:1800250015">Call 1800 250 015</a>
+          <a class="btn btn-sm" href="https://www.counsellingonline.org.au/service-finder" target="_blank" rel="noopener noreferrer">Counselling Online service finder</a>
+          <a class="btn btn-sm" href="https://askizzy.org.au/" target="_blank" rel="noopener noreferrer">Ask Izzy (also in Nearby help)</a>
+        </div>
+      </div>
+      <h3 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 0">Pick your state or territory</h3>
+      <div class="treatment-state-grid" id="treatmentStateGrid" role="group" aria-label="Australian states and territories"></div>
+    </div>
+
+    <div id="treatmentDetail" class="treatment-detail" hidden>
+      <div class="back-row">
+        <button class="btn btn-sm" type="button" id="treatmentBackBtn">← All states</button>
+      </div>
+      <div class="meeting-card">
+        <h3 id="treatmentDetailTitle"></h3>
+        <p id="treatmentDetailBlurb"></p>
+        <div id="treatmentDetailHelplines"></div>
+        <div class="row" id="treatmentDetailLinks" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <p class="help" style="margin-top:16px"><strong>In immediate danger?</strong> Call <a href="tel:000">000</a>. Crisis support: <a href="tel:131114">Lifeline 13 11 14</a>. Use <strong>Get help now</strong> for more contacts. Medical withdrawal (especially alcohol or benzos) needs a doctor or AOD service — not DIY detox.</p>
+  </div>
+</dialog>
+
 <!-- ============================ Craving skills ============================ -->
 <dialog id="skillsDlg" aria-labelledby="skillsTitle">
   <form method="dialog" class="dlg-head">
@@ -1755,7 +1856,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.6';
+const EDEN_BUILD = 'hopewick-v5.7';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -1824,7 +1925,7 @@ const CRAVINGS = ['None', 'Mild', 'Moderate', 'Strong'];
 
 const STARTERS = {
   friend: ['Let me tell you about my day', 'I need to talk something through', 'Give me a little pick-me-up', 'Help me plan my week'],
-  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down', 'I need food or a place to stay', 'Find a meeting near me'],
+  counsellor: ["I'm having a craving", 'I slipped up', 'Help me make a plan', 'Pray with me', 'I want to cut down', 'I need food or a place to stay', 'Find a meeting near me', 'Find treatment or rehab'],
 };
 
 /* Interactive craving / urge skills (DBT + CBT-informed). Skills practice — not therapy. */
@@ -1873,6 +1974,7 @@ const DEFAULT_SELFCARE = [
 
 const CRAVING_LANG_RE = /\b(craving|crave|urge|itching for|want(ing)? (a |to )?drink|want(ing)? (a |to )?hit|bottle shop|gotta use|need a drink|fiending)\b/i;
 const MEETING_LANG_RE = /\b(find(ing)? a meeting|where('?s| is) a meeting|aa meeting|na meeting|smart recovery|alcoholics anonymous|narcotics anonymous|go to (an? )?(aa|na)|peer(-| )?support meeting|12[- ]step meeting)\b/i;
+const TREATMENT_LANG_RE = /\b(find(ing)? (treatment|rehab|a rehab|detox|withdrawal)|need (rehab|detox|treatment)|residential (rehab|treatment)|where.*(rehab|detox|treatment)|go to (rehab|detox)|AOD (service|treatment)|alcohol.?and.?other.?drug (service|treatment))\b/i;
 
 
 /* Verified Australian crisis & AOD contacts (checked against official sites, Sept 2026). */
@@ -2027,7 +2129,7 @@ const el = {
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
-  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'),
+  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'),
   toasts: $('#toasts'),
 };
 
@@ -2520,6 +2622,7 @@ function renderWelcome() {
     b.addEventListener('click', () => {
       if (/food or a place to stay|shower|shelter|homeless/i.test(stub)) { openNearby(); return; }
       if (/find a meeting/i.test(stub)) { openMeetings(); return; }
+      if (/find treatment|rehab/i.test(stub)) { openTreatment(); return; }
       sendMessage(stub);
     });
     starters.appendChild(b);
@@ -2590,6 +2693,7 @@ function renderMessages() {
   if (!c || c.messages.length === 0) {
     hideBreakerSuggest();
     hideMeetingSuggest();
+    hideTreatmentSuggest();
     renderWelcome();
     return;
   }
@@ -2598,6 +2702,8 @@ function renderMessages() {
   else hideBreakerSuggest();
   if (shouldSuggestMeetings(c)) appendMeetingSuggest();
   else hideMeetingSuggest();
+  if (shouldSuggestTreatment(c)) appendTreatmentSuggest();
+  else hideTreatmentSuggest();
   if (isDemo && !busy) el.inner.appendChild(demoChipsEl());
   scrollToBottom(true);
 }
@@ -2678,7 +2784,7 @@ function counsellorPrompt(convo) {
     'WHO YOU ARE (AND AREN\'T)',
     '- You are an AI support tool, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant, without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
-    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders).',
+    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -4703,6 +4809,178 @@ function openMeetings() {
 }
 
 
+/* ---------------------------------------------------------------------------
+   Find treatment / rehab — official AU helplines + service finders (v5.7)
+   Faith-independent. No scraped facility lists.
+   --------------------------------------------------------------------------- */
+const TREATMENT_STATES = [
+  {
+    id: 'qld', short: 'QLD', name: 'Queensland',
+    blurb: 'Adis counselling, information and referrals — plus the QLD service finder and QNADA peak body.',
+    helplines: [{ label: 'Adis 24/7', display: '1800 177 833', tel: '1800177833' }],
+    finders: [
+      { label: 'Open Adis service finder', href: 'https://adis.health.qld.gov.au/getting-support/find-a-service', primary: true },
+      { label: 'QNADA (peak body)', href: 'https://qnada.org.au/' },
+    ],
+  },
+  {
+    id: 'nsw', short: 'NSW', name: 'New South Wales',
+    blurb: 'NSW ADIS is reached via the National Alcohol and Other Drug Hotline. Use NSW Health’s AOD contacts page for services.',
+    helplines: [{ label: 'ADIS (National Hotline)', display: '1800 250 015', tel: '1800250015' }],
+    finders: [
+      { label: 'Open NSW AOD service contacts', href: 'https://www.health.nsw.gov.au/aod/Pages/contact-service.aspx', primary: true },
+    ],
+  },
+  {
+    id: 'vic', short: 'VIC', name: 'Victoria',
+    blurb: 'DirectLine for 24/7 counselling and referral. Use the Victorian service finder or Counselling Online.',
+    helplines: [{ label: 'DirectLine', display: '1800 888 236', tel: '1800888236' }],
+    finders: [
+      { label: 'Open DirectLine service finder', href: 'https://directline.org.au/service-finder', primary: true },
+      { label: 'Counselling Online service finder', href: 'https://www.counsellingonline.org.au/service-finder' },
+      { label: 'health.vic AOD treatment overview', href: 'https://www.health.vic.gov.au/alcohol-and-drugs/alcohol-and-other-drug-treatment-services' },
+    ],
+  },
+  {
+    id: 'wa', short: 'WA', name: 'Western Australia',
+    blurb: 'Alcohol and Drug Support Line (ADSL). MHC My Services directory and Community Alcohol and Drug Services (CADS).',
+    helplines: [
+      { label: 'ADSL regional', display: '1800 198 024', tel: '1800198024' },
+      { label: 'ADSL metro', display: '(08) 9442 5000', tel: '0894425000' },
+    ],
+    finders: [
+      { label: 'Open My Services directory (MHC)', href: 'https://myservices.org.au/', primary: true },
+      { label: 'CADS overview (MHC)', href: 'https://www.mhc.wa.gov.au/getting-help/other-support-services/community-support-and-treatment-services/community-alcohol-and-drug-services' },
+    ],
+  },
+  {
+    id: 'sa', short: 'SA', name: 'South Australia',
+    blurb: 'SA ADIS (local call) — usually 8:30am–10:00pm. National hotline also routes SA callers in those hours.',
+    helplines: [{ label: 'ADIS SA', display: '1300 131 340', tel: '1300131340' }],
+    finders: [
+      { label: 'Counselling Online service finder', href: 'https://www.counsellingonline.org.au/service-finder', primary: true },
+      { label: 'SA Health — ADIS information', href: 'https://www.sahealth.sa.gov.au/wps/wcm/connect/Public+Content/SA+Health+Internet/Services/Mental+Health+and+Drug+and+Alcohol+Services/Drug+and+Alcohol+Services/DASSA+services/Alcohol+and+Drug+Information+Service+ADIS' },
+    ],
+  },
+  {
+    id: 'tas', short: 'TAS', name: 'Tasmania',
+    blurb: 'Tasmanian ADIS 24/7. ATDC publishes the statewide ATOD service directory.',
+    helplines: [{ label: 'ADIS Tasmania', display: '1800 811 994', tel: '1800811994' }],
+    finders: [
+      { label: 'Open ATDC service directory', href: 'https://atdc.org.au/service-directory/', primary: true },
+    ],
+  },
+  {
+    id: 'act', short: 'ACT', name: 'Australian Capital Territory',
+    blurb: 'ACT Alcohol and Drug Information Service. ATODA directory lists ACT ATOD programs.',
+    helplines: [{ label: 'ACT ADIS', display: '(02) 6207 9977', tel: '0262079977' }],
+    finders: [
+      { label: 'Open ATODA program directory', href: 'https://directory.atoda.org.au/', primary: true },
+    ],
+  },
+  {
+    id: 'nt', short: 'NT', name: 'Northern Territory',
+    blurb: 'NT ADIS 24/7. AADANT is the Territory peak body with a service directory.',
+    helplines: [{ label: 'ADIS NT', display: '1800 131 350', tel: '1800131350' }],
+    finders: [
+      { label: 'Open AADANT service directory', href: 'https://www.aadant.org.au/AADANTServiceDirectory', primary: true },
+      { label: 'AADANT home', href: 'https://www.aadant.org.au/' },
+    ],
+  },
+];
+
+function renderTreatmentStateGrid() {
+  const grid = $('#treatmentStateGrid');
+  if (!grid || grid.dataset.ready === '1') return;
+  grid.innerHTML = '';
+  for (const st of TREATMENT_STATES) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'treatment-state-btn';
+    b.dataset.state = st.id;
+    b.innerHTML = `<span>${escapeHtml(st.short)}</span><span class="sub">${escapeHtml(st.name)}</span>`;
+    b.addEventListener('click', () => showTreatmentState(st.id));
+    grid.appendChild(b);
+  }
+  grid.dataset.ready = '1';
+}
+
+function showTreatmentHome() {
+  $('#treatmentHome').hidden = false;
+  $('#treatmentDetail').hidden = true;
+}
+
+function showTreatmentState(id) {
+  const st = TREATMENT_STATES.find(s => s.id === id);
+  if (!st) return;
+  $('#treatmentHome').hidden = true;
+  const detail = $('#treatmentDetail');
+  detail.hidden = false;
+  $('#treatmentDetailTitle').textContent = `${st.name} (${st.short})`;
+  $('#treatmentDetailBlurb').textContent = st.blurb;
+  const hl = $('#treatmentDetailHelplines');
+  hl.innerHTML = '';
+  for (const h of st.helplines) {
+    const p = document.createElement('p');
+    p.className = 'treatment-helpline';
+    p.innerHTML = `${escapeHtml(h.label)}: <a href="tel:${escapeHtml(h.tel)}">${escapeHtml(h.display)}</a>`;
+    hl.appendChild(p);
+  }
+  const links = $('#treatmentDetailLinks');
+  links.innerHTML = '';
+  for (const f of st.finders) {
+    const a = document.createElement('a');
+    a.className = f.primary ? 'btn btn-primary btn-sm' : 'btn btn-sm';
+    a.href = f.href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = f.label;
+    links.appendChild(a);
+  }
+  for (const h of st.helplines) {
+    const a = document.createElement('a');
+    a.className = 'btn btn-sm';
+    a.href = 'tel:' + h.tel;
+    a.textContent = 'Call ' + h.display;
+    links.appendChild(a);
+  }
+}
+
+function shouldSuggestTreatment(convo) {
+  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
+  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
+  return !!(lastUser && TREATMENT_LANG_RE.test(lastUser.content || ''));
+}
+function appendTreatmentSuggest() {
+  let bar = $('#treatmentSuggest');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'treatmentSuggest';
+    bar.className = 'tool-suggest';
+    bar.setAttribute('role', 'note');
+    bar.innerHTML = `<span class="lbl">Looking for treatment or rehab?</span>`;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Find treatment / rehab';
+    b.addEventListener('click', openTreatment);
+    bar.appendChild(b);
+    el.messages.appendChild(bar);
+  }
+  bar.hidden = false;
+}
+function hideTreatmentSuggest() {
+  const bar = $('#treatmentSuggest');
+  if (bar) bar.hidden = true;
+}
+function openTreatment() {
+  if (!profile) return;
+  closeSidebar();
+  hideTreatmentSuggest();
+  renderTreatmentStateGrid();
+  showTreatmentHome();
+  if (!el.treatmentDlg.open) el.treatmentDlg.showModal();
+}
+
+
 function startSkill(sk) {
   if (!sk) return;
   sendMessage(sk.starter);
@@ -4887,6 +5165,8 @@ $('#nearbyAskIzzy').addEventListener('click', () => {
 });
 $('#helpNearbyBtn').addEventListener('click', () => openNearby());
 $('#helpMeetingBtn').addEventListener('click', () => { el.helpDlg.close(); openMeetings(); });
+$('#helpTreatmentBtn').addEventListener('click', () => { el.helpDlg.close(); openTreatment(); });
+$('#treatmentBackBtn').addEventListener('click', showTreatmentHome);
 
 function openMemories() { closeSidebar(); renderMemories(); if (!el.memoriesDlg.open) el.memoriesDlg.showModal(); }
 
@@ -5522,6 +5802,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'breakers') openBreakers();
   else if (o === 'selfcare') openSelfCare();
   else if (o === 'meetings') openMeetings();
+  else if (o === 'treatment') openTreatment();
 }));
 
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
@@ -5542,7 +5823,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -5830,7 +6111,12 @@ function demoChipsEl() {
   for (const s of DEMO_CHIPS) {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'starter'; b.textContent = s;
-    b.addEventListener('click', () => sendMessage(s));
+    b.addEventListener('click', () => {
+      if (/find a meeting/i.test(s)) { openMeetings(); return; }
+      if (/find treatment|rehab/i.test(s)) { openTreatment(); return; }
+      if (/food or a place to stay|shower|shelter|homeless/i.test(s)) { openNearby(); return; }
+      sendMessage(s);
+    });
     box.appendChild(b);
   }
   return box;
