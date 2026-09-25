@@ -78,6 +78,9 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 ## Features
 
+- **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. Optional He Reads Truth / CSB links stay external — no commercial Bible text is pasted.
+
+
 - **Two modes.** *AOD faith counsellor* (the default) or *Friend*. The counsellor draws on motivational interviewing (OARS, working with mixed feelings, stages of change), harm reduction, relapse prevention (triggers, HALT, urge surfing, coping plans), CBT-style reframing and SMART goals. Its approach is strengths-based, trauma-informed and culturally safe. It also encourages real-world support: a GP, your local AOD service, your faith community, SMART Recovery, AA/NA or Celebrate Recovery.
 - **Faith settings.** Choose Faith-inclusive / general spirituality (the default), Christian, Catholic, Islamic, Jewish, Buddhist, Hindu, Sikh, Indigenous spirituality (respectful, and defers to Elders and community) or No faith content. You can also set how much faith content you want: *Only when I ask*, *Gently woven in* (the default) or *Central*. Hope is never preachy or shaming, and it paraphrases sacred texts, saying so, rather than risk misquoting them.
 - **Safety first.** Words that suggest risk (suicide, self-harm, overdose, feeling unsafe, someone in danger) instantly show a crisis card with the contacts above. This works even offline or without an API key. Hope is also told to give those contacts first.
@@ -105,3 +108,7 @@ If you used the earlier single-user version, your chats, memories and settings m
 © 2026 BRIDGE&BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.
 
 This is proprietary software. It is published for demonstration purposes only. You may not copy, modify, distribute or use it without written permission from BRIDGE&BITE.CO PTY LTD. See [LICENSE](LICENSE).
+
+
+### In-app Bible (v5.5)
+Open **Demo** → sidebar **Bible & SOAP**. SOAP Day 1 shows Matthew 1 embedded (WEB). Use the **Read Bible** tab for the full Protestant canon (WEB via bible-api.com, cached).

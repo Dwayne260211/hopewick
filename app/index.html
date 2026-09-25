@@ -552,6 +552,90 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .soap-log-form textarea { width: 100%; min-height: 52px; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 8px 10px; font: inherit; resize: vertical; }
 .soap-entry { border-left: 3px solid #c9a227; }
 
+/* v5.5: in-app WEB Bible reader (public domain) */
+.bible-passage {
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, #fff8e7 8%, var(--surface-2));
+  border: 1px solid color-mix(in srgb, #c9a227 28%, var(--border));
+  max-height: 280px;
+  overflow: auto;
+}
+.bible-passage .bp-credit {
+  font-size: .75rem;
+  color: var(--muted);
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.bible-passage .bp-status { font-size: .85rem; color: var(--muted); margin: 0; }
+.bible-verse {
+  display: grid;
+  grid-template-columns: 2.2em 1fr;
+  gap: 6px 8px;
+  margin: 0 0 6px;
+  font-size: .92rem;
+  line-height: 1.45;
+}
+.bible-verse .vn {
+  font-size: .72rem;
+  font-weight: 700;
+  color: #c9a227;
+  text-align: right;
+  padding-top: .2em;
+  user-select: none;
+}
+.bible-verse.highlight {
+  background: color-mix(in srgb, #c9a227 18%, transparent);
+  border-radius: 8px;
+  margin-left: -6px;
+  margin-right: -6px;
+  padding: 4px 6px;
+}
+.reader-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; margin: 8px 0 10px; }
+.reader-nav .field { margin: 0; min-width: 0; flex: 1 1 140px; }
+.reader-nav select, .reader-nav input[type="number"] {
+  width: 100%; border: 1px solid var(--border); background: var(--surface-2);
+  border-radius: 10px; padding: 8px 10px; font: inherit;
+}
+.reader-toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; align-items: center; }
+.reader-chapters {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; max-height: 120px; overflow: auto;
+}
+.reader-chapters .chip { min-width: 2.4em; justify-content: center; cursor: pointer; }
+.reader-chapters .chip[aria-current="true"] {
+  background: color-mix(in srgb, #1f4a38 88%, #c9a227);
+  color: #f7e7a1; border-color: #c9a227;
+}
+.reader-body {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: 14px;
+  padding: 14px 14px 10px;
+  min-height: 180px;
+  max-height: min(55vh, 480px);
+  overflow: auto;
+}
+.reader-body h3 { margin: 0 0 4px; font-size: 1.1rem; }
+.reader-body .credit { font-size: .78rem; color: var(--muted); margin: 0 0 12px; }
+.reader-testament { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 8px; }
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 6px;
+  margin: 0 0 12px;
+  max-height: 200px;
+  overflow: auto;
+}
+.book-grid .chip { cursor: pointer; justify-content: flex-start; font-size: .82rem; }
+.book-grid .chip[aria-current="true"] {
+  background: color-mix(in srgb, #1f4a38 88%, #c9a227);
+  color: #f7e7a1; border-color: #c9a227;
+}
+.soap-optional-links { font-size: .82rem; color: var(--muted); margin: 8px 0 0; }
+.soap-optional-links a { color: var(--accent-strong); }
+
+
 .clean-hero { text-align: center; padding: 18px 8px 8px; }
 .clean-hero .big { font-size: 3.2rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
 .clean-hero .sub { color: var(--muted); margin-top: 6px; font-size: .95rem; }
@@ -623,6 +707,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 /* v5.3: early access / waitlist (mailto, no accounts) */
 /* v5.4: demo-first UX; own API key under Advanced */
+/* v5.5: in-app WEB Bible (public domain) + SOAP deep-link */
 .waitlist-dlg { width: min(480px, calc(100vw - 24px)); }
 .waitlist-dlg .dlg-body { padding: 8px 18px 4px; }
 .waitlist-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
@@ -714,9 +799,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
         12 Steps
       </button>
-      <button class="btn btn-ghost" type="button" data-open="bible">
+      <button class="btn btn-ghost" type="button" data-open="bible" id="sideBibleBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 6v10"/><path d="M8 8h8"/></svg>
-        SOAP Bible study
+        Bible &amp; SOAP
       </button>
       <button class="btn btn-ghost" type="button" data-open="nutrition">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
@@ -1311,8 +1396,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ SOAP Bible study dialog ============================ -->
 <dialog id="bibleDlg" aria-labelledby="bibleTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="bibleTitle">📖 SOAP Bible study</h2>
-    <button class="icon-btn" value="close" aria-label="Close SOAP Bible study">
+    <h2 id="bibleTitle">📖 Bible &amp; SOAP study</h2>
+    <button class="icon-btn" value="close" aria-label="Close Bible & SOAP study">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
@@ -1320,6 +1405,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <p class="help" id="bibleIntro" style="margin:10px 0 0"></p>
     <div class="dlg-tabs" role="tablist" aria-label="Bible study sections">
       <button type="button" class="chip" role="tab" id="bibleTabSoap" aria-selected="true" data-bible-tab="soap">SOAP daily</button>
+      <button type="button" class="chip" role="tab" id="bibleTabReader" aria-selected="false" data-bible-tab="reader">Read Bible</button>
       <button type="button" class="chip" role="tab" id="bibleTabThemes" aria-selected="false" data-bible-tab="themes">Themes</button>
       <button type="button" class="chip" role="tab" id="bibleTabLog" aria-selected="false" data-bible-tab="log">My logs</button>
     </div>
@@ -1332,11 +1418,16 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div class="soap-letter"><div class="ltr" aria-hidden="true">A</div><strong>Application</strong><span>How does it meet your life — gently, in recovery?</span></div>
         <div class="soap-letter"><div class="ltr" aria-hidden="true">P</div><strong>Prayer</strong><span>Optional — “shall we pray?” then pray together</span></div>
       </div>
-      <div class="row" style="gap:8px;flex-wrap:wrap;margin:4px 0 12px">
-        <button class="btn btn-primary" type="button" id="bibleStartSoap">Start today’s SOAP with Hope</button>
-        <a class="btn btn-sm" id="bibleReadCsB" href="https://read.csbible.com/?book=matthew&amp;chapter=1" target="_blank" rel="noopener noreferrer">Read CSB chapter</a>
-        <a class="btn btn-sm" id="bibleReadHrt" href="https://hereadstruth.com/plans/matthew-2/" target="_blank" rel="noopener noreferrer">He Reads Truth plan</a>
+      <div id="soapPassageBox" class="bible-passage" aria-live="polite">
+        <p class="bp-credit">Scripture shown: World English Bible (public domain). You don’t need a paper Bible for this study.</p>
+        <p class="bp-status" id="soapPassageStatus">Loading today’s reading…</p>
+        <div id="soapPassageText"></div>
       </div>
+      <div class="row" style="gap:8px;flex-wrap:wrap;margin:10px 0 8px">
+        <button class="btn btn-primary" type="button" id="bibleStartSoap">Start today’s SOAP with Hope</button>
+        <button class="btn btn-sm" type="button" id="bibleOpenReader">Open in Bible reader</button>
+      </div>
+      <p class="soap-optional-links">Prefer the He Reads Truth / CSB edition? <a id="bibleReadHrt" href="https://hereadstruth.com/plans/matthew-2/" target="_blank" rel="noopener noreferrer">HRT plan</a> · <a id="bibleReadCsB" href="https://read.csbible.com/?book=matthew&amp;chapter=1" target="_blank" rel="noopener noreferrer">CSB chapter</a> (external; optional).</p>
       <details id="soapLogDetails" style="margin-bottom:8px">
         <summary style="cursor:pointer;font-weight:600">Log today’s SOAP (optional)</summary>
         <form class="soap-log-form" id="soapLogForm" style="margin-top:10px">
@@ -1350,6 +1441,30 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           </div>
         </form>
       </details>
+    </div>
+    <div id="bibleReaderPanel" hidden>
+      <p class="help" style="margin:0 0 8px">Full Protestant canon in the <strong>World English Bible (WEB)</strong> — public domain. Pick a book and chapter. Day 1 (Matthew 1) works offline; other chapters load from a public WEB API when you’re online.</p>
+      <div class="reader-testament" role="tablist" aria-label="Testament">
+        <button type="button" class="chip active" data-reader-test="OT" aria-selected="true">Old Testament</button>
+        <button type="button" class="chip" data-reader-test="NT" aria-selected="false">New Testament</button>
+      </div>
+      <div class="book-grid" id="readerBookGrid" aria-label="Bible books"></div>
+      <div class="reader-nav">
+        <div class="field">
+          <label for="readerBookSelect">Book</label>
+          <select id="readerBookSelect"></select>
+        </div>
+        <div class="field" style="flex:0 1 100px">
+          <label for="readerChapterSelect">Chapter</label>
+          <select id="readerChapterSelect"></select>
+        </div>
+        <button class="btn btn-sm" type="button" id="readerPrevCh" aria-label="Previous chapter">← Prev</button>
+        <button class="btn btn-sm" type="button" id="readerNextCh" aria-label="Next chapter">Next →</button>
+      </div>
+      <div class="reader-chapters" id="readerChapterChips" aria-label="Chapters"></div>
+      <div class="reader-body" id="readerBody" aria-live="polite">
+        <p class="bp-status">Choose a book to begin.</p>
+      </div>
     </div>
     <div id="bibleThemesPanel" hidden>
       <p class="help" style="margin:0 0 8px">Optional recovery-themed reflections (references + questions only). Prefer the SOAP daily plan above.</p>
@@ -1572,7 +1687,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.4';
+const EDEN_BUILD = 'hopewick-v5.5';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -2463,6 +2578,7 @@ function renderAll() {
   renderHistory();
   renderMessages();
   updateMoodPill();
+  syncFaithBibleVisibility();
 }
 
 /* ---------------------------------------------------------------------------
@@ -3260,8 +3376,396 @@ function startStepChat(step) {
   toast(`Working Step ${step.n} with ${settings.name}`);
 }
 
+
 /* ---------------------------------------------------------------------------
-   SOAP Bible study (He Reads Truth Bible / CSB companion — not affiliated)
+   In-app Bible — World English Bible (WEB), public domain
+   Full Protestant canon. Day 1 Matthew 1:1–25 embedded for offline demo.
+   Other chapters: bible-api.com (WEB) with in-memory + localStorage cache.
+   Never paste CSB/NIV/ESV/NLT commercial text.
+   --------------------------------------------------------------------------- */
+const WEB_CREDIT = 'Scripture shown: World English Bible (public domain).';
+const WEB_API = 'https://bible-api.com/';
+const WEB_CACHE_KEY = 'eden.webBibleCache.v1';
+const WEB_EMBED_DAY1 = {
+  book: 'Matthew', chapter: 1, start: 1, end: 25, translation: 'web',
+  verses: {
+  1: "The book of the genealogy of Jesus Christ, the son of David, the son of Abraham.",
+  2: "Abraham became the father of Isaac. Isaac became the father of Jacob. Jacob became the father of Judah and his brothers.",
+  3: "Judah became the father of Perez and Zerah by Tamar. Perez became the father of Hezron. Hezron became the father of Ram.",
+  4: "Ram became the father of Amminadab. Amminadab became the father of Nahshon. Nahshon became the father of Salmon.",
+  5: "Salmon became the father of Boaz by Rahab. Boaz became the father of Obed by Ruth. Obed became the father of Jesse.",
+  6: "Jesse became the father of King David. David became the father of Solomon by her who had been Uriah’s wife.",
+  7: "Solomon became the father of Rehoboam. Rehoboam became the father of Abijah. Abijah became the father of Asa.",
+  8: "Asa became the father of Jehoshaphat. Jehoshaphat became the father of Joram. Joram became the father of Uzziah.",
+  9: "Uzziah became the father of Jotham. Jotham became the father of Ahaz. Ahaz became the father of Hezekiah.",
+  10: "Hezekiah became the father of Manasseh. Manasseh became the father of Amon. Amon became the father of Josiah.",
+  11: "Josiah became the father of Jechoniah and his brothers, at the time of the exile to Babylon.",
+  12: "After the exile to Babylon, Jechoniah became the father of Shealtiel. Shealtiel became the father of Zerubbabel.",
+  13: "Zerubbabel became the father of Abiud. Abiud became the father of Eliakim. Eliakim became the father of Azor.",
+  14: "Azor became the father of Zadok. Zadok became the father of Achim. Achim became the father of Eliud.",
+  15: "Eliud became the father of Eleazar. Eleazar became the father of Matthan. Matthan became the father of Jacob.",
+  16: "Jacob became the father of Joseph, the husband of Mary, from whom was born Jesus, who is called Christ.",
+  17: "So all the generations from Abraham to David are fourteen generations; from David to the exile to Babylon fourteen generations; and from the carrying away to Babylon to the Christ, fourteen generations.",
+  18: "Now the birth of Jesus Christ was like this: After his mother, Mary, was engaged to Joseph, before they came together, she was found pregnant by the Holy Spirit.",
+  19: "Joseph, her husband, being a righteous man, and not willing to make her a public example, intended to put her away secretly.",
+  20: "But when he thought about these things, behold, an angel of the Lord appeared to him in a dream, saying, “Joseph, son of David, don’t be afraid to take to yourself Mary, your wife, for that which is conceived in her is of the Holy Spirit.",
+  21: "She shall give birth to a son. You shall call his name Jesus, for it is he who shall save his people from their sins.”",
+  22: "Now all this has happened, that it might be fulfilled which was spoken by the Lord through the prophet, saying,",
+  23: "“Behold, the virgin shall be with child,\nand shall give birth to a son.\nThey shall call his name Immanuel”;\nwhich is, being interpreted, “God with us.”",
+  24: "Joseph arose from his sleep, and did as the angel of the Lord commanded him, and took his wife to himself;",
+  25: "and didn’t know her sexually until she had given birth to her firstborn son. He named him Jesus."
+  }
+};
+
+/** Protestant canon (66 books) with chapter counts. verseEnd only for 1-chapter books (API needs a range). */
+const WEB_CANON = [
+  { name: 'Genesis', abbr: 'Gen', testament: 'OT', chapters: 50 },
+  { name: 'Exodus', abbr: 'Exod', testament: 'OT', chapters: 40 },
+  { name: 'Leviticus', abbr: 'Lev', testament: 'OT', chapters: 27 },
+  { name: 'Numbers', abbr: 'Num', testament: 'OT', chapters: 36 },
+  { name: 'Deuteronomy', abbr: 'Deut', testament: 'OT', chapters: 34 },
+  { name: 'Joshua', abbr: 'Josh', testament: 'OT', chapters: 24 },
+  { name: 'Judges', abbr: 'Judg', testament: 'OT', chapters: 21 },
+  { name: 'Ruth', abbr: 'Ruth', testament: 'OT', chapters: 4 },
+  { name: '1 Samuel', abbr: '1Sam', testament: 'OT', chapters: 31 },
+  { name: '2 Samuel', abbr: '2Sam', testament: 'OT', chapters: 24 },
+  { name: '1 Kings', abbr: '1Kgs', testament: 'OT', chapters: 22 },
+  { name: '2 Kings', abbr: '2Kgs', testament: 'OT', chapters: 25 },
+  { name: '1 Chronicles', abbr: '1Chr', testament: 'OT', chapters: 29 },
+  { name: '2 Chronicles', abbr: '2Chr', testament: 'OT', chapters: 36 },
+  { name: 'Ezra', abbr: 'Ezra', testament: 'OT', chapters: 10 },
+  { name: 'Nehemiah', abbr: 'Neh', testament: 'OT', chapters: 13 },
+  { name: 'Esther', abbr: 'Esth', testament: 'OT', chapters: 10 },
+  { name: 'Job', abbr: 'Job', testament: 'OT', chapters: 42 },
+  { name: 'Psalms', abbr: 'Ps', testament: 'OT', chapters: 150 },
+  { name: 'Proverbs', abbr: 'Prov', testament: 'OT', chapters: 31 },
+  { name: 'Ecclesiastes', abbr: 'Eccl', testament: 'OT', chapters: 12 },
+  { name: 'Song of Solomon', abbr: 'Song', testament: 'OT', chapters: 8 },
+  { name: 'Isaiah', abbr: 'Isa', testament: 'OT', chapters: 66 },
+  { name: 'Jeremiah', abbr: 'Jer', testament: 'OT', chapters: 52 },
+  { name: 'Lamentations', abbr: 'Lam', testament: 'OT', chapters: 5 },
+  { name: 'Ezekiel', abbr: 'Ezek', testament: 'OT', chapters: 48 },
+  { name: 'Daniel', abbr: 'Dan', testament: 'OT', chapters: 12 },
+  { name: 'Hosea', abbr: 'Hos', testament: 'OT', chapters: 14 },
+  { name: 'Joel', abbr: 'Joel', testament: 'OT', chapters: 3 },
+  { name: 'Amos', abbr: 'Amos', testament: 'OT', chapters: 9 },
+  { name: 'Obadiah', abbr: 'Obad', testament: 'OT', chapters: 1, verseEnd: 21 },
+  { name: 'Jonah', abbr: 'Jonah', testament: 'OT', chapters: 4 },
+  { name: 'Micah', abbr: 'Mic', testament: 'OT', chapters: 7 },
+  { name: 'Nahum', abbr: 'Nah', testament: 'OT', chapters: 3 },
+  { name: 'Habakkuk', abbr: 'Hab', testament: 'OT', chapters: 3 },
+  { name: 'Zephaniah', abbr: 'Zeph', testament: 'OT', chapters: 3 },
+  { name: 'Haggai', abbr: 'Hag', testament: 'OT', chapters: 2 },
+  { name: 'Zechariah', abbr: 'Zech', testament: 'OT', chapters: 14 },
+  { name: 'Malachi', abbr: 'Mal', testament: 'OT', chapters: 4 },
+  { name: 'Matthew', abbr: 'Matt', testament: 'NT', chapters: 28 },
+  { name: 'Mark', abbr: 'Mark', testament: 'NT', chapters: 16 },
+  { name: 'Luke', abbr: 'Luke', testament: 'NT', chapters: 24 },
+  { name: 'John', abbr: 'John', testament: 'NT', chapters: 21 },
+  { name: 'Acts', abbr: 'Acts', testament: 'NT', chapters: 28 },
+  { name: 'Romans', abbr: 'Rom', testament: 'NT', chapters: 16 },
+  { name: '1 Corinthians', abbr: '1Cor', testament: 'NT', chapters: 16 },
+  { name: '2 Corinthians', abbr: '2Cor', testament: 'NT', chapters: 13 },
+  { name: 'Galatians', abbr: 'Gal', testament: 'NT', chapters: 6 },
+  { name: 'Ephesians', abbr: 'Eph', testament: 'NT', chapters: 6 },
+  { name: 'Philippians', abbr: 'Phil', testament: 'NT', chapters: 4 },
+  { name: 'Colossians', abbr: 'Col', testament: 'NT', chapters: 4 },
+  { name: '1 Thessalonians', abbr: '1Thess', testament: 'NT', chapters: 5 },
+  { name: '2 Thessalonians', abbr: '2Thess', testament: 'NT', chapters: 3 },
+  { name: '1 Timothy', abbr: '1Tim', testament: 'NT', chapters: 6 },
+  { name: '2 Timothy', abbr: '2Tim', testament: 'NT', chapters: 4 },
+  { name: 'Titus', abbr: 'Titus', testament: 'NT', chapters: 3 },
+  { name: 'Philemon', abbr: 'Phlm', testament: 'NT', chapters: 1, verseEnd: 25 },
+  { name: 'Hebrews', abbr: 'Heb', testament: 'NT', chapters: 13 },
+  { name: 'James', abbr: 'Jas', testament: 'NT', chapters: 5 },
+  { name: '1 Peter', abbr: '1Pet', testament: 'NT', chapters: 5 },
+  { name: '2 Peter', abbr: '2Pet', testament: 'NT', chapters: 3 },
+  { name: '1 John', abbr: '1John', testament: 'NT', chapters: 5 },
+  { name: '2 John', abbr: '2John', testament: 'NT', chapters: 1, verseEnd: 13 },
+  { name: '3 John', abbr: '3John', testament: 'NT', chapters: 1, verseEnd: 14 },
+  { name: 'Jude', abbr: 'Jude', testament: 'NT', chapters: 1, verseEnd: 25 },
+  { name: 'Revelation', abbr: 'Rev', testament: 'NT', chapters: 22 },
+];
+
+let webMemCache = Object.create(null);
+let readerState = { testament: 'NT', book: 'Matthew', chapter: 1, highlight: null };
+let soapPassageReq = 0;
+
+function webBookMeta(name) {
+  return WEB_CANON.find(b => b.name.toLowerCase() === String(name || '').toLowerCase()) || null;
+}
+function webCacheKey(book, chapter) {
+  return `${book}|${chapter}|web`;
+}
+function loadWebDiskCache() {
+  if (isDemo) return;
+  try {
+    const raw = localStorage.getItem(WEB_CACHE_KEY);
+    if (!raw) return;
+    const obj = JSON.parse(raw);
+    if (obj && typeof obj === 'object') Object.assign(webMemCache, obj);
+  } catch (_) {}
+}
+function saveWebDiskCache(key, verses) {
+  webMemCache[key] = verses;
+  if (isDemo) return;
+  try {
+    const slim = {};
+    const keys = Object.keys(webMemCache);
+    // Cap cache size (~80 chapters)
+    const keep = keys.slice(-80);
+    for (const k of keep) slim[k] = webMemCache[k];
+    webMemCache = slim;
+    localStorage.setItem(WEB_CACHE_KEY, JSON.stringify(slim));
+  } catch (_) {}
+}
+function embeddedWebVerses(book, chapter, verseStart, verseEnd) {
+  if (book === 'Matthew' && Number(chapter) === 1 && WEB_EMBED_DAY1 && WEB_EMBED_DAY1.verses) {
+    const out = {};
+    const vs = WEB_EMBED_DAY1.verses;
+    const a = verseStart || 1;
+    const b = verseEnd || 25;
+    for (let n = a; n <= b; n++) {
+      if (vs[n] != null) out[n] = vs[n];
+      else if (vs[String(n)] != null) out[n] = vs[String(n)];
+    }
+    if (Object.keys(out).length) return out;
+  }
+  return null;
+}
+function webApiQuery(book, chapter) {
+  const meta = webBookMeta(book);
+  if (meta && meta.chapters === 1) {
+    return `${book} 1:1-${meta.verseEnd || 999}`;
+  }
+  return `${book} ${chapter}`;
+}
+/** Returns { verses: {n: text}, source: 'embed'|'cache'|'api', offline?: bool, error?: string } */
+async function fetchWebChapter(book, chapter, opts) {
+  const ch = Math.max(1, Number(chapter) || 1);
+  const verseStart = opts && opts.verseStart;
+  const verseEnd = opts && opts.verseEnd;
+  const embed = embeddedWebVerses(book, ch, verseStart, verseEnd);
+  // Prefer full chapter from cache/API when available; embed is exact range fallback.
+  const key = webCacheKey(book, ch);
+  if (!webMemCache[key] && !Object.keys(webMemCache).length) loadWebDiskCache();
+  if (webMemCache[key]) {
+    let verses = webMemCache[key];
+    if (verseStart || verseEnd) verses = sliceVerses(verses, verseStart, verseEnd);
+    return { verses, source: 'cache' };
+  }
+  try {
+    const q = webApiQuery(book, ch);
+    const url = WEB_API + encodeURIComponent(q) + '?translation=web';
+    const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const t = setTimeout(() => { if (ctrl) ctrl.abort(); }, 12000);
+    const res = await fetch(url, ctrl ? { signal: ctrl.signal } : undefined);
+    clearTimeout(t);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const verses = {};
+    for (const v of (data.verses || [])) {
+      verses[Number(v.verse)] = String(v.text || '').replace(/\n+$/g, '').trim();
+    }
+    if (!Object.keys(verses).length) throw new Error('Empty chapter');
+    saveWebDiskCache(key, verses);
+    let out = verses;
+    if (verseStart || verseEnd) out = sliceVerses(verses, verseStart, verseEnd);
+    return { verses: out, source: 'api' };
+  } catch (err) {
+    if (embed) return { verses: embed, source: 'embed', offline: true };
+    return {
+      verses: null,
+      source: 'none',
+      offline: true,
+      error: 'This chapter needs a network connection the first time. Day 1 (Matthew 1:1–25) works offline. Try again when you’re online.',
+    };
+  }
+}
+function sliceVerses(verses, start, end) {
+  const a = start || 1;
+  const b = end || 9999;
+  const out = {};
+  for (const [k, t] of Object.entries(verses)) {
+    const n = Number(k);
+    if (n >= a && n <= b) out[n] = t;
+  }
+  return out;
+}
+function parsePassageRef(passage) {
+  // e.g. "Matthew 1:1–25", "John 3:16", "Psalms 23", "1 John 4:7–21"
+  const s = String(passage || '').replace(/[–—]/g, '-').trim();
+  const m = s.match(/^((?:[1-3]\s+)?[A-Za-z]+(?:\s+[A-Za-z]+)?)\s+(\d+)(?::(\d+)(?:-(\d+))?)?/);
+  if (!m) return null;
+  const book = m[1].replace(/\s+/g, ' ').trim();
+  // Normalise Psalm -> Psalms for API
+  const bookNorm = book === 'Psalm' ? 'Psalms' : book;
+  if (!webBookMeta(bookNorm)) return null;
+  return {
+    book: bookNorm,
+    chapter: Number(m[2]),
+    verseStart: m[3] ? Number(m[3]) : null,
+    verseEnd: m[4] ? Number(m[4]) : null,
+  };
+}
+function renderVersesHtml(verses, highlightVerse) {
+  if (!verses) return '';
+  const nums = Object.keys(verses).map(Number).sort((a, b) => a - b);
+  return nums.map(n => {
+    const hl = highlightVerse && Number(highlightVerse) === n ? ' highlight' : '';
+    return `<div class="bible-verse${hl}" data-verse="${n}"><span class="vn">${n}</span><span class="vt">${escapeHtml(verses[n])}</span></div>`;
+  }).join('');
+}
+async function fillSoapPassage() {
+  const status = $('#soapPassageStatus');
+  const box = $('#soapPassageText');
+  if (!status || !box) return;
+  const reading = todaySoapReading();
+  const parsed = parsePassageRef(reading.passage) || { book: reading.book, chapter: reading.chapter, verseStart: 1, verseEnd: reading.chapter === 1 && reading.book === 'Matthew' ? 25 : null };
+  const req = ++soapPassageReq;
+  status.textContent = 'Loading today’s WEB reading…';
+  box.innerHTML = '';
+  const result = await fetchWebChapter(parsed.book, parsed.chapter, { verseStart: parsed.verseStart, verseEnd: parsed.verseEnd });
+  if (req !== soapPassageReq) return;
+  if (!result.verses) {
+    status.textContent = result.error || 'Could not load passage.';
+    return;
+  }
+  const srcNote = result.source === 'embed' ? ' (offline copy)' : result.source === 'cache' ? ' (saved on this device)' : '';
+  status.innerHTML = `<strong>${escapeHtml(reading.passage)}</strong> · ${WEB_CREDIT}${srcNote}`;
+  box.innerHTML = renderVersesHtml(result.verses);
+}
+function syncFaithBibleVisibility() {
+  const btn = $('#sideBibleBtn');
+  if (!btn) return;
+  const show = settings.faith !== 'none';
+  btn.hidden = !show;
+  if (!show && el.bibleDlg && el.bibleDlg.open) el.bibleDlg.close();
+}
+function openBibleReader(book, chapter, verse) {
+  if (book) readerState.book = book;
+  if (chapter) readerState.chapter = Number(chapter) || 1;
+  readerState.highlight = verse || null;
+  const meta = webBookMeta(readerState.book);
+  if (meta) readerState.testament = meta.testament;
+  bibleTab = 'reader';
+  if (!el.bibleDlg.open) {
+    if (!profile) return;
+    closeSidebar();
+    el.bibleDlg.showModal();
+  }
+  renderBible();
+  setBibleTab('reader');
+  renderBibleReader();
+}
+function readerBooksForTestament() {
+  return WEB_CANON.filter(b => b.testament === readerState.testament);
+}
+function populateReaderControls() {
+  const sel = $('#readerBookSelect');
+  const chSel = $('#readerChapterSelect');
+  const grid = $('#readerBookGrid');
+  const chips = $('#readerChapterChips');
+  if (!sel || !chSel || !grid) return;
+  const books = readerBooksForTestament();
+  if (!webBookMeta(readerState.book) || webBookMeta(readerState.book).testament !== readerState.testament) {
+    readerState.book = books[0].name;
+    readerState.chapter = 1;
+  }
+  sel.innerHTML = WEB_CANON.map(b => `<option value="${escapeHtml(b.name)}" ${b.name === readerState.book ? 'selected' : ''}>${escapeHtml(b.name)}</option>`).join('');
+  // Prefer current testament order in grid; select lists all for quick jump
+  grid.innerHTML = '';
+  for (const b of books) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chip';
+    btn.textContent = b.name;
+    btn.setAttribute('aria-current', b.name === readerState.book ? 'true' : 'false');
+    btn.addEventListener('click', () => {
+      readerState.book = b.name;
+      readerState.chapter = 1;
+      readerState.highlight = null;
+      renderBibleReader();
+    });
+    grid.appendChild(btn);
+  }
+  $$('[data-reader-test]').forEach(btn => {
+    const on = btn.getAttribute('data-reader-test') === readerState.testament;
+    btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    btn.classList.toggle('active', on);
+  });
+  const meta = webBookMeta(readerState.book);
+  const maxCh = meta ? meta.chapters : 1;
+  readerState.chapter = Math.min(Math.max(1, readerState.chapter || 1), maxCh);
+  chSel.innerHTML = Array.from({ length: maxCh }, (_, i) => {
+    const n = i + 1;
+    return `<option value="${n}" ${n === readerState.chapter ? 'selected' : ''}>${n}</option>`;
+  }).join('');
+  if (chips) {
+    chips.innerHTML = '';
+    for (let n = 1; n <= maxCh; n++) {
+      const c = document.createElement('button');
+      c.type = 'button';
+      c.className = 'chip';
+      c.textContent = String(n);
+      c.setAttribute('aria-current', n === readerState.chapter ? 'true' : 'false');
+      c.addEventListener('click', () => {
+        readerState.chapter = n;
+        readerState.highlight = null;
+        renderBibleReader();
+      });
+      chips.appendChild(c);
+    }
+  }
+}
+async function renderBibleReader() {
+  populateReaderControls();
+  const body = $('#readerBody');
+  if (!body) return;
+  const book = readerState.book;
+  const chapter = readerState.chapter;
+  body.innerHTML = `<h3>${escapeHtml(book)} ${chapter}</h3><p class="credit">${WEB_CREDIT}</p><p class="bp-status">Loading…</p>`;
+  const result = await fetchWebChapter(book, chapter);
+  if (readerState.book !== book || readerState.chapter !== chapter) return;
+  if (!result.verses) {
+    body.innerHTML = `<h3>${escapeHtml(book)} ${chapter}</h3><p class="credit">${WEB_CREDIT}</p><p class="bp-status">${escapeHtml(result.error || 'Unavailable offline.')}</p>`;
+    return;
+  }
+  const src = result.source === 'embed' ? ' · offline embed' : result.source === 'cache' ? ' · from device cache' : '';
+  body.innerHTML = `<h3>${escapeHtml(book)} ${chapter}</h3><p class="credit">${WEB_CREDIT}${src}</p>${renderVersesHtml(result.verses, readerState.highlight)}`;
+  if (readerState.highlight) {
+    const node = body.querySelector(`[data-verse="${Number(readerState.highlight)}"]`);
+    if (node) node.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+}
+function readerStepChapter(delta) {
+  const meta = webBookMeta(readerState.book);
+  if (!meta) return;
+  let ch = readerState.chapter + delta;
+  let bookIdx = WEB_CANON.findIndex(b => b.name === readerState.book);
+  if (ch < 1) {
+    if (bookIdx > 0) {
+      bookIdx -= 1;
+      readerState.book = WEB_CANON[bookIdx].name;
+      readerState.testament = WEB_CANON[bookIdx].testament;
+      readerState.chapter = WEB_CANON[bookIdx].chapters;
+    } else return;
+  } else if (ch > meta.chapters) {
+    if (bookIdx < WEB_CANON.length - 1) {
+      bookIdx += 1;
+      readerState.book = WEB_CANON[bookIdx].name;
+      readerState.testament = WEB_CANON[bookIdx].testament;
+      readerState.chapter = 1;
+    } else return;
+  } else {
+    readerState.chapter = ch;
+  }
+  readerState.highlight = null;
+  renderBibleReader();
+}
+
+/* ---------------------------------------------------------------------------
+   SOAP Bible study (in-app WEB + optional He Reads Truth / CSB link-outs — not affiliated)
    --------------------------------------------------------------------------- */
 function normalizeBible(raw) {
   const b = Object.assign({ entries: [], planDay: 1, completed: {}, notes: {}, updated: 0 }, raw || {});
@@ -3282,49 +3786,61 @@ function openBible() {
   if (!el.bibleDlg.open) el.bibleDlg.showModal();
 }
 function setBibleTab(tab) {
-  bibleTab = tab === 'themes' ? 'themes' : tab === 'log' ? 'log' : 'soap';
-  const map = { soap: '#bibleSoapPanel', themes: '#bibleThemesPanel', log: '#bibleLogPanel' };
+  bibleTab = tab === 'reader' ? 'reader' : tab === 'themes' ? 'themes' : tab === 'log' ? 'log' : 'soap';
+  const map = {
+    soap: '#bibleSoapPanel',
+    reader: '#bibleReaderPanel',
+    themes: '#bibleThemesPanel',
+    log: '#bibleLogPanel',
+  };
   Object.entries(map).forEach(([k, sel]) => { const n = $(sel); if (n) n.hidden = k !== bibleTab; });
   $$('[data-bible-tab]').forEach(btn => {
     const on = btn.getAttribute('data-bible-tab') === bibleTab;
     btn.setAttribute('aria-selected', on ? 'true' : 'false');
     btn.classList.toggle('active', on);
   });
+  if (bibleTab === 'reader') renderBibleReader();
   if (bibleTab === 'themes') renderBibleThemes();
   if (bibleTab === 'log') renderBibleEntries();
 }
 function renderBible() {
   const intro = $('#bibleIntro');
-  if (settings.faith === 'none') {
-    intro.textContent = 'Optional SOAP Scripture reflection. You’re welcome to use it as quiet reading, or skip it — no pressure. Designed to use alongside the He Reads Truth Bible (CSB); we never paste long Bible quotations.';
-  } else {
-    intro.textContent = 'SOAP daily reading with Hope: Scripture → Observation → Application → Prayer (one step at a time). Designed to use alongside the He Reads Truth Bible (CSB). References only — open your own Bible or the links below.';
+  if (intro) {
+    if (settings.faith === 'none') {
+      intro.textContent = 'Optional SOAP Scripture reflection — use it as quiet reading, or skip it. The passage below is World English Bible (public domain); you don’t need a paper Bible. Prefer He Reads Truth / CSB? Use the optional external links.';
+    } else {
+      intro.textContent = 'SOAP with Hope: Scripture → Observation → Application → Prayer (one step at a time). Scripture is shown in-app from the World English Bible (public domain) — no paper Bible needed. Optional He Reads Truth / CSB links if you prefer that edition.';
+    }
   }
   const reading = todaySoapReading();
   const day = reading.planDay || reading.day || 1;
   const pct = Math.round(((day - 1) / SOAP_PLAN_TOTAL) * 100);
-  $('#bibleProg').innerHTML = `<span style="width:${Math.min(100, Math.max(0, pct))}%"></span>`;
+  const prog = $('#bibleProg');
+  if (prog) prog.innerHTML = `<span style="width:${Math.min(100, Math.max(0, pct))}%"></span>`;
   const support = (reading.supporting && reading.supporting.length)
-    ? `<p class="meta">HRT-style supporting refs (in your Bible/plan): ${escapeHtml(reading.supporting.join(' · '))}</p>`
+    ? `<p class="meta">HRT-style supporting refs (optional, in your own Bible/plan): ${escapeHtml(reading.supporting.join(' · '))}</p>`
     : '';
   const card = $('#bibleTodayCard');
-  card.innerHTML = `
+  if (card) {
+    card.innerHTML = `
     <p class="soap-kicker">SOAP · Day ${day} of ${SOAP_PLAN_TOTAL}</p>
     <h3>${escapeHtml(reading.title || reading.passage)}</h3>
     <p class="passage" id="bibleTodayPassage">${escapeHtml(reading.passage)}</p>
     ${support}
-    <p class="credit">Designed to use alongside the <strong>He Reads Truth Bible (CSB)</strong>. Not an official partnership — open your copy, or use the free plan / CSB reader links.</p>
-    <p class="meta">Tip: open your He Reads Truth Bible to <strong>${escapeHtml(reading.passage)}</strong>, then start SOAP with Hope.</p>`;
+    <p class="credit">Scripture shown: <strong>World English Bible (public domain)</strong>. You don’t need a paper Bible for this study.</p>
+    <p class="meta">Read the WEB text below, or open the full Bible reader. Prefer He Reads Truth / CSB? Use the optional links under the passage.</p>`;
+  }
   const csb = $('#bibleReadCsB');
   const hrt = $('#bibleReadHrt');
   if (csb) {
     csb.href = CSB_READER(reading.book, reading.chapter);
-    csb.textContent = `Read ${reading.book} ${reading.chapter} (CSB)`;
+    csb.textContent = `CSB chapter (external)`;
   }
   if (hrt) {
     hrt.href = reading.book === 'Matthew' ? (day === 1 ? HRT_DAY1_EXAMPLE : HRT_MATTHEW_PLAN) : HRT_HOME;
-    hrt.textContent = reading.book === 'Matthew' ? (day === 1 ? 'HRT Day 1 example' : 'He Reads Truth · Matthew plan') : 'He Reads Truth';
+    hrt.textContent = reading.book === 'Matthew' ? (day === 1 ? 'HRT Day 1 (external)' : 'HRT Matthew plan (external)') : 'He Reads Truth (external)';
   }
+  fillSoapPassage();
   setBibleTab(bibleTab || 'soap');
 }
 function renderBibleThemes() {
@@ -3373,12 +3889,12 @@ function renderBibleEntries() {
 }
 function soapSystemExtra(reading) {
   const support = (reading.supporting && reading.supporting.length)
-    ? `Supporting references (invite them to their HRT Bible / plan — do not paste long quotes): ${reading.supporting.join('; ')}.`
+    ? `Supporting references (optional HRT/CSB edition — do not paste long commercial quotes): ${reading.supporting.join('; ')}.`
     : '';
   return [
     `You are guiding a SOAP Bible study with ${userName()}. Method name is SOAP (not "Hope"). Companion name stays ${settings.name}.`,
     `Today’s reading (Day ${reading.planDay || reading.day}): ${reading.passage}. ${support}`,
-    'Designed to use alongside the He Reads Truth Bible (Christian Standard Bible / CSB). Invite them to open that Bible or a CSB reader. Do NOT paste long Scripture quotations (copyright). At most a few words they already mentioned, or a brief paraphrase labelled as paraphrase.',
+    'The app shows this passage in-app from the World English Bible (WEB, public domain). Invite them to read it there (or in the Bible reader). Do NOT paste long CSB/NIV/ESV quotations. A brief WEB phrase they already named, or a short paraphrase labelled as paraphrase, is OK.',
     'Lead SOAP strictly in order, ONE step at a time, waiting for their answer before the next:',
     '1) Scripture — ask what verse or moment stood out after they read.',
     '2) Observation — what did they notice?',
@@ -3391,7 +3907,7 @@ function soapSystemExtra(reading) {
 function themeBibleSystemExtra(lesson) {
   return [
     `You are studying Scripture with ${userName()} for recovery-themed lesson “${lesson.title}” (${lesson.theme}).`,
-    `Passage reference: ${lesson.ref}. Invite them to read it in their own Bible (He Reads Truth / CSB welcome) or app. Do NOT invent lengthy quotes; paraphrase briefly only if helpful and say you are paraphrasing.`,
+    `Passage reference: ${lesson.ref}. Invite them to open it in the in-app World English Bible reader (public domain), or their own Bible. Do NOT invent lengthy commercial-translation quotes; paraphrase briefly only if helpful and say you are paraphrasing.`,
     `Open questions: ${lesson.questions.join(' | ')}`,
     'Connect gently to recovery, hope and daily life. Respect their faithLevel. Never preachy or shaming. Australian English. 2–6 sentences, one question at a time.',
     settings.faith === 'none' ? 'They usually prefer no faith content — keep this optional and exploratory; follow their lead.' : '',
@@ -3411,9 +3927,9 @@ function startTodaysSoap() {
   c.passage = reading.passage;
   c.title = `SOAP · ${reading.passage}`;
   c.systemExtra = soapSystemExtra(reading);
-  const opener = `G’day${userName() ? ', ' + userName() : ''} — ready for today’s **SOAP**?\n\n**Today’s reading (Day ${reading.planDay || reading.day}):** ${reading.passage}\n\nOpen your **He Reads Truth Bible (CSB)** to that passage` +
-    (reading.supporting && reading.supporting.length ? ` (the HRT day pack also points to ${reading.supporting.join(', ')})` : '') +
-    `, or use a CSB reader if you like. I won’t paste the chapter here.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**\n\nNo rush — take what speaks to you.`;
+  const opener = `G’day${userName() ? ', ' + userName() : ''} — ready for today’s **SOAP**?\n\n**Today’s reading (Day ${reading.planDay || reading.day}):** ${reading.passage}\n\nYou can read it **in the app** (World English Bible — free/public domain; no paper Bible needed)` +
+    (reading.supporting && reading.supporting.length ? `. The optional HRT day pack also points to ${reading.supporting.join(', ')}` : '') +
+    `. Prefer He Reads Truth / CSB? There’s an optional external link in Bible & SOAP.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**\n\nNo rush — take what speaks to you.`;
   c.messages.push({ role: 'assistant', content: opener, ts: Date.now() });
   persistConvos();
   renderAll();
@@ -4747,6 +5263,35 @@ $('#selfCareResetDefaults').addEventListener('click', resetSelfCareDefaults);
 $$('#breakerLinks [data-open=nearby]').forEach(b => b.addEventListener('click', () => { el.circuitBreakerDlg.close(); openNearby(); }));
 $$('[data-bible-tab]').forEach(btn => btn.addEventListener('click', () => setBibleTab(btn.getAttribute('data-bible-tab'))));
 $('#bibleStartSoap')?.addEventListener('click', () => startTodaysSoap());
+$('#bibleOpenReader')?.addEventListener('click', () => {
+  const reading = todaySoapReading();
+  openBibleReader(reading.book, reading.chapter, null);
+});
+$$('[data-reader-test]').forEach(btn => btn.addEventListener('click', () => {
+  readerState.testament = btn.getAttribute('data-reader-test') === 'OT' ? 'OT' : 'NT';
+  const books = readerBooksForTestament();
+  if (!webBookMeta(readerState.book) || webBookMeta(readerState.book).testament !== readerState.testament) {
+    readerState.book = books[0].name;
+    readerState.chapter = 1;
+  }
+  readerState.highlight = null;
+  renderBibleReader();
+}));
+$('#readerBookSelect')?.addEventListener('change', (e) => {
+  readerState.book = e.target.value;
+  readerState.chapter = 1;
+  readerState.highlight = null;
+  const meta = webBookMeta(readerState.book);
+  if (meta) readerState.testament = meta.testament;
+  renderBibleReader();
+});
+$('#readerChapterSelect')?.addEventListener('change', (e) => {
+  readerState.chapter = Number(e.target.value) || 1;
+  readerState.highlight = null;
+  renderBibleReader();
+});
+$('#readerPrevCh')?.addEventListener('click', () => readerStepChapter(-1));
+$('#readerNextCh')?.addEventListener('click', () => readerStepChapter(1));
 $('#soapLogForm')?.addEventListener('submit', (e) => {
   e.preventDefault();
   saveSoapEntry({
@@ -4819,7 +5364,7 @@ const DEMO_CUTDOWN_REST = [
 ];
 
 const DEMO_SOAP_SCENARIO = [
-  ['a', "G’day, Alex — ready for today’s **SOAP**?\n\n**Today’s reading (Day 1):** Matthew 1:1–25\n\nOpen your **He Reads Truth Bible (CSB)** to that passage (the HRT day pack also points to Matthew 2:1–23, Micah 5:1–4, John 1:14), or use a CSB reader if you like. I won’t paste the chapter here.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**"],
+  ['a', "G’day, Alex — ready for today’s **SOAP**?\n\n**Today’s reading (Day 1):** Matthew 1:1–25\n\nYou can read it **in the app** (World English Bible — free/public domain; no paper Bible needed). The optional HRT day pack also points to Matthew 2:1–23, Micah 5:1–4, John 1:14 — He Reads Truth / CSB links stay optional.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**"],,
   ['u', 'Matthew 1:23 — “God with us.” That hit me.'],
   ['a', "Beautiful catch. **Emmanuel — God with us** — right in the middle of a very human family story.\n\n**Observation:** what did you notice as you sat with that? Anything about the genealogy, Joseph’s courage, or the ‘with us’ part that stood out?"],
   ['u', 'That Jesus steps into a messy line of people. Makes me feel less alone in my own mess.'],
