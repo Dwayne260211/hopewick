@@ -37,8 +37,8 @@ REQUIRED_URLS = [
 def test_static_info_training_tool():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.10'" in text
-    assert 'content="hopewick-v5.10"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.11'" in text
+    assert 'content="hopewick-v5.11"' in land
     assert 'id="infoDlg"' in text
     assert "function openInfoTraining" in text
     assert 'id="sideInfoBtn"' in text
