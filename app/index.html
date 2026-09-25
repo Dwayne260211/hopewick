@@ -810,34 +810,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 /* v5.7: Find treatment / rehab (official AU link-outs) */
 /* v5.8: Find a church (official AU denominational finders) */
-/* v5.9: Info & training (official AU AOD info + workforce training link-outs) */
 /* v5.10: product copy + crisis UX pass */
-.info-hub-section { margin-top: 18px; }
-.info-hub-section > h3 {
-  font-size: .85rem; text-transform: uppercase; letter-spacing: .06em;
-  color: var(--muted); margin: 0 0 8px;
-}
-.info-hub-featured {
-  padding: 14px 16px; border: 2px solid var(--accent, #3f8f5f);
-  background: var(--surface-2); border-radius: 14px; margin-bottom: 10px;
-}
-.info-hub-featured h3 { margin: 0 0 4px; font-size: 1.05rem; }
-.info-hub-featured .badge {
-  display: inline-block; font-size: .72rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .04em;
-  color: var(--accent, #3f8f5f); margin-bottom: 6px;
-}
-.info-hub-bullets { margin: 10px 0 0; padding-left: 1.15rem; color: var(--muted); font-size: .88rem; line-height: 1.45; }
-.info-hub-bullets li { margin: 0 0 4px; }
-.info-hub-samples { margin: 12px 0 0; padding: 10px 12px; border: 1px dashed var(--border); border-radius: 10px; background: var(--surface, transparent); }
-.info-hub-samples > h4 { margin: 0 0 6px; font-size: .92rem; }
-.info-hub-samples > p { margin: 0 0 8px; font-size: .82rem; color: var(--muted); line-height: 1.4; }
-.info-hub-samples-group { margin: 0 0 10px; }
-.info-hub-samples-group:last-child { margin-bottom: 0; }
-.info-hub-samples-group > strong { display: block; font-size: .8rem; margin: 0 0 4px; color: var(--text); }
-.info-hub-samples-list { margin: 0; padding-left: 1.1rem; font-size: .82rem; line-height: 1.45; color: var(--muted); }
-.info-hub-samples-list li { margin: 0 0 4px; }
-.info-hub-samples-list a { color: var(--accent, #3f8f5f); }
 .treatment-state-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -895,7 +868,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 /* v5.6: Diving Deeper Finding Jesus — whole Bible + Hope connections */
 /* v5.7: Find treatment / rehab — official AU AOD finders + helplines */
 /* v5.8: Find a church — official AU denominational finders */
-/* v5.9: Info & training — Insight + AU AOD workforce / public info link-outs */
 /* v5.10: product copy + crisis UX — AOD recovery tagline, Join waitlist, moment-first crisis */
 /* v5.11: Find AOD services — curated QLD NGO cards + offer chips */
 
@@ -1041,10 +1013,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" data-open="aod" id="sideAodBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Find AOD services
-      </button>
-      <button class="btn btn-ghost" type="button" data-open="info" id="sideInfoBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-        Info &amp; AOD training
       </button>
       <button class="btn btn-ghost" type="button" data-open="church" id="sideChurchBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2H6v4H2v16h20V6h-4V2z"/><path d="M12 2v4"/><path d="M12 10v8"/><path d="M8 14h8"/></svg>
@@ -1302,7 +1270,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
-      <button class="btn" type="button" id="helpInfoBtn">Info &amp; AOD training — Insight &amp; staff courses</button>
       <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
     </div>
     <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
@@ -2041,127 +2008,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
-<!-- ============================ Info & training ============================ -->
-<dialog id="infoDlg" aria-labelledby="infoTitle">
-  <form method="dialog" class="dlg-head">
-    <h2 id="infoTitle">📚 Info &amp; AOD training</h2>
-    <button class="icon-btn" value="close" aria-label="Close info and training">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </form>
-  <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run these courses or websites.</strong> They are curated official Australian AOD information and workforce-training sites. We only open their pages so content stays current. This is <strong>education, not medical advice</strong>, and <strong>not a crisis service</strong>.</p>
-    <ul class="info-hub-bullets">
-      <li>Useful for AOD / rehab workers and students exploring <span data-brand></span> as a pilot tool</li>
-      <li>Also handy for anyone wanting reliable public information</li>
-      <li>Trainings and fact sheets are run by those organisations — <span data-brand></span> only links out</li>
-    </ul>
-
-    <div class="info-hub-section" id="infoStaffSection">
-      <h3>For AOD staff &amp; students</h3>
-      <div class="meeting-cards">
-        <div class="info-hub-featured meeting-card" id="infoInsightFeatured">
-          <div class="badge">Featured · QLD Health workforce</div>
-          <h3>Insight — AOD training &amp; eLearning</h3>
-          <p>Queensland’s specialist AOD workforce development centre: free self-paced eLearning, webinars, workshops and practice toolkits for AOD, mental health and SEWB workers and students. <span data-brand></span> does not host or enrol you — these are sample deep links into Insight’s catalogue (titles and URLs can change).</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://insight.qld.edu.au/" target="_blank" rel="noopener noreferrer">Open Insight</a>
-            <a class="btn btn-sm" href="https://insight.qld.edu.au/training/elearning" target="_blank" rel="noopener noreferrer">Browse eLearning</a>
-            <a class="btn btn-sm" href="https://insight.qld.edu.au/training/elearning/course-guide" target="_blank" rel="noopener noreferrer">Course guide</a>
-          </div>
-          <div class="info-hub-samples" id="infoInsightSamples">
-            <h4>Sample courses</h4>
-            <p>Named examples only — open Insight to enrol. Free and self-paced for AOD / MH / SEWB workers.</p>
-            <div class="info-hub-samples-group">
-              <strong>Trauma-informed care</strong>
-              <ul class="info-hub-samples-list">
-                <li><a href="https://insight.qld.edu.au/toolkits/trauma-informed-care/detail" target="_blank" rel="noopener noreferrer">Trauma-informed care toolkit</a> — pathways: <em>Foundations of Trauma-Informed Care</em> (4 modules); <em>Applying Trauma-Informed Care in Practice</em> (7 modules)</li>
-              </ul>
-            </div>
-            <div class="info-hub-samples-group">
-              <strong>Substance effects (Understanding Drugs + Meth Check)</strong>
-              <ul class="info-hub-samples-list">
-                <li><a href="https://insight.qld.edu.au/training/methamphetamine/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Methamphetamine</a> (1.03, Level 1 Core AOD Knowledge) — effects, harms, dependence, harm reduction, intoxication</li>
-                <li><a href="https://insight.qld.edu.au/training/alcohol/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Alcohol</a></li>
-                <li><a href="https://insight.qld.edu.au/training/cannabis/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Cannabis</a></li>
-                <li><a href="https://insight.qld.edu.au/training/understanding-drugs-opioids/landing" target="_blank" rel="noopener noreferrer">Understanding Drugs — Opioids</a></li>
-                <li><a href="https://insight.qld.edu.au/toolkits/understanding-drugs/detail" target="_blank" rel="noopener noreferrer">Understanding drugs toolkit</a> (full series)</li>
-                <li><a href="https://insight.qld.edu.au/toolkits/meth-check/detail" target="_blank" rel="noopener noreferrer">Meth Check toolkit</a> — clinician tools for methamphetamine; includes <a href="https://insight.qld.edu.au/training/psychostimulants-withdrawal-management/landing" target="_blank" rel="noopener noreferrer">Psychostimulant withdrawal management</a> (2.04)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>Dovetail — youth AOD practice (part of Insight)</h3>
-          <p>Youth-focused training, eLearning and toolkits for workers supporting young people who use alcohol and other drugs.</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://insight.qld.edu.au/dovetail" target="_blank" rel="noopener noreferrer">Open Dovetail</a>
-            <a class="btn btn-sm" href="https://insight.qld.edu.au/" target="_blank" rel="noopener noreferrer">Insight home</a>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>NCETA — National Centre for Education and Training on Addiction</h3>
-          <p>Flinders University research centre for AOD workforce development, training packages and workplace resources.</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://nceta.flinders.edu.au/" target="_blank" rel="noopener noreferrer">Open NCETA</a>
-            <a class="btn btn-sm" href="https://nceta.flinders.edu.au/about-us/AOD-training" target="_blank" rel="noopener noreferrer">AOD training overview</a>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>Cracks in the Ice — frontline worker training</h3>
-          <p>Evidence-based ice (methamphetamine) resources and free online training modules for frontline health and community workers.</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://cracksintheice.org.au/health-professionals/online-resources" target="_blank" rel="noopener noreferrer">Worker training &amp; resources</a>
-            <a class="btn btn-sm" href="https://cracksintheice.org.au/" target="_blank" rel="noopener noreferrer">Cracks in the Ice home</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="info-hub-section" id="infoEveryoneSection">
-      <h3>For everyone</h3>
-      <div class="meeting-cards">
-        <div class="meeting-card">
-          <h3>Alcohol and Drug Foundation (ADF)</h3>
-          <p>Trusted Australian drug facts, community programs and evidence-based information for the public.</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://adf.org.au/" target="_blank" rel="noopener noreferrer">Open ADF</a>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>Positive Choices</h3>
-          <p>Evidence-based AOD education for schools, parents, families and young people.</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://positivechoices.org.au/" target="_blank" rel="noopener noreferrer">Open Positive Choices</a>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>AIHW — alcohol and other drugs</h3>
-          <p>National statistics and reports on illicit drug and alcohol use in Australia (Australian Institute of Health and Welfare).</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://www.aihw.gov.au/reports-data/behaviours-risk-factors/illicit-use-of-drugs/overview" target="_blank" rel="noopener noreferrer">Open AIHW AOD overview</a>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>Counselling Online</h3>
-          <p>Free, confidential alcohol and drug counselling for Australians — phone, chat and a service finder.</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://www.counsellingonline.org.au/" target="_blank" rel="noopener noreferrer">Open Counselling Online</a>
-          </div>
-        </div>
-        <div class="meeting-card">
-          <h3>Cracks in the Ice (public)</h3>
-          <p>Clear, evidence-based information about ice for individuals, families and communities. For workforce meth training samples, see Insight above (and ADF for general drug facts).</p>
-          <div class="row">
-            <a class="btn btn-primary btn-sm" href="https://cracksintheice.org.au/" target="_blank" rel="noopener noreferrer">Open Cracks in the Ice</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <p class="help" style="margin-top:16px"><strong>In immediate danger?</strong> Call <a href="tel:000">000</a>. Crisis support: <a href="tel:131114">Lifeline 13 11 14</a> · AOD: <a href="tel:1800250015">1800 250 015</a>. Use <strong>Get help now</strong> for more contacts.</p>
-  </div>
-</dialog>
 
 
 <!-- ============================ Craving skills ============================ -->
@@ -2622,7 +2468,7 @@ const el = {
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
-  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'), infoDlg: $('#infoDlg'),
+  circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
   toasts: $('#toasts'),
 };
 
@@ -3138,7 +2984,6 @@ function renderWelcome() {
       if (/find a meeting/i.test(stub)) { openMeetings(); return; }
       if (/find treatment|rehab/i.test(stub)) { openTreatment(); return; }
       if (/find aod services|aod services/i.test(stub)) { openAodServices(); return; }
-      if (/info (&|and )?training|aod training|insight (qld|training)|workforce training/i.test(stub)) { openInfoTraining(); return; }
       if (/find a church/i.test(stub)) { openChurch(); return; }
       sendMessage(stub);
     });
@@ -3307,7 +3152,7 @@ function counsellorPrompt(convo) {
     'WHO YOU ARE (AND AREN\'T)',
     '- You are an AI recovery companion, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant (especially after crisis action steps), without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
-    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, suggest opening Find AOD services in the sidebar (curated offerings from their public sites) — do not invent phone numbers beyond that curated list. When they ask about AOD training, eLearning, workforce development or reliable drug information sites, suggest opening Info & training in the sidebar (Insight, Dovetail, NCETA, ADF and similar official AU link-outs) — do not invent course catalogues. When they ask about finding a church, parish or congregation, suggest opening Find a church in the sidebar (official Australian denominational finders and maps) — do not invent church lists or claim Hopewick runs churches.',
+    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, suggest opening Find AOD services in the sidebar (curated offerings from their public sites) — do not invent phone numbers beyond that curated list. When they ask about finding a church, parish or congregation, suggest opening Find a church in the sidebar (official Australian denominational finders and maps) — do not invent church lists or claim Hopewick runs churches.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -5801,18 +5646,6 @@ function openChurch() {
   if (!el.churchDlg.open) el.churchDlg.showModal();
 }
 
-/* ---------------------------------------------------------------------------
-   Info & training — official AU AOD info + workforce training link-outs (v5.9)
-   Hopewick does not run these courses. Faith-independent.
-   --------------------------------------------------------------------------- */
-function openInfoTraining() {
-  if (!profile) return;
-  closeSidebar();
-  if (!el.infoDlg.open) el.infoDlg.showModal();
-}
-
-
-
 
 function startSkill(sk) {
   if (!sk) return;
@@ -6001,7 +5834,6 @@ $('#helpMeetingBtn').addEventListener('click', () => { el.helpDlg.close(); openM
 $('#helpTreatmentBtn').addEventListener('click', () => { el.helpDlg.close(); openTreatment(); });
 $('#helpAodBtn').addEventListener('click', () => { el.helpDlg.close(); openAodServices(); });
 $('#helpChurchBtn').addEventListener('click', () => { el.helpDlg.close(); openChurch(); });
-$('#helpInfoBtn').addEventListener('click', () => { el.helpDlg.close(); openInfoTraining(); });
 $('#treatmentBackBtn').addEventListener('click', showTreatmentHome);
 $('#aodOpenTreatmentBtn').addEventListener('click', () => { if (el.aodDlg.open) el.aodDlg.close(); openTreatment(); });
 
@@ -6314,7 +6146,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.infoDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
@@ -6612,7 +6444,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.infoDlg, el.needAiDlg, el.waitlistDlg, el.inviteDlg, el.aboutDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.waitlistDlg, el.inviteDlg, el.aboutDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -6642,7 +6474,6 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'treatment') openTreatment();
   else if (o === 'aod') openAodServices();
   else if (o === 'church') openChurch();
-  else if (o === 'info') openInfoTraining();
 }));
 
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
@@ -6663,7 +6494,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.infoDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -7023,7 +6854,6 @@ function demoChipsEl() {
       if (/find a meeting/i.test(s)) { openMeetings(); return; }
       if (/find treatment|rehab/i.test(s)) { openTreatment(); return; }
       if (/find aod services|aod services/i.test(s)) { openAodServices(); return; }
-      if (/info (&|and )?training|aod training|insight (qld|training)|workforce training/i.test(s)) { openInfoTraining(); return; }
       if (/find a church/i.test(s)) { openChurch(); return; }
       if (/food or a place to stay|shower|shelter|homeless/i.test(s)) { openNearby(); return; }
       sendMessage(s);

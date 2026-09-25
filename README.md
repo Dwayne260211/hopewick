@@ -81,7 +81,6 @@ The **Get help now** button is always at the top of the screen. All numbers were
 
 - **Product copy + crisis UX (v5.10).** Tagline **AOD recovery support between sessions**; Hope standardised as an **AI recovery companion**; CTA **Join waitlist**; About uses progressive disclosure; crisis card leads with moment-first actions (incl. **1800RESPECT**).
 - **Find a church (v5.8).** Official Australian denominational finders (ACC, Catholic free parish lookup, Anglican dioceses, Uniting, Baptist state unions, Salvation Army, Presbyterian, Lutheran, Churches of Christ) plus AusChurches directory and maps. Hopewick does **not** scrape or host a church database — link-outs only. Soft-hidden when faith preference is “none” (same pattern as Bible); chat chip if someone asks for a church.
-- **Info & training (v5.9 / samples in v5.10).** Curated official Australian AOD **workforce training** and public information sites (Insight eLearning & webinars first, plus Dovetail, NCETA, Cracks in the Ice worker resources, ADF, Positive Choices, AIHW, Counselling Online). Featured Insight card lists **sample courses** with deep links (trauma-informed care pathways; Understanding Drugs — Methamphetamine/Alcohol/Cannabis/Opioids; Meth Check). Hopewick **does not** host or enrol — link-outs only; catalogue may change. Faith-independent; visible in demo.
 - **Find AOD services (v5.11).** Curated QLD-first community AOD NGOs (QuIHN, Drug ARM, Lives Lived Well, Brisbane Youth Service, Anglicare SQ, plus QNADA) with plain-language offer chips from their public sites — Visit site / Call link-outs. Different from Find treatment / rehab (state helplines + official finders only). Hopewick does **not** run these services.
 - **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; visible in demo.
 - **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
@@ -117,8 +116,6 @@ This is proprietary software. It is published for demonstration purposes only. Y
 
 
 
-### Info & training (v5.9)
-Open **Demo** → sidebar **Info & AOD training** (near Find treatment / Nutrition). Groups: **For AOD staff & students** (Insight featured, Dovetail, NCETA, Cracks in the Ice worker training) and **For everyone** (ADF, Positive Choices, AIHW, Counselling Online). Educational link-outs only — not medical advice; crisis → **Get help now**.
 
 ### Find a church (v5.8)
 Open **Demo** → sidebar **Find a church** (near Find a meeting / Find treatment). Cards by tradition + maps near me + AusChurches. Or tap the chip when chat asks for a church/parish. Hidden when faith preference is **No faith content**. Also under **Get help now**.
