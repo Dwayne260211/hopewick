@@ -51,7 +51,7 @@ The landing page has a "Pilot with us" section for services. **TODO:** the conta
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. All numbers were verified against official sites in September 2026.
+The **Get help now** button is always at the top of the screen. Preferences (faith, role, theme, daily check-in) open when you launch the demo or enter a profile, and again from **More → Preferences**. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
 
 | Service | Number |
 |---|---|
@@ -62,6 +62,8 @@ The **Get help now** button is always at the top of the screen. All numbers were
 | Adis 24/7 Alcohol and Drug Support (QLD) | **1800 177 833** |
 | 1800RESPECT (domestic, family and sexual violence) | **1800 737 732** |
 | 13YARN (Aboriginal and Torres Strait Islander crisis support) | **13 92 76** |
+
+The **Info** tab (Home · Chat · Info · More) adds trusted drug-alert links and a domestic and family violence section. National crisis line: **1800RESPECT 1800 737 732** (text **0458 737 732**). Queensland, when that state is selected: **DVConnect Womensline 1800 811 811** (24/7) and **Mensline 1800 600 636** (9am–midnight). Shelter placement is via those services and [Ask Izzy](https://askizzy.org.au/search/domestic-violence) — refuge addresses are not listed in the app. Legal information: [Family Violence Law Help](https://familyviolencelaw.gov.au/), [Legal Aid Queensland](https://www.legalaid.qld.gov.au/Find-legal-information/Relationships-and-children/Domestic-and-family-violence) **1300 65 11 88**, [Women’s Legal Service Queensland](https://wlsq.org.au/) **1800 957 957**, [QIFVLS](https://qifvls.com.au/) **1800 887 700**.
 
 ## Open it
 

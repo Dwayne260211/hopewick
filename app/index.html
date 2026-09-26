@@ -435,13 +435,27 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   background: transparent;
 }
 
-.home-view {
+.home-view,
+.info-view,
+.launch-prefs {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 10px 16px 12px;
 }
+.info-inner, .launch-prefs-inner {
+  max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px;
+}
+.info-view h2 { font-size: 1.08rem; margin: 10px 0 0; font-weight: 700; }
+.info-view .info-lead { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+.launch-prefs h1 { font-size: clamp(1.25rem, 3.2vw, 1.65rem); margin: 8px 0 4px; text-align: center; }
+.launch-prefs .lede { margin: 0 0 4px; color: var(--muted); text-align: center; font-size: .92rem; line-height: 1.45; }
+.launch-prefs .launch-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.launch-prefs .launch-actions .btn { flex: 1; justify-content: center; min-width: 140px; }
+.info-quick-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .home-view[hidden],
+.info-view[hidden],
+.launch-prefs[hidden],
 .messages[hidden],
 .composer-wrap[hidden] { display: none !important; }
 .home-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 8px; }
@@ -490,9 +504,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .chat-checkin-hint button:hover { filter: brightness(.97); }
 
-.app.tab-home .composer-wrap { display: none !important; }
-.app.tab-home .messages { display: none !important; }
-.app.tab-chat .home-view { display: none !important; }
+.app.tab-home .composer-wrap,
+.app.tab-info .composer-wrap,
+.app.showing-launch-prefs .composer-wrap { display: none !important; }
+.app.tab-home .messages,
+.app.tab-info .messages,
+.app.showing-launch-prefs .messages { display: none !important; }
+.app.tab-chat .home-view,
+.app.tab-info .home-view,
+.app.showing-launch-prefs .home-view { display: none !important; }
+.app.tab-home .info-view,
+.app.tab-chat .info-view,
+.app.showing-launch-prefs .info-view { display: none !important; }
 
 /* Composer sits above the tab bar — no double safe-area on wrap */
 .composer-wrap { padding: 8px 16px 10px; }
@@ -1230,18 +1253,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
         </button>
-        <button class="icon-btn hide-sm" id="autoSpeakBtn" type="button" aria-pressed="false" aria-label="Read replies aloud" title="Read replies aloud">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        </button>
-        <button class="icon-btn hide-sm" id="themeBtn" type="button" aria-label="Dark mode" aria-pressed="false" title="Toggle light / dark">
-          <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button class="icon-btn hide-sm" type="button" data-open="memories" aria-label="Memories" title="Memories">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-        </button>
-        <button class="icon-btn" type="button" data-open="settings" aria-label="Settings" title="Settings">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
-        </button>
       </div>
     </header>
 
@@ -1264,8 +1275,157 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </div>
 
 
+    <section class="launch-prefs" id="launchPrefs" hidden aria-labelledby="launchPrefsTitle">
+      <div class="launch-prefs-inner">
+        <h1 id="launchPrefsTitle" tabindex="-1">Preferences</h1>
+        <p class="lede">Set how <span data-companion></span> shows up before you start. You can change this later from <strong>More → Preferences</strong>. <strong>Get help</strong> stays at the top.</p>
+        <form id="launchPrefsForm">
+          <div class="field">
+            <label for="launchMode"><span data-companion></span>’s role</label>
+            <select id="launchMode">
+              <option value="counsellor">AOD faith counsellor — support with alcohol &amp; other drugs</option>
+              <option value="friend">Friend — warm, everyday companion</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="launchFaith">Faith</label>
+            <select id="launchFaith">
+              <option value="general">Faith-inclusive / general spirituality</option>
+              <option value="christian">Christian (non-denominational)</option>
+              <option value="catholic">Catholic</option>
+              <option value="islamic">Islamic</option>
+              <option value="jewish">Jewish</option>
+              <option value="buddhist">Buddhist</option>
+              <option value="hindu">Hindu</option>
+              <option value="sikh">Sikh</option>
+              <option value="indigenous">Indigenous spirituality</option>
+              <option value="none">No faith content</option>
+            </select>
+          </div>
+          <div class="field">
+            <span class="label" id="launchFaithLevelLabel">How much faith content?</span>
+            <div class="radio-row" role="radiogroup" aria-labelledby="launchFaithLevelLabel">
+              <label><input type="radio" name="launchFaithLevel" value="ask"> Only when I ask</label>
+              <label><input type="radio" name="launchFaithLevel" value="woven"> Gently woven in</label>
+              <label><input type="radio" name="launchFaithLevel" value="central"> Central</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="launchTheme">Theme</label>
+            <select id="launchTheme">
+              <option value="system">Match system</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+          <div class="check"><input type="checkbox" id="launchMoodCheck"><label for="launchMoodCheck">Show the daily check-in on Home</label></div>
+          <div class="launch-actions">
+            <button class="btn btn-primary" type="submit" id="launchPrefsContinue">Continue</button>
+            <button class="btn" type="button" id="launchPrefsSkip">Skip for now</button>
+          </div>
+        </form>
+        <p class="help" id="launchPrefsDemoNote" hidden>In the demo, these choices last for this visit only.</p>
+        <p class="help"><button class="btn btn-ghost btn-sm" type="button" id="launchPrefsAllSettings">All settings</button></p>
+      </div>
+    </section>
+
     <section class="home-view" id="homeView" aria-label="Home">
       <div class="home-inner" id="homeInner"></div>
+    </section>
+
+    <section class="info-view" id="infoView" hidden aria-label="Info">
+      <div class="info-inner">
+        <div class="home-hero">
+          <h1>Info</h1>
+          <p>Trusted Australian updates and support links. <span data-brand></span> does not run these services — open the official page so details stay current.</p>
+        </div>
+
+        <h2 id="infoNewsTitle">Drug alerts &amp; trusted sources</h2>
+        <p class="info-lead">Peer and government pages for alerts, naloxone and Queensland peer support. This is information, not a crisis service.</p>
+        <div class="meeting-cards" id="infoNews">
+          <div class="meeting-card">
+            <h3>QuIVAA publications</h3>
+            <p>Queensland Injectors Voice for Advocacy and Action — peer publications and media, including Queensland drug-warning notes.</p>
+            <div class="row">
+              <a class="btn btn-primary btn-sm" href="https://quivaa.org.au/publications-and-media/" target="_blank" rel="noopener noreferrer">QuIVAA publications</a>
+              <a class="btn btn-sm" href="https://quivaa.org.au/" target="_blank" rel="noopener noreferrer">QuIVAA home</a>
+            </div>
+          </div>
+          <div class="meeting-card">
+            <h3>The Know</h3>
+            <p>National drug alerts and harm-reduction warnings from Australian peer and research partners.</p>
+            <div class="row">
+              <a class="btn btn-primary btn-sm" href="https://theknow.org.au/" target="_blank" rel="noopener noreferrer">Open The Know</a>
+            </div>
+          </div>
+          <div class="meeting-card">
+            <h3>NSW public drug warnings</h3>
+            <p>NSW Health public drug alerts. If you are in another state, The Know and your local health department may also post warnings.</p>
+            <div class="row">
+              <a class="btn btn-primary btn-sm" href="https://www.health.nsw.gov.au/aod/public-drug-alerts/Pages/default.aspx" target="_blank" rel="noopener noreferrer">NSW Health drug warnings</a>
+            </div>
+          </div>
+          <div class="meeting-card">
+            <h3>Naloxone</h3>
+            <p>Take-home naloxone is free, without a prescription, from participating pharmacies and some alcohol-and-other-drug services. In an overdose, call <a href="tel:000">000</a>.</p>
+            <div class="row">
+              <a class="btn btn-primary btn-sm" href="https://www.health.gov.au/our-work/take-home-naloxone-program/where-to-access-naloxone" target="_blank" rel="noopener noreferrer">Where to get naloxone</a>
+              <a class="btn btn-sm" href="https://www.health.gov.au/our-work/take-home-naloxone-program" target="_blank" rel="noopener noreferrer">National program</a>
+              <a class="btn btn-sm" href="https://www.health.qld.gov.au/public-health/topics/mhaod/for-healthcare-providers/programs-and-services/take-home-naloxone-program" target="_blank" rel="noopener noreferrer">Queensland Health program</a>
+            </div>
+          </div>
+          <div class="meeting-card">
+            <h3>Queensland peer support</h3>
+            <p>QuIVAA is a statewide peer organisation for people who use drugs, including Peer Qnect. QNADA is the Queensland peak body for community AOD services.</p>
+            <div class="row">
+              <a class="btn btn-primary btn-sm" href="https://quivaa.org.au/advocacy-action/" target="_blank" rel="noopener noreferrer">QuIVAA peer programs</a>
+              <a class="btn btn-sm" href="https://qnada.org.au/" target="_blank" rel="noopener noreferrer">QNADA</a>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="infoDvTitle">Domestic &amp; family violence support</h2>
+        <p class="info-lead">If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand></span> does not run shelters or give legal advice.</p>
+        <div class="info-quick-row">
+          <a class="btn btn-primary btn-sm" href="tel:000">Call 000</a>
+          <button class="btn btn-sm" type="button" id="infoQuickExit">Quick exit</button>
+        </div>
+        <p class="help">Quick exit leaves this app for a neutral page, so this screen is not left open.</p>
+
+        <div class="meeting-card" id="infoDvNational">
+          <h3>1800RESPECT — Australia</h3>
+          <p>National counselling, information and support for people affected by domestic, family or sexual violence. Free, confidential, 24 hours, 7 days. Phone <strong>1800 737 732</strong>. Text <strong>0458 737 732</strong>. Online chat and video are on their website.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="tel:1800737732">Call 1800 737 732</a>
+            <a class="btn btn-sm" href="sms:0458737732">Text 0458 737 732</a>
+            <a class="btn btn-sm" href="https://1800respect.org.au/" target="_blank" rel="noopener noreferrer">1800respect.org.au</a>
+          </div>
+        </div>
+
+        <div class="meeting-card">
+          <h3>Find a shelter or safe place</h3>
+          <p>Refuge addresses are not published here. A service arranges a safe place. Ask Izzy can search crisis accommodation and domestic violence support across Australia.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://askizzy.org.au/search/domestic-violence" target="_blank" rel="noopener noreferrer">Ask Izzy — domestic violence</a>
+            <a class="btn btn-sm" href="https://askizzy.org.au/" target="_blank" rel="noopener noreferrer">Ask Izzy home</a>
+          </div>
+        </div>
+
+        <div class="meeting-card">
+          <h3>Legal rights &amp; protections</h3>
+          <p>Family Violence Law Help explains domestic violence orders, family law and child protection across Australia. It is information, not a lawyer for your matter.</p>
+          <div class="row">
+            <a class="btn btn-primary btn-sm" href="https://familyviolencelaw.gov.au/" target="_blank" rel="noopener noreferrer">Family Violence Law Help</a>
+          </div>
+        </div>
+
+        <h3 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:8px 0 0">Your state or territory</h3>
+        <p class="info-lead">Queensland contacts are shown first. Pick another state or territory for a local note — national lines above stay available.</p>
+        <div class="chips" id="infoRegionChips" role="group" aria-label="State or territory"></div>
+        <div id="infoRegionDetail"></div>
+
+        <p class="help">In immediate danger call <a href="tel:000">000</a>. Crisis support also includes <a href="tel:131114">Lifeline 13 11 14</a>. <span data-companion></span> is an AI recovery companion, not a crisis line.</p>
+      </div>
     </section>
 
     <section class="messages" id="messages" aria-label="Conversation">
@@ -1299,6 +1459,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button type="button" class="bottom-nav-btn" id="appTabChat" data-tab="chat" aria-current="false" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
         <span>Chat</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" id="appTabInfo" data-tab="info" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>
+        <span>Info</span>
       </button>
       <button type="button" class="bottom-nav-btn" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-controls="sidebar" aria-haspopup="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -1456,6 +1620,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
       <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
+      <button class="btn" type="button" id="helpDvBtn">Domestic &amp; family violence — Info</button>
     </div>
     <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
@@ -2325,7 +2490,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.12';
+const EDEN_BUILD = 'hopewick-v5.13';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -2396,6 +2561,7 @@ const DEFAULT_PROFILE_SETTINGS = {
   pitch: 1,
   autoSpeak: false,
   theme: 'system',
+  infoRegion: 'qld',
 };
 
 const TRAIT_PRESETS = ['Warm', 'Playful', 'Thoughtful', 'Witty', 'Calm', 'Curious', 'Encouraging', 'Honest', 'Gentle', 'Nerdy'];
@@ -2620,7 +2786,8 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
-let appTab = 'home';       // 'home' | 'chat' — More opens sidebar, not a tab destination
+let appTab = 'home';       // 'home' | 'chat' | 'info' — More opens sidebar, not a tab destination
+let launchPrefsOpen = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
@@ -2646,11 +2813,11 @@ const el = {
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
+  infoView: $('#infoView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
-  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabMore: $('#appTabMore'),
+  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabInfo: $('#appTabInfo'), tabMore: $('#appTabMore'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
-  autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'),
@@ -2891,19 +3058,10 @@ function resolvedTheme() { return (settings.theme || 'system') === 'system' ? (m
 function applyTheme() {
   const t = resolvedTheme();
   document.documentElement.dataset.theme = t;
-  el.themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
-  el.themeIcon.innerHTML = t === 'dark'
-    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>'
-    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
   const meta = $('meta[name="theme-color"]');
   if (meta) meta.content = t === 'dark' ? '#0e1612' : '#3f8f5f';
 }
 mqDark.addEventListener('change', () => { if (settings.theme === 'system') applyTheme(); });
-el.themeBtn.addEventListener('click', () => {
-  settings.theme = resolvedTheme() === 'dark' ? 'light' : 'dark';
-  saveSettings();
-  applyTheme();
-});
 
 /* ---------------------------------------------------------------------------
    Orb / status
@@ -3070,37 +3228,113 @@ async function copyText(text) {
 
 
 /* ---------------------------------------------------------------------------
-   App tabs: Home | Chat | More (More opens sidebar)
+   App tabs: Home | Chat | Info | More (More opens sidebar)
    --------------------------------------------------------------------------- */
+function dismissLaunchPrefs() {
+  launchPrefsOpen = false;
+  if (el.launchPrefs) el.launchPrefs.hidden = true;
+  if (el.app) el.app.classList.remove('showing-launch-prefs');
+}
+function syncLaunchFaith() {
+  const faith = $('#launchFaith');
+  const none = !!(faith && faith.value === 'none');
+  $$('input[name="launchFaithLevel"]').forEach(r => { r.disabled = none; });
+}
+function populateLaunchPrefs() {
+  const mode = $('#launchMode');
+  if (!mode) return;
+  mode.value = settings.mode === 'friend' ? 'friend' : 'counsellor';
+  const faith = $('#launchFaith');
+  if (faith) faith.value = settings.faith || 'general';
+  $$('input[name="launchFaithLevel"]').forEach(r => { r.checked = r.value === (settings.faithLevel || 'woven'); });
+  syncLaunchFaith();
+  const theme = $('#launchTheme');
+  if (theme) theme.value = settings.theme || 'system';
+  const mood = $('#launchMoodCheck');
+  if (mood) mood.checked = settings.moodCheck !== false;
+  const note = $('#launchPrefsDemoNote');
+  if (note) note.hidden = !isDemo;
+}
+function showLaunchPrefs() {
+  if (!profile || !el.launchPrefs) return;
+  closeSidebar();
+  populateLaunchPrefs();
+  launchPrefsOpen = true;
+  el.launchPrefs.hidden = false;
+  el.app.classList.add('showing-launch-prefs');
+  if (el.homeView) el.homeView.hidden = true;
+  if (el.infoView) el.infoView.hidden = true;
+  if (el.messages) el.messages.hidden = true;
+  if (el.composerWrap) el.composerWrap.hidden = true;
+  [el.tabHome, el.tabChat, el.tabInfo, el.tabMore].forEach(b => {
+    if (!b) return;
+    b.setAttribute('aria-current', 'false');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  const title = $('#launchPrefsTitle');
+  const disclaimerOpen = el.disclaimerDlg && el.disclaimerDlg.open;
+  if (!disclaimerOpen && title) title.focus();
+}
+function applyLaunchPrefs(opts = {}) {
+  if (!opts.skip) {
+    const mode = $('#launchMode');
+    const faith = $('#launchFaith');
+    const theme = $('#launchTheme');
+    const mood = $('#launchMoodCheck');
+    if (mode) settings.mode = mode.value === 'friend' ? 'friend' : 'counsellor';
+    if (faith) settings.faith = faith.value || 'general';
+    const lvl = $$('input[name="launchFaithLevel"]').find(r => r.checked);
+    if (lvl) settings.faithLevel = lvl.value;
+    if (theme) settings.theme = theme.value || 'system';
+    if (mood) settings.moodCheck = mood.checked;
+    saveSettings();
+    applyTheme();
+  }
+  dismissLaunchPrefs();
+  renderAll();
+  if (!opts.skip) {
+    toast(isDemo ? 'Preferences set for this demo visit' : 'Preferences saved');
+    if (!isDemo && isCounsellor()) maybeShowDisclaimer();
+  }
+}
 function setAppTab(tab, opts = {}) {
   if (tab === 'more') {
     if (el.app.classList.contains('sidebar-open')) closeSidebar();
     else openSidebar();
     return;
   }
-  const next = tab === 'chat' ? 'chat' : 'home';
+  if (launchPrefsOpen && opts.keepPrefs) {
+    if (el.launchPrefs) el.launchPrefs.hidden = false;
+    el.app.classList.add('showing-launch-prefs');
+    return;
+  }
+  if (launchPrefsOpen) dismissLaunchPrefs();
+  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : 'home';
   const changed = appTab !== next;
   appTab = next;
-  const onHome = appTab === 'home';
-  el.app.classList.toggle('tab-home', onHome);
-  el.app.classList.toggle('tab-chat', !onHome);
-  if (el.homeView) el.homeView.hidden = !onHome;
-  if (el.messages) el.messages.hidden = onHome;
-  if (el.composerWrap) el.composerWrap.hidden = onHome;
-  if (el.tabHome) {
-    el.tabHome.setAttribute('aria-current', onHome ? 'page' : 'false');
-    el.tabHome.setAttribute('aria-pressed', String(onHome));
-  }
-  if (el.tabChat) {
-    el.tabChat.setAttribute('aria-current', onHome ? 'false' : 'page');
-    el.tabChat.setAttribute('aria-pressed', String(!onHome));
-  }
+  el.app.classList.toggle('tab-home', next === 'home');
+  el.app.classList.toggle('tab-chat', next === 'chat');
+  el.app.classList.toggle('tab-info', next === 'info');
+  if (el.homeView) el.homeView.hidden = next !== 'home';
+  if (el.infoView) el.infoView.hidden = next !== 'info';
+  if (el.messages) el.messages.hidden = next !== 'chat';
+  if (el.composerWrap) el.composerWrap.hidden = next !== 'chat';
+  const mark = (btn, on) => {
+    if (!btn) return;
+    btn.setAttribute('aria-current', on ? 'page' : 'false');
+    btn.setAttribute('aria-pressed', String(!!on));
+  };
+  mark(el.tabHome, next === 'home');
+  mark(el.tabChat, next === 'chat');
+  mark(el.tabInfo, next === 'info');
   if (el.tabMore) {
     el.tabMore.setAttribute('aria-current', 'false');
     el.tabMore.setAttribute('aria-pressed', 'false');
   }
-  if (onHome) {
+  if (next === 'home') {
     renderHome();
+  } else if (next === 'info') {
+    renderInfoRegion();
   } else if (changed || opts.forceRender) {
     renderMessages();
     if (!opts.skipFocus) focusInput();
@@ -3480,7 +3714,6 @@ function renderAll() {
   el.keyBanner.hidden = !!settings.apiKey || isDemo;
   $('#demoBanner').hidden = !isDemo;
   $('#demoBadge').hidden = !isDemo;
-  el.autoSpeakBtn.setAttribute('aria-pressed', String(!!settings.autoSpeak));
   el.switchAvatar.textContent = (userName()[0] || '?');
   el.switchAvatar.style.setProperty('--c', avatarColour(profile));
   el.switchName.textContent = userName();
@@ -3491,7 +3724,7 @@ function renderAll() {
   updateMoodPill();
   syncFaithBibleVisibility();
   // Keep current tab; Home owns check-in. Conversations stay in memory either way.
-  setAppTab(appTab || 'home', { skipFocus: true, forceRender: true });
+  setAppTab(appTab || 'home', { skipFocus: true, forceRender: true, keepPrefs: launchPrefsOpen });
 }
 
 /* ---------------------------------------------------------------------------
@@ -5648,6 +5881,77 @@ const TREATMENT_STATES = [
   },
 ];
 
+/* Info tab — location note for domestic & family violence. Numbers verified Sept 2026. */
+function currentInfoRegion() {
+  const id = (settings && settings.infoRegion) || 'qld';
+  return TREATMENT_STATES.some(s => s.id === id) ? id : 'qld';
+}
+function infoRegionDetailHtml(id) {
+  if (id === 'qld') {
+    return `
+      <div class="meeting-card">
+        <h3>Queensland — DVConnect</h3>
+        <p>DVConnect can help you find a safe place tonight, including a women’s shelter or refuge, and can arrange transport. Call them — shelter addresses are not listed here. Womensline is free, 24 hours, 7 days. Mensline is free, 9am to midnight, 7 days.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="tel:1800811811">Womensline 1800 811 811</a>
+          <a class="btn btn-sm" href="tel:1800600636">Mensline 1800 600 636</a>
+          <a class="btn btn-sm" href="https://www.dvconnect.org/womensline/" target="_blank" rel="noopener noreferrer">DVConnect Womensline</a>
+          <a class="btn btn-sm" href="https://www.dvconnect.org/about-crisis-accommodation/" target="_blank" rel="noopener noreferrer">Crisis accommodation</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Queensland service finder</h3>
+        <p>The Queensland Government finder lists funded domestic and family violence support, including crisis accommodation. Filter by your area.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="https://www.qld.gov.au/community/getting-support-health-social-issue/support-victims-abuse/need-to-know/help-and-support-options/find-local-support" target="_blank" rel="noopener noreferrer">Find local QLD support</a>
+        </div>
+      </div>
+      <div class="meeting-card">
+        <h3>Queensland legal help — rights and protections</h3>
+        <p>Information on domestic violence protection orders and where to get legal help. These are not the police, and they are not a substitute for calling 000 if you are in danger.</p>
+        <div class="row">
+          <a class="btn btn-primary btn-sm" href="tel:1300651188">Legal Aid QLD 1300 65 11 88</a>
+          <a class="btn btn-sm" href="https://www.legalaid.qld.gov.au/Find-legal-information/Relationships-and-children/Domestic-and-family-violence" target="_blank" rel="noopener noreferrer">Legal Aid — DFV information</a>
+          <a class="btn btn-sm" href="tel:1800957957">Women’s Legal Service 1800 957 957</a>
+          <a class="btn btn-sm" href="https://wlsq.org.au/" target="_blank" rel="noopener noreferrer">WLSQ</a>
+          <a class="btn btn-sm" href="tel:1800887700">QIFVLS 1800 887 700</a>
+          <a class="btn btn-sm" href="https://qifvls.com.au/" target="_blank" rel="noopener noreferrer">QIFVLS</a>
+        </div>
+        <p class="help" style="margin-top:8px">Legal Aid Queensland: 1300 65 11 88, Monday to Friday, 8.30am–4.30pm. Aboriginal and Torres Strait Islander Information Line: 1300 65 01 43. Women’s Legal Service Queensland: 1800 957 957, Monday to Friday, 9.00am–4.30pm AEST. QIFVLS is a free legal service for Aboriginal and Torres Strait Islander people in Queensland affected by family violence or sexual assault (1800 887 700).</p>
+      </div>`;
+  }
+  const st = TREATMENT_STATES.find(s => s.id === id);
+  const name = st ? st.name : 'your state or territory';
+  return `
+    <div class="meeting-card">
+      <h3>${name}</h3>
+      <p>For a shelter, refuge or legal service in ${name}, call <strong>1800RESPECT</strong> on <a href="tel:1800737732">1800 737 732</a> (24/7). They connect you with support where you are. Ask Izzy and Family Violence Law Help, above, cover a local search and your rights. Shelter addresses are not listed here.</p>
+    </div>`;
+}
+function renderInfoRegion() {
+  const box = $('#infoRegionChips');
+  const detail = $('#infoRegionDetail');
+  if (!box || !detail || typeof TREATMENT_STATES === 'undefined') return;
+  const current = currentInfoRegion();
+  box.innerHTML = '';
+  for (const st of TREATMENT_STATES) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.textContent = st.short;
+    b.dataset.region = st.id;
+    b.setAttribute('aria-pressed', String(st.id === current));
+    b.setAttribute('aria-label', st.name);
+    b.addEventListener('click', () => {
+      settings.infoRegion = st.id;
+      if (!isDemo) saveSettings();
+      renderInfoRegion();
+    });
+    box.appendChild(b);
+  }
+  detail.innerHTML = infoRegionDetailHtml(current);
+}
+
 function renderTreatmentStateGrid() {
   const grid = $('#treatmentStateGrid');
   if (!grid || grid.dataset.ready === '1') return;
@@ -6214,6 +6518,12 @@ $('#helpMeetingBtn').addEventListener('click', () => { el.helpDlg.close(); openM
 $('#helpTreatmentBtn').addEventListener('click', () => { el.helpDlg.close(); openTreatment(); });
 $('#helpAodBtn').addEventListener('click', () => { el.helpDlg.close(); openAodServices(); });
 $('#helpChurchBtn').addEventListener('click', () => { el.helpDlg.close(); openChurch(); });
+$('#helpDvBtn')?.addEventListener('click', () => {
+  if (el.helpDlg.open) el.helpDlg.close();
+  setAppTab('info');
+  const dv = $('#infoDvTitle');
+  if (dv) dv.scrollIntoView({ block: 'start' });
+});
 $('#treatmentBackBtn').addEventListener('click', showTreatmentHome);
 $('#aodOpenTreatmentBtn').addEventListener('click', () => { if (el.aodDlg.open) el.aodDlg.close(); openTreatment(); });
 
@@ -6522,6 +6832,7 @@ function renderPicker() {
 }
 function showPicker() {
   if (isDemo) exitDemo();
+  dismissLaunchPrefs();
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
@@ -6571,6 +6882,7 @@ function enterProfile(pid) {
   el.pickerDlg.close();
   toast(`Hi ${profile.name} 👋`);
   maybeShowDisclaimer();
+  showLaunchPrefs();
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -6733,13 +7045,7 @@ $('#testVoiceBtn').addEventListener('click', () => {
   speak(`G'day ${userName()}! I'm ${settings.name}. This is how I sound.`);
   settings = prev;
 });
-el.autoSpeakBtn.addEventListener('click', () => {
-  settings.autoSpeak = !settings.autoSpeak;
-  saveSettings();
-  el.autoSpeakBtn.setAttribute('aria-pressed', String(settings.autoSpeak));
-  if (!settings.autoSpeak) stopSpeaking();
-  toast(settings.autoSpeak ? (tts ? 'Replies will be read aloud 🔊' : 'Speech isn’t supported in this browser') : 'Auto-speak off');
-});
+/* Auto-speak lives in Settings → More (the header toggle was removed to keep the top bar clear). */
 
 /* ---------------------------------------------------------------------------
    Voice: speech recognition + hands-free conversation mode
@@ -6840,7 +7146,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
   else if (o === 'connection' || o === 'advanced') openSettings('setKey', 'advanced');
-  else if (o === 'prefs') openSettings(null, 'prefs');
+  else if (o === 'prefs') showLaunchPrefs();
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
   else if (o === 'steps') openSteps();
@@ -6867,6 +7173,7 @@ el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-op
 
 el.tabHome?.addEventListener('click', () => setAppTab('home'));
 el.tabChat?.addEventListener('click', () => setAppTab('chat'));
+el.tabInfo?.addEventListener('click', () => setAppTab('info'));
 el.tabMore?.addEventListener('click', () => setAppTab('more'));
 
 el.scrim.addEventListener('click', closeSidebar);
@@ -7131,11 +7438,13 @@ function enterDemo() {
   applyTheme();
   newConversation();
   toast('Welcome to the demo 🌿 — replies are pre-written examples', false, 3500);
+  showLaunchPrefs();
 }
 
 function exitDemo() {
   demoRun++;
   isDemo = false;
+  dismissLaunchPrefs();
   hideAccessBanner();
   profile = null;
   convos = []; memories = []; moods = []; gratitude = []; journal = [];
@@ -7439,6 +7748,24 @@ function showOnboarding() {
 /* ---------------------------------------------------------------------------
    Boot: migrate → soft onboarding (first visit) → profile picker
    --------------------------------------------------------------------------- */
+$('#launchFaith')?.addEventListener('change', syncLaunchFaith);
+$('#launchPrefsForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  applyLaunchPrefs();
+});
+$('#launchPrefsSkip')?.addEventListener('click', () => applyLaunchPrefs({ skip: true }));
+$('#launchPrefsAllSettings')?.addEventListener('click', () => {
+  if (isDemo) {
+    toast('In the demo, use the preferences on this screen. Full settings open when you choose a profile.', false, 4500);
+    return;
+  }
+  dismissLaunchPrefs();
+  openSettings(null, 'prefs');
+});
+$('#infoQuickExit')?.addEventListener('click', () => {
+  location.replace('https://www.google.com.au/');
+});
+
 applyBrand();
 migrateStorage();
 renderHelpList();
