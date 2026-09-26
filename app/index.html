@@ -156,8 +156,17 @@ svg { flex: none; }
 .history .del { opacity: 0; width: 32px; height: 32px; }
 .history li:hover .del, .history li.active .del, .history .del:focus-visible { opacity: 1; }
 .history-empty { color: var(--muted); font-size: .88rem; padding: 10px; }
-.sidebar-foot { display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border); padding-top: 10px; flex: 0 0 auto; padding-bottom: 12px; }
+.sidebar-foot { display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--border); padding-top: 8px; flex: 0 0 auto; padding-bottom: 12px; }
 .sidebar-foot .btn { justify-content: flex-start; }
+.side-section-label {
+  font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+  padding: 10px 10px 2px; font-weight: 700;
+}
+.side-section-label:first-child { padding-top: 2px; }
+.side-hint {
+  font-size: .68rem; color: var(--muted); line-height: 1.3;
+  padding: 0 10px 6px 36px; margin: -1px 0 2px;
+}
 
 .scrim { display: none; }
 
@@ -312,7 +321,10 @@ svg { flex: none; }
 .send-btn:hover { background: var(--accent-strong) !important; }
 .mic-btn.listening { background: #f3d77f !important; color: #3d2f00 !important; animation: micpulse 1.4s infinite; }
 @keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(240,200,100,.6); } 50% { box-shadow: 0 0 0 7px rgba(240,200,100,0); } }
-.composer-hint { max-width: 780px; margin: 6px auto 0; font-size: .74rem; color: var(--muted); text-align: center; }
+.composer-hint { max-width: 780px; margin: 4px auto 0; font-size: .72rem; color: var(--muted); text-align: center; line-height: 1.35; }
+@media (max-width: 480px) {
+  .composer-hint { font-size: .68rem; margin: 2px auto 0; }
+}
 .convo-mode-bar {
   max-width: 780px; margin: 0 auto 8px; display: flex; align-items: center; gap: 10px; justify-content: center;
   background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
@@ -1035,6 +1047,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   background: #fdf3d3; color: #4a3a05; border: 1px solid #ecd58a; }
 :root[data-theme="dark"] .demo-banner { background: #3a3013; color: #f6e6b0; border-color: #6b5a22; }
 .demo-banner p { margin: 0; flex: 1; min-width: 220px; font-size: .9rem; }
+.demo-banner.slim { margin: 6px 16px 0; padding: 5px 12px; gap: 10px; flex-wrap: nowrap; }
+.demo-banner.slim p { font-size: .8rem; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.demo-banner.slim .btn { flex: none; }
 .demo-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 6px 0 4px; }
 .demo-chips .lbl { width: 100%; text-align: center; font-size: .8rem; color: var(--muted); }
 .picker-demo { margin-top: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
@@ -1079,6 +1094,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="history-label" id="historyLabel">Conversations</div>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
     <div class="sidebar-foot">
+      <div class="side-section-label">Recovery tools</div>
       <button class="btn btn-ghost" type="button" data-open="skills">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
         Skills
@@ -1107,6 +1123,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
         Nutrition
       </button>
+      <button class="btn btn-ghost" type="button" data-open="memories">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
+      </button>
+      <div class="side-section-label">Find support</div>
       <button class="btn btn-ghost" type="button" data-open="nearby">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         Find nearby help
@@ -1119,18 +1140,21 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Find treatment / rehab
       </button>
+      <p class="side-hint">Official finders &amp; helplines</p>
       <button class="btn btn-ghost" type="button" data-open="aod" id="sideAodBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Find AOD services
       </button>
+      <p class="side-hint">Community AOD NGOs (e.g. QuIHN, Drug ARM)</p>
       <button class="btn btn-ghost" type="button" data-open="church" id="sideChurchBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2H6v4H2v16h20V6h-4V2z"/><path d="M12 2v4"/><path d="M12 10v8"/><path d="M8 14h8"/></svg>
         Find a church
       </button>
-            <button class="btn btn-ghost" type="button" data-open="memories">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-        Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
+      <button class="btn btn-ghost" type="button" data-open="help">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Get help now
       </button>
+      <div class="side-section-label">Settings</div>
       <button class="btn btn-ghost" type="button" data-open="prefs">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
         Preferences
@@ -1138,6 +1162,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" data-open="advanced">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         Advanced
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+        Settings
       </button>
       <button class="btn btn-ghost" type="button" id="sideSwitchBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
@@ -1189,8 +1217,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </div>
     </header>
 
-    <div class="demo-banner" id="demoBanner" hidden role="note">
-      <p><strong>Demo mode</strong> — these replies are <strong>pre-written examples, not live AI</strong>. Nothing you type is sent anywhere, and the demo resets when you leave. Tap a scenario to see how <span data-companion></span> supports someone.</p>
+    <div class="demo-banner slim" id="demoBanner" hidden role="note">
+      <p><strong>Demo</strong> · pre-written responses</p>
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
@@ -1232,7 +1260,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · <span data-companion></span> is an AI recovery companion, not a counsellor or doctor — in an emergency call 000.<br><span class="copyright" data-copyright></span></p>
+      <p class="composer-hint" id="composerHint">Enter to send · <span data-companion></span> is not emergency or medical care · Emergency 000<br><span class="copyright" data-copyright></span></p>
     </div>
 
     <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
@@ -1318,7 +1346,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <ul class="about-short">
       <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
       <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
-      <li><strong>Not a crisis service.</strong> If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
+      <li><strong>Not emergency or medical care.</strong> <span data-companion></span> is an AI recovery companion — not a counsellor, doctor, or crisis line. If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
       <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
@@ -3452,7 +3480,7 @@ function counsellorPrompt(convo) {
     '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
     '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure.',
     '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
-    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly.',
+    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
     '',
     'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
     '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also suggest they open Circuit breakers (urge-interrupt activities) or Self-care in the sidebar.',
@@ -6769,6 +6797,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'treatment') openTreatment();
   else if (o === 'aod') openAodServices();
   else if (o === 'church') openChurch();
+  else if (o === 'help') openHelp();
 }));
 
 function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
@@ -6915,11 +6944,15 @@ const DEMO_CUTDOWN_REST = [
   ['u', "I'm drinking most nights, maybe five or six beers. I'm tired all the time and my partner's worried."],
   ['a', "It sounds like you're noticing the cost — feeling tired all the time — and you care about how your partner feels. Those are strong reasons, and they're yours. 🌱\n\nOn a scale of 0–10, how **important** is cutting down to you right now? And how **confident** do you feel that you could do it?"],
   ['u', 'Importance is about an 8. Confidence maybe a 5.'],
-  ['a', "An 8 for importance is high — you really want this. And a 5 for confidence isn't nothing: what makes it a 5 and not a 2?\n\nLet's build a **SMART goal** that could nudge that confidence up:\n\n- **Specific:** alcohol-free Monday to Thursday; up to three beers on Friday and Saturday\n- **Measurable:** tick off each day in your phone, or in your check-in here\n- **Achievable:** try it for two weeks to start, not forever\n- **Relevant:** better sleep, more energy, less worry at home\n- **Time-bound:** review how it went in two weeks — with me, or your counsellor\n\nA few swaps that help: keep zero-alc drinks in the fridge, try a new evening routine (a walk, a shower, the footy replay), and let your partner know the plan so they can back you. Would you like to change any part of it so it fits you better?"],
+  ['a', "An 8 for importance is high — you really want this. And a 5 for confidence isn't nothing: what makes it a 5 and not a 2?"],
+  ['u', "I've gone a few nights without drinking before, and my partner would support me."],
+  ['a', "That gives us something to work with — you've done short alcohol-free stretches before, and you've got support at home. Would you like to build a small two-week goal around that?"],
+  ['u', 'Yes, that sounds good.'],
+  ['a', "Great — let's shape a **SMART goal** together from what you said. Here's a draft you can change:\n\n- **Specific:** practise short alcohol-free stretches on some weeknights, and decide any weekend nights in advance with your partner's support\n- **Measurable:** tick each day in your phone, or in your check-in here\n- **Achievable:** try it for two weeks to start, not forever\n- **Relevant:** better sleep, more energy, less worry at home\n- **Time-bound:** review how it went in two weeks — with me, or your counsellor\n\nOne safety check first: if you've been drinking most nights, cutting down or stopping suddenly can be risky for some people (especially if you've ever had shakes, seizures, or heavy daily use). Worth checking with a GP or AOD service before you change how much you drink — they can help you do it safely.\n\nWould you like to tweak any part of this draft so it fits you?"],
 ];
 
 const DEMO_SOAP_SCENARIO = [
-  ['a', "G’day, Alex — ready for today’s **SOAP**?\n\n**Today’s reading (Day 1):** Matthew 1:1–25\n\nYou can read it **in the app** (World English Bible — free/public domain; no paper Bible needed). Related refs you can also open in the reader: Matthew 2:1–23, Micah 5:1–4, John 1:14.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**"],,
+  ['a', "G’day, Alex — ready for today’s **SOAP**?\n\n**Today’s reading (Day 1):** Matthew 1:1–25\n\nYou can read it **in the app** (World English Bible — free/public domain; no paper Bible needed). Related refs you can also open in the reader: Matthew 2:1–23, Micah 5:1–4, John 1:14.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**"],
   ['u', 'Matthew 1:23 — “God with us.” That hit me.'],
   ['a', "Beautiful catch. **Emmanuel — God with us** — right in the middle of a very human family story.\n\n**Observation:** what did you notice as you sat with that? Anything about the genealogy, Joseph’s courage, or the ‘with us’ part that stood out?"],
   ['u', 'That Jesus steps into a messy line of people. Makes me feel less alone in my own mess.'],
