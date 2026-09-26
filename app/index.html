@@ -423,6 +423,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   -webkit-tap-highlight-color: transparent;
 }
 .bottom-nav-btn svg { width: 22px; height: 22px; }
+.bottom-nav-btn span {
+  line-height: 1.15;
+  text-align: center;
+}
 .bottom-nav-btn:hover { background: var(--surface-2); color: var(--text); }
 .bottom-nav-btn[aria-current="page"],
 .bottom-nav-btn[aria-pressed="true"] {
@@ -437,17 +441,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 .home-view,
 .info-view,
+.dv-view,
 .launch-prefs {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 10px 16px 12px;
 }
-.info-inner, .launch-prefs-inner {
+.info-inner, .dv-inner, .launch-prefs-inner {
   max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px;
 }
-.info-view h2 { font-size: 1.08rem; margin: 10px 0 0; font-weight: 700; }
-.info-view .info-lead { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+.info-view h2, .dv-view h2 { font-size: 1.08rem; margin: 10px 0 0; font-weight: 700; }
+.info-view .info-lead, .dv-view .info-lead { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
 .launch-prefs h1 { font-size: clamp(1.25rem, 3.2vw, 1.65rem); margin: 8px 0 4px; text-align: center; }
 .launch-prefs .lede { margin: 0 0 4px; color: var(--muted); text-align: center; font-size: .92rem; line-height: 1.45; }
 .launch-prefs .launch-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
@@ -455,6 +460,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .info-quick-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .home-view[hidden],
 .info-view[hidden],
+.dv-view[hidden],
 .launch-prefs[hidden],
 .messages[hidden],
 .composer-wrap[hidden] { display: none !important; }
@@ -506,23 +512,38 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 .app.tab-home .composer-wrap,
 .app.tab-info .composer-wrap,
+.app.tab-dv .composer-wrap,
 .app.showing-launch-prefs .composer-wrap { display: none !important; }
 .app.tab-home .messages,
 .app.tab-info .messages,
+.app.tab-dv .messages,
 .app.showing-launch-prefs .messages { display: none !important; }
 .app.tab-chat .home-view,
 .app.tab-info .home-view,
+.app.tab-dv .home-view,
 .app.showing-launch-prefs .home-view { display: none !important; }
 .app.tab-home .info-view,
 .app.tab-chat .info-view,
+.app.tab-dv .info-view,
 .app.showing-launch-prefs .info-view { display: none !important; }
+.app.tab-home .dv-view,
+.app.tab-chat .dv-view,
+.app.tab-info .dv-view,
+.app.showing-launch-prefs .dv-view { display: none !important; }
+.sidebar-foot .btn[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
 
 /* Composer sits above the tab bar — no double safe-area on wrap */
 .composer-wrap { padding: 8px 16px 10px; }
 .toasts { bottom: calc(72px + env(safe-area-inset-bottom)); }
 
 @media (max-width: 860px) {
-  .home-view { padding: 8px 10px 8px; }
+  .home-view, .info-view, .dv-view { padding: 8px 10px 8px; }
+  .bottom-nav { gap: 2px; padding-left: 4px; padding-right: 4px; }
+  .bottom-nav-btn { font-size: .58rem; padding: 5px 2px; }
+  .bottom-nav-btn svg { width: 20px; height: 20px; }
 }
 
 /* ==========================================================================
@@ -1201,6 +1222,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2H6v4H2v16h20V6h-4V2z"/><path d="M12 2v4"/><path d="M12 10v8"/><path d="M8 14h8"/></svg>
         Find a church
       </button>
+      <button class="btn btn-ghost" type="button" id="sideDvBtn" data-open="dv" aria-current="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
+        Domestic &amp; family violence
+      </button>
       <button class="btn btn-ghost" type="button" data-open="help">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Get help now
@@ -1333,11 +1358,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="home-inner" id="homeInner"></div>
     </section>
 
-    <section class="info-view" id="infoView" hidden aria-label="Info">
+    <section class="info-view" id="infoView" hidden aria-label="News &amp; resources">
       <div class="info-inner">
         <div class="home-hero">
-          <h1>Info</h1>
-          <p>Trusted Australian updates and support links. <span data-brand></span> does not run these services — open the official page so details stay current.</p>
+          <h1>News &amp; resources</h1>
+          <p>Drug alerts, naloxone and trusted Australian sources. <span data-brand></span> does not run these services — open the official page so details stay current.</p>
         </div>
 
         <h2 id="infoNewsTitle">Drug alerts &amp; trusted sources</h2>
@@ -1383,12 +1408,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <h2 id="infoDvTitle">Domestic &amp; family violence support</h2>
-        <p class="info-lead">If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand></span> does not run shelters or give legal advice.</p>
+    <section class="dv-view" id="dvView" hidden aria-label="Domestic &amp; family violence">
+      <div class="dv-inner">
+        <div class="home-hero">
+          <h1 id="dvTitle">Domestic &amp; family violence</h1>
+          <p>If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand></span> does not run shelters or give legal advice.</p>
+        </div>
         <div class="info-quick-row">
           <a class="btn btn-primary btn-sm" href="tel:000">Call 000</a>
-          <button class="btn btn-sm" type="button" id="infoQuickExit">Quick exit</button>
+          <button class="btn btn-sm" type="button" id="dvQuickExit">Quick exit</button>
         </div>
         <p class="help">Quick exit leaves this app for a neutral page, so this screen is not left open.</p>
 
@@ -1419,7 +1450,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           </div>
         </div>
 
-        <h3 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:8px 0 0">Your state or territory</h3>
+        <h2 id="dvRegionTitle">Your state or territory</h2>
         <p class="info-lead">Queensland contacts are shown first. Pick another state or territory for a local note — national lines above stay available.</p>
         <div class="chips" id="infoRegionChips" role="group" aria-label="State or territory"></div>
         <div id="infoRegionDetail"></div>
@@ -1460,9 +1491,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
         <span>Chat</span>
       </button>
+      <button type="button" class="bottom-nav-btn" id="appTabDv" data-tab="dv" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
+        <span>Domestic&nbsp;&amp; family violence</span>
+      </button>
       <button type="button" class="bottom-nav-btn" id="appTabInfo" data-tab="info" aria-current="false" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>
-        <span>Info</span>
+        <span>News&nbsp;&amp; resources</span>
       </button>
       <button type="button" class="bottom-nav-btn" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-controls="sidebar" aria-haspopup="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -1620,7 +1655,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
       <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
-      <button class="btn" type="button" id="helpDvBtn">Domestic &amp; family violence — Info</button>
     </div>
     <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
@@ -2786,7 +2820,7 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
-let appTab = 'home';       // 'home' | 'chat' | 'info' — More opens sidebar, not a tab destination
+let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'info' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
@@ -2813,9 +2847,10 @@ const el = {
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
-  infoView: $('#infoView'), launchPrefs: $('#launchPrefs'),
+  infoView: $('#infoView'), dvView: $('#dvView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
-  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabInfo: $('#appTabInfo'), tabMore: $('#appTabMore'),
+  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabDv: $('#appTabDv'), tabInfo: $('#appTabInfo'), tabMore: $('#appTabMore'),
+  sideDvBtn: $('#sideDvBtn'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
@@ -3228,7 +3263,7 @@ async function copyText(text) {
 
 
 /* ---------------------------------------------------------------------------
-   App tabs: Home | Chat | Info | More (More opens sidebar)
+   App tabs: Home | Chat | Domestic & family violence | News & resources | More (More opens sidebar)
    --------------------------------------------------------------------------- */
 function dismissLaunchPrefs() {
   launchPrefsOpen = false;
@@ -3264,13 +3299,15 @@ function showLaunchPrefs() {
   el.app.classList.add('showing-launch-prefs');
   if (el.homeView) el.homeView.hidden = true;
   if (el.infoView) el.infoView.hidden = true;
+  if (el.dvView) el.dvView.hidden = true;
   if (el.messages) el.messages.hidden = true;
   if (el.composerWrap) el.composerWrap.hidden = true;
-  [el.tabHome, el.tabChat, el.tabInfo, el.tabMore].forEach(b => {
+  [el.tabHome, el.tabChat, el.tabDv, el.tabInfo, el.tabMore].forEach(b => {
     if (!b) return;
     b.setAttribute('aria-current', 'false');
     b.setAttribute('aria-pressed', 'false');
   });
+  if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', 'false');
   const title = $('#launchPrefsTitle');
   const disclaimerOpen = el.disclaimerDlg && el.disclaimerDlg.open;
   if (!disclaimerOpen && title) title.focus();
@@ -3309,14 +3346,16 @@ function setAppTab(tab, opts = {}) {
     return;
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
-  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : 'home';
+  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : 'home';
   const changed = appTab !== next;
   appTab = next;
   el.app.classList.toggle('tab-home', next === 'home');
   el.app.classList.toggle('tab-chat', next === 'chat');
   el.app.classList.toggle('tab-info', next === 'info');
+  el.app.classList.toggle('tab-dv', next === 'dv');
   if (el.homeView) el.homeView.hidden = next !== 'home';
   if (el.infoView) el.infoView.hidden = next !== 'info';
+  if (el.dvView) el.dvView.hidden = next !== 'dv';
   if (el.messages) el.messages.hidden = next !== 'chat';
   if (el.composerWrap) el.composerWrap.hidden = next !== 'chat';
   const mark = (btn, on) => {
@@ -3327,15 +3366,17 @@ function setAppTab(tab, opts = {}) {
   mark(el.tabHome, next === 'home');
   mark(el.tabChat, next === 'chat');
   mark(el.tabInfo, next === 'info');
+  mark(el.tabDv, next === 'dv');
+  if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', next === 'dv' ? 'page' : 'false');
   if (el.tabMore) {
     el.tabMore.setAttribute('aria-current', 'false');
     el.tabMore.setAttribute('aria-pressed', 'false');
   }
   if (next === 'home') {
     renderHome();
-  } else if (next === 'info') {
+  } else if (next === 'dv') {
     renderInfoRegion();
-  } else if (changed || opts.forceRender) {
+  } else if (next !== 'info' && (changed || opts.forceRender)) {
     renderMessages();
     if (!opts.skipFocus) focusInput();
   }
@@ -5881,7 +5922,7 @@ const TREATMENT_STATES = [
   },
 ];
 
-/* Info tab — location note for domestic & family violence. Numbers verified Sept 2026. */
+/* Domestic & family violence view — state note. Numbers verified Sept 2026. */
 function currentInfoRegion() {
   const id = (settings && settings.infoRegion) || 'qld';
   return TREATMENT_STATES.some(s => s.id === id) ? id : 'qld';
@@ -6518,12 +6559,6 @@ $('#helpMeetingBtn').addEventListener('click', () => { el.helpDlg.close(); openM
 $('#helpTreatmentBtn').addEventListener('click', () => { el.helpDlg.close(); openTreatment(); });
 $('#helpAodBtn').addEventListener('click', () => { el.helpDlg.close(); openAodServices(); });
 $('#helpChurchBtn').addEventListener('click', () => { el.helpDlg.close(); openChurch(); });
-$('#helpDvBtn')?.addEventListener('click', () => {
-  if (el.helpDlg.open) el.helpDlg.close();
-  setAppTab('info');
-  const dv = $('#infoDvTitle');
-  if (dv) dv.scrollIntoView({ block: 'start' });
-});
 $('#treatmentBackBtn').addEventListener('click', showTreatmentHome);
 $('#aodOpenTreatmentBtn').addEventListener('click', () => { if (el.aodDlg.open) el.aodDlg.close(); openTreatment(); });
 
@@ -7160,6 +7195,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'treatment') openTreatment();
   else if (o === 'aod') openAodServices();
   else if (o === 'church') openChurch();
+  else if (o === 'dv') { closeSidebar(); setAppTab('dv'); }
   else if (o === 'help') openHelp();
 }));
 
@@ -7173,6 +7209,7 @@ el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-op
 
 el.tabHome?.addEventListener('click', () => setAppTab('home'));
 el.tabChat?.addEventListener('click', () => setAppTab('chat'));
+el.tabDv?.addEventListener('click', () => setAppTab('dv'));
 el.tabInfo?.addEventListener('click', () => setAppTab('info'));
 el.tabMore?.addEventListener('click', () => setAppTab('more'));
 
@@ -7762,7 +7799,7 @@ $('#launchPrefsAllSettings')?.addEventListener('click', () => {
   dismissLaunchPrefs();
   openSettings(null, 'prefs');
 });
-$('#infoQuickExit')?.addEventListener('click', () => {
+$('#dvQuickExit')?.addEventListener('click', () => {
   location.replace('https://www.google.com.au/');
 });
 

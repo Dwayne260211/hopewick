@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hopewick v5.13 — launch preferences (decluttered header) and Info DV support."""
+"""Hopewick v5.13 — launch preferences, News & resources, and a top-level DV view."""
 from __future__ import annotations
 
 import re
@@ -54,7 +54,22 @@ def test_static_header_and_info():
     assert 'id="autoSpeakBtn"' not in topbar
     assert 'id="launchPrefs"' in text
     assert 'id="appTabInfo"' in text
-    assert "Home" in text and ">Info<" in text
+    assert 'id="appTabDv"' in text
+    assert 'id="sideDvBtn"' in text
+    assert 'id="dvView"' in text
+    assert 'id="helpDvBtn"' not in text
+    assert ">News &amp; resources<" in text
+    assert ">Domestic &amp; family violence<" in text
+    assert ">Info<" not in text
+    # DV safety content lives on the DV view, not under Get help or News & resources.
+    dv = re.search(r'<section class="dv-view".*?</section>', text, re.S).group(0)
+    info = re.search(r'<section class="info-view".*?</section>', text, re.S).group(0)
+    help = re.search(r'<dialog id="helpDlg".*?</dialog>', text, re.S).group(0)
+    assert "1800RESPECT" in dv and "Ask Izzy" in dv and "Family Violence Law Help" in dv
+    assert 'id="dvQuickExit"' in dv
+    assert "1800RESPECT" not in info and "DVConnect" not in info
+    assert "QuIVAA" in info and "The Know" in info
+    assert "Domestic" not in help
     for n in REQUIRED_NUMBERS:
         assert n in text, n
     for u in REQUIRED_URLS:
@@ -98,15 +113,46 @@ def test_launch_prefs_and_info_ui():
             assert page.is_hidden("#launchPrefs")
             page.screenshot(path=str(shot_dir / "v513-home-header-mobile.png"))
 
+            page.click("#appTabChat")
+            page.wait_for_selector("#input", state="visible")
+            page.fill("#input", "my partner is hurting me")
+            page.click("#sendBtn")
+            page.wait_for_selector(".crisis-card")
+            crisis = page.inner_text(".crisis-card")
+            assert "1800RESPECT" in crisis
+            assert "1800 737 732" in crisis
+            page.click("#appTabHome")
+            page.wait_for_selector("#homeView:not([hidden])")
+
+            nav = " ".join(page.inner_text("#bottomNav").split())
+            assert "News & resources" in nav
+            assert "Domestic & family violence" in nav
+            assert "Info" not in nav
+
             page.click("#appTabInfo")
             page.wait_for_selector("#infoView:not([hidden])")
+            assert page.locator("#appTabInfo").get_attribute("aria-current") == "page"
             body = page.inner_text("#infoView")
-            assert "1800 737 732" in body
-            assert "1800 811 811" in body
-            assert "Ask Izzy" in body
-            assert "Family Violence Law Help" in body
+            assert "News & resources" in body
             assert "QuIVAA" in body
             assert "The Know" in body
+            assert "1800 737 732" not in body
+            assert "Ask Izzy" not in body
+            assert page.is_hidden("#dvView")
+            page.screenshot(path=str(shot_dir / "v513-news-resources-mobile.png"))
+
+            page.click("#appTabDv")
+            page.wait_for_selector("#dvView:not([hidden])")
+            assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+            assert page.locator("#sideDvBtn").get_attribute("aria-current") == "page"
+            assert page.is_hidden("#infoView")
+            dv_body = page.inner_text("#dvView")
+            assert "Domestic & family violence" in dv_body
+            assert "1800 737 732" in dv_body
+            assert "1800 811 811" in dv_body
+            assert "Ask Izzy" in dv_body
+            assert "Family Violence Law Help" in dv_body
+            assert page.locator("#dvQuickExit").count() == 1
             page.locator("#infoRegionDetail").scroll_into_view_if_needed()
             page.screenshot(path=str(shot_dir / "v513-info-qld-detail.png"))
 
@@ -122,7 +168,35 @@ def test_launch_prefs_and_info_ui():
             assert "1300 65 11 88" in page.inner_text("#infoRegionDetail")
             assert "1800 957 957" in page.inner_text("#infoRegionDetail")
 
+            page.click("#helpBtn")
+            page.wait_for_function("() => document.getElementById('helpDlg')?.open === true")
+            assert page.locator("#helpDvBtn").count() == 0
+            help_text = page.inner_text("#helpDlg")
+            assert "Domestic & family violence" not in help_text
+            assert "1800RESPECT" in help_text
+            assert "1800 250 015" in help_text
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('helpDlg')?.open !== true")
+
+            # Mobile sidebar reaches the same DV view and closes the drawer.
+            page.click("#menuBtn")
+            page.wait_for_selector("#app.sidebar-open")
+            page.click("#sideDvBtn")
+            page.wait_for_function("() => !document.getElementById('app').classList.contains('sidebar-open')")
+            page.wait_for_selector("#dvView:not([hidden])")
+            page.locator("#appTabInfo").focus()
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#infoView:not([hidden])")
+            assert page.locator("#appTabInfo").get_attribute("aria-pressed") == "true"
+
             page.set_viewport_size({"width": 1280, "height": 900})
+            page.click("#sideDvBtn")
+            page.wait_for_selector("#dvView:not([hidden])")
+            assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+            page.screenshot(path=str(shot_dir / "v513-dv-desktop.png"))
+            page.click("#appTabInfo")
+            page.wait_for_selector("#infoView:not([hidden])")
+            page.screenshot(path=str(shot_dir / "v513-news-desktop.png"))
             page.click("#sideAboutBtn")  # sidebar is visible on desktop; ensures More menu still works
             page.wait_for_function("() => document.getElementById('aboutDlg')?.open === true")
             page.keyboard.press("Escape")
