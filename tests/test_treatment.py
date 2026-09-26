@@ -40,8 +40,8 @@ REQUIRED_URLS = [
 def test_static_treatment_tool():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.12'" in text
-    assert 'content="hopewick-v5.12"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.13'" in text
+    assert 'content="hopewick-v5.13"' in land
     assert 'id="treatmentDlg"' in text
     assert "const TREATMENT_STATES" in text
     assert "function openTreatment" in text
