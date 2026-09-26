@@ -373,6 +373,115 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .toast { background: var(--text); color: var(--bg); padding: 9px 16px; border-radius: 12px; font-size: .9rem; box-shadow: var(--shadow); animation: fadeUp .25s ease both; }
 .toast.bad { background: var(--danger); color: #fff; }
 
+
+/* ==========================================================================
+   Bottom tab bar + Home screen
+   ========================================================================== */
+.bottom-nav {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 4px;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(12px);
+  z-index: 20;
+}
+.bottom-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 48px;
+  padding: 6px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 600;
+  border-radius: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-nav-btn svg { width: 22px; height: 22px; }
+.bottom-nav-btn:hover { background: var(--surface-2); color: var(--text); }
+.bottom-nav-btn[aria-current="page"],
+.bottom-nav-btn[aria-pressed="true"] {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+.bottom-nav-btn[aria-current="false"],
+.bottom-nav-btn[aria-pressed="false"] {
+  color: var(--muted);
+  background: transparent;
+}
+
+.home-view {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px 16px 12px;
+}
+.home-view[hidden],
+.messages[hidden],
+.composer-wrap[hidden] { display: none !important; }
+.home-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; padding-bottom: 8px; }
+.home-hero { text-align: center; padding: 8px 4px 0; animation: fadeUp .45s ease both; }
+.home-hero h1 { font-size: clamp(1.35rem, 3.5vw, 1.85rem); margin: 14px 0 6px; font-weight: 700; }
+.home-hero p { color: var(--muted); margin: 0 auto; max-width: 440px; font-size: .95rem; }
+.home-sober {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px 14px; border-radius: 14px; text-align: left;
+  background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+}
+.home-sober .days { font-size: 1.65rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
+.home-sober .lbl { font-size: .85rem; color: var(--muted); line-height: 1.3; }
+.home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.home-shortcut {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 14px 14px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface);
+  text-align: left; font-size: .92rem; font-weight: 600;
+  box-shadow: var(--shadow);
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.home-shortcut:hover { border-color: var(--accent); background: var(--surface-2); transform: translateY(-1px); }
+.home-shortcut .ico { font-size: 1.35rem; line-height: 1; }
+.home-shortcut .sub { font-size: .78rem; font-weight: 500; color: var(--muted); }
+.home-checkin-done {
+  text-align: center; font-size: .9rem; color: var(--muted);
+  padding: 10px 12px; border-radius: 12px; background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.chat-checkin-hint {
+  margin: 14px auto 0; max-width: 420px; text-align: center;
+}
+.chat-checkin-hint button {
+  border: 1px dashed color-mix(in srgb, var(--accent) 40%, var(--border));
+  background: var(--accent-soft); color: var(--accent-strong);
+  border-radius: 999px; padding: 8px 14px; font-size: .88rem; font-weight: 600;
+}
+.chat-checkin-hint button:hover { filter: brightness(.97); }
+
+.app.tab-home .composer-wrap { display: none !important; }
+.app.tab-home .messages { display: none !important; }
+.app.tab-chat .home-view { display: none !important; }
+
+/* Composer sits above the tab bar — no double safe-area on wrap */
+.composer-wrap { padding: 8px 16px 10px; }
+.toasts { bottom: calc(72px + env(safe-area-inset-bottom)); }
+
+@media (max-width: 860px) {
+  .home-view { padding: 14px 10px 8px; }
+}
+
 /* ==========================================================================
    Responsive
    ========================================================================== */
@@ -1098,6 +1207,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </div>
     </div>
 
+
+    <section class="home-view" id="homeView" aria-label="Home">
+      <div class="home-inner" id="homeInner"></div>
+    </section>
+
     <section class="messages" id="messages" aria-label="Conversation">
       <div class="messages-inner" id="messagesInner" role="log" aria-live="polite" aria-relevant="additions"></div>
     </section>
@@ -1120,6 +1234,21 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </form>
       <p class="composer-hint" id="composerHint">Enter to send · Shift+Enter for a new line · <span data-companion></span> is an AI recovery companion, not a counsellor or doctor — in an emergency call 000.<br><span class="copyright" data-copyright></span></p>
     </div>
+
+    <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
+      <button type="button" class="bottom-nav-btn" id="tabHome" data-tab="home" aria-current="page" aria-pressed="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+        <span>Home</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" id="tabChat" data-tab="chat" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+        <span>Chat</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" id="tabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-controls="sidebar" aria-haspopup="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+        <span>More</span>
+      </button>
+    </nav>
   </main>
 </div>
 
@@ -1422,7 +1551,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <label for="setSoberWhy">Why I'm choosing this (optional)</label>
         <textarea id="setSoberWhy" rows="2" maxlength="400" placeholder="e.g. for my kids, for my health, for my faith"></textarea>
       </div>
-      <div class="check"><input type="checkbox" id="setMoodCheck"><label for="setMoodCheck">Show the daily / mood check-in on new chats</label></div>
+      <div class="check"><input type="checkbox" id="setMoodCheck"><label for="setMoodCheck">Show the daily check-in on Home</label></div>
       <div class="check"><input type="checkbox" id="setGratCheck"><label for="setGratCheck">Show morning gratitude on new chats</label></div>
     </fieldset>
 
@@ -2435,6 +2564,7 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
+let appTab = 'home';       // 'home' | 'chat' — More opens sidebar, not a tab destination
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
@@ -2459,7 +2589,9 @@ const el = {
   app: $('#app'), scrim: $('#scrim'), menuBtn: $('#menuBtn'),
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
-  keyBanner: $('#keyBanner'), messages: $('#messages'), inner: $('#messagesInner'),
+  keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
+  messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
+  bottomNav: $('#bottomNav'), tabHome: $('#tabHome'), tabChat: $('#tabChat'), tabMore: $('#tabMore'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   autoSpeakBtn: $('#autoSpeakBtn'), themeBtn: $('#themeBtn'), themeIcon: $('#themeIcon'),
@@ -2736,14 +2868,14 @@ function activeConvo() { return convos.find(c => c.id === activeId) || null; }
 
 function newConversation() {
   const current = activeConvo();
-  if (current && current.messages.length === 0) { renderAll(); focusInput(); return current; }
+  if (current && current.messages.length === 0) { renderAll(); if (appTab === 'chat') focusInput(); return current; }
   const c = { id: uid(), title: 'New chat', created: Date.now(), updated: Date.now(), mood: null, craving: null, messages: [] };
   convos.unshift(c);
   activeId = c.id;
   convos = convos.filter(x => x.id === activeId || x.messages.length > 0);
   persistConvos();
   renderAll();
-  focusInput();
+  if (appTab === 'chat') focusInput();
   return c;
 }
 function openConversation(id) {
@@ -2752,6 +2884,7 @@ function openConversation(id) {
   activeId = id;
   convos = convos.filter(x => x.id === activeId || x.messages.length > 0);
   persistConvos();
+  appTab = 'chat';
   renderAll();
   closeSidebar();
 }
@@ -2879,13 +3012,192 @@ async function copyText(text) {
   catch (e) { toast('Copy failed — your browser blocked clipboard access', true); }
 }
 
+
+/* ---------------------------------------------------------------------------
+   App tabs: Home | Chat | More (More opens sidebar)
+   --------------------------------------------------------------------------- */
+function setAppTab(tab, opts = {}) {
+  if (tab === 'more') {
+    if (el.app.classList.contains('sidebar-open')) closeSidebar();
+    else openSidebar();
+    return;
+  }
+  const next = tab === 'chat' ? 'chat' : 'home';
+  const changed = appTab !== next;
+  appTab = next;
+  const onHome = appTab === 'home';
+  el.app.classList.toggle('tab-home', onHome);
+  el.app.classList.toggle('tab-chat', !onHome);
+  if (el.homeView) el.homeView.hidden = !onHome;
+  if (el.messages) el.messages.hidden = onHome;
+  if (el.composerWrap) el.composerWrap.hidden = onHome;
+  if (el.tabHome) {
+    el.tabHome.setAttribute('aria-current', onHome ? 'page' : 'false');
+    el.tabHome.setAttribute('aria-pressed', String(onHome));
+  }
+  if (el.tabChat) {
+    el.tabChat.setAttribute('aria-current', onHome ? 'false' : 'page');
+    el.tabChat.setAttribute('aria-pressed', String(!onHome));
+  }
+  if (el.tabMore) {
+    el.tabMore.setAttribute('aria-current', 'false');
+    el.tabMore.setAttribute('aria-pressed', 'false');
+  }
+  if (onHome) {
+    renderHome();
+  } else if (changed || opts.forceRender) {
+    renderMessages();
+    if (!opts.skipFocus) focusInput();
+  }
+}
+
+function moodCardEl(opts = {}) {
+  const counsellor = isCounsellor();
+  const c = activeConvo();
+  const today = todaysCheckin();
+  const card = document.createElement('div');
+  card.className = 'mood-card';
+  const title = counsellor ? 'Daily check-in — how are you travelling today?' : 'How are you feeling right now?';
+  card.innerHTML = `<h2 id="${opts.titleId || 'moodQ'}">${escapeHtml(title)} <span class="help">(optional)</span></h2><div class="mood-row" role="group" aria-labelledby="${opts.titleId || 'moodQ'}"></div>`;
+  const row = $('.mood-row', card);
+  const current = (today && today.mood) || (c && c.mood);
+  for (const m of MOODS) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'mood-btn';
+    b.setAttribute('aria-pressed', String(!!(current && current.l === m.l)));
+    b.innerHTML = `<span class="e" aria-hidden="true">${m.e}</span><span class="l">${m.l}</span>`;
+    b.addEventListener('click', () => setMood(m));
+    row.appendChild(b);
+  }
+  if (counsellor) {
+    const cr = document.createElement('div');
+    cr.className = 'craving-row';
+    cr.setAttribute('role', 'group');
+    cr.setAttribute('aria-label', 'Cravings today');
+    cr.innerHTML = '<span class="lbl">Cravings today:</span>';
+    const curCraving = (today && today.craving) || (c && c.craving);
+    for (const lvl of CRAVINGS) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip craving-chip'; b.textContent = lvl;
+      b.setAttribute('aria-pressed', String(curCraving === lvl));
+      b.addEventListener('click', () => setCraving(lvl));
+      cr.appendChild(b);
+    }
+    card.appendChild(cr);
+    card.appendChild(moodWeekEl());
+  }
+  return card;
+}
+
+function renderHome() {
+  if (!el.homeInner) return;
+  const counsellor = isCounsellor();
+  const box = el.homeInner;
+  box.innerHTML = '';
+
+  const hero = document.createElement('div');
+  hero.className = 'home-hero';
+  hero.innerHTML = '<div class="orb lg" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
+  $('h1', hero).textContent = greeting() + ' 🌿';
+  $('p', hero).textContent = counsellor
+    ? `A safe space with ${settings.name} — your AI recovery companion. Check in below, or open a tool when you need it.`
+    : `A safe space with ${settings.name}. Check in below, or open a tool when you need it.`;
+  box.appendChild(hero);
+
+  const days = soberDaysCount();
+  if (days !== null) {
+    const sober = document.createElement('button');
+    sober.type = 'button';
+    sober.className = 'home-sober';
+    const what = settings.soberWhat || (counsellor ? 'on your journey' : 'clean');
+    sober.innerHTML = `<span class="days"></span><span class="lbl"></span>`;
+    $('.days', sober).textContent = days;
+    $('.lbl', sober).textContent = `${days === 1 ? 'day' : 'days'} ${what === 'days' ? '' : what}`.trim() + ' 🌱 — tap to update';
+    sober.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || 'clean'}. Open clean time tracker.`);
+    sober.addEventListener('click', () => openCleanTime());
+    box.appendChild(sober);
+  }
+
+  if (settings.moodCheck) {
+    const today = todaysCheckin();
+    if (today && today.mood) {
+      const done = document.createElement('div');
+      done.className = 'home-checkin-done';
+      const parts = [`Today: ${today.mood.e} ${today.mood.l}`];
+      if (today.craving) parts.push(`cravings ${today.craving.toLowerCase()}`);
+      done.textContent = parts.join(' · ');
+      box.appendChild(done);
+      // Still allow changing via the full card beneath (collapsed feel: show card too for edit)
+      box.appendChild(moodCardEl({ titleId: 'homeMoodQ' }));
+    } else {
+      box.appendChild(moodCardEl({ titleId: 'homeMoodQ' }));
+    }
+  }
+
+  if (settings.gratCheck !== false && !todaysGratitude()) {
+    box.appendChild(gratitudeCardEl());
+  } else if (settings.gratCheck !== false && todaysGratitude()) {
+    const g = todaysGratitude();
+    const note = document.createElement('p');
+    note.className = 'help';
+    note.style.textAlign = 'center';
+    note.textContent = 'Today you’re grateful for: ' + g.items.join(' · ');
+    box.appendChild(note);
+  }
+
+  const shortcuts = document.createElement('div');
+  shortcuts.className = 'home-shortcuts';
+  shortcuts.setAttribute('aria-label', 'Shortcuts');
+  const items = [
+    { ico: '💬', label: 'Talk to Hope', sub: 'Open chat', action: () => { setAppTab('chat'); } },
+    { ico: '📓', label: 'Journal', sub: 'Write it down', action: () => openJournal() },
+    { ico: '🌱', label: 'Clean time', sub: 'Track your days', action: () => openCleanTime() },
+    { ico: '🆘', label: 'Get help', sub: 'Helplines & support', action: () => openHelp() },
+  ];
+  // Use companion name in shortcut label
+  items[0].label = `Talk to ${settings.name}`;
+  for (const it of items) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'home-shortcut';
+    b.innerHTML = `<span class="ico" aria-hidden="true">${it.ico}</span><span>${escapeHtml(it.label)}</span><span class="sub">${escapeHtml(it.sub)}</span>`;
+    b.addEventListener('click', it.action);
+    shortcuts.appendChild(b);
+  }
+  box.appendChild(shortcuts);
+
+  if (counsellor) {
+    const skillsRow = document.createElement('div');
+    skillsRow.className = 'starters skills-chips';
+    skillsRow.setAttribute('aria-label', 'Craving skills');
+    const lbl = document.createElement('span');
+    lbl.className = 'help';
+    lbl.style.width = '100%';
+    lbl.style.textAlign = 'center';
+    lbl.textContent = 'Craving skills — practise with ' + settings.name + ':';
+    skillsRow.appendChild(lbl);
+    const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
+    const chips = showAll ? CRAVING_SKILLS : CRAVING_SKILLS.slice(0, 5);
+    for (const sk of chips) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'starter skill-chip'; b.textContent = sk.chip;
+      b.addEventListener('click', () => { setAppTab('chat', { skipFocus: true }); startSkill(sk); });
+      skillsRow.appendChild(b);
+    }
+    const brk = document.createElement('button');
+    brk.type = 'button'; brk.className = 'starter skill-chip'; brk.textContent = 'Try a circuit breaker';
+    brk.addEventListener('click', openBreakers);
+    skillsRow.appendChild(brk);
+    box.appendChild(skillsRow);
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Welcome screen, daily check-in & mood history
    --------------------------------------------------------------------------- */
 function todaysCheckin() { return moods.find(m => m.date === localDate()) || null; }
 
 function renderWelcome() {
-  const c = activeConvo();
   const counsellor = isCounsellor();
   const box = document.createElement('div');
   box.className = 'welcome';
@@ -2895,51 +3207,27 @@ function renderWelcome() {
     ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups, faith and hope — whatever's on your mind, at your own pace.`
     : `I'm ${settings.name}. I'm here to listen, chat, brainstorm, or just keep you company.`;
 
+  // Daily check-in lives on Home; chat only nudges if not done yet.
   if (settings.moodCheck) {
     const today = todaysCheckin();
-    const card = document.createElement('div');
-    card.className = 'mood-card';
-    const title = counsellor ? 'Daily check-in — how are you travelling today?' : 'How are you feeling right now?';
-    card.innerHTML = `<h2 id="moodQ">${escapeHtml(title)} <span class="help">(optional)</span></h2><div class="mood-row" role="group" aria-labelledby="moodQ"></div>`;
-    const row = $('.mood-row', card);
-    const current = (c && c.mood) || (today && today.mood);
-    for (const m of MOODS) {
+    if (today && today.mood) {
+      const note = document.createElement('p');
+      note.className = 'help';
+      note.style.marginTop = '14px';
+      const bits = [`Checked in: ${today.mood.e} ${today.mood.l}`];
+      if (today.craving) bits.push(`cravings ${today.craving.toLowerCase()}`);
+      note.textContent = bits.join(' · ');
+      box.appendChild(note);
+    } else {
+      const hint = document.createElement('div');
+      hint.className = 'chat-checkin-hint';
       const b = document.createElement('button');
-      b.type = 'button'; b.className = 'mood-btn';
-      b.setAttribute('aria-pressed', String(!!(current && current.l === m.l)));
-      b.innerHTML = `<span class="e" aria-hidden="true">${m.e}</span><span class="l">${m.l}</span>`;
-      b.addEventListener('click', () => setMood(m));
-      row.appendChild(b);
+      b.type = 'button';
+      b.textContent = 'Daily check-in is on Home →';
+      b.addEventListener('click', () => setAppTab('home'));
+      hint.appendChild(b);
+      box.appendChild(hint);
     }
-    if (counsellor) {
-      const cr = document.createElement('div');
-      cr.className = 'craving-row';
-      cr.setAttribute('role', 'group');
-      cr.setAttribute('aria-label', 'Cravings today');
-      cr.innerHTML = '<span class="lbl">Cravings today:</span>';
-      const curCraving = (c && c.craving) || (today && today.craving);
-      for (const lvl of CRAVINGS) {
-        const b = document.createElement('button');
-        b.type = 'button'; b.className = 'chip craving-chip'; b.textContent = lvl;
-        b.setAttribute('aria-pressed', String(curCraving === lvl));
-        b.addEventListener('click', () => setCraving(lvl));
-        cr.appendChild(b);
-      }
-      card.appendChild(cr);
-      card.appendChild(moodWeekEl());
-    }
-    box.appendChild(card);
-  }
-
-  if (settings.gratCheck !== false && !todaysGratitude()) {
-    box.appendChild(gratitudeCardEl());
-  } else if (settings.gratCheck !== false && todaysGratitude()) {
-    const g = todaysGratitude();
-    const note = document.createElement('p');
-    note.className = 'help';
-    note.style.marginTop = '14px';
-    note.textContent = 'Today you’re grateful for: ' + g.items.join(' · ');
-    box.appendChild(note);
   }
 
   if (counsellor) {
@@ -3023,25 +3311,29 @@ function recordCheckin(patch) {
   moods = moods.slice(-400);
   saveMoods();
 }
+function refreshAfterCheckin() {
+  updateMoodPill();
+  if (appTab === 'home') renderHome();
+  else renderMessages();
+}
 function setMood(m) {
   const c = activeConvo() || newConversation();
   const toggledOff = c.mood && c.mood.l === m.l;
   c.mood = toggledOff ? null : { e: m.e, l: m.l };
   recordCheckin({ mood: c.mood });
   persistConvos();
-  renderMessages(); updateMoodPill();
+  refreshAfterCheckin();
   if (c.mood) toast(`Thanks for checking in ${m.e}`);
-  focusInput();
+  if (appTab === 'chat') focusInput();
 }
 function setCraving(lvl) {
   const c = activeConvo() || newConversation();
   c.craving = c.craving === lvl ? null : lvl;
   recordCheckin({ craving: c.craving });
   persistConvos();
-  renderMessages();
+  refreshAfterCheckin();
   if (c.craving === 'Strong') {
-    toast('Strong cravings are tough — they do pass. Try a circuit breaker or a craving skill below, or tap Get help now.', false, 4500);
-    renderMessages();
+    toast('Strong cravings are tough — they do pass. Try a circuit breaker or a craving skill on Home, or tap Get help now.', false, 4500);
   }
 }
 function updateMoodPill() {
@@ -3111,9 +3403,10 @@ function renderAll() {
   if (!busy) setOrb('idle');
   renderSober();
   renderHistory();
-  renderMessages();
   updateMoodPill();
   syncFaithBibleVisibility();
+  // Keep current tab; Home owns check-in. Conversations stay in memory either way.
+  setAppTab(appTab || 'home', { skipFocus: true, forceRender: true });
 }
 
 /* ---------------------------------------------------------------------------
@@ -3325,6 +3618,7 @@ async function sendMessage(textOverride) {
   if (busy || !profile) return;
   const text = String(textOverride ?? el.input.value).trim();
   if (!text) return;
+  if (appTab !== 'chat') setAppTab('chat', { skipFocus: true });
   if (isDemo) { demoHandle(text); return; }
   const crisis = CRISIS_RE.test(text);
   const crisisKind = crisis ? classifyCrisis(text) : null;
@@ -3604,7 +3898,8 @@ function gratitudeCardEl() {
     if (!items.length) { toast('Add at least one thing, or tap Not now.'); return; }
     saveTodaysGratitude(items);
     toast('Noted with thanks 🌿');
-    renderMessages();
+    if (appTab === 'home') renderHome();
+    else renderMessages();
   });
   $('[data-grat-skip]', card).addEventListener('click', () => {
     // Mark skipped for today in-session only (don't pollute storage with empty)
@@ -6186,11 +6481,11 @@ function enterProfile(pid) {
   loadProfileData(pid);
   applyTheme();
   el.input.value = '';
+  appTab = 'home';
   if (!activeConvo()) { activeId = null; newConversation(); } else renderAll();
   el.pickerDlg.close();
   toast(`Hi ${profile.name} 👋`);
   maybeShowDisclaimer();
-  focusInput();
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -6455,7 +6750,7 @@ el.composer.addEventListener('submit', (e) => {
   e.preventDefault();
   if (busy) stopGeneration(); else sendMessage();
 });
-el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); closeSidebar(); });
+el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); closeSidebar(); setAppTab('chat'); });
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
@@ -6483,6 +6778,11 @@ function closeSidebar() {
   el.menuBtn.setAttribute('aria-expanded', 'false');
 }
 el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-open') ? closeSidebar() : openSidebar());
+
+el.tabHome?.addEventListener('click', () => setAppTab('home'));
+el.tabChat?.addEventListener('click', () => setAppTab('chat'));
+el.tabMore?.addEventListener('click', () => setAppTab('more'));
+
 el.scrim.addEventListener('click', closeSidebar);
 
 document.addEventListener('keydown', (e) => {
@@ -6737,6 +7037,7 @@ function enterDemo() {
   stepsProgress = sample.steps; bibleProgress = sample.bible;
   breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
   activeId = null;
+  appTab = 'home';
   applyTheme();
   newConversation();
   toast('Welcome to the demo 🌿 — replies are pre-written examples', false, 3500);
