@@ -8,7 +8,7 @@
    tagline and copyright owner are defined for the app.
    (Internal storage keys stay "eden.*" on purpose so existing data survives.)
    ============================================================================ */
-const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026 };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, founder: 'Dwayne Stevens' };
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="AOD recovery support between sessions.">
@@ -703,6 +703,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .about-body ul { margin: 8px 0 14px; padding-left: 1.15em; color: var(--text); }
 .about-body li { margin: 6px 0; line-height: 1.4; }
 .about-body .about-foot { margin-top: 12px; text-align: center; }
+.founder-credit strong { color: var(--text); font-weight: 700; }
 .picker-guide { margin: 0 0 14px !important; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border)); color: var(--text); font-size: .9rem; line-height: 1.4; text-align: left; }
 .picker-guide strong { font-weight: 700; }
 .settings-tabs { display: flex; gap: 4px; padding: 8px 14px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
@@ -1424,7 +1425,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for the full reading library and your chat history. The demo, today’s readings, and Get help stay free.</p>
+      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. The demo, today’s readings, and Get help stay free.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">See plans</button>
       <button class="btn btn-sm" type="button" id="accessBannerWaitlist">Join waitlist</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
@@ -1708,7 +1709,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </form>
   <div class="dlg-body about-body">
     <p><strong><span data-brand></span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
-    <p class="founder-credit" data-founder>Created by Dwayne Stevens</p>
+    <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
     <ul class="about-short">
       <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
       <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
@@ -1718,13 +1719,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Plans &amp; account</button>
       <button class="btn" type="button" id="aboutWaitlistBtn">Join waitlist</button>
-      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month. Get help is never locked.</p>
+      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. Get help is never locked.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy · Advanced</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) adds the reading library and full chat history. Organisation plans are coming soon.</li>
+        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon — it isn’t ready to install yet. Get help stays free. Organisation plans are coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
         <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
@@ -3756,7 +3757,7 @@ function daysInLibraryMonth(month) {
 function readingLibraryEl() {
   const wrap = document.createElement('div');
   wrap.className = 'today-library';
-  wrap.innerHTML = '<p class="today-label">Reading library</p><div class="today-library-row"><label>Month <select id="libraryMonth"></select></label><label>Day <select id="libraryDay"></select></label><button type="button" class="btn btn-sm" id="libraryTodayBtn">Back to today</button></div><p class="help">Included with Hopewick Plus. Same optional reflection — not clinical advice.</p>';
+  wrap.innerHTML = '<p class="today-label">Reading library</p><div class="today-library-row"><label>Month <select id="libraryMonth"></select></label><label>Day <select id="libraryDay"></select></label><button type="button" class="btn btn-sm" id="libraryTodayBtn">Back to today</button></div><p class="help">Included with Hopewick Plus. A quiet reflection you can open again — not clinical advice.</p>';
   const monthSel = $('#libraryMonth', wrap);
   const daySel = $('#libraryDay', wrap);
   LIBRARY_MONTHS.forEach((name, i) => {
@@ -3802,10 +3803,10 @@ function todayPlusNoteEl() {
   note.className = 'today-plus-note';
   note.id = 'todayPlusNote';
   if (subscriptionPlus()) {
-    note.textContent = 'Hopewick Plus is active. You can open any day in the reading library, and your chat history stays open. Get help is still free.';
+    note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) adds the full year of readings and your whole chat history. Get help stays free. ');
+  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Get help stays free. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -7739,7 +7740,9 @@ function applyBrand() {
   $$('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.companion); });
   $$('[data-copyright]').forEach(e => { e.textContent = COPYRIGHT; });
-  $$('[data-founder]').forEach(e => { e.textContent = 'Created by Dwayne Stevens'; });
+  $$('[data-founder]').forEach(e => {
+    e.innerHTML = 'Founded by <strong>' + BRAND.founder + '</strong> (BRIDGE&amp;BITE.CO / ' + BRAND.name + ').';
+  });
   $$('[data-company]').forEach(e => { e.textContent = BRAND.company; });
 }
 
@@ -8332,7 +8335,7 @@ function paintAccount() {
   body.replaceChildren();
   const lede = document.createElement('p');
   lede.className = 'lede';
-  lede.textContent = 'Hopewick Plus is AU$20 a month for one person. Today’s readings, the demo, crisis support, and domestic and family violence links stay free. Organisation plans are coming soon.';
+  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon; it isn’t ready to install yet. Today’s readings, the demo, crisis support, and domestic and family violence links stay free. You do not need Plus for Get help. Organisation plans are coming soon.';
   body.appendChild(lede);
 
   if (!billingState.reachable) {
@@ -8379,8 +8382,8 @@ function paintAccount() {
   const status = document.createElement('p');
   status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
   status.id = 'accountStatus';
-  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month unlocks the reading library and full chat history.');
-  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. The full reading library and your chat history are open.';
+  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month opens the year’s readings and your chat history on this device.');
+  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. Any day of the readings is open, and your chat history stays with you on this device.';
   body.appendChild(status);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
