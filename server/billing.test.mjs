@@ -28,6 +28,7 @@ async function listen(env, stripeCalls) {
     PUBLIC_BASE_URL: process.env.PUBLIC_BASE_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
+    FOUNDER_PLUS_EMAILS: process.env.FOUNDER_PLUS_EMAILS,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -35,6 +36,7 @@ async function listen(env, stripeCalls) {
   process.env.STRIPE_PUBLISHABLE_KEY = 'pk_test_placeholder';
   delete process.env.PUBLIC_BASE_URL;
   delete process.env.RESEND_API_KEY;
+  delete process.env.FOUNDER_PLUS_EMAILS;
   Object.assign(process.env, env);
 
   globalThis.fetch = async (url, opts) => {
@@ -313,6 +315,49 @@ test('health check and www host redirect to the public origin', async () => {
 
     const apex = await rawRequest(app.base, '/api/health', { host: 'hopewick.com.au' });
     assert.equal(apex.status, 200);
+  } finally {
+    await app.close();
+  }
+});
+
+test('founder email gets complimentary Plus and the organisations inbox does not', async () => {
+  const app = await listen({
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+  }, []);
+  try {
+    const founder = await signIn(app.base, 'DwayneSimons1990@gmail.com');
+    const founderMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: founder } })).json();
+    assert.equal(founderMe.plus, true);
+    assert.equal(founderMe.complimentary, true);
+    assert.equal(founderMe.subscriptionStatus, 'active');
+
+    const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
+    const clinicMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: clinic } })).json();
+    assert.equal(clinicMe.plus, false);
+    assert.equal(clinicMe.complimentary, false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('FOUNDER_PLUS_EMAILS overrides the default and still ignores the organisations inbox', async () => {
+  const app = await listen({
+    FOUNDER_PLUS_EMAILS: 'patron@example.com, admin@bridge-bite-co.com',
+  }, []);
+  try {
+    const patron = await signIn(app.base, 'patron@example.com');
+    const patronMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: patron } })).json();
+    assert.equal(patronMe.plus, true);
+    assert.equal(patronMe.complimentary, true);
+
+    const founder = await signIn(app.base, 'dwaynesimons1990@gmail.com');
+    const founderMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: founder } })).json();
+    assert.equal(founderMe.plus, false);
+
+    const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
+    const clinicMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: clinic } })).json();
+    assert.equal(clinicMe.plus, false);
   } finally {
     await app.close();
   }

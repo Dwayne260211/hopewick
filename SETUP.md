@@ -14,13 +14,12 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 |---|---|---|
 | Website | Yes | Yes |
 | Crisis, domestic and family violence, Get help | Always | Always |
-| Companion demo, including today’s readings | Yes | Yes |
-| Chat | Demo, plus the latest conversation on a free account | Full chat history on this device |
+| Chat history | Latest conversation on a free account | Saved chat history on this device |
 | Reading library (any day of the year) | Today only | Yes |
 | Resume builder | Yes — saved on this device | Included, still free |
 | Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
 
-Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep the companion as it works today, including the demo for organisation trials.
+Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and the resume builder. Scripted sample conversations stay at `app/?demo=1` for organisation trials.
 
 ## Environment variables
 
@@ -41,6 +40,7 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
 | `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. |
+| `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. |
 
 Do not commit real keys. Placeholders in `.env.example` are not live credentials.
 
@@ -70,7 +70,7 @@ Use this server, not `python3 -m http.server`, when you want sign-in or Stripe. 
 
 With `HOPEWICK_DEV=1` (the local default):
 
-1. In the companion, open **Plans & account**.
+1. In the companion, open **Hopewick Plus**.
 2. Enter an email and request a link.
 3. Click the link shown on screen (it is also printed in the server log).
 4. You are signed in. Checkout stays disabled until Stripe keys and a price id are set.
@@ -222,7 +222,7 @@ Send a test event from the Stripe Dashboard (or pay with test card `4242 4242 42
 1. In Resend, add the domain `hopewick.com.au` and copy the DNS records it displays into GoDaddy. They are extra `TXT` / `CNAME` rows. Do not change the apex `A` record or the `www` `CNAME`. The domain has no mail records today, so these do not replace an existing inbox.
 2. Wait until Resend marks the domain verified.
 3. Set `RESEND_API_KEY` and `MAGIC_LINK_FROM=Hopewick <hello@hopewick.com.au>`.
-4. On https://hopewick.com.au/app/ , open **Plans & account**, enter an email you can read, and open the link in that message. It expires in 30 minutes and works once.
+4. On https://hopewick.com.au/app/ , open **Hopewick Plus**, enter an email you can read, and open the link in that message. It expires in 30 minutes and works once.
 
 `admin@bridge-bite-co.com` can be the from-address only if `bridge-bite-co.com` is verified in Resend. The product domain is the clearer sender.
 
@@ -241,9 +241,11 @@ Company on the Stripe account and invoices: **BRIDGE&BITE.CO PTY LTD**, ABN **83
 
 Point the apex `A` records at `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, and `185.199.111.153`, and point `www` at `dwayne260211.github.io`. Put `hopewick.com.au` back in the `CNAME` file and in Pages settings. `/api` will 404 again. The Render disk still holds the account file if you point DNS back later.
 
-## PWA
+## Home screen
 
-TODO: a web app manifest, icons, and a service worker are not included. `theme-color` is already set. Add a manifest when real icons exist; do not add a service worker until caching of `app/index.html` is thought through.
+Add to Home Screen is available now. `app/manifest.webmanifest`, with icons in `app/`, opens Hopewick as a standalone web app. The Play Store app is not ready yet.
+
+TODO: a service worker is not included. Do not add one until caching of `app/index.html` is thought through. `theme-color` is already set.
 
 ## Security
 

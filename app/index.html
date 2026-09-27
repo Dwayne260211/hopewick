@@ -13,6 +13,12 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="AOD recovery support between sessions.">
 <meta name="theme-color" content="#3f8f5f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hopewick">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
 <title>Hopewick · AI recovery companion</title>
 <!-- Inline favicon (avoids a 404 when served statically) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='35%25' cy='30%25'%3E%3Cstop offset='0' stop-color='%23d9f7c8'/%3E%3Cstop offset='.5' stop-color='%237cc49a'/%3E%3Cstop offset='1' stop-color='%232f7a50'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='28' fill='url(%23g)'/%3E%3C/svg%3E">
@@ -947,7 +953,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .about-more[open] > summary::before { content: '▾'; }
 .about-more ul { margin: 0; padding: 0 14px 12px 1.35em; border-top: 1px solid var(--border); }
 .about-more li { margin: 8px 0; line-height: 1.4; font-size: .9rem; color: var(--text); }
-/* v5.10: product copy + crisis UX (Join waitlist, AI recovery companion, moment-first crisis card) */
+/* v5.10: product copy + crisis UX (AI recovery companion, moment-first crisis card) */
 /* v5.11: Find AOD services (curated NGO offerings, QLD-first) */
 
 /* Recovery counter */
@@ -1280,13 +1286,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .treatment-helpline a { color: inherit; text-decoration: none; }
 .treatment-helpline a:hover { text-decoration: underline; }
 
-/* v5.3/v5.10: Join waitlist (mailto, no accounts) */
+/* v5.3/v5.10: account and subscription entry */
 /* v5.4: demo-first UX; own API key under Advanced */
 /* v5.5: in-app WEB Bible (public domain) + SOAP deep-link */
 /* v5.6: Diving Deeper Finding Jesus — whole Bible + Hope connections */
 /* v5.7: Find treatment / rehab — official AU AOD finders + helplines */
 /* v5.8: Find a church — official AU denominational finders */
-/* v5.10: product copy + crisis UX — AOD recovery tagline, Join waitlist, moment-first crisis */
+/* v5.10: product copy + crisis UX — AOD recovery tagline, moment-first crisis */
 /* v5.11: Find AOD services — curated QLD NGO cards + offer chips */
 
 /* v5.11: Find AOD services — curated QLD-first NGO cards with verified offers */
@@ -1478,9 +1484,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </button>
       <button class="btn btn-ghost" type="button" id="sideAccountBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
-        <span id="sideAccountLabel">Plans &amp; account</span>
+        <span id="sideAccountLabel">Hopewick Plus</span>
       </button>
-      <button class="btn btn-ghost" type="button" id="sideWaitlistBtn">🌱 Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
       <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
     </div>
@@ -1519,17 +1524,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. The demo, today’s readings, and Get help stay free.</p>
-      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">See plans</button>
-      <button class="btn btn-sm" type="button" id="accessBannerWaitlist">Join waitlist</button>
+      <p><strong>Hopewick Plus — AU$20/month.</strong> Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Hopewick Plus</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>🌱 <strong>Try <span data-brand></span> free.</strong> Live AI accounts aren’t open yet — explore the demo (pre-written examples, nothing sent), or <strong>Join waitlist</strong> to hear when accounts open.</p>
+      <p>Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.</p>
       <div class="banner-actions">
-        <button class="btn btn-primary btn-sm" type="button" id="keyBannerDemo">✨ Try the demo</button>
-        <button class="btn btn-sm" type="button" id="keyBannerInvite">Enter invite code</button>
-        <button class="btn btn-sm" type="button" id="keyBannerWaitlist">Join waitlist</button>
+        <button class="btn btn-primary btn-sm" type="button" id="keyBannerInvite">Enter invite code</button>
+        <button class="btn btn-sm" type="button" id="keyBannerPlus">Hopewick Plus</button>
       </div>
     </div>
 
@@ -1846,12 +1849,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="addPersonCancel">Cancel</button>
     </form>
     <div class="picker-actions">
-      <button class="btn" type="button" id="addPersonBtn">+ Add your profile</button>
+      <button class="btn btn-primary" type="button" id="addPersonBtn">+ Add your profile</button>
       <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage profiles</button>
-    </div>
-    <div class="picker-demo">
-      <button class="btn btn-primary" type="button" id="tryDemoBtn">✨ Try the demo <span class="help" style="color:inherit;opacity:.85">— no API key needed</span></button>
-      <button class="btn" type="button" id="pickerWaitlistBtn">Join waitlist</button>
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
@@ -1871,7 +1870,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
       <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
-      <button class="btn btn-ghost" type="button" id="onboardWaitlistBtn">Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand></span></button>
     </div>
   </div>
@@ -1895,15 +1893,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
-      <button class="btn btn-primary" type="button" id="aboutPlansBtn">Plans &amp; account</button>
-      <button class="btn" type="button" id="aboutWaitlistBtn">Join waitlist</button>
-      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. Get help is never locked.</p>
+      <button class="btn btn-primary" type="button" id="aboutPlansBtn">Hopewick Plus</button>
+      <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy · Advanced</summary>
       <ul>
-        <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon — it isn’t ready to install yet. Get help stays free. Organisation plans are coming soon.</li>
+        <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
+        <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
         <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
@@ -1919,44 +1916,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
-
-<!-- ============================ Join waitlist ============================ -->
-<dialog id="waitlistDlg" class="waitlist-dlg" aria-labelledby="waitlistTitle">
-  <form method="dialog" class="dlg-head">
-    <h2 id="waitlistTitle">Join waitlist</h2>
-    <button class="icon-btn" value="close" aria-label="Close waitlist">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </form>
-  <div class="dlg-body">
-    <p class="lede">Try the free demo now. Paid accounts and hosted service access are coming — leave your name and email and we’ll be in touch. No accounts to create, no payments yet.</p>
-    <form class="waitlist-form" id="appWaitlistForm" novalidate>
-      <label for="appWlName">Your name
-        <input id="appWlName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="First name or preferred name">
-      </label>
-      <label for="appWlEmail">Email
-        <input id="appWlEmail" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
-      </label>
-      <fieldset style="border:0;padding:0;margin:0">
-        <legend style="font-size:.9rem;font-weight:600;margin-bottom:4px">I am… <span class="hint" style="font-weight:500;color:var(--muted);font-size:.8rem">(pick one)</span></legend>
-        <div class="role-row" role="radiogroup" aria-label="How you relate to Hopewick">
-          <label><input type="radio" name="role" value="Person in recovery" required> Person in recovery</label>
-          <label><input type="radio" name="role" value="Family / support person"> Family / support person</label>
-          <label><input type="radio" name="role" value="AOD service / clinician"> AOD service / clinician</label>
-          <label><input type="radio" name="role" value="Other"> Other</label>
-        </div>
-      </fieldset>
-      <label for="appWlNote">Anything you’d like us to know <span class="hint">(optional)</span>
-        <textarea id="appWlNote" name="note" rows="2" maxlength="500" placeholder="Optional note"></textarea>
-      </label>
-      <button class="btn btn-primary" type="submit" id="appWaitlistSubmit">Join waitlist</button>
-    </form>
-    <p class="waitlist-mail" id="appWaitlistContact">Or email <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD anytime.</p>
-  </div>
-  <div class="dlg-foot">
-    <button class="btn" type="button" id="waitlistCloseBtn">Close</button>
-  </div>
-</dialog>
 
 <!-- ============================ Help dialog ============================ -->
 <dialog id="helpDlg" aria-labelledby="helpTitle">
@@ -2002,18 +1961,16 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ Need AI / no key prompt ============================ -->
 <dialog id="needAiDlg" class="need-ai-dlg" aria-labelledby="needAiTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="needAiTitle">Try the demo</h2>
+    <h2 id="needAiTitle">Live chat</h2>
     <button class="icon-btn" value="close" aria-label="Close">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede" id="needAiLede">Live AI chat needs a hosted account (coming soon), an invite code, or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.</p>
+    <p class="lede" id="needAiLede">Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.</p>
     <div class="need-ai-actions">
-      <button class="btn btn-primary" type="button" id="needAiDemoBtn">✨ Try the demo</button>
-      <button class="btn" type="button" id="needAiInviteBtn">Enter invite code</button>
-      <button class="btn" type="button" id="needAiWaitlistBtn">Join waitlist</button>
-      <button class="btn btn-ghost" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
+      <button class="btn btn-primary" type="button" id="needAiInviteBtn">Enter invite code</button>
+      <button class="btn" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
     </div>
     <p class="hosted-privacy">With a hosted invite, messages go via Bridge&amp;Bite then the model provider — not stored as an account chat history in this app.</p>
   </div>
@@ -2034,23 +1991,23 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <p class="lede">If Bridge&amp;Bite or a partner gave you a pilot invite, enter it here. You’ll get a session token for live AI on this device — no need for your own API key.</p>
     <form class="invite-form" id="inviteForm" novalidate>
       <label for="inviteCodeInput">Invite code
-        <input id="inviteCodeInput" type="text" autocomplete="off" spellcheck="false" placeholder="e.g. HOPE-DEMO-001" required>
+        <input id="inviteCodeInput" type="text" autocomplete="off" spellcheck="false" placeholder="Your invite code" required>
       </label>
       <button class="btn btn-primary" type="submit" id="inviteSubmitBtn">Redeem invite</button>
     </form>
     <p class="invite-status" id="inviteStatus" role="status" aria-live="polite"></p>
-    <p class="invite-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Demo mode still sends nothing.</p>
+    <p class="invite-privacy">Invite mode: messages go via Bridge&amp;Bite then the model provider.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="inviteCloseBtn">Close</button>
   </div>
 </dialog>
 
-<!-- ============================ Plans & account ============================ -->
+<!-- ============================ Hopewick Plus ============================ -->
 <dialog id="accountDlg" class="account-dlg" aria-labelledby="accountTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="accountTitle">Plans &amp; account</h2>
-    <button class="icon-btn" value="close" aria-label="Close plans and account">
+    <h2 id="accountTitle">Hopewick Plus — AU$20/month</h2>
+    <button class="icon-btn" value="close" aria-label="Close Hopewick Plus">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
@@ -2221,11 +2178,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
     </div>
     <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
-      <p class="advanced-lede">Most visitors use the <strong>free demo</strong>, an <strong>invite code</strong>, or <strong>Join waitlist</strong>. Live public accounts aren’t open yet.
+      <p class="advanced-lede">Live chat uses an <strong>invite code</strong>, or your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.
         <span class="adv-actions">
-          <button class="btn btn-sm btn-primary" type="button" id="advTryDemoBtn">✨ Try the demo</button>
-          <button class="btn btn-sm" type="button" id="advInviteBtn">Enter invite code</button>
-          <button class="btn btn-sm" type="button" id="advWaitlistBtn">Join waitlist</button>
+          <button class="btn btn-sm btn-primary" type="button" id="advInviteBtn">Enter invite code</button>
+          <button class="btn btn-sm" type="button" id="advPlusBtn">Hopewick Plus</button>
         </span>
       </p>
       <p class="hosted-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Own-key Advanced still talks only to the URL you set.</p>
@@ -3197,7 +3153,7 @@ const el = {
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
@@ -3501,7 +3457,7 @@ function newConversation() {
 }
 function openConversation(id) {
   if (conversationLocked(id)) {
-    toast('Older chats are part of Hopewick Plus. Today’s reading, the demo, and Get help stay free.', false, 4800);
+    toast('Older chats are part of Hopewick Plus. Today’s Readings, crisis support, and Get help stay free.', false, 4800);
     openAccountDlg();
     return;
   }
@@ -4006,11 +3962,11 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Get help stays free. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
-  btn.textContent = 'See plans';
+  btn.textContent = 'Hopewick Plus';
   btn.addEventListener('click', () => openAccountDlg());
   note.appendChild(btn);
   return note;
@@ -4583,7 +4539,7 @@ async function sendMessage(textOverride) {
   const crisis = CRISIS_RE.test(text);
   const crisisKind = crisis ? classifyCrisis(text) : null;
   if (!settings.apiKey && !crisis) {
-    promptNeedAi('To chat with live AI, join the waitlist (coming soon) or use an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
+    promptNeedAi('Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.');
     return;
   }
 
@@ -5028,7 +4984,7 @@ async function refineJournalEntry(entry, showInCompose) {
   if (isDemo) {
     parsed = DEMO_REFINE;
   } else if (!settings.apiKey) {
-    promptNeedAi('Deepen reflection needs live AI. Try the demo, join the waitlist, or open Advanced if you use your own key.');
+    promptNeedAi('Deepen reflection needs live chat. Use an invite code, or your own key under Advanced.');
     return;
   } else {
     try {
@@ -7222,7 +7178,7 @@ function promptNeedAi(reason) {
   if (isDemo) return;
   const lede = $('#needAiLede');
   if (lede) {
-    lede.textContent = reason || 'Live AI chat needs a hosted account (coming soon) or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.';
+    lede.textContent = reason || 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.';
   }
   if (el.needAiDlg && !el.needAiDlg.open) el.needAiDlg.showModal();
 }
@@ -7758,12 +7714,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live AI. Try the demo or join the waitlist.`); return; }
+  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live chat. Use an invite code, or your own key under Advanced.`); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live AI. Try the demo or join the waitlist.`); return; }
+  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live chat. Use an invite code, or your own key under Advanced.`); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -7786,7 +7742,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.waitlistDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -8081,7 +8037,7 @@ function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg, el.waitlistDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -8127,25 +8083,18 @@ function exitDemo() {
   }
 }
 $('#exitDemoBtn').addEventListener('click', showPicker);
-$('#tryDemoBtn').addEventListener('click', enterDemo);
-const keyBannerDemo = $('#keyBannerDemo');
-if (keyBannerDemo) keyBannerDemo.addEventListener('click', enterDemo);
-const keyBannerWaitlist = $('#keyBannerWaitlist');
-if (keyBannerWaitlist) keyBannerWaitlist.addEventListener('click', () => openWaitlist('banner'));
-$('#needAiDemoBtn').addEventListener('click', () => { closeNeedAi(); enterDemo(); });
-$('#needAiWaitlistBtn').addEventListener('click', () => { closeNeedAi(); openWaitlist('need-ai'); });
 $('#needAiAdvancedBtn').addEventListener('click', () => { closeNeedAi(); openSettings('setKey', 'advanced'); });
 $('#needAiCloseBtn').addEventListener('click', closeNeedAi);
 const needAiInviteBtn = $('#needAiInviteBtn');
 if (needAiInviteBtn) needAiInviteBtn.addEventListener('click', () => { closeNeedAi(); openInviteDlg(); });
 const keyBannerInvite = $('#keyBannerInvite');
 if (keyBannerInvite) keyBannerInvite.addEventListener('click', () => openInviteDlg());
-const advTry = $('#advTryDemoBtn');
-if (advTry) advTry.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); enterDemo(); });
+const keyBannerPlus = $('#keyBannerPlus');
+if (keyBannerPlus) keyBannerPlus.addEventListener('click', () => openAccountDlg());
 const advInvite = $('#advInviteBtn');
 if (advInvite) advInvite.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openInviteDlg(); });
-const advWl = $('#advWaitlistBtn');
-if (advWl) advWl.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openWaitlist('advanced'); });
+const advPlus = $('#advPlusBtn');
+if (advPlus) advPlus.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openAccountDlg(); });
 
 /* ---------------------------------------------------------------------------
    Invite code redeem → eden.shared.v1 (baseUrl, apiKey=token, model)
@@ -8306,59 +8255,15 @@ async function playScenario(turns, fresh) {
 }
 
 /* ---------------------------------------------------------------------------
-   Join waitlist (mailto — no accounts, no payments)
+   Plus prompt after a sample conversation
    --------------------------------------------------------------------------- */
-const WAITLIST_TO = 'Admin@bridge-bite-co.com';
 const ACCESS_PROMPT_KEY = 'hopewick.waitlistPrompt.v1';
 
-function openWaitlist() {
-  if (el.aboutDlg.open) el.aboutDlg.close();
-  if (!el.waitlistDlg.open) el.waitlistDlg.showModal();
-}
-function closeWaitlist() { if (el.waitlistDlg.open) el.waitlistDlg.close(); }
-
-function buildWaitlistMailto(name, email, role, note) {
-  const subject = 'Hopewick waitlist';
-  const lines = [
-    'Hello BRIDGE&BITE.CO,',
-    '',
-    'I would like to join the Hopewick waitlist.',
-    '',
-    'Name: ' + name,
-    'Email: ' + email,
-    'I am: ' + role,
-  ];
-  if (note) lines.push('Note: ' + note);
-  lines.push('', '— Sent from the Hopewick app waitlist form');
-  return 'mailto:' + WAITLIST_TO
-    + '?subject=' + encodeURIComponent(subject)
-    + '&body=' + encodeURIComponent(lines.join('\n'));
-}
-
-$('#appWaitlistForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = ($('#appWlName').value || '').trim();
-  const email = ($('#appWlEmail').value || '').trim();
-  const note = ($('#appWlNote').value || '').trim();
-  const roleEl = $('#appWaitlistForm').querySelector('input[name="role"]:checked');
-  const role = roleEl ? roleEl.value : '';
-  if (!name || !email || !role) { $('#appWaitlistForm').reportValidity(); return; }
-  try { sessionStorage.setItem(ACCESS_PROMPT_KEY, 'joined'); } catch (_) {}
-  hideAccessBanner();
-  window.location.href = buildWaitlistMailto(name, email, role, note);
-});
-$('#waitlistCloseBtn').addEventListener('click', closeWaitlist);
-$('#pickerWaitlistBtn').addEventListener('click', openWaitlist);
-$('#sideWaitlistBtn').addEventListener('click', () => { closeSidebar(); openWaitlist(); });
-$('#onboardWaitlistBtn').addEventListener('click', openWaitlist);
-$('#aboutWaitlistBtn').addEventListener('click', openWaitlist);
 const aboutPlansBtn = $('#aboutPlansBtn');
 if (aboutPlansBtn) aboutPlansBtn.addEventListener('click', () => { closeAbout(); openAccountDlg(); });
 const sideAccountBtn = $('#sideAccountBtn');
 if (sideAccountBtn) sideAccountBtn.addEventListener('click', () => { closeSidebar(); openAccountDlg(); });
 $('#accessBannerBtn').addEventListener('click', () => openAccountDlg());
-const accessBannerWaitlist = $('#accessBannerWaitlist');
-if (accessBannerWaitlist) accessBannerWaitlist.addEventListener('click', openWaitlist);
 $('#accessBannerDismiss').addEventListener('click', () => {
   try { sessionStorage.setItem(ACCESS_PROMPT_KEY, 'dismissed'); } catch (_) {}
   hideAccessBanner();
@@ -8823,6 +8728,7 @@ const billingState = {
   plus: false,
   checkoutReady: false,
   devMagic: false,
+  complimentary: false,
 };
 const FREE_HISTORY_KEEP = 1;
 
@@ -8887,15 +8793,17 @@ async function refreshBilling() {
     billingState.plus = !!user.plus;
     billingState.checkoutReady = !!config.checkoutReady;
     billingState.devMagic = !!config.devMagic;
+    billingState.complimentary = !!user.complimentary;
   } catch (_) {
     billingState.reachable = false;
     billingState.signedIn = false;
     billingState.plus = false;
+    billingState.complimentary = false;
   }
   billingState.loaded = true;
   const label = $('#sideAccountLabel');
   if (label) {
-    label.textContent = subscriptionPlus() ? 'Plus · account' : (billingState.signedIn ? 'Account · Free' : 'Plans & account');
+    label.textContent = subscriptionPlus() ? 'Plus · account' : 'Hopewick Plus';
   }
   paintAccount();
   if (!libraryPick || subscriptionPlus()) {
@@ -8911,21 +8819,37 @@ async function refreshBilling() {
     }
   } catch (_) { /* home may not be ready on the very first tick */ }
 }
+function appendPlusOffer(body) {
+  const unlock = document.createElement('p');
+  unlock.className = 'lede';
+  unlock.textContent = 'Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history.';
+  body.appendChild(unlock);
+  const free = document.createElement('p');
+  free.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder.';
+  body.appendChild(free);
+  const cancel = document.createElement('p');
+  cancel.textContent = 'Cancel anytime. One subscription per person.';
+  body.appendChild(cancel);
+  const org = document.createElement('p');
+  org.textContent = 'Organisation plans coming soon.';
+  body.appendChild(org);
+  const home = document.createElement('p');
+  home.className = 'hosted-privacy';
+  home.textContent = 'Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.';
+  body.appendChild(home);
+}
 function paintAccount() {
   const body = $('#accountBody');
   if (!body) return;
   const active = document.activeElement;
   if (active && body.contains(active) && (active.id === 'accountEmail')) return;
   body.replaceChildren();
-  const lede = document.createElement('p');
-  lede.className = 'lede';
-  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon; it isn’t ready to install yet. Today’s readings, the demo, crisis support, domestic and family violence links, and the resume builder stay free. You do not need Plus for Get help. Organisation plans are coming soon.';
-  body.appendChild(lede);
+  appendPlusOffer(body);
 
   if (!billingState.reachable) {
     const p = document.createElement('p');
     p.className = 'account-status';
-    p.textContent = 'Sign-in needs the Hopewick account service on this same site. For a local trial, run npm start and open http://127.0.0.1:8787/app/ (see SETUP.md). You can keep using the demo and Get help without it.';
+    p.textContent = 'Sign-in needs the Hopewick account service on this same site. For a local trial, run npm start and open http://127.0.0.1:8787/app/ (see SETUP.md). Today’s Readings and Get help work without it.';
     body.appendChild(p);
     const actions = document.createElement('div');
     actions.className = 'account-actions';
@@ -8971,7 +8895,7 @@ function paintAccount() {
   body.appendChild(status);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
-  if (subscriptionPlus() || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled') {
+  if (!billingState.complimentary && (subscriptionPlus() || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled')) {
     const portal = document.createElement('button');
     portal.type = 'button';
     portal.className = 'btn';
@@ -9080,9 +9004,10 @@ async function signOutBilling() {
   billingState.plus = false;
   billingState.email = '';
   billingState.subscriptionStatus = 'none';
+  billingState.complimentary = false;
   libraryPick = null;
   await refreshBilling();
-  toast('Signed out. The demo and Get help stay available.', false, 3500);
+  toast('Signed out. Today’s Readings and Get help stay available.', false, 3500);
 }
 async function devSetStatus(status) {
   try {
