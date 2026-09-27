@@ -357,12 +357,15 @@ test('founder email gets complimentary Plus and the organisations inbox does not
     const founderMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: founder } })).json();
     assert.equal(founderMe.plus, true);
     assert.equal(founderMe.complimentary, true);
+    assert.equal(founderMe.founder, true);
+    assert.equal(founderMe.email, 'dwaynesimons1990@gmail.com');
     assert.equal(founderMe.subscriptionStatus, 'active');
 
     const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
     const clinicMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: clinic } })).json();
     assert.equal(clinicMe.plus, false);
     assert.equal(clinicMe.complimentary, false);
+    assert.equal(clinicMe.founder, false);
   } finally {
     await app.close();
   }
@@ -377,14 +380,17 @@ test('FOUNDER_PLUS_EMAILS overrides the default and still ignores the organisati
     const patronMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: patron } })).json();
     assert.equal(patronMe.plus, true);
     assert.equal(patronMe.complimentary, true);
+    assert.equal(patronMe.founder, true);
 
     const founder = await signIn(app.base, 'dwaynesimons1990@gmail.com');
     const founderMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: founder } })).json();
     assert.equal(founderMe.plus, false);
+    assert.equal(founderMe.founder, false);
 
     const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
     const clinicMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: clinic } })).json();
     assert.equal(clinicMe.plus, false);
+    assert.equal(clinicMe.founder, false);
   } finally {
     await app.close();
   }
@@ -587,6 +593,45 @@ test('memory extraction does not spend a daily message', async () => {
     const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: session } })).json();
     assert.equal(usage.used, 1);
     assert.equal(usage.remaining, 0);
+  } finally {
+    await app.close();
+  }
+});
+
+test('developer settings flag follows the founder allowlist, not Plus or a typed name', async () => {
+  const app = await listen({}, []);
+  try {
+    const guest = await (await fetch(`${app.base}/api/auth/me`)).json();
+    assert.equal(guest.signedIn, false);
+    assert.equal(guest.founder, false);
+    assert.equal(guest.plus, false);
+
+    const freeSession = await signIn(app.base, 'free@example.com');
+    const freeMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: freeSession } })).json();
+    assert.equal(freeMe.founder, false);
+    assert.equal(freeMe.plus, false);
+
+    const plusOn = await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: freeSession, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'active' }),
+    });
+    const plusMe = await plusOn.json();
+    assert.equal(plusOn.status, 200);
+    assert.equal(plusMe.plus, true);
+    assert.equal(plusMe.founder, false);
+    assert.equal(plusMe.complimentary, false);
+
+    const founderSession = await signIn(app.base, 'dwaynesimons1990@gmail.com');
+    const paidFounder = await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: founderSession, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'active' }),
+    });
+    const paidFounderMe = await paidFounder.json();
+    assert.equal(paidFounderMe.plus, true);
+    assert.equal(paidFounderMe.complimentary, false);
+    assert.equal(paidFounderMe.founder, true);
   } finally {
     await app.close();
   }

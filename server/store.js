@@ -125,11 +125,13 @@ export function publicUser(user) {
       currentPeriodEnd: null,
       plus: false,
       complimentary: false,
+      founder: false,
     };
   }
   const storedStatus = user.subscriptionStatus || 'none';
   const paid = isPlusStatus(storedStatus);
-  const complimentary = isFounderPlusEmail(user.email) && !paid;
+  const founder = isFounderPlusEmail(user.email);
+  const complimentary = founder && !paid;
   return {
     signedIn: true,
     id: user.id,
@@ -138,5 +140,6 @@ export function publicUser(user) {
     currentPeriodEnd: user.currentPeriodEnd || null,
     plus: paid || complimentary,
     complimentary,
+    founder,
   };
 }

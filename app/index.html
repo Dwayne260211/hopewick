@@ -128,6 +128,7 @@ svg { flex: none; }
 .brand-name { font-weight: 700; font-size: 1.2rem; letter-spacing: .02em; }
 .brand-sub { font-size: .75rem; color: var(--muted); }
 
+.btn[hidden] { display: none !important; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   border: 1px solid var(--border); background: var(--surface);
@@ -809,6 +810,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   border-bottom: 2px solid transparent;
 }
 .settings-tabs [role="tab"][aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent-soft); }
+.settings-tabs [role="tab"][hidden] { display: none !important; }
 .settings-tabs [role="tab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .settings-panel[hidden] { display: none !important; }
 .conn-hint { margin: 10px 0 0; font-size: .85rem; color: var(--muted); text-align: center; }
@@ -1394,7 +1396,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="brand">
       <div class="brand-mark" aria-hidden="true"></div>
       <div>
-        <div class="brand-name" id="brandName" data-brand></div>
+        <div class="brand-name" id="brandName" data-brand>Hopewick</div>
         <div class="brand-sub" id="brandSub">AI recovery companion</div>
       </div>
     </div>
@@ -1482,7 +1484,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
         Preferences
       </button>
-      <button class="btn btn-ghost" type="button" data-open="advanced">
+      <button class="btn btn-ghost" type="button" id="sideDeveloperBtn" data-open="advanced" hidden>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         Developer
       </button>
@@ -1498,7 +1500,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
         <span id="sideAccountLabel">Hopewick Plus</span>
       </button>
-      <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
+      <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand>Hopewick</span></button>
       <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
     </div>
   </aside>
@@ -1513,7 +1515,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="who">
         <div class="orb" id="headerOrb" data-state="idle" aria-hidden="true"><span class="shine"></span></div>
         <div class="who-text">
-          <div class="who-name"><span id="headerName" data-companion></span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
+          <div class="who-name"><span id="headerName" data-companion>Hope</span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
           <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here to listen</span><span class="mood-pill" id="moodPill" hidden></span></div>
         </div>
       </div>
@@ -1611,7 +1613,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="info-inner">
         <div class="home-hero">
           <h1>News &amp; resources</h1>
-          <p>Drug alerts, naloxone and trusted Australian sources. <span data-brand></span> does not run these services — open the official page so details stay current.</p>
+          <p>Drug alerts, naloxone and trusted Australian sources. <span data-brand>Hopewick</span> does not run these services — open the official page so details stay current.</p>
         </div>
 
         <h2 id="infoNewsTitle">Drug alerts &amp; trusted sources</h2>
@@ -1664,7 +1666,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="dv-inner">
         <div class="home-hero">
           <h1 id="dvTitle">Domestic &amp; family violence</h1>
-          <p>If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand></span> does not run shelters or give legal advice.</p>
+          <p>If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand>Hopewick</span> does not run shelters or give legal advice.</p>
         </div>
         <div class="info-quick-row">
           <a class="btn btn-primary btn-sm" href="tel:000">Call 000</a>
@@ -1704,7 +1706,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div class="chips" id="infoRegionChips" role="group" aria-label="State or territory"></div>
         <div id="infoRegionDetail"></div>
 
-        <p class="help">In immediate danger call <a href="tel:000">000</a>. Crisis support also includes <a href="tel:131114">Lifeline 13 11 14</a>. <span data-companion></span> is an AI recovery companion, not a crisis line.</p>
+        <p class="help">In immediate danger call <a href="tel:000">000</a>. Crisis support also includes <a href="tel:131114">Lifeline 13 11 14</a>. <span data-companion>Hope</span> is an AI recovery companion, not a crisis line.</p>
       </div>
     </section>
 
@@ -1712,7 +1714,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="resume-inner">
         <div class="home-hero">
           <h1 id="resumeTitle" tabindex="-1">Resume builder</h1>
-          <p id="resumeLede">Write a simple resume in your own words. This is free in <span data-brand></span> — it is not part of Plus. Your draft stays on this device.</p>
+          <p id="resumeLede">Write a simple resume in your own words. This is free in <span data-brand>Hopewick</span> — it is not part of Plus. Your draft stays on this device.</p>
         </div>
         <p class="resume-note" id="resumeGapNote">A gap in paid work is ordinary. Volunteering, courses, casual work, and caring for someone all belong here. You do not have to mention recovery unless you want to.</p>
         <div class="resume-steps" id="resumeSteps" role="tablist" aria-label="Resume steps"></div>
@@ -1812,7 +1814,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · <span data-companion></span> is not emergency or medical care · Emergency 000<br><span class="copyright" data-copyright></span></p>
+      <p class="composer-hint" id="composerHint">Enter to send · <span data-companion>Hope</span> is not emergency or medical care · Emergency 000<br><span class="copyright" data-copyright></span></p>
     </div>
 
     <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
@@ -1844,8 +1846,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="pickerDlg" aria-labelledby="pickerTitle">
   <div class="picker-body" id="pickerBody">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
-    <h2 id="pickerTitle">Chat with <span data-companion></span></h2>
-    <p class="picker-guide"><strong><span data-companion></span> — an AI recovery companion</strong> private to you — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
+    <h2 id="pickerTitle">Chat with <span data-companion>Hope</span></h2>
+    <p class="picker-guide"><strong><span data-companion>Hope</span> — an AI recovery companion</strong> private to you — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
     <ul class="profiles" id="profileList" aria-label="Your profiles"></ul>
     <form class="inline-form" id="pinForm" hidden>
       <label for="pinInput" id="pinLabel" class="sr-only">PIN</label>
@@ -1866,7 +1868,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
-      <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand></span></button>
+      <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand>Hopewick</span></button>
       · <a href="../" id="aboutLink">Landing page</a> · <span data-copyright></span>
     </p>
   </div>
@@ -1876,13 +1878,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="onboardingDlg" aria-labelledby="onboardTitle">
   <div class="onboard-body">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
-    <h2 id="onboardTitle">Welcome to <span data-brand></span></h2>
+    <h2 id="onboardTitle">Welcome to <span data-brand>Hopewick</span></h2>
     <p class="lead">Want a private space to talk through cravings and hard days between sessions?</p>
-    <p><span data-companion></span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
+    <p><span data-companion>Hope</span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
       <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
-      <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand></span></button>
+      <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand>Hopewick</span></button>
     </div>
   </div>
 </dialog>
@@ -1890,18 +1892,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ About panel ============================ -->
 <dialog id="aboutDlg" aria-labelledby="aboutTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="aboutTitle">About <span data-brand></span></h2>
+    <h2 id="aboutTitle">About <span data-brand>Hopewick</span></h2>
     <button class="icon-btn" value="close" aria-label="Close about">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body about-body">
-    <p><strong><span data-brand></span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
+    <p><strong><span data-brand>Hopewick</span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion>Hope</span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
     <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
     <ul class="about-short">
       <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
-      <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
-      <li><strong>Not emergency or medical care.</strong> <span data-companion></span> is an AI recovery companion — not a counsellor, doctor, or crisis line. If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
+      <li><strong>What <span data-companion>Hope</span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
+      <li><strong>Not emergency or medical care.</strong> <span data-companion>Hope</span> is an AI recovery companion — not a counsellor, doctor, or crisis line. If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
       <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
@@ -1909,13 +1911,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
-      <summary>Learn more · Privacy · Developer</summary>
+      <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
         <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
-        <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
+        <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Hopewick holds the model connection — you do not need an API key.</li>
-        <li><strong>Developer (optional).</strong> Settings → Developer is for the people building Hopewick. It is not part of Free or Plus.</li>
+        <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
         <li><strong>Account.</strong> Email sign-in. We store your email, subscription status, and today’s message count — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
@@ -1947,7 +1949,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
       <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
     </div>
-    <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
+    <p class="help" style="margin-top:12px"><span data-companion>Hope</span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
 </dialog>
 
@@ -1955,7 +1957,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="disclaimerDlg" aria-labelledby="discTitle">
   <div class="dlg-head"><h2 id="discTitle">Before we start 🌿</h2></div>
   <div class="dlg-body disclaimer-body">
-    <p><span data-brand></span> offers <strong><span data-companion></span> — an AI recovery companion</strong> for talking through alcohol and other drug use, cravings, and hard days. Faith content is optional. It draws on approaches used in Australian AOD services, but:</p>
+    <p><span data-brand>Hopewick</span> offers <strong><span data-companion>Hope</span> — an AI recovery companion</strong> for talking through alcohol and other drug use, cravings, and hard days. Faith content is optional. It draws on approaches used in Australian AOD services, but:</p>
     <ul>
       <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
       <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
@@ -2041,7 +2043,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   <div class="settings-tabs" role="tablist" aria-label="Settings sections">
     <button type="button" role="tab" id="tabPrefs" data-settings-tab="prefs" aria-controls="panelPrefs" aria-selected="true">Preferences</button>
     <button type="button" role="tab" id="tabMore" data-settings-tab="more" aria-controls="panelMore" aria-selected="false">More</button>
-    <button type="button" role="tab" id="tabAdvanced" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false">Developer</button>
+    <button type="button" role="tab" id="tabDeveloper" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false" hidden>Developer</button>
   </div>
   <div class="dlg-body">
     <div class="settings-panel" id="panelPrefs" data-tab-panel="prefs" role="tabpanel" aria-labelledby="tabPrefs">
@@ -2082,7 +2084,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <fieldset>
       <legend>Your profile</legend>
       <div class="field">
-        <label for="setProfileName">Your name (<span data-companion></span> will call you this)</label>
+        <label for="setProfileName">Your name (<span data-companion>Hope</span> will call you this)</label>
         <input id="setProfileName" type="text" maxlength="30">
       </div>
       <div class="field">
@@ -2127,7 +2129,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div class="chips" id="traitChips" role="group" aria-labelledby="traitsLabel"></div>
       </div>
       <div class="field">
-        <label for="setTraitsCustom">More about <span data-companion></span>'s personality</label>
+        <label for="setTraitsCustom">More about <span data-companion>Hope</span>'s personality</label>
         <textarea id="setTraitsCustom" rows="2" placeholder="e.g. loves gardening metaphors, gently nerdy"></textarea>
       </div>
       <div class="field">
@@ -2151,7 +2153,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <legend>Voice</legend>
       <p class="help" id="voiceSupport" style="margin:6px 0 0"></p>
       <div class="field">
-        <label for="setVoice"><span data-companion></span>'s voice</label>
+        <label for="setVoice"><span data-companion>Hope</span>'s voice</label>
         <select id="setVoice"><option value="">Default voice</option></select>
       </div>
       <div class="field">
@@ -2190,7 +2192,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </div>
     </fieldset>
     </div>
-    <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
+    <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabDeveloper" hidden>
       <p class="dev-warning"><strong>Developer.</strong> Most people never need this. Sign in and Hope replies on Hopewick — Free is 20 messages a day, Hopewick Plus is 200. You do not need an invite code, an OpenAI key, OpenRouter, or Groq.</p>
       <details class="own-key-details" id="inviteDetails" data-invite-entry hidden>
         <summary>Pilot invite code</summary>
@@ -2249,7 +2251,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with <span data-companion></span> in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
+    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with <span data-companion>Hope</span> in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
     <form class="mem-add" id="memAddForm">
       <label for="memAddInput" class="sr-only">New memory</label>
       <input id="memAddInput" type="text" data-ph="Add something {name} should remember…" maxlength="300">
@@ -2288,7 +2290,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0">A private place for your thoughts. Deepen reflection with <span data-companion></span> when you want more emotional depth — never a diagnosis.</p>
+    <p class="help" style="margin:10px 0 0">A private place for your thoughts. Deepen reflection with <span data-companion>Hope</span> when you want more emotional depth — never a diagnosis.</p>
     <div id="journalCompose">
       <div class="field">
         <label for="jTitle">Title <span class="help">(optional)</span></label>
@@ -2472,7 +2474,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0">Peer-support meetings are run by <strong>AA, NA, SMART Recovery</strong> and similar groups — <strong>not by <span data-brand></span></strong>. We only open their official Australian finders so times stay accurate. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0">Peer-support meetings are run by <strong>AA, NA, SMART Recovery</strong> and similar groups — <strong>not by <span data-brand>Hopewick</span></strong>. We only open their official Australian finders so times stay accurate. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">After a finder opens, type your suburb or postcode on their site. We don’t scrape or host meeting lists.</p>
     <div class="meeting-cards" id="meetingCards">
       <div class="meeting-card">
@@ -2521,7 +2523,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run rehabs or treatment services.</strong> These are official government and peak-body finders and helplines across Australia. Numbers change — if a call fails, check their site. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0"><strong><span data-brand>Hopewick</span> does not run rehabs or treatment services.</strong> These are official government and peak-body finders and helplines across Australia. Numbers change — if a call fails, check their site. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">We don’t scrape or host a list of every facility (those go out of date fast). Open the official finder for your state, or call the helpline.</p>
 
     <div id="treatmentHome">
@@ -2565,7 +2567,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run these services.</strong> Offerings below are summarised from each organisation’s public website and may change — always confirm on their site or by phone. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0"><strong><span data-brand>Hopewick</span> does not run these services.</strong> Offerings below are summarised from each organisation’s public website and may change — always confirm on their site or by phone. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">QLD-first curated NGOs (what they can offer), different from <strong>Find treatment / rehab</strong> (state helplines and official finders only).</p>
 
     <div class="aod-filters" id="aodFilters" role="group" aria-label="Filter by offer type"></div>
@@ -2596,7 +2598,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run churches.</strong> These are official Australian denominational finders and a broad directory. Open a finder when you feel ready — no pressure. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0"><strong><span data-brand>Hopewick</span> does not run churches.</strong> These are official Australian denominational finders and a broad directory. Open a finder when you feel ready — no pressure. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">We don’t scrape or host a church database (those go stale). After a finder opens, search by suburb or postcode on their site.</p>
 
     <div class="meeting-cards" id="churchCards">
@@ -2708,7 +2710,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0">Short DBT- and CBT-informed exercises you can practise with <span data-companion></span> in chat. This is <strong>skills practice</strong>, not therapy or a substitute for a psychologist.</p>
+    <p class="help" style="margin:10px 0 0">Short DBT- and CBT-informed exercises you can practise with <span data-companion>Hope</span> in chat. This is <strong>skills practice</strong>, not therapy or a substitute for a psychologist.</p>
     <ul class="steps-list" id="skillsList" aria-label="Craving skills"></ul>
   </div>
 </dialog>
@@ -3581,7 +3583,7 @@ function crisisCardHtml(kind) {
     <h3>Here’s what you can do now 💚</h3>
     <p class="crisis-now">${crisisMomentCopy(k)}</p>
     <ul class="crisis-actions">${actions}</ul>
-    <p class="crisis-about"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. These are real Australian services — tap to call.</p>
+    <p class="crisis-about"><span data-companion>Hope</span> is an AI recovery companion, not a counsellor or doctor. These are real Australian services — tap to call.</p>
   </div>`;
 }
 
@@ -7258,7 +7260,8 @@ const FOCUS_TAB = {
   setName: 'more', setStyle: 'more', setTheme: 'more', setVoice: 'more',
 };
 function setSettingsTab(tab) {
-  let t = tab === 'connection' ? 'advanced' : tab;
+  let t = tab === 'connection' || tab === 'developer' ? 'advanced' : tab;
+  if (t === 'advanced' && !founderDeveloperVisible()) t = 'prefs';
   t = SETTINGS_TITLES[t] ? t : 'prefs';
   $$('.settings-tabs [role="tab"]').forEach(btn => {
     const on = btn.dataset.settingsTab === t;
@@ -7351,9 +7354,13 @@ function openSettings(focusId, tabHint) {
   $('#testResult').textContent = ''; $('#testResult').className = 'test-result';
   settingsThemeBefore = settings.theme;
   let tab = tabHint || (focusId && FOCUS_TAB[focusId]) || 'prefs';
-  if (tab === 'connection') tab = 'advanced'; // legacy alias
+  if (tab === 'connection' || tab === 'developer') tab = 'advanced';
+  if (tab === 'advanced' && !founderDeveloperVisible()) {
+    tab = 'prefs';
+    focusId = null;
+  }
+  const focusKey = tab === 'advanced' && (focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel');
   setSettingsTab(tab);
-  const focusKey = focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel';
   expandOwnKey(focusKey);
   if (!el.settingsDlg.open) el.settingsDlg.showModal();
   if (focusKey) setTimeout(() => { const n = $('#' + focusId); if (n) { expandOwnKey(true); n.focus(); } }, 60);
@@ -7885,7 +7892,10 @@ el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpe
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
-  else if (o === 'connection' || o === 'advanced') openSettings(null, 'advanced');
+  else if (o === 'connection' || o === 'advanced' || o === 'developer') {
+    if (!founderDeveloperVisible()) return;
+    openSettings(null, 'advanced');
+  }
   else if (o === 'prefs') showLaunchPrefs();
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
@@ -8230,6 +8240,8 @@ if (advInvite) advInvite.addEventListener('click', () => { if (el.settingsDlg.op
    Flip it to true to show entry again — redeemInviteCode and POST /redeem stay.
    --------------------------------------------------------------------------- */
 const SHOW_INVITE_ENTRY = false;
+/** Set once the signed-in account is known. Invite redeem stays off unless this and SHOW_INVITE_ENTRY are both on. */
+let founderDeveloperOn = false;
 const INVITE_COPY = {
   keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.',
   needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.',
@@ -8246,14 +8258,18 @@ function liveChatNeed(prefix) {
   return prefix ? `${prefix} ${HOSTED_SIGNIN_COPY}` : HOSTED_SIGNIN_COPY;
 }
 function syncInviteEntryUi() {
+  const showInvite = SHOW_INVITE_ENTRY && founderDeveloperOn;
   document.querySelectorAll('[data-invite-entry]').forEach((node) => {
-    node.hidden = !SHOW_INVITE_ENTRY;
+    node.hidden = !showInvite;
   });
   const own = document.getElementById('keyBannerOwnKey');
   if (own) own.hidden = !!SHOW_INVITE_ENTRY;
   const advBtn = document.getElementById('needAiAdvancedBtn');
-  if (advBtn) advBtn.classList.toggle('btn-primary', !SHOW_INVITE_ENTRY);
-  if (!SHOW_INVITE_ENTRY) return;
+  if (advBtn) {
+    advBtn.hidden = !founderDeveloperOn;
+    advBtn.classList.toggle('btn-primary', !showInvite);
+  }
+  if (!showInvite) return;
   const bannerP = document.getElementById('keyBannerText');
   if (bannerP) bannerP.textContent = INVITE_COPY.keyBanner;
   const lede = document.getElementById('needAiLede');
@@ -8267,7 +8283,7 @@ function syncInviteEntryUi() {
 }
 syncInviteEntryUi();
 function openInviteDlg() {
-  if (!SHOW_INVITE_ENTRY) return;
+  if (!SHOW_INVITE_ENTRY || !founderDeveloperOn) return;
   if (isDemo) { toast('Exit the demo first to redeem an invite.', false, 3500); return; }
   const st = $('#inviteStatus');
   if (st) { st.textContent = ''; st.className = 'invite-status'; }
@@ -8898,10 +8914,32 @@ const billingState = {
   checkoutReady: false,
   devMagic: false,
   complimentary: false,
+  founder: false,
   hopeHosted: false,
   hopeUsage: null,
 };
 const FREE_HISTORY_KEEP = 1;
+
+/** True only when the signed-in Hopewick account email is on FOUNDER_PLUS_EMAILS.
+ *  The server sets founder from that same list as complimentary Plus. A profile name does not. */
+function founderDeveloperVisible() {
+  return !!(billingState.signedIn && billingState.founder);
+}
+function syncDeveloperChrome() {
+  const show = founderDeveloperVisible();
+  founderDeveloperOn = show;
+  ['#sideDeveloperBtn', '#tabDeveloper', '#aboutDeveloperNote'].forEach((sel) => {
+    const node = $(sel);
+    if (node) node.hidden = !show;
+  });
+  if (!show) {
+    const selected = $('.settings-tabs [role="tab"][aria-selected="true"]');
+    if (selected && (selected.dataset.settingsTab === 'advanced' || selected.dataset.settingsTab === 'developer')) {
+      setSettingsTab('prefs');
+    }
+  }
+  if (typeof syncInviteEntryUi === 'function') syncInviteEntryUi();
+}
 
 function subscriptionPlus() {
   return !!(billingState.signedIn && billingState.plus);
@@ -8965,16 +9003,20 @@ async function refreshBilling() {
     billingState.checkoutReady = !!config.checkoutReady;
     billingState.devMagic = !!config.devMagic;
     billingState.complimentary = !!user.complimentary;
+    billingState.founder = !!user.founder;
     billingState.hopeHosted = !!config.hopeHosted;
   } catch (_) {
     billingState.reachable = false;
     billingState.signedIn = false;
+    billingState.email = '';
     billingState.plus = false;
     billingState.complimentary = false;
+    billingState.founder = false;
     billingState.hopeHosted = false;
     billingState.hopeUsage = null;
   }
   billingState.loaded = true;
+  syncDeveloperChrome();
   const label = $('#sideAccountLabel');
   if (label) {
     label.textContent = subscriptionPlus() ? 'Plus · account' : 'Hopewick Plus';
@@ -9226,6 +9268,9 @@ async function signOutBilling() {
   billingState.email = '';
   billingState.subscriptionStatus = 'none';
   billingState.complimentary = false;
+  billingState.founder = false;
+  founderDeveloperOn = false;
+  syncDeveloperChrome();
   libraryPick = null;
   await refreshBilling();
   toast('Signed out. Today’s Readings and Get help stay available.', false, 3500);
