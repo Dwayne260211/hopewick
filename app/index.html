@@ -1536,9 +1536,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.</p>
+      <p id="keyBannerText">Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat can use your own key under Advanced.</p>
       <div class="banner-actions">
-        <button class="btn btn-primary btn-sm" type="button" id="keyBannerInvite">Enter invite code</button>
+        <button class="btn btn-primary btn-sm" type="button" id="keyBannerInvite" data-invite-entry hidden>Enter invite code</button>
+        <button class="btn btn-primary btn-sm" type="button" id="keyBannerOwnKey">Use my own key</button>
         <button class="btn btn-sm" type="button" id="keyBannerPlus">Hopewick Plus</button>
       </div>
     </div>
@@ -1911,7 +1912,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
         <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
-        <li><strong>Architecture note.</strong> The companion still runs in this browser. Sign-in and Stripe billing use the Hopewick account service when this site is served with it. Invite-code live AI is a separate service.</li>
+        <li><strong>Architecture note.</strong> The companion still runs in this browser. Sign-in and Stripe billing use the Hopewick account service when this site is served with it.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -1974,12 +1975,12 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede" id="needAiLede">Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.</p>
+    <p class="lede" id="needAiLede">Live chat can use your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.</p>
     <div class="need-ai-actions">
-      <button class="btn btn-primary" type="button" id="needAiInviteBtn">Enter invite code</button>
-      <button class="btn" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
+      <button class="btn btn-primary" type="button" id="needAiInviteBtn" data-invite-entry hidden>Enter invite code</button>
+      <button class="btn btn-primary" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
     </div>
-    <p class="hosted-privacy">With a hosted invite, messages go via Bridge&amp;Bite then the model provider — not stored as an account chat history in this app.</p>
+    <p class="hosted-privacy" id="needAiHostedNote">Your own key talks only to the provider URL you set. Chats are not stored as an account history.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="needAiCloseBtn">Not now</button>
@@ -1987,7 +1988,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 </dialog>
 
 <!-- ============================ Invite code ============================ -->
-<dialog id="inviteDlg" class="invite-dlg" aria-labelledby="inviteTitle">
+<!-- Invite entry stays in the page so SHOW_INVITE_ENTRY can bring it back. Hidden for public users. -->
+<dialog id="inviteDlg" class="invite-dlg" data-invite-entry hidden aria-labelledby="inviteTitle">
   <form method="dialog" class="dlg-head">
     <h2 id="inviteTitle">Enter invite code</h2>
     <button class="icon-btn" value="close" aria-label="Close invite">
@@ -2185,13 +2187,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
     </div>
     <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
-      <p class="advanced-lede">Live chat uses an <strong>invite code</strong>, or your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.
+      <p class="advanced-lede"><span id="advInviteLede">Live chat can use your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.</span>
         <span class="adv-actions">
-          <button class="btn btn-sm btn-primary" type="button" id="advInviteBtn">Enter invite code</button>
+          <button class="btn btn-sm btn-primary" type="button" id="advInviteBtn" data-invite-entry hidden>Enter invite code</button>
           <button class="btn btn-sm" type="button" id="advPlusBtn">Hopewick Plus</button>
         </span>
       </p>
-      <p class="hosted-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Own-key Advanced still talks only to the URL you set.</p>
+      <p class="hosted-privacy" id="advHostedNote">Your own key talks only to the provider URL you set.</p>
       <details class="own-key-details" id="ownKeyDetails">
         <summary>Use my own API key</summary>
         <div class="own-key-body">
@@ -4546,7 +4548,7 @@ async function sendMessage(textOverride) {
   const crisis = CRISIS_RE.test(text);
   const crisisKind = crisis ? classifyCrisis(text) : null;
   if (!settings.apiKey && !crisis) {
-    promptNeedAi('Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.');
+    promptNeedAi(liveChatNeed());
     return;
   }
 
@@ -4991,7 +4993,7 @@ async function refineJournalEntry(entry, showInCompose) {
   if (isDemo) {
     parsed = DEMO_REFINE;
   } else if (!settings.apiKey) {
-    promptNeedAi('Deepen reflection needs live chat. Use an invite code, or your own key under Advanced.');
+    promptNeedAi(liveChatNeed('Deepen reflection needs live chat.'));
     return;
   } else {
     try {
@@ -7185,7 +7187,7 @@ function promptNeedAi(reason) {
   if (isDemo) return;
   const lede = $('#needAiLede');
   if (lede) {
-    lede.textContent = reason || 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.';
+    lede.textContent = reason || liveChatNeed();
   }
   if (el.needAiDlg && !el.needAiDlg.open) el.needAiDlg.showModal();
 }
@@ -7721,12 +7723,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live chat. Use an invite code, or your own key under Advanced.`); return; }
+  if (!settings.apiKey && !isDemo) { promptNeedAi(liveChatNeed(`Voice chat with ${settings.name || BRAND.companion} needs live chat.`)); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live chat. Use an invite code, or your own key under Advanced.`); return; }
+  if (on && !settings.apiKey && !isDemo) { promptNeedAi(liveChatNeed('Hands-free mode needs live chat.')); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -8096,6 +8098,8 @@ const needAiInviteBtn = $('#needAiInviteBtn');
 if (needAiInviteBtn) needAiInviteBtn.addEventListener('click', () => { closeNeedAi(); openInviteDlg(); });
 const keyBannerInvite = $('#keyBannerInvite');
 if (keyBannerInvite) keyBannerInvite.addEventListener('click', () => openInviteDlg());
+const keyBannerOwnKey = $('#keyBannerOwnKey');
+if (keyBannerOwnKey) keyBannerOwnKey.addEventListener('click', () => openSettings('setKey', 'advanced'));
 const keyBannerPlus = $('#keyBannerPlus');
 if (keyBannerPlus) keyBannerPlus.addEventListener('click', () => openAccountDlg());
 const advInvite = $('#advInviteBtn');
@@ -8106,12 +8110,55 @@ if (advPlus) advPlus.addEventListener('click', () => { if (el.settingsDlg.open) 
 /* ---------------------------------------------------------------------------
    Invite code redeem → eden.shared.v1 (baseUrl, apiKey=token, model)
    Prefer invite session when token present; Advanced own-key path unchanged.
+   SHOW_INVITE_ENTRY hides the field and “need a code” prompts for public users.
+   Flip it to true to show entry again — redeemInviteCode and POST /redeem stay.
    --------------------------------------------------------------------------- */
+const SHOW_INVITE_ENTRY = false;
+const INVITE_COPY = {
+  keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.',
+  needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.',
+  needAiHosted: 'With a hosted invite, messages go via Bridge&Bite then the model provider — not stored as an account chat history in this app.',
+  advanced: 'Live chat uses an invite code, or your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.',
+  advancedHosted: 'Hosted / invite mode: messages go via Bridge&Bite then the model provider. Own-key Advanced still talks only to the URL you set.',
+};
+function liveChatNeed(prefix) {
+  if (SHOW_INVITE_ENTRY) {
+    return prefix
+      ? `${prefix} Use an invite code, or your own key under Advanced.`
+      : INVITE_COPY.needAi;
+  }
+  return prefix
+    ? `${prefix} Add your own key under Advanced.`
+    : 'Live chat can use your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.';
+}
+function syncInviteEntryUi() {
+  document.querySelectorAll('[data-invite-entry]').forEach((node) => {
+    node.hidden = !SHOW_INVITE_ENTRY;
+  });
+  const own = document.getElementById('keyBannerOwnKey');
+  if (own) own.hidden = !!SHOW_INVITE_ENTRY;
+  const advBtn = document.getElementById('needAiAdvancedBtn');
+  if (advBtn) advBtn.classList.toggle('btn-primary', !SHOW_INVITE_ENTRY);
+  if (!SHOW_INVITE_ENTRY) return;
+  const bannerP = document.getElementById('keyBannerText');
+  if (bannerP) bannerP.textContent = INVITE_COPY.keyBanner;
+  const lede = document.getElementById('needAiLede');
+  if (lede) lede.textContent = INVITE_COPY.needAi;
+  const hosted = document.getElementById('needAiHostedNote');
+  if (hosted) hosted.textContent = INVITE_COPY.needAiHosted;
+  const adv = document.getElementById('advInviteLede');
+  if (adv) adv.textContent = INVITE_COPY.advanced;
+  const advHosted = document.getElementById('advHostedNote');
+  if (advHosted) advHosted.textContent = INVITE_COPY.advancedHosted;
+}
+syncInviteEntryUi();
 function openInviteDlg() {
+  if (!SHOW_INVITE_ENTRY) return;
   if (isDemo) { toast('Exit the demo first to redeem an invite.', false, 3500); return; }
   const st = $('#inviteStatus');
   if (st) { st.textContent = ''; st.className = 'invite-status'; }
   const inp = $('#inviteCodeInput');
+  if (el.inviteDlg) el.inviteDlg.hidden = false;
   if (el.inviteDlg && !el.inviteDlg.open) el.inviteDlg.showModal();
   if (inp) setTimeout(() => inp.focus(), 40);
 }
