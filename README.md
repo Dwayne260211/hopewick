@@ -81,6 +81,7 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 
 ## Features
 
+- **Today on Home.** A prominent card with a **Word for today** and a short **Just for today** reflection. Both change with the Brisbane calendar date and are the same for everyone that day. Original fellowship-style lines — optional, not clinical advice.
 - **Product copy + crisis UX (v5.10).** Tagline **AOD recovery support between sessions**; Hope standardised as an **AI recovery companion**; CTA **Join waitlist**; About uses progressive disclosure; crisis card leads with moment-first actions (incl. **1800RESPECT**).
 - **Find a church (v5.8).** Official Australian denominational finders (ACC, Catholic free parish lookup, Anglican dioceses, Uniting, Baptist state unions, Salvation Army, Presbyterian, Lutheran, Churches of Christ) plus AusChurches directory and maps. Hopewick does **not** scrape or host a church database — link-outs only. Soft-hidden when faith preference is “none” (same pattern as Bible); chat chip if someone asks for a church.
 - **Find AOD services (v5.11).** Curated QLD-first community AOD NGOs (QuIHN, Drug ARM, Lives Lived Well, Brisbane Youth Service, Anglicare SQ, plus QNADA) with plain-language offer chips from their public sites — Visit site / Call link-outs. Different from Find treatment / rehab (state helplines + official finders only). Hopewick does **not** run these services.
