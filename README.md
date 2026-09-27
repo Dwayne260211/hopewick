@@ -1,7 +1,7 @@
 # Hopewick — AOD recovery support & AI recovery companion 🕯️
 
-**Hopewick** (a small light that keeps burning) is a warm, non-judgemental **AI recovery companion** that runs entirely in your browser. The product tagline is **AOD recovery support between sessions**. Faith content is optional (Preferences / About). It can also switch to an everyday **Friend** mode.
-There's no build step, no server and no external CDNs.
+**Hopewick** (a small light that keeps burning) is a warm, non-judgemental **AI recovery companion** that runs in your browser. The product tagline is **AOD recovery support between sessions**. Faith content is optional (Preferences / About). It can also switch to an everyday **Friend** mode.
+The marketing site and companion are static HTML (no build step, no external CDNs). **Hopewick Plus** (AU$20/month) adds a small Node account server for email sign-in and Stripe — see [SETUP.md](SETUP.md). Chats stay in the browser.
 
 **Live:**
 - Website (landing page): https://dwayne260211.github.io/hopewick/
@@ -64,6 +64,16 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 | 13YARN (Aboriginal and Torres Strait Islander crisis support) | **13 92 76** |
 
 **News & resources** (Home · Chat · Domestic & family violence · News & resources · More) lists trusted drug-alert links. **Domestic & family violence** is its own destination in the sidebar and the tab bar — not inside Get help. National crisis line: **1800RESPECT 1800 737 732** (text **0458 737 732**). Queensland, when that state is selected: **DVConnect Womensline 1800 811 811** (24/7) and **Mensline 1800 600 636** (9am–midnight). Shelter placement is via those services and [Ask Izzy](https://askizzy.org.au/search/domestic-violence) — refuge addresses are not listed in the app. Legal information: [Family Violence Law Help](https://familyviolencelaw.gov.au/), [Legal Aid Queensland](https://www.legalaid.qld.gov.au/Find-legal-information/Relationships-and-children/Domestic-and-family-violence) **1300 65 11 88**, [Women’s Legal Service Queensland](https://wlsq.org.au/) **1800 957 957**, [QIFVLS](https://qifvls.com.au/) **1800 887 700**. Get help stays the crisis and AOD list, including 1800RESPECT on the crisis card.
+
+## Hopewick Plus (AU$20/month)
+
+Individual subscriptions sit beside the free demo. **Get help, crisis and domestic violence support, the marketing site, the companion demo, and today’s Word for the day / Just for today stay free.** Organisation and clinic seat plans are coming soon (the pilot sheet is still the conversation for services).
+
+Hopewick Plus unlocks the full-year reading library and full chat history on this device, plus account management through Stripe. Sign-in is an email magic link. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status.
+
+Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
+
+TODO: a web app manifest and service worker are not included yet.
 
 ## Open it
 

@@ -1,0 +1,565 @@
+/**
+ * Hopewick account + billing server.
+ *
+ * The marketing site and companion stay static HTML. This process serves those
+ * files and a small /api for email magic-link sign-in, Stripe Checkout,
+ * the Customer Portal, and subscription webhooks.
+ *
+ * Invite-code live AI still uses the existing Azure Functions API
+ * (HOPEWICK_INVITE_API in app/index.html). This server does not replace it.
+ *
+ * No conversations are stored here — only email and subscription status.
+ */
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+
+import { createStore, hashToken, publicUser, isPlusStatus } from './store.js';
+import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export const REPO_ROOT = path.resolve(__dirname, '..');
+
+const SESSION_COOKIE = 'hopewick_session';
+const SESSION_MS = 30 * 24 * 60 * 60 * 1000;
+const MAGIC_MS = 30 * 60 * 1000;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PLUS_OK = new Set(['active', 'trialing']);
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
+  '.ico': 'image/x-icon',
+};
+
+const magicAttempts = new Map();
+
+export function devMode() {
+  if (process.env.HOPEWICK_DEV === '0') return false;
+  if (process.env.HOPEWICK_DEV === '1') return true;
+  return process.env.NODE_ENV !== 'production';
+}
+
+export function loadEnvFile(file = path.join(REPO_ROOT, '.env')) {
+  if (!fs.existsSync(file)) return;
+  const text = fs.readFileSync(file, 'utf8');
+  for (const line of text.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const i = trimmed.indexOf('=');
+    if (i < 1) continue;
+    const key = trimmed.slice(0, i).trim();
+    let value = trimmed.slice(i + 1).trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (process.env[key] == null || process.env[key] === '') process.env[key] = value;
+  }
+}
+
+function requestOrigin(req) {
+  const proto = String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim();
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '127.0.0.1').split(',')[0].trim();
+  return `${proto}://${host}`;
+}
+
+function publicBase(req) {
+  const configured = (process.env.PUBLIC_BASE_URL || '').replace(/\/+$/, '');
+  return configured || requestOrigin(req);
+}
+
+function json(res, status, body, extraHeaders) {
+  const payload = JSON.stringify(body);
+  res.writeHead(status, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'Content-Length': Buffer.byteLength(payload),
+    ...(extraHeaders || {}),
+  });
+  res.end(payload);
+}
+
+function readBody(req, limit = 1_000_000) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    let size = 0;
+    req.on('data', (chunk) => {
+      size += chunk.length;
+      if (size > limit) {
+        const err = new Error('Request body is too large.');
+        err.status = 413;
+        reject(err);
+        req.destroy();
+        return;
+      }
+      chunks.push(chunk);
+    });
+    req.on('end', () => resolve(Buffer.concat(chunks)));
+    req.on('error', reject);
+  });
+}
+
+function cookies(req) {
+  const out = {};
+  const raw = req.headers.cookie || '';
+  for (const part of raw.split(';')) {
+    const i = part.indexOf('=');
+    if (i < 1) continue;
+    const key = part.slice(0, i).trim();
+    const value = part.slice(i + 1).trim();
+    try { out[key] = decodeURIComponent(value); } catch { out[key] = value; }
+  }
+  return out;
+}
+
+function sessionCookie(token, req, maxAgeSec) {
+  const secure = requestOrigin(req).startsWith('https://') || process.env.COOKIE_SECURE === '1';
+  const bits = [
+    `${SESSION_COOKIE}=${encodeURIComponent(token)}`,
+    'HttpOnly',
+    'Path=/',
+    'SameSite=Lax',
+    `Max-Age=${maxAgeSec}`,
+  ];
+  if (secure) bits.push('Secure');
+  return bits.join('; ');
+}
+
+function clearCookie(req) {
+  return sessionCookie('', req, 0);
+}
+
+function currentUser(req, store) {
+  return store.findBySession(cookies(req)[SESSION_COOKIE]);
+}
+
+function safeNext(value) {
+  if (!value || typeof value !== 'string') return '';
+  if (!value.startsWith('/') || value.startsWith('//') || value.includes('\\')) return '';
+  return value;
+}
+
+function allowRate(email) {
+  const now = Date.now();
+  const prev = (magicAttempts.get(email) || []).filter((t) => now - t < 60 * 60 * 1000);
+  if (prev.length >= 8) return false;
+  prev.push(now);
+  magicAttempts.set(email, prev);
+  return true;
+}
+
+async function sendMagicEmail(email, link) {
+  const key = process.env.RESEND_API_KEY;
+  const from = process.env.MAGIC_LINK_FROM;
+  if (!key || !from) return false;
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from,
+      to: [email],
+      subject: 'Your Hopewick sign-in link',
+      text: [
+        'Here is your Hopewick sign-in link. It works for 30 minutes and can only be used once.',
+        '',
+        link,
+        '',
+        'If you did not ask for this, you can ignore this email.',
+        'Hopewick is an AI recovery companion, not a crisis service. In an emergency call 000.',
+      ].join('\n'),
+    }),
+  });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    const err = new Error(`Could not send the sign-in email (${response.status}). ${detail}`.trim());
+    err.status = 502;
+    throw err;
+  }
+  return true;
+}
+
+function applySubscription(user, sub) {
+  user.stripeSubscriptionId = sub.id || user.stripeSubscriptionId || null;
+  const customer = typeof sub.customer === 'string' ? sub.customer : (sub.customer && sub.customer.id);
+  if (customer) user.stripeCustomerId = customer;
+  user.subscriptionStatus = sub.status || 'none';
+  user.currentPeriodEnd = sub.current_period_end
+    ? new Date(sub.current_period_end * 1000).toISOString()
+    : null;
+  return user;
+}
+
+function findUserForStripeObject(store, object) {
+  const userId = (object.metadata && object.metadata.userId) || object.client_reference_id || '';
+  if (userId) {
+    const byId = store.findById(userId);
+    if (byId) return byId;
+  }
+  const customer = typeof object.customer === 'string' ? object.customer : (object.customer && object.customer.id);
+  if (customer) {
+    const byCustomer = store.findByStripeCustomer(customer);
+    if (byCustomer) return byCustomer;
+  }
+  const email = object.customer_email || object.customer_details?.email || object.email;
+  if (email) return store.findByEmail(email);
+  return null;
+}
+
+async function handleWebhook(store, raw) {
+  const event = verifyStripeEvent(raw.body, raw.signature, process.env.STRIPE_WEBHOOK_SECRET);
+  const type = event.type;
+  const object = event.data && event.data.object;
+  if (!object) return { received: true, ignored: true };
+
+  if (type === 'checkout.session.completed') {
+    const user = findUserForStripeObject(store, object);
+    if (!user) return { received: true, matched: false };
+    if (object.customer) user.stripeCustomerId = String(object.customer);
+    if (object.subscription) {
+      const sub = await stripeRequest('GET', `/subscriptions/${object.subscription}`);
+      applySubscription(user, sub);
+    } else if (object.payment_status === 'paid') {
+      user.subscriptionStatus = 'active';
+    }
+    store.save(user);
+    return { received: true, matched: true, subscriptionStatus: user.subscriptionStatus };
+  }
+
+  if (type === 'customer.subscription.created' || type === 'customer.subscription.updated' || type === 'customer.subscription.deleted') {
+    const user = findUserForStripeObject(store, object);
+    if (!user) return { received: true, matched: false };
+    if (type === 'customer.subscription.deleted') {
+      user.stripeSubscriptionId = object.id || user.stripeSubscriptionId;
+      user.subscriptionStatus = 'canceled';
+      if (object.customer) user.stripeCustomerId = String(object.customer);
+    } else {
+      applySubscription(user, object);
+    }
+    store.save(user);
+    return { received: true, matched: true, subscriptionStatus: user.subscriptionStatus };
+  }
+
+  return { received: true, ignored: true };
+}
+
+function blockedStatic(rel) {
+  const norm = rel.replace(/\\/g, '/').replace(/^\/+/, '');
+  if (!norm) return false;
+  const segments = norm.split('/');
+  if (segments.some((seg) => seg.startsWith('.'))) return true;
+  if (segments[0] === 'server') return true;
+  if (norm === 'package.json' || norm === 'package-lock.json') return true;
+  return false;
+}
+
+function resolveStatic(root, urlPath) {
+  let decoded;
+  try { decoded = decodeURIComponent(urlPath.split('?')[0]); } catch { return null; }
+  if (decoded.includes('\0')) return null;
+  const rel = decoded.replace(/^\/+/, '');
+  if (blockedStatic(rel)) return null;
+  const rootResolved = path.resolve(root);
+  let full = path.resolve(rootResolved, rel);
+  if (full !== rootResolved && !full.startsWith(rootResolved + path.sep)) return null;
+  if (fs.existsSync(full) && fs.statSync(full).isDirectory()) full = path.join(full, 'index.html');
+  if (!fs.existsSync(full) || !fs.statSync(full).isFile()) return null;
+  return full;
+}
+
+function serveStatic(root, req, res, urlPath) {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    json(res, 405, { error: 'Method not allowed.' });
+    return;
+  }
+  const file = resolveStatic(root, urlPath);
+  if (!file) {
+    json(res, 404, { error: 'Not found.' });
+    return;
+  }
+  const ext = path.extname(file).toLowerCase();
+  const type = MIME[ext] || 'application/octet-stream';
+  const body = fs.readFileSync(file);
+  res.writeHead(200, {
+    'Content-Type': type,
+    'Content-Length': body.length,
+    'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=300',
+    'X-Content-Type-Options': 'nosniff',
+  });
+  res.end(req.method === 'HEAD' ? undefined : body);
+}
+
+async function handleApi(store, req, res, url) {
+  const route = url.pathname;
+
+  if (req.method === 'GET' && route === '/api/billing/config') {
+    json(res, 200, {
+      checkoutReady: stripeConfigured(),
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
+      priceConfigured: Boolean(process.env.STRIPE_PRICE_ID),
+      devMagic: devMode(),
+      currency: 'aud',
+      amountLabel: 'AU$20/month',
+    });
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/auth/me') {
+    json(res, 200, publicUser(currentUser(req, store)));
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/auth/logout') {
+    const user = currentUser(req, store);
+    if (user) {
+      user.session = null;
+      store.save(user);
+    }
+    json(res, 200, { ok: true }, { 'Set-Cookie': clearCookie(req) });
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/auth/magic-link') {
+    const raw = await readBody(req);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send the email as JSON.' });
+      return;
+    }
+    const email = String(body.email || '').trim().toLowerCase();
+    if (!EMAIL_RE.test(email) || email.length > 120) {
+      json(res, 400, { error: 'Enter a valid email address.' });
+      return;
+    }
+    if (!allowRate(email)) {
+      json(res, 429, { error: 'Too many sign-in links for that email. Try again in a little while.' });
+      return;
+    }
+    const user = store.findByEmail(email) || store.createUser(email);
+    const token = crypto.randomBytes(32).toString('hex');
+    user.magic = { hash: hashToken(token), expiresAt: Date.now() + MAGIC_MS };
+    store.save(user);
+    const next = safeNext(body.next) || '/app/?signedin=1';
+    const link = `${publicBase(req)}/api/auth/verify?token=${encodeURIComponent(token)}&next=${encodeURIComponent(next)}`;
+    let emailed = false;
+    if (process.env.RESEND_API_KEY && process.env.MAGIC_LINK_FROM) {
+      emailed = await sendMagicEmail(email, link);
+    }
+    const dev = devMode();
+    if (!emailed && !dev) {
+      json(res, 503, { error: 'Email sign-in is not configured on this server yet.' });
+      return;
+    }
+    if (dev) console.log(`Hopewick dev sign-in link for ${email}: ${link}`);
+    json(res, 200, {
+      ok: true,
+      emailed,
+      devLink: dev ? link : undefined,
+      message: emailed
+        ? 'Check your email for a sign-in link. It expires in 30 minutes.'
+        : 'Developer mode: use the sign-in link shown here. It expires in 30 minutes.',
+    });
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/auth/verify') {
+    const token = url.searchParams.get('token') || '';
+    const match = store.findByMagic(token);
+    if (!match) {
+      json(res, 400, { error: 'That sign-in link is invalid or has expired. Request a new one.' });
+      return;
+    }
+    match.magic = null;
+    const session = crypto.randomBytes(32).toString('hex');
+    match.session = { hash: hashToken(session), expiresAt: Date.now() + SESSION_MS };
+    store.save(match);
+    const next = safeNext(url.searchParams.get('next')) || '/app/?signedin=1';
+    res.writeHead(302, {
+      Location: next,
+      'Set-Cookie': sessionCookie(session, req, Math.floor(SESSION_MS / 1000)),
+      'Cache-Control': 'no-store',
+    });
+    res.end();
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/billing/checkout') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in before checkout.' });
+      return;
+    }
+    if (!stripeConfigured()) {
+      json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID.' });
+      return;
+    }
+    if (isPlusStatus(user.subscriptionStatus)) {
+      json(res, 409, { error: 'Hopewick Plus is already active on this account. Use Manage subscription to make changes.' });
+      return;
+    }
+    if (!user.stripeCustomerId) {
+      const customer = await stripeRequest('POST', '/customers', {
+        email: user.email,
+        'metadata[userId]': user.id,
+        name: user.email,
+      });
+      user.stripeCustomerId = customer.id;
+      store.save(user);
+    }
+    const base = publicBase(req);
+    const session = await stripeRequest('POST', '/checkout/sessions', {
+      mode: 'subscription',
+      customer: user.stripeCustomerId,
+      client_reference_id: user.id,
+      'line_items[0][price]': process.env.STRIPE_PRICE_ID,
+      'line_items[0][quantity]': '1',
+      success_url: `${base}/app/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${base}/app/?checkout=cancel`,
+      'metadata[userId]': user.id,
+      'metadata[email]': user.email,
+      'subscription_data[metadata][userId]': user.id,
+      allow_promotion_codes: 'true',
+      locale: 'en',
+    });
+    json(res, 200, { url: session.url, id: session.id });
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/billing/portal') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in before opening the billing portal.' });
+      return;
+    }
+    if (!process.env.STRIPE_SECRET_KEY) {
+      json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY.' });
+      return;
+    }
+    if (!user.stripeCustomerId) {
+      json(res, 400, { error: 'Subscribe first, then you can manage billing here.' });
+      return;
+    }
+    const portal = await stripeRequest('POST', '/billing_portal/sessions', {
+      customer: user.stripeCustomerId,
+      return_url: `${publicBase(req)}/app/?portal=return`,
+    });
+    json(res, 200, { url: portal.url });
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/billing/webhook') {
+    const raw = await readBody(req);
+    const result = await handleWebhook(store, {
+      body: raw,
+      signature: req.headers['stripe-signature'] || '',
+    });
+    json(res, 200, result);
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/billing/dev-set') {
+    if (!devMode()) {
+      json(res, 404, { error: 'Not found.' });
+      return;
+    }
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in first.' });
+      return;
+    }
+    const raw = await readBody(req);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send JSON.' });
+      return;
+    }
+    const allowed = new Set(['none', 'active', 'trialing', 'past_due', 'canceled', 'incomplete', 'incomplete_expired', 'unpaid', 'paused']);
+    const status = String(body.status || '');
+    if (!allowed.has(status)) {
+      json(res, 400, { error: 'Unknown subscription status.' });
+      return;
+    }
+    user.subscriptionStatus = status;
+    if (PLUS_OK.has(status) && !user.stripeSubscriptionId) user.stripeSubscriptionId = 'sub_dev';
+    if (status === 'none' || status === 'canceled') {
+      /* keep customer id so the portal can still be tested after a real checkout */
+    }
+    user.currentPeriodEnd = PLUS_OK.has(status) ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : user.currentPeriodEnd;
+    store.save(user);
+    json(res, 200, publicUser(user));
+    return;
+  }
+
+  json(res, 404, { error: 'Not found.' });
+}
+
+export function createApp({ store, root = REPO_ROOT } = {}) {
+  if (!store) throw new Error('createApp requires a store');
+  return async function onRequest(req, res) {
+    try {
+      const host = req.headers.host || '127.0.0.1';
+      const url = new URL(req.url || '/', `http://${host}`);
+      if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
+        res.writeHead(204, {
+          'Access-Control-Allow-Origin': requestOrigin(req),
+          'Access-Control-Allow-Credentials': 'true',
+          'Access-Control-Allow-Headers': 'Content-Type, Accept',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Max-Age': '600',
+        });
+        res.end();
+        return;
+      }
+      if (url.pathname.startsWith('/api/')) {
+        await handleApi(store, req, res, url);
+        return;
+      }
+      const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
+      serveStatic(root, req, res, pathname);
+    } catch (err) {
+      const status = err.status || 500;
+      if (status >= 500) console.error(err);
+      if (!res.headersSent) json(res, status, { error: err.message || 'Something went wrong.' });
+      else res.end();
+    }
+  };
+}
+
+export function startServer({
+  port = Number(process.env.PORT || 8787),
+  host = '127.0.0.1',
+  storePath = process.env.BILLING_STORE || path.join(REPO_ROOT, 'server', 'data', 'users.json'),
+  root = REPO_ROOT,
+} = {}) {
+  const store = createStore(storePath);
+  const server = http.createServer(createApp({ store, root }));
+  return new Promise((resolve) => {
+    server.listen(port, host, () => resolve(server));
+  });
+}
+
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  loadEnvFile();
+  const host = process.env.HOST || '127.0.0.1';
+  startServer({ host }).then((server) => {
+    const addr = server.address();
+    console.log(`Hopewick is running at http://${host}:${addr.port}`);
+    console.log(`Account API: http://${host}:${addr.port}/api/auth/me`);
+    if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
+    if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
+  });
+}

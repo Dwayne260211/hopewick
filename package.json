@@ -1,0 +1,10 @@
+{
+  "name": "hopewick",
+  "private": true,
+  "type": "module",
+  "description": "Hopewick static site plus the account and Stripe billing server.",
+  "scripts": {
+    "start": "node server/index.js",
+    "test:billing": "node --test --test-concurrency=1 server/billing.test.mjs"
+  }
+}

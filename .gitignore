@@ -6,3 +6,6 @@ __pycache__/
 **/local.settings.json
 **/.env
 **/.env.local
+
+# Hopewick Plus account store (emails and subscription status)
+server/data/
