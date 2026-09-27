@@ -32,9 +32,9 @@ const BRAND = { name:'Hopewick', companion:'Hope', tagline:'AOD recovery support
 
 To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html`, then run `python3 tools/make_og.py` to redraw the share image. Also update the static fallback text in the `<head>` meta tags of `index.html` (social-media crawlers don't run JavaScript). Storage keys stay `eden.*` on purpose, so existing users keep their data.
 
-## Demo mode
+## Sample conversations
 
-Open `app/?demo=1`, or click **Try the demo** on the landing page or the person picker. The demo:
+`app/?demo=1` still plays scripted sample conversations for a look around (including organisation trials). It is not a button on the public site. The landing page and the person picker open the app. The sample:
 - makes **no API calls** and needs no key;
 - uses a sample person ("Alex") with a sample recovery counter and a week of check-ins;
 - plays scripted conversations with a streaming animation: a craving (HALT and urge surfing), a slip-up, cutting down, *Pray with me*, and a crisis example that shows the crisis card;
@@ -45,7 +45,7 @@ A **DEMO** badge and banner are always visible.
 
 ## Pilot with us
 
-The landing page has a "Pilot with us" section for services. **TODO:** the contact details there are a clearly marked placeholder. Add the real contact method in `index.html` (search for `TODO`).
+The landing page has a "Pilot with us" section for services. Organisation and clinic enquiries go to **admin@bridge-bite-co.com**. That address is the business contact for organisations and clinics. It is not the founder’s email. Hopewick was founded by **Dwayne Stevens**.
 
 > ⚠️ Hope is an **AI recovery companion, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
 
@@ -67,15 +67,17 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 
 ## Hopewick Plus (AU$20/month)
 
-Individual subscriptions sit beside the free demo. **Get help, crisis and domestic violence support, the marketing site, the companion demo, today’s Word for the day / Just for today, and the resume builder stay free.** Organisation and clinic seat plans are coming soon (the pilot sheet is still the conversation for services).
+**Hopewick Plus — AU$20/month** unlocks the full Hopewick experience: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Cancel anytime. One subscription per person.
 
-Hopewick Plus unlocks the full-year reading library and full chat history on this device, plus account management through Stripe. Sign-in is an email magic link. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status.
+Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. **Daily message limits:** Free is 20 messages/day. Hopewick Plus is 200 messages/day. Those caps are product policy in the copy. They are not enforced in the companion yet. Organisation plans are coming soon (the pilot sheet is still the conversation for services).
+
+Sign-in is an email magic link. In the companion the screen is **Hopewick Plus**. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when that variable is unset, the only address is the founder’s Plus email, not the organisations inbox.
 
 Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, and in production `RESEND_API_KEY` plus `MAGIC_LINK_FROM`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
 
 GitHub Pages cannot run that server, so `https://hopewick.com.au/api/billing/*` 404s until DNS points at it. Production is one Render web service (`render.yaml`, `Dockerfile`) that serves the site and `/api` on `https://hopewick.com.au`. The cutover steps, the test price `price_1UKDd4PoYudRr3bcBe7IIdTH`, and the webhook URL are in [SETUP.md](SETUP.md). Invite-code AI stays on `https://hopewick-api.azurewebsites.net/api`.
 
-TODO: a web app manifest and service worker are not included yet.
+Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` and the icons in `app/`). The Play Store app isn’t ready yet. A service worker is still not included — see [SETUP.md](SETUP.md).
 
 ## Open it
 
@@ -89,12 +91,12 @@ TODO: a web app manifest and service worker are not included yet.
 
 1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
 2. Read the short one-time disclaimer.
-3. **Visitors:** use **Try the demo** (no key, nothing sent) or **Join waitlist**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
+3. **Hopewick Plus** is the subscription screen (email magic link). Live chat uses an invite code, or Settings → Advanced → *Use my own API key* (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
 
 ## Features
 
 - **Today on Home.** A prominent card with a full **Word for the day** and a full **Just for today** reading. There are 365 original entries of each (`app/data/word-for-the-day.js`, `app/data/just-for-today.js`), chosen by the Australia/Brisbane calendar date — the same pair for everyone that day, including offline, with no API. Optional fellowship-style reflection, not clinical advice. Expand the card to read the whole text. 29 February reuses the 28 February readings.
-- **Product copy + crisis UX (v5.10).** Tagline **AOD recovery support between sessions**; Hope standardised as an **AI recovery companion**; CTA **Join waitlist**; About uses progressive disclosure; crisis card leads with moment-first actions (incl. **1800RESPECT**).
+- **Product copy + crisis UX (v5.10).** Tagline **AOD recovery support between sessions**; Hope standardised as an **AI recovery companion**; About uses progressive disclosure; crisis card leads with moment-first actions (incl. **1800RESPECT**).
 - **Find a church (v5.8).** Official Australian denominational finders (ACC, Catholic free parish lookup, Anglican dioceses, Uniting, Baptist state unions, Salvation Army, Presbyterian, Lutheran, Churches of Christ) plus AusChurches directory and maps. Hopewick does **not** scrape or host a church database — link-outs only. Soft-hidden when faith preference is “none” (same pattern as Bible); chat chip if someone asks for a church.
 - **Find AOD services (v5.11).** Curated QLD-first community AOD NGOs (QuIHN, Drug ARM, Lives Lived Well, Brisbane Youth Service, Anglicare SQ, plus QNADA) with plain-language offer chips from their public sites — Visit site / Call link-outs. Different from Find treatment / rehab (state helplines + official finders only). Hopewick does **not** run these services.
 - **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; visible in demo.
@@ -121,7 +123,7 @@ If you used the earlier single-user version, your chats, memories and settings m
 
 ## Tests
 
-- `tests/test_eden.py` runs headless Chromium (Playwright) checks against a fake API. It covers profiles, PINs, privacy, migration, mode and faith, the crisis path, the help panel, the counter, check-ins, streaming, memory, export/import, mobile, loading from file://, demo mode (no network calls, no storage changes, scenarios, crisis card), central branding, and the landing page (links, welcome-back banner, TODO contact, copyright, meta tags).
+- `tests/test_eden.py` runs headless Chromium (Playwright) checks against a fake API. It covers profiles, PINs, privacy, migration, mode and faith, the crisis path, the help panel, the counter, check-ins, streaming, memory, export/import, mobile, loading from file://, demo mode (no network calls, no storage changes, scenarios, crisis card), central branding, and the landing page (links, welcome-back banner, copyright, meta tags).
 - `tests/test_profiles.py` checks that a new device starts with no named profiles, that unused factory profiles are not shown, and that demo mode still uses the Alex sample without writing storage.
 - `tests/test_real_e2e.py` runs a live test using `OPENAI_API_KEY` from the environment. The key goes into the headless browser only and is never written to a file.
 

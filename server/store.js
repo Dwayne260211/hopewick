@@ -92,17 +92,51 @@ export function isPlusStatus(status) {
   return status === 'active' || status === 'trialing';
 }
 
+/** Organisations inbox. Never a founder or complimentary Plus address. */
+const ORGANISATION_CONTACT = 'admin@bridge-bite-co.com';
+const DEFAULT_FOUNDER_PLUS_EMAIL = 'dwaynesimons1990@gmail.com';
+
+/**
+ * Complimentary Hopewick Plus. FOUNDER_PLUS_EMAILS (comma-separated) overrides
+ * the default. Unset uses the founder address only. An empty value grants none.
+ * The organisations contact is ignored even if someone lists it.
+ */
+export function founderPlusEmails() {
+  const raw = process.env.FOUNDER_PLUS_EMAILS;
+  const source = raw == null ? DEFAULT_FOUNDER_PLUS_EMAIL : String(raw);
+  const emails = source
+    .split(/[,;\s]+/)
+    .map((part) => part.trim().toLowerCase())
+    .filter((part) => part.includes('@') && part !== ORGANISATION_CONTACT);
+  return new Set(emails);
+}
+
+export function isFounderPlusEmail(email) {
+  return founderPlusEmails().has(String(email || '').trim().toLowerCase());
+}
+
 export function publicUser(user) {
   if (!user) {
-    return { signedIn: false, id: null, email: null, subscriptionStatus: 'none', currentPeriodEnd: null, plus: false };
+    return {
+      signedIn: false,
+      id: null,
+      email: null,
+      subscriptionStatus: 'none',
+      currentPeriodEnd: null,
+      plus: false,
+      complimentary: false,
+    };
   }
-  const subscriptionStatus = user.subscriptionStatus || 'none';
+  const storedStatus = user.subscriptionStatus || 'none';
+  const paid = isPlusStatus(storedStatus);
+  const complimentary = isFounderPlusEmail(user.email) && !paid;
   return {
     signedIn: true,
     id: user.id,
     email: user.email,
-    subscriptionStatus,
+    subscriptionStatus: complimentary ? 'active' : storedStatus,
     currentPeriodEnd: user.currentPeriodEnd || null,
-    plus: isPlusStatus(subscriptionStatus),
+    plus: paid || complimentary,
+    complimentary,
   };
 }

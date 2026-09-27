@@ -15,6 +15,11 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <meta name="description" content="Hopewick is an AI AOD recovery companion from BRIDGE&BITE.CO PTY LTD (ABN 83 692 080 792) — support between sessions for people in recovery, and for Australian rehabs and AOD services.">
 <meta name="build" content="hopewick-v5.13">
 <meta name="theme-color" content="#3f8f5f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hopewick">
+<link rel="manifest" href="app/manifest.webmanifest">
+<link rel="apple-touch-icon" href="app/icon-180.png">
 <link rel="canonical" href="https://hopewick.com.au/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hopewick">
@@ -121,29 +126,6 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .roadmap { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .05em; background: var(--gold); color: #3d2f00; padding: 2px 8px; border-radius: 999px; vertical-align: middle; margin-left: 6px; }
 .pilot { text-align: center; }
 .pilot .card { max-width: 720px; margin: 0 auto; padding: 34px; }
-.todo-contact { margin: 20px auto 0; max-width: 520px; border: 2px dashed #d0a52c; background: #fdf3d3; color: #4a3a05; border-radius: 14px; padding: 14px 18px; font-weight: 600; }
-@media (prefers-color-scheme: dark) { .todo-contact { background: #3a3013; color: #f6e6b0; border-color: #8a7330; } }
-
-
-/* Join waitlist */
-.waitlist { text-align: center; }
-.waitlist .card { max-width: 640px; margin: 0 auto; padding: 34px; text-align: left; }
-.waitlist h2 { text-align: center; }
-.waitlist .section-lede { text-align: center; }
-.waitlist-form { display: grid; gap: 12px; margin-top: 18px; }
-.waitlist-form label { display: grid; gap: 4px; font-size: .92rem; font-weight: 600; }
-.waitlist-form label span.hint { font-weight: 500; color: var(--muted); font-size: .82rem; }
-.waitlist-form input, .waitlist-form select, .waitlist-form textarea {
-  font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border);
-  background: var(--surface-2); color: var(--text); width: 100%;
-}
-.waitlist-form input:focus, .waitlist-form select:focus, .waitlist-form textarea:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
-.waitlist-form .role-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.waitlist-form .role-row label { display: flex; align-items: center; gap: 6px; font-weight: 500; padding: 8px 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); cursor: pointer; font-size: .88rem; }
-.waitlist-form .role-row input { width: auto; accent-color: var(--accent); }
-.waitlist-form .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 4px; }
-.waitlist-note { margin-top: 14px; font-size: .88rem; color: var(--muted); text-align: center; }
-.waitlist-note a { font-weight: 600; }
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--border); padding: 30px 0 40px; font-size: .9rem; color: var(--muted); }
@@ -165,6 +147,14 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .plan .plan-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
 .plan-soon { margin-top: 16px; }
 .plan-soon h3 { margin-top: 0; }
+.message-caps { margin: 4px 0 18px; }
+.message-caps-title { margin: 0 0 8px; font-size: 1.05rem; font-weight: 800; }
+.message-caps-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.message-cap { border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; background: var(--surface); }
+.message-cap.plus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.message-cap .lbl { margin: 0; font-size: .88rem; font-weight: 700; color: var(--muted); }
+.message-cap .num { margin: 2px 0 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; color: var(--text); }
+@media (max-width: 600px) { .message-caps-row { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .plans-grid { grid-template-columns: 1fr; } }
 
 @media (max-width: 900px) {
@@ -190,7 +180,6 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   "legalName": "BRIDGE&BITE.CO PTY LTD",
   "url": "https://hopewick.com.au/",
   "logo": "https://hopewick.com.au/og-image.png",
-  "email": "admin@bridge-bite-co.com",
   "description": "AI AOD recovery companion for people in recovery, and for Australian rehabs and AOD services. Not a crisis service. Not affiliated with the cancelled HOPEWICK PTY. LTD. (ABN 98 010 417 124).",
   "taxID": "83 692 080 792",
   "address": {
@@ -217,11 +206,10 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
       <li><a href="#clinicians">For services</a></li>
       <li><a href="#safety">Safety</a></li>
       <li><a href="#privacy">Privacy</a></li>
-      <li><a href="#plans">Plans</a></li>
-      <li><a href="#waitlist">Join waitlist</a></li>
+      <li><a href="#plans">Hopewick Plus</a></li>
       <li><a href="#pilot">Pilot with us</a></li>
     </ul>
-    <a class="btn btn-primary btn-sm" href="app/?demo=1" id="navLaunch">Try the demo</a>
+    <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Open the app</a>
   </nav>
 </header>
 
@@ -243,10 +231,10 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <p class="hero-byline" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
         <p class="lede">Chat with <strong data-companion>Hope</strong> — a warm, non-judgemental AI recovery companion on <strong data-brand>Hopewick</strong>. Use it on your own, or offer it through a rehab or AOD service. Built on evidence-based approaches, with faith optional, and verified Australian crisis contacts one tap away.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="app/?demo=1" id="tryDemo">✨ Try the demo</a>
-          <a class="btn" href="#waitlist" id="heroWaitlist">Join waitlist</a>
+          <a class="btn btn-primary" href="app/" id="launchApp">Open the app</a>
+          <a class="btn" href="#plans" id="heroPlus">Hopewick Plus</a>
         </div>
-        <p class="cta-note">The free demo needs no card. <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the year’s readings and your chat history. Phone app coming soon. <a href="#plans">See plans</a>. Get help stays free. Organisation plans are coming soon.<br><a href="app/" id="launchApp" style="font-size:.9em;opacity:.85">Open the app</a> <span style="opacity:.65">(returning visitors)</span></p>
+        <p class="cta-note">Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. <strong>Hopewick Plus is AU$20 a month.</strong> <strong>Daily message limits:</strong> Free is 20 messages/day. Hopewick Plus is 200 messages/day. <a href="#plans">See Hopewick Plus</a>. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet. Organisation plans are coming soon.</p>
       </div>
       <div class="mock" aria-label="Example conversation (pre-written)">
         <div class="mock-head"><span class="orb" aria-hidden="true"></span><span data-companion>Hope</span><span class="tag">EXAMPLE</span></div>
@@ -254,7 +242,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <div class="bubble a">Thanks for reaching out right now — that's a real strength. Cravings are like waves: they build, peak and pass, usually within 20–30 minutes. Quick check-in: are you hungry, angry, lonely or tired right now?</div>
         <div class="bubble u">Tired and a bit lonely.</div>
         <div class="bubble a">That makes sense after a long day. Want to try urge surfing together? It takes about ten minutes…</div>
-        <p class="mock-note">Illustrative example from the demo, not a real client conversation.</p>
+        <p class="mock-note">Illustrative example, not a real conversation.</p>
       </div>
     </div>
   </section>
@@ -276,7 +264,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   <section id="features" aria-labelledby="featTitle">
     <div class="wrap">
       <h2 id="featTitle">Key features</h2>
-      <p class="section-lede">Hope runs in the browser today, on desktop or mobile. A phone app is coming soon — there isn’t a home-screen install yet.</p>
+      <p class="section-lede">Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
       <div class="grid g3">
         <div class="card"><div class="icon" aria-hidden="true">🌊</div><h3>Craving &amp; slip support</h3><p>Guided urge surfing, HALT checks, TIPP and other DBT/CBT skills practised step-by-step in chat. A slip is something to learn from, not a failure.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Goals &amp; cut-down plans</h3><p>Helps people set small SMART goals, whether that's abstinence, cutting down or safer use, and review them kindly.</p></div>
@@ -348,15 +336,15 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   <!-- Privacy -->
   <section id="privacy" class="alt" aria-labelledby="privTitle">
     <div class="wrap">
-      <h2 id="privTitle">Privacy: how it works today</h2>
-      <p class="section-lede">We'd rather be plain about this than overpromise.</p>
+      <h2 id="privTitle">Privacy</h2>
+      <p class="section-lede">Chats stay on the device. An account stores your email and whether Hopewick Plus is active.</p>
       <div class="grid g3">
         <div class="card"><h3>Stays on the device</h3><p>Chats, memories, check-ins and settings stay in the browser on the device being used. If you sign in for Hopewick Plus, we store your email and subscription status — not your conversations.</p></div>
-        <div class="card"><h3>Demo sends nothing</h3><p>The public demo uses pre-written examples only — nothing you type is sent to an AI provider. When hosted accounts open, replies will use our managed service instead of asking visitors for keys.</p></div>
-        <div class="card"><h3>Service-ready hosting <span class="roadmap">ROADMAP</span></h3><p>A hosted version for services, with Australian data storage and managed access, is on the roadmap. It isn't available yet.</p></div>
+        <div class="card"><h3>Your account</h3><p>Hopewick Plus sign-in is an email link. We keep the email and whether Plus is active. Conversations are not uploaded.</p></div>
+        <div class="card"><h3>Organisations</h3><p>Seat plans for rehabs, AOD services and clinics are not on sale yet. A pilot is how a service can talk about using Hope with the people they support.</p></div>
       </div>
       <p class="callout">Profile PINs are a light privacy lock for shared devices, not strong security. Anyone with access to the browser's storage could still read the data. People can export or delete their own data at any time.</p>
-      <p class="help" style="margin:14px auto 0;max-width:720px;text-align:center;font-size:.85rem;color:var(--muted)">Advanced (in the app): optional own OpenAI-compatible API key for device testing — tucked under Settings → Advanced, not the main path.</p>
+      <p class="help" style="margin:14px auto 0;max-width:720px;text-align:center;font-size:.85rem;color:var(--muted)">Settings → Advanced can use your own OpenAI-compatible API key. That is optional.</p>
     </div>
   </section>
 
@@ -378,88 +366,69 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   </section>
 
 
-  <!-- Plans -->
+  <!-- Hopewick Plus -->
   <section id="plans" aria-labelledby="plansTitle">
     <div class="wrap">
-      <h2 id="plansTitle">Plans</h2>
-      <p class="section-lede">The demo, today’s readings, and Get help stay free. Plus includes a clean time tracker, Bible study (SOAP and Diving Deeper Finding Jesus, with Going Deeper), 12 Steps practice, journal refinements, the full year of readings, and your chat history. A phone app is coming soon. Get help never asks you to pay.</p>
+      <h2 id="plansTitle">Hopewick Plus — AU$20/month</h2>
+      <p class="section-lede">Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history.</p>
+      <p class="section-lede">Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder.</p>
+      <p class="section-lede">Cancel anytime. One subscription per person.</p>
+      <p class="section-lede">Organisation plans coming soon.</p>
+      <div class="message-caps" aria-label="Daily message limits">
+        <p class="message-caps-title">Daily message limits</p>
+        <div class="message-caps-row">
+          <div class="message-cap">
+            <p class="lbl">Free</p>
+            <p class="num">20 messages/day</p>
+          </div>
+          <div class="message-cap plus">
+            <p class="lbl">Hopewick Plus</p>
+            <p class="num">200 messages/day</p>
+          </div>
+        </div>
+      </div>
       <div class="plans-grid">
         <article class="card plan">
-          <h3>Free</h3>
+          <h3>Essential support</h3>
           <p class="price">AU$0</p>
-          <p class="who">For trying Hope — on your own, or with a service looking around before a pilot.</p>
+          <p class="who">Stays free. Plus is not required.</p>
           <ul class="checklist">
-            <li>The website, including the safety information</li>
-            <li>Crisis lines, domestic and family violence support, and Get help — always free. Plus is not required</li>
-            <li>The companion demo, including today’s Word for the day and Just for today</li>
-            <li>A limited chat, so you can hear how Hope responds, with no card</li>
-            <li>Resume builder in the app — free, and kept on this device</li>
+            <li><strong>Daily message limit: 20 messages/day</strong></li>
+            <li>Today’s Readings — Word for the day and Just for today</li>
+            <li>Crisis support, including Australian crisis lines</li>
+            <li>Domestic and family violence resources</li>
+            <li>Get Help</li>
+            <li>The resume builder, kept on this device</li>
           </ul>
           <div class="plan-actions">
-            <a class="btn btn-primary" href="app/?demo=1">Try the free demo</a>
+            <a class="btn btn-primary" href="app/">Open the app</a>
           </div>
         </article>
         <article class="card plan featured">
           <h3>Hopewick Plus</h3>
           <p class="price">AU$20 <span>/ month</span></p>
-          <p class="who">For one person. Australian dollars. Cancel any time from your account.</p>
+          <p class="who">Cancel anytime. One subscription per person.</p>
           <ul class="checklist">
-            <li>Everything in Free stays with you, including today’s readings and Get help. Crisis care is never part of the subscription</li>
-            <li>A clean time tracker — the days that matter to you, with milestones if you want them. A slip doesn’t wipe the record</li>
-            <li>Bible study when you choose it: daily SOAP (World English Bible)</li>
-            <li>Deeper dives: Diving Deeper Finding Jesus, with Going Deeper cross-references</li>
-            <li>Practise the 12 Steps with Hope — a faith-based outline, optional, a support tool, not a sponsor</li>
-            <li>Journal refinements: a private journal, plus an optional deepen-reflection that keeps your voice</li>
-            <li>The full year of readings — any day, not only today</li>
-            <li>Your chat history with Hope, kept on this device</li>
-            <li>Phone app coming soon. Hope runs in the browser today — a home-screen install isn’t ready yet</li>
-            <li>Your account in one place: update your card, see invoices, or cancel. We store your email and whether Plus is active — not the chats</li>
+            <li><strong>Daily message limit: 200 messages/day</strong></li>
+            <li>Your clean time tracker</li>
+            <li>SOAP reflections</li>
+            <li>Going Deeper faith content</li>
+            <li>12 Steps practice</li>
+            <li>Journal tools</li>
+            <li>The full year of readings</li>
+            <li>Your saved chat history</li>
+            <li>Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet</li>
           </ul>
           <div class="plan-actions">
-            <a class="btn btn-primary" href="app/?account=1">Sign in to subscribe</a>
+            <a class="btn btn-primary" href="app/?account=1">Email me a sign-in link</a>
           </div>
         </article>
       </div>
       <div class="card plan-soon">
         <h3>Organisations and clinics <span class="roadmap">COMING SOON</span></h3>
-        <p>Seat plans for rehabs, AOD services and clinics are not on sale yet. You can still try the free demo with your team, read <a href="how-it-fits.html">how Hope fits in a service</a>, or look at the <a href="pilot-pricing.html">pilot price sheet</a>. Email <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a> if you’d like to talk about a pilot.</p>
+        <p>Organisation plans coming soon. Seat plans for rehabs, AOD services and clinics are not on sale yet. Read <a href="how-it-fits.html">how Hope fits in a service</a>, or look at the <a href="pilot-pricing.html">pilot price sheet</a>. Email <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a> if you’d like to talk about a pilot.</p>
       </div>
-      <p class="callout">Hopewick Plus is an individual subscription. It is not counselling and not a crisis service. In an emergency call <a href="tel:000">000</a>. Chats stay on your device; your account holds your email and whether Plus is active.</p>
-    </div>
-  </section>
-
-  <!-- Join waitlist -->
-  <section id="waitlist" class="waitlist" aria-labelledby="waitlistTitle">
-    <div class="wrap">
-      <div class="card">
-        <h2 id="waitlistTitle">Join waitlist</h2>
-        <p class="section-lede" style="margin:0 auto 6px">Try the free demo today. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the year’s readings and your chat history — see <a href="#plans">Plans</a>. Phone app coming soon. Today’s readings and Get help stay free. Organisation and clinic plans are still on the way; leave your details if you’d like us to be in touch.</p>
-        <form class="waitlist-form" id="waitlistForm" novalidate>
-          <label for="wlName">Your name
-            <input id="wlName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="First name or preferred name">
-          </label>
-          <label for="wlEmail">Email
-            <input id="wlEmail" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
-          </label>
-          <fieldset style="border:0;padding:0;margin:0">
-            <legend style="font-size:.92rem;font-weight:600;margin-bottom:4px">I am… <span class="hint" style="font-weight:500;color:var(--muted);font-size:.82rem">(pick one)</span></legend>
-            <div class="role-row" role="radiogroup" aria-label="How you relate to Hopewick">
-              <label><input type="radio" name="role" value="Person in recovery" required> Person in recovery</label>
-              <label><input type="radio" name="role" value="Family / support person"> Family / support person</label>
-              <label><input type="radio" name="role" value="AOD service / clinician"> AOD service / clinician</label>
-              <label><input type="radio" name="role" value="Other"> Other</label>
-            </div>
-          </fieldset>
-          <label for="wlNote">Anything you’d like us to know <span class="hint">(optional)</span>
-            <textarea id="wlNote" name="note" rows="3" maxlength="500" placeholder="e.g. interested for our rehab clients, or for myself after discharge"></textarea>
-          </label>
-          <div class="actions">
-            <button class="btn btn-primary" type="submit" id="waitlistSubmit">Join waitlist</button>
-            <a class="btn" href="app/?demo=1">Try the free demo</a>
-          </div>
-        </form>
-        <p class="waitlist-note" id="waitlistContact">Opens your email app to contact <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD. If the form is awkward on mobile, tap that address anytime.</p>
-      </div>
+      <p class="callout">Hopewick Plus is an individual subscription. It is not counselling and not a crisis service. In an emergency call <a href="tel:000">000</a>. Chats stay on your device; your account holds your email and whether Plus is active. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
   </section>
 
@@ -468,12 +437,12 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     <div class="wrap">
       <div class="card">
         <h2 id="pilotTitle">Pilot with us</h2>
-        <p class="section-lede" style="margin:0 auto 18px">We're looking for Australian rehabs, AOD services and counsellors to help shape <span data-brand>Hopewick</span> for real-world use. Individual Plus is available now. Organisation plans are coming soon — a pilot is still the way to try Hope with the people you support.</p>
+        <p class="section-lede" style="margin:0 auto 18px">We're looking for Australian rehabs, AOD services and counsellors to help shape <span data-brand>Hopewick</span> for real-world use. Individual Hopewick Plus is available now. Organisation plans are coming soon — email us if you’d like to talk about a pilot.</p>
         <div class="cta-row" style="justify-content:center">
-          <a class="btn btn-primary" href="app/?demo=1">Try the demo first</a>
-          <a class="btn" href="#waitlist">Join waitlist</a>
+          <a class="btn btn-primary" href="app/">Open the app</a>
+          <a class="btn" href="mailto:admin@bridge-bite-co.com">Email us about a pilot</a>
         </div>
-        <p class="pilot-contact" id="pilotContact" style="margin:20px auto 0;max-width:520px;font-weight:600">Pilot enquiries: <a href="mailto:Admin@bridge-bite-co.com">Admin@bridge-bite-co.com</a></p>
+        <p class="pilot-contact" id="pilotContact" style="margin:20px auto 0;max-width:520px;font-weight:600">Organisations and clinics: <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a></p>
       </div>
     </div>
   </section>
@@ -489,9 +458,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     </div>
     <div>
       <ul class="foot-links">
-        <li><a href="#plans">Plans</a></li>
-        <li><a href="app/?demo=1">Demo</a></li>
-        <li><a href="#waitlist">Join waitlist</a></li>
+        <li><a href="#plans">Hopewick Plus</a></li>
         <li><a href="app/">App</a></li>
         <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
       </ul>
@@ -530,42 +497,6 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     returning = !!(profiles && Array.isArray(profiles.list) && profiles.list.length) || localStorage.getItem('eden.settings.v1') !== null;
   } catch (e) { returning = false; }
   if (returning) document.getElementById('welcomeBack').classList.add('show');
-})();
-
-/* Waitlist form → mailto (works on static GitHub Pages; no backend). */
-(function waitlistMailto() {
-  const form = document.getElementById('waitlistForm');
-  if (!form) return;
-  const TO = 'Admin@bridge-bite-co.com';
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const name = (document.getElementById('wlName').value || '').trim();
-    const email = (document.getElementById('wlEmail').value || '').trim();
-    const note = (document.getElementById('wlNote').value || '').trim();
-    const roleEl = form.querySelector('input[name="role"]:checked');
-    const role = roleEl ? roleEl.value : '';
-    if (!name || !email || !role) {
-      form.reportValidity();
-      return;
-    }
-    const subject = 'Hopewick waitlist';
-    const body = [
-      'Hello BRIDGE&BITE.CO,',
-      '',
-      'I would like to join the Hopewick waitlist.',
-      '',
-      'Name: ' + name,
-      'Email: ' + email,
-      'I am: ' + role,
-      note ? ('Note: ' + note) : '',
-      '',
-      '— Sent from the Hopewick waitlist form'
-    ].filter(Boolean).join('\n');
-    const href = 'mailto:' + TO
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + encodeURIComponent(body);
-    window.location.href = href;
-  });
 })();
 </script>
 </body>

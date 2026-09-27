@@ -42,6 +42,9 @@ services:
         sync: false
       - key: MAGIC_LINK_FROM
         sync: false
+      # Founder complimentary Plus. Not the organisations inbox.
+      - key: FOUNDER_PLUS_EMAILS
+        value: dwaynesimons1990@gmail.com
     disk:
       name: hopewick-accounts
       mountPath: /var/data
