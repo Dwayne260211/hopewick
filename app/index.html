@@ -788,6 +788,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .picker-body h2 { margin: 14px 0 4px; font-size: 1.5rem; }
 .picker-body > p { margin: 0 0 18px; color: var(--muted); }
 .profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.profiles .empty-hint { grid-column: 1 / -1; margin: 0; }
 .profile-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 10px 14px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-2); transition: transform .15s, border-color .15s; width: 100%; }
 .profile-card:hover { transform: translateY(-2px); border-color: var(--accent); }
 .profile-card .pname { font-weight: 650; font-size: 1.05rem; }
@@ -1410,7 +1411,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <span>Get help<span class="htext-long"> now</span></span>
         </button>
         <button class="switch-btn" id="switchBtn" type="button" title="Switch profile">
-          <span class="avatar" id="switchAvatar" aria-hidden="true">D</span><span class="sname" id="switchName">Dwayne</span>
+          <span class="avatar" id="switchAvatar" aria-hidden="true">?</span><span class="sname" id="switchName"></span>
         </button>
         <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
@@ -3021,34 +3022,55 @@ const el = {
 /* ---------------------------------------------------------------------------
    Profiles: migration, loading and saving
    --------------------------------------------------------------------------- */
-/** One-time migration from the single-user v1 layout into the "Dwayne" profile. */
+/** Old builds seeded two unused profiles. Drop that pair when nobody has used them. */
+const FACTORY_PROFILE_IDS = ['abbey', 'dwayne'];
+function isUntouchedFactorySeed(state) {
+  if (!state || !Array.isArray(state.list) || state.list.length !== FACTORY_PROFILE_IDS.length) return false;
+  const ids = state.list.map(p => p.id).slice().sort();
+  if (ids.join() !== FACTORY_PROFILE_IDS.join()) return false;
+  if (state.list.some(p => p.pin)) return false;
+  // The shipped names matched these ids. A rename, PIN, or any saved data means keep them.
+  if (state.list.some(p => String(p.name || '').trim().toLowerCase() !== String(p.id || '').toLowerCase())) return false;
+  for (const id of ids) {
+    if (PK.some(what => localStorage.getItem(pk(id, what)) !== null)) return false;
+  }
+  return true;
+}
+
+/** Fresh installs start with no profiles. Legacy single-user data moves into one neutral profile. */
 function migrateStorage() {
+  const demoOpen = new URLSearchParams(location.search).get('demo') === '1';
   profilesState = load(K.profiles, null);
+  if (isUntouchedFactorySeed(profilesState)) {
+    // Demo must not write storage. Hide the unused names in memory; a normal visit removes them.
+    if (!demoOpen) localStorage.removeItem(K.profiles);
+    profilesState = null;
+  }
   if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length) return;
-  const now = Date.now();
-  profilesState = {
-    list: [
-      { id: 'dwayne', name: 'Dwayne', pin: null, created: now },
-      { id: 'abbey', name: 'Abbey', pin: null, created: now },
-    ],
-    lastId: 'dwayne',
-  };
   const oldSettings = load(LEGACY.settings, null);
   const hasLegacy = Object.values(LEGACY).some(k => localStorage.getItem(k) !== null);
-  // Opening straight into the demo on a fresh device must not write anything:
-  // keep the default people in memory until someone actually picks a person.
-  if (!hasLegacy && new URLSearchParams(location.search).get('demo') === '1') return;
+  // Opening straight into the demo on a fresh device must not write anything.
+  if (!hasLegacy) {
+    profilesState = { list: [], lastId: null };
+    return;
+  }
+  const id = uid();
+  const now = Date.now();
+  profilesState = {
+    list: [{ id, name: 'Person 1', pin: null, created: now }],
+    lastId: id,
+  };
   if (oldSettings) {
     for (const k of SHARED_KEYS) if (oldSettings[k] !== undefined) shared[k] = oldSettings[k];
     const persona = Object.assign({}, oldSettings);
     SHARED_KEYS.forEach(k => delete persona[k]);
     delete persona.userName;
-    save(pk('dwayne', 'settings'), persona); // settingsVersion missing → mode migration runs on load
+    save(pk(id, 'settings'), persona); // settingsVersion missing → mode migration runs on load
   }
   const moves = [[LEGACY.convos, 'convos'], [LEGACY.memories, 'memories'], [LEGACY.active, 'active']];
   for (const [oldKey, what] of moves) {
     const raw = localStorage.getItem(oldKey);
-    if (raw !== null) localStorage.setItem(pk('dwayne', what), raw);
+    if (raw !== null) localStorage.setItem(pk(id, what), raw);
   }
   Object.values(LEGACY).forEach(k => localStorage.removeItem(k));
   save(K.shared, shared);
@@ -7218,6 +7240,13 @@ function renderPicker() {
   $('#pickerBody').classList.toggle('managing', managing);
   $('#managePeopleBtn').setAttribute('aria-pressed', String(managing));
   $('#managePeopleBtn').textContent = managing ? 'Done' : 'Manage profiles';
+  $('#managePeopleBtn').hidden = !profilesState.list.length;
+  if (!profilesState.list.length) {
+    const li = document.createElement('li');
+    li.className = 'empty-hint';
+    li.textContent = 'No profiles yet. Add your name to start.';
+    list.appendChild(li);
+  }
   for (const p of profilesState.list) {
     const li = document.createElement('li');
     li.className = 'profile-item';
@@ -7251,9 +7280,17 @@ function showPicker() {
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
+  const noProfiles = !profilesState.list.length;
+  if (noProfiles) {
+    $('#addPersonForm').hidden = false;
+    $('#addPersonInput').value = '';
+  }
   if (!el.pickerDlg.open) el.pickerDlg.showModal();
-  const first = $('.profile-card', el.pickerDlg);
-  if (first) first.focus();
+  if (noProfiles) $('#addPersonInput').focus();
+  else {
+    const first = $('.profile-card', el.pickerDlg);
+    if (first) first.focus();
+  }
 }
 function pickProfile(p) {
   if (managing) return;
@@ -8481,7 +8518,8 @@ migrateStorage();
 renderHelpList();
 (function preTheme() {
   // Use the last profile's theme behind the picker without loading any of their data.
-  const last = load(pk(profilesState.lastId, 'settings'), {}) || {};
+  const lastId = profilesState && profilesState.lastId;
+  const last = lastId ? (load(pk(lastId, 'settings'), {}) || {}) : {};
   settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, shared);
   applyTheme();
 })();

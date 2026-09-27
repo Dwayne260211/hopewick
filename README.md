@@ -87,7 +87,7 @@ TODO: a web app manifest and service worker are not included yet.
 
 ## First run
 
-1. **Who's chatting?** Pick **Dwayne** or **Abbey**, or add a person. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings.
+1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
 2. Read the short one-time disclaimer.
 3. **Visitors:** use **Try the demo** (no key, nothing sent) or **Join waitlist**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
 
@@ -116,11 +116,12 @@ TODO: a web app manifest and service worker are not included yet.
 
 ## Upgrading from v1
 
-If you used the earlier single-user version, your chats, memories and settings move into the **Dwayne** profile automatically, and your API key becomes the shared device key. Everyone is switched to counsellor mode **once**. After that, you can pick Friend mode in Settings and it will stay.
+If you used the earlier single-user version, your chats, memories and settings move into a profile named **Person 1** automatically, and your API key becomes the shared device key. You can rename that profile. Everyone is switched to counsellor mode **once**. After that, you can pick Friend mode in Settings and it will stay.
 
 ## Tests
 
 - `tests/test_eden.py` runs headless Chromium (Playwright) checks against a fake API. It covers profiles, PINs, privacy, migration, mode and faith, the crisis path, the help panel, the counter, check-ins, streaming, memory, export/import, mobile, loading from file://, demo mode (no network calls, no storage changes, scenarios, crisis card), central branding, and the landing page (links, welcome-back banner, TODO contact, copyright, meta tags).
+- `tests/test_profiles.py` checks that a new device starts with no named profiles, that unused factory profiles are not shown, and that demo mode still uses the Alex sample without writing storage.
 - `tests/test_real_e2e.py` runs a live test using `OPENAI_API_KEY` from the environment. The key goes into the headless browser only and is never written to a file.
 
 ## Copyright and licence
