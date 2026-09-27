@@ -67,7 +67,7 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 
 ## Hopewick Plus (AU$20/month)
 
-Individual subscriptions sit beside the free demo. **Get help, crisis and domestic violence support, the marketing site, the companion demo, and today’s Word for the day / Just for today stay free.** Organisation and clinic seat plans are coming soon (the pilot sheet is still the conversation for services).
+Individual subscriptions sit beside the free demo. **Get help, crisis and domestic violence support, the marketing site, the companion demo, today’s Word for the day / Just for today, and the resume builder stay free.** Organisation and clinic seat plans are coming soon (the pilot sheet is still the conversation for services).
 
 Hopewick Plus unlocks the full-year reading library and full chat history on this device, plus account management through Stripe. Sign-in is an email magic link. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status.
 
@@ -106,6 +106,7 @@ TODO: a web app manifest and service worker are not included yet.
 - **Safety first.** Words that suggest risk (suicide, self-harm, overdose, about to use / extreme craving, domestic violence, feeling unsafe, someone in danger) instantly show a crisis card that leads with **what to do in this moment** and call buttons, then notes that Hope is an AI recovery companion. This works even offline or without an API key. Hope is also told to give those contacts first.
 - **Recovery counter.** Set a start date and a label (e.g. "alcohol-free") and the day count shows in the sidebar.
 - **Daily check-in.** Pick a mood and rate your cravings, with a strip showing the last 7 days. Quick-start chips include *I'm having a craving*, *I slipped up*, *Help me make a plan*, *Pray with me* and *I want to cut down*.
+- **Resume builder (free).** More → Resume, or the Home shortcut. Guided steps for contact details, a short summary, work / volunteering / caring, education or training, skills, and optional references. The draft stays in this browser (`eden.p.<id>.resume`). Download a plain PDF. It is not part of Hopewick Plus.
 - **Memory.** After each exchange Hope notes useful facts for each person, such as goals, triggers, supports, what helps and faith preferences. It never stores crisis details. You can view, edit, add or delete memories in the **Memories** panel.
 - **Profiles and privacy.** Each person's data is stored separately, and Hope only ever sees the active person's chats and memories. There's an optional **4-digit PIN** per person, which is a *light privacy lock, not strong security*. Use **Switch person** in the header or sidebar to change who's chatting.
 - **Chat.** Replies stream in (falling back to normal requests if streaming isn't supported), with a safe markdown renderer, an animated orb, a typing indicator, and stop/retry/copy/read-aloud buttons.
