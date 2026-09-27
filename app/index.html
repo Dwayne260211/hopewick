@@ -1424,7 +1424,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> — any day of the readings, and your chats with Hope kept on this device. The demo, today’s readings, and Get help stay free.</p>
+      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for SOAP, Diving Deeper Finding Jesus, the 12 Steps, urge surfing, check-in and journal, with your chats kept on this device. The demo, today’s readings, and Get help stay free.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">See plans</button>
       <button class="btn btn-sm" type="button" id="accessBannerWaitlist">Join waitlist</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
@@ -1718,13 +1718,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Plans &amp; account</button>
       <button class="btn" type="button" id="aboutWaitlistBtn">Join waitlist</button>
-      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month for the year’s readings and your chat history on this device. Get help is never locked.</p>
+      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month for SOAP, Diving Deeper Finding Jesus, the 12 Steps, urge surfing, check-in and journal, with your chat history on this device. Get help is never locked.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy · Advanced</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) opens the year’s readings and keeps your chat history on this device. Organisation plans are coming soon.</li>
+        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) is for SOAP, Diving Deeper Finding Jesus, the 12 Steps, urge surfing, check-in and journal, and it keeps your chat history on this device. Get help stays free. Organisation plans are coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
         <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
@@ -3784,7 +3784,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) opens the rest of the year, and keeps your chats on this device. Get help stays free. ');
+  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) opens the rest of the year and keeps your chats on this device. SOAP, the 12 Steps, urge surfing, check-in and journal stay in the companion. Get help stays free. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -8298,7 +8298,7 @@ function paintAccount() {
   body.replaceChildren();
   const lede = document.createElement('p');
   lede.className = 'lede';
-  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — any day of the readings, and your chats kept on this device. Today’s readings, the demo, crisis support, and domestic and family violence links stay free. Organisation plans are coming soon.';
+  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — SOAP, Diving Deeper Finding Jesus, the 12 Steps, urge surfing, check-in and journal, plus any day of the readings and your chats on this device. Today’s readings, the demo, crisis support, and domestic and family violence links stay free. You do not need Plus for Get help. Organisation plans are coming soon.';
   body.appendChild(lede);
 
   if (!billingState.reachable) {
