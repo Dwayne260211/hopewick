@@ -748,6 +748,38 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .invite-privacy, .hosted-privacy {
   font-size: .76rem; color: var(--muted); margin: 10px 0 0; line-height: 1.4;
 }
+.account-dlg { width: min(460px, calc(100vw - 24px)); }
+.account-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
+.account-form { display: grid; gap: 10px; }
+.account-form label { display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
+.account-form input {
+  font: inherit; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); color: inherit;
+}
+.account-form input:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
+.account-status { min-height: 1.2em; font-size: .88rem; color: var(--muted); margin: 8px 0 0; }
+.account-status.bad { color: #b42318; }
+.account-status.ok { color: var(--accent-strong); }
+.account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.account-dev { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); border: 1px dashed var(--border); font-size: .85rem; }
+.account-dev a { font-weight: 700; word-break: break-all; }
+.today-plus-note { margin: 0 0 14px; font-size: .9rem; color: var(--muted); text-align: center; }
+.today-plus-note .linkish, button.linkish {
+  background: none; border: 0; padding: 0; color: var(--accent-strong); font: inherit; font-weight: 700;
+  cursor: pointer; text-decoration: underline;
+}
+.today-library { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.today-library-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.today-library-row label { display: grid; gap: 4px; font-size: .78rem; font-weight: 700; color: var(--muted); }
+.today-library-row select {
+  font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--surface); color: inherit;
+}
+.history li.is-locked .title { opacity: .75; }
+.plus-pill {
+  display: inline-block; margin-left: 6px; font-size: .68rem; font-weight: 800; letter-spacing: .04em;
+  background: var(--accent-soft); color: var(--accent-strong); border-radius: 999px; padding: 1px 6px; vertical-align: middle;
+}
 .banner .banner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* Profile picker */
@@ -1348,6 +1380,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
         Switch profile
       </button>
+      <button class="btn btn-ghost" type="button" id="sideAccountBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+        <span id="sideAccountLabel">Plans &amp; account</span>
+      </button>
       <button class="btn btn-ghost" type="button" id="sideWaitlistBtn">🌱 Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
       <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
@@ -1387,8 +1423,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p>Like what you see? <strong>Paid accounts aren’t open yet</strong> — join the waitlist and we’ll email you when access is ready.</p>
-      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Join waitlist</button>
+      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for the full reading library and your chat history. The demo, today’s readings, and Get help stay free.</p>
+      <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">See plans</button>
+      <button class="btn btn-sm" type="button" id="accessBannerWaitlist">Join waitlist</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
@@ -1678,17 +1715,19 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
-      <button class="btn btn-primary" type="button" id="aboutWaitlistBtn">Join waitlist</button>
-      <p class="help" style="margin:8px 0 0">Free demo now. Paid accounts coming — no fake logins.</p>
+      <button class="btn btn-primary" type="button" id="aboutPlansBtn">Plans &amp; account</button>
+      <button class="btn" type="button" id="aboutWaitlistBtn">Join waitlist</button>
+      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month. Get help is never locked.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy · Advanced</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hosted accounts are coming — use <strong>Join waitlist</strong>.</li>
+        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) adds the reading library and full chat history. Organisation plans are coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
-        <li><strong>Architecture note.</strong> Hopewick is a static browser app (no Hopewick account server today). Live AI, when used, goes to the provider you choose under Advanced.</li>
+        <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Architecture note.</strong> The companion still runs in this browser. Sign-in and Stripe billing use the Hopewick account service when this site is served with it. Invite-code live AI is a separate service.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -1824,6 +1863,20 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="inviteCloseBtn">Close</button>
+  </div>
+</dialog>
+
+<!-- ============================ Plans & account ============================ -->
+<dialog id="accountDlg" class="account-dlg" aria-labelledby="accountTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="accountTitle">Plans &amp; account</h2>
+    <button class="icon-btn" value="close" aria-label="Close plans and account">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body" id="accountBody"></div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="accountCloseBtn">Close</button>
   </div>
 </dialog>
 
@@ -2958,7 +3011,7 @@ const el = {
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), waitlistDlg: $('#waitlistDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
@@ -3231,6 +3284,11 @@ function newConversation() {
   return c;
 }
 function openConversation(id) {
+  if (conversationLocked(id)) {
+    toast('Older chats are part of Hopewick Plus. Today’s reading, the demo, and Get help stay free.', false, 4800);
+    openAccountDlg();
+    return;
+  }
   if (busy) stopGeneration();
   stopSpeaking();
   activeId = id;
@@ -3262,8 +3320,16 @@ function renderHistory() {
       <button class="icon-btn del" type="button" title="Delete">${ICON_TRASH}</button>`;
     const open = $('.open-chat', li);
     if (c.id === activeId) open.setAttribute('aria-current', 'true');
+    const locked = conversationLocked(c.id);
+    if (locked) li.classList.add('is-locked');
     $('.title', li).textContent = (c.mood ? c.mood.e + ' ' : '') + c.title;
     $('.meta', li).textContent = `${relTime(c.updated)} · ${c.messages.filter(m => !m.card).length} messages`;
+    if (locked) {
+      const pill = document.createElement('span');
+      pill.className = 'plus-pill';
+      pill.textContent = 'Plus';
+      $('.title', li).appendChild(pill);
+    }
     $('.del', li).setAttribute('aria-label', `Delete conversation: ${c.title}`);
     open.addEventListener('click', () => openConversation(c.id));
     $('.del', li).addEventListener('click', () => deleteConversation(c.id));
@@ -3531,6 +3597,7 @@ function moodCardEl(opts = {}) {
    --------------------------------------------------------------------------- */
 const NON_LEAP_MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 let todayExpanded = false;
+let libraryPick = null; // { month, day } when Plus is browsing the year; null = today
 
 /** YYYY-MM-DD in Australia/Brisbane, so the daily pair is shared across users. */
 function brisbaneDateISO(d = new Date()) {
@@ -3589,8 +3656,30 @@ function fillReading(el, text) {
     el.appendChild(p);
   }
 }
+function readingForMonthDay(month, day) {
+  const index = readingDayIndex(month, day);
+  const wordEntry = WORD_FOR_THE_DAY[index];
+  const jftEntry = JUST_FOR_TODAY[index];
+  return {
+    iso: `library-${month}-${day}`,
+    index,
+    month,
+    day,
+    leap: false,
+    word: wordEntry.word,
+    wordReading: wordEntry.reading,
+    title: jftEntry.title,
+    line: jftEntry.reading,
+    jftReading: jftEntry.reading,
+  };
+}
+function libraryDateLabel(month, day) {
+  const dt = new Date(Date.UTC(2026, month - 1, day, 12, 0, 0));
+  return new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(dt);
+}
 function todayCardEl(d = new Date()) {
-  const t = todayReflection(d);
+  const usingLibrary = !!(libraryPick && subscriptionPlus());
+  const t = usingLibrary ? readingForMonthDay(libraryPick.month, libraryPick.day) : todayReflection(d);
   const card = document.createElement('section');
   card.className = 'today-card' + (todayExpanded ? ' is-expanded' : '');
   card.id = 'todayCard';
@@ -3612,7 +3701,13 @@ function todayCardEl(d = new Date()) {
     '<p class="today-jft-title"></p>' +
     '<div class="today-reading today-jft-reading" id="todayJftReading"></div>' +
     '<button type="button" class="today-expand" id="todayExpand" aria-controls="todayWordReading todayJftReading"></button>';
-  $('.today-date', card).textContent = brisbaneDateLabel(d) + ' · Brisbane';
+  if (usingLibrary) {
+    const heading = $('#todayHeading', card);
+    if (heading) heading.textContent = 'Reading';
+    $('.today-date', card).textContent = libraryDateLabel(t.month, t.day) + ' · reading library';
+  } else {
+    $('.today-date', card).textContent = brisbaneDateLabel(d) + ' · Brisbane';
+  }
   $('.today-word', card).textContent = t.word;
   $('.today-jft-title', card).textContent = t.title;
   fillReading($('.today-word-reading', card), t.wordReading);
@@ -3629,7 +3724,73 @@ function todayCardEl(d = new Date()) {
     card.classList.toggle('is-expanded', todayExpanded);
     syncBtn();
   });
+  if (subscriptionPlus()) card.appendChild(readingLibraryEl());
   return card;
+}
+const LIBRARY_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+function daysInLibraryMonth(month) {
+  return NON_LEAP_MONTH_DAYS[month - 1] || 31;
+}
+function readingLibraryEl() {
+  const wrap = document.createElement('div');
+  wrap.className = 'today-library';
+  wrap.innerHTML = '<p class="today-label">Reading library</p><div class="today-library-row"><label>Month <select id="libraryMonth"></select></label><label>Day <select id="libraryDay"></select></label><button type="button" class="btn btn-sm" id="libraryTodayBtn">Back to today</button></div><p class="help">Included with Hopewick Plus. Same optional reflection — not clinical advice.</p>';
+  const monthSel = $('#libraryMonth', wrap);
+  const daySel = $('#libraryDay', wrap);
+  LIBRARY_MONTHS.forEach((name, i) => {
+    const opt = document.createElement('option');
+    opt.value = String(i + 1);
+    opt.textContent = name;
+    monthSel.appendChild(opt);
+  });
+  const syncDays = () => {
+    const month = Number(monthSel.value);
+    const max = daysInLibraryMonth(month);
+    const current = Number(daySel.value) || 1;
+    daySel.replaceChildren();
+    for (let d = 1; d <= max; d++) {
+      const opt = document.createElement('option');
+      opt.value = String(d);
+      opt.textContent = String(d);
+      daySel.appendChild(opt);
+    }
+    daySel.value = String(Math.min(current, max));
+  };
+  const iso = brisbaneDateISO(new Date());
+  const parts = iso.split('-').map(Number);
+  const start = libraryPick || { month: parts[1], day: parts[1] === 2 && parts[2] === 29 ? 28 : parts[2] };
+  monthSel.value = String(start.month);
+  syncDays();
+  daySel.value = String(Math.min(start.day, daysInLibraryMonth(start.month)));
+  const applyPick = () => {
+    libraryPick = { month: Number(monthSel.value), day: Number(daySel.value) };
+    if (appTab === 'home') renderHome();
+  };
+  monthSel.addEventListener('change', () => { syncDays(); applyPick(); });
+  daySel.addEventListener('change', applyPick);
+  $('#libraryTodayBtn', wrap).addEventListener('click', () => {
+    libraryPick = null;
+    if (appTab === 'home') renderHome();
+  });
+  return wrap;
+}
+
+function todayPlusNoteEl() {
+  const note = document.createElement('p');
+  note.className = 'today-plus-note';
+  note.id = 'todayPlusNote';
+  if (subscriptionPlus()) {
+    note.textContent = 'Hopewick Plus is active. You can open any day in the reading library, and your chat history stays open. Get help is still free.';
+    return note;
+  }
+  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) adds the full year of readings and your whole chat history. Get help stays free. ');
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'linkish';
+  btn.textContent = 'See plans';
+  btn.addEventListener('click', () => openAccountDlg());
+  note.appendChild(btn);
+  return note;
 }
 
 function renderHome() {
@@ -3645,6 +3806,7 @@ function renderHome() {
   $('p', hero).textContent = `A safe space with ${settings.name}. Check in below, or open a tool whenever you need it.`;
   box.appendChild(hero);
   box.appendChild(todayCardEl());
+  box.appendChild(todayPlusNoteEl());
 
   const days = soberDaysCount();
   if (days !== null) {
@@ -7378,7 +7540,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.waitlistDlg, el.inviteDlg, el.aboutDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.waitlistDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -7935,7 +8097,13 @@ $('#pickerWaitlistBtn').addEventListener('click', openWaitlist);
 $('#sideWaitlistBtn').addEventListener('click', () => { closeSidebar(); openWaitlist(); });
 $('#onboardWaitlistBtn').addEventListener('click', openWaitlist);
 $('#aboutWaitlistBtn').addEventListener('click', openWaitlist);
-$('#accessBannerBtn').addEventListener('click', openWaitlist);
+const aboutPlansBtn = $('#aboutPlansBtn');
+if (aboutPlansBtn) aboutPlansBtn.addEventListener('click', () => { closeAbout(); openAccountDlg(); });
+const sideAccountBtn = $('#sideAccountBtn');
+if (sideAccountBtn) sideAccountBtn.addEventListener('click', () => { closeSidebar(); openAccountDlg(); });
+$('#accessBannerBtn').addEventListener('click', () => openAccountDlg());
+const accessBannerWaitlist = $('#accessBannerWaitlist');
+if (accessBannerWaitlist) accessBannerWaitlist.addEventListener('click', openWaitlist);
 $('#accessBannerDismiss').addEventListener('click', () => {
   try { sessionStorage.setItem(ACCESS_PROMPT_KEY, 'dismissed'); } catch (_) {}
   hideAccessBanner();
@@ -8016,6 +8184,298 @@ $('#dvQuickExit')?.addEventListener('click', () => {
   location.replace('https://www.google.com.au/');
 });
 
+/* ---------------------------------------------------------------------------
+   Hopewick Plus — email sign-in, Stripe, and soft gating
+   Account service is same-origin /api (npm start). Chats stay in this browser.
+   --------------------------------------------------------------------------- */
+const billingState = {
+  loaded: false,
+  reachable: false,
+  signedIn: false,
+  email: '',
+  id: '',
+  subscriptionStatus: 'none',
+  currentPeriodEnd: null,
+  plus: false,
+  checkoutReady: false,
+  devMagic: false,
+};
+const FREE_HISTORY_KEEP = 1;
+
+function subscriptionPlus() {
+  return !!(billingState.signedIn && billingState.plus);
+}
+function historyGateOn() {
+  // Demo and signed-out local use stay open so org trials and existing chats are not walled off.
+  return billingState.signedIn && !subscriptionPlus() && !isDemo;
+}
+function freeHistoryIds() {
+  const list = convos.filter(c => c.messages && c.messages.length > 0).sort((a, b) => b.updated - a.updated);
+  return new Set(list.slice(0, FREE_HISTORY_KEEP).map(c => c.id));
+}
+function conversationLocked(id) {
+  if (!historyGateOn()) return false;
+  const c = convos.find(x => x.id === id);
+  if (!c || !c.messages || !c.messages.length) return false;
+  return !freeHistoryIds().has(id);
+}
+function openAccountDlg() {
+  paintAccount();
+  if (el.accountDlg && !el.accountDlg.open) el.accountDlg.showModal();
+}
+function closeAccountDlg() {
+  if (el.accountDlg && el.accountDlg.open) el.accountDlg.close();
+}
+function statusLabel(status) {
+  if (status === 'active' || status === 'trialing') return 'Hopewick Plus is active';
+  if (status === 'past_due') return 'Payment needs attention';
+  if (status === 'canceled') return 'Plus is cancelled';
+  if (status === 'incomplete' || status === 'incomplete_expired') return 'Checkout was not finished';
+  if (status === 'unpaid' || status === 'paused') return 'Plus is paused';
+  return 'Free';
+}
+async function billingFetch(path, options) {
+  const opts = options || {};
+  opts.credentials = 'include';
+  opts.headers = Object.assign({ Accept: 'application/json' }, opts.headers || {});
+  const response = await fetch(path, opts);
+  let data = {};
+  try { data = await response.json(); } catch (_) { data = {}; }
+  if (!response.ok) {
+    const err = new Error(data.error || ('Request failed (' + response.status + ')'));
+    err.status = response.status;
+    throw err;
+  }
+  return data;
+}
+async function refreshBilling() {
+  try {
+    const [user, config] = await Promise.all([
+      billingFetch('/api/auth/me'),
+      billingFetch('/api/billing/config'),
+    ]);
+    billingState.reachable = true;
+    billingState.signedIn = !!user.signedIn;
+    billingState.email = user.email || '';
+    billingState.id = user.id || '';
+    billingState.subscriptionStatus = user.subscriptionStatus || 'none';
+    billingState.currentPeriodEnd = user.currentPeriodEnd || null;
+    billingState.plus = !!user.plus;
+    billingState.checkoutReady = !!config.checkoutReady;
+    billingState.devMagic = !!config.devMagic;
+  } catch (_) {
+    billingState.reachable = false;
+    billingState.signedIn = false;
+    billingState.plus = false;
+  }
+  billingState.loaded = true;
+  const label = $('#sideAccountLabel');
+  if (label) {
+    label.textContent = subscriptionPlus() ? 'Plus · account' : (billingState.signedIn ? 'Account · Free' : 'Plans & account');
+  }
+  paintAccount();
+  if (!libraryPick || subscriptionPlus()) {
+    /* keep a library day only while Plus is active */
+  } else {
+    libraryPick = null;
+  }
+  if (!subscriptionPlus()) libraryPick = null;
+  try {
+    if (profile || isDemo) {
+      renderHistory();
+      if (appTab === 'home') renderHome();
+    }
+  } catch (_) { /* home may not be ready on the very first tick */ }
+}
+function paintAccount() {
+  const body = $('#accountBody');
+  if (!body) return;
+  const active = document.activeElement;
+  if (active && body.contains(active) && (active.id === 'accountEmail')) return;
+  body.replaceChildren();
+  const lede = document.createElement('p');
+  lede.className = 'lede';
+  lede.textContent = 'Hopewick Plus is AU$20 a month for one person. Today’s readings, the demo, crisis support, and domestic and family violence links stay free. Organisation plans are coming soon.';
+  body.appendChild(lede);
+
+  if (!billingState.reachable) {
+    const p = document.createElement('p');
+    p.className = 'account-status';
+    p.textContent = 'Sign-in needs the Hopewick account service on this same site. For a local trial, run npm start and open http://127.0.0.1:8787/app/ (see SETUP.md). You can keep using the demo and Get help without it.';
+    body.appendChild(p);
+    const actions = document.createElement('div');
+    actions.className = 'account-actions';
+    const plans = document.createElement('a');
+    plans.className = 'btn';
+    plans.href = '../#plans';
+    plans.textContent = 'Read the plans';
+    actions.appendChild(plans);
+    body.appendChild(actions);
+    return;
+  }
+
+  if (!billingState.signedIn) {
+    const form = document.createElement('form');
+    form.className = 'account-form';
+    form.id = 'accountMagicForm';
+    form.noValidate = true;
+    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn btn-primary" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
+    body.appendChild(form);
+    const status = document.createElement('p');
+    status.className = 'account-status';
+    status.id = 'accountStatus';
+    status.setAttribute('role', 'status');
+    body.appendChild(status);
+    const dev = document.createElement('div');
+    dev.className = 'account-dev';
+    dev.id = 'accountDevLink';
+    dev.hidden = true;
+    body.appendChild(dev);
+    form.addEventListener('submit', onMagicLinkSubmit);
+    return;
+  }
+
+  const who = document.createElement('p');
+  who.innerHTML = 'Signed in as <strong></strong>';
+  $('strong', who).textContent = billingState.email;
+  body.appendChild(who);
+  const status = document.createElement('p');
+  status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
+  status.id = 'accountStatus';
+  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month unlocks the reading library and full chat history.');
+  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. The full reading library and your chat history are open.';
+  body.appendChild(status);
+  const actions = document.createElement('div');
+  actions.className = 'account-actions';
+  if (subscriptionPlus() || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled') {
+    const portal = document.createElement('button');
+    portal.type = 'button';
+    portal.className = 'btn';
+    portal.textContent = 'Manage subscription';
+    portal.addEventListener('click', () => startPortal());
+    actions.appendChild(portal);
+  }
+  if (!subscriptionPlus()) {
+    const sub = document.createElement('button');
+    sub.type = 'button';
+    sub.className = 'btn btn-primary';
+    sub.textContent = billingState.checkoutReady ? 'Subscribe — AU$20/month' : 'Payments aren’t configured yet';
+    sub.disabled = !billingState.checkoutReady;
+    sub.addEventListener('click', () => startCheckout());
+    actions.appendChild(sub);
+  }
+  const out = document.createElement('button');
+  out.type = 'button';
+  out.className = 'btn';
+  out.textContent = 'Sign out';
+  out.addEventListener('click', () => signOutBilling());
+  actions.appendChild(out);
+  body.appendChild(actions);
+  const compare = document.createElement('p');
+  compare.className = 'hosted-privacy';
+  compare.innerHTML = 'Free vs Plus is on the <a href="../#plans">plans page</a>. We don’t store your chats. In an emergency call 000.';
+  body.appendChild(compare);
+  if (billingState.devMagic) {
+    const dev = document.createElement('div');
+    dev.className = 'account-dev';
+    dev.innerHTML = '<strong>Local testing only.</strong> Mark this account without a card payment.';
+    const row = document.createElement('div');
+    row.className = 'account-actions';
+    const on = document.createElement('button');
+    on.type = 'button';
+    on.className = 'btn btn-sm';
+    on.textContent = 'Set Plus active';
+    on.addEventListener('click', () => devSetStatus('active'));
+    const off = document.createElement('button');
+    off.type = 'button';
+    off.className = 'btn btn-sm';
+    off.textContent = 'Set cancelled';
+    off.addEventListener('click', () => devSetStatus('canceled'));
+    row.appendChild(on);
+    row.appendChild(off);
+    dev.appendChild(row);
+    body.appendChild(dev);
+  }
+}
+async function onMagicLinkSubmit(e) {
+  e.preventDefault();
+  const input = $('#accountEmail');
+  const status = $('#accountStatus');
+  const email = (input && input.value || '').trim();
+  if (!email) { if (input) input.reportValidity(); return; }
+  if (status) { status.className = 'account-status'; status.textContent = 'Sending a sign-in link…'; }
+  try {
+    const data = await billingFetch('/api/auth/magic-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, next: '/app/?signedin=1' }),
+    });
+    if (status) { status.className = 'account-status ok'; status.textContent = data.message || 'Check your email.'; }
+    const dev = $('#accountDevLink');
+    if (dev && data.devLink) {
+      dev.hidden = false;
+      dev.replaceChildren();
+      const p = document.createElement('p');
+      p.textContent = 'Developer mode: this link is not emailed. It expires in 30 minutes.';
+      const a = document.createElement('a');
+      a.href = data.devLink;
+      a.textContent = 'Sign in now';
+      dev.appendChild(p);
+      dev.appendChild(a);
+    }
+  } catch (err) {
+    if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not send the link.'; }
+  }
+}
+async function startCheckout() {
+  const status = $('#accountStatus');
+  if (!billingState.signedIn) { openAccountDlg(); return; }
+  if (status) status.textContent = 'Opening secure checkout…';
+  try {
+    const data = await billingFetch('/api/billing/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    if (data.url) location.href = data.url;
+  } catch (err) {
+    if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Checkout could not start.'; }
+    toast(err.message || 'Checkout could not start.', true, 5000);
+  }
+}
+async function startPortal() {
+  const status = $('#accountStatus');
+  if (status) status.textContent = 'Opening billing…';
+  try {
+    const data = await billingFetch('/api/billing/portal', { method: 'POST' });
+    if (data.url) location.href = data.url;
+  } catch (err) {
+    if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Billing portal could not open.'; }
+    toast(err.message || 'Billing portal could not open.', true, 5000);
+  }
+}
+async function signOutBilling() {
+  try { await billingFetch('/api/auth/logout', { method: 'POST' }); } catch (_) { /* still clear local state */ }
+  billingState.signedIn = false;
+  billingState.plus = false;
+  billingState.email = '';
+  billingState.subscriptionStatus = 'none';
+  libraryPick = null;
+  await refreshBilling();
+  toast('Signed out. The demo and Get help stay available.', false, 3500);
+}
+async function devSetStatus(status) {
+  try {
+    await billingFetch('/api/billing/dev-set', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: status }),
+    });
+    await refreshBilling();
+    toast(status === 'active' ? 'Plus marked active for local testing.' : 'Plus marked cancelled for local testing.', false, 3500);
+  } catch (err) {
+    toast(err.message || 'Could not update the test subscription.', true, 4000);
+  }
+}
+const accountCloseBtn = $('#accountCloseBtn');
+if (accountCloseBtn) accountCloseBtn.addEventListener('click', closeAccountDlg);
+
 applyBrand();
 migrateStorage();
 renderHelpList();
@@ -8032,6 +8492,32 @@ if (new URLSearchParams(location.search).get('demo') === '1') {
 } else {
   showPicker();
 }
+refreshBilling().then(() => {
+  const q = new URLSearchParams(location.search);
+  if (q.get('checkout') === 'success') toast('Thanks. If Plus isn’t showing yet, it will as soon as Stripe confirms the payment.', false, 5500);
+  if (q.get('checkout') === 'cancel') toast('No worries — nothing was charged.', false, 4000);
+  if (q.get('portal') === 'return') toast('You’re back from billing.', false, 3000);
+  if (q.get('signedin') === '1' && billingState.signedIn) toast('You’re signed in.', false, 3000);
+  const openAccount = q.get('account') === '1' || q.get('signedin') === '1' || q.get('checkout') || q.get('portal') === 'return';
+  if (openAccount) {
+    if (!onboardingSeen()) markOnboardingSeen({ via: 'account' });
+    if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+    openAccountDlg();
+  }
+  if (q.get('checkout') === 'success') {
+    let tries = 0;
+    const poll = async () => {
+      tries += 1;
+      await refreshBilling();
+      if (subscriptionPlus() || tries >= 5) {
+        if (subscriptionPlus()) toast('Hopewick Plus is active.', false, 3500);
+        return;
+      }
+      setTimeout(poll, 1500);
+    };
+    setTimeout(poll, 1200);
+  }
+});
 </script>
 </body>
 </html>
