@@ -852,7 +852,23 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .invite-privacy, .hosted-privacy {
   font-size: .76rem; color: var(--muted); margin: 10px 0 0; line-height: 1.4;
 }
-.account-dlg { width: min(460px, calc(100vw - 24px)); }
+.account-dlg { width: min(520px, calc(100vw - 24px)); }
+.plus-offer { text-align: left; }
+.plus-price { margin: 0 0 4px; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
+.plus-price span { font-size: .95rem; font-weight: 650; color: var(--muted); }
+.plus-kicker { margin: 0 0 10px; color: var(--muted); }
+.plus-checklist { list-style: none; margin: 12px 0 14px; padding: 0; display: grid; gap: 8px; }
+.plus-checklist li { display: flex; gap: 8px; align-items: flex-start; line-height: 1.35; }
+.plus-checklist li::before { content: "✓"; color: var(--accent-strong); font-weight: 800; flex: none; }
+.crisis-free-note { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--border); font-size: .9rem; line-height: 1.45; }
+.privacy-card { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface-2); text-align: left; }
+.privacy-card h3 { margin: 0 0 6px; font-size: .98rem; }
+.privacy-card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+.history-device { margin: 0 10px 8px; font-size: .75rem; color: var(--muted); line-height: 1.35; }
+.onboard-choices { text-align: left; display: grid; gap: 8px; margin-top: 4px; }
+.onboard-choices label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); cursor: pointer; color: var(--text); }
+.onboard-choices label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.onboard-choices input { margin-top: 3px; }
 .account-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
 .message-caps { margin: 0 0 14px; }
 .message-caps-title { margin: 0 0 8px; font-weight: 800; font-size: .98rem; }
@@ -1409,6 +1425,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <span class="lbl" id="soberLbl">days</span>
     </button>
     <div class="history-label" id="historyLabel">Conversations</div>
+    <p class="history-device" id="historyDeviceNote">Keep your conversation history on this device. Cloud sync is not enabled.</p>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
     <div class="sidebar-foot">
       <div class="side-section-label">Recovery tools</div>
@@ -1879,12 +1896,39 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   <div class="onboard-body">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
     <h2 id="onboardTitle">Welcome to <span data-brand>Hopewick</span></h2>
-    <p class="lead">Want a private space to talk through cravings and hard days between sessions?</p>
-    <p><span data-companion>Hope</span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
-    <div class="onboard-actions">
-      <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
-      <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
-      <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand>Hopewick</span></button>
+    <div id="onboardStepWelcome">
+      <p class="lead">A private place to talk through cravings and hard days between sessions.</p>
+      <p><span data-companion>Hope</span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
+      <div class="onboard-actions">
+        <button class="btn btn-primary" type="button" id="onboardYesBtn">Continue</button>
+        <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
+        <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand>Hopewick</span></button>
+      </div>
+    </div>
+    <div id="onboardStepReason" hidden>
+      <p>What brings you here? This stays with your profile on this device.</p>
+      <div class="onboard-choices" role="radiogroup" aria-labelledby="onboardTitle">
+        <label><input type="radio" name="onboardReason" value="myself" checked> Recovery myself</label>
+        <label><input type="radio" name="onboardReason" value="supporting"> Supporting someone</label>
+        <label><input type="radio" name="onboardReason" value="exploring"> Exploring</label>
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-primary" type="button" id="onboardReasonContinue">Continue</button>
+        <button class="btn" type="button" id="onboardReasonBack">Back</button>
+      </div>
+    </div>
+    <div id="onboardStepFaith" hidden>
+      <p>How should <span data-companion>Hope</span> handle faith? Theme, voice, model, PIN, and export stay in Settings.</p>
+      <div class="onboard-choices" role="radiogroup" aria-label="Faith preference">
+        <label><input type="radio" name="onboardFaith" value="none"> None</label>
+        <label><input type="radio" name="onboardFaith" value="ask"> Only when asked</label>
+        <label><input type="radio" name="onboardFaith" value="woven" checked> Gently</label>
+        <label><input type="radio" name="onboardFaith" value="central"> Central</label>
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-primary" type="button" id="onboardStartBtn">Start talking to Hope</button>
+        <button class="btn" type="button" id="onboardFaithBack">Back</button>
+      </div>
     </div>
   </div>
 </dialog>
@@ -2182,7 +2226,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
     <fieldset>
       <legend>Your data</legend>
-      <p class="help" style="margin:6px 0 10px">Everything lives only in this browser. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
+      <p class="help" style="margin:6px 0 10px">Keep your conversation history on this device. Cloud sync is not enabled. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
       <div class="row">
         <button class="btn btn-sm" type="button" id="exportBtn">Export JSON</button>
         <button class="btn btn-sm" type="button" id="importBtn">Import JSON</button>
@@ -2899,6 +2943,7 @@ const DEFAULT_PROFILE_SETTINGS = {
   memAuto: true,
   moodCheck: true,
   gratCheck: true,
+  hereFor: '',
   soberStart: '',
   soberWhat: '',
   soberWhy: '',
@@ -3134,6 +3179,7 @@ let convos = [];
 let memories = [];
 let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'info' | 'resume' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
+let pendingStartChat = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
@@ -3595,7 +3641,7 @@ function messageEl(msg) {
 
   if (msg.card === 'crisis') {
     wrap.innerHTML = crisisCardHtml(msg.crisisKind);
-    wrap.querySelectorAll('[data-companion]').forEach(e => { e.textContent = settings.name || BRAND.companion; });
+    wrap.querySelectorAll('[data-companion]').forEach(e => { e.textContent = companionName(); });
     row.appendChild(wrap);
     return { row, bubble: wrap, tools: document.createElement('div') };
   }
@@ -3604,7 +3650,7 @@ function messageEl(msg) {
   bubble.className = 'bubble';
   const who = document.createElement('span');
   who.className = 'sr-only';
-  who.textContent = msg.role === 'user' ? 'You said: ' : `${settings.name} said: `;
+  who.textContent = msg.role === 'user' ? 'You said: ' : `${companionName()} said: `;
   if (msg.role === 'user' || msg.error) bubble.textContent = msg.content;
   else bubble.innerHTML = renderMarkdown(msg.content);
   wrap.appendChild(who);
@@ -4007,7 +4053,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4027,7 +4073,7 @@ function renderHome() {
   hero.className = 'home-hero';
   hero.innerHTML = '<div class="orb md" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
   $('h1', hero).textContent = greeting() + ' 🌿';
-  $('p', hero).textContent = `A safe space with ${settings.name}. Check in below, or open a tool whenever you need it.`;
+  $('p', hero).textContent = `A safe space with ${companionName()}. Check in below, or open a tool whenever you need it.`;
   box.appendChild(hero);
   box.appendChild(todayCardEl());
   box.appendChild(todayPlusNoteEl());
@@ -4084,7 +4130,7 @@ function renderHome() {
     { ico: '📄', label: 'Resume', sub: 'Free builder', action: () => setAppTab('resume') },
   ];
   // Use companion name in shortcut label
-  items[0].label = `Talk to ${settings.name}`;
+  items[0].label = `Talk to ${companionName()}`;
   for (const it of items) {
     const b = document.createElement('button');
     b.type = 'button';
@@ -4103,7 +4149,7 @@ function renderHome() {
     lbl.className = 'help';
     lbl.style.width = '100%';
     lbl.style.textAlign = 'center';
-    lbl.textContent = 'Craving skills — practise with ' + settings.name + ':';
+    lbl.textContent = 'Craving skills — practise with ' + companionName() + ':';
     skillsRow.appendChild(lbl);
     const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
     const chips = showAll ? CRAVING_SKILLS : CRAVING_SKILLS.slice(0, 5);
@@ -4134,7 +4180,7 @@ function renderWelcome() {
   $('h1', box).textContent = greeting() + ' 🌿';
   $('p', box).textContent = counsellor
     ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups, faith and hope — whatever's on your mind, at your own pace.`
-    : `I'm ${settings.name}. I'm here to listen, chat, brainstorm, or just keep you company.`;
+    : `I'm ${companionName()}. I'm here to listen, chat, brainstorm, or just keep you company.`;
 
   // Daily check-in lives on Home; chat only nudges if not done yet.
   if (settings.moodCheck) {
@@ -4167,7 +4213,7 @@ function renderWelcome() {
     lbl.className = 'help';
     lbl.style.width = '100%';
     lbl.style.textAlign = 'center';
-    lbl.textContent = 'Craving skills — practise with ' + settings.name + ':';
+    lbl.textContent = 'Craving skills — practise with ' + companionName() + ':';
     skillsRow.appendChild(lbl);
     const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
     const chips = showAll ? CRAVING_SKILLS : CRAVING_SKILLS.slice(0, 5);
@@ -4372,6 +4418,12 @@ function renderAll() {
 /* ---------------------------------------------------------------------------
    System prompts
    --------------------------------------------------------------------------- */
+function hereForLine() {
+  if (settings.hereFor === 'supporting') return 'They are here mainly to support someone else in recovery. Speak to a family member or friend. Do not assume they use alcohol or other drugs.';
+  if (settings.hereFor === 'exploring') return 'They are exploring Hopewick and may not be in recovery themselves. Stay welcoming. Do not assume they use alcohol or other drugs.';
+  if (settings.hereFor === 'myself') return 'They are here for their own recovery.';
+  return '';
+}
 function commonContext(convo) {
   const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'short' }).format(new Date());
   const lines = [
@@ -4379,6 +4431,8 @@ function commonContext(convo) {
     `You are talking with ${userName()}. Address them by name naturally (not in every message).`,
     'Privacy: this device is shared by several people who each have their own private profile. Only ever discuss this person\'s own conversations and memories. Never reveal, guess at or discuss anyone else\'s chats, memories or information, even if asked.',
   ];
+  const whyHere = hereForLine();
+  if (whyHere) lines.push(whyHere);
   const days = soberDaysCount();
   if (days !== null) lines.push(`${userName()} is tracking ${days} day(s) ${settings.soberWhat || 'on their recovery journey'} (since ${settings.soberStart}). Acknowledge milestones warmly; if they slip, respond with compassion — progress isn't erased.`);
   if (memories.length) {
@@ -4399,7 +4453,7 @@ function counsellorPrompt(convo) {
   const faith = FAITH_TEXT[settings.faith] || FAITH_TEXT.general;
   const level = settings.faith === 'none' ? '' : (FAITH_LEVEL_TEXT[settings.faithLevel] || FAITH_LEVEL_TEXT.woven);
   return [
-    `You are ${settings.name}, a warm, calm, hopeful and non-judgemental AI recovery companion for people affected by alcohol and other drugs (AOD). Faith content is optional and follows the person's Preferences. You model the person-centred, evidence-based practice used in Australian AOD services.`,
+    `You are ${companionName()}, a warm, calm, hopeful and non-judgemental AI recovery companion for people affected by alcohol and other drugs (AOD). Faith content is optional and follows the person's Preferences. You model the person-centred, evidence-based practice used in Australian AOD services.`,
     settings.traits.length ? `Personality: ${settings.traits.join(', ')}.${settings.traitsCustom ? ' ' + settings.traitsCustom : ''}` : '',
     '',
     'WHO YOU ARE (AND AREN\'T)',
@@ -4439,7 +4493,7 @@ function counsellorPrompt(convo) {
 
 function friendPrompt(convo) {
   return [
-    `You are ${settings.name}, a personal AI companion — like a warm, curious, supportive friend. You listen closely, remember what matters, show genuine interest and help the user feel heard.`,
+    `You are ${companionName()}, a personal AI companion — like a warm, curious, supportive friend. You listen closely, remember what matters, show genuine interest and help the user feel heard.`,
     settings.traits.length ? `Your personality traits: ${settings.traits.join(', ')}.` : '',
     settings.traitsCustom ? `More about your personality: ${settings.traitsCustom}` : '',
     `Conversation style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced}`,
@@ -4670,7 +4724,7 @@ async function generateReply(c) {
   const pid = profile.id;
   const { row, bubble, tools } = messageEl({ role: 'assistant', content: '' });
   tools.hidden = true;
-  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(settings.name)} is typing"><span></span><span></span><span></span></span>`;
+  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(companionName())} is typing"><span></span><span></span><span></span></span>`;
   el.inner.appendChild(row);
   scrollToBottom(true);
 
@@ -4778,7 +4832,7 @@ async function extractMemories(pid, userText, assistantText, crisis) {
       el.memCount.textContent = memories.length;
       if (el.memoriesDlg.open) renderMemories();
       const summary = added.map(a => a.text).join('; ');
-      toast(`🌱 ${settings.name} will remember: ${summary.length > 120 ? summary.slice(0, 117) + '…' : summary}`, false, 4500);
+      toast(`🌱 ${companionName()} will remember: ${summary.length > 120 ? summary.slice(0, 117) + '…' : summary}`, false, 4500);
     }
   } catch (e) { /* best-effort */ }
 }
@@ -4795,7 +4849,7 @@ function renderMemories() {
     const li = document.createElement('li');
     li.className = 'mem-empty';
     li.textContent = memories.length ? 'No memories match your search.'
-      : `🌱 Nothing yet. As you chat, ${settings.name} will remember the important things — goals, what helps, who supports you — or add some yourself above.`;
+      : `🌱 Nothing yet. As you chat, ${companionName()} will remember the important things — goals, what helps, who supports you — or add some yourself above.`;
     list.appendChild(li);
   }
   for (const m of items) {
@@ -5051,7 +5105,7 @@ $('#jRefineBtn').addEventListener('click', async () => {
 
 function journalRefineSystemPrompt(crisis) {
   return [
-    `You are ${settings.name}, helping ${userName()} deepen a private journal reflection.`,
+    `You are ${companionName()}, helping ${userName()} deepen a private journal reflection.`,
     'Keep their meaning and voice. Do not preach. Do not diagnose. Australian English. Warm, trauma-informed.',
     'Respond in this exact structure (plain text, use the headings):',
     'REFINED:',
@@ -5176,7 +5230,7 @@ function renderSteps() {
       <div class="field" style="margin-top:8px"><label class="sr-only">Notes for step ${step.n}</label>
         <textarea rows="2" data-step-note="${step.n}" placeholder="Your notes (private)…">${escapeHtml(note)}</textarea></div>
       <div class="actions">
-        <button class="btn btn-primary btn-sm" type="button" data-work="${step.n}">Work this step with ${escapeHtml(settings.name)}</button>
+        <button class="btn btn-primary btn-sm" type="button" data-work="${step.n}">Work this step with ${escapeHtml(companionName())}</button>
         <button class="btn btn-sm" type="button" data-toggle="${step.n}">${isDone ? 'Mark not done' : 'Mark done'}</button>
       </div>
       <p class="help" style="margin-top:8px">No obligation to disclose trauma details to the AI. For amends that could harm someone, talk with a sponsor, pastor or counsellor first.</p>`;
@@ -5226,7 +5280,7 @@ function startStepChat(step) {
   persistConvos();
   renderAll();
   focusInput();
-  toast(`Working Step ${step.n} with ${settings.name}`);
+  toast(`Working Step ${step.n} with ${companionName()}`);
 }
 
 
@@ -5780,7 +5834,7 @@ function renderBibleThemes() {
       <p class="meta">Read: ${escapeHtml(lesson.ref)}</p>
       <ul class="help" style="margin:6px 0 0;padding-left:1.2em">${lesson.questions.map(q => `<li>${escapeHtml(q)}</li>`).join('')}</ul>
       <div class="actions">
-        <button class="btn btn-primary btn-sm" type="button" data-study="${lesson.id}">Study theme with ${escapeHtml(settings.name)}</button>
+        <button class="btn btn-primary btn-sm" type="button" data-study="${lesson.id}">Study theme with ${escapeHtml(companionName())}</button>
         <button class="btn btn-sm" type="button" data-btoggle="${lesson.id}">${isDone ? 'Mark not done' : 'Mark done'}</button>
       </div>`;
     $('[data-study]', li).addEventListener('click', () => startThemeBibleChat(lesson));
@@ -5817,7 +5871,7 @@ function soapSystemExtra(reading) {
     ? `Related references (invite them to open in the in-app WEB reader): ${reading.supporting.join('; ')}.`
     : '';
   return [
-    `You are guiding a SOAP Bible study with ${userName()}. Method name is SOAP (not "Hope"). Companion name stays ${settings.name}.`,
+    `You are guiding a SOAP Bible study with ${userName()}. Method name is SOAP (not "Hope"). Companion name stays ${companionName()}.`,
     `Today’s reading (Day ${reading.planDay || reading.day}): ${reading.passage}. ${support}`,
     'The app shows this passage in-app from the World English Bible (WEB, public domain). Invite them to read it there (or in the Bible reader). Do NOT paste long commercial-translation quotations. A brief WEB phrase they already named, or a short paraphrase labelled as paraphrase, is OK.',
     'Lead SOAP strictly in order, ONE step at a time, waiting for their answer before the next:',
@@ -5873,7 +5927,7 @@ function startThemeBibleChat(lesson) {
   persistConvos();
   renderAll();
   focusInput();
-  toast(`Studying with ${settings.name}`);
+  toast(`Studying with ${companionName()}`);
 }
 function saveSoapEntry(partial = {}) {
   const reading = todaySoapReading();
@@ -7047,7 +7101,7 @@ function openSkills() {
   for (const sk of CRAVING_SKILLS) {
     const li = document.createElement('li');
     li.className = 'step-card';
-    li.innerHTML = `<h3></h3><p class="body"></p><div class="actions"><button class="btn btn-primary btn-sm" type="button">Try with ${escapeHtml(settings.name)}</button></div>`;
+    li.innerHTML = `<h3></h3><p class="body"></p><div class="actions"><button class="btn btn-primary btn-sm" type="button">Try with ${escapeHtml(companionName())}</button></div>`;
     $('h3', li).textContent = sk.chip;
     $('.body', li).textContent = sk.blurb;
     $('button', li).addEventListener('click', () => { el.skillsDlg.close(); startSkill(sk); });
@@ -7338,7 +7392,7 @@ function openSettings(focusId, tabHint) {
   if (ownToggle) ownToggle.checked = !!settings.useOwnKey;
   setKeyVisible(false);
   $('#setStream').checked = settings.stream;
-  $('#setName').value = settings.name;
+  $('#setName').value = companionName();
   draftTraits = [...settings.traits];
   renderTraitChips();
   $('#setTraitsCustom').value = settings.traitsCustom;
@@ -7622,14 +7676,17 @@ function enterProfile(pid) {
   profilesState.lastId = pid;
   saveProfiles();
   loadProfileData(pid);
+  applyOnboardingChoices();
   applyTheme();
   el.input.value = '';
-  appTab = 'home';
+  const startChat = pendingStartChat;
+  pendingStartChat = false;
+  appTab = startChat ? 'chat' : 'home';
   if (!activeConvo()) { activeId = null; newConversation(); } else renderAll();
   el.pickerDlg.close();
   toast(`Hi ${profile.name} 👋`);
   maybeShowDisclaimer();
-  showLaunchPrefs();
+  if (startChat) focusInput();
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -7789,7 +7846,7 @@ $('#testVoiceBtn').addEventListener('click', () => {
   if (!tts) { toast('Speech isn’t supported in this browser', true); return; }
   const prev = settings;
   settings = readSettingsForm();
-  speak(`G'day ${userName()}! I'm ${settings.name}. This is how I sound.`);
+  speak(`G'day ${userName()}! I'm ${companionName()}. This is how I sound.`);
   settings = prev;
 });
 /* Auto-speak lives in Settings → More (the header toggle was removed to keep the top bar clear). */
@@ -8372,7 +8429,7 @@ function demoSleep(ms, run) {
 async function demoStream(text, run) {
   const { row, bubble, tools } = messageEl({ role: 'assistant', content: '' });
   tools.hidden = true;
-  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(settings.name)} is typing"><span></span><span></span><span></span></span>`;
+  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(companionName())} is typing"><span></span><span></span><span></span></span>`;
   el.inner.appendChild(row);
   scrollToBottom(true);
   setOrb('thinking');
@@ -8490,19 +8547,82 @@ function onboardingSeen() {
 function markOnboardingSeen(extra) {
   save(K.onboarding, Object.assign({ seen: true, at: Date.now() }, extra || {}));
 }
+function setOnboardStep(step) {
+  const welcome = $('#onboardStepWelcome');
+  const reason = $('#onboardStepReason');
+  const faith = $('#onboardStepFaith');
+  if (welcome) welcome.hidden = step !== 'welcome';
+  if (reason) reason.hidden = step !== 'reason';
+  if (faith) faith.hidden = step !== 'faith';
+  const title = $('#onboardTitle');
+  if (title) {
+    if (step === 'reason') title.textContent = 'What brings you here';
+    else if (step === 'faith') title.textContent = 'Faith preference';
+    else title.innerHTML = 'Welcome to <span data-brand>Hopewick</span>';
+  }
+  const focusId = step === 'reason' ? 'onboardReasonContinue' : step === 'faith' ? 'onboardStartBtn' : 'onboardYesBtn';
+  const focus = document.getElementById(focusId);
+  if (focus && el.onboardingDlg && el.onboardingDlg.open) focus.focus();
+}
+function applyOnboardingChoices() {
+  if (isDemo || !profile) return;
+  const o = load(K.onboarding, null);
+  if (!o || !o.faithChoice) return;
+  const applied = Object.assign({}, o.appliedTo || {});
+  if (applied[profile.id]) return;
+  if (o.hereFor) settings.hereFor = o.hereFor;
+  if (o.faithChoice === 'none') {
+    settings.faith = 'none';
+    settings.faithLevel = 'ask';
+  } else if (o.faithChoice === 'ask') {
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    settings.faithLevel = 'ask';
+  } else if (o.faithChoice === 'central') {
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    settings.faithLevel = 'central';
+  } else {
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    settings.faithLevel = 'woven';
+  }
+  applied[profile.id] = true;
+  save(K.onboarding, Object.assign({}, o, { appliedTo: applied }));
+  saveSettings();
+}
 function finishOnboarding(extra) {
   markOnboardingSeen(extra);
+  pendingStartChat = !!(extra && extra.startChat);
   if (el.onboardingDlg.open) el.onboardingDlg.close();
+  if (profile && pendingStartChat) {
+    applyOnboardingChoices();
+    pendingStartChat = false;
+    setAppTab('chat');
+    focusInput();
+    return;
+  }
   showPicker();
 }
-$('#onboardYesBtn').addEventListener('click', () => finishOnboarding({ continued: true }));
+$('#onboardYesBtn').addEventListener('click', () => setOnboardStep('reason'));
 $('#onboardLaterBtn').addEventListener('click', () => finishOnboarding({ continued: false }));
+$('#onboardReasonBack')?.addEventListener('click', () => setOnboardStep('welcome'));
+$('#onboardReasonContinue')?.addEventListener('click', () => setOnboardStep('faith'));
+$('#onboardFaithBack')?.addEventListener('click', () => setOnboardStep('reason'));
+$('#onboardStartBtn')?.addEventListener('click', () => {
+  const reason = $$('input[name="onboardReason"]').find(r => r.checked);
+  const faith = $$('input[name="onboardFaith"]').find(r => r.checked);
+  finishOnboarding({
+    continued: true,
+    startChat: true,
+    hereFor: reason ? reason.value : 'myself',
+    faithChoice: faith ? faith.value : 'woven',
+  });
+});
 el.onboardingDlg.addEventListener('cancel', (e) => {
   e.preventDefault();
   finishOnboarding({ continued: false, dismissed: true });
 });
 
 function showOnboarding() {
+  setOnboardStep('welcome');
   if (!el.onboardingDlg.open) el.onboardingDlg.showModal();
   const yes = $('#onboardYesBtn');
   if (yes) yes.focus();
@@ -9049,13 +9169,14 @@ async function refreshHopeUsage() {
   }
 }
 function appendPlusOffer(body) {
-  const unlock = document.createElement('p');
-  unlock.className = 'lede';
-  unlock.textContent = 'Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history.';
-  body.appendChild(unlock);
-  const free = document.createElement('p');
-  free.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder.';
-  body.appendChild(free);
+  const price = document.createElement('p');
+  price.className = 'plus-price';
+  price.innerHTML = 'AU$20<span>/month</span>';
+  body.appendChild(price);
+  const kicker = document.createElement('p');
+  kicker.className = 'plus-kicker';
+  kicker.textContent = 'Cancel anytime. One subscription per person.';
+  body.appendChild(kicker);
   const caps = document.createElement('div');
   caps.className = 'message-caps';
   caps.setAttribute('aria-label', 'Daily message limits');
@@ -9082,16 +9203,66 @@ function appendPlusOffer(body) {
   capsRow.appendChild(capCard('Hopewick Plus', '200 messages/day', true));
   caps.appendChild(capsRow);
   body.appendChild(caps);
-  const cancel = document.createElement('p');
-  cancel.textContent = 'Cancel anytime. One subscription per person.';
-  body.appendChild(cancel);
+  const list = document.createElement('ul');
+  list.className = 'plus-checklist';
+  [
+    '200 messages a day with Hope',
+    'Clean time tracker, SOAP reflections, and journal tools',
+    'Going Deeper faith content and 12 Steps practice',
+    'The full year of readings',
+    'Keep your conversation history on this device. Cloud sync is not enabled.',
+  ].forEach(text => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    list.appendChild(li);
+  });
+  body.appendChild(list);
+  if (!subscriptionPlus()) {
+    const actions = document.createElement('div');
+    actions.className = 'account-actions';
+    const sub = document.createElement('button');
+    sub.type = 'button';
+    sub.className = 'btn btn-primary';
+    sub.id = 'startPlusBtn';
+    sub.textContent = 'Start Hopewick Plus';
+    if (!billingState.reachable || (billingState.signedIn && !billingState.checkoutReady)) {
+      sub.disabled = true;
+    } else if (!billingState.signedIn) {
+      sub.addEventListener('click', () => {
+        const email = $('#accountEmail');
+        if (email) email.focus();
+        const status = $('#accountStatus');
+        if (status) status.textContent = 'Enter your email and we’ll send a sign-in link. Then you can start Hopewick Plus.';
+      });
+    } else {
+      sub.addEventListener('click', () => startCheckout());
+    }
+    actions.appendChild(sub);
+    body.appendChild(actions);
+    if (billingState.reachable && billingState.signedIn && !billingState.checkoutReady) {
+      const pay = document.createElement('p');
+      pay.className = 'help';
+      pay.textContent = 'Payments aren’t configured yet.';
+      body.appendChild(pay);
+    } else if (billingState.reachable && !billingState.signedIn) {
+      const hint = document.createElement('p');
+      hint.className = 'help';
+      hint.textContent = 'Sign in below, then start Hopewick Plus.';
+      body.appendChild(hint);
+    }
+  }
+  const crisis = document.createElement('p');
+  crisis.className = 'crisis-free-note';
+  crisis.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. In danger call 000. Lifeline 13 11 14. 1800RESPECT 1800 737 732.';
+  body.appendChild(crisis);
+  const privacy = document.createElement('aside');
+  privacy.className = 'privacy-card';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Your account knows your subscription. It doesn’t hold a dashboard of what you told Hope. Keep your conversation history on this device. Cloud sync is not enabled.</p>';
+  body.appendChild(privacy);
   const org = document.createElement('p');
-  org.textContent = 'Organisation plans coming soon.';
+  org.className = 'hosted-privacy';
+  org.textContent = 'Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.';
   body.appendChild(org);
-  const home = document.createElement('p');
-  home.className = 'hosted-privacy';
-  home.textContent = 'Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.';
-  body.appendChild(home);
 }
 function paintAccount() {
   const body = $('#accountBody');
@@ -9122,7 +9293,7 @@ function paintAccount() {
     form.className = 'account-form';
     form.id = 'accountMagicForm';
     form.noValidate = true;
-    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn btn-primary" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
+    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
     body.appendChild(form);
     const status = document.createElement('p');
     status.className = 'account-status';
@@ -9145,8 +9316,9 @@ function paintAccount() {
   const status = document.createElement('p');
   status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
   status.id = 'accountStatus';
-  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month opens the year’s readings and your chat history on this device.');
-  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. Any day of the readings is open, and your chat history stays with you on this device.';
+  status.textContent = statusLabel(billingState.subscriptionStatus) + (subscriptionPlus()
+    ? '. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.'
+    : '. AU$20/month. Cancel anytime.');
   body.appendChild(status);
   const allowance = document.createElement('p');
   allowance.className = 'hosted-privacy';
@@ -9166,15 +9338,6 @@ function paintAccount() {
     portal.addEventListener('click', () => startPortal());
     actions.appendChild(portal);
   }
-  if (!subscriptionPlus()) {
-    const sub = document.createElement('button');
-    sub.type = 'button';
-    sub.className = 'btn btn-primary';
-    sub.textContent = billingState.checkoutReady ? 'Subscribe — AU$20/month' : 'Payments aren’t configured yet';
-    sub.disabled = !billingState.checkoutReady;
-    sub.addEventListener('click', () => startCheckout());
-    actions.appendChild(sub);
-  }
   const out = document.createElement('button');
   out.type = 'button';
   out.className = 'btn';
@@ -9182,10 +9345,6 @@ function paintAccount() {
   out.addEventListener('click', () => signOutBilling());
   actions.appendChild(out);
   body.appendChild(actions);
-  const compare = document.createElement('p');
-  compare.className = 'hosted-privacy';
-  compare.innerHTML = 'Free vs Plus is on the <a href="../#plans">plans page</a>. We don’t store your chats. In an emergency call 000.';
-  body.appendChild(compare);
   if (billingState.devMagic) {
     const dev = document.createElement('div');
     dev.className = 'account-dev';

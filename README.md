@@ -51,7 +51,7 @@ The landing page has a "Pilot with us" section for services. Organisation and cl
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. Preferences (faith, role, theme, daily check-in) open when you launch the demo or enter a profile, and again from **More → Preferences**. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
+The **Get help now** button is always at the top of the screen. First-run onboarding is Welcome, what brings you here, a faith preference, then **Start talking to Hope**. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
 
 | Service | Number |
 |---|---|
