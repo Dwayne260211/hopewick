@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -275,6 +276,43 @@ test('missing Stripe keys refuse checkout without inventing a session', async ()
     const body = await response.json();
     assert.equal(response.status, 503);
     assert.match(body.error, /STRIPE_SECRET_KEY/);
+  } finally {
+    await app.close();
+  }
+});
+
+function rawRequest(base, requestPath, headers) {
+  const url = new URL(requestPath, base);
+  return new Promise((resolve, reject) => {
+    const req = http.request({
+      hostname: url.hostname,
+      port: url.port,
+      path: `${url.pathname}${url.search}`,
+      method: 'GET',
+      headers,
+    }, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: Buffer.concat(chunks).toString('utf8') }));
+    });
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+test('health check and www host redirect to the public origin', async () => {
+  const app = await listen({ PUBLIC_BASE_URL: 'https://hopewick.com.au' }, []);
+  try {
+    const health = await rawRequest(app.base, '/api/health', { host: '127.0.0.1' });
+    assert.equal(health.status, 200);
+    assert.deepEqual(JSON.parse(health.body), { ok: true });
+
+    const redirected = await rawRequest(app.base, '/api/health?from=www', { host: 'www.hopewick.com.au' });
+    assert.equal(redirected.status, 308);
+    assert.equal(redirected.headers.location, 'https://hopewick.com.au/api/health?from=www');
+
+    const apex = await rawRequest(app.base, '/api/health', { host: 'hopewick.com.au' });
+    assert.equal(apex.status, 200);
   } finally {
     await app.close();
   }

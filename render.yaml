@@ -1,0 +1,48 @@
+# Hopewick production: one web service serves the static site and /api.
+# Create it from the Render Dashboard → New → Blueprint, after this file is on main.
+# Secrets are sync:false — paste them in the Dashboard. Do not commit key values.
+services:
+  - type: web
+    name: hopewick
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    branch: main
+    region: singapore
+    # Smallest paid plan. A disk cannot be attached to the free plan, and the free
+    # plan sleeps, which drops Stripe webhooks. Do not scale past one instance:
+    # the account file lives on this disk and is not shared.
+    plan: 0.5c-512mb
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    # www is redirected to the apex (Render, and server/index.js) so the
+    # session cookie stays on one host. Both names need a certificate.
+    domains:
+      - hopewick.com.au
+      - www.hopewick.com.au
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOPEWICK_DEV
+        value: "0"
+      - key: PUBLIC_BASE_URL
+        value: https://hopewick.com.au
+      - key: HOST
+        value: 0.0.0.0
+      - key: BILLING_STORE
+        value: /var/data/users.json
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_PRICE_ID
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAGIC_LINK_FROM
+        sync: false
+    disk:
+      name: hopewick-accounts
+      mountPath: /var/data
+      sizeGB: 1

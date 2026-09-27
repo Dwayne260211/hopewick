@@ -2,6 +2,9 @@
   "name": "hopewick",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "description": "Hopewick static site plus the account and Stripe billing server.",
   "scripts": {
     "start": "node server/index.js",
