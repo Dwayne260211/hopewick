@@ -29,6 +29,11 @@ async function listen(env, stripeCalls) {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
     FOUNDER_PLUS_EMAILS: process.env.FOUNDER_PLUS_EMAILS,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    OPENAI_BASE_URL: process.env.OPENAI_BASE_URL,
+    OPENAI_MODEL: process.env.OPENAI_MODEL,
+    HOPEWICK_FREE_DAILY: process.env.HOPEWICK_FREE_DAILY,
+    HOPEWICK_PLUS_DAILY: process.env.HOPEWICK_PLUS_DAILY,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -37,10 +42,30 @@ async function listen(env, stripeCalls) {
   delete process.env.PUBLIC_BASE_URL;
   delete process.env.RESEND_API_KEY;
   delete process.env.FOUNDER_PLUS_EMAILS;
+  delete process.env.OPENAI_API_KEY;
+  delete process.env.OPENAI_BASE_URL;
+  delete process.env.OPENAI_MODEL;
+  delete process.env.HOPEWICK_FREE_DAILY;
+  delete process.env.HOPEWICK_PLUS_DAILY;
   Object.assign(process.env, env);
 
+  const openaiCalls = [];
   globalThis.fetch = async (url, opts) => {
     const target = String(url);
+    if (target.startsWith('https://api.openai.com/') || target.endsWith('/chat/completions')) {
+      const headers = opts && opts.headers ? opts.headers : {};
+      openaiCalls.push({
+        url: target,
+        body: opts && opts.body ? String(opts.body) : '',
+        authorization: headers.Authorization || headers.authorization || '',
+      });
+      const parsed = opts && opts.body ? JSON.parse(String(opts.body)) : {};
+      if (parsed.stream) {
+        const sse = 'data: {"choices":[{"delta":{"content":"Hello"}}]}\n\ndata: [DONE]\n\n';
+        return new Response(sse, { status: 200, headers: { 'Content-Type': 'text/event-stream' } });
+      }
+      return jsonResponse({ choices: [{ message: { role: 'assistant', content: 'Hello from Hope' } }] });
+    }
     if (target.startsWith('https://api.stripe.com/')) {
       stripeCalls.push({ url: target, body: opts && opts.body ? String(opts.body) : '', method: opts && opts.method });
       if (target.endsWith('/customers') && (!opts || opts.method === 'POST')) {
@@ -70,6 +95,8 @@ async function listen(env, stripeCalls) {
   const { port } = server.address();
   return {
     base: `http://127.0.0.1:${port}`,
+    openaiCalls,
+    storePath,
     async close() {
       globalThis.fetch = realFetch;
       for (const [key, value] of Object.entries(previous)) {
@@ -358,6 +385,208 @@ test('FOUNDER_PLUS_EMAILS overrides the default and still ignores the organisati
     const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
     const clinicMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: clinic } })).json();
     assert.equal(clinicMe.plus, false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('hosted Hope requires sign-in, hides the key, and enforces free and Plus caps', async () => {
+  const app = await listen({
+    OPENAI_API_KEY: 'sk-test-hope-secret',
+    HOPEWICK_FREE_DAILY: '1',
+    HOPEWICK_PLUS_DAILY: '2',
+  }, []);
+  try {
+    const anon = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'Hello Hope' }] }),
+    });
+    assert.equal(anon.status, 401);
+    assert.equal(app.openaiCalls.length, 0);
+
+    const session = await signIn(app.base, 'free@example.com');
+    const first = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          { role: 'system', content: 'You are Hope.' },
+          { role: 'user', content: 'A private note about my day that must not be stored' },
+        ],
+        stream: false,
+        model: 'gpt-4o',
+      }),
+    });
+    const firstBody = await first.json();
+    assert.equal(first.status, 200);
+    assert.equal(firstBody.choices[0].message.content, 'Hello from Hope');
+    assert.equal(JSON.stringify(firstBody).includes('sk-test-hope-secret'), false);
+    assert.equal(app.openaiCalls.length, 1);
+    assert.equal(app.openaiCalls[0].authorization, 'Bearer sk-test-hope-secret');
+    const sent = JSON.parse(app.openaiCalls[0].body);
+    assert.equal(sent.model, 'gpt-4o-mini');
+    assert.equal(sent.messages[1].content.includes('must not be stored'), true);
+
+    const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: session } })).json();
+    assert.equal(usage.used, 1);
+    assert.equal(usage.limit, 1);
+    assert.equal(usage.plus, false);
+    assert.equal(usage.remaining, 0);
+
+    const blocked = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'One more please' }] }),
+    });
+    assert.equal(blocked.status, 429);
+    const blockedBody = await blocked.json();
+    assert.match(blockedBody.error.message, /20 free messages|today’s 1 free messages/);
+    assert.equal(app.openaiCalls.length, 1);
+
+    const crisis = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'I want to die' }] }),
+    });
+    const crisisBody = await crisis.json();
+    assert.equal(crisis.status, 200);
+    assert.match(crisisBody.choices[0].message.content, /000/);
+    assert.match(crisisBody.choices[0].message.content, /13 11 14/);
+    assert.equal(app.openaiCalls.length, 1);
+
+    const stored = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(stored.includes('must not be stored'), false);
+    assert.equal(stored.includes('sk-test-hope-secret'), false);
+    assert.equal(stored.includes('I want to die'), false);
+
+    const plusSession = await signIn(app.base, 'plus@example.com');
+    await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: plusSession, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'active' }),
+    });
+    for (let i = 0; i < 2; i += 1) {
+      const ok = await fetch(`${app.base}/api/hope/chat`, {
+        method: 'POST',
+        headers: { cookie: plusSession, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: `Plus message ${i}` }], stream: true }),
+      });
+      assert.equal(ok.status, 200);
+      const text = await ok.text();
+      assert.match(text, /data:/);
+      assert.match(ok.headers.get('content-type') || '', /event-stream/);
+    }
+    const plusBlocked = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: plusSession, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'over plus cap' }] }),
+    });
+    assert.equal(plusBlocked.status, 429);
+    const plusUsage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: plusSession } })).json();
+    assert.equal(plusUsage.plus, true);
+    assert.equal(plusUsage.limit, 2);
+    assert.equal(plusUsage.used, 2);
+  } finally {
+    await app.close();
+  }
+});
+
+test('complimentary founder gets the Plus cap and is not sent to Checkout', async () => {
+  const stripeCalls = [];
+  const app = await listen({
+    OPENAI_API_KEY: 'sk-test-hope-secret',
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+    HOPEWICK_FREE_DAILY: '1',
+    HOPEWICK_PLUS_DAILY: '2',
+  }, stripeCalls);
+  try {
+    const founder = await signIn(app.base, 'dwaynesimons1990@gmail.com');
+    const checkout = await fetch(`${app.base}/api/billing/checkout`, {
+      method: 'POST',
+      headers: { cookie: founder, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    assert.equal(checkout.status, 409);
+    assert.match((await checkout.json()).error, /No payment is needed/);
+    assert.equal(stripeCalls.length, 0);
+
+    const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: founder } })).json();
+    assert.equal(usage.plus, true);
+    assert.equal(usage.complimentary, true);
+    assert.equal(usage.limit, 2);
+
+    const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
+    const clinicUsage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: clinic } })).json();
+    assert.equal(clinicUsage.plus, false);
+    assert.equal(clinicUsage.limit, 1);
+    const clinicCheckout = await fetch(`${app.base}/api/billing/checkout`, {
+      method: 'POST',
+      headers: { cookie: clinic, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    assert.equal(clinicCheckout.status, 200);
+  } finally {
+    await app.close();
+  }
+});
+
+test('hosted Hope without a server key does not call the model', async () => {
+  const app = await listen({}, []);
+  try {
+    const session = await signIn(app.base, 'nokey@example.com');
+    const response = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'Hello' }] }),
+    });
+    const body = await response.json();
+    assert.equal(response.status, 503);
+    assert.match(body.error.message, /not connected/);
+    assert.equal(app.openaiCalls.length, 0);
+    const config = await (await fetch(`${app.base}/api/billing/config`)).json();
+    assert.equal(config.hopeHosted, false);
+
+    const crisis = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'I am not safe at home' }] }),
+    });
+    const crisisBody = await crisis.json();
+    assert.equal(crisis.status, 200);
+    assert.match(crisisBody.choices[0].message.content, /000/);
+    assert.equal(app.openaiCalls.length, 0);
+  } finally {
+    await app.close();
+  }
+});
+
+test('memory extraction does not spend a daily message', async () => {
+  const app = await listen({
+    OPENAI_API_KEY: 'sk-test-hope-secret',
+    HOPEWICK_FREE_DAILY: '1',
+  }, []);
+  try {
+    const session = await signIn(app.base, 'mem@example.com');
+    const chat = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'I walk the dog when cravings hit' }] }),
+    });
+    assert.equal(chat.status, 200);
+    const memory = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        purpose: 'memory',
+        messages: [{ role: 'user', content: 'Already known:\n(none)\n\nLatest exchange:\nUser: I walk the dog' }],
+      }),
+    });
+    assert.equal(memory.status, 200);
+    const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: session } })).json();
+    assert.equal(usage.used, 1);
+    assert.equal(usage.remaining, 0);
   } finally {
     await app.close();
   }

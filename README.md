@@ -69,13 +69,13 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 
 **Hopewick Plus — AU$20/month** unlocks the full Hopewick experience: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Cancel anytime. One subscription per person.
 
-Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. **Daily message limits:** Free is 20 messages/day. Hopewick Plus is 200 messages/day. Those caps are product policy in the copy. They are not enforced in the companion yet. Organisation plans are coming soon (the pilot sheet is still the conversation for services).
+Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. **Daily message limits:** Free is 20 messages/day. Hopewick Plus is 200 messages/day. The account server enforces those caps on hosted Hope (`POST /api/hope/chat`). The browser never sees the model key. Organisation plans are coming soon (the pilot sheet is still the conversation for services).
 
 Sign-in is an email magic link. In the companion the screen is **Hopewick Plus**. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when that variable is unset, the only address is the founder’s Plus email, not the organisations inbox.
 
 Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, and in production `RESEND_API_KEY` plus `MAGIC_LINK_FROM`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
 
-GitHub Pages cannot run that server, so `https://hopewick.com.au/api/billing/*` 404s until DNS points at it. Production is one Render web service (`render.yaml`, `Dockerfile`) that serves the site and `/api` on `https://hopewick.com.au`. The cutover steps, the test price `price_1UKDd4PoYudRr3bcBe7IIdTH`, and the webhook URL are in [SETUP.md](SETUP.md). Invite-code AI stays on `https://hopewick-api.azurewebsites.net/api`.
+GitHub Pages cannot run that server, so `https://hopewick.com.au/api/billing/*` 404s until DNS points at it. Production is one Render web service (`render.yaml`, `Dockerfile`) that serves the site and `/api` on `https://hopewick.com.au`. The cutover steps, the test price `price_1UKDd4PoYudRr3bcBe7IIdTH`, and the webhook URL are in [SETUP.md](SETUP.md). Hosted Hope uses `OPENAI_API_KEY` on that service. The older invite-code proxy remains at `https://hopewick-api.azurewebsites.net/api` for Developer / pilot use.
 
 Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` and the icons in `app/`). The Play Store app isn’t ready yet. A service worker is still not included — see [SETUP.md](SETUP.md).
 
@@ -91,7 +91,7 @@ Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` 
 
 1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
 2. Read the short one-time disclaimer.
-3. **Hopewick Plus** is the subscription screen (email magic link). Live chat uses an invite code, or Settings → Advanced → *Use my own API key* (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
+3. **Sign in** (email magic link) and chat with Hope. Free is 20 messages a day. Hopewick Plus, including complimentary founder access, is 200 messages a day. No personal API key. Settings → Developer keeps an optional own-key or pilot-invite path (`eden.*` localStorage keys unchanged) for the people building Hopewick.
 
 ## Features
 
