@@ -28,6 +28,7 @@ async function listen(env, stripeCalls) {
     PUBLIC_BASE_URL: process.env.PUBLIC_BASE_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
+    FOUNDER_PLUS_EMAILS: process.env.FOUNDER_PLUS_EMAILS,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -35,6 +36,7 @@ async function listen(env, stripeCalls) {
   process.env.STRIPE_PUBLISHABLE_KEY = 'pk_test_placeholder';
   delete process.env.PUBLIC_BASE_URL;
   delete process.env.RESEND_API_KEY;
+  delete process.env.FOUNDER_PLUS_EMAILS;
   Object.assign(process.env, env);
 
   globalThis.fetch = async (url, opts) => {
@@ -335,6 +337,49 @@ test('developer toggle can mark Plus for local UI checks', async () => {
       body: JSON.stringify({ status: 'canceled' }),
     });
     assert.equal((await off.json()).plus, false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('founder complimentary Plus uses only the founder account', async () => {
+  const stripeCalls = [];
+  const app = await listen({
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+  }, stripeCalls);
+  try {
+    const founder = await signIn(app.base, 'DwayneSimons1990@gmail.com');
+    const me = await fetch(`${app.base}/api/auth/me`, { headers: { cookie: founder } });
+    const user = await me.json();
+    assert.equal(user.email, 'dwaynesimons1990@gmail.com');
+    assert.equal(user.subscriptionStatus, 'none');
+    assert.equal(user.plus, true);
+    const checkout = await fetch(`${app.base}/api/billing/checkout`, {
+      method: 'POST',
+      headers: { cookie: founder },
+    });
+    assert.equal(checkout.status, 409);
+    assert.equal(stripeCalls.some((call) => call.url.includes('/checkout/sessions')), false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('company admin email is not complimentary Plus', async () => {
+  const app = await listen({
+    FOUNDER_PLUS_EMAILS: 'admin@bridge-bite-co.com, dwaynesimons1990@gmail.com',
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+  }, []);
+  try {
+    const admin = await signIn(app.base, 'Admin@bridge-bite-co.com');
+    const adminMe = await fetch(`${app.base}/api/auth/me`, { headers: { cookie: admin } });
+    assert.equal((await adminMe.json()).plus, false);
+
+    const founder = await signIn(app.base, 'dwaynesimons1990@gmail.com');
+    const founderMe = await fetch(`${app.base}/api/auth/me`, { headers: { cookie: founder } });
+    assert.equal((await founderMe.json()).plus, true);
   } finally {
     await app.close();
   }

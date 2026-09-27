@@ -4,9 +4,8 @@
 The marketing site and companion are static HTML (no build step, no external CDNs). **Hopewick Plus** (AU$20/month) adds a small Node account server for email sign-in and Stripe — see [SETUP.md](SETUP.md). Chats stay in the browser.
 
 **Live:**
-- Website (landing page): https://dwayne260211.github.io/hopewick/
-- App: https://dwayne260211.github.io/hopewick/app/
-- Demo (no API key needed, nothing saved): https://dwayne260211.github.io/hopewick/app/?demo=1
+- Website (landing page): https://hopewick.com.au/
+- App: https://hopewick.com.au/app/
 
 ## Project layout
 
@@ -32,26 +31,21 @@ const BRAND = { name:'Hopewick', companion:'Hope', tagline:'AOD recovery support
 
 To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html`, then run `python3 tools/make_og.py` to redraw the share image. Also update the static fallback text in the `<head>` meta tags of `index.html` (social-media crawlers don't run JavaScript). Storage keys stay `eden.*` on purpose, so existing users keep their data.
 
-## Demo mode
+## Practice visit
 
-Open `app/?demo=1`, or click **Try the demo** on the landing page or the person picker. The demo:
-- makes **no API calls** and needs no key;
-- uses a sample person ("Alex") with a sample recovery counter and a week of check-ins;
-- plays scripted conversations with a streaming animation: a craving (HALT and urge surfing), a slip-up, cutting down, *Pray with me*, and a crisis example that shows the crisis card;
-- gives a scripted reply to anything you type;
-- never reads or writes your real data, and everything resets when you leave (**Exit demo**).
+The public site does not ship a sample profile, a DEMO badge, or placeholder people. Open the app and add your own profile. Today’s readings, the resume builder, Get help, and domestic and family violence support stay free.
 
-A **DEMO** badge and banner are always visible.
+`app/?demo=1` is an unlisted scripted visit used by tests. It does not name a person, does not fill in a clean-time streak or journal, makes no API calls, and does not write storage.
 
 ## Pilot with us
 
-The landing page has a "Pilot with us" section for services. **TODO:** the contact details there are a clearly marked placeholder. Add the real contact method in `index.html` (search for `TODO`).
+The landing page has a "Pilot with us" section. Company enquiries go to `admin@bridge-bite-co.com` (BRIDGE&BITE.CO PTY LTD). That address is the company inbox, not the founder’s account. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when unset, only `dwaynesimons1990@gmail.com` is included.
 
 > ⚠️ Hope is an **AI recovery companion, not a registered counsellor, doctor or clinician**. It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous, so talk to a doctor first. **In an emergency call 000.**
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. Preferences (faith, role, theme, daily check-in) open when you launch the demo or enter a profile, and again from **More → Preferences**. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
+The **Get help now** button is always at the top of the screen. Preferences (faith, role, theme, daily check-in) open when you enter a profile, and again from **More → Preferences**. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
 
 | Service | Number |
 |---|---|
@@ -67,7 +61,7 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 
 ## Hopewick Plus (AU$20/month)
 
-Individual subscriptions sit beside the free demo. **Get help, crisis and domestic violence support, the marketing site, the companion demo, today’s Word for the day / Just for today, and the resume builder stay free.** Organisation and clinic seat plans are coming soon (the pilot sheet is still the conversation for services).
+Individual subscriptions sit beside the free companion. **Get help, crisis and domestic violence support, the marketing site, today’s Word for the day / Just for today, and the resume builder stay free.** Organisation and clinic seat plans are coming soon (the pilot sheet is still the conversation for services).
 
 Hopewick Plus unlocks the full-year reading library and full chat history on this device, plus account management through Stripe. Sign-in is an email magic link. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status.
 
@@ -89,7 +83,7 @@ TODO: a web app manifest and service worker are not included yet.
 
 1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
 2. Read the short one-time disclaimer.
-3. **Visitors:** use **Try the demo** (no key, nothing sent) or **Join waitlist**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
+3. **Visitors:** open the app and add your profile, or **Join waitlist**. **Advanced (optional):** Settings → Advanced → *Use my own API key* still accepts an OpenAI-compatible key in this browser for testing (`eden.*` localStorage keys unchanged). Default provider `https://api.openai.com/v1` / `gpt-4o-mini`.
 
 ## Features
 
@@ -97,8 +91,8 @@ TODO: a web app manifest and service worker are not included yet.
 - **Product copy + crisis UX (v5.10).** Tagline **AOD recovery support between sessions**; Hope standardised as an **AI recovery companion**; CTA **Join waitlist**; About uses progressive disclosure; crisis card leads with moment-first actions (incl. **1800RESPECT**).
 - **Find a church (v5.8).** Official Australian denominational finders (ACC, Catholic free parish lookup, Anglican dioceses, Uniting, Baptist state unions, Salvation Army, Presbyterian, Lutheran, Churches of Christ) plus AusChurches directory and maps. Hopewick does **not** scrape or host a church database — link-outs only. Soft-hidden when faith preference is “none” (same pattern as Bible); chat chip if someone asks for a church.
 - **Find AOD services (v5.11).** Curated QLD-first community AOD NGOs (QuIHN, Drug ARM, Lives Lived Well, Brisbane Youth Service, Anglicare SQ, plus QNADA) with plain-language offer chips from their public sites — Visit site / Call link-outs. Different from Find treatment / rehab (state helplines + official finders only). Hopewick does **not** run these services.
-- **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; visible in demo.
-- **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline demo; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
+- **Find treatment / rehab (v5.7).** Official Australian AOD helplines and service finders by state/territory (National Hotline **1800 250 015**, Adis/ADIS/DirectLine/ADSL and peak-body directories). Hopewick does **not** scrape or host facility lists — we link out so contacts stay current. Faith-independent; available in the app.
+- **In-app Bible (WEB).** Full Protestant canon reader using the public-domain **World English Bible**. SOAP Day 1 (Matthew 1:1–25) is embedded for offline reading; other chapters load from bible-api.com with graceful offline messaging. **Diving Deeper Finding Jesus** covers all 66 books with daily main readings, Going Deeper cross-refs, checkboxes, and original Hopewick “Finding Jesus” notes — WEB only, no commercial translation pitches.
 
 
 - **Two modes.** *AOD faith counsellor* (the default) or *Friend*. The counsellor draws on motivational interviewing (OARS, working with mixed feelings, stages of change), harm reduction, relapse prevention (triggers, HALT, urge surfing, coping plans), CBT-style reframing and SMART goals. Its approach is strengths-based, trauma-informed and culturally safe. It also encourages real-world support: a GP, your local AOD service, your faith community, SMART Recovery, AA/NA or Celebrate Recovery.
@@ -121,8 +115,7 @@ If you used the earlier single-user version, your chats, memories and settings m
 
 ## Tests
 
-- `tests/test_eden.py` runs headless Chromium (Playwright) checks against a fake API. It covers profiles, PINs, privacy, migration, mode and faith, the crisis path, the help panel, the counter, check-ins, streaming, memory, export/import, mobile, loading from file://, demo mode (no network calls, no storage changes, scenarios, crisis card), central branding, and the landing page (links, welcome-back banner, TODO contact, copyright, meta tags).
-- `tests/test_profiles.py` checks that a new device starts with no named profiles, that unused factory profiles are not shown, and that demo mode still uses the Alex sample without writing storage.
+- `tests/test_profiles.py` checks that a new device starts with no named profiles, that unused factory profiles are not shown, and that an unlisted scripted visit does not name a person or write storage.
 - `tests/test_real_e2e.py` runs a live test using `OPENAI_API_KEY` from the environment. The key goes into the headless browser only and is never written to a file.
 
 ## Copyright and licence
@@ -135,13 +128,13 @@ This is proprietary software. It is published for demonstration purposes only. Y
 
 
 ### Find a church (v5.8)
-Open **Demo** → sidebar **Find a church** (near Find a meeting / Find treatment). Cards by tradition + maps near me + AusChurches. Or tap the chip when chat asks for a church/parish. Hidden when faith preference is **No faith content**. Also under **Get help now**.
+Open the app → sidebar **Find a church** (near Find a meeting / Find treatment). Cards by tradition + maps near me + AusChurches. Or tap the chip when chat asks for a church/parish. Hidden when faith preference is **No faith content**. Also under **Get help now**.
 
 ### Find treatment / rehab (v5.7)
-Open **Demo** → sidebar **Find treatment / rehab** (near Find a meeting / Find nearby help). Pick a state for the helpline + Open service finder. Or tap the chip when chat mentions rehab/detox/treatment. Also under **Get help now**.
+Open the app → sidebar **Find treatment / rehab** (near Find a meeting / Find nearby help). Pick a state for the helpline + Open service finder. Or tap the chip when chat mentions rehab/detox/treatment. Also under **Get help now**.
 
 ### In-app Bible (v5.6)
-Open **Demo** → sidebar **Bible & SOAP**. Tabs: **SOAP daily** | **Diving Deeper Finding Jesus** | **Read Bible**.
+Open the app → sidebar **Bible & SOAP**. Tabs: **SOAP daily** | **Diving Deeper Finding Jesus** | **Read Bible**.
 
 - SOAP Day 1 shows Matthew 1 embedded (WEB).
 - **Diving Deeper Finding Jesus**: 483 days / 97 weeks across all 66 Protestant books. Genesis opens with the founder’s photo plan (25 days); then Exodus → Revelation. Pick a **section** (Genesis, Law, History, Wisdom, Prophets, Gospels, Church letters, Revelation), tick days, open a row for main + Going Deeper WEB text, expand **Finding Jesus**, or **Talk with Hope**.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Starter profiles must not ship personal names. The Alex demo sample stays."""
+"""Starter profiles must not ship personal names. Scripted visits have no sample person."""
 from __future__ import annotations
 
 import json
@@ -31,10 +31,13 @@ def test_static_no_personal_starter_names():
     assert "Abbey" not in picker
     assert "name: 'Dwayne'" not in text
     assert "name: 'Abbey'" not in text
-    assert "const DEMO_PERSON = { id: 'demo', name: 'Alex'" in text
+    assert "name: 'Alex'" not in text
+    assert ">DEMO<" not in text
+    assert "const DEMO_PERSON = { id: 'demo', name: ''" in text
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "Pick **Dwayne**" not in readme
     assert "Abbey" not in readme
+    assert "sample person" not in readme
     assert "Person 1" in readme
 
 
@@ -94,7 +97,8 @@ def test_new_user_picker_and_demo_privacy():
             page.on("pageerror", lambda exc: errors.append(str(exc)))
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=15000)
-            assert page.locator("#switchName").text_content().strip() == "Alex"
+            assert page.locator("#switchName").text_content().strip() == ""
+            assert "Alex" not in page.locator("body").inner_text()
             assert page.evaluate("() => Object.keys(localStorage).filter(k => k.startsWith('eden.'))") == []
             page.click("#switchBtn")
             page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
@@ -174,7 +178,7 @@ def test_new_user_picker_and_demo_privacy():
             )
             page.reload(wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])")
-            assert page.locator("#switchName").text_content().strip() == "Alex"
+            assert page.locator("#switchName").text_content().strip() == ""
             still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
             assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
             page.click("#exitDemoBtn")

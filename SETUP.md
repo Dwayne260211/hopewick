@@ -4,7 +4,7 @@ Individual subscriptions are **AU$20 per month** (AUD). The marketing site and c
 
 Chats, memories, and readings stay in the browser. The account file stores **email and subscription status only**.
 
-Crisis lines, domestic and family violence support, Get help, the public demo, and **today’s** Word for the day and Just for today stay free.
+Crisis lines, domestic and family violence support, Get help, the resume builder, and **today’s** Word for the day and Just for today stay free.
 
 Organisation and clinic seat plans are **not** for sale here. They remain “coming soon”. The existing pilot sheet (`pilot-pricing.html`) is unchanged as a conversation starter for services.
 
@@ -14,13 +14,15 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 |---|---|---|
 | Website | Yes | Yes |
 | Crisis, domestic and family violence, Get help | Always | Always |
-| Companion demo, including today’s readings | Yes | Yes |
-| Chat | Demo, plus the latest conversation on a free account | Full chat history on this device |
+| Companion on this device, including today’s readings | Yes | Yes |
+| Chat | Latest conversation on a free signed-in account | Full chat history on this device |
 | Reading library (any day of the year) | Today only | Yes |
 | Resume builder | Yes — saved on this device | Included, still free |
 | Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
 
-Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep the companion as it works today, including the demo for organisation trials.
+Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep today’s readings, Get help, domestic and family violence support, and the resume builder.
+
+`FOUNDER_PLUS_EMAILS` is an optional comma-separated complimentary Plus list. When it is unset, only `dwaynesimons1990@gmail.com` (Dwayne Stevens’ founder account) is included. `admin@bridge-bite-co.com` is the company inbox for pilots and Stripe records — it is never treated as the founder email and is ignored if someone puts it in that list. Do not publish the founder address on the marketing site.
 
 ## Environment variables
 
@@ -40,6 +42,7 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `RESEND_API_KEY` | Production email | Required in production. With `MAGIC_LINK_FROM`, sign-in links are emailed via [Resend](https://resend.com). Without both, production sign-in returns 503 and does not reveal the link. |
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
+| `FOUNDER_PLUS_EMAILS` | No | Complimentary Plus, comma-separated. Unset means `dwaynesimons1990@gmail.com` only. `admin@bridge-bite-co.com` is never included. |
 | `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. |
 
 Do not commit real keys. Placeholders in `.env.example` are not live credentials.
@@ -64,7 +67,7 @@ npm start
 
 Open **http://127.0.0.1:8787/** (plans are on the home page) and **http://127.0.0.1:8787/app/** for the companion.
 
-Use this server, not `python3 -m http.server`, when you want sign-in or Stripe. The Python server still serves the static demo; `/api` will not be there.
+Use this server, not `python3 -m http.server`, when you want sign-in or Stripe. The Python server still serves the static site; `/api` will not be there.
 
 ### Sign in without email
 
@@ -100,7 +103,7 @@ curl -s -X POST http://127.0.0.1:8787/api/billing/dev-set \
 
 ### What to look at in the companion
 
-- **Free / signed out:** Today’s readings, demo, Get help, and domestic and family violence stay available. Existing local chats are not deleted.
+- **Free / signed out:** Today’s readings, the resume builder, Get help, and domestic and family violence stay available. Existing local chats are not deleted.
 - **Signed in, not subscribed:** the latest conversation opens; older ones show a Plus note and a soft plans prompt. Today’s reading stays. Other days in the reading library do not.
 - **Plus active:** any day in the reading library, and the full conversation list.
 - Get help and the crisis card are never blocked.

@@ -16,7 +16,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
-import { createStore, hashToken, publicUser, isPlusStatus } from './store.js';
+import { createStore, hashToken, publicUser, isPlusStatus, hasFounderPlus } from './store.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -442,7 +442,7 @@ async function handleApi(store, req, res, url) {
       json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID.' });
       return;
     }
-    if (isPlusStatus(user.subscriptionStatus)) {
+    if (isPlusStatus(user.subscriptionStatus) || hasFounderPlus(user.email)) {
       json(res, 409, { error: 'Hopewick Plus is already active on this account. Use Manage subscription to make changes.' });
       return;
     }

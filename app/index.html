@@ -1339,7 +1339,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .about-body .waitlist-cta { margin: 14px 0 4px; text-align: center; }
 
 /* v3: demo mode + copyright */
-.demo-badge { font-size: .7rem; font-weight: 800; letter-spacing: .08em; background: #f2c94c; color: #3d2f00; border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
 .demo-banner { margin: 12px 16px 0; padding: 10px 14px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   background: #fdf3d3; color: #4a3a05; border: 1px solid #ecd58a; }
 :root[data-theme="dark"] .demo-banner { background: #3a3013; color: #f6e6b0; border-color: #6b5a22; }
@@ -1496,7 +1495,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="who">
         <div class="orb" id="headerOrb" data-state="idle" aria-hidden="true"><span class="shine"></span></div>
         <div class="who-text">
-          <div class="who-name"><span id="headerName" data-companion></span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
+          <div class="who-name"><span id="headerName" data-companion></span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
           <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here to listen</span><span class="mood-pill" id="moodPill" hidden></span></div>
         </div>
       </div>
@@ -1515,19 +1514,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </header>
 
     <div class="demo-banner slim" id="demoBanner" hidden role="note">
-      <p><strong>Demo</strong> · pre-written responses</p>
-      <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
+      <p>Pre-written examples · nothing is sent</p>
+      <button class="btn btn-sm" type="button" id="exitDemoBtn">Back</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. The demo, today’s readings, and Get help stay free.</p>
+      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. Today’s readings, the resume builder, and Get help stay free.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">See plans</button>
       <button class="btn btn-sm" type="button" id="accessBannerWaitlist">Join waitlist</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>🌱 <strong>Try <span data-brand></span> free.</strong> Live AI accounts aren’t open yet — explore the demo (pre-written examples, nothing sent), or <strong>Join waitlist</strong> to hear when accounts open.</p>
+      <p>🌱 <strong>Today’s readings, Get help, and the resume builder are free.</strong> Live replies need an invite code, or an optional key under Advanced.</p>
       <div class="banner-actions">
-        <button class="btn btn-primary btn-sm" type="button" id="keyBannerDemo">✨ Try the demo</button>
         <button class="btn btn-sm" type="button" id="keyBannerInvite">Enter invite code</button>
         <button class="btn btn-sm" type="button" id="keyBannerWaitlist">Join waitlist</button>
       </div>
@@ -1583,7 +1581,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
             <button class="btn" type="button" id="launchPrefsSkip">Skip for now</button>
           </div>
         </form>
-        <p class="help" id="launchPrefsDemoNote" hidden>In the demo, these choices last for this visit only.</p>
+        <p class="help" id="launchPrefsDemoNote" hidden>On this visit, these choices last until you leave.</p>
         <p class="help"><button class="btn btn-ghost btn-sm" type="button" id="launchPrefsAllSettings">All settings</button></p>
       </div>
     </section>
@@ -1850,7 +1848,6 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage profiles</button>
     </div>
     <div class="picker-demo">
-      <button class="btn btn-primary" type="button" id="tryDemoBtn">✨ Try the demo <span class="help" style="color:inherit;opacity:.85">— no API key needed</span></button>
       <button class="btn" type="button" id="pickerWaitlistBtn">Join waitlist</button>
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
@@ -1897,13 +1894,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Plans &amp; account</button>
       <button class="btn" type="button" id="aboutWaitlistBtn">Join waitlist</button>
-      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. Get help is never locked.</p>
+      <p class="help" style="margin:8px 0 0">Today’s readings and the resume builder stay free. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. Get help is never locked.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy · Advanced</summary>
       <ul>
-        <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon — it isn’t ready to install yet. Get help stays free. Organisation plans are coming soon.</li>
+        <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Hopewick does not start you in a sample profile.</li>
+        <li><strong>Hopewick Plus</strong> (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon — it isn’t ready to install yet. Today’s readings, the resume builder, and Get help stay free. Organisation plans are coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
         <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
@@ -1929,13 +1926,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede">Try the free demo now. Paid accounts and hosted service access are coming — leave your name and email and we’ll be in touch. No accounts to create, no payments yet.</p>
+    <p class="lede">Leave your name and email and we’ll be in touch about hosted service access. Hopewick Plus for one person is on the plans page. No payment on this form.</p>
     <form class="waitlist-form" id="appWaitlistForm" novalidate>
       <label for="appWlName">Your name
         <input id="appWlName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="First name or preferred name">
       </label>
       <label for="appWlEmail">Email
-        <input id="appWlEmail" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com">
+        <input id="appWlEmail" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="Your email">
       </label>
       <fieldset style="border:0;padding:0;margin:0">
         <legend style="font-size:.9rem;font-weight:600;margin-bottom:4px">I am… <span class="hint" style="font-weight:500;color:var(--muted);font-size:.8rem">(pick one)</span></legend>
@@ -1951,7 +1948,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </label>
       <button class="btn btn-primary" type="submit" id="appWaitlistSubmit">Join waitlist</button>
     </form>
-    <p class="waitlist-mail" id="appWaitlistContact">Or email <a href="mailto:Admin@bridge-bite-co.com?subject=Hopewick%20waitlist">Admin@bridge-bite-co.com</a> at BRIDGE&amp;BITE.CO PTY LTD anytime.</p>
+    <p class="waitlist-mail" id="appWaitlistContact">Or email the company at <a href="mailto:admin@bridge-bite-co.com?subject=Hopewick%20waitlist">admin@bridge-bite-co.com</a> (BRIDGE&amp;BITE.CO PTY LTD) anytime.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="waitlistCloseBtn">Close</button>
@@ -2002,16 +1999,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ Need AI / no key prompt ============================ -->
 <dialog id="needAiDlg" class="need-ai-dlg" aria-labelledby="needAiTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="needAiTitle">Try the demo</h2>
+    <h2 id="needAiTitle">Live replies</h2>
     <button class="icon-btn" value="close" aria-label="Close">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede" id="needAiLede">Live AI chat needs a hosted account (coming soon), an invite code, or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.</p>
+    <p class="lede" id="needAiLede">Live AI chat needs an invite code, or an optional key under Advanced. Today’s readings, Get help, and the resume builder stay available. Join the waitlist to hear about hosted accounts.</p>
     <div class="need-ai-actions">
-      <button class="btn btn-primary" type="button" id="needAiDemoBtn">✨ Try the demo</button>
-      <button class="btn" type="button" id="needAiInviteBtn">Enter invite code</button>
+      <button class="btn btn-primary" type="button" id="needAiInviteBtn">Enter invite code</button>
       <button class="btn" type="button" id="needAiWaitlistBtn">Join waitlist</button>
       <button class="btn btn-ghost" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
     </div>
@@ -2034,12 +2030,12 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <p class="lede">If Bridge&amp;Bite or a partner gave you a pilot invite, enter it here. You’ll get a session token for live AI on this device — no need for your own API key.</p>
     <form class="invite-form" id="inviteForm" novalidate>
       <label for="inviteCodeInput">Invite code
-        <input id="inviteCodeInput" type="text" autocomplete="off" spellcheck="false" placeholder="e.g. HOPE-DEMO-001" required>
+        <input id="inviteCodeInput" type="text" autocomplete="off" spellcheck="false" placeholder="Paste the code you were given" required>
       </label>
       <button class="btn btn-primary" type="submit" id="inviteSubmitBtn">Redeem invite</button>
     </form>
     <p class="invite-status" id="inviteStatus" role="status" aria-live="polite"></p>
-    <p class="invite-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Demo mode still sends nothing.</p>
+    <p class="invite-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="inviteCloseBtn">Close</button>
@@ -2221,10 +2217,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
     </div>
     <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
-      <p class="advanced-lede">Most visitors use the <strong>free demo</strong>, an <strong>invite code</strong>, or <strong>Join waitlist</strong>. Live public accounts aren’t open yet.
+      <p class="advanced-lede">Most people use an <strong>invite code</strong> or <strong>Join waitlist</strong>. A key here is optional, for this device only.
         <span class="adv-actions">
-          <button class="btn btn-sm btn-primary" type="button" id="advTryDemoBtn">✨ Try the demo</button>
-          <button class="btn btn-sm" type="button" id="advInviteBtn">Enter invite code</button>
+          <button class="btn btn-sm btn-primary" type="button" id="advInviteBtn">Enter invite code</button>
           <button class="btn btn-sm" type="button" id="advWaitlistBtn">Join waitlist</button>
         </span>
       </p>
@@ -3501,7 +3496,7 @@ function newConversation() {
 }
 function openConversation(id) {
   if (conversationLocked(id)) {
-    toast('Older chats are part of Hopewick Plus. Today’s reading, the demo, and Get help stay free.', false, 4800);
+    toast('Older chats are part of Hopewick Plus. Today’s reading, the resume builder, and Get help stay free.', false, 4800);
     openAccountDlg();
     return;
   }
@@ -3717,7 +3712,7 @@ function applyLaunchPrefs(opts = {}) {
   dismissLaunchPrefs();
   renderAll();
   if (!opts.skip) {
-    toast(isDemo ? 'Preferences set for this demo visit' : 'Preferences saved');
+    toast(isDemo ? 'Preferences set for this visit' : 'Preferences saved');
     if (!isDemo && isCounsellor()) maybeShowDisclaimer();
   }
 }
@@ -4353,11 +4348,10 @@ function renderAll() {
   el.memCount.textContent = memories.length;
   el.keyBanner.hidden = !!settings.apiKey || isDemo;
   $('#demoBanner').hidden = !isDemo;
-  $('#demoBadge').hidden = !isDemo;
   el.switchAvatar.textContent = (userName()[0] || '?');
   el.switchAvatar.style.setProperty('--c', avatarColour(profile));
   el.switchName.textContent = userName();
-  el.switchBtn.setAttribute('aria-label', isDemo ? 'Exit demo and choose a person' : `Switch person (currently ${userName()})`);
+  el.switchBtn.setAttribute('aria-label', isDemo ? 'Leave this visit and choose a profile' : `Switch person (currently ${userName()})`);
   if (!busy) setOrb('idle');
   renderSober();
   renderHistory();
@@ -4583,7 +4577,7 @@ async function sendMessage(textOverride) {
   const crisis = CRISIS_RE.test(text);
   const crisisKind = crisis ? classifyCrisis(text) : null;
   if (!settings.apiKey && !crisis) {
-    promptNeedAi('To chat with live AI, join the waitlist (coming soon) or use an optional key under Advanced. Try the free demo instead — nothing is sent anywhere.');
+    promptNeedAi('To chat with live AI, use an invite code or an optional key under Advanced. Today’s readings, Get help, and the resume builder stay available.');
     return;
   }
 
@@ -4833,7 +4827,7 @@ function renderCleanTime() {
   });
 }
 $('#cleanCloseBtn').addEventListener('click', () => el.cleanTimeDlg.close());
-$('#cleanEditSettings').addEventListener('click', () => { el.cleanTimeDlg.close(); if (isDemo) { toast('Settings are off in the demo.'); return; } openSettings('setSoberStart'); });
+$('#cleanEditSettings').addEventListener('click', () => { el.cleanTimeDlg.close(); if (isDemo) { toast('Choose a profile to save a clean-time start date.'); return; } openSettings('setSoberStart'); });
 
 /* ---------------------------------------------------------------------------
    Morning gratitude
@@ -5015,7 +5009,7 @@ function parseRefineResponse(raw) {
 const DEMO_REFINE = {
   refined: 'You’re noticing both the pull of the craving and the choice you made to reach out instead. Underneath the urge there seems to be tiredness and a need for connection — and naming that is already a kind of strength.',
   emotions: 'anxiety, loneliness, pride, relief',
-  question: 'What helped you choose the text to your brother in that moment?',
+  question: 'What helped you choose to reach out in that moment?',
 };
 
 async function refineJournalEntry(entry, showInCompose) {
@@ -5028,7 +5022,7 @@ async function refineJournalEntry(entry, showInCompose) {
   if (isDemo) {
     parsed = DEMO_REFINE;
   } else if (!settings.apiKey) {
-    promptNeedAi('Deepen reflection needs live AI. Try the demo, join the waitlist, or open Advanced if you use your own key.');
+    promptNeedAi('Deepen reflection needs live AI. Use an invite code, join the waitlist, or open Advanced if you use your own key.');
     return;
   } else {
     try {
@@ -7059,8 +7053,8 @@ function openNearby() {
   $('#nearbyLinks').innerHTML = '';
   $('#nearbySuburb').value = nearbyLastCoarse || '';
   if (isDemo) {
-    $('#nearbyStatus').textContent = 'Demo: pretend you’re around Brisbane CBD. Use the links below — nothing is sent from this device.';
-    renderNearbyLinks({ label: 'Brisbane CBD (demo)', lat: -27.4698, lng: 153.0251, suburb: 'Brisbane' });
+    $('#nearbyStatus').textContent = 'These links use a Brisbane example so you can open the finders without sharing your location. Nothing is sent from this device.';
+    renderNearbyLinks({ label: 'Brisbane CBD', lat: -27.4698, lng: 153.0251, suburb: 'Brisbane' });
   }
   if (!el.nearbyDlg.open) el.nearbyDlg.showModal();
 }
@@ -7112,8 +7106,8 @@ function renderNearbyLinks(opts) {
 }
 $('#nearbyUseLoc').addEventListener('click', () => {
   if (isDemo) {
-    $('#nearbyStatus').textContent = 'Demo uses a sample Brisbane location — no real GPS requested.';
-    renderNearbyLinks({ label: 'Brisbane CBD (demo)', lat: -27.4698, lng: 153.0251, suburb: 'Brisbane' });
+    $('#nearbyStatus').textContent = 'This visit uses a Brisbane example — no GPS requested.';
+    renderNearbyLinks({ label: 'Brisbane CBD', lat: -27.4698, lng: 153.0251, suburb: 'Brisbane' });
     return;
   }
   if (!navigator.geolocation) {
@@ -7222,7 +7216,7 @@ function promptNeedAi(reason) {
   if (isDemo) return;
   const lede = $('#needAiLede');
   if (lede) {
-    lede.textContent = reason || 'Live AI chat needs a hosted account (coming soon) or an optional key under Advanced. For now, try the free demo — pre-written examples, nothing sent — or join the waitlist.';
+    lede.textContent = reason || 'Live AI chat needs an invite code, or an optional key under Advanced. Today’s readings, Get help, and the resume builder stay available.';
   }
   if (el.needAiDlg && !el.needAiDlg.open) el.needAiDlg.showModal();
 }
@@ -7230,7 +7224,7 @@ function closeNeedAi() { if (el.needAiDlg && el.needAiDlg.open) el.needAiDlg.clo
 
 function openSettings(focusId, tabHint) {
   if (!profile) return;
-  if (isDemo) { toast('Settings are turned off in the demo — choose a profile to set things up for real.', false, 4000); return; }
+  if (isDemo) { toast('Choose a profile to save settings on this device.', false, 4000); return; }
   closeSidebar();
   $('#setMode').value = settings.mode;
   $('#setFaith').value = settings.faith;
@@ -7758,12 +7752,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live AI. Try the demo or join the waitlist.`); return; }
+  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live AI. Use an invite code or join the waitlist.`); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live AI. Try the demo or join the waitlist.`); return; }
+  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live AI. Use an invite code or join the waitlist.`); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -7949,6 +7943,7 @@ function applyBrand() {
   $$('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.companion); });
   $$('[data-copyright]').forEach(e => { e.textContent = COPYRIGHT; });
+  // Name only. The company inbox is not the founder's email.
   $$('[data-founder]').forEach(e => {
     e.innerHTML = 'Founded by <strong>' + BRAND.founder + '</strong> (BRIDGE&amp;BITE.CO / ' + BRAND.name + ').';
   });
@@ -7960,7 +7955,7 @@ function applyBrand() {
    reads or writes localStorage; everything lives in memory and is discarded
    on exit.
    --------------------------------------------------------------------------- */
-const DEMO_PERSON = { id: 'demo', name: 'Alex', pin: null, demo: true };
+const DEMO_PERSON = { id: 'demo', name: '', pin: null, demo: true };
 const DEMO_CHIPS = [...STARTERS.counsellor, "Let's try a TIPP calm-down", 'SOAP Bible study', 'Show a crisis example'];
 const DEMO_SPEED = Math.max(0.1, Number(new URLSearchParams(location.search).get('demospeed')) || 1);
 
@@ -7977,7 +7972,7 @@ const DEMO_CUTDOWN_REST = [
 ];
 
 const DEMO_SOAP_SCENARIO = [
-  ['a', "G’day, Alex — ready for today’s **SOAP**?\n\n**Today’s reading (Day 1):** Matthew 1:1–25\n\nYou can read it **in the app** (World English Bible — free/public domain; no paper Bible needed). Related refs you can also open in the reader: Matthew 2:1–23, Micah 5:1–4, John 1:14.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**"],
+  ['a', "G’day — ready for today’s **SOAP**?\n\n**Today’s reading (Day 1):** Matthew 1:1–25\n\nYou can read it **in the app** (World English Bible — free/public domain; no paper Bible needed). Related refs you can also open in the reader: Matthew 2:1–23, Micah 5:1–4, John 1:14.\n\nWhen you’ve had a look: **what Scripture or verse stood out to you?**"],
   ['u', 'Matthew 1:23 — “God with us.” That hit me.'],
   ['a', "Beautiful catch. **Emmanuel — God with us** — right in the middle of a very human family story.\n\n**Observation:** what did you notice as you sat with that? Anything about the genealogy, Joseph’s courage, or the ‘with us’ part that stood out?"],
   ['u', 'That Jesus steps into a messy line of people. Makes me feel less alone in my own mess.'],
@@ -7985,7 +7980,7 @@ const DEMO_SOAP_SCENARIO = [
   ['u', 'When cravings hit at night, I can remember I’m not abandoned. Maybe text my brother and pray instead of driving to the bottle shop.'],
   ['a', "That’s a solid, gentle application — connection plus a pause. 💚\n\n**Shall we pray?** Totally optional — if you’d rather sit quietly with it, that’s fine too."],
   ['u', 'Yes, please.'],
-  ['a', "Of course.\n\n*God who is with us — thank you for meeting Alex in Matthew’s story and in tonight’s real life. When loneliness or craving rises, remind him he is not alone. Give courage to reach for his brother, and rest for his mind. Amen.*\n\nWhenever you want, you can save this SOAP in the Bible study log. Proud of you for showing up."],
+  ['a', "Of course.\n\n*God who is with us — thank you for meeting this person in Matthew’s story and in tonight’s real life. When loneliness or craving rises, remind them they are not alone. Give courage to reach for someone they trust, and rest for their mind. Amen.*\n\nWhenever you want, you can save this SOAP in the Bible study log. Proud of you for showing up."],
 ];
 
 const DEMO_SCENARIOS = {
@@ -7993,7 +7988,7 @@ const DEMO_SCENARIOS = {
   "start today's soap": DEMO_SOAP_SCENARIO,
   "i'm having a craving": [
     ['u', "It's nearly midnight and I'm really craving a drink. The bottle shop's still open."],
-    ['a', "Thanks for reaching out right now, Alex — that's a real strength, especially at this hour. 💚\n\nCravings can feel huge late at night, but they behave like waves: they build, peak and pass, usually within 20–30 minutes.\n\nCan I check in on something quickly? **HALT** — are you feeling **H**ungry, **A**ngry, **L**onely or **T**ired right now?"],
+    ['a', "Thanks for reaching out right now — that's a real strength, especially at this hour. 💚\n\nCravings can feel huge late at night, but they behave like waves: they build, peak and pass, usually within 20–30 minutes.\n\nCan I check in on something quickly? **HALT** — are you feeling **H**ungry, **A**ngry, **L**onely or **T**ired right now?"],
     ['u', 'Probably tired and a bit lonely. Rough day at work.'],
     ['a', "That makes a lot of sense. Tired and lonely after a rough day is exactly when cravings tend to hit hardest — it's not a sign you're failing, it's your brain looking for relief.\n\nWould you like to try **urge surfing** together? It takes about ten minutes:\n\n1. Sit comfortably and notice where you feel the craving in your body — chest, throat, hands?\n2. Breathe slowly: in for 4, out for 6. Picture the craving as a wave you're riding, not fighting.\n3. Rate it out of 10 now, then again in five minutes.\n\nWhile you ride it: have a glass of water and something to eat, put the car keys somewhere out of reach, and consider texting someone in your support crew. Is there someone you could message tonight, even just to say hi?"],
     ['u', "My brother's usually up late. I'll text him."],
@@ -8001,23 +7996,23 @@ const DEMO_SCENARIOS = {
   ],
   'i slipped up': [
     ['u', "I slipped up last night. Had a few drinks after 23 days. I feel like I've wrecked everything."],
-    ['a', "I'm really glad you told me, Alex. That took honesty, and it matters.\n\nA slip after 23 days doesn't wipe out those 23 days. You practised a lot of skills in that time, and they're still yours.\n\nIt's really common to feel like you've *blown it* — and that thought (\"I've wrecked everything, so what's the point?\") is often what turns one slip into a longer run. Would you be open to looking at what happened, without any judgement, so we can learn from it?"],
+    ['a', "I'm really glad you told me. That took honesty, and it matters.\n\nA slip doesn't wipe out the days you've already practised. Those skills are still yours.\n\nIt's really common to feel like you've *blown it* — and that thought (\"I've wrecked everything, so what's the point?\") is often what turns one slip into a longer run. Would you be open to looking at what happened, without any judgement, so we can learn from it?"],
     ['u', "Yeah. It was a mate's birthday at the pub and I didn't have a plan."],
     ['a', "Thanks — that's really useful to know. Social events with drinking are one of the most common high-risk situations, and going in without a plan is something almost everyone learns the hard way.\n\nLet's turn it into a **relapse-prevention plan** for next time:\n\n- **Trigger:** celebrations at the pub with mates\n- **Before:** decide your drink in advance (soda and lime, a zero-alc beer) and tell one mate you're not drinking\n- **During:** have an exit time and a reason ready — \"early start tomorrow\"\n- **If the urge spikes:** step outside, do a HALT check, text your support person\n- **After:** a quick check-in here or with your counsellor\n\nHow does that sound? Is there anything you'd change so it fits you?"],
-    ['u', "That actually feels doable. I'll tell Jono next time."],
-    ['a', "That sounds like a solid, realistic plan — and having Jono as your backup is a great step. 💚\n\nBe kind to yourself today: rest, eat well, drink water. If you're seeing your counsellor or GP soon, it could help to mention the slip — not as a confession, just as useful information for your plan.\n\nYou're still on the path, Alex."],
+    ['u', "That actually feels doable. I'll tell someone I trust next time."],
+    ['a', "That sounds like a solid, realistic plan — and having someone you trust as your backup is a great step. 💚\n\nBe kind to yourself today: rest, eat well, drink water. If you're seeing your counsellor or GP soon, it could help to mention the slip — not as a confession, just as useful information for your plan.\n\nYou're still on the path."],
   ],
   'i want to cut down': [['u', "I want to cut down on my drinking, but I don't know where to start."], ...DEMO_CUTDOWN_REST],
   'help me make a plan': [['u', 'Can you help me make a plan to cut down on my drinking?'], ...DEMO_CUTDOWN_REST],
   'pray with me': [
     ['u', "Would you pray with me? I'm feeling pretty lost tonight."],
-    ['a', "Of course, Alex. I'm glad you asked. Feeling lost is hard, and you don't have to carry it alone.\n\nIf it feels right, here's a prayer many people in recovery find comforting — the Serenity Prayer:\n\n> *God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.*\n\nYou might add something in your own words, speaking to God or your Higher Power however you understand them:\n\n> *Thank you for getting me through today. Please give me rest tonight, strength for tomorrow, and people around me who care. Help me be gentle with myself.*\n\nTake a slow breath. What's weighing on you most tonight?"],
+    ['a', "Of course. I'm glad you asked. Feeling lost is hard, and you don't have to carry it alone.\n\nIf it feels right, here's a prayer many people in recovery find comforting — the Serenity Prayer:\n\n> *God, grant me the serenity to accept the things I cannot change, courage to change the things I can, and wisdom to know the difference.*\n\nYou might add something in your own words, speaking to God or your Higher Power however you understand them:\n\n> *Thank you for getting me through today. Please give me rest tonight, strength for tomorrow, and people around me who care. Help me be gentle with myself.*\n\nTake a slow breath. What's weighing on you most tonight?"],
     ['u', "Mostly guilt about how I've treated my family."],
     ['a', "That guilt shows how much you love them. In many faith traditions, guilt isn't meant to crush us — it points us back towards repair, and there's always grace for starting again.\n\nMaybe one small step this week: a sincere apology, or simply showing up for one thing that matters to them. When you're ready, it could help to talk with someone from your faith community, or your counsellor, about making amends.\n\nNo rush — healing happens one step at a time. 🌿"],
   ],
   "let's try a tipp calm-down": [
     ['u', "Let's try a TIPP calm-down"],
-    ['a', "Good call, Alex — TIPP is a short DBT skill for when the urge or emotion feels huge. We'll do **one piece at a time**. This is skills practice, not therapy. 💚\n\n**T — Temperature (safe):** Hold a cool glass of water, or rest a cool (not freezing) cloth on your wrists or the back of your neck for 30–60 seconds. Skip anything extreme like ice baths.\n\nHave a go, then tell me when you're ready for the next letter."],
+    ['a', "Good call — TIPP is a short DBT skill for when the urge or emotion feels huge. We'll do **one piece at a time**. This is skills practice, not therapy. 💚\n\n**T — Temperature (safe):** Hold a cool glass of water, or rest a cool (not freezing) cloth on your wrists or the back of your neck for 30–60 seconds. Skip anything extreme like ice baths.\n\nHave a go, then tell me when you're ready for the next letter."],
     ['u', 'Done — cool cloth on my wrists. Feeling a bit clearer.'],
     ['a', "Nice work.\n\n**I — Intense exercise (brief):** Stand up and march on the spot, or walk to the letterbox and back — about 60–90 seconds. Just enough to shift the adrenaline.\n\nWhen you've done that, we'll pace the breath."],
     ['u', 'Marched on the spot. Heart rate came up a bit then settled.'],
@@ -8025,56 +8020,27 @@ const DEMO_SCENARIOS = {
   ],
   'show a crisis example': [
     ['u', "Some nights I just don't want to be here anymore."],
-    ['a', "Alex, thank you for telling me. I'm really glad you did, and I'm taking what you've said seriously. 💚\n\nIf you're in immediate danger or might act on these thoughts, please call **000** now. You can also talk to someone right now, any time:\n\n- **Lifeline:** 13 11 14 (or text 0477 13 11 14)\n- **Suicide Call Back Service:** 1300 659 467\n- **13YARN:** 13 92 76 (for Aboriginal and Torres Strait Islander people)\n- **National Alcohol and Other Drug Hotline:** 1800 250 015\n\nAre you safe right now? Is there someone nearby — family or a friend — who could be with you tonight?"],
+    ['a', "Thank you for telling me. I'm really glad you did, and I'm taking what you've said seriously. 💚\n\nIf you're in immediate danger or might act on these thoughts, please call **000** now. You can also talk to someone right now, any time:\n\n- **Lifeline:** 13 11 14 (or text 0477 13 11 14)\n- **Suicide Call Back Service:** 1300 659 467\n- **13YARN:** 13 92 76 (for Aboriginal and Torres Strait Islander people)\n- **National Alcohol and Other Drug Hotline:** 1800 250 015\n\nAre you safe right now? Is there someone nearby — family or a friend — who could be with you tonight?"],
     ['u', "I'm safe right now. I just feel really low."],
     ['a', "Thank you for letting me know you're safe right now. Feeling this low is exhausting, and you don't have to work it all out tonight.\n\nWould you be willing to do one thing in the next hour — call Lifeline, or text someone you trust? It would also be really worth booking in with your GP or counsellor this week to talk about how you've been feeling; they can help in ways I can't.\n\nI'm here to keep talking in the meantime."],
   ],
 };
-const DEMO_FREE_REPLY = "Thanks for trying that! 🌿 In this demo my replies are **pre-written examples**, so I can't respond to what you typed — in the full app I'd reply to exactly what you said.\n\nTap one of the scenarios below to see how I support someone through a craving, a slip-up, making a plan, prayer, or a crisis.";
+const DEMO_FREE_REPLY = "Thanks for trying that. 🌿 These replies are **pre-written examples**, so they can't respond to exactly what you typed.\n\nTap one of the scenarios below to see how support can sound through a craving, a slip-up, making a plan, prayer, or a crisis.";
 const DEMO_FREE_CRISIS_REPLY = DEMO_SCENARIOS['show a crisis example'][1][1];
 
 function demoSampleData() {
-  const start = new Date(); start.setDate(start.getDate() - 23);
-  const moodsSeq = [
-    [{ e: '🙂', l: 'Good' }, 'Mild'], [{ e: '😐', l: 'Okay' }, 'Moderate'], [{ e: '😣', l: 'Stressed' }, 'Strong'],
-    [{ e: '🙂', l: 'Good' }, 'Mild'], [{ e: '😄', l: 'Great' }, 'None'], [{ e: '😐', l: 'Okay' }, 'Mild'],
-  ];
-  const sampleMoods = moodsSeq.map(([mood, craving], i) => {
-    const d = new Date(); d.setDate(d.getDate() - (6 - i));
-    return { date: localDate(d), mood, craving };
-  });
-  const now = Date.now();
-  const sampleMemories = [
-    'Wants to stay alcohol-free and sleep better',
-    'Late nights after a rough day at work are a big trigger',
-    'His brother is a good late-night support',
-    'Walking the dog helps when cravings hit',
-    'Finds the Serenity Prayer comforting',
-  ].map((text, i) => ({ id: 'demo-m' + i, text, created: now - i * 86400000, source: 'auto' }));
-  const sampleJournal = [
-    { id: 'demo-j1', title: 'After the craving', body: 'Nearly went to the bottle shop last night. Texted my brother instead. Still shaky but proud I reached out.', refined: 'Last night a strong craving nearly pulled me to the bottle shop. Underneath the urge I can sense loneliness and tiredness after a hard day. Choosing to text my brother was me choosing connection over the craving — and that matters.', emotions: 'anxiety, loneliness, pride, relief', created: now - 86400000, updated: now - 86400000 },
-    { id: 'demo-j2', title: '', body: 'Grateful for a quiet morning and a walk with the dog. Feeling a bit more like myself.', created: now - 172800000, updated: now - 172800000 },
-  ];
-  const sampleGrat = [{ date: localDate(), items: ['My brother’s late-night texts', 'A clear head this morning', 'Walking the dog'], ts: now }];
-  const sampleSteps = { currentStep: 2, notes: { '1': 'Admitted I cannot control drinking on my own anymore.' }, completed: { '1': true }, updated: now };
-  const sampleBible = {
-    planDay: 1,
-    completed: { 'hope-1': true },
-    notes: {},
-    updated: now,
-    entries: [{
-      date: localDate(),
-      passage: 'Matthew 1:1–25',
-      scriptureNote: 'Matthew 1:23 — God with us',
-      observation: 'Jesus enters a messy family line — grace from the start.',
-      application: 'I don’t have to be perfect to belong; I can show up honest today.',
-      prayer: 'God, thank you for being with me in recovery. Help me take one faithful step.',
-      ts: now,
-    }],
+  // No sample person, journal, memories, or clean-time streak. Scripted replies stay in memory only.
+  return {
+    soberStart: '',
+    moods: [],
+    memories: [],
+    journal: [],
+    gratitude: [],
+    steps: { currentStep: 1, notes: {}, completed: {}, updated: 0 },
+    bible: { entries: [], planDay: 1, completed: {}, notes: {}, updated: 0 },
+    breakers: { custom: [], tried: { date: '', ids: [] } },
+    selfcare: { items: null, done: { date: '', ids: [] } },
   };
-  const sampleBreakers = { custom: [{ id: 'demo-b1', label: 'Walk the dog around the block' }], tried: { date: localDate(), ids: ['water', 'walk'] } };
-  const sampleSelfCare = { items: null, done: { date: localDate(), ids: ['sleep', 'hydrate', 'eat'] } };
-  return { soberStart: localDate(start), moods: sampleMoods, memories: sampleMemories, journal: sampleJournal, gratitude: sampleGrat, steps: sampleSteps, bible: sampleBible, breakers: sampleBreakers, selfcare: sampleSelfCare };
 }
 
 function enterDemo() {
@@ -8087,7 +8053,7 @@ function enterDemo() {
   profile = Object.assign({}, DEMO_PERSON);
   const sample = demoSampleData();
   settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, DEFAULT_SHARED, {
-    theme: settings.theme || 'system', disclaimerAck: true, soberStart: sample.soberStart, soberWhat: 'alcohol-free',
+    theme: settings.theme || 'system', disclaimerAck: true, soberStart: sample.soberStart, soberWhat: '',
     faith: 'general', faithLevel: 'woven', apiKey: '',
   });
   convos = []; memories = sample.memories; moods = sample.moods;
@@ -8101,7 +8067,7 @@ function enterDemo() {
   appTab = 'home';
   applyTheme();
   newConversation();
-  toast('Welcome to the demo 🌿 — replies are pre-written examples', false, 3500);
+  toast('Pre-written examples only — nothing is saved on this device', false, 3500);
   showLaunchPrefs();
 }
 
@@ -8127,12 +8093,14 @@ function exitDemo() {
   }
 }
 $('#exitDemoBtn').addEventListener('click', showPicker);
-$('#tryDemoBtn').addEventListener('click', enterDemo);
+const tryDemoBtn = $('#tryDemoBtn');
+if (tryDemoBtn) tryDemoBtn.addEventListener('click', enterDemo);
 const keyBannerDemo = $('#keyBannerDemo');
 if (keyBannerDemo) keyBannerDemo.addEventListener('click', enterDemo);
 const keyBannerWaitlist = $('#keyBannerWaitlist');
 if (keyBannerWaitlist) keyBannerWaitlist.addEventListener('click', () => openWaitlist('banner'));
-$('#needAiDemoBtn').addEventListener('click', () => { closeNeedAi(); enterDemo(); });
+const needAiDemoBtn = $('#needAiDemoBtn');
+if (needAiDemoBtn) needAiDemoBtn.addEventListener('click', () => { closeNeedAi(); enterDemo(); });
 $('#needAiWaitlistBtn').addEventListener('click', () => { closeNeedAi(); openWaitlist('need-ai'); });
 $('#needAiAdvancedBtn').addEventListener('click', () => { closeNeedAi(); openSettings('setKey', 'advanced'); });
 $('#needAiCloseBtn').addEventListener('click', closeNeedAi);
@@ -8152,7 +8120,7 @@ if (advWl) advWl.addEventListener('click', () => { if (el.settingsDlg.open) el.s
    Prefer invite session when token present; Advanced own-key path unchanged.
    --------------------------------------------------------------------------- */
 function openInviteDlg() {
-  if (isDemo) { toast('Exit the demo first to redeem an invite.', false, 3500); return; }
+  if (isDemo) { toast('Choose a profile before redeeming an invite.', false, 3500); return; }
   const st = $('#inviteStatus');
   if (st) { st.textContent = ''; st.className = 'invite-status'; }
   const inp = $('#inviteCodeInput');
@@ -8213,7 +8181,7 @@ if (inviteCloseBtn) inviteCloseBtn.addEventListener('click', closeInviteDlg);
 function demoChipsEl() {
   const box = document.createElement('div');
   box.className = 'demo-chips';
-  box.innerHTML = '<span class="lbl">Try a demo scenario:</span>';
+  box.innerHTML = '<span class="lbl">See an example:</span>';
   for (const s of DEMO_CHIPS) {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'starter'; b.textContent = s;
@@ -8308,7 +8276,7 @@ async function playScenario(turns, fresh) {
 /* ---------------------------------------------------------------------------
    Join waitlist (mailto — no accounts, no payments)
    --------------------------------------------------------------------------- */
-const WAITLIST_TO = 'Admin@bridge-bite-co.com';
+const WAITLIST_TO = 'admin@bridge-bite-co.com';
 const ACCESS_PROMPT_KEY = 'hopewick.waitlistPrompt.v1';
 
 function openWaitlist() {
@@ -8429,7 +8397,7 @@ $('#launchPrefsForm')?.addEventListener('submit', (e) => {
 $('#launchPrefsSkip')?.addEventListener('click', () => applyLaunchPrefs({ skip: true }));
 $('#launchPrefsAllSettings')?.addEventListener('click', () => {
   if (isDemo) {
-    toast('In the demo, use the preferences on this screen. Full settings open when you choose a profile.', false, 4500);
+    toast('Use the preferences on this screen. Full settings open when you choose a profile.', false, 4500);
     return;
   }
   dismissLaunchPrefs();
@@ -8677,7 +8645,7 @@ function updateResumeSavedNote() {
   const lede = $('#resumeLede');
   if (lede) {
     lede.textContent = isDemo
-      ? `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. In the demo, the draft lasts for this visit only.`
+      ? `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. On this visit, the draft lasts until you leave.`
       : `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. Your draft stays on this device.`;
   }
 }
@@ -8919,13 +8887,13 @@ function paintAccount() {
   body.replaceChildren();
   const lede = document.createElement('p');
   lede.className = 'lede';
-  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon; it isn’t ready to install yet. Today’s readings, the demo, crisis support, domestic and family violence links, and the resume builder stay free. You do not need Plus for Get help. Organisation plans are coming soon.';
+  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon; it isn’t ready to install yet. Today’s readings, crisis support, domestic and family violence links, and the resume builder stay free. You do not need Plus for Get help. Organisation plans are coming soon.';
   body.appendChild(lede);
 
   if (!billingState.reachable) {
     const p = document.createElement('p');
     p.className = 'account-status';
-    p.textContent = 'Sign-in needs the Hopewick account service on this same site. For a local trial, run npm start and open http://127.0.0.1:8787/app/ (see SETUP.md). You can keep using the demo and Get help without it.';
+    p.textContent = 'Sign-in needs the Hopewick account service on this same site. For a local trial, run npm start and open http://127.0.0.1:8787/app/ (see SETUP.md). Today’s readings, the resume builder, and Get help work without it.';
     body.appendChild(p);
     const actions = document.createElement('div');
     actions.className = 'account-actions';
@@ -8943,7 +8911,7 @@ function paintAccount() {
     form.className = 'account-form';
     form.id = 'accountMagicForm';
     form.noValidate = true;
-    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn btn-primary" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
+    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="Your email"></label><button class="btn btn-primary" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
     body.appendChild(form);
     const status = document.createElement('p');
     status.className = 'account-status';
@@ -8966,12 +8934,17 @@ function paintAccount() {
   const status = document.createElement('p');
   status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
   status.id = 'accountStatus';
-  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month opens the year’s readings and your chat history on this device.');
-  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. Any day of the readings is open, and your chat history stays with you on this device.';
+  const plusViaStripe = billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing';
+  if (subscriptionPlus()) {
+    status.textContent = (plusViaStripe ? statusLabel(billingState.subscriptionStatus) : 'Hopewick Plus is active') + '. Any day of the readings is open, and your chat history stays with you on this device.';
+  } else {
+    status.textContent = statusLabel(billingState.subscriptionStatus) + ' · AU$20/month opens the year’s readings and your chat history on this device.';
+  }
   body.appendChild(status);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
-  if (subscriptionPlus() || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled') {
+  const stripeAccount = plusViaStripe || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled';
+  if (stripeAccount) {
     const portal = document.createElement('button');
     portal.type = 'button';
     portal.className = 'btn';
@@ -9082,7 +9055,7 @@ async function signOutBilling() {
   billingState.subscriptionStatus = 'none';
   libraryPick = null;
   await refreshBilling();
-  toast('Signed out. The demo and Get help stay available.', false, 3500);
+  toast('Signed out. Today’s readings, the resume builder, and Get help stay available.', false, 3500);
 }
 async function devSetStatus(status) {
   try {

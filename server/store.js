@@ -92,6 +92,27 @@ export function isPlusStatus(status) {
   return status === 'active' || status === 'trialing';
 }
 
+/** Company inbox. Never a complimentary Plus / founder account. */
+const COMPANY_ADMIN_EMAIL = 'admin@bridge-bite-co.com';
+/** Used when FOUNDER_PLUS_EMAILS is unset. Not the company admin address. */
+const DEFAULT_FOUNDER_PLUS_EMAIL = 'dwaynesimons1990@gmail.com';
+
+/**
+ * Complimentary Hopewick Plus accounts.
+ * FOUNDER_PLUS_EMAILS is a comma-separated list. When it is unset, only the
+ * founder account is included. admin@bridge-bite-co.com is always ignored.
+ */
+export function founderPlusEmails() {
+  const raw = process.env.FOUNDER_PLUS_EMAILS;
+  const source = raw == null || String(raw).trim() === '' ? DEFAULT_FOUNDER_PLUS_EMAIL : String(raw);
+  const emails = source.split(/[,;\s]+/).map((part) => part.trim().toLowerCase()).filter(Boolean);
+  return new Set(emails.filter((email) => email !== COMPANY_ADMIN_EMAIL));
+}
+
+export function hasFounderPlus(email) {
+  return founderPlusEmails().has(String(email || '').trim().toLowerCase());
+}
+
 export function publicUser(user) {
   if (!user) {
     return { signedIn: false, id: null, email: null, subscriptionStatus: 'none', currentPeriodEnd: null, plus: false };
@@ -103,6 +124,6 @@ export function publicUser(user) {
     email: user.email,
     subscriptionStatus,
     currentPeriodEnd: user.currentPeriodEnd || null,
-    plus: isPlusStatus(subscriptionStatus),
+    plus: isPlusStatus(subscriptionStatus) || hasFounderPlus(user.email),
   };
 }

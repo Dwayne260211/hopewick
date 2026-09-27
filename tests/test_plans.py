@@ -15,10 +15,17 @@ def test_marketing_plans_copy():
     assert "Get help never asks you to pay" in page or "Get help never asks you to pay." in page
     assert "today’s Word for the day" in page or "today's Word for the day" in page
     assert "Sign in to subscribe" in page
-    assert "app/?demo=1" in page
+    assert "app/?demo=1" not in page
+    assert "Try the demo" not in page
+    assert "Try the free demo" not in page
+    assert 'href="app/"' in page
+    assert "Resume builder" in page
     assert "crisis" in page.lower()
-    # Consumer checkout is not a hard wall in front of the demo.
-    assert "Try the free demo" in page
+    # The company inbox is a business contact, not the founder account.
+    assert "dwaynesimons1990@gmail.com" not in page
+    assert "founder" in page.lower()
+    founder = page.split('"founder"', 1)[1][:400]
+    assert "email" not in founder.lower()
 
 
 def test_companion_gates_premium_not_crisis():
