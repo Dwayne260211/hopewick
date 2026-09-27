@@ -8,18 +8,18 @@
    copyright owner are defined for the landing page. (Static <meta> tags below
    are fallbacks for crawlers; they are updated from this config at runtime.)
    ============================================================================ */
-const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, siteUrl: 'https://hopewick.com.au/' };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, siteUrl: 'https://hopewick.com.au/', founder: 'Dwayne Stevens' };
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hopewick · Faith-sensitive AOD support, between sessions</title>
-<meta name="description" content="Hopewick is an AI AOD recovery companion from BRIDGE&BITE.CO PTY LTD (ABN 83 692 080 792) — support between sessions for people in recovery, for Australian adult AOD services.">
+<meta name="description" content="Hopewick is an AI AOD recovery companion from BRIDGE&BITE.CO PTY LTD (ABN 83 692 080 792) — support between sessions for people in recovery, and for Australian rehabs and AOD services.">
 <meta name="build" content="hopewick-v5.13">
 <meta name="theme-color" content="#3f8f5f">
 <link rel="canonical" href="https://hopewick.com.au/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hopewick">
 <meta property="og:title" content="Hopewick · Faith-sensitive AOD support, between sessions">
-<meta property="og:description" content="AOD recovery support between sessions — an AI recovery companion for people affected by alcohol and other drugs, with verified Australian crisis contacts.">
+<meta property="og:description" content="AOD recovery support between sessions — for people in recovery, and for Australian rehabs and AOD services. Verified Australian crisis contacts are one tap away.">
 <meta property="og:url" content="https://hopewick.com.au/">
 <meta property="og:image" content="https://hopewick.com.au/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -150,7 +150,9 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .foot-grid { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
 .foot-links { display: flex; gap: 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
 .site-footer p { margin: 6px 0; }
-.founder-credit { font-size: .85rem; margin-top: 4px !important; }
+.founder-credit { font-size: .92rem; margin-top: 4px !important; }
+.founder-credit strong, .hero-byline strong { color: var(--text); font-weight: 700; }
+.hero-byline { margin: 0 0 16px; font-size: .95rem; color: var(--muted); }
 
 /* Plans */
 .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
@@ -189,7 +191,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   "url": "https://hopewick.com.au/",
   "logo": "https://hopewick.com.au/og-image.png",
   "email": "admin@bridge-bite-co.com",
-  "description": "AI AOD recovery companion that keeps hope lit between sessions. Not affiliated with the cancelled HOPEWICK PTY. LTD. (ABN 98 010 417 124).",
+  "description": "AI AOD recovery companion for people in recovery, and for Australian rehabs and AOD services. Not a crisis service. Not affiliated with the cancelled HOPEWICK PTY. LTD. (ABN 98 010 417 124).",
   "taxID": "83 692 080 792",
   "address": {
     "@type": "PostalAddress",
@@ -235,15 +237,16 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   <section class="hero" aria-labelledby="heroTitle">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">For Australian rehabs &amp; AOD services</span>
-        <p class="hero-soft">Continuity between sessions for people in recovery — and the services that support them.</p>
+        <span class="eyebrow">For people in recovery &amp; AOD services</span>
+        <p class="hero-soft">For the quiet hours between appointments — if you’re in recovery yourself, or you support someone who is.</p>
         <h1 id="heroTitle"><span class="name" data-brand>Hopewick</span><span data-tagline>AOD recovery support between sessions</span></h1>
-        <p class="lede">Chat with <strong data-companion>Hope</strong> — a warm, non-judgemental AI recovery companion on <strong data-brand>Hopewick</strong>. Built on evidence-based approaches, with faith optional, and verified Australian crisis contacts one tap away.</p>
+        <p class="hero-byline" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
+        <p class="lede">Chat with <strong data-companion>Hope</strong> — a warm, non-judgemental AI recovery companion on <strong data-brand>Hopewick</strong>. Use it on your own, or offer it through a rehab or AOD service. Built on evidence-based approaches, with faith optional, and verified Australian crisis contacts one tap away.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="app/?demo=1" id="tryDemo">✨ Try the demo</a>
           <a class="btn" href="#waitlist" id="heroWaitlist">Join waitlist</a>
         </div>
-        <p class="cta-note">The free demo needs no card. <strong>Hopewick Plus is AU$20 a month</strong> for the full reading library and your chat history. <a href="#plans">See plans</a>. Organisation plans are coming soon.<br><a href="app/" id="launchApp" style="font-size:.9em;opacity:.85">Open the app</a> <span style="opacity:.65">(returning visitors)</span></p>
+        <p class="cta-note">The free demo needs no card. <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the year’s readings and your chat history. Phone app coming soon. <a href="#plans">See plans</a>. Get help stays free. Organisation plans are coming soon.<br><a href="app/" id="launchApp" style="font-size:.9em;opacity:.85">Open the app</a> <span style="opacity:.65">(returning visitors)</span></p>
       </div>
       <div class="mock" aria-label="Example conversation (pre-written)">
         <div class="mock-head"><span class="orb" aria-hidden="true"></span><span data-companion>Hope</span><span class="tag">EXAMPLE</span></div>
@@ -260,11 +263,11 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   <section id="who" class="alt" aria-labelledby="whoTitle">
     <div class="wrap">
       <h2 id="whoTitle">Who it's for</h2>
-      <p class="section-lede">Designed to complement treatment, not replace it. It's there in the hours between appointments, when cravings and hard moments often happen.</p>
+      <p class="section-lede">People in recovery can use Hope on their own. Rehabs and AOD services can offer it between sessions. It complements treatment. It does not replace a counsellor, a doctor, or a crisis service. In an emergency call <a href="tel:000">000</a>.</p>
       <div class="grid g3">
-        <div class="card"><div class="icon" aria-hidden="true">🏡</div><h3>Rehabs &amp; AOD services</h3><p>Offer clients a consistent, values-aligned support tool they can use between sessions, after discharge, or while waiting for a place.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🧑‍⚕️</div><h3>Counsellors &amp; clinicians</h3><p>Reinforce the skills you teach, like urge surfing, HALT checks, coping plans and SMART goals, with an AI recovery companion that uses the same language.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">💚</div><h3>Clients &amp; families</h3><p>A private, judgement-free space to talk through cravings, slips, goals, faith and hope — plus practical nearby help when food or shelter is the need.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">💚</div><h3>People in recovery</h3><p>A private, judgement-free place to talk through cravings, slips, goals, faith and hope. You can start on your own phone — you don’t need a service to try Hope.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🏡</div><h3>Rehabs &amp; AOD services</h3><p>Offer people a consistent, values-aligned tool between sessions, after discharge, or while waiting for a place. Counsellors can reinforce urge surfing, HALT checks, coping plans and SMART goals.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🤝</div><h3>Families &amp; support people</h3><p>Somewhere calm to think things through, plus practical nearby help when food or shelter is the need.</p></div>
       </div>
     </div>
   </section>
@@ -273,12 +276,12 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   <section id="features" aria-labelledby="featTitle">
     <div class="wrap">
       <h2 id="featTitle">Key features</h2>
-      <p class="section-lede">Everything runs in the browser on desktop or mobile, with nothing to install.</p>
+      <p class="section-lede">Hope runs in the browser today, on desktop or mobile. A phone app is coming soon — there isn’t a home-screen install yet.</p>
       <div class="grid g3">
         <div class="card"><div class="icon" aria-hidden="true">🌊</div><h3>Craving &amp; slip support</h3><p>Guided urge surfing, HALT checks, TIPP and other DBT/CBT skills practised step-by-step in chat. A slip is something to learn from, not a failure.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Goals &amp; cut-down plans</h3><p>Helps people set small SMART goals, whether that's abstinence, cutting down or safer use, and review them kindly.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">📅</div><h3>Clean time, check-in &amp; gratitude</h3><p>Track clean days with milestones, a quick mood and craving check-in, and an optional morning gratitude prompt.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">📓</div><h3>Journal &amp; deepen reflection</h3><p>Private journal entries, with an optional AI deepen-reflection that keeps your voice and names emotions gently.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">📅</div><h3>Clean time tracker</h3><p>Count the days that matter to you, with milestones if you want them. A slip doesn’t wipe the record. An optional mood note and morning gratitude prompt sit beside it.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">📓</div><h3>Journal refinements</h3><p>Private journal entries, with an optional deepen-reflection that keeps your voice and names emotions gently.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">✝️</div><h3>12 Steps, SOAP &amp; Diving Deeper Finding Jesus (WEB)</h3><p>A faith-based 12-step outline, daily <strong>SOAP</strong>, and <strong>Diving Deeper Finding Jesus</strong> — a whole-Bible plan with Going Deeper cross-refs and warm Hope connections. Scripture in-app is the public-domain World English Bible.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">📍</div><h3>Find nearby help</h3><p>Opt-in links to Ask Izzy for free meals, shelter, showers and practical support — location only if you choose.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">⛪</div><h3>Find a church</h3><p>Official Australian denominational finders and maps — Hopewick doesn’t host a church list. Soft-hidden if you choose no faith content.</p></div>
@@ -379,17 +382,17 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   <section id="plans" aria-labelledby="plansTitle">
     <div class="wrap">
       <h2 id="plansTitle">Plans</h2>
-      <p class="section-lede">Keep using Hopewick without a card. Plus is there if you want the full year of readings and your chat history kept open. Get help never asks you to pay.</p>
+      <p class="section-lede">The demo, today’s readings, and Get help stay free. Plus includes a clean time tracker, Bible study (SOAP and Diving Deeper Finding Jesus, with Going Deeper), 12 Steps practice, journal refinements, the full year of readings, and your chat history. A phone app is coming soon. Get help never asks you to pay.</p>
       <div class="plans-grid">
         <article class="card plan">
           <h3>Free</h3>
           <p class="price">AU$0</p>
-          <p class="who">For trying Hope, and for services looking around before a pilot.</p>
+          <p class="who">For trying Hope — on your own, or with a service looking around before a pilot.</p>
           <ul class="checklist">
-            <li>The website, including safety information</li>
-            <li>Crisis, domestic and family violence, and Get help links — always on</li>
+            <li>The website, including the safety information</li>
+            <li>Crisis lines, domestic and family violence support, and Get help — always free. Plus is not required</li>
             <li>The companion demo, including today’s Word for the day and Just for today</li>
-            <li>A limited chat so you, or a service, can try Hope without a card</li>
+            <li>A limited chat, so you can hear how Hope responds, with no card</li>
             <li>Resume builder in the app — free, and kept on this device</li>
           </ul>
           <div class="plan-actions">
@@ -399,13 +402,18 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <article class="card plan featured">
           <h3>Hopewick Plus</h3>
           <p class="price">AU$20 <span>/ month</span></p>
-          <p class="who">For one person. Australian dollars, cancel any time from your account.</p>
+          <p class="who">For one person. Australian dollars. Cancel any time from your account.</p>
           <ul class="checklist">
-            <li>Everything in Free, including today’s readings and Get help</li>
-            <li>The full year of daily readings — open any day, not only today</li>
-            <li>Your full companion chat history on this device</li>
-            <li>Account and subscription management (update your card, cancel, invoices)</li>
-            <li>A path toward installing Hopewick on your phone later</li>
+            <li>Everything in Free stays with you, including today’s readings and Get help. Crisis care is never part of the subscription</li>
+            <li>A clean time tracker — the days that matter to you, with milestones if you want them. A slip doesn’t wipe the record</li>
+            <li>Bible study when you choose it: daily SOAP (World English Bible)</li>
+            <li>Deeper dives: Diving Deeper Finding Jesus, with Going Deeper cross-references</li>
+            <li>Practise the 12 Steps with Hope — a faith-based outline, optional, a support tool, not a sponsor</li>
+            <li>Journal refinements: a private journal, plus an optional deepen-reflection that keeps your voice</li>
+            <li>The full year of readings — any day, not only today</li>
+            <li>Your chat history with Hope, kept on this device</li>
+            <li>Phone app coming soon. Hope runs in the browser today — a home-screen install isn’t ready yet</li>
+            <li>Your account in one place: update your card, see invoices, or cancel. We store your email and whether Plus is active — not the chats</li>
           </ul>
           <div class="plan-actions">
             <a class="btn btn-primary" href="app/?account=1">Sign in to subscribe</a>
@@ -425,7 +433,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     <div class="wrap">
       <div class="card">
         <h2 id="waitlistTitle">Join waitlist</h2>
-        <p class="section-lede" style="margin:0 auto 6px">Try the free demo today. Hopewick Plus is AU$20 a month — see <a href="#plans">Plans</a>. Organisation and clinic plans are still on the way; leave your details if you’d like us to be in touch.</p>
+        <p class="section-lede" style="margin:0 auto 6px">Try the free demo today. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the year’s readings and your chat history — see <a href="#plans">Plans</a>. Phone app coming soon. Today’s readings and Get help stay free. Organisation and clinic plans are still on the way; leave your details if you’d like us to be in touch.</p>
         <form class="waitlist-form" id="waitlistForm" novalidate>
           <label for="wlName">Your name
             <input id="wlName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="First name or preferred name">
@@ -476,6 +484,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     <div>
       <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span data-brand>Hopewick</span></a>
       <p data-tagline>AOD recovery support between sessions</p>
+      <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
       <p><strong>Not a crisis service.</strong> In an emergency call <a href="tel:000">000</a>.</p>
     </div>
     <div>
@@ -487,7 +496,6 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
         <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
       </ul>
       <p class="copyright" data-copyright>© 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.</p>
-      <p class="founder-credit" data-founder>Created by Dwayne Stevens</p>
     </div>
   </div>
 </footer>
@@ -502,14 +510,16 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
   setMeta('meta[property="og:title"]', title);
   setMeta('meta[name="twitter:title"]', title);
   setMeta('meta[property="og:site_name"]', BRAND.name);
-  setMeta('meta[name="description"]', `${BRAND.name} is AOD recovery support between sessions — an AI recovery companion for people affected by alcohol and other drugs, designed for Australian rehabs, AOD services and counsellors.`);
-  setMeta('meta[property="og:description"]', `AOD recovery support between sessions — an AI recovery companion for people affected by alcohol and other drugs, with verified Australian crisis contacts.`);
-  setMeta('meta[name="twitter:description"]', `AOD recovery support between sessions — an AI recovery companion for people affected by alcohol and other drugs, with verified Australian crisis contacts.`);
+  setMeta('meta[name="description"]', `${BRAND.name} is AOD recovery support between sessions — an AI recovery companion for people in recovery, and for Australian rehabs, AOD services and counsellors. Verified Australian crisis contacts are one tap away.`);
+  setMeta('meta[property="og:description"]', `AOD recovery support between sessions — for people in recovery, and for Australian rehabs and AOD services. Verified Australian crisis contacts are one tap away.`);
+  setMeta('meta[name="twitter:description"]', `AOD recovery support between sessions — for people in recovery, and for Australian rehabs and AOD services. Verified Australian crisis contacts are one tap away.`);
   document.querySelectorAll('[data-brand]').forEach(e => { e.textContent = BRAND.name; });
   document.querySelectorAll('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   document.querySelectorAll('[data-tagline]').forEach(e => { e.textContent = BRAND.tagline; });
   document.querySelectorAll('[data-copyright]').forEach(e => { e.textContent = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`; });
-  document.querySelectorAll('[data-founder]').forEach(e => { e.textContent = 'Created by Dwayne Stevens'; });
+  document.querySelectorAll('[data-founder]').forEach(e => {
+    e.innerHTML = 'Founded by <strong>' + BRAND.founder + '</strong> (BRIDGE&amp;BITE.CO / ' + BRAND.name + ').';
+  });
 })();
 
 /* Returning users: if this browser already has app data, offer a quick way back in. */

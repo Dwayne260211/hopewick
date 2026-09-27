@@ -8,7 +8,7 @@
    tagline and copyright owner are defined for the app.
    (Internal storage keys stay "eden.*" on purpose so existing data survives.)
    ============================================================================ */
-const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026 };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, founder: 'Dwayne Stevens' };
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="AOD recovery support between sessions.">
@@ -793,6 +793,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .about-body ul { margin: 8px 0 14px; padding-left: 1.15em; color: var(--text); }
 .about-body li { margin: 6px 0; line-height: 1.4; }
 .about-body .about-foot { margin-top: 12px; text-align: center; }
+.founder-credit strong { color: var(--text); font-weight: 700; }
 .picker-guide { margin: 0 0 14px !important; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border)); color: var(--text); font-size: .9rem; line-height: 1.4; text-align: left; }
 .picker-guide strong { font-weight: 700; }
 .settings-tabs { display: flex; gap: 4px; padding: 8px 14px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
@@ -878,6 +879,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .picker-body h2 { margin: 14px 0 4px; font-size: 1.5rem; }
 .picker-body > p { margin: 0 0 18px; color: var(--muted); }
 .profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 0; }
+.profiles .empty-hint { grid-column: 1 / -1; margin: 0; }
 .profile-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 10px 14px; border: 1px solid var(--border); border-radius: 18px; background: var(--surface-2); transition: transform .15s, border-color .15s; width: 100%; }
 .profile-card:hover { transform: translateY(-2px); border-color: var(--accent); }
 .profile-card .pname { font-weight: 650; font-size: 1.05rem; }
@@ -1504,7 +1506,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <span>Get help<span class="htext-long"> now</span></span>
         </button>
         <button class="switch-btn" id="switchBtn" type="button" title="Switch profile">
-          <span class="avatar" id="switchAvatar" aria-hidden="true">D</span><span class="sname" id="switchName">Dwayne</span>
+          <span class="avatar" id="switchAvatar" aria-hidden="true">?</span><span class="sname" id="switchName"></span>
         </button>
         <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
@@ -1517,7 +1519,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for the full reading library and your chat history. The demo, today’s readings, and Get help stay free.</p>
+      <p>Like what you see? <strong>Hopewick Plus is AU$20 a month</strong> for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. The demo, today’s readings, and Get help stay free.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">See plans</button>
       <button class="btn btn-sm" type="button" id="accessBannerWaitlist">Join waitlist</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
@@ -1885,7 +1887,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </form>
   <div class="dlg-body about-body">
     <p><strong><span data-brand></span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
-    <p class="founder-credit" data-founder>Created by Dwayne Stevens</p>
+    <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
     <ul class="about-short">
       <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
       <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
@@ -1895,13 +1897,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Plans &amp; account</button>
       <button class="btn" type="button" id="aboutWaitlistBtn">Join waitlist</button>
-      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month. Get help is never locked.</p>
+      <p class="help" style="margin:8px 0 0">The demo and today’s readings stay free. Hopewick Plus is AU$20 a month for a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Phone app coming soon. Get help is never locked.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy · Advanced</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. The public demo sends nothing anywhere.</li>
-        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) adds the reading library and full chat history. Organisation plans are coming soon.</li>
+        <li><strong>Demo first.</strong> Try pre-written examples with nothing sent. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon — it isn’t ready to install yet. Get help stays free. Organisation plans are coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
         <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
         <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
@@ -3205,34 +3207,55 @@ const el = {
 /* ---------------------------------------------------------------------------
    Profiles: migration, loading and saving
    --------------------------------------------------------------------------- */
-/** One-time migration from the single-user v1 layout into the "Dwayne" profile. */
+/** Old builds seeded two unused profiles. Drop that pair when nobody has used them. */
+const FACTORY_PROFILE_IDS = ['abbey', 'dwayne'];
+function isUntouchedFactorySeed(state) {
+  if (!state || !Array.isArray(state.list) || state.list.length !== FACTORY_PROFILE_IDS.length) return false;
+  const ids = state.list.map(p => p.id).slice().sort();
+  if (ids.join() !== FACTORY_PROFILE_IDS.join()) return false;
+  if (state.list.some(p => p.pin)) return false;
+  // The shipped names matched these ids. A rename, PIN, or any saved data means keep them.
+  if (state.list.some(p => String(p.name || '').trim().toLowerCase() !== String(p.id || '').toLowerCase())) return false;
+  for (const id of ids) {
+    if (PK.some(what => localStorage.getItem(pk(id, what)) !== null)) return false;
+  }
+  return true;
+}
+
+/** Fresh installs start with no profiles. Legacy single-user data moves into one neutral profile. */
 function migrateStorage() {
+  const demoOpen = new URLSearchParams(location.search).get('demo') === '1';
   profilesState = load(K.profiles, null);
+  if (isUntouchedFactorySeed(profilesState)) {
+    // Demo must not write storage. Hide the unused names in memory; a normal visit removes them.
+    if (!demoOpen) localStorage.removeItem(K.profiles);
+    profilesState = null;
+  }
   if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length) return;
-  const now = Date.now();
-  profilesState = {
-    list: [
-      { id: 'dwayne', name: 'Dwayne', pin: null, created: now },
-      { id: 'abbey', name: 'Abbey', pin: null, created: now },
-    ],
-    lastId: 'dwayne',
-  };
   const oldSettings = load(LEGACY.settings, null);
   const hasLegacy = Object.values(LEGACY).some(k => localStorage.getItem(k) !== null);
-  // Opening straight into the demo on a fresh device must not write anything:
-  // keep the default people in memory until someone actually picks a person.
-  if (!hasLegacy && new URLSearchParams(location.search).get('demo') === '1') return;
+  // Opening straight into the demo on a fresh device must not write anything.
+  if (!hasLegacy) {
+    profilesState = { list: [], lastId: null };
+    return;
+  }
+  const id = uid();
+  const now = Date.now();
+  profilesState = {
+    list: [{ id, name: 'Person 1', pin: null, created: now }],
+    lastId: id,
+  };
   if (oldSettings) {
     for (const k of SHARED_KEYS) if (oldSettings[k] !== undefined) shared[k] = oldSettings[k];
     const persona = Object.assign({}, oldSettings);
     SHARED_KEYS.forEach(k => delete persona[k]);
     delete persona.userName;
-    save(pk('dwayne', 'settings'), persona); // settingsVersion missing → mode migration runs on load
+    save(pk(id, 'settings'), persona); // settingsVersion missing → mode migration runs on load
   }
   const moves = [[LEGACY.convos, 'convos'], [LEGACY.memories, 'memories'], [LEGACY.active, 'active']];
   for (const [oldKey, what] of moves) {
     const raw = localStorage.getItem(oldKey);
-    if (raw !== null) localStorage.setItem(pk('dwayne', what), raw);
+    if (raw !== null) localStorage.setItem(pk(id, what), raw);
   }
   Object.values(LEGACY).forEach(k => localStorage.removeItem(k));
   save(K.shared, shared);
@@ -3934,7 +3957,7 @@ function daysInLibraryMonth(month) {
 function readingLibraryEl() {
   const wrap = document.createElement('div');
   wrap.className = 'today-library';
-  wrap.innerHTML = '<p class="today-label">Reading library</p><div class="today-library-row"><label>Month <select id="libraryMonth"></select></label><label>Day <select id="libraryDay"></select></label><button type="button" class="btn btn-sm" id="libraryTodayBtn">Back to today</button></div><p class="help">Included with Hopewick Plus. Same optional reflection — not clinical advice.</p>';
+  wrap.innerHTML = '<p class="today-label">Reading library</p><div class="today-library-row"><label>Month <select id="libraryMonth"></select></label><label>Day <select id="libraryDay"></select></label><button type="button" class="btn btn-sm" id="libraryTodayBtn">Back to today</button></div><p class="help">Included with Hopewick Plus. A quiet reflection you can open again — not clinical advice.</p>';
   const monthSel = $('#libraryMonth', wrap);
   const daySel = $('#libraryDay', wrap);
   LIBRARY_MONTHS.forEach((name, i) => {
@@ -3980,10 +4003,10 @@ function todayPlusNoteEl() {
   note.className = 'today-plus-note';
   note.id = 'todayPlusNote';
   if (subscriptionPlus()) {
-    note.textContent = 'Hopewick Plus is active. You can open any day in the reading library, and your chat history stays open. Get help is still free.';
+    note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) adds the full year of readings and your whole chat history. Get help stays free. ');
+  note.append('Today’s Word and Just for today are free. Hopewick Plus (AU$20 a month) includes a clean time tracker, SOAP, Diving Deeper Finding Jesus, the 12 Steps, journal refinements, the full year of readings and your chat history. Get help stays free. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -7426,6 +7449,13 @@ function renderPicker() {
   $('#pickerBody').classList.toggle('managing', managing);
   $('#managePeopleBtn').setAttribute('aria-pressed', String(managing));
   $('#managePeopleBtn').textContent = managing ? 'Done' : 'Manage profiles';
+  $('#managePeopleBtn').hidden = !profilesState.list.length;
+  if (!profilesState.list.length) {
+    const li = document.createElement('li');
+    li.className = 'empty-hint';
+    li.textContent = 'No profiles yet. Add your name to start.';
+    list.appendChild(li);
+  }
   for (const p of profilesState.list) {
     const li = document.createElement('li');
     li.className = 'profile-item';
@@ -7459,9 +7489,17 @@ function showPicker() {
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
+  const noProfiles = !profilesState.list.length;
+  if (noProfiles) {
+    $('#addPersonForm').hidden = false;
+    $('#addPersonInput').value = '';
+  }
   if (!el.pickerDlg.open) el.pickerDlg.showModal();
-  const first = $('.profile-card', el.pickerDlg);
-  if (first) first.focus();
+  if (noProfiles) $('#addPersonInput').focus();
+  else {
+    const first = $('.profile-card', el.pickerDlg);
+    if (first) first.focus();
+  }
 }
 function pickProfile(p) {
   if (managing) return;
@@ -7911,7 +7949,9 @@ function applyBrand() {
   $$('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   $$('[data-ph]').forEach(e => { e.placeholder = e.dataset.ph.replace(/\{name\}/g, BRAND.companion); });
   $$('[data-copyright]').forEach(e => { e.textContent = COPYRIGHT; });
-  $$('[data-founder]').forEach(e => { e.textContent = 'Created by Dwayne Stevens'; });
+  $$('[data-founder]').forEach(e => {
+    e.innerHTML = 'Founded by <strong>' + BRAND.founder + '</strong> (BRIDGE&amp;BITE.CO / ' + BRAND.name + ').';
+  });
   $$('[data-company]').forEach(e => { e.textContent = BRAND.company; });
 }
 
@@ -8879,7 +8919,7 @@ function paintAccount() {
   body.replaceChildren();
   const lede = document.createElement('p');
   lede.className = 'lede';
-  lede.textContent = 'Hopewick Plus is AU$20 a month for one person. Today’s readings, the demo, crisis support, domestic and family violence links, and the resume builder stay free. Organisation plans are coming soon.';
+  lede.textContent = 'Hopewick Plus is AU$20 a month for one person — a clean time tracker, SOAP, Diving Deeper Finding Jesus with Going Deeper, 12 Steps practice, journal refinements, the full year of readings and your chat history. Phone app coming soon; it isn’t ready to install yet. Today’s readings, the demo, crisis support, domestic and family violence links, and the resume builder stay free. You do not need Plus for Get help. Organisation plans are coming soon.';
   body.appendChild(lede);
 
   if (!billingState.reachable) {
@@ -8926,8 +8966,8 @@ function paintAccount() {
   const status = document.createElement('p');
   status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
   status.id = 'accountStatus';
-  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month unlocks the reading library and full chat history.');
-  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. The full reading library and your chat history are open.';
+  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month opens the year’s readings and your chat history on this device.');
+  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. Any day of the readings is open, and your chat history stays with you on this device.';
   body.appendChild(status);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
@@ -9065,7 +9105,8 @@ migrateStorage();
 renderHelpList();
 (function preTheme() {
   // Use the last profile's theme behind the picker without loading any of their data.
-  const last = load(pk(profilesState.lastId, 'settings'), {}) || {};
+  const lastId = profilesState && profilesState.lastId;
+  const last = lastId ? (load(pk(lastId, 'settings'), {}) || {}) : {};
   settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, shared);
   applyTheme();
 })();
