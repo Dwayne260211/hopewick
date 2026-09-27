@@ -68,10 +68,41 @@ export function loadEnvFile(file = path.join(REPO_ROOT, '.env')) {
   }
 }
 
+function requestHostname(req) {
+  const raw = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim().toLowerCase();
+  return raw.replace(/:\d+$/, '');
+}
+
 function requestOrigin(req) {
   const proto = String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim();
   const host = String(req.headers['x-forwarded-host'] || req.headers.host || '127.0.0.1').split(',')[0].trim();
   return `${proto}://${host}`;
+}
+
+function cookieSecure(req) {
+  if (process.env.COOKIE_SECURE === '1') return true;
+  if (process.env.COOKIE_SECURE === '0') return false;
+  if ((process.env.PUBLIC_BASE_URL || '').startsWith('https://')) return true;
+  return requestOrigin(req).startsWith('https://');
+}
+
+/**
+ * Send www.<public host> to the apex so the session cookie (host-only, SameSite=Lax)
+ * and Stripe return URLs stay on one origin.
+ */
+function maybeCanonicalRedirect(req, res) {
+  const base = (process.env.PUBLIC_BASE_URL || '').replace(/\/+$/, '');
+  let canonical = '';
+  try { canonical = new URL(base).hostname.toLowerCase(); } catch { return false; }
+  if (!canonical || canonical === 'localhost' || canonical === '127.0.0.1') return false;
+  if (requestHostname(req) !== `www.${canonical}`) return false;
+  const pathAndQuery = req.url && req.url.startsWith('/') ? req.url : `/${req.url || ''}`;
+  res.writeHead(308, {
+    Location: `${base}${pathAndQuery}`,
+    'Cache-Control': 'no-store',
+  });
+  res.end();
+  return true;
 }
 
 function publicBase(req) {
@@ -124,7 +155,7 @@ function cookies(req) {
 }
 
 function sessionCookie(token, req, maxAgeSec) {
-  const secure = requestOrigin(req).startsWith('https://') || process.env.COOKIE_SECURE === '1';
+  const secure = cookieSecure(req);
   const bits = [
     `${SESSION_COOKIE}=${encodeURIComponent(token)}`,
     'HttpOnly',
@@ -304,6 +335,11 @@ function serveStatic(root, req, res, urlPath) {
 
 async function handleApi(store, req, res, url) {
   const route = url.pathname;
+
+  if (req.method === 'GET' && route === '/api/health') {
+    json(res, 200, { ok: true });
+    return;
+  }
 
   if (req.method === 'GET' && route === '/api/billing/config') {
     json(res, 200, {
@@ -510,6 +546,7 @@ export function createApp({ store, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   return async function onRequest(req, res) {
     try {
+      if (maybeCanonicalRedirect(req, res)) return;
       const host = req.headers.host || '127.0.0.1';
       const url = new URL(req.url || '/', `http://${host}`);
       if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
@@ -554,12 +591,21 @@ export function startServer({
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   loadEnvFile();
-  const host = process.env.HOST || '127.0.0.1';
-  startServer({ host }).then((server) => {
+  if (process.env.NODE_ENV === 'production' && devMode()) {
+    console.error('Refusing to start: NODE_ENV=production requires HOPEWICK_DEV=0 so magic links are not returned to the browser.');
+    process.exit(1);
+  }
+  const host = process.env.HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1');
+  const storePath = process.env.BILLING_STORE || path.join(REPO_ROOT, 'server', 'data', 'users.json');
+  startServer({ host, storePath }).then((server) => {
     const addr = server.address();
     console.log(`Hopewick is running at http://${host}:${addr.port}`);
-    console.log(`Account API: http://${host}:${addr.port}/api/auth/me`);
+    console.log(`Health: http://${host}:${addr.port}/api/health`);
+    console.log(`Account file: ${storePath}`);
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
+    else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
+      console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');
+    }
   });
 }

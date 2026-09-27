@@ -71,7 +71,9 @@ Individual subscriptions sit beside the free demo. **Get help, crisis and domest
 
 Hopewick Plus unlocks the full-year reading library and full chat history on this device, plus account management through Stripe. Sign-in is an email magic link. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status.
 
-Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
+Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, and in production `RESEND_API_KEY` plus `MAGIC_LINK_FROM`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
+
+GitHub Pages cannot run that server, so `https://hopewick.com.au/api/billing/*` 404s until DNS points at it. Production is one Render web service (`render.yaml`, `Dockerfile`) that serves the site and `/api` on `https://hopewick.com.au`. The cutover steps, the test price `price_1UKDd4PoYudRr3bcBe7IIdTH`, and the webhook URL are in [SETUP.md](SETUP.md). Invite-code AI stays on `https://hopewick-api.azurewebsites.net/api`.
 
 TODO: a web app manifest and service worker are not included yet.
 

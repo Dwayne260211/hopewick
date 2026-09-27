@@ -1,0 +1,9 @@
+.git
+.github
+.env
+.env.*
+server/data
+node_modules
+__pycache__
+.pytest_cache
+*.pyc
