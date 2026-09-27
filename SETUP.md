@@ -17,6 +17,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 | Companion demo, including today’s readings | Yes | Yes |
 | Chat | Demo, plus the latest conversation on a free account | Full chat history on this device |
 | Reading library (any day of the year) | Today only | Yes |
+| Resume builder | Yes — saved on this device | Included, still free |
 | Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep the companion as it works today, including the demo for organisation trials.

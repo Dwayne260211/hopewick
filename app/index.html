@@ -442,6 +442,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .home-view,
 .info-view,
 .dv-view,
+.resume-view,
 .launch-prefs {
   flex: 1;
   overflow-y: auto;
@@ -461,6 +462,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .home-view[hidden],
 .info-view[hidden],
 .dv-view[hidden],
+.resume-view[hidden],
 .launch-prefs[hidden],
 .messages[hidden],
 .composer-wrap[hidden] { display: none !important; }
@@ -499,6 +501,84 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   text-align: center; font-size: .9rem; color: var(--muted);
   padding: 10px 12px; border-radius: 12px; background: var(--surface-2);
   border: 1px solid var(--border);
+}
+.resume-inner { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px; }
+.resume-note {
+  margin: 0;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: .88rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+.resume-steps { display: flex; flex-wrap: wrap; gap: 6px; }
+.resume-steps button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: .84rem;
+  font-weight: 650;
+}
+.resume-steps button[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+.resume-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  gap: 14px;
+  align-items: start;
+}
+.resume-panel[hidden] { display: none !important; }
+.resume-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 4px 12px 12px;
+  margin-top: 10px;
+  background: var(--surface);
+}
+.resume-card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; }
+.resume-card-head span { font-size: .82rem; font-weight: 700; color: var(--muted); }
+.resume-prompts { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.resume-prompts button { text-align: left; white-space: normal; line-height: 1.35; }
+.resume-actions { margin-top: 14px; }
+.resume-actions .btn:disabled { opacity: .45; cursor: default; }
+.resume-preview-wrap h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+.resume-paper {
+  background: #fff;
+  color: #1d2b22;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 16px 18px;
+  box-shadow: var(--shadow);
+  font-size: .86rem;
+  line-height: 1.4;
+}
+.resume-paper h3 { margin: 0 0 2px; font-size: 1.25rem; line-height: 1.2; }
+.resume-paper .rp-contact { color: #3d5246; font-size: .8rem; margin: 0 0 8px; }
+.resume-paper h4 {
+  margin: 12px 0 4px;
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #2c6e46;
+  border-bottom: 1px solid #d8e5d9;
+  padding-bottom: 2px;
+}
+.resume-paper p { margin: 0 0 6px; }
+.resume-paper ul { margin: 4px 0 0; padding-left: 1.15em; }
+.resume-entry { margin: 0 0 8px; }
+.resume-entry .rp-line { display: flex; justify-content: space-between; gap: 8px; font-weight: 700; }
+.resume-entry .rp-dates { font-weight: 500; color: #5d7064; font-size: .78rem; white-space: nowrap; }
+.resume-preview-empty { margin: 0; color: #5d7064; }
+@media (max-width: 860px) {
+  .resume-layout { grid-template-columns: 1fr; }
+  .resume-preview-wrap { order: -1; }
+  .resume-paper { max-height: 220px; overflow: auto; }
 }
 /* Today card — primary on Home; fellowship-style, not clinical */
 .home-view .home-hero .orb.md { --size: 48px; }
@@ -614,23 +694,33 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-home .composer-wrap,
 .app.tab-info .composer-wrap,
 .app.tab-dv .composer-wrap,
+.app.tab-resume .composer-wrap,
 .app.showing-launch-prefs .composer-wrap { display: none !important; }
 .app.tab-home .messages,
 .app.tab-info .messages,
 .app.tab-dv .messages,
+.app.tab-resume .messages,
 .app.showing-launch-prefs .messages { display: none !important; }
 .app.tab-chat .home-view,
 .app.tab-info .home-view,
 .app.tab-dv .home-view,
+.app.tab-resume .home-view,
 .app.showing-launch-prefs .home-view { display: none !important; }
 .app.tab-home .info-view,
 .app.tab-chat .info-view,
 .app.tab-dv .info-view,
+.app.tab-resume .info-view,
 .app.showing-launch-prefs .info-view { display: none !important; }
 .app.tab-home .dv-view,
 .app.tab-chat .dv-view,
 .app.tab-info .dv-view,
+.app.tab-resume .dv-view,
 .app.showing-launch-prefs .dv-view { display: none !important; }
+.app.tab-home .resume-view,
+.app.tab-chat .resume-view,
+.app.tab-info .resume-view,
+.app.tab-dv .resume-view,
+.app.showing-launch-prefs .resume-view { display: none !important; }
 .sidebar-foot .btn[aria-current="page"] {
   background: var(--accent-soft);
   color: var(--accent-strong);
@@ -641,7 +731,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .toasts { bottom: calc(72px + env(safe-area-inset-bottom)); }
 
 @media (max-width: 860px) {
-  .home-view, .info-view, .dv-view { padding: 8px 10px 8px; }
+  .home-view, .info-view, .dv-view, .resume-view { padding: 8px 10px 8px; }
   .bottom-nav { gap: 2px; padding-left: 4px; padding-right: 4px; }
   .bottom-nav-btn { font-size: .58rem; padding: 5px 2px; }
   .bottom-nav-btn svg { width: 20px; height: 20px; }
@@ -1316,6 +1406,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         Journal
       </button>
+      <button class="btn btn-ghost" type="button" data-open="resume" id="sideResumeBtn" aria-current="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+        Resume
+      </button>
       <button class="btn btn-ghost" type="button" data-open="steps">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
         12 Steps
@@ -1594,6 +1688,90 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div id="infoRegionDetail"></div>
 
         <p class="help">In immediate danger call <a href="tel:000">000</a>. Crisis support also includes <a href="tel:131114">Lifeline 13 11 14</a>. <span data-companion></span> is an AI recovery companion, not a crisis line.</p>
+      </div>
+    </section>
+
+    <section class="resume-view" id="resumeView" hidden aria-label="Resume builder">
+      <div class="resume-inner">
+        <div class="home-hero">
+          <h1 id="resumeTitle" tabindex="-1">Resume builder</h1>
+          <p id="resumeLede">Write a simple resume in your own words. This is free in <span data-brand></span> — it is not part of Plus. Your draft stays on this device.</p>
+        </div>
+        <p class="resume-note" id="resumeGapNote">A gap in paid work is ordinary. Volunteering, courses, casual work, and caring for someone all belong here. You do not have to mention recovery unless you want to.</p>
+        <div class="resume-steps" id="resumeSteps" role="tablist" aria-label="Resume steps"></div>
+        <div class="resume-layout">
+          <div>
+            <p class="resume-note" id="resumeTip"></p>
+            <div id="resumePanelContact" class="resume-panel" data-resume-panel="contact" role="tabpanel" aria-labelledby="resumeStep-contact">
+              <div class="field">
+                <label for="resumeName">Your name</label>
+                <input id="resumeName" type="text" maxlength="80" autocomplete="name" placeholder="The name you want on the resume">
+              </div>
+              <div class="field">
+                <label for="resumePhone">Phone <span class="help">(optional)</span></label>
+                <input id="resumePhone" type="tel" maxlength="40" autocomplete="tel" placeholder="Mobile, if you want employers to call">
+              </div>
+              <div class="field">
+                <label for="resumeEmail">Email <span class="help">(optional)</span></label>
+                <input id="resumeEmail" type="text" inputmode="email" maxlength="120" autocomplete="email" placeholder="Email, if you have one">
+              </div>
+              <div class="field">
+                <label for="resumeLocation">Where you are <span class="help">(optional)</span></label>
+                <input id="resumeLocation" type="text" maxlength="80" autocomplete="address-level2" placeholder="Suburb or town — a street address is optional">
+              </div>
+            </div>
+            <div id="resumePanelSummary" class="resume-panel" data-resume-panel="summary" role="tabpanel" aria-labelledby="resumeStep-summary" hidden>
+              <div class="field">
+                <label for="resumeSummary">Short summary</label>
+                <textarea id="resumeSummary" rows="5" maxlength="800" placeholder="A few honest sentences about what you can offer. Plain words are perfect."></textarea>
+              </div>
+              <p class="help" style="margin:12px 0 0">Starting points — edit them so they sound like you:</p>
+              <div class="resume-prompts" id="resumePrompts"></div>
+            </div>
+            <div id="resumePanelExperience" class="resume-panel" data-resume-panel="experience" role="tabpanel" aria-labelledby="resumeStep-experience" hidden>
+              <div id="resumeExpList"></div>
+              <div class="row" style="margin-top:10px">
+                <button class="btn btn-sm" type="button" id="resumeAddExp">Add another</button>
+              </div>
+            </div>
+            <div id="resumePanelEducation" class="resume-panel" data-resume-panel="education" role="tabpanel" aria-labelledby="resumeStep-education" hidden>
+              <div id="resumeEduList"></div>
+              <div class="row" style="margin-top:10px">
+                <button class="btn btn-sm" type="button" id="resumeAddEdu">Add another</button>
+              </div>
+            </div>
+            <div id="resumePanelSkills" class="resume-panel" data-resume-panel="skills" role="tabpanel" aria-labelledby="resumeStep-skills" hidden>
+              <div class="field">
+                <label for="resumeSkills">Skills</label>
+                <textarea id="resumeSkills" rows="5" maxlength="600" placeholder="e.g. teamwork, cooking, being on time, using a phone, driving"></textarea>
+              </div>
+              <p class="help">One skill per line, or separate them with commas.</p>
+            </div>
+            <div id="resumePanelReferences" class="resume-panel" data-resume-panel="references" role="tabpanel" aria-labelledby="resumeStep-references" hidden>
+              <div class="radio-row" role="radiogroup" aria-label="How to show references">
+                <label><input type="radio" name="resumeRefMode" value="available"> Say they are available if asked</label>
+                <label><input type="radio" name="resumeRefMode" value="list"> List people who have already said yes</label>
+              </div>
+              <div id="resumeRefFields">
+                <div id="resumeRefList"></div>
+                <div class="row" style="margin-top:10px">
+                  <button class="btn btn-sm" type="button" id="resumeAddRef">Add another</button>
+                </div>
+              </div>
+            </div>
+            <div class="row resume-actions">
+              <button class="btn" type="button" id="resumeBack">Back</button>
+              <button class="btn" type="button" id="resumeNext">Next</button>
+              <button class="btn btn-primary" type="button" id="resumeDownload">Download PDF</button>
+              <button class="btn btn-ghost" type="button" id="resumeClear">Clear draft</button>
+            </div>
+            <p class="help" id="resumeSaved" aria-live="polite"></p>
+          </div>
+          <aside class="resume-preview-wrap" aria-label="Live preview">
+            <h2>Preview</h2>
+            <div id="resumePreview" class="resume-paper" aria-live="polite"></div>
+          </aside>
+        </div>
       </div>
     </section>
 
@@ -2660,6 +2838,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 <script src="data/word-for-the-day.js"></script>
 <script src="data/just-for-today.js"></script>
+<script src="resume.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -2678,9 +2857,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
      eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
+     eden.p.<id>.resume        per-person resume draft (free; not part of Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.13';
+const EDEN_BUILD = 'hopewick-v5.14';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -2690,7 +2870,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'breakers', 'selfcare', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'breakers', 'selfcare', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -2976,7 +3156,7 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
-let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'info' — More opens sidebar, not a tab destination
+let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'info' | 'resume' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
@@ -2987,6 +3167,10 @@ let bibleTab = 'soap';
 let ddState = { section: 'genesis', dayId: null };
 let breakersState = { custom: [], tried: { date: '', ids: [] } };
 let selfCareState = { items: null, done: { date: '', ids: [] } }; // items null → use defaults
+let resumeState = HopewickResume.emptyResume();
+let resumeStep = 'contact';
+let resumePaintedFor = null;
+let resumeSaveTimer = null;
 let activeId = null;
 let journalEditId = null;
 let busy = false;
@@ -3003,10 +3187,10 @@ const el = {
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
-  infoView: $('#infoView'), dvView: $('#dvView'), launchPrefs: $('#launchPrefs'),
+  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
   bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabDv: $('#appTabDv'), tabInfo: $('#appTabInfo'), tabMore: $('#appTabMore'),
-  sideDvBtn: $('#sideDvBtn'),
+  sideDvBtn: $('#sideDvBtn'), sideResumeBtn: $('#sideResumeBtn'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
@@ -3080,6 +3264,9 @@ function loadProfileData(pid) {
   bibleProgress = normalizeBible(load(pk(pid, 'bible'), {}));
   breakersState = normalizeBreakers(load(pk(pid, 'breakers'), {}));
   selfCareState = normalizeSelfCare(load(pk(pid, 'selfcare'), {}));
+  resumeState = HopewickResume.normalizeResume(load(pk(pid, 'resume'), null));
+  resumePaintedFor = null;
+  resumeStep = 'contact';
   activeId = load(pk(pid, 'active'), null);
   if (!Array.isArray(convos)) convos = [];
   if (!Array.isArray(memories)) memories = [];
@@ -3107,6 +3294,12 @@ function saveSteps() { if (isDemo) return; save(pk(profile.id, 'steps'), stepsPr
 function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), bibleProgress); }
 function saveBreakers() { if (isDemo) return; save(pk(profile.id, 'breakers'), breakersState); }
 function saveSelfCare() { if (isDemo) return; save(pk(profile.id, 'selfcare'), selfCareState); }
+function saveResume() {
+  if (isDemo || !profile) return;
+  save(pk(profile.id, 'resume'), resumeState);
+  const note = $('#resumeSaved');
+  if (note && appTab === 'resume') note.textContent = 'Draft saved on this device.';
+}
 
 /** Light PIN hash (FNV-1a, iterated). This is a privacy lock, not security. */
 function pinHash(pid, pin) {
@@ -3469,6 +3662,7 @@ function showLaunchPrefs() {
   if (el.homeView) el.homeView.hidden = true;
   if (el.infoView) el.infoView.hidden = true;
   if (el.dvView) el.dvView.hidden = true;
+  if (el.resumeView) el.resumeView.hidden = true;
   if (el.messages) el.messages.hidden = true;
   if (el.composerWrap) el.composerWrap.hidden = true;
   [el.tabHome, el.tabChat, el.tabDv, el.tabInfo, el.tabMore].forEach(b => {
@@ -3477,6 +3671,7 @@ function showLaunchPrefs() {
     b.setAttribute('aria-pressed', 'false');
   });
   if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', 'false');
+  if (el.sideResumeBtn) el.sideResumeBtn.setAttribute('aria-current', 'false');
   const title = $('#launchPrefsTitle');
   const disclaimerOpen = el.disclaimerDlg && el.disclaimerDlg.open;
   if (!disclaimerOpen && title) title.focus();
@@ -3515,16 +3710,18 @@ function setAppTab(tab, opts = {}) {
     return;
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
-  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : 'home';
+  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : 'home';
   const changed = appTab !== next;
   appTab = next;
   el.app.classList.toggle('tab-home', next === 'home');
   el.app.classList.toggle('tab-chat', next === 'chat');
   el.app.classList.toggle('tab-info', next === 'info');
   el.app.classList.toggle('tab-dv', next === 'dv');
+  el.app.classList.toggle('tab-resume', next === 'resume');
   if (el.homeView) el.homeView.hidden = next !== 'home';
   if (el.infoView) el.infoView.hidden = next !== 'info';
   if (el.dvView) el.dvView.hidden = next !== 'dv';
+  if (el.resumeView) el.resumeView.hidden = next !== 'resume';
   if (el.messages) el.messages.hidden = next !== 'chat';
   if (el.composerWrap) el.composerWrap.hidden = next !== 'chat';
   const mark = (btn, on) => {
@@ -3537,6 +3734,7 @@ function setAppTab(tab, opts = {}) {
   mark(el.tabInfo, next === 'info');
   mark(el.tabDv, next === 'dv');
   if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', next === 'dv' ? 'page' : 'false');
+  if (el.sideResumeBtn) el.sideResumeBtn.setAttribute('aria-current', next === 'resume' ? 'page' : 'false');
   if (el.tabMore) {
     el.tabMore.setAttribute('aria-current', 'false');
     el.tabMore.setAttribute('aria-pressed', 'false');
@@ -3545,6 +3743,8 @@ function setAppTab(tab, opts = {}) {
     renderHome();
   } else if (next === 'dv') {
     renderInfoRegion();
+  } else if (next === 'resume') {
+    showResume(changed);
   } else if (next !== 'info' && (changed || opts.forceRender)) {
     renderMessages();
     if (!opts.skipFocus) focusInput();
@@ -3857,6 +4057,7 @@ function renderHome() {
     { ico: '📓', label: 'Journal', sub: 'Write it down', action: () => openJournal() },
     { ico: '🌱', label: 'Clean time', sub: 'Track your days', action: () => openCleanTime() },
     { ico: '🆘', label: 'Get help', sub: 'Helplines & support', action: () => openHelp() },
+    { ico: '📄', label: 'Resume', sub: 'Free builder', action: () => setAppTab('resume') },
   ];
   // Use companion name in shortcut label
   items[0].label = `Talk to ${settings.name}`;
@@ -4190,6 +4391,7 @@ function counsellorPrompt(convo) {
     '',
     'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
     '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also suggest they open Circuit breakers (urge-interrupt activities) or Self-care in the sidebar.',
+    '- If they want help writing a resume or job application, or listing work, volunteering, caring or courses, suggest the free Resume builder in the sidebar (More → Resume). Do not send them to paid resume websites. Never shame employment gaps. Do not pressure them to disclose recovery.',
     '- Skills you can run interactively: urge surfing; delay–distract–decide; HALT check; DBT TIPP (Temperature with a cool drink or cool cloth on wrists/face — NEVER ice-bath / ice-dive / extreme cold that could harm; Intense exercise = brief safe movement like walking stairs; Paced breathing; Paired muscle relaxation); DBT opposite action (when the emotion fits the facts); DBT STOP + wise mind (brief); CBT thought record / catch–check–change for urge thoughts; urge surfing + values reminder; 5-4-3-2-1 grounding.',
     '- Frame clearly as skills practice / support tool — you are not delivering therapy and are not a psychologist. Encourage real counselling when longer work is needed.',
     '- Stay trauma-informed and non-shaming. If crisis language appears, use the crisis path first.',
@@ -4221,6 +4423,7 @@ function friendPrompt(convo) {
     '- Be honest that you are an AI if it comes up.',
     '- Use Australian English and a natural, conversational tone. Light markdown is fine.',
     '- Weave in what you remember naturally; never recite memories as a list.',
+    '- If they want help writing a resume, suggest the free Resume builder in the sidebar (More → Resume). Do not send them to paid resume websites, and never shame gaps in work.',
     '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, about to use, domestic violence, being unsafe or someone in danger, respond with care and FIRST tell them what to do now and clearly give these Australian contacts (including 1800RESPECT 1800 737 732), then check on their safety:',
     CONTACTS_TEXT,
     ...commonContext(convo),
@@ -7143,7 +7346,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState,
+    gratitude, journal, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -7181,6 +7384,11 @@ $('#importFile').addEventListener('change', async (e) => {
     bibleProgress = normalizeBible(data.bible || {});
     breakersState = normalizeBreakers(data.breakers || {});
     selfCareState = normalizeSelfCare(data.selfcare || {});
+    if (data.resume) {
+      resumeState = HopewickResume.normalizeResume(data.resume);
+      resumePaintedFor = null;
+      saveResume();
+    }
     activeId = null;
     settingsThemeBefore = settings.theme;
     saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
@@ -7191,7 +7399,7 @@ $('#importFile').addEventListener('change', async (e) => {
   } catch (err) { toast('Import failed: ' + err.message, true, 5000); }
 });
 $('#clearMineBtn').addEventListener('click', () => {
-  if (!confirm(`Clear all of ${profile.name}'s chats, memories, check-ins and settings? Other people's data is not affected. This cannot be undone.`)) return;
+  if (!confirm(`Clear all of ${profile.name}'s chats, memories, check-ins, resume and settings? Other people's data is not affected. This cannot be undone.`)) return;
   PK.forEach(w => localStorage.removeItem(pk(profile.id, w)));
   loadProfileData(profile.id);
   el.settingsDlg.close();
@@ -7202,7 +7410,7 @@ $('#clearMineBtn').addEventListener('click', () => {
   maybeShowDisclaimer();
 });
 $('#clearAllBtn').addEventListener('click', () => {
-  if (!confirm(`Clear ALL ${BRAND.name} data on this device — every person\'s chats, memories and settings, plus the API key? This cannot be undone.`)) return;
+  if (!confirm(`Clear ALL ${BRAND.name} data on this device — every person\'s chats, memories, resumes and settings, plus the API key? This cannot be undone.`)) return;
   Object.keys(localStorage).filter(k => k.startsWith('eden.')).forEach(k => localStorage.removeItem(k));
   location.reload();
 });
@@ -7571,6 +7779,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'aod') openAodServices();
   else if (o === 'church') openChurch();
   else if (o === 'dv') { closeSidebar(); setAppTab('dv'); }
+  else if (o === 'resume') { closeSidebar(); setAppTab('resume'); }
   else if (o === 'help') openHelp();
 }));
 
@@ -7845,6 +8054,9 @@ function enterDemo() {
   journal = sample.journal; gratitude = sample.gratitude;
   stepsProgress = sample.steps; bibleProgress = sample.bible;
   breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
+  resumeState = HopewickResume.emptyResume();
+  resumePaintedFor = null;
+  resumeStep = 'contact';
   activeId = null;
   appTab = 'home';
   applyTheme();
@@ -7864,6 +8076,9 @@ function exitDemo() {
   bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
   breakersState = { custom: [], tried: { date: '', ids: [] } };
   selfCareState = { items: null, done: { date: '', ids: [] } };
+  resumeState = HopewickResume.emptyResume();
+  resumePaintedFor = null;
+  resumeStep = 'contact';
   activeId = null;
   el.inner.innerHTML = '';
   if (new URLSearchParams(location.search).has('demo')) {
@@ -8185,6 +8400,375 @@ $('#dvQuickExit')?.addEventListener('click', () => {
 });
 
 /* ---------------------------------------------------------------------------
+   Resume builder — free, per person, stored like other companion data.
+   The PDF is the person's own words. It is not gated on Hopewick Plus.
+   --------------------------------------------------------------------------- */
+function resumePaintKey() {
+  return (profile && profile.id ? profile.id : '') + (isDemo ? ':demo' : '');
+}
+function resumeField(id, label, value, placeholder, multiline, max) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+  const lab = document.createElement('label');
+  lab.htmlFor = id;
+  lab.textContent = label;
+  wrap.appendChild(lab);
+  const input = document.createElement(multiline ? 'textarea' : 'input');
+  input.id = id;
+  if (multiline) input.rows = 3;
+  else input.type = 'text';
+  input.maxLength = max;
+  input.placeholder = placeholder;
+  input.value = value || '';
+  wrap.appendChild(input);
+  return { wrap, input };
+}
+function renderRepeat(listId, items, spec) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  list.replaceChildren();
+  items.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'resume-card';
+    const head = document.createElement('div');
+    head.className = 'resume-card-head';
+    const label = document.createElement('span');
+    label.textContent = spec.noun + ' ' + (index + 1);
+    head.appendChild(label);
+    if (items.length > 1) {
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'btn btn-ghost btn-sm';
+      remove.textContent = 'Remove';
+      remove.addEventListener('click', () => {
+        items.splice(index, 1);
+        renderRepeat(listId, items, spec);
+        onResumeChanged();
+      });
+      head.appendChild(remove);
+    }
+    card.appendChild(head);
+    spec.fields.forEach(field => {
+      const id = spec.prefix + '-' + item.id + '-' + field.key;
+      const built = resumeField(id, field.label, item[field.key], field.placeholder, !!field.multiline, field.max);
+      built.input.addEventListener('input', () => {
+        item[field.key] = built.input.value;
+        onResumeChanged();
+      });
+      card.appendChild(built.wrap);
+    });
+    list.appendChild(card);
+  });
+}
+function experienceSpec() {
+  return {
+    noun: 'Experience', prefix: 'exp',
+    fields: [
+      { key: 'role', label: 'What you did', placeholder: 'e.g. Kitchen hand, volunteer, carer, labourer', max: 80 },
+      { key: 'place', label: 'Where', placeholder: 'e.g. Community kitchen, family, a local cafe', max: 80 },
+      { key: 'dates', label: 'When', placeholder: 'e.g. 2023–2024, or a few months in 2022', max: 40 },
+      { key: 'details', label: 'What it involved', placeholder: 'What you actually did. Short lines are fine.', multiline: true, max: 600 },
+    ],
+  };
+}
+function educationSpec() {
+  return {
+    noun: 'Training', prefix: 'edu',
+    fields: [
+      { key: 'study', label: 'Course, school or training', placeholder: 'e.g. Year 10, Certificate II, first aid course', max: 80 },
+      { key: 'place', label: 'Where', placeholder: 'e.g. TAFE, a program, school', max: 80 },
+      { key: 'dates', label: 'When', placeholder: 'e.g. 2024, or still going', max: 40 },
+      { key: 'details', label: 'Anything else', placeholder: 'What you learned, or that you started it. Optional.', multiline: true, max: 600 },
+    ],
+  };
+}
+function referenceSpec() {
+  return {
+    noun: 'Reference', prefix: 'ref',
+    fields: [
+      { key: 'name', label: 'Their name', placeholder: 'Someone who has agreed you can list them', max: 80 },
+      { key: 'relationship', label: 'How they know you', placeholder: 'e.g. Volunteer coordinator, previous boss', max: 80 },
+      { key: 'phone', label: 'Their phone', placeholder: 'Only if they said you can share it', max: 40 },
+    ],
+  };
+}
+function renderExperienceList() { renderRepeat('resumeExpList', resumeState.experience, experienceSpec()); }
+function renderEducationList() { renderRepeat('resumeEduList', resumeState.education, educationSpec()); }
+function renderReferenceList() { renderRepeat('resumeRefList', resumeState.references.items, referenceSpec()); }
+function syncRefMode() {
+  const box = $('#resumeRefFields');
+  if (box) box.hidden = resumeState.references.mode !== 'list';
+}
+function ensureResumeSteps() {
+  const nav = $('#resumeSteps');
+  if (!nav || nav.childElementCount) return;
+  HopewickResume.STEPS.forEach(step => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'resumeStep-' + step.id;
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-controls', 'resumePanel' + step.id.charAt(0).toUpperCase() + step.id.slice(1));
+    b.dataset.resumeStep = step.id;
+    b.textContent = step.label;
+    b.addEventListener('click', () => setResumeStep(step.id));
+    nav.appendChild(b);
+  });
+}
+function ensureSummaryPrompts() {
+  const box = $('#resumePrompts');
+  if (!box || box.childElementCount) return;
+  HopewickResume.SUMMARY_PROMPTS.forEach(text => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn';
+    b.textContent = text;
+    b.addEventListener('click', () => useSummaryPrompt(text));
+    box.appendChild(b);
+  });
+}
+function setResumeStep(step) {
+  const ids = HopewickResume.STEPS.map(s => s.id);
+  resumeStep = ids.includes(step) ? step : 'contact';
+  $$('[data-resume-panel]').forEach(panel => { panel.hidden = panel.dataset.resumePanel !== resumeStep; });
+  $$('#resumeSteps [data-resume-step]').forEach(b => {
+    const on = b.dataset.resumeStep === resumeStep;
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+  });
+  const tip = $('#resumeTip');
+  if (tip) tip.textContent = HopewickResume.TIPS[resumeStep] || '';
+  const back = $('#resumeBack');
+  const next = $('#resumeNext');
+  if (back) back.disabled = resumeStep === 'contact';
+  if (next) next.disabled = resumeStep === 'references';
+}
+function moveResumeStep(dir) {
+  const ids = HopewickResume.STEPS.map(s => s.id);
+  const next = ids[ids.indexOf(resumeStep) + dir];
+  if (!next) return;
+  setResumeStep(next);
+  if (window.matchMedia('(max-width: 860px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const tip = $('#resumeTip');
+    if (tip) tip.scrollIntoView({ block: 'nearest' });
+  }
+}
+function useSummaryPrompt(text) {
+  const current = resumeState.summary.trim();
+  if (current && current !== text.trim()) {
+    if (!confirm('Replace the summary you have written with this starting point? You can still edit it.')) return;
+  }
+  resumeState.summary = text;
+  const ta = $('#resumeSummary');
+  if (ta) { ta.value = text; ta.focus(); }
+  onResumeChanged();
+}
+function renderResumePreview() {
+  const box = $('#resumePreview');
+  if (!box) return;
+  const doc = HopewickResume.resumeDocument(resumeState);
+  box.replaceChildren();
+  if (!doc.name && !doc.contactLine && !doc.blocks.length) {
+    const empty = document.createElement('p');
+    empty.className = 'resume-preview-empty';
+    empty.textContent = 'Your resume will show up here as you fill it in.';
+    box.appendChild(empty);
+    return;
+  }
+  if (doc.name) {
+    const h = document.createElement('h3');
+    h.textContent = doc.name;
+    box.appendChild(h);
+  }
+  if (doc.contactLine) {
+    const contact = document.createElement('p');
+    contact.className = 'rp-contact';
+    contact.textContent = doc.contactLine;
+    box.appendChild(contact);
+  }
+  doc.blocks.forEach(block => {
+    const h = document.createElement('h4');
+    h.textContent = block.heading;
+    box.appendChild(h);
+    (block.paragraphs || []).forEach(text => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      box.appendChild(p);
+    });
+    (block.entries || []).forEach(entry => {
+      const wrap = document.createElement('div');
+      wrap.className = 'resume-entry';
+      if (entry.title || entry.dates) {
+        const line = document.createElement('div');
+        line.className = 'rp-line';
+        const title = document.createElement('span');
+        title.textContent = entry.title || '';
+        const dates = document.createElement('span');
+        dates.className = 'rp-dates';
+        dates.textContent = entry.dates || '';
+        line.append(title, dates);
+        wrap.appendChild(line);
+      }
+      if (entry.lines && entry.lines.length) {
+        if (entry.bullets) {
+          const ul = document.createElement('ul');
+          entry.lines.forEach(line => {
+            const li = document.createElement('li');
+            li.textContent = line;
+            ul.appendChild(li);
+          });
+          wrap.appendChild(ul);
+        } else {
+          const p = document.createElement('p');
+          p.textContent = entry.lines.join(' · ');
+          wrap.appendChild(p);
+        }
+      }
+      box.appendChild(wrap);
+    });
+  });
+}
+function updateResumeSavedNote() {
+  const note = $('#resumeSaved');
+  if (note) {
+    note.textContent = isDemo
+      ? 'Demo visit only — this draft is not saved on the device.'
+      : 'Your draft stays in this browser.';
+  }
+  const lede = $('#resumeLede');
+  if (lede) {
+    lede.textContent = isDemo
+      ? `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. In the demo, the draft lasts for this visit only.`
+      : `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. Your draft stays on this device.`;
+  }
+}
+function onResumeChanged() {
+  renderResumePreview();
+  clearTimeout(resumeSaveTimer);
+  if (isDemo || !profile) {
+    updateResumeSavedNote();
+    return;
+  }
+  const note = $('#resumeSaved');
+  if (note) note.textContent = 'Saving draft…';
+  resumeSaveTimer = setTimeout(() => {
+    saveResume();
+    const saved = $('#resumeSaved');
+    if (saved && appTab === 'resume') saved.textContent = 'Draft saved on this device.';
+  }, 280);
+}
+function paintResumeForm() {
+  if (!resumeState) resumeState = HopewickResume.emptyResume();
+  const contact = resumeState.contact;
+  $('#resumeName').value = contact.name;
+  $('#resumePhone').value = contact.phone;
+  $('#resumeEmail').value = contact.email;
+  $('#resumeLocation').value = contact.location;
+  $('#resumeSummary').value = resumeState.summary;
+  $('#resumeSkills').value = resumeState.skills;
+  $$('input[name="resumeRefMode"]').forEach(r => { r.checked = r.value === resumeState.references.mode; });
+  renderExperienceList();
+  renderEducationList();
+  renderReferenceList();
+  syncRefMode();
+  ensureResumeSteps();
+  ensureSummaryPrompts();
+  setResumeStep(resumeStep);
+  resumePaintedFor = resumePaintKey();
+  updateResumeSavedNote();
+}
+function showResume(changed) {
+  if (resumePaintedFor !== resumePaintKey()) paintResumeForm();
+  else {
+    ensureResumeSteps();
+    ensureSummaryPrompts();
+    setResumeStep(resumeStep);
+    updateResumeSavedNote();
+  }
+  renderResumePreview();
+  if (changed) {
+    const title = $('#resumeTitle');
+    if (title) title.focus();
+  }
+}
+function downloadResume() {
+  if (!HopewickResume.resumeHasContent(resumeState)) {
+    toast('Add a name, or a few lines, before downloading.', true);
+    return;
+  }
+  const pdf = HopewickResume.buildPdf(resumeState);
+  const blob = new Blob([pdf], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = HopewickResume.resumeFilename(resumeState);
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  toast('Resume downloaded');
+}
+function clearResumeDraft() {
+  if (!confirm('Clear this resume draft? This removes what you have written here.')) return;
+  resumeState = HopewickResume.emptyResume();
+  resumeStep = 'contact';
+  resumePaintedFor = null;
+  paintResumeForm();
+  renderResumePreview();
+  if (!isDemo && profile) saveResume();
+  toast('Resume draft cleared');
+}
+function addResumeEntry(list, blank, max, render, focusId) {
+  if (list.length >= max) {
+    toast(max + ' entries is enough for this resume.');
+    return;
+  }
+  const item = blank();
+  list.push(item);
+  render();
+  onResumeChanged();
+  const node = document.getElementById(focusId(item));
+  if (node) node.focus();
+}
+function bindResumeUi() {
+  const bind = (id, apply) => {
+    const node = document.getElementById(id);
+    if (!node) return;
+    node.addEventListener('input', () => {
+      apply(node.value);
+      onResumeChanged();
+    });
+  };
+  bind('resumeName', v => { resumeState.contact.name = v; });
+  bind('resumePhone', v => { resumeState.contact.phone = v; });
+  bind('resumeEmail', v => { resumeState.contact.email = v; });
+  bind('resumeLocation', v => { resumeState.contact.location = v; });
+  bind('resumeSummary', v => { resumeState.summary = v; });
+  bind('resumeSkills', v => { resumeState.skills = v; });
+  $$('input[name="resumeRefMode"]').forEach(r => {
+    r.addEventListener('change', () => {
+      if (!r.checked) return;
+      resumeState.references.mode = r.value === 'list' ? 'list' : 'available';
+      syncRefMode();
+      onResumeChanged();
+    });
+  });
+  $('#resumeBack')?.addEventListener('click', () => moveResumeStep(-1));
+  $('#resumeNext')?.addEventListener('click', () => moveResumeStep(1));
+  $('#resumeDownload')?.addEventListener('click', downloadResume);
+  $('#resumeClear')?.addEventListener('click', clearResumeDraft);
+  $('#resumeAddExp')?.addEventListener('click', () => addResumeEntry(
+    resumeState.experience, HopewickResume.emptyRole, HopewickResume.LIMITS.experience, renderExperienceList, item => 'exp-' + item.id + '-role'
+  ));
+  $('#resumeAddEdu')?.addEventListener('click', () => addResumeEntry(
+    resumeState.education, HopewickResume.emptyStudy, HopewickResume.LIMITS.education, renderEducationList, item => 'edu-' + item.id + '-study'
+  ));
+  $('#resumeAddRef')?.addEventListener('click', () => addResumeEntry(
+    resumeState.references.items, HopewickResume.emptyRef, HopewickResume.LIMITS.references, renderReferenceList, item => 'ref-' + item.id + '-name'
+  ));
+}
+bindResumeUi();
+
+/* ---------------------------------------------------------------------------
    Hopewick Plus — email sign-in, Stripe, and soft gating
    Account service is same-origin /api (npm start). Chats stay in this browser.
    --------------------------------------------------------------------------- */
@@ -8295,7 +8879,7 @@ function paintAccount() {
   body.replaceChildren();
   const lede = document.createElement('p');
   lede.className = 'lede';
-  lede.textContent = 'Hopewick Plus is AU$20 a month for one person. Today’s readings, the demo, crisis support, and domestic and family violence links stay free. Organisation plans are coming soon.';
+  lede.textContent = 'Hopewick Plus is AU$20 a month for one person. Today’s readings, the demo, crisis support, domestic and family violence links, and the resume builder stay free. Organisation plans are coming soon.';
   body.appendChild(lede);
 
   if (!billingState.reachable) {
