@@ -45,6 +45,11 @@ services:
       # Founder complimentary Plus. Not the organisations inbox.
       - key: FOUNDER_PLUS_EMAILS
         value: dwaynesimons1990@gmail.com
+      # Same key already set on the Azure function hopewick-api. Never commit it.
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
     disk:
       name: hopewick-accounts
       mountPath: /var/data

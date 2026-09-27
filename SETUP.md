@@ -22,7 +22,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and the resume builder. Scripted sample conversations stay at `app/?demo=1` for organisation trials.
 
-The daily message limits (Free 20 messages/day, Hopewick Plus 200 messages/day) are product policy on the marketing site and the Hopewick Plus screen. The companion does not enforce those caps yet.
+The daily message limits (Free 20 messages/day, Hopewick Plus 200 messages/day) are enforced by the account server on hosted Hope (`POST /api/hope/chat`). The marketing site and the Hopewick Plus screen use the same numbers.
 
 ## Environment variables
 
@@ -43,7 +43,10 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
 | `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. |
-| `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. |
+| `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. Complimentary Plus is not sent to Stripe Checkout. |
+| `OPENAI_API_KEY` | Yes, for hosted Hope | Server-only model key. Same secret already configured on the Azure app `hopewick-api`. Never commit it and never send it to the browser. |
+| `OPENAI_MODEL` | No | Default `gpt-4o-mini`. |
+| `OPENAI_BASE_URL` | No | Default `https://api.openai.com/v1`. Must be `https`. |
 
 Do not commit real keys. Placeholders in `.env.example` are not live credentials.
 
@@ -120,7 +123,9 @@ That checks magic-link sign-in, Checkout refusing anonymous users, a mocked Stri
 
 GitHub Pages serves https://hopewick.com.au today (apex `A` records to GitHub’s IPs, `www` `CNAME` to `dwayne260211.github.io`). Pages is static, so `https://hopewick.com.au/api/billing/*` returns a GitHub **404** page. The companion calls `/api/...` on the same origin (`SameSite=Lax`, host-only cookie). The process in `server/index.js` already serves the HTML and `/api` together. Production is that one process, on [Render](https://render.com), in Singapore.
 
-The invite-code AI stays the separate Azure Functions app (`https://hopewick-api.azurewebsites.net/api`). This host does not replace it.
+Hosted Hope for signed-in Free and Plus accounts runs on this same service: `POST /api/hope/chat`. Set `OPENAI_API_KEY` on the server (the key already used by `hopewick-api` is the one to copy). Do not put that key in the browser or in git. Free is 20 messages a day. Plus, including complimentary founder emails, is 200. The count is the Australia/Brisbane calendar day and is stored beside the account, not the conversation.
+
+The older invite-code proxy stays at `https://hopewick-api.azurewebsites.net/api` for Developer / organisation pilots. It is not the path a paying customer uses.
 
 Accounts are a JSON file. Render’s free instance sleeps and has no disk, so a restart would drop sign-ins and subscription status and Stripe would miss webhooks. The blueprint uses a paid instance (`0.5c-512mb`) and a 1 GB disk mounted at `/var/data`. Keep the service at **one instance**. The disk is not shared across instances.
 
@@ -143,6 +148,8 @@ Create these in the Render Dashboard when the blueprint asks. Do not put the sec
 | `STRIPE_WEBHOOK_SECRET` | Signing secret of the endpoint below (`whsec_...`). |
 | `RESEND_API_KEY` | Resend → API keys (`re_...`). |
 | `MAGIC_LINK_FROM` | `Hopewick <hello@hopewick.com.au>` after that domain is verified in Resend. |
+| `OPENAI_API_KEY` | The key already set on the Azure function app `hopewick-api`. Server only. |
+| `OPENAI_MODEL` | Optional. `gpt-4o-mini` if unset. |
 
 `PORT` is set by Render. Leave it alone.
 

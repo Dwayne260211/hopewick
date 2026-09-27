@@ -815,6 +815,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .conn-hint button { color: var(--accent); background: none; border: 0; font: inherit; font-weight: 650; text-decoration: underline; cursor: pointer; padding: 0; }
 .advanced-lede { margin: 0 0 12px; color: var(--muted); font-size: .92rem; line-height: 1.45; }
 .advanced-lede .adv-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.dev-warning {
+  margin: 0 0 12px; padding: 10px 12px; border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  border: 1px solid var(--border); font-size: .92rem; line-height: 1.45;
+}
 .own-key-details { margin: 8px 0 0; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); padding: 0; }
 .own-key-details > summary {
   cursor: pointer; list-style: none; padding: 12px 14px; font-weight: 650; font-size: .95rem;
@@ -1479,7 +1484,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </button>
       <button class="btn btn-ghost" type="button" data-open="advanced">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        Advanced
+        Developer
       </button>
       <button class="btn btn-ghost" type="button" data-open="settings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
@@ -1536,10 +1541,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p>Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.</p>
+      <p id="keyBannerText">Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder stay available.</p>
       <div class="banner-actions">
-        <button class="btn btn-primary btn-sm" type="button" id="keyBannerInvite">Enter invite code</button>
-        <button class="btn btn-sm" type="button" id="keyBannerPlus">Hopewick Plus</button>
+        <button class="btn btn-primary btn-sm" type="button" id="keyBannerSignIn">Sign in</button>
+        <button class="btn btn-sm" type="button" id="keyBannerInvite" data-invite-entry hidden>Enter invite code</button>
       </div>
     </div>
 
@@ -1547,10 +1552,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <section class="launch-prefs" id="launchPrefs" hidden aria-labelledby="launchPrefsTitle">
       <div class="launch-prefs-inner">
         <h1 id="launchPrefsTitle" tabindex="-1">Preferences</h1>
-        <p class="lede">Set how <span data-companion></span> shows up before you start. You can change this later from <strong>More → Preferences</strong>. <strong>Get help</strong> stays at the top.</p>
+        <p class="lede">Set how <span data-companion>Hope</span> shows up before you start. You can change this later from <strong>More → Preferences</strong>. <strong>Get help</strong> stays at the top.</p>
         <form id="launchPrefsForm">
           <div class="field">
-            <label for="launchMode"><span data-companion></span>’s role</label>
+            <label for="launchMode"><span data-companion>Hope</span>’s role</label>
             <select id="launchMode">
               <option value="counsellor">AOD faith counsellor — support with alcohol &amp; other drugs</option>
               <option value="friend">Friend — warm, everyday companion</option>
@@ -1904,14 +1909,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
-      <summary>Learn more · Privacy · Advanced</summary>
+      <summary>Learn more · Privacy · Developer</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
         <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
-        <li><strong>Advanced (optional).</strong> Settings → Advanced → <em>Use my own API key</em> accepts an OpenAI-compatible key in this browser for testing. Existing saved keys keep working.</li>
-        <li><strong>Account.</strong> Optional email sign-in. We store your email and subscription status — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
-        <li><strong>Architecture note.</strong> The companion still runs in this browser. Sign-in and Stripe billing use the Hopewick account service when this site is served with it. Invite-code live AI is a separate service.</li>
+        <li><strong>Hope.</strong> Sign in and chat. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Hopewick holds the model connection — you do not need an API key.</li>
+        <li><strong>Developer (optional).</strong> Settings → Developer is for the people building Hopewick. It is not part of Free or Plus.</li>
+        <li><strong>Account.</strong> Email sign-in. We store your email, subscription status, and today’s message count — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -1955,7 +1960,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
       <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
       <li>In an emergency call <strong>000</strong>. The <strong>Get help now</strong> button is always at the top of the screen.</li>
-      <li>Chats are stored only on this device, but messages are sent to your chosen AI provider to create replies.</li>
+      <li>Chats are stored only on this device. Hosted Hope sends messages to Hopewick to create a reply and does not keep an account chat history.</li>
     </ul>
   </div>
   <div class="dlg-foot">
@@ -1968,18 +1973,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ Need AI / no key prompt ============================ -->
 <dialog id="needAiDlg" class="need-ai-dlg" aria-labelledby="needAiTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="needAiTitle">Live chat</h2>
+    <h2 id="needAiTitle">Chat with Hope</h2>
     <button class="icon-btn" value="close" aria-label="Close">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede" id="needAiLede">Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.</p>
+    <p class="lede" id="needAiLede">Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, Get Help, and the resume builder stay available.</p>
     <div class="need-ai-actions">
-      <button class="btn btn-primary" type="button" id="needAiInviteBtn">Enter invite code</button>
-      <button class="btn" type="button" id="needAiAdvancedBtn">Advanced — use my own API key</button>
+      <button class="btn btn-primary" type="button" id="needAiSignInBtn">Sign in</button>
+      <button class="btn" type="button" id="needAiInviteBtn" data-invite-entry hidden>Enter invite code</button>
     </div>
-    <p class="hosted-privacy">With a hosted invite, messages go via Bridge&amp;Bite then the model provider — not stored as an account chat history in this app.</p>
+    <p class="hosted-privacy" id="needAiHostedNote">Messages go to Hopewick to create a reply. They stay in this browser — we don’t keep an account chat history. You do not need an API key.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="needAiCloseBtn">Not now</button>
@@ -1987,7 +1992,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 </dialog>
 
 <!-- ============================ Invite code ============================ -->
-<dialog id="inviteDlg" class="invite-dlg" aria-labelledby="inviteTitle">
+<!-- Invite entry stays in the page so SHOW_INVITE_ENTRY can bring it back. Hidden for public users. -->
+<dialog id="inviteDlg" class="invite-dlg" data-invite-entry hidden aria-labelledby="inviteTitle">
   <form method="dialog" class="dlg-head">
     <h2 id="inviteTitle">Enter invite code</h2>
     <button class="icon-btn" value="close" aria-label="Close invite">
@@ -2035,14 +2041,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   <div class="settings-tabs" role="tablist" aria-label="Settings sections">
     <button type="button" role="tab" id="tabPrefs" data-settings-tab="prefs" aria-controls="panelPrefs" aria-selected="true">Preferences</button>
     <button type="button" role="tab" id="tabMore" data-settings-tab="more" aria-controls="panelMore" aria-selected="false">More</button>
-    <button type="button" role="tab" id="tabAdvanced" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false">Advanced</button>
+    <button type="button" role="tab" id="tabAdvanced" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false">Developer</button>
   </div>
   <div class="dlg-body">
     <div class="settings-panel" id="panelPrefs" data-tab-panel="prefs" role="tabpanel" aria-labelledby="tabPrefs">
     <fieldset>
       <legend>Mode &amp; faith</legend>
       <div class="field">
-        <label for="setMode"><span data-companion></span>'s role</label>
+        <label for="setMode"><span data-companion>Hope</span>'s role</label>
         <select id="setMode">
           <option value="counsellor">AOD faith counsellor — support with alcohol &amp; other drugs</option>
           <option value="friend">Friend — warm, everyday companion</option>
@@ -2185,19 +2191,21 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </fieldset>
     </div>
     <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
-      <p class="advanced-lede">Live chat uses an <strong>invite code</strong>, or your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.
-        <span class="adv-actions">
-          <button class="btn btn-sm btn-primary" type="button" id="advInviteBtn">Enter invite code</button>
-          <button class="btn btn-sm" type="button" id="advPlusBtn">Hopewick Plus</button>
-        </span>
-      </p>
-      <p class="hosted-privacy">Hosted / invite mode: messages go via Bridge&amp;Bite then the model provider. Own-key Advanced still talks only to the URL you set.</p>
+      <p class="dev-warning"><strong>Developer.</strong> Most people never need this. Sign in and Hope replies on Hopewick — Free is 20 messages a day, Hopewick Plus is 200. You do not need an invite code, an OpenAI key, OpenRouter, or Groq.</p>
+      <details class="own-key-details" id="inviteDetails" data-invite-entry hidden>
+        <summary>Pilot invite code</summary>
+        <div class="own-key-body">
+          <p class="help" style="margin:10px 0">For an organisation pilot only. Hopewick Plus does not use invite codes. This stays hidden unless invite entry is turned back on.</p>
+          <button class="btn btn-sm" type="button" id="advInviteBtn" data-invite-entry hidden>Enter invite code</button>
+        </div>
+      </details>
       <details class="own-key-details" id="ownKeyDetails">
         <summary>Use my own API key</summary>
         <div class="own-key-body">
           <fieldset>
             <legend>Connection <span class="help" style="font-weight:500">(shared on this device)</span></legend>
-            <p class="help" style="margin:6px 0 0">For device testing only. Your key stays in this browser’s localStorage (<code>eden.*</code> keys unchanged).</p>
+            <p class="help" style="margin:6px 0 0">Only if you are developing Hopewick. A key stays in this browser and is sent only to the URL below. Paying customers should leave this off.</p>
+            <div class="check"><input type="checkbox" id="setUseOwnKey"><label for="setUseOwnKey">Send chat to this provider instead of hosted Hope</label></div>
             <div class="field">
               <label for="setBaseUrl">Provider base URL</label>
               <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
@@ -2850,9 +2858,10 @@ function save(key, value) {
 /* ---------------------------------------------------------------------------
    Constants
    --------------------------------------------------------------------------- */
-const SHARED_KEYS = ['baseUrl', 'model', 'apiKey', 'stream'];
+const SHARED_KEYS = ['baseUrl', 'model', 'apiKey', 'stream', 'useOwnKey'];
 const SETTINGS_VERSION = 2; // v2 = counsellor mode introduced (migrates everyone once)
-const DEFAULT_SHARED = { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: '', stream: true };
+const DEFAULT_SHARED = { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: '', stream: true, useOwnKey: false };
+const HOSTED_SIGNIN_COPY = 'Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, Get Help, and the resume builder stay available.';
 /* Hopewick company-held API (Azure Functions).
    Redeem POSTs to {HOPEWICK_INVITE_API}/redeem; response baseUrl is used for /chat/completions.
    Production Azure is the default so invite flow works on hopewick.com.au without a personal OpenAI key.
@@ -3238,8 +3247,9 @@ function loadProfileData(pid) {
     save(pk(pid, 'settings'), ps);
   }
   SHARED_KEYS.forEach(k => delete ps[k]);
-  if (!ps.name || LEGACY_DEFAULT_NAMES.includes(ps.name)) delete ps.name;
-  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, shared);
+  if (!ps.name || !String(ps.name).trim() || LEGACY_DEFAULT_NAMES.includes(ps.name)) delete ps.name;
+  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, providerFrom(shared));
+  ensureCompanionName();
   if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_PROFILE_SETTINGS.traits];
   convos = load(pk(pid, 'convos'), []);
   memories = load(pk(pid, 'memories'), []);
@@ -3267,7 +3277,7 @@ function saveSettings() {
   const ps = {};
   for (const [k, v] of Object.entries(settings)) if (!SHARED_KEYS.includes(k)) ps[k] = v;
   if (ps.name === BRAND.companion) delete ps.name; // keep following the default companion name
-  for (const k of SHARED_KEYS) shared[k] = settings[k];
+  shared = Object.assign({}, DEFAULT_SHARED, providerFrom(settings));
   save(pk(profile.id, 'settings'), ps);
   save(K.shared, shared);
 }
@@ -3304,6 +3314,32 @@ function avatarColour(p) {
   return AVATAR_COLOURS[n % AVATAR_COLOURS.length];
 }
 function userName() { return profile ? profile.name : ''; }
+function companionName() {
+  const n = String(settings && settings.name || '').trim();
+  return n || (typeof BRAND !== 'undefined' && BRAND.companion) || 'Hope';
+}
+function ensureCompanionName() {
+  settings.name = companionName();
+  return settings.name;
+}
+/** Provider fields only. A stray empty name in old shared storage must not blank Hope. */
+function providerFrom(src) {
+  const out = {};
+  const base = src || {};
+  for (const k of SHARED_KEYS) {
+    if (base[k] !== undefined && base[k] !== null) out[k] = base[k];
+  }
+  return out;
+}
+function usingOwnProvider() {
+  return !!(settings.useOwnKey && String(settings.apiKey || '').trim());
+}
+function hostedChatAvailable() {
+  return !isDemo && !usingOwnProvider() && billingState.reachable && billingState.signedIn;
+}
+function canCallModel() {
+  return isDemo || usingOwnProvider() || hostedChatAvailable();
+}
 const isCounsellor = () => settings.mode === 'counsellor';
 
 /* ---------------------------------------------------------------------------
@@ -4304,17 +4340,18 @@ function renderSober() {
 }
 function renderAll() {
   const counsellor = isCounsellor();
+  const hopeName = ensureCompanionName();
   el.brandName.textContent = BRAND.name;
-  $$('[data-companion]').forEach(e => { e.textContent = settings.name; });
+  $$('[data-companion]').forEach(e => { e.textContent = hopeName; });
   el.brandSub.textContent = counsellor ? 'AI recovery companion' : 'your AI recovery companion';
-  el.headerName.textContent = settings.name;
+  el.headerName.textContent = hopeName;
   el.modeBadge.textContent = counsellor ? 'AOD support' : 'Friend';
-  el.input.placeholder = counsellor ? `Tell ${settings.name} what's on your mind…` : `Message ${settings.name}…`;
-  el.inputLabel.textContent = `Message ${settings.name}`;
-  el.mic.setAttribute('aria-label', `Speak to ${settings.name}`);
-  $('#memTitle').textContent = `🌿 What ${settings.name} remembers about ${userName()}`;
+  el.input.placeholder = counsellor ? `Tell ${hopeName} what's on your mind…` : `Message ${hopeName}…`;
+  el.inputLabel.textContent = `Message ${hopeName}`;
+  el.mic.setAttribute('aria-label', `Speak to ${hopeName}`);
+  $('#memTitle').textContent = `🌿 What ${hopeName} remembers about ${userName()}`;
   el.memCount.textContent = memories.length;
-  el.keyBanner.hidden = !!settings.apiKey || isDemo;
+  syncKeyBanner();
   $('#demoBanner').hidden = !isDemo;
   $('#demoBadge').hidden = !isDemo;
   el.switchAvatar.textContent = (userName()[0] || '?');
@@ -4461,6 +4498,11 @@ async function apiErrorFrom(res) {
  */
 async function chatCompletion(messages, opts = {}) {
   if (isDemo) throw new ApiError('Demo mode never calls the API.', 0);
+  if (opts.direct || usingOwnProvider()) return providerChatCompletion(messages, opts);
+  return hostedChatCompletion(messages, opts);
+}
+
+async function providerChatCompletion(messages, opts = {}) {
   const { onToken, signal } = opts;
   const wantStream = !!opts.stream;
   const body = { model: settings.model || DEFAULT_SHARED.model, messages, temperature: opts.temperature ?? 0.7 };
@@ -4477,16 +4519,67 @@ async function chatCompletion(messages, opts = {}) {
     });
   } catch (e) {
     if (e.name === 'AbortError') throw e;
-    if (wantStream) return chatCompletion(messages, { ...opts, stream: false });
+    if (wantStream) return providerChatCompletion(messages, { ...opts, stream: false });
     throw new ApiError('Could not reach the provider. Check your connection and base URL (the provider must allow requests from a browser).', 0);
   }
   if (!res.ok) {
     const err = await apiErrorFrom(res);
     if (wantStream && (res.status === 400 || res.status === 422) && /stream/i.test(err.message)) {
-      return chatCompletion(messages, { ...opts, stream: false });
+      return providerChatCompletion(messages, { ...opts, stream: false });
     }
     throw err;
   }
+  return readCompletionResponse(res, { onToken, wantStream });
+}
+
+async function hostedChatCompletion(messages, opts = {}) {
+  const { onToken, signal } = opts;
+  const wantStream = !!opts.stream;
+  const body = {
+    messages,
+    temperature: opts.temperature ?? 0.7,
+    purpose: opts.purpose === 'memory' ? 'memory' : 'chat',
+  };
+  if (opts.max_tokens) body.max_tokens = opts.max_tokens;
+  if (wantStream) body.stream = true;
+  let res;
+  try {
+    res = await fetch('/api/hope/chat', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body),
+      signal,
+    });
+  } catch (e) {
+    if (e.name === 'AbortError') throw e;
+    if (wantStream) return hostedChatCompletion(messages, { ...opts, stream: false });
+    throw new ApiError('Could not reach Hope. Check your connection and try again.', 0);
+  }
+  if (!res.ok) {
+    let detail = '';
+    let code = '';
+    try {
+      const j = await res.json();
+      detail = (j.error && (j.error.message || j.error)) || j.message || '';
+      code = (j.error && j.error.code) || j.code || '';
+    } catch (_) { detail = ''; }
+    if (res.status === 401 || code === 'auth') {
+      promptNeedAi(HOSTED_SIGNIN_COPY);
+    }
+    const message = typeof detail === 'string' && detail
+      ? detail
+      : (res.status === 429
+        ? 'You’ve reached today’s message limit with Hope.'
+        : 'Hope could not reply just now. Please try again.');
+    throw new ApiError(message, res.status);
+  }
+  const text = await readCompletionResponse(res, { onToken, wantStream });
+  refreshHopeUsage().catch(() => {});
+  return text;
+}
+
+async function readCompletionResponse(res, { onToken, wantStream }) {
   const ctype = res.headers.get('content-type') || '';
   if (!wantStream || !res.body || !/event-stream/i.test(ctype)) {
     const data = await res.json();
@@ -4545,8 +4638,10 @@ async function sendMessage(textOverride) {
   if (isDemo) { demoHandle(text); return; }
   const crisis = CRISIS_RE.test(text);
   const crisisKind = crisis ? classifyCrisis(text) : null;
-  if (!settings.apiKey && !crisis) {
-    promptNeedAi('Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.');
+  if (!canCallModel() && !crisis) {
+    promptNeedAi(billingState.signedIn
+      ? 'Hope could not start a reply from this account yet. Today’s Readings, crisis support, Get Help, and the resume builder stay available.'
+      : HOSTED_SIGNIN_COPY);
     return;
   }
 
@@ -4565,7 +4660,7 @@ async function sendMessage(textOverride) {
   renderMessages();
   renderHistory();
 
-  if (!settings.apiKey) { return; } // crisis card already shown; don't wall with key/demo prompts
+  if (!canCallModel()) { return; } // crisis card already shown; help stays available without a model reply
   await generateReply(c);
 }
 
@@ -4654,7 +4749,7 @@ async function extractMemories(pid, userText, assistantText, crisis) {
     { role: 'user', content: `Already known:\n${known}\n\nLatest exchange:\nUser: ${userText}\nAssistant: ${assistantText.slice(0, 1500)}` },
   ];
   try {
-    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300 });
+    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300, purpose: 'memory' });
     const match = raw.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
     if (!match) return;
     const parsed = JSON.parse(match[0]);
@@ -4990,8 +5085,10 @@ async function refineJournalEntry(entry, showInCompose) {
   let parsed;
   if (isDemo) {
     parsed = DEMO_REFINE;
-  } else if (!settings.apiKey) {
-    promptNeedAi('Deepen reflection needs live chat. Use an invite code, or your own key under Advanced.');
+  } else if (!canCallModel()) {
+    promptNeedAi(billingState.signedIn
+      ? 'Deepen reflection needs a reply from Hope. Try again once today’s messages are available.'
+      : 'Deepen reflection needs Hope. ' + HOSTED_SIGNIN_COPY);
     return;
   } else {
     try {
@@ -7153,7 +7250,7 @@ function syncFaithControls() {
   const none = $('#setFaith').value === 'none';
   $$('input[name="faithLevel"]').forEach(r => { r.disabled = none; });
 }
-const SETTINGS_TITLES = { prefs: 'Preferences', more: 'More settings', advanced: 'Advanced' };
+const SETTINGS_TITLES = { prefs: 'Preferences', more: 'More settings', advanced: 'Developer' };
 const FOCUS_TAB = {
   setKey: 'advanced', setBaseUrl: 'advanced', setModel: 'advanced', setStream: 'advanced',
   setMode: 'prefs', setFaith: 'prefs', setProfileName: 'prefs', setPin: 'prefs',
@@ -7181,11 +7278,33 @@ function expandOwnKey(open) {
   const d = $('#ownKeyDetails');
   if (d) d.open = !!open;
 }
+function syncKeyBanner() {
+  const banner = el.keyBanner;
+  if (!banner) return;
+  const text = $('#keyBannerText');
+  const signedIn = billingState.reachable && billingState.signedIn;
+  const hostedReady = hostedChatAvailable() && billingState.hopeHosted !== false;
+  if (isDemo || usingOwnProvider() || hostedReady) {
+    banner.hidden = true;
+    return;
+  }
+  banner.hidden = false;
+  if (!text) return;
+  if (!billingState.reachable) {
+    text.textContent = 'Chat with Hope needs the Hopewick site, where sign-in runs. Today’s Readings, crisis support, Get Help, and the resume builder stay available here.';
+  } else if (!signedIn) {
+    text.textContent = HOSTED_SIGNIN_COPY;
+  } else if (billingState.hopeHosted === false) {
+    text.textContent = 'Hosted Hope is not connected on this server yet. Today’s Readings, crisis support, Get Help, and the resume builder stay available.';
+  } else {
+    text.textContent = HOSTED_SIGNIN_COPY;
+  }
+}
 function promptNeedAi(reason) {
   if (isDemo) return;
   const lede = $('#needAiLede');
   if (lede) {
-    lede.textContent = reason || 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.';
+    lede.textContent = reason || HOSTED_SIGNIN_COPY;
   }
   if (el.needAiDlg && !el.needAiDlg.open) el.needAiDlg.showModal();
 }
@@ -7212,6 +7331,8 @@ function openSettings(focusId, tabHint) {
   $('#setBaseUrl').value = settings.baseUrl;
   $('#setModel').value = settings.model;
   $('#setKey').value = settings.apiKey;
+  const ownToggle = $('#setUseOwnKey');
+  if (ownToggle) ownToggle.checked = !!settings.useOwnKey;
   setKeyVisible(false);
   $('#setStream').checked = settings.stream;
   $('#setName').value = settings.name;
@@ -7232,11 +7353,10 @@ function openSettings(focusId, tabHint) {
   let tab = tabHint || (focusId && FOCUS_TAB[focusId]) || 'prefs';
   if (tab === 'connection') tab = 'advanced'; // legacy alias
   setSettingsTab(tab);
-  if (tab === 'advanced') expandOwnKey(!!(focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel' || tabHint === 'advanced' || tabHint === 'connection'));
-  else expandOwnKey(false);
+  const focusKey = focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel';
+  expandOwnKey(focusKey);
   if (!el.settingsDlg.open) el.settingsDlg.showModal();
-  if (focusId) setTimeout(() => { const n = $('#' + focusId); if (n) { expandOwnKey(true); n.focus(); } }, 60);
-  else if (tab === 'advanced') setTimeout(() => { expandOwnKey(true); const k = $('#setKey'); if (k) k.focus(); }, 60);
+  if (focusKey) setTimeout(() => { const n = $('#' + focusId); if (n) { expandOwnKey(true); n.focus(); } }, 60);
 }
 function readSettingsForm() {
   const lvl = $$('input[name="faithLevel"]').find(r => r.checked);
@@ -7252,6 +7372,7 @@ function readSettingsForm() {
     baseUrl: $('#setBaseUrl').value.trim() || DEFAULT_SHARED.baseUrl,
     model: $('#setModel').value.trim() || DEFAULT_SHARED.model,
     apiKey: $('#setKey').value.trim(),
+    useOwnKey: !!($('#setUseOwnKey') && $('#setUseOwnKey').checked),
     stream: $('#setStream').checked,
     name: $('#setName').value.trim() || BRAND.companion,
     traits: [...draftTraits],
@@ -7314,7 +7435,7 @@ $('#testConnBtn').addEventListener('click', async () => {
   out.className = 'test-result'; out.textContent = 'Testing…';
   try {
     if (!settings.apiKey) throw new Error('Enter an API key first.');
-    const r = await chatCompletion([{ role: 'user', content: 'Reply with just the word: ok' }], { stream: false, temperature: 0, max_tokens: 5 });
+    const r = await chatCompletion([{ role: 'user', content: 'Reply with just the word: ok' }], { stream: false, temperature: 0, max_tokens: 5, direct: true });
     out.className = 'test-result ok'; out.textContent = `✓ Connected to ${settings.model}. Reply: “${r.trim().slice(0, 40)}”`;
   } catch (e) {
     out.className = 'test-result bad'; out.textContent = '✗ ' + String(e.message || 'Failed').split('\n')[0];
@@ -7721,12 +7842,12 @@ function startListening() {
 function stopListening() { if (recog && listening) { try { recog.stop(); } catch (e) { /* ignore */ } } }
 el.mic.addEventListener('click', () => {
   if (!SR) { toast('Voice input isn’t supported in this browser (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (!settings.apiKey && !isDemo) { promptNeedAi(`Voice chat with ${settings.name || BRAND.companion} needs live chat. Use an invite code, or your own key under Advanced.`); return; }
+  if (!canCallModel() && !isDemo) { promptNeedAi(`Voice chat with ${companionName()} needs you to be signed in. ` + HOSTED_SIGNIN_COPY); return; }
   if (listening) stopListening(); else startListening();
 });
 function setConvoMode(on) {
   if (on && !SR) { toast('Hands-free mode needs speech recognition (try Chrome, Edge or Safari).', true, 4500); return; }
-  if (on && !settings.apiKey && !isDemo) { promptNeedAi(`Hands-free mode needs live chat. Use an invite code, or your own key under Advanced.`); return; }
+  if (on && !canCallModel() && !isDemo) { promptNeedAi(`Hands-free mode needs you to be signed in. ` + HOSTED_SIGNIN_COPY); return; }
   convoMode = on;
   el.convoBtn.setAttribute('aria-pressed', String(on));
   el.convoBar.hidden = !on;
@@ -7764,7 +7885,7 @@ el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpe
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
-  else if (o === 'connection' || o === 'advanced') openSettings('setKey', 'advanced');
+  else if (o === 'connection' || o === 'advanced') openSettings(null, 'advanced');
   else if (o === 'prefs') showLaunchPrefs();
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
@@ -8090,28 +8211,68 @@ function exitDemo() {
   }
 }
 $('#exitDemoBtn').addEventListener('click', showPicker);
-$('#needAiAdvancedBtn').addEventListener('click', () => { closeNeedAi(); openSettings('setKey', 'advanced'); });
 $('#needAiCloseBtn').addEventListener('click', closeNeedAi);
+const needAiSignInBtn = $('#needAiSignInBtn');
+if (needAiSignInBtn) needAiSignInBtn.addEventListener('click', () => { closeNeedAi(); openAccountDlg(); });
+const keyBannerSignIn = $('#keyBannerSignIn');
+if (keyBannerSignIn) keyBannerSignIn.addEventListener('click', () => openAccountDlg());
 const needAiInviteBtn = $('#needAiInviteBtn');
 if (needAiInviteBtn) needAiInviteBtn.addEventListener('click', () => { closeNeedAi(); openInviteDlg(); });
 const keyBannerInvite = $('#keyBannerInvite');
 if (keyBannerInvite) keyBannerInvite.addEventListener('click', () => openInviteDlg());
-const keyBannerPlus = $('#keyBannerPlus');
-if (keyBannerPlus) keyBannerPlus.addEventListener('click', () => openAccountDlg());
 const advInvite = $('#advInviteBtn');
 if (advInvite) advInvite.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openInviteDlg(); });
-const advPlus = $('#advPlusBtn');
-if (advPlus) advPlus.addEventListener('click', () => { if (el.settingsDlg.open) el.settingsDlg.close(); openAccountDlg(); });
 
 /* ---------------------------------------------------------------------------
    Invite code redeem → eden.shared.v1 (baseUrl, apiKey=token, model)
    Prefer invite session when token present; Advanced own-key path unchanged.
+   SHOW_INVITE_ENTRY hides the field and “need a code” prompts for public users.
+   Flip it to true to show entry again — redeemInviteCode and POST /redeem stay.
    --------------------------------------------------------------------------- */
+const SHOW_INVITE_ENTRY = false;
+const INVITE_COPY = {
+  keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.',
+  needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.',
+  needAiHosted: 'With a hosted invite, messages go via Bridge&Bite then the model provider — not stored as an account chat history in this app.',
+  advanced: 'Live chat uses an invite code, or your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.',
+  advancedHosted: 'Hosted / invite mode: messages go via Bridge&Bite then the model provider. Own-key Advanced still talks only to the URL you set.',
+};
+function liveChatNeed(prefix) {
+  if (SHOW_INVITE_ENTRY) {
+    return prefix
+      ? `${prefix} Use an invite code, or your own key under Advanced.`
+      : INVITE_COPY.needAi;
+  }
+  return prefix ? `${prefix} ${HOSTED_SIGNIN_COPY}` : HOSTED_SIGNIN_COPY;
+}
+function syncInviteEntryUi() {
+  document.querySelectorAll('[data-invite-entry]').forEach((node) => {
+    node.hidden = !SHOW_INVITE_ENTRY;
+  });
+  const own = document.getElementById('keyBannerOwnKey');
+  if (own) own.hidden = !!SHOW_INVITE_ENTRY;
+  const advBtn = document.getElementById('needAiAdvancedBtn');
+  if (advBtn) advBtn.classList.toggle('btn-primary', !SHOW_INVITE_ENTRY);
+  if (!SHOW_INVITE_ENTRY) return;
+  const bannerP = document.getElementById('keyBannerText');
+  if (bannerP) bannerP.textContent = INVITE_COPY.keyBanner;
+  const lede = document.getElementById('needAiLede');
+  if (lede) lede.textContent = INVITE_COPY.needAi;
+  const hosted = document.getElementById('needAiHostedNote');
+  if (hosted) hosted.textContent = INVITE_COPY.needAiHosted;
+  const adv = document.getElementById('advInviteLede');
+  if (adv) adv.textContent = INVITE_COPY.advanced;
+  const advHosted = document.getElementById('advHostedNote');
+  if (advHosted) advHosted.textContent = INVITE_COPY.advancedHosted;
+}
+syncInviteEntryUi();
 function openInviteDlg() {
+  if (!SHOW_INVITE_ENTRY) return;
   if (isDemo) { toast('Exit the demo first to redeem an invite.', false, 3500); return; }
   const st = $('#inviteStatus');
   if (st) { st.textContent = ''; st.className = 'invite-status'; }
   const inp = $('#inviteCodeInput');
+  if (el.inviteDlg) el.inviteDlg.hidden = false;
   if (el.inviteDlg && !el.inviteDlg.open) el.inviteDlg.showModal();
   if (inp) setTimeout(() => inp.focus(), 40);
 }
@@ -8135,6 +8296,7 @@ async function redeemInviteCode(code) {
   settings.baseUrl = String(data.baseUrl).replace(/\/+$/, '');
   settings.apiKey = String(data.token);
   settings.model = String(data.model || settings.model || DEFAULT_SHARED.model);
+  settings.useOwnKey = true;
   for (const k of SHARED_KEYS) shared[k] = settings[k];
   save(K.shared, shared);
   if (profile && !isDemo) saveSettings();
@@ -8736,6 +8898,8 @@ const billingState = {
   checkoutReady: false,
   devMagic: false,
   complimentary: false,
+  hopeHosted: false,
+  hopeUsage: null,
 };
 const FREE_HISTORY_KEEP = 1;
 
@@ -8801,30 +8965,46 @@ async function refreshBilling() {
     billingState.checkoutReady = !!config.checkoutReady;
     billingState.devMagic = !!config.devMagic;
     billingState.complimentary = !!user.complimentary;
+    billingState.hopeHosted = !!config.hopeHosted;
   } catch (_) {
     billingState.reachable = false;
     billingState.signedIn = false;
     billingState.plus = false;
     billingState.complimentary = false;
+    billingState.hopeHosted = false;
+    billingState.hopeUsage = null;
   }
   billingState.loaded = true;
   const label = $('#sideAccountLabel');
   if (label) {
     label.textContent = subscriptionPlus() ? 'Plus · account' : 'Hopewick Plus';
   }
-  paintAccount();
   if (!libraryPick || subscriptionPlus()) {
     /* keep a library day only while Plus is active */
   } else {
     libraryPick = null;
   }
   if (!subscriptionPlus()) libraryPick = null;
+  await refreshHopeUsage();
+  paintAccount();
   try {
     if (profile || isDemo) {
       renderHistory();
       if (appTab === 'home') renderHome();
+      syncKeyBanner();
     }
   } catch (_) { /* home may not be ready on the very first tick */ }
+}
+async function refreshHopeUsage() {
+  if (!billingState.signedIn || !billingState.reachable) {
+    billingState.hopeUsage = null;
+    return;
+  }
+  try {
+    billingState.hopeUsage = await billingFetch('/api/hope/usage');
+  } catch (_) {
+    billingState.hopeUsage = null;
+  }
 }
 function appendPlusOffer(body) {
   const unlock = document.createElement('p');
@@ -8926,6 +9106,14 @@ function paintAccount() {
   status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month opens the year’s readings and your chat history on this device.');
   if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. Any day of the readings is open, and your chat history stays with you on this device.';
   body.appendChild(status);
+  const allowance = document.createElement('p');
+  allowance.className = 'hosted-privacy';
+  const snap = billingState.hopeUsage;
+  const used = snap && typeof snap.used === 'number' ? `${snap.used} of ${snap.limit} messages used today. ` : '';
+  allowance.textContent = used + (subscriptionPlus()
+    ? 'Hope on this account is 200 messages a day.'
+    : 'Hope on this account is 20 messages a day. Hopewick Plus is 200.');
+  body.appendChild(allowance);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
   if (!billingState.complimentary && (subscriptionPlus() || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled')) {
@@ -9065,7 +9253,8 @@ renderHelpList();
   // Use the last profile's theme behind the picker without loading any of their data.
   const lastId = profilesState && profilesState.lastId;
   const last = lastId ? (load(pk(lastId, 'settings'), {}) || {}) : {};
-  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, shared);
+  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, providerFrom(shared));
+  ensureCompanionName();
   applyTheme();
 })();
 if (new URLSearchParams(location.search).get('demo') === '1') {

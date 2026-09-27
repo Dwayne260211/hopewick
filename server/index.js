@@ -5,10 +5,17 @@
  * files and a small /api for email magic-link sign-in, Stripe Checkout,
  * the Customer Portal, and subscription webhooks.
  *
- * Invite-code live AI still uses the existing Azure Functions API
- * (HOPEWICK_INVITE_API in app/index.html). This server does not replace it.
+ * Hosted Hope chat is POST /api/hope/chat. The OpenAI key stays in
+ * OPENAI_API_KEY on this server (the same key can already exist on the
+ * Azure invite proxy). The browser never receives it.
  *
- * No conversations are stored here — only email and subscription status.
+ * Daily caps: Free 20 messages, Hopewick Plus (including complimentary
+ * founder emails) 200. Counts use the Australia/Brisbane calendar day.
+ * Conversations are not stored — only email, subscription status, and
+ * that day's message count.
+ *
+ * Invite-code live AI can still use the Azure Functions API from
+ * Developer settings in the companion. It is not the default path.
  */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -16,8 +23,24 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
-import { createStore, hashToken, publicUser, isPlusStatus } from './store.js';
+import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail } from './store.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
+import {
+  hopeConfigured,
+  freeDailyCap,
+  plusDailyCap,
+  usageSnapshot,
+  lastUserText,
+  isCrisisText,
+  CRISIS_FALLBACK,
+  sanitizeMessages,
+  completionBody,
+  openAiEndpoint,
+  admitHopeCall,
+  commitSpend,
+  rollbackSpend,
+  capMessage,
+} from './hope-chat.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(__dirname, '..');
@@ -349,7 +372,25 @@ async function handleApi(store, req, res, url) {
       devMagic: devMode(),
       currency: 'aud',
       amountLabel: 'AU$20/month',
+      hopeHosted: hopeConfigured(),
+      freeDailyMessages: freeDailyCap(),
+      plusDailyMessages: plusDailyCap(),
     });
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/hope/usage') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in to chat with Hope.', code: 'auth' });
+      return;
+    }
+    json(res, 200, usageSnapshot(user));
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/hope/chat') {
+    await handleHopeChat(store, req, res);
     return;
   }
 
@@ -440,6 +481,10 @@ async function handleApi(store, req, res, url) {
     }
     if (!stripeConfigured()) {
       json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID.' });
+      return;
+    }
+    if (isFounderPlusEmail(user.email)) {
+      json(res, 409, { error: 'Hopewick Plus is already included on this account. No payment is needed.' });
       return;
     }
     if (isPlusStatus(user.subscriptionStatus)) {
@@ -540,6 +585,156 @@ async function handleApi(store, req, res, url) {
   }
 
   json(res, 404, { error: 'Not found.' });
+}
+
+function completionJson(text) {
+  return {
+    id: 'hopewick-hosted',
+    object: 'chat.completion',
+    choices: [{ index: 0, message: { role: 'assistant', content: text }, finish_reason: 'stop' }],
+  };
+}
+
+function writeSse(res, text) {
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'X-Accel-Buffering': 'no',
+  });
+  const payload = JSON.stringify({ choices: [{ delta: { content: text } }] });
+  res.end(`data: ${payload}\n\ndata: [DONE]\n\n`);
+}
+
+async function pipeUpstream(res, upstream) {
+  res.writeHead(upstream.status, {
+    'Content-Type': upstream.headers.get('content-type') || 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'X-Accel-Buffering': 'no',
+  });
+  if (!upstream.body) {
+    res.end();
+    return;
+  }
+  const reader = upstream.body.getReader();
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      res.write(value);
+    }
+  } finally {
+    res.end();
+  }
+}
+
+async function handleHopeChat(store, req, res) {
+  const user = currentUser(req, store);
+  if (!user) {
+    json(res, 401, { error: { message: 'Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200.', code: 'auth' } });
+    return;
+  }
+
+  const raw = await readBody(req, 200_000);
+  let body = {};
+  try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+    json(res, 400, { error: { message: 'Send the conversation as JSON.' } });
+    return;
+  }
+
+  let messages;
+  try { messages = sanitizeMessages(body.messages); } catch (err) {
+    json(res, err.status || 400, { error: { message: err.message } });
+    return;
+  }
+
+  const purpose = body.purpose === 'memory' ? 'memory' : 'chat';
+  const stream = body.stream === true && purpose === 'chat';
+  const crisis = purpose === 'chat' && isCrisisText(lastUserText(messages));
+  if (crisis && !hopeConfigured()) {
+    if (stream) writeSse(res, CRISIS_FALLBACK);
+    else json(res, 200, completionJson(CRISIS_FALLBACK));
+    return;
+  }
+  if (!hopeConfigured()) {
+    json(res, 503, { error: { message: 'Hosted Hope is not connected on this server yet. Today’s Readings, crisis support, Get help, and the resume builder still work.', code: 'unconfigured' } });
+    return;
+  }
+  const admission = admitHopeCall(user, { purpose, crisis });
+  if (!admission.ok) {
+    const message = admission.code === 'daily_cap'
+      ? capMessage(user, admission.limit)
+      : 'Hope can only note memories for messages you have already sent today.';
+    json(res, admission.status, {
+      error: { message, code: admission.code },
+      limit: admission.limit,
+      used: admission.usage.count,
+    });
+    return;
+  }
+
+  if (crisis && admission.usage.count >= admission.limit) {
+    if (stream) writeSse(res, CRISIS_FALLBACK);
+    else json(res, 200, completionJson(CRISIS_FALLBACK));
+    return;
+  }
+
+  commitSpend(user, admission);
+  store.save(user);
+
+  let upstream;
+  try {
+    upstream = await fetch(openAiEndpoint(), {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(completionBody(messages, {
+        temperature: body.temperature,
+        max_tokens: body.max_tokens,
+        stream,
+      })),
+      signal: AbortSignal.timeout(90_000),
+    });
+  } catch (err) {
+    rollbackSpend(user, admission);
+    store.save(user);
+    console.error('Hosted Hope request failed:', err && err.name ? err.name : 'error');
+    json(res, 502, { error: { message: 'Hope could not reach the model just now. Please try again in a moment.', code: 'upstream' } });
+    return;
+  }
+
+  if (!upstream.ok) {
+    rollbackSpend(user, admission);
+    store.save(user);
+    upstream.body?.cancel?.().catch(() => {});
+    console.error('Hosted Hope upstream status:', upstream.status);
+    if (crisis) {
+      if (stream) writeSse(res, CRISIS_FALLBACK);
+      else json(res, 200, completionJson(CRISIS_FALLBACK));
+      return;
+    }
+    json(res, 502, { error: { message: 'Hope could not complete that reply. Please try again in a moment.', code: 'upstream' } });
+    return;
+  }
+
+  try {
+    if (stream) {
+      await pipeUpstream(res, upstream);
+      return;
+    }
+    const data = await upstream.json();
+    json(res, 200, data);
+  } catch (err) {
+    console.error('Hosted Hope response failed:', err && err.name ? err.name : 'error');
+    if (!res.headersSent) {
+      rollbackSpend(user, admission);
+      store.save(user);
+      json(res, 502, { error: { message: 'Hope could not complete that reply. Please try again in a moment.', code: 'upstream' } });
+    } else {
+      res.end();
+    }
+  }
 }
 
 export function createApp({ store, root = REPO_ROOT } = {}) {
