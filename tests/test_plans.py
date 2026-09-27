@@ -62,6 +62,16 @@ def test_companion_gates_premium_not_crisis():
     assert "Add Hopewick to your home screen as a web app today." in app
     assert "The Play Store app isn’t ready yet." in app
     assert "Older chats are part of Hopewick Plus" in app
+    assert "Start Hopewick Plus" in app
+    assert "Start talking to Hope" in app
+    assert "What brings you here" in app
+    assert "Keep your conversation history on this device" in app
+    assert "Cloud sync is not enabled" in app
+    assert "doesn’t hold a dashboard of what you told Hope" in app
+    assert "Recovery myself" in app
+    assert "Only when asked" in app
+    enter = app.split("function enterProfile", 1)[1].split("function ", 1)[0]
+    assert "showLaunchPrefs()" not in enter
     assert "dwaynesimons1990@gmail.com" not in app
     assert "admin@bridge-bite-co.com" not in app
     # Crisis card and Get help remain in the companion.

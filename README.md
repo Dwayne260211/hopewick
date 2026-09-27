@@ -51,7 +51,7 @@ The landing page has a "Pilot with us" section for services. Organisation and cl
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. Preferences (faith, role, theme, daily check-in) open when you launch the demo or enter a profile, and again from **More → Preferences**. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
+The **Get help now** button is always at the top of the screen. First-run onboarding is Welcome, what brings you here, a faith preference, then **Start talking to Hope**. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
 
 | Service | Number |
 |---|---|
@@ -91,7 +91,7 @@ Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` 
 
 1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
 2. Read the short one-time disclaimer.
-3. **Sign in** (email magic link) and chat with Hope. Free is 20 messages a day. Hopewick Plus, including complimentary founder access, is 200 messages a day. No personal API key. Settings → Developer keeps an optional own-key or pilot-invite path (`eden.*` localStorage keys unchanged) for the people building Hopewick.
+3. **Sign in** (email magic link) and chat with Hope. Free is 20 messages a day. Hopewick Plus, including complimentary founder access, is 200 messages a day. No personal API key. Settings → Developer (own API key, model endpoint, own provider, and invite redeem when that entry is turned on) is visible only when the signed-in account email is on `FOUNDER_PLUS_EMAILS`. A profile name does not unlock it. Guest, free, other Plus accounts, and `admin@bridge-bite-co.com` do not see it.
 
 ## Features
 

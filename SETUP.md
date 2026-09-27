@@ -43,12 +43,14 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
 | `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. |
-| `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. Complimentary Plus is not sent to Stripe Checkout. |
+| `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. Complimentary Plus is not sent to Stripe Checkout. The same list is the only one that can see Settings → Developer in the companion. |
 | `OPENAI_API_KEY` | Yes, for hosted Hope | Server-only model key. Same secret already configured on the Azure app `hopewick-api`. Never commit it and never send it to the browser. |
 | `OPENAI_MODEL` | No | Default `gpt-4o-mini`. |
 | `OPENAI_BASE_URL` | No | Default `https://api.openai.com/v1`. Must be `https`. |
 
 Do not commit real keys. Placeholders in `.env.example` are not live credentials.
+
+Settings → Developer (API key, model endpoint, own provider, and invite redeem when that control is enabled) stays hidden unless the signed-in Hopewick account email is on `FOUNDER_PLUS_EMAILS`. The companion reads the `founder` flag from `GET /api/auth/me`, which uses the same check as complimentary Plus. Guest, free, and other Plus accounts do not see it. `admin@bridge-bite-co.com` does not see it. The name typed on a local profile does not unlock it. Crisis support and domestic and family violence resources stay free.
 
 In the Stripe Dashboard (test mode):
 

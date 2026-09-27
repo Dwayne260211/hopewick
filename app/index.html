@@ -128,6 +128,7 @@ svg { flex: none; }
 .brand-name { font-weight: 700; font-size: 1.2rem; letter-spacing: .02em; }
 .brand-sub { font-size: .75rem; color: var(--muted); }
 
+.btn[hidden] { display: none !important; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   border: 1px solid var(--border); background: var(--surface);
@@ -809,6 +810,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   border-bottom: 2px solid transparent;
 }
 .settings-tabs [role="tab"][aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent-soft); }
+.settings-tabs [role="tab"][hidden] { display: none !important; }
 .settings-tabs [role="tab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .settings-panel[hidden] { display: none !important; }
 .conn-hint { margin: 10px 0 0; font-size: .85rem; color: var(--muted); text-align: center; }
@@ -850,7 +852,23 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .invite-privacy, .hosted-privacy {
   font-size: .76rem; color: var(--muted); margin: 10px 0 0; line-height: 1.4;
 }
-.account-dlg { width: min(460px, calc(100vw - 24px)); }
+.account-dlg { width: min(520px, calc(100vw - 24px)); }
+.plus-offer { text-align: left; }
+.plus-price { margin: 0 0 4px; font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
+.plus-price span { font-size: .95rem; font-weight: 650; color: var(--muted); }
+.plus-kicker { margin: 0 0 10px; color: var(--muted); }
+.plus-checklist { list-style: none; margin: 12px 0 14px; padding: 0; display: grid; gap: 8px; }
+.plus-checklist li { display: flex; gap: 8px; align-items: flex-start; line-height: 1.35; }
+.plus-checklist li::before { content: "✓"; color: var(--accent-strong); font-weight: 800; flex: none; }
+.crisis-free-note { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--border); font-size: .9rem; line-height: 1.45; }
+.privacy-card { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface-2); text-align: left; }
+.privacy-card h3 { margin: 0 0 6px; font-size: .98rem; }
+.privacy-card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+.history-device { margin: 0 10px 8px; font-size: .75rem; color: var(--muted); line-height: 1.35; }
+.onboard-choices { text-align: left; display: grid; gap: 8px; margin-top: 4px; }
+.onboard-choices label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); cursor: pointer; color: var(--text); }
+.onboard-choices label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.onboard-choices input { margin-top: 3px; }
 .account-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
 .message-caps { margin: 0 0 14px; }
 .message-caps-title { margin: 0 0 8px; font-weight: 800; font-size: .98rem; }
@@ -1394,7 +1412,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <div class="brand">
       <div class="brand-mark" aria-hidden="true"></div>
       <div>
-        <div class="brand-name" id="brandName" data-brand></div>
+        <div class="brand-name" id="brandName" data-brand>Hopewick</div>
         <div class="brand-sub" id="brandSub">AI recovery companion</div>
       </div>
     </div>
@@ -1407,6 +1425,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <span class="lbl" id="soberLbl">days</span>
     </button>
     <div class="history-label" id="historyLabel">Conversations</div>
+    <p class="history-device" id="historyDeviceNote">Keep your conversation history on this device. Cloud sync is not enabled.</p>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
     <div class="sidebar-foot">
       <div class="side-section-label">Recovery tools</div>
@@ -1482,7 +1501,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
         Preferences
       </button>
-      <button class="btn btn-ghost" type="button" data-open="advanced">
+      <button class="btn btn-ghost" type="button" id="sideDeveloperBtn" data-open="advanced" hidden>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         Developer
       </button>
@@ -1498,7 +1517,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
         <span id="sideAccountLabel">Hopewick Plus</span>
       </button>
-      <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand></span></button>
+      <button class="btn btn-ghost" type="button" id="sideAboutBtn">About <span data-brand>Hopewick</span></button>
       <p class="side-copy"><a href="../">Landing page</a><br><span data-copyright></span></p>
     </div>
   </aside>
@@ -1513,7 +1532,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="who">
         <div class="orb" id="headerOrb" data-state="idle" aria-hidden="true"><span class="shine"></span></div>
         <div class="who-text">
-          <div class="who-name"><span id="headerName" data-companion></span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
+          <div class="who-name"><span id="headerName" data-companion>Hope</span> <span class="demo-badge" id="demoBadge" hidden>DEMO</span> <span class="mode-badge" id="modeBadge">AOD support</span></div>
           <div class="who-status"><span class="dot" aria-hidden="true"></span><span id="statusText" role="status" aria-live="polite">Here to listen</span><span class="mood-pill" id="moodPill" hidden></span></div>
         </div>
       </div>
@@ -1611,7 +1630,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="info-inner">
         <div class="home-hero">
           <h1>News &amp; resources</h1>
-          <p>Drug alerts, naloxone and trusted Australian sources. <span data-brand></span> does not run these services — open the official page so details stay current.</p>
+          <p>Drug alerts, naloxone and trusted Australian sources. <span data-brand>Hopewick</span> does not run these services — open the official page so details stay current.</p>
         </div>
 
         <h2 id="infoNewsTitle">Drug alerts &amp; trusted sources</h2>
@@ -1664,7 +1683,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="dv-inner">
         <div class="home-hero">
           <h1 id="dvTitle">Domestic &amp; family violence</h1>
-          <p>If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand></span> does not run shelters or give legal advice.</p>
+          <p>If you or someone else is in immediate danger, call <a href="tel:000"><strong>000</strong></a> now. These are free Australian services. <span data-brand>Hopewick</span> does not run shelters or give legal advice.</p>
         </div>
         <div class="info-quick-row">
           <a class="btn btn-primary btn-sm" href="tel:000">Call 000</a>
@@ -1704,7 +1723,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div class="chips" id="infoRegionChips" role="group" aria-label="State or territory"></div>
         <div id="infoRegionDetail"></div>
 
-        <p class="help">In immediate danger call <a href="tel:000">000</a>. Crisis support also includes <a href="tel:131114">Lifeline 13 11 14</a>. <span data-companion></span> is an AI recovery companion, not a crisis line.</p>
+        <p class="help">In immediate danger call <a href="tel:000">000</a>. Crisis support also includes <a href="tel:131114">Lifeline 13 11 14</a>. <span data-companion>Hope</span> is an AI recovery companion, not a crisis line.</p>
       </div>
     </section>
 
@@ -1712,7 +1731,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <div class="resume-inner">
         <div class="home-hero">
           <h1 id="resumeTitle" tabindex="-1">Resume builder</h1>
-          <p id="resumeLede">Write a simple resume in your own words. This is free in <span data-brand></span> — it is not part of Plus. Your draft stays on this device.</p>
+          <p id="resumeLede">Write a simple resume in your own words. This is free in <span data-brand>Hopewick</span> — it is not part of Plus. Your draft stays on this device.</p>
         </div>
         <p class="resume-note" id="resumeGapNote">A gap in paid work is ordinary. Volunteering, courses, casual work, and caring for someone all belong here. You do not have to mention recovery unless you want to.</p>
         <div class="resume-steps" id="resumeSteps" role="tablist" aria-label="Resume steps"></div>
@@ -1812,7 +1831,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · <span data-companion></span> is not emergency or medical care · Emergency 000<br><span class="copyright" data-copyright></span></p>
+      <p class="composer-hint" id="composerHint">Enter to send · <span data-companion>Hope</span> is not emergency or medical care · Emergency 000<br><span class="copyright" data-copyright></span></p>
     </div>
 
     <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
@@ -1844,8 +1863,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="pickerDlg" aria-labelledby="pickerTitle">
   <div class="picker-body" id="pickerBody">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
-    <h2 id="pickerTitle">Chat with <span data-companion></span></h2>
-    <p class="picker-guide"><strong><span data-companion></span> — an AI recovery companion</strong> private to you — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
+    <h2 id="pickerTitle">Chat with <span data-companion>Hope</span></h2>
+    <p class="picker-guide"><strong><span data-companion>Hope</span> — an AI recovery companion</strong> private to you — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
     <ul class="profiles" id="profileList" aria-label="Your profiles"></ul>
     <form class="inline-form" id="pinForm" hidden>
       <label for="pinInput" id="pinLabel" class="sr-only">PIN</label>
@@ -1866,7 +1885,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </div>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
-      <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand></span></button>
+      <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand>Hopewick</span></button>
       · <a href="../" id="aboutLink">Landing page</a> · <span data-copyright></span>
     </p>
   </div>
@@ -1876,13 +1895,40 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="onboardingDlg" aria-labelledby="onboardTitle">
   <div class="onboard-body">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
-    <h2 id="onboardTitle">Welcome to <span data-brand></span></h2>
-    <p class="lead">Want a private space to talk through cravings and hard days between sessions?</p>
-    <p><span data-companion></span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
-    <div class="onboard-actions">
-      <button class="btn btn-primary" type="button" id="onboardYesBtn">Yes, continue</button>
-      <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
-      <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand></span></button>
+    <h2 id="onboardTitle">Welcome to <span data-brand>Hopewick</span></h2>
+    <div id="onboardStepWelcome">
+      <p class="lead">A private place to talk through cravings and hard days between sessions.</p>
+      <p><span data-companion>Hope</span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
+      <div class="onboard-actions">
+        <button class="btn btn-primary" type="button" id="onboardYesBtn">Continue</button>
+        <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
+        <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand>Hopewick</span></button>
+      </div>
+    </div>
+    <div id="onboardStepReason" hidden>
+      <p>What brings you here? This stays with your profile on this device.</p>
+      <div class="onboard-choices" role="radiogroup" aria-labelledby="onboardTitle">
+        <label><input type="radio" name="onboardReason" value="myself" checked> Recovery myself</label>
+        <label><input type="radio" name="onboardReason" value="supporting"> Supporting someone</label>
+        <label><input type="radio" name="onboardReason" value="exploring"> Exploring</label>
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-primary" type="button" id="onboardReasonContinue">Continue</button>
+        <button class="btn" type="button" id="onboardReasonBack">Back</button>
+      </div>
+    </div>
+    <div id="onboardStepFaith" hidden>
+      <p>How should <span data-companion>Hope</span> handle faith? Theme, voice, model, PIN, and export stay in Settings.</p>
+      <div class="onboard-choices" role="radiogroup" aria-label="Faith preference">
+        <label><input type="radio" name="onboardFaith" value="none"> None</label>
+        <label><input type="radio" name="onboardFaith" value="ask"> Only when asked</label>
+        <label><input type="radio" name="onboardFaith" value="woven" checked> Gently</label>
+        <label><input type="radio" name="onboardFaith" value="central"> Central</label>
+      </div>
+      <div class="onboard-actions">
+        <button class="btn btn-primary" type="button" id="onboardStartBtn">Start talking to Hope</button>
+        <button class="btn" type="button" id="onboardFaithBack">Back</button>
+      </div>
     </div>
   </div>
 </dialog>
@@ -1890,18 +1936,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ About panel ============================ -->
 <dialog id="aboutDlg" aria-labelledby="aboutTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="aboutTitle">About <span data-brand></span></h2>
+    <h2 id="aboutTitle">About <span data-brand>Hopewick</span></h2>
     <button class="icon-btn" value="close" aria-label="Close about">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body about-body">
-    <p><strong><span data-brand></span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion></span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
+    <p><strong><span data-brand>Hopewick</span></strong> is <strong>AOD recovery support between sessions</strong> from <span data-company>BRIDGE&BITE.CO PTY LTD</span>. You chat with <strong><span data-companion>Hope</span></strong> — an AI recovery companion, not a counsellor, doctor, or person in rehab.</p>
     <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
     <ul class="about-short">
       <li><strong>Who it’s for.</strong> People in recovery, families, and Australian AOD services — for cravings and hard days between appointments.</li>
-      <li><strong>What <span data-companion></span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
-      <li><strong>Not emergency or medical care.</strong> <span data-companion></span> is an AI recovery companion — not a counsellor, doctor, or crisis line. If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
+      <li><strong>What <span data-companion>Hope</span> can do.</strong> Urge surfing, plans, check-ins, journal, optional faith tools, and one-tap Australian helplines and finders.</li>
+      <li><strong>Not emergency or medical care.</strong> <span data-companion>Hope</span> is an AI recovery companion — not a counsellor, doctor, or crisis line. If you’re in danger, call <strong>000</strong>. Use <strong>Get help now</strong> for Australian helplines.</li>
       <li><strong>Faith optional.</strong> Choose how much (if any) in Preferences.</li>
     </ul>
     <div class="waitlist-cta">
@@ -1909,13 +1955,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
-      <summary>Learn more · Privacy · Developer</summary>
+      <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
         <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
-        <!-- Advanced: own OpenAI-compatible key still works via localStorage (eden.* keys unchanged) for device testing. -->
+        <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Hopewick holds the model connection — you do not need an API key.</li>
-        <li><strong>Developer (optional).</strong> Settings → Developer is for the people building Hopewick. It is not part of Free or Plus.</li>
+        <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
         <li><strong>Account.</strong> Email sign-in. We store your email, subscription status, and today’s message count — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
@@ -1947,7 +1993,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
       <button class="btn" type="button" id="helpChurchBtn">Find a church — official AU finders</button>
     </div>
-    <p class="help" style="margin-top:12px"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
+    <p class="help" style="margin-top:12px"><span data-companion>Hope</span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
 </dialog>
 
@@ -1955,7 +2001,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <dialog id="disclaimerDlg" aria-labelledby="discTitle">
   <div class="dlg-head"><h2 id="discTitle">Before we start 🌿</h2></div>
   <div class="dlg-body disclaimer-body">
-    <p><span data-brand></span> offers <strong><span data-companion></span> — an AI recovery companion</strong> for talking through alcohol and other drug use, cravings, and hard days. Faith content is optional. It draws on approaches used in Australian AOD services, but:</p>
+    <p><span data-brand>Hopewick</span> offers <strong><span data-companion>Hope</span> — an AI recovery companion</strong> for talking through alcohol and other drug use, cravings, and hard days. Faith content is optional. It draws on approaches used in Australian AOD services, but:</p>
     <ul>
       <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
       <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
@@ -2041,7 +2087,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   <div class="settings-tabs" role="tablist" aria-label="Settings sections">
     <button type="button" role="tab" id="tabPrefs" data-settings-tab="prefs" aria-controls="panelPrefs" aria-selected="true">Preferences</button>
     <button type="button" role="tab" id="tabMore" data-settings-tab="more" aria-controls="panelMore" aria-selected="false">More</button>
-    <button type="button" role="tab" id="tabAdvanced" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false">Developer</button>
+    <button type="button" role="tab" id="tabDeveloper" data-settings-tab="advanced" aria-controls="panelAdvanced" aria-selected="false" hidden>Developer</button>
   </div>
   <div class="dlg-body">
     <div class="settings-panel" id="panelPrefs" data-tab-panel="prefs" role="tabpanel" aria-labelledby="tabPrefs">
@@ -2082,7 +2128,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <fieldset>
       <legend>Your profile</legend>
       <div class="field">
-        <label for="setProfileName">Your name (<span data-companion></span> will call you this)</label>
+        <label for="setProfileName">Your name (<span data-companion>Hope</span> will call you this)</label>
         <input id="setProfileName" type="text" maxlength="30">
       </div>
       <div class="field">
@@ -2127,7 +2173,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <div class="chips" id="traitChips" role="group" aria-labelledby="traitsLabel"></div>
       </div>
       <div class="field">
-        <label for="setTraitsCustom">More about <span data-companion></span>'s personality</label>
+        <label for="setTraitsCustom">More about <span data-companion>Hope</span>'s personality</label>
         <textarea id="setTraitsCustom" rows="2" placeholder="e.g. loves gardening metaphors, gently nerdy"></textarea>
       </div>
       <div class="field">
@@ -2151,7 +2197,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <legend>Voice</legend>
       <p class="help" id="voiceSupport" style="margin:6px 0 0"></p>
       <div class="field">
-        <label for="setVoice"><span data-companion></span>'s voice</label>
+        <label for="setVoice"><span data-companion>Hope</span>'s voice</label>
         <select id="setVoice"><option value="">Default voice</option></select>
       </div>
       <div class="field">
@@ -2180,7 +2226,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
     <fieldset>
       <legend>Your data</legend>
-      <p class="help" style="margin:6px 0 10px">Everything lives only in this browser. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
+      <p class="help" style="margin:6px 0 10px">Keep your conversation history on this device. Cloud sync is not enabled. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
       <div class="row">
         <button class="btn btn-sm" type="button" id="exportBtn">Export JSON</button>
         <button class="btn btn-sm" type="button" id="importBtn">Import JSON</button>
@@ -2190,7 +2236,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </div>
     </fieldset>
     </div>
-    <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabAdvanced" hidden>
+    <div class="settings-panel" id="panelAdvanced" data-tab-panel="advanced" role="tabpanel" aria-labelledby="tabDeveloper" hidden>
       <p class="dev-warning"><strong>Developer.</strong> Most people never need this. Sign in and Hope replies on Hopewick — Free is 20 messages a day, Hopewick Plus is 200. You do not need an invite code, an OpenAI key, OpenRouter, or Groq.</p>
       <details class="own-key-details" id="inviteDetails" data-invite-entry hidden>
         <summary>Pilot invite code</summary>
@@ -2249,7 +2295,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with <span data-companion></span> in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
+    <p class="help" style="margin:10px 0 0" id="memIntro">These facts are shared with <span data-companion>Hope</span> in every chat so it can remember you. Edit anything inline — changes save automatically.</p>
     <form class="mem-add" id="memAddForm">
       <label for="memAddInput" class="sr-only">New memory</label>
       <input id="memAddInput" type="text" data-ph="Add something {name} should remember…" maxlength="300">
@@ -2288,7 +2334,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0">A private place for your thoughts. Deepen reflection with <span data-companion></span> when you want more emotional depth — never a diagnosis.</p>
+    <p class="help" style="margin:10px 0 0">A private place for your thoughts. Deepen reflection with <span data-companion>Hope</span> when you want more emotional depth — never a diagnosis.</p>
     <div id="journalCompose">
       <div class="field">
         <label for="jTitle">Title <span class="help">(optional)</span></label>
@@ -2472,7 +2518,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0">Peer-support meetings are run by <strong>AA, NA, SMART Recovery</strong> and similar groups — <strong>not by <span data-brand></span></strong>. We only open their official Australian finders so times stay accurate. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0">Peer-support meetings are run by <strong>AA, NA, SMART Recovery</strong> and similar groups — <strong>not by <span data-brand>Hopewick</span></strong>. We only open their official Australian finders so times stay accurate. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">After a finder opens, type your suburb or postcode on their site. We don’t scrape or host meeting lists.</p>
     <div class="meeting-cards" id="meetingCards">
       <div class="meeting-card">
@@ -2521,7 +2567,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run rehabs or treatment services.</strong> These are official government and peak-body finders and helplines across Australia. Numbers change — if a call fails, check their site. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0"><strong><span data-brand>Hopewick</span> does not run rehabs or treatment services.</strong> These are official government and peak-body finders and helplines across Australia. Numbers change — if a call fails, check their site. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">We don’t scrape or host a list of every facility (those go out of date fast). Open the official finder for your state, or call the helpline.</p>
 
     <div id="treatmentHome">
@@ -2565,7 +2611,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run these services.</strong> Offerings below are summarised from each organisation’s public website and may change — always confirm on their site or by phone. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0"><strong><span data-brand>Hopewick</span> does not run these services.</strong> Offerings below are summarised from each organisation’s public website and may change — always confirm on their site or by phone. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">QLD-first curated NGOs (what they can offer), different from <strong>Find treatment / rehab</strong> (state helplines and official finders only).</p>
 
     <div class="aod-filters" id="aodFilters" role="group" aria-label="Filter by offer type"></div>
@@ -2596,7 +2642,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p style="margin:12px 0 0"><strong><span data-brand></span> does not run churches.</strong> These are official Australian denominational finders and a broad directory. Open a finder when you feel ready — no pressure. This is <strong>not a crisis service</strong>.</p>
+    <p style="margin:12px 0 0"><strong><span data-brand>Hopewick</span> does not run churches.</strong> These are official Australian denominational finders and a broad directory. Open a finder when you feel ready — no pressure. This is <strong>not a crisis service</strong>.</p>
     <p class="help" style="margin-top:8px">We don’t scrape or host a church database (those go stale). After a finder opens, search by suburb or postcode on their site.</p>
 
     <div class="meeting-cards" id="churchCards">
@@ -2708,7 +2754,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0">Short DBT- and CBT-informed exercises you can practise with <span data-companion></span> in chat. This is <strong>skills practice</strong>, not therapy or a substitute for a psychologist.</p>
+    <p class="help" style="margin:10px 0 0">Short DBT- and CBT-informed exercises you can practise with <span data-companion>Hope</span> in chat. This is <strong>skills practice</strong>, not therapy or a substitute for a psychologist.</p>
     <ul class="steps-list" id="skillsList" aria-label="Craving skills"></ul>
   </div>
 </dialog>
@@ -2897,6 +2943,7 @@ const DEFAULT_PROFILE_SETTINGS = {
   memAuto: true,
   moodCheck: true,
   gratCheck: true,
+  hereFor: '',
   soberStart: '',
   soberWhat: '',
   soberWhy: '',
@@ -3132,6 +3179,7 @@ let convos = [];
 let memories = [];
 let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'info' | 'resume' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
+let pendingStartChat = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
@@ -3581,7 +3629,7 @@ function crisisCardHtml(kind) {
     <h3>Here’s what you can do now 💚</h3>
     <p class="crisis-now">${crisisMomentCopy(k)}</p>
     <ul class="crisis-actions">${actions}</ul>
-    <p class="crisis-about"><span data-companion></span> is an AI recovery companion, not a counsellor or doctor. These are real Australian services — tap to call.</p>
+    <p class="crisis-about"><span data-companion>Hope</span> is an AI recovery companion, not a counsellor or doctor. These are real Australian services — tap to call.</p>
   </div>`;
 }
 
@@ -3593,7 +3641,7 @@ function messageEl(msg) {
 
   if (msg.card === 'crisis') {
     wrap.innerHTML = crisisCardHtml(msg.crisisKind);
-    wrap.querySelectorAll('[data-companion]').forEach(e => { e.textContent = settings.name || BRAND.companion; });
+    wrap.querySelectorAll('[data-companion]').forEach(e => { e.textContent = companionName(); });
     row.appendChild(wrap);
     return { row, bubble: wrap, tools: document.createElement('div') };
   }
@@ -3602,7 +3650,7 @@ function messageEl(msg) {
   bubble.className = 'bubble';
   const who = document.createElement('span');
   who.className = 'sr-only';
-  who.textContent = msg.role === 'user' ? 'You said: ' : `${settings.name} said: `;
+  who.textContent = msg.role === 'user' ? 'You said: ' : `${companionName()} said: `;
   if (msg.role === 'user' || msg.error) bubble.textContent = msg.content;
   else bubble.innerHTML = renderMarkdown(msg.content);
   wrap.appendChild(who);
@@ -4005,7 +4053,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4025,7 +4073,7 @@ function renderHome() {
   hero.className = 'home-hero';
   hero.innerHTML = '<div class="orb md" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
   $('h1', hero).textContent = greeting() + ' 🌿';
-  $('p', hero).textContent = `A safe space with ${settings.name}. Check in below, or open a tool whenever you need it.`;
+  $('p', hero).textContent = `A safe space with ${companionName()}. Check in below, or open a tool whenever you need it.`;
   box.appendChild(hero);
   box.appendChild(todayCardEl());
   box.appendChild(todayPlusNoteEl());
@@ -4082,7 +4130,7 @@ function renderHome() {
     { ico: '📄', label: 'Resume', sub: 'Free builder', action: () => setAppTab('resume') },
   ];
   // Use companion name in shortcut label
-  items[0].label = `Talk to ${settings.name}`;
+  items[0].label = `Talk to ${companionName()}`;
   for (const it of items) {
     const b = document.createElement('button');
     b.type = 'button';
@@ -4101,7 +4149,7 @@ function renderHome() {
     lbl.className = 'help';
     lbl.style.width = '100%';
     lbl.style.textAlign = 'center';
-    lbl.textContent = 'Craving skills — practise with ' + settings.name + ':';
+    lbl.textContent = 'Craving skills — practise with ' + companionName() + ':';
     skillsRow.appendChild(lbl);
     const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
     const chips = showAll ? CRAVING_SKILLS : CRAVING_SKILLS.slice(0, 5);
@@ -4132,7 +4180,7 @@ function renderWelcome() {
   $('h1', box).textContent = greeting() + ' 🌿';
   $('p', box).textContent = counsellor
     ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups, faith and hope — whatever's on your mind, at your own pace.`
-    : `I'm ${settings.name}. I'm here to listen, chat, brainstorm, or just keep you company.`;
+    : `I'm ${companionName()}. I'm here to listen, chat, brainstorm, or just keep you company.`;
 
   // Daily check-in lives on Home; chat only nudges if not done yet.
   if (settings.moodCheck) {
@@ -4165,7 +4213,7 @@ function renderWelcome() {
     lbl.className = 'help';
     lbl.style.width = '100%';
     lbl.style.textAlign = 'center';
-    lbl.textContent = 'Craving skills — practise with ' + settings.name + ':';
+    lbl.textContent = 'Craving skills — practise with ' + companionName() + ':';
     skillsRow.appendChild(lbl);
     const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
     const chips = showAll ? CRAVING_SKILLS : CRAVING_SKILLS.slice(0, 5);
@@ -4370,6 +4418,12 @@ function renderAll() {
 /* ---------------------------------------------------------------------------
    System prompts
    --------------------------------------------------------------------------- */
+function hereForLine() {
+  if (settings.hereFor === 'supporting') return 'They are here mainly to support someone else in recovery. Speak to a family member or friend. Do not assume they use alcohol or other drugs.';
+  if (settings.hereFor === 'exploring') return 'They are exploring Hopewick and may not be in recovery themselves. Stay welcoming. Do not assume they use alcohol or other drugs.';
+  if (settings.hereFor === 'myself') return 'They are here for their own recovery.';
+  return '';
+}
 function commonContext(convo) {
   const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'short' }).format(new Date());
   const lines = [
@@ -4377,6 +4431,8 @@ function commonContext(convo) {
     `You are talking with ${userName()}. Address them by name naturally (not in every message).`,
     'Privacy: this device is shared by several people who each have their own private profile. Only ever discuss this person\'s own conversations and memories. Never reveal, guess at or discuss anyone else\'s chats, memories or information, even if asked.',
   ];
+  const whyHere = hereForLine();
+  if (whyHere) lines.push(whyHere);
   const days = soberDaysCount();
   if (days !== null) lines.push(`${userName()} is tracking ${days} day(s) ${settings.soberWhat || 'on their recovery journey'} (since ${settings.soberStart}). Acknowledge milestones warmly; if they slip, respond with compassion — progress isn't erased.`);
   if (memories.length) {
@@ -4397,7 +4453,7 @@ function counsellorPrompt(convo) {
   const faith = FAITH_TEXT[settings.faith] || FAITH_TEXT.general;
   const level = settings.faith === 'none' ? '' : (FAITH_LEVEL_TEXT[settings.faithLevel] || FAITH_LEVEL_TEXT.woven);
   return [
-    `You are ${settings.name}, a warm, calm, hopeful and non-judgemental AI recovery companion for people affected by alcohol and other drugs (AOD). Faith content is optional and follows the person's Preferences. You model the person-centred, evidence-based practice used in Australian AOD services.`,
+    `You are ${companionName()}, a warm, calm, hopeful and non-judgemental AI recovery companion for people affected by alcohol and other drugs (AOD). Faith content is optional and follows the person's Preferences. You model the person-centred, evidence-based practice used in Australian AOD services.`,
     settings.traits.length ? `Personality: ${settings.traits.join(', ')}.${settings.traitsCustom ? ' ' + settings.traitsCustom : ''}` : '',
     '',
     'WHO YOU ARE (AND AREN\'T)',
@@ -4437,7 +4493,7 @@ function counsellorPrompt(convo) {
 
 function friendPrompt(convo) {
   return [
-    `You are ${settings.name}, a personal AI companion — like a warm, curious, supportive friend. You listen closely, remember what matters, show genuine interest and help the user feel heard.`,
+    `You are ${companionName()}, a personal AI companion — like a warm, curious, supportive friend. You listen closely, remember what matters, show genuine interest and help the user feel heard.`,
     settings.traits.length ? `Your personality traits: ${settings.traits.join(', ')}.` : '',
     settings.traitsCustom ? `More about your personality: ${settings.traitsCustom}` : '',
     `Conversation style: ${STYLE_TEXT[settings.style] || STYLE_TEXT.balanced}`,
@@ -4668,7 +4724,7 @@ async function generateReply(c) {
   const pid = profile.id;
   const { row, bubble, tools } = messageEl({ role: 'assistant', content: '' });
   tools.hidden = true;
-  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(settings.name)} is typing"><span></span><span></span><span></span></span>`;
+  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(companionName())} is typing"><span></span><span></span><span></span></span>`;
   el.inner.appendChild(row);
   scrollToBottom(true);
 
@@ -4776,7 +4832,7 @@ async function extractMemories(pid, userText, assistantText, crisis) {
       el.memCount.textContent = memories.length;
       if (el.memoriesDlg.open) renderMemories();
       const summary = added.map(a => a.text).join('; ');
-      toast(`🌱 ${settings.name} will remember: ${summary.length > 120 ? summary.slice(0, 117) + '…' : summary}`, false, 4500);
+      toast(`🌱 ${companionName()} will remember: ${summary.length > 120 ? summary.slice(0, 117) + '…' : summary}`, false, 4500);
     }
   } catch (e) { /* best-effort */ }
 }
@@ -4793,7 +4849,7 @@ function renderMemories() {
     const li = document.createElement('li');
     li.className = 'mem-empty';
     li.textContent = memories.length ? 'No memories match your search.'
-      : `🌱 Nothing yet. As you chat, ${settings.name} will remember the important things — goals, what helps, who supports you — or add some yourself above.`;
+      : `🌱 Nothing yet. As you chat, ${companionName()} will remember the important things — goals, what helps, who supports you — or add some yourself above.`;
     list.appendChild(li);
   }
   for (const m of items) {
@@ -5049,7 +5105,7 @@ $('#jRefineBtn').addEventListener('click', async () => {
 
 function journalRefineSystemPrompt(crisis) {
   return [
-    `You are ${settings.name}, helping ${userName()} deepen a private journal reflection.`,
+    `You are ${companionName()}, helping ${userName()} deepen a private journal reflection.`,
     'Keep their meaning and voice. Do not preach. Do not diagnose. Australian English. Warm, trauma-informed.',
     'Respond in this exact structure (plain text, use the headings):',
     'REFINED:',
@@ -5174,7 +5230,7 @@ function renderSteps() {
       <div class="field" style="margin-top:8px"><label class="sr-only">Notes for step ${step.n}</label>
         <textarea rows="2" data-step-note="${step.n}" placeholder="Your notes (private)…">${escapeHtml(note)}</textarea></div>
       <div class="actions">
-        <button class="btn btn-primary btn-sm" type="button" data-work="${step.n}">Work this step with ${escapeHtml(settings.name)}</button>
+        <button class="btn btn-primary btn-sm" type="button" data-work="${step.n}">Work this step with ${escapeHtml(companionName())}</button>
         <button class="btn btn-sm" type="button" data-toggle="${step.n}">${isDone ? 'Mark not done' : 'Mark done'}</button>
       </div>
       <p class="help" style="margin-top:8px">No obligation to disclose trauma details to the AI. For amends that could harm someone, talk with a sponsor, pastor or counsellor first.</p>`;
@@ -5224,7 +5280,7 @@ function startStepChat(step) {
   persistConvos();
   renderAll();
   focusInput();
-  toast(`Working Step ${step.n} with ${settings.name}`);
+  toast(`Working Step ${step.n} with ${companionName()}`);
 }
 
 
@@ -5778,7 +5834,7 @@ function renderBibleThemes() {
       <p class="meta">Read: ${escapeHtml(lesson.ref)}</p>
       <ul class="help" style="margin:6px 0 0;padding-left:1.2em">${lesson.questions.map(q => `<li>${escapeHtml(q)}</li>`).join('')}</ul>
       <div class="actions">
-        <button class="btn btn-primary btn-sm" type="button" data-study="${lesson.id}">Study theme with ${escapeHtml(settings.name)}</button>
+        <button class="btn btn-primary btn-sm" type="button" data-study="${lesson.id}">Study theme with ${escapeHtml(companionName())}</button>
         <button class="btn btn-sm" type="button" data-btoggle="${lesson.id}">${isDone ? 'Mark not done' : 'Mark done'}</button>
       </div>`;
     $('[data-study]', li).addEventListener('click', () => startThemeBibleChat(lesson));
@@ -5815,7 +5871,7 @@ function soapSystemExtra(reading) {
     ? `Related references (invite them to open in the in-app WEB reader): ${reading.supporting.join('; ')}.`
     : '';
   return [
-    `You are guiding a SOAP Bible study with ${userName()}. Method name is SOAP (not "Hope"). Companion name stays ${settings.name}.`,
+    `You are guiding a SOAP Bible study with ${userName()}. Method name is SOAP (not "Hope"). Companion name stays ${companionName()}.`,
     `Today’s reading (Day ${reading.planDay || reading.day}): ${reading.passage}. ${support}`,
     'The app shows this passage in-app from the World English Bible (WEB, public domain). Invite them to read it there (or in the Bible reader). Do NOT paste long commercial-translation quotations. A brief WEB phrase they already named, or a short paraphrase labelled as paraphrase, is OK.',
     'Lead SOAP strictly in order, ONE step at a time, waiting for their answer before the next:',
@@ -5871,7 +5927,7 @@ function startThemeBibleChat(lesson) {
   persistConvos();
   renderAll();
   focusInput();
-  toast(`Studying with ${settings.name}`);
+  toast(`Studying with ${companionName()}`);
 }
 function saveSoapEntry(partial = {}) {
   const reading = todaySoapReading();
@@ -7045,7 +7101,7 @@ function openSkills() {
   for (const sk of CRAVING_SKILLS) {
     const li = document.createElement('li');
     li.className = 'step-card';
-    li.innerHTML = `<h3></h3><p class="body"></p><div class="actions"><button class="btn btn-primary btn-sm" type="button">Try with ${escapeHtml(settings.name)}</button></div>`;
+    li.innerHTML = `<h3></h3><p class="body"></p><div class="actions"><button class="btn btn-primary btn-sm" type="button">Try with ${escapeHtml(companionName())}</button></div>`;
     $('h3', li).textContent = sk.chip;
     $('.body', li).textContent = sk.blurb;
     $('button', li).addEventListener('click', () => { el.skillsDlg.close(); startSkill(sk); });
@@ -7258,7 +7314,8 @@ const FOCUS_TAB = {
   setName: 'more', setStyle: 'more', setTheme: 'more', setVoice: 'more',
 };
 function setSettingsTab(tab) {
-  let t = tab === 'connection' ? 'advanced' : tab;
+  let t = tab === 'connection' || tab === 'developer' ? 'advanced' : tab;
+  if (t === 'advanced' && !founderDeveloperVisible()) t = 'prefs';
   t = SETTINGS_TITLES[t] ? t : 'prefs';
   $$('.settings-tabs [role="tab"]').forEach(btn => {
     const on = btn.dataset.settingsTab === t;
@@ -7335,7 +7392,7 @@ function openSettings(focusId, tabHint) {
   if (ownToggle) ownToggle.checked = !!settings.useOwnKey;
   setKeyVisible(false);
   $('#setStream').checked = settings.stream;
-  $('#setName').value = settings.name;
+  $('#setName').value = companionName();
   draftTraits = [...settings.traits];
   renderTraitChips();
   $('#setTraitsCustom').value = settings.traitsCustom;
@@ -7351,9 +7408,13 @@ function openSettings(focusId, tabHint) {
   $('#testResult').textContent = ''; $('#testResult').className = 'test-result';
   settingsThemeBefore = settings.theme;
   let tab = tabHint || (focusId && FOCUS_TAB[focusId]) || 'prefs';
-  if (tab === 'connection') tab = 'advanced'; // legacy alias
+  if (tab === 'connection' || tab === 'developer') tab = 'advanced';
+  if (tab === 'advanced' && !founderDeveloperVisible()) {
+    tab = 'prefs';
+    focusId = null;
+  }
+  const focusKey = tab === 'advanced' && (focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel');
   setSettingsTab(tab);
-  const focusKey = focusId === 'setKey' || focusId === 'setBaseUrl' || focusId === 'setModel';
   expandOwnKey(focusKey);
   if (!el.settingsDlg.open) el.settingsDlg.showModal();
   if (focusKey) setTimeout(() => { const n = $('#' + focusId); if (n) { expandOwnKey(true); n.focus(); } }, 60);
@@ -7615,14 +7676,17 @@ function enterProfile(pid) {
   profilesState.lastId = pid;
   saveProfiles();
   loadProfileData(pid);
+  applyOnboardingChoices();
   applyTheme();
   el.input.value = '';
-  appTab = 'home';
+  const startChat = pendingStartChat;
+  pendingStartChat = false;
+  appTab = startChat ? 'chat' : 'home';
   if (!activeConvo()) { activeId = null; newConversation(); } else renderAll();
   el.pickerDlg.close();
   toast(`Hi ${profile.name} 👋`);
   maybeShowDisclaimer();
-  showLaunchPrefs();
+  if (startChat) focusInput();
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -7782,7 +7846,7 @@ $('#testVoiceBtn').addEventListener('click', () => {
   if (!tts) { toast('Speech isn’t supported in this browser', true); return; }
   const prev = settings;
   settings = readSettingsForm();
-  speak(`G'day ${userName()}! I'm ${settings.name}. This is how I sound.`);
+  speak(`G'day ${userName()}! I'm ${companionName()}. This is how I sound.`);
   settings = prev;
 });
 /* Auto-speak lives in Settings → More (the header toggle was removed to keep the top bar clear). */
@@ -7885,7 +7949,10 @@ el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpe
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
-  else if (o === 'connection' || o === 'advanced') openSettings(null, 'advanced');
+  else if (o === 'connection' || o === 'advanced' || o === 'developer') {
+    if (!founderDeveloperVisible()) return;
+    openSettings(null, 'advanced');
+  }
   else if (o === 'prefs') showLaunchPrefs();
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
@@ -8230,6 +8297,8 @@ if (advInvite) advInvite.addEventListener('click', () => { if (el.settingsDlg.op
    Flip it to true to show entry again — redeemInviteCode and POST /redeem stay.
    --------------------------------------------------------------------------- */
 const SHOW_INVITE_ENTRY = false;
+/** Set once the signed-in account is known. Invite redeem stays off unless this and SHOW_INVITE_ENTRY are both on. */
+let founderDeveloperOn = false;
 const INVITE_COPY = {
   keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.',
   needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.',
@@ -8246,14 +8315,18 @@ function liveChatNeed(prefix) {
   return prefix ? `${prefix} ${HOSTED_SIGNIN_COPY}` : HOSTED_SIGNIN_COPY;
 }
 function syncInviteEntryUi() {
+  const showInvite = SHOW_INVITE_ENTRY && founderDeveloperOn;
   document.querySelectorAll('[data-invite-entry]').forEach((node) => {
-    node.hidden = !SHOW_INVITE_ENTRY;
+    node.hidden = !showInvite;
   });
   const own = document.getElementById('keyBannerOwnKey');
   if (own) own.hidden = !!SHOW_INVITE_ENTRY;
   const advBtn = document.getElementById('needAiAdvancedBtn');
-  if (advBtn) advBtn.classList.toggle('btn-primary', !SHOW_INVITE_ENTRY);
-  if (!SHOW_INVITE_ENTRY) return;
+  if (advBtn) {
+    advBtn.hidden = !founderDeveloperOn;
+    advBtn.classList.toggle('btn-primary', !showInvite);
+  }
+  if (!showInvite) return;
   const bannerP = document.getElementById('keyBannerText');
   if (bannerP) bannerP.textContent = INVITE_COPY.keyBanner;
   const lede = document.getElementById('needAiLede');
@@ -8267,7 +8340,7 @@ function syncInviteEntryUi() {
 }
 syncInviteEntryUi();
 function openInviteDlg() {
-  if (!SHOW_INVITE_ENTRY) return;
+  if (!SHOW_INVITE_ENTRY || !founderDeveloperOn) return;
   if (isDemo) { toast('Exit the demo first to redeem an invite.', false, 3500); return; }
   const st = $('#inviteStatus');
   if (st) { st.textContent = ''; st.className = 'invite-status'; }
@@ -8356,7 +8429,7 @@ function demoSleep(ms, run) {
 async function demoStream(text, run) {
   const { row, bubble, tools } = messageEl({ role: 'assistant', content: '' });
   tools.hidden = true;
-  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(settings.name)} is typing"><span></span><span></span><span></span></span>`;
+  bubble.innerHTML = `<span class="typing" role="img" aria-label="${escapeHtml(companionName())} is typing"><span></span><span></span><span></span></span>`;
   el.inner.appendChild(row);
   scrollToBottom(true);
   setOrb('thinking');
@@ -8474,19 +8547,82 @@ function onboardingSeen() {
 function markOnboardingSeen(extra) {
   save(K.onboarding, Object.assign({ seen: true, at: Date.now() }, extra || {}));
 }
+function setOnboardStep(step) {
+  const welcome = $('#onboardStepWelcome');
+  const reason = $('#onboardStepReason');
+  const faith = $('#onboardStepFaith');
+  if (welcome) welcome.hidden = step !== 'welcome';
+  if (reason) reason.hidden = step !== 'reason';
+  if (faith) faith.hidden = step !== 'faith';
+  const title = $('#onboardTitle');
+  if (title) {
+    if (step === 'reason') title.textContent = 'What brings you here';
+    else if (step === 'faith') title.textContent = 'Faith preference';
+    else title.innerHTML = 'Welcome to <span data-brand>Hopewick</span>';
+  }
+  const focusId = step === 'reason' ? 'onboardReasonContinue' : step === 'faith' ? 'onboardStartBtn' : 'onboardYesBtn';
+  const focus = document.getElementById(focusId);
+  if (focus && el.onboardingDlg && el.onboardingDlg.open) focus.focus();
+}
+function applyOnboardingChoices() {
+  if (isDemo || !profile) return;
+  const o = load(K.onboarding, null);
+  if (!o || !o.faithChoice) return;
+  const applied = Object.assign({}, o.appliedTo || {});
+  if (applied[profile.id]) return;
+  if (o.hereFor) settings.hereFor = o.hereFor;
+  if (o.faithChoice === 'none') {
+    settings.faith = 'none';
+    settings.faithLevel = 'ask';
+  } else if (o.faithChoice === 'ask') {
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    settings.faithLevel = 'ask';
+  } else if (o.faithChoice === 'central') {
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    settings.faithLevel = 'central';
+  } else {
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    settings.faithLevel = 'woven';
+  }
+  applied[profile.id] = true;
+  save(K.onboarding, Object.assign({}, o, { appliedTo: applied }));
+  saveSettings();
+}
 function finishOnboarding(extra) {
   markOnboardingSeen(extra);
+  pendingStartChat = !!(extra && extra.startChat);
   if (el.onboardingDlg.open) el.onboardingDlg.close();
+  if (profile && pendingStartChat) {
+    applyOnboardingChoices();
+    pendingStartChat = false;
+    setAppTab('chat');
+    focusInput();
+    return;
+  }
   showPicker();
 }
-$('#onboardYesBtn').addEventListener('click', () => finishOnboarding({ continued: true }));
+$('#onboardYesBtn').addEventListener('click', () => setOnboardStep('reason'));
 $('#onboardLaterBtn').addEventListener('click', () => finishOnboarding({ continued: false }));
+$('#onboardReasonBack')?.addEventListener('click', () => setOnboardStep('welcome'));
+$('#onboardReasonContinue')?.addEventListener('click', () => setOnboardStep('faith'));
+$('#onboardFaithBack')?.addEventListener('click', () => setOnboardStep('reason'));
+$('#onboardStartBtn')?.addEventListener('click', () => {
+  const reason = $$('input[name="onboardReason"]').find(r => r.checked);
+  const faith = $$('input[name="onboardFaith"]').find(r => r.checked);
+  finishOnboarding({
+    continued: true,
+    startChat: true,
+    hereFor: reason ? reason.value : 'myself',
+    faithChoice: faith ? faith.value : 'woven',
+  });
+});
 el.onboardingDlg.addEventListener('cancel', (e) => {
   e.preventDefault();
   finishOnboarding({ continued: false, dismissed: true });
 });
 
 function showOnboarding() {
+  setOnboardStep('welcome');
   if (!el.onboardingDlg.open) el.onboardingDlg.showModal();
   const yes = $('#onboardYesBtn');
   if (yes) yes.focus();
@@ -8898,10 +9034,32 @@ const billingState = {
   checkoutReady: false,
   devMagic: false,
   complimentary: false,
+  founder: false,
   hopeHosted: false,
   hopeUsage: null,
 };
 const FREE_HISTORY_KEEP = 1;
+
+/** True only when the signed-in Hopewick account email is on FOUNDER_PLUS_EMAILS.
+ *  The server sets founder from that same list as complimentary Plus. A profile name does not. */
+function founderDeveloperVisible() {
+  return !!(billingState.signedIn && billingState.founder);
+}
+function syncDeveloperChrome() {
+  const show = founderDeveloperVisible();
+  founderDeveloperOn = show;
+  ['#sideDeveloperBtn', '#tabDeveloper', '#aboutDeveloperNote'].forEach((sel) => {
+    const node = $(sel);
+    if (node) node.hidden = !show;
+  });
+  if (!show) {
+    const selected = $('.settings-tabs [role="tab"][aria-selected="true"]');
+    if (selected && (selected.dataset.settingsTab === 'advanced' || selected.dataset.settingsTab === 'developer')) {
+      setSettingsTab('prefs');
+    }
+  }
+  if (typeof syncInviteEntryUi === 'function') syncInviteEntryUi();
+}
 
 function subscriptionPlus() {
   return !!(billingState.signedIn && billingState.plus);
@@ -8965,16 +9123,20 @@ async function refreshBilling() {
     billingState.checkoutReady = !!config.checkoutReady;
     billingState.devMagic = !!config.devMagic;
     billingState.complimentary = !!user.complimentary;
+    billingState.founder = !!user.founder;
     billingState.hopeHosted = !!config.hopeHosted;
   } catch (_) {
     billingState.reachable = false;
     billingState.signedIn = false;
+    billingState.email = '';
     billingState.plus = false;
     billingState.complimentary = false;
+    billingState.founder = false;
     billingState.hopeHosted = false;
     billingState.hopeUsage = null;
   }
   billingState.loaded = true;
+  syncDeveloperChrome();
   const label = $('#sideAccountLabel');
   if (label) {
     label.textContent = subscriptionPlus() ? 'Plus · account' : 'Hopewick Plus';
@@ -9007,13 +9169,14 @@ async function refreshHopeUsage() {
   }
 }
 function appendPlusOffer(body) {
-  const unlock = document.createElement('p');
-  unlock.className = 'lede';
-  unlock.textContent = 'Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history.';
-  body.appendChild(unlock);
-  const free = document.createElement('p');
-  free.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder.';
-  body.appendChild(free);
+  const price = document.createElement('p');
+  price.className = 'plus-price';
+  price.innerHTML = 'AU$20<span>/month</span>';
+  body.appendChild(price);
+  const kicker = document.createElement('p');
+  kicker.className = 'plus-kicker';
+  kicker.textContent = 'Cancel anytime. One subscription per person.';
+  body.appendChild(kicker);
   const caps = document.createElement('div');
   caps.className = 'message-caps';
   caps.setAttribute('aria-label', 'Daily message limits');
@@ -9040,16 +9203,66 @@ function appendPlusOffer(body) {
   capsRow.appendChild(capCard('Hopewick Plus', '200 messages/day', true));
   caps.appendChild(capsRow);
   body.appendChild(caps);
-  const cancel = document.createElement('p');
-  cancel.textContent = 'Cancel anytime. One subscription per person.';
-  body.appendChild(cancel);
+  const list = document.createElement('ul');
+  list.className = 'plus-checklist';
+  [
+    '200 messages a day with Hope',
+    'Clean time tracker, SOAP reflections, and journal tools',
+    'Going Deeper faith content and 12 Steps practice',
+    'The full year of readings',
+    'Keep your conversation history on this device. Cloud sync is not enabled.',
+  ].forEach(text => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    list.appendChild(li);
+  });
+  body.appendChild(list);
+  if (!subscriptionPlus()) {
+    const actions = document.createElement('div');
+    actions.className = 'account-actions';
+    const sub = document.createElement('button');
+    sub.type = 'button';
+    sub.className = 'btn btn-primary';
+    sub.id = 'startPlusBtn';
+    sub.textContent = 'Start Hopewick Plus';
+    if (!billingState.reachable || (billingState.signedIn && !billingState.checkoutReady)) {
+      sub.disabled = true;
+    } else if (!billingState.signedIn) {
+      sub.addEventListener('click', () => {
+        const email = $('#accountEmail');
+        if (email) email.focus();
+        const status = $('#accountStatus');
+        if (status) status.textContent = 'Enter your email and we’ll send a sign-in link. Then you can start Hopewick Plus.';
+      });
+    } else {
+      sub.addEventListener('click', () => startCheckout());
+    }
+    actions.appendChild(sub);
+    body.appendChild(actions);
+    if (billingState.reachable && billingState.signedIn && !billingState.checkoutReady) {
+      const pay = document.createElement('p');
+      pay.className = 'help';
+      pay.textContent = 'Payments aren’t configured yet.';
+      body.appendChild(pay);
+    } else if (billingState.reachable && !billingState.signedIn) {
+      const hint = document.createElement('p');
+      hint.className = 'help';
+      hint.textContent = 'Sign in below, then start Hopewick Plus.';
+      body.appendChild(hint);
+    }
+  }
+  const crisis = document.createElement('p');
+  crisis.className = 'crisis-free-note';
+  crisis.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. In danger call 000. Lifeline 13 11 14. 1800RESPECT 1800 737 732.';
+  body.appendChild(crisis);
+  const privacy = document.createElement('aside');
+  privacy.className = 'privacy-card';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Your account knows your subscription. It doesn’t hold a dashboard of what you told Hope. Keep your conversation history on this device. Cloud sync is not enabled.</p>';
+  body.appendChild(privacy);
   const org = document.createElement('p');
-  org.textContent = 'Organisation plans coming soon.';
+  org.className = 'hosted-privacy';
+  org.textContent = 'Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.';
   body.appendChild(org);
-  const home = document.createElement('p');
-  home.className = 'hosted-privacy';
-  home.textContent = 'Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.';
-  body.appendChild(home);
 }
 function paintAccount() {
   const body = $('#accountBody');
@@ -9080,7 +9293,7 @@ function paintAccount() {
     form.className = 'account-form';
     form.id = 'accountMagicForm';
     form.noValidate = true;
-    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn btn-primary" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
+    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
     body.appendChild(form);
     const status = document.createElement('p');
     status.className = 'account-status';
@@ -9103,8 +9316,9 @@ function paintAccount() {
   const status = document.createElement('p');
   status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
   status.id = 'accountStatus';
-  status.textContent = statusLabel(billingState.subscriptionStatus) + (billingState.subscriptionStatus === 'active' || billingState.subscriptionStatus === 'trialing' ? '' : ' · AU$20/month opens the year’s readings and your chat history on this device.');
-  if (subscriptionPlus()) status.textContent = statusLabel(billingState.subscriptionStatus) + '. Any day of the readings is open, and your chat history stays with you on this device.';
+  status.textContent = statusLabel(billingState.subscriptionStatus) + (subscriptionPlus()
+    ? '. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.'
+    : '. AU$20/month. Cancel anytime.');
   body.appendChild(status);
   const allowance = document.createElement('p');
   allowance.className = 'hosted-privacy';
@@ -9124,15 +9338,6 @@ function paintAccount() {
     portal.addEventListener('click', () => startPortal());
     actions.appendChild(portal);
   }
-  if (!subscriptionPlus()) {
-    const sub = document.createElement('button');
-    sub.type = 'button';
-    sub.className = 'btn btn-primary';
-    sub.textContent = billingState.checkoutReady ? 'Subscribe — AU$20/month' : 'Payments aren’t configured yet';
-    sub.disabled = !billingState.checkoutReady;
-    sub.addEventListener('click', () => startCheckout());
-    actions.appendChild(sub);
-  }
   const out = document.createElement('button');
   out.type = 'button';
   out.className = 'btn';
@@ -9140,10 +9345,6 @@ function paintAccount() {
   out.addEventListener('click', () => signOutBilling());
   actions.appendChild(out);
   body.appendChild(actions);
-  const compare = document.createElement('p');
-  compare.className = 'hosted-privacy';
-  compare.innerHTML = 'Free vs Plus is on the <a href="../#plans">plans page</a>. We don’t store your chats. In an emergency call 000.';
-  body.appendChild(compare);
   if (billingState.devMagic) {
     const dev = document.createElement('div');
     dev.className = 'account-dev';
@@ -9226,6 +9427,9 @@ async function signOutBilling() {
   billingState.email = '';
   billingState.subscriptionStatus = 'none';
   billingState.complimentary = false;
+  billingState.founder = false;
+  founderDeveloperOn = false;
+  syncDeveloperChrome();
   libraryPick = null;
   await refreshBilling();
   toast('Signed out. Today’s Readings and Get help stay available.', false, 3500);
