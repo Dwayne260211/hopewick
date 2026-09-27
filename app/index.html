@@ -549,12 +549,58 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   letter-spacing: -0.02em;
   color: var(--accent-strong);
 }
-.today-line {
-  margin: 2px 0 0;
+.today-card .today-label { margin: 12px 0 0; }
+.today-card h2 + .today-date + .today-label,
+.today-card h2 + .today-date + .today-leap + .today-label { margin-top: 0; }
+.today-jft-title {
+  margin: 2px 0 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.today-reading p {
+  margin: 0 0 .7em;
   font-size: 1.02rem;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--text);
 }
+.today-reading p:last-child { margin-bottom: 0; }
+.today-reading .today-jft-close {
+  margin-top: .45em;
+  padding-top: .65em;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  font-weight: 600;
+}
+/* Collapsed previews stay short; the full reading is in the page for expand/scroll. */
+.today-card:not(.is-expanded) .today-reading {
+  max-height: 6.6rem;
+  overflow: hidden;
+}
+.today-leap {
+  margin: -2px 0 8px;
+  font-size: .8rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.today-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 12px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: var(--surface);
+  color: var(--accent-strong);
+  font: inherit;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.today-expand:hover { background: var(--surface-2); }
 .chat-checkin-hint {
   margin: 14px auto 0; max-width: 420px; text-align: center;
 }
@@ -2559,6 +2605,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
+<script src="data/word-for-the-day.js"></script>
+<script src="data/just-for-today.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -3476,102 +3524,13 @@ function moodCardEl(opts = {}) {
 }
 
 /* ---------------------------------------------------------------------------
-   Today — word + Just for today (original lines; Brisbane calendar day)
-   Same entry for every person on a given Australia/Brisbane date.
-   Not AA/NA literature, and not clinical advice.
+   Today — full Word for the day + Just for today.
+   Readings live in app/data/*.js (365 each), keyed by Australia/Brisbane
+   month and day. Same pair for everyone on that date. Original prose:
+   not AA/NA literature, and not clinical advice.
    --------------------------------------------------------------------------- */
-const DAILY_TODAY = [
-  { word: "Honesty", line: "Just for today, I can name what is true for me, without turning it into a verdict on my whole life." },
-  { word: "Patience", line: "Just for today, I do not have to fix my whole life. I can give this hour a little more time." },
-  { word: "Courage", line: "Just for today, I can take one honest step even while I still feel unsure." },
-  { word: "Willingness", line: "Just for today, I can stay open to a different choice than the one my habit suggests." },
-  { word: "Kindness", line: "Just for today, I can speak to myself the way I would speak to a friend who is trying." },
-  { word: "Rest", line: "Just for today, I can treat rest as part of recovery, not a reward I have to earn." },
-  { word: "Hope", line: "Just for today, I can keep a little room for things to feel lighter than they do right now." },
-  { word: "Humility", line: "Just for today, I can ask for help before I am certain I have it all figured out." },
-  { word: "Connection", line: "Just for today, I can reach toward one person instead of carrying everything alone." },
-  { word: "Gratitude", line: "Just for today, I can notice one ordinary thing that is still good." },
-  { word: "Boundaries", line: "Just for today, I can say no to what pulls me off course, and mean it kindly." },
-  { word: "Presence", line: "Just for today, I can come back to this moment when my mind runs ahead." },
-  { word: "Enough", line: "Just for today, I do not have to be further along than I am." },
-  { word: "Begin", line: "Just for today, a fresh start can be as simple as the next breath." },
-  { word: "Breathe", line: "Just for today, I can slow one breath before I answer a craving or a worry." },
-  { word: "Ask", line: "Just for today, I can let someone know I need company, a ride, or a listening ear." },
-  { word: "Stay", line: "Just for today, I can stay with the feeling long enough to learn it will move." },
-  { word: "Gentle", line: "Just for today, I can drop the harsh voice and try a softer one." },
-  { word: "Truth", line: "Just for today, I can tell one true sentence about where I am." },
-  { word: "Pause", line: "Just for today, I can put a little space between the urge and what I do next." },
-  { word: "Trust", line: "Just for today, I can borrow a little trust from people who have walked this way." },
-  { word: "Show up", line: "Just for today, arriving as I am counts, even if I have little to say." },
-  { word: "Small steps", line: "Just for today, a short walk, a meal, or a phone call can be the whole plan." },
-  { word: "Belonging", line: "Just for today, I can remember I do not have to recover in isolation." },
-  { word: "Forgiveness", line: "Just for today, I can loosen my grip on yesterday without pretending it did not happen." },
-  { word: "Clarity", line: "Just for today, I can choose the next clear thing instead of the whole map." },
-  { word: "Steady", line: "Just for today, steady is more useful to me than dramatic." },
-  { word: "Openness", line: "Just for today, I can hear a suggestion before I decide it will not work." },
-  { word: "Care", line: "Just for today, I can do one simple thing that looks after my body." },
-  { word: "Listen", line: "Just for today, I can listen all the way through before I defend myself." },
-  { word: "Choice", line: "Just for today, I still get to choose the next hour, even after a hard one." },
-  { word: "Mercy", line: "Just for today, I can meet a mistake with learning instead of punishment." },
-  { word: "Progress", line: "Just for today, progress can look like not doing the old thing once." },
-  { word: "Simplicity", line: "Just for today, I can keep the plan plain: eat, rest, reach out, stay." },
-  { word: "Support", line: "Just for today, support is something I am allowed to use, not something I must deserve." },
-  { word: "Keep going", line: "Just for today, I only need to continue from here, not from a perfect past." },
-  { word: "Soften", line: "Just for today, I can unclench my jaw, my hands, and my expectations." },
-  { word: "Morning", line: "Just for today, I can let the day be new without demanding it be easy." },
-  { word: "Light", line: "Just for today, I can look for one small light and move toward it." },
-  { word: "Company", line: "Just for today, I can sit with people who want me well, even quietly." },
-  { word: "Return", line: "Just for today, if I drift, I can come back without a speech." },
-  { word: "Quiet", line: "Just for today, a quieter hour can be a way of taking care." },
-  { word: "Strength", line: "Just for today, strength can be asking, waiting, or telling the truth." },
-  { word: "Accept", line: "Just for today, I can accept this day as it is while still choosing my next step." },
-  { word: "One step", line: "Just for today, the step in front of me is the only one I have to take." },
-  { word: "Warmth", line: "Just for today, I can offer warmth to myself and to someone else." },
-  { word: "Release", line: "Just for today, I can set down one worry I cannot solve before night." },
-  { word: "Notice", line: "Just for today, I can notice the urge without obeying it." },
-  { word: "Repair", line: "Just for today, a short honest repair is better than a long silence." },
-  { word: "Shelter", line: "Just for today, I can choose places and people that help me feel safe." },
-  { word: "Practice", line: "Just for today, I am practising a new way, and practice is allowed to be uneven." },
-  { word: "Ease", line: "Just for today, I can stop making a hard moment harder than it already is." },
-  { word: "Reach", line: "Just for today, reaching out is a recovery action, not a failure." },
-  { word: "Ground", line: "Just for today, I can feel my feet, name the room, and come back to now." },
-  { word: "Fresh", line: "Just for today, I do not have to drag every old story into this morning." },
-  { word: "Hold", line: "Just for today, I can hold both “this is hard” and “I am still here”." },
-  { word: "Share", line: "Just for today, I can share one real thing with someone I trust." },
-  { word: "Wait", line: "Just for today, I can wait out a wave instead of deciding my whole future inside it." },
-  { word: "Try", line: "Just for today, trying again is allowed, and it does not need a perfect reason." },
-  { word: "Safe", line: "Just for today, I can choose the safer option and call that wisdom." },
-  { word: "Real", line: "Just for today, real progress includes ordinary hours that nobody applauds." },
-  { word: "Slow", line: "Just for today, slower can be the kindest speed." },
-  { word: "Here", line: "Just for today, being here — in this day — is the work." },
-  { word: "Next", line: "Just for today, I can ask only what the next kind thing is." },
-  { word: "Room", line: "Just for today, I can make room for a feeling without letting it drive." },
-  { word: "Peace", line: "Just for today, peace can be a few quieter minutes, not a finished life." },
-  { word: "Tender", line: "Just for today, I can be tender with the part of me that is tired of starting over." },
-  { word: "Whole", line: "Just for today, I am a whole person, not only the hardest thing I have done." },
-  { word: "Free", line: "Just for today, freedom can mean one hour I do not hand to the old pattern." },
-  { word: "Together", line: "Just for today, together is a strength I can borrow." },
-  { word: "Unlearn", line: "Just for today, I can unlearn one harsh rule I picked up along the way." },
-  { word: "Keep", line: "Just for today, I can keep what helps and leave what harms." },
-  { word: "Name it", line: "Just for today, I can name hunger, anger, loneliness, or tiredness before I act." },
-  { word: "Allow", line: "Just for today, I can allow this day to be ordinary and still worthwhile." },
-  { word: "Balance", line: "Just for today, I can put one helpful thing beside one hard thing." },
-  { word: "Dignity", line: "Just for today, I can treat my own life as worth protecting." },
-  { word: "Neighbour", line: "Just for today, I can be a good neighbour to myself." },
-  { word: "Dawn", line: "Just for today, I do not need the whole story — only the light I have now." },
-  { word: "Carry", line: "Just for today, I can carry less by letting one trusted person help hold it." },
-  { word: "Undo", line: "Just for today, I cannot undo yesterday, and I can still choose differently now." },
-  { word: "Welcome", line: "Just for today, I can welcome help without first proving I am falling apart." },
-  { word: "Still", line: "Just for today, I can be still for a minute and let my shoulders drop." },
-  { word: "Little", line: "Just for today, little efforts count, especially the ones no one sees." },
-  { word: "Stay close", line: "Just for today, I can stay close to the people and routines that steady me." },
-  { word: "Renew", line: "Just for today, I can renew a simple promise: I will look after this day." },
-  { word: "Honest ask", line: "Just for today, an honest ask is braver than a polished excuse." },
-  { word: "Spare", line: "Just for today, I can spare myself the extra shame and keep the lesson." },
-  { word: "Return path", line: "Just for today, the way back is still open, and it starts with one message or one meeting." },
-  { word: "Companionship", line: "Just for today, I can let companionship be part of how I stay well." },
-  { word: "This day", line: "Just for today, this day is the only one I am asked to live." },
-];
+const NON_LEAP_MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+let todayExpanded = false;
 
 /** YYYY-MM-DD in Australia/Brisbane, so the daily pair is shared across users. */
 function brisbaneDateISO(d = new Date()) {
@@ -3592,28 +3551,84 @@ function brisbaneDateLabel(d = new Date()) {
     month: 'long',
   }).format(d);
 }
+/** 0 = 1 January … 364 = 31 December. 29 February uses 28 February. */
+function readingDayIndex(month, day) {
+  let d = day;
+  if (month === 2 && d === 29) d = 28;
+  let index = d - 1;
+  for (let i = 0; i < month - 1; i++) index += NON_LEAP_MONTH_DAYS[i];
+  return index;
+}
 /** Stable daily pair for a Brisbane calendar date. */
 function todayReflection(d = new Date()) {
   const iso = brisbaneDateISO(d);
-  const [y, m, day] = iso.split('-').map(Number);
-  const utcDays = Math.floor(Date.UTC(y, m - 1, day) / 86400000);
-  const len = DAILY_TODAY.length;
-  const index = ((utcDays % len) + len) % len;
-  const entry = DAILY_TODAY[index];
-  return { iso, index, word: entry.word, line: entry.line };
+  const [, m, day] = iso.split('-').map(Number);
+  const index = readingDayIndex(m, day);
+  const wordEntry = WORD_FOR_THE_DAY[index];
+  const jftEntry = JUST_FOR_TODAY[index];
+  return {
+    iso,
+    index,
+    month: m,
+    day,
+    leap: m === 2 && day === 29,
+    word: wordEntry.word,
+    wordReading: wordEntry.reading,
+    title: jftEntry.title,
+    line: jftEntry.reading,
+    jftReading: jftEntry.reading,
+  };
+}
+function fillReading(el, text) {
+  el.replaceChildren();
+  const parts = String(text || '').split(/\n\n+/).map(s => s.trim()).filter(Boolean);
+  for (const part of parts) {
+    const p = document.createElement('p');
+    p.textContent = part;
+    if (part.startsWith('Just for today')) p.className = 'today-jft-close';
+    el.appendChild(p);
+  }
 }
 function todayCardEl(d = new Date()) {
   const t = todayReflection(d);
   const card = document.createElement('section');
-  card.className = 'today-card';
+  card.className = 'today-card' + (todayExpanded ? ' is-expanded' : '');
   card.id = 'todayCard';
   card.setAttribute('aria-labelledby', 'todayHeading');
   card.dataset.iso = t.iso;
   card.dataset.index = String(t.index);
-  card.innerHTML = '<p class="today-kicker">Optional fellowship-style daily reflection · not clinical advice</p><h2 id="todayHeading">Today</h2><p class="today-date"></p><h3 class="today-label">Word for today</h3><p class="today-word"></p><h3 class="today-label">Just for today</h3><p class="today-line"></p>';
+  const leap = t.leap
+    ? '<p class="today-leap">Leap day keeps the 28 February reading.</p>'
+    : '';
+  card.innerHTML =
+    '<p class="today-kicker">Optional fellowship-style reflection, not clinical advice.</p>' +
+    '<h2 id="todayHeading">Today</h2>' +
+    '<p class="today-date"></p>' +
+    leap +
+    '<h3 class="today-label">Word for the day</h3>' +
+    '<p class="today-word"></p>' +
+    '<div class="today-reading today-word-reading" id="todayWordReading"></div>' +
+    '<h3 class="today-label">Just for today</h3>' +
+    '<p class="today-jft-title"></p>' +
+    '<div class="today-reading today-jft-reading" id="todayJftReading"></div>' +
+    '<button type="button" class="today-expand" id="todayExpand" aria-controls="todayWordReading todayJftReading"></button>';
   $('.today-date', card).textContent = brisbaneDateLabel(d) + ' · Brisbane';
   $('.today-word', card).textContent = t.word;
-  $('.today-line', card).textContent = t.line;
+  $('.today-jft-title', card).textContent = t.title;
+  fillReading($('.today-word-reading', card), t.wordReading);
+  fillReading($('.today-jft-reading', card), t.jftReading);
+  const btn = $('#todayExpand', card);
+  const syncBtn = () => {
+    const open = card.classList.contains('is-expanded');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'Show less' : 'Read full reflections';
+  };
+  syncBtn();
+  btn.addEventListener('click', () => {
+    todayExpanded = !card.classList.contains('is-expanded');
+    card.classList.toggle('is-expanded', todayExpanded);
+    syncBtn();
+  });
   return card;
 }
 
