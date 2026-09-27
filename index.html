@@ -147,6 +147,14 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .plan .plan-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
 .plan-soon { margin-top: 16px; }
 .plan-soon h3 { margin-top: 0; }
+.message-caps { margin: 4px 0 18px; }
+.message-caps-title { margin: 0 0 8px; font-size: 1.05rem; font-weight: 800; }
+.message-caps-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.message-cap { border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; background: var(--surface); }
+.message-cap.plus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.message-cap .lbl { margin: 0; font-size: .88rem; font-weight: 700; color: var(--muted); }
+.message-cap .num { margin: 2px 0 0; font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; color: var(--text); }
+@media (max-width: 600px) { .message-caps-row { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .plans-grid { grid-template-columns: 1fr; } }
 
 @media (max-width: 900px) {
@@ -226,7 +234,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
           <a class="btn btn-primary" href="app/" id="launchApp">Open the app</a>
           <a class="btn" href="#plans" id="heroPlus">Hopewick Plus</a>
         </div>
-        <p class="cta-note">Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. <strong>Hopewick Plus is AU$20 a month.</strong> <a href="#plans">See Hopewick Plus</a>. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet. Organisation plans are coming soon.</p>
+        <p class="cta-note">Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. <strong>Hopewick Plus is AU$20 a month.</strong> <strong>Daily message limits:</strong> Free is 20 messages/day. Hopewick Plus is 200 messages/day. <a href="#plans">See Hopewick Plus</a>. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet. Organisation plans are coming soon.</p>
       </div>
       <div class="mock" aria-label="Example conversation (pre-written)">
         <div class="mock-head"><span class="orb" aria-hidden="true"></span><span data-companion>Hope</span><span class="tag">EXAMPLE</span></div>
@@ -366,12 +374,26 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
       <p class="section-lede">Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder.</p>
       <p class="section-lede">Cancel anytime. One subscription per person.</p>
       <p class="section-lede">Organisation plans coming soon.</p>
+      <div class="message-caps" aria-label="Daily message limits">
+        <p class="message-caps-title">Daily message limits</p>
+        <div class="message-caps-row">
+          <div class="message-cap">
+            <p class="lbl">Free</p>
+            <p class="num">20 messages/day</p>
+          </div>
+          <div class="message-cap plus">
+            <p class="lbl">Hopewick Plus</p>
+            <p class="num">200 messages/day</p>
+          </div>
+        </div>
+      </div>
       <div class="plans-grid">
         <article class="card plan">
           <h3>Essential support</h3>
           <p class="price">AU$0</p>
           <p class="who">Stays free. Plus is not required.</p>
           <ul class="checklist">
+            <li><strong>Daily message limit: 20 messages/day</strong></li>
             <li>Today’s Readings — Word for the day and Just for today</li>
             <li>Crisis support, including Australian crisis lines</li>
             <li>Domestic and family violence resources</li>
@@ -387,6 +409,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
           <p class="price">AU$20 <span>/ month</span></p>
           <p class="who">Cancel anytime. One subscription per person.</p>
           <ul class="checklist">
+            <li><strong>Daily message limit: 200 messages/day</strong></li>
             <li>Your clean time tracker</li>
             <li>SOAP reflections</li>
             <li>Going Deeper faith content</li>

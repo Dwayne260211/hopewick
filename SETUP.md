@@ -15,11 +15,14 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 | Website | Yes | Yes |
 | Crisis, domestic and family violence, Get help | Always | Always |
 | Chat history | Latest conversation on a free account | Saved chat history on this device |
+| Daily message limit (marketing policy) | 20 messages/day | 200 messages/day |
 | Reading library (any day of the year) | Today only | Yes |
 | Resume builder | Yes — saved on this device | Included, still free |
 | Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and the resume builder. Scripted sample conversations stay at `app/?demo=1` for organisation trials.
+
+The daily message limits (Free 20 messages/day, Hopewick Plus 200 messages/day) are product policy on the marketing site and the Hopewick Plus screen. The companion does not enforce those caps yet.
 
 ## Environment variables
 

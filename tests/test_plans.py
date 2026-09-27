@@ -12,6 +12,9 @@ def test_marketing_plans_copy():
     assert "AU$20" in page
     assert "Unlock the full Hopewick experience" in page
     assert "Essential support stays free" in page
+    assert "Daily message limits" in page
+    assert "20 messages/day" in page
+    assert "200 messages/day" in page
     assert "Cancel anytime. One subscription per person." in page
     assert "Organisation plans coming soon" in page
     assert "COMING SOON" in page
@@ -47,6 +50,9 @@ def test_companion_gates_premium_not_crisis():
     assert "/api/auth/magic-link" in app
     assert "AU$20" in app
     assert "Essential support stays free" in app
+    assert "Daily message limits" in app
+    assert "20 messages/day" in app
+    assert "200 messages/day" in app
     assert "Email me a sign-in link" in app
     assert "Hopewick Plus — AU$20/month" in app
     assert "Plans & account" not in app

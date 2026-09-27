@@ -69,7 +69,7 @@ The **Get help now** button is always at the top of the screen. Preferences (fai
 
 **Hopewick Plus — AU$20/month** unlocks the full Hopewick experience: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Cancel anytime. One subscription per person.
 
-Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Organisation plans are coming soon (the pilot sheet is still the conversation for services).
+Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. **Daily message limits:** Free is 20 messages/day. Hopewick Plus is 200 messages/day. Those caps are product policy in the copy. They are not enforced in the companion yet. Organisation plans are coming soon (the pilot sheet is still the conversation for services).
 
 Sign-in is an email magic link. In the companion the screen is **Hopewick Plus**. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when that variable is unset, the only address is the founder’s Plus email, not the organisations inbox.
 

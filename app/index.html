@@ -847,6 +847,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .account-dlg { width: min(460px, calc(100vw - 24px)); }
 .account-dlg .lede { color: var(--muted); font-size: .92rem; margin: 0 0 12px; line-height: 1.45; }
+.message-caps { margin: 0 0 14px; }
+.message-caps-title { margin: 0 0 8px; font-weight: 800; font-size: .98rem; }
+.message-caps-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.message-cap { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: var(--surface-2); }
+.message-cap.plus { border-color: var(--accent); background: var(--accent-soft); }
+.message-cap .lbl { margin: 0; font-size: .78rem; font-weight: 700; color: var(--muted); }
+.message-cap .num { margin: 2px 0 0; font-size: 1.02rem; font-weight: 800; color: var(--text); line-height: 1.25; }
 .account-form { display: grid; gap: 10px; }
 .account-form label { display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
 .account-form input {
@@ -8827,6 +8834,32 @@ function appendPlusOffer(body) {
   const free = document.createElement('p');
   free.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder.';
   body.appendChild(free);
+  const caps = document.createElement('div');
+  caps.className = 'message-caps';
+  caps.setAttribute('aria-label', 'Daily message limits');
+  const capsTitle = document.createElement('p');
+  capsTitle.className = 'message-caps-title';
+  capsTitle.textContent = 'Daily message limits';
+  caps.appendChild(capsTitle);
+  const capsRow = document.createElement('div');
+  capsRow.className = 'message-caps-row';
+  function capCard(label, amount, featured) {
+    const card = document.createElement('div');
+    card.className = featured ? 'message-cap plus' : 'message-cap';
+    const who = document.createElement('p');
+    who.className = 'lbl';
+    who.textContent = label;
+    const num = document.createElement('p');
+    num.className = 'num';
+    num.textContent = amount;
+    card.appendChild(who);
+    card.appendChild(num);
+    return card;
+  }
+  capsRow.appendChild(capCard('Free', '20 messages/day', false));
+  capsRow.appendChild(capCard('Hopewick Plus', '200 messages/day', true));
+  caps.appendChild(capsRow);
+  body.appendChild(caps);
   const cancel = document.createElement('p');
   cancel.textContent = 'Cancel anytime. One subscription per person.';
   body.appendChild(cancel);
