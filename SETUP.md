@@ -22,7 +22,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and the resume builder. Scripted sample conversations stay at `app/?demo=1` for organisation trials.
 
-The daily message limits (Free 20 messages/day, Hopewick Plus 200 messages/day) are product policy on the marketing site and the Hopewick Plus screen. The companion does not enforce those caps yet.
+The daily message limits (Free 20 messages/day, Hopewick Plus 200 messages/day) are enforced by the account server on hosted Hope (`POST /api/hope/chat`). The marketing site and the Hopewick Plus screen use the same numbers.
 
 ## Environment variables
 
