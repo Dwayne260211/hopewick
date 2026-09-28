@@ -22,7 +22,7 @@ LIBRARY_MARKERS = (
 
 def _library_source() -> str:
     text = APP.read_text(encoding="utf-8")
-    return text.split("const NUTRITION_LIBRARY = [", 1)[1].split("const NUTRITION_TOPICS = [", 1)[0]
+    return text.split("const NUTRITION_BENEFITS = [", 1)[1].split("const NUTRITION_TOPICS = [", 1)[0]
 
 
 def test_static_nutrition_copy_and_gate():
@@ -44,9 +44,15 @@ def test_static_nutrition_copy_and_gate():
     assert "Multivitamin" in library
     assert "Vitamin-rich foods" in library
     assert "Hydration" in library
+    assert "Benefit ↔ nutrient" in text
+    assert "Look up by benefit" in text
+    assert "Look up by nutrient" in text
+    assert "const NUTRITION_PAIRINGS" in text
+    for benefit in ("Sleep", "Mood support", "Liver / antioxidant interest", "Heart & brain oils", "Energy", "Hydration"):
+        assert benefit in library
     assert "What it is" in text
-    assert "Why people in recovery often look at it" in text
-    assert "Practical notes" in text
+    assert "data-benefit-filter" in text
+    assert "data-nutrient-filter" in text
     assert "nutrition: { label: 'Open nutrition'" in text
     assert "id: 'nutrition'" not in text  # Home chips stay as they are; today’s reading stays up
     assert "Do not add plus, resume, bible, or nutrition on a crisis reply." in text
@@ -134,14 +140,38 @@ def test_nutrition_plus_free_and_crisis():
             page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
             page.wait_for_selector('#nutritionLibrary:not([hidden]) article[data-nutrient="nac"]')
             plus_text = page.locator("#nutritionDlg").text_content()
+            assert "Benefit" in plus_text
+            assert "Nutrient" in plus_text
             assert "What it is" in plus_text
-            assert "Why people in recovery often look at it" in plus_text
-            assert "Practical notes" in plus_text
+            assert "Notes" in plus_text
             for marker in LIBRARY_MARKERS:
                 assert marker in plus_text
             assert "not a treatment for addiction" in plus_text
             assert page.locator("#nutritionGate").is_hidden()
             assert not re.search(r"\b\d+\s*mg\b", plus_text, re.I)
+
+            page.click('[data-benefit-filter="sleep"]')
+            page.wait_for_selector('.nut-pair[data-benefit="sleep"]')
+            assert page.locator('.nut-pair[data-nutrient="nac"]').count() == 0
+            sleep_text = page.locator("#nutritionPairs").text_content()
+            assert "Sleep" in sleep_text
+            assert "Magnesium" in sleep_text
+
+            page.click('[data-nutrient-filter="nac"]')
+            page.wait_for_selector("#nutritionPairEmpty")
+
+            page.click('[data-benefit-filter="all"]')
+            page.wait_for_selector('.nut-pair[data-nutrient="nac"]')
+            nac_text = page.locator('.nut-pair[data-nutrient="nac"]').text_content()
+            assert "Liver / antioxidant interest" in nac_text
+            assert "NAC (N-acetylcysteine)" in nac_text
+            assert "Sleep" not in nac_text
+
+            page.click('[data-nutrient-filter="fish-oil"]')
+            page.wait_for_selector('.nut-pair[data-nutrient="fish-oil"][data-benefit="mood"]')
+            assert page.locator('.nut-pair[data-nutrient="fish-oil"][data-benefit="heart"]').count() == 1
+            page.click('[data-nutrient-filter="all"]')
+            page.click('[data-benefit-filter="all"]')
             page.select_option("#nutritionSelect", "alcohol")
             assert "thiamine" in page.inner_text("#nutritionPanel").lower()
             page.keyboard.press("Escape")
