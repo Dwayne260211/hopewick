@@ -10,8 +10,10 @@
  * Azure invite proxy). The browser never receives it.
  *
  * Plus Checkout includes a 3-day trial, then the existing monthly price.
- * Daily caps: Free 20 messages, Hopewick Plus (including complimentary
- * founder emails) 200. Counts use the Australia/Brisbane calendar day.
+ * Daily caps: Free is 5 messages. Hopewick Plus, a 3-day trial, and
+ * complimentary founder emails have no daily message cap. Counts use the
+ * Australia/Brisbane calendar day. Crisis and Get help replies do not
+ * spend a message and are not refused for the free cap.
  * Conversations are not stored — only email, subscription status, and
  * that day's message count.
  *
@@ -29,7 +31,6 @@ import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-cli
 import {
   hopeConfigured,
   freeDailyCap,
-  plusDailyCap,
   usageSnapshot,
   lastUserText,
   isCrisisText,
@@ -377,7 +378,7 @@ async function handleApi(store, req, res, url) {
       trialDays: PLUS_TRIAL_DAYS,
       hopeHosted: hopeConfigured(),
       freeDailyMessages: freeDailyCap(),
-      plusDailyMessages: plusDailyCap(),
+      plusDailyMessages: null,
     });
     return;
   }
@@ -640,7 +641,7 @@ async function pipeUpstream(res, upstream) {
 async function handleHopeChat(store, req, res) {
   const user = currentUser(req, store);
   if (!user) {
-    json(res, 401, { error: { message: 'Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200.', code: 'auth' } });
+    json(res, 401, { error: { message: 'Sign in to chat with Hope. Free is 5 messages a day. Hopewick Plus has no daily message limit.', code: 'auth' } });
     return;
   }
 
@@ -682,7 +683,7 @@ async function handleHopeChat(store, req, res) {
     return;
   }
 
-  if (crisis && admission.usage.count >= admission.limit) {
+  if (crisis && admission.limit != null && admission.usage.count >= admission.limit) {
     if (stream) writeSse(res, CRISIS_FALLBACK);
     else json(res, 200, completionJson(CRISIS_FALLBACK));
     return;

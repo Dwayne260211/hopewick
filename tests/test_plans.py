@@ -13,8 +13,11 @@ def test_marketing_plans_copy():
     assert "Unlock the full Hopewick experience" in page
     assert "Essential support stays free" in page
     assert "Daily message limits" in page
-    assert "20 messages/day" in page
-    assert "200 messages/day" in page
+    assert "5 messages/day" in page
+    assert "No daily limit" in page
+    assert "No daily message limit" in page
+    assert "20 messages/day" not in page
+    assert "200 messages/day" not in page
     assert "Cancel anytime. One subscription per person." in page
     assert "Organisation plans coming soon" in page
     assert "COMING SOON" in page
@@ -53,8 +56,11 @@ def test_companion_gates_premium_not_crisis():
     assert "AU$20" in app
     assert "Essential support stays free" in app
     assert "Daily message limits" in app
-    assert "20 messages/day" in app
-    assert "200 messages/day" in app
+    assert "5 messages/day" in app
+    assert "No daily limit" in app
+    assert "No daily message limit" in app
+    assert "20 messages/day" not in app
+    assert "200 messages/day" not in app
     assert "Email me a sign-in link" in app
     assert "Hopewick Plus — 3 days free, then AU$20/month" in app
     assert "Plans & account" not in app

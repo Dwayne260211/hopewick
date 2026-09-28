@@ -436,7 +436,48 @@ test('FOUNDER_PLUS_EMAILS overrides the default and still ignores the organisati
   }
 });
 
-test('hosted Hope requires sign-in, hides the key, and enforces free and Plus caps', async () => {
+test('free Hope defaults to 5 a day and a trial has no daily cap', async () => {
+  const app = await listen({
+    OPENAI_API_KEY: 'sk-test-hope-secret',
+    HOPEWICK_PLUS_DAILY: '2',
+  }, []);
+  try {
+    const config = await (await fetch(`${app.base}/api/billing/config`)).json();
+    assert.equal(config.freeDailyMessages, 5);
+    assert.equal(config.plusDailyMessages, null);
+
+    const free = await signIn(app.base, 'five@example.com');
+    const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: free } })).json();
+    assert.equal(usage.plus, false);
+    assert.equal(usage.limit, 5);
+    assert.equal(usage.remaining, 5);
+
+    const trial = await signIn(app.base, 'trial@example.com');
+    const set = await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: trial, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'trialing' }),
+    });
+    assert.equal(set.status, 200);
+    for (let i = 0; i < 3; i += 1) {
+      const ok = await fetch(`${app.base}/api/hope/chat`, {
+        method: 'POST',
+        headers: { cookie: trial, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: `Trial message ${i}` }] }),
+      });
+      assert.equal(ok.status, 200);
+    }
+    const trialUsage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: trial } })).json();
+    assert.equal(trialUsage.plus, true);
+    assert.equal(trialUsage.limit, null);
+    assert.equal(trialUsage.remaining, null);
+    assert.equal(trialUsage.used, 3);
+  } finally {
+    await app.close();
+  }
+});
+
+test('hosted Hope requires sign-in, hides the key, and enforces the free cap', async () => {
   const app = await listen({
     OPENAI_API_KEY: 'sk-test-hope-secret',
     HOPEWICK_FREE_DAILY: '1',
@@ -487,7 +528,8 @@ test('hosted Hope requires sign-in, hides the key, and enforces free and Plus ca
     });
     assert.equal(blocked.status, 429);
     const blockedBody = await blocked.json();
-    assert.match(blockedBody.error.message, /20 free messages|today’s 1 free messages/);
+    assert.match(blockedBody.error.message, /today’s 1 free messages/);
+    assert.match(blockedBody.error.message, /no daily message limit/);
     assert.equal(app.openaiCalls.length, 1);
 
     const crisis = await fetch(`${app.base}/api/hope/chat`, {
@@ -512,7 +554,7 @@ test('hosted Hope requires sign-in, hides the key, and enforces free and Plus ca
       headers: { cookie: plusSession, 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'active' }),
     });
-    for (let i = 0; i < 2; i += 1) {
+    for (let i = 0; i < 3; i += 1) {
       const ok = await fetch(`${app.base}/api/hope/chat`, {
         method: 'POST',
         headers: { cookie: plusSession, 'Content-Type': 'application/json' },
@@ -523,22 +565,17 @@ test('hosted Hope requires sign-in, hides the key, and enforces free and Plus ca
       assert.match(text, /data:/);
       assert.match(ok.headers.get('content-type') || '', /event-stream/);
     }
-    const plusBlocked = await fetch(`${app.base}/api/hope/chat`, {
-      method: 'POST',
-      headers: { cookie: plusSession, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: [{ role: 'user', content: 'over plus cap' }] }),
-    });
-    assert.equal(plusBlocked.status, 429);
     const plusUsage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: plusSession } })).json();
     assert.equal(plusUsage.plus, true);
-    assert.equal(plusUsage.limit, 2);
-    assert.equal(plusUsage.used, 2);
+    assert.equal(plusUsage.limit, null);
+    assert.equal(plusUsage.remaining, null);
+    assert.equal(plusUsage.used, 3);
   } finally {
     await app.close();
   }
 });
 
-test('complimentary founder gets the Plus cap and is not sent to Checkout', async () => {
+test('complimentary founder has no daily cap and is not sent to Checkout', async () => {
   const stripeCalls = [];
   const app = await listen({
     OPENAI_API_KEY: 'sk-test-hope-secret',
@@ -558,10 +595,20 @@ test('complimentary founder gets the Plus cap and is not sent to Checkout', asyn
     assert.match((await checkout.json()).error, /No payment is needed/);
     assert.equal(stripeCalls.length, 0);
 
+    for (let i = 0; i < 3; i += 1) {
+      const ok = await fetch(`${app.base}/api/hope/chat`, {
+        method: 'POST',
+        headers: { cookie: founder, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: `Founder message ${i}` }] }),
+      });
+      assert.equal(ok.status, 200);
+    }
     const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: founder } })).json();
     assert.equal(usage.plus, true);
     assert.equal(usage.complimentary, true);
-    assert.equal(usage.limit, 2);
+    assert.equal(usage.limit, null);
+    assert.equal(usage.remaining, null);
+    assert.equal(usage.used, 3);
 
     const clinic = await signIn(app.base, 'admin@bridge-bite-co.com');
     const clinicUsage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: clinic } })).json();
