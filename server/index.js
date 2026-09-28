@@ -2,7 +2,8 @@
  * Hopewick account + billing server.
  *
  * The marketing site and companion stay static HTML. This process serves those
- * files and a small /api for email magic-link sign-in, Stripe Checkout,
+ * files and a small /api for email magic-link sign-in, Sign in with Google,
+ * Sign in with Apple, Stripe Checkout,
  * the Customer Portal, and subscription webhooks.
  *
  * Hosted Hope chat is POST /api/hope/chat. The OpenAI key stays in
@@ -27,6 +28,15 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail } from './store.js';
+import {
+  OAUTH_COOKIE,
+  googleSignInEnabled,
+  appleSignInEnabled,
+  oauthStartupLines,
+  startOAuth,
+  finishOAuth,
+  clearOauthCookie,
+} from './oauth.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import {
   hopeConfigured,
@@ -195,6 +205,62 @@ function sessionCookie(token, req, maxAgeSec) {
 
 function clearCookie(req) {
   return sessionCookie('', req, 0);
+}
+
+function clientIp(req) {
+  const fwd = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return fwd || (req.socket && req.socket.remoteAddress) || 'local';
+}
+
+function startSession(user, store) {
+  const session = crypto.randomBytes(32).toString('hex');
+  user.session = { hash: hashToken(session), expiresAt: Date.now() + SESSION_MS };
+  store.save(user);
+  return session;
+}
+
+function redirectOAuthProblem(res, req, code) {
+  const allowed = new Set(['denied', 'email', 'state', 'config', 'provider', 'conflict']);
+  const safe = allowed.has(code) ? code : 'provider';
+  res.writeHead(302, {
+    Location: `/app/?account=1&oauth_error=${safe}`,
+    'Set-Cookie': clearOauthCookie(cookieSecure(req)),
+    'Cache-Control': 'no-store',
+  });
+  res.end();
+}
+
+async function completeProviderSignIn(store, req, res, provider, params) {
+  try {
+    const result = await finishOAuth(provider, {
+      cookie: cookies(req)[OAUTH_COOKIE],
+      state: params.state || '',
+      code: params.code || '',
+      idToken: params.idToken || '',
+      error: params.error || '',
+      store,
+    });
+    if (result.emailMismatch) {
+      const name = provider === 'apple' ? 'Apple' : 'Google';
+      console.log(`Sign in with ${name} used the account already linked to that provider. The email on this sign-in is different, so the Hopewick email was left unchanged.`);
+    }
+    const session = startSession(result.user, store);
+    res.writeHead(302, {
+      Location: result.next,
+      'Set-Cookie': [
+        sessionCookie(session, req, Math.floor(SESSION_MS / 1000)),
+        clearOauthCookie(cookieSecure(req)),
+      ],
+      'Cache-Control': 'no-store',
+    });
+    res.end();
+  } catch (err) {
+    if (!err || !err.oauthCode) {
+      const name = provider === 'apple' ? 'Apple' : 'Google';
+      console.error(`Sign in with ${name} failed (provider).`);
+    }
+    if (!res.headersSent) redirectOAuthProblem(res, req, err && err.oauthCode);
+  }
 }
 
 function currentUser(req, store) {
@@ -379,6 +445,8 @@ async function handleApi(store, req, res, url) {
       hopeHosted: hopeConfigured(),
       freeDailyMessages: freeDailyCap(),
       plusDailyMessages: null,
+      googleSignIn: googleSignInEnabled(),
+      appleSignIn: appleSignInEnabled(),
     });
     return;
   }
@@ -464,9 +532,7 @@ async function handleApi(store, req, res, url) {
       return;
     }
     match.magic = null;
-    const session = crypto.randomBytes(32).toString('hex');
-    match.session = { hash: hashToken(session), expiresAt: Date.now() + SESSION_MS };
-    store.save(match);
+    const session = startSession(match, store);
     const next = safeNext(url.searchParams.get('next')) || '/app/?signedin=1';
     res.writeHead(302, {
       Location: next,
@@ -474,6 +540,61 @@ async function handleApi(store, req, res, url) {
       'Cache-Control': 'no-store',
     });
     res.end();
+    return;
+  }
+
+  if (req.method === 'GET' && (route === '/api/auth/google' || route === '/api/auth/apple')) {
+    const provider = route.endsWith('apple') ? 'apple' : 'google';
+    try {
+      const started = startOAuth(provider, {
+        next: safeNext(url.searchParams.get('next')),
+        secure: cookieSecure(req),
+        publicBase: publicBase(req),
+        ip: clientIp(req),
+      });
+      res.writeHead(302, {
+        Location: started.location,
+        'Set-Cookie': started.setCookie,
+        'Cache-Control': 'no-store',
+      });
+      res.end();
+    } catch (err) {
+      redirectOAuthProblem(res, req, (err && err.oauthCode) || 'provider');
+    }
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/auth/google/callback') {
+    await completeProviderSignIn(store, req, res, 'google', {
+      state: url.searchParams.get('state') || '',
+      code: url.searchParams.get('code') || '',
+      error: url.searchParams.get('error') || '',
+    });
+    return;
+  }
+
+  if (route === '/api/auth/apple/callback' && req.method === 'POST') {
+    const raw = await readBody(req, 100_000);
+    const type = String(req.headers['content-type'] || '');
+    if (!type.includes('application/x-www-form-urlencoded')) {
+      redirectOAuthProblem(res, req, 'provider');
+      return;
+    }
+    const form = new URLSearchParams(raw.toString('utf8'));
+    await completeProviderSignIn(store, req, res, 'apple', {
+      state: form.get('state') || '',
+      code: form.get('code') || '',
+      idToken: form.get('id_token') || '',
+      error: form.get('error') || '',
+    });
+    return;
+  }
+
+  if (route === '/api/auth/apple/callback' && req.method === 'GET') {
+    await completeProviderSignIn(store, req, res, 'apple', {
+      state: url.searchParams.get('state') || '',
+      error: url.searchParams.get('error') || 'rejected',
+    });
     return;
   }
 
@@ -809,6 +930,7 @@ if (isMain) {
     console.log(`Health: http://${host}:${addr.port}/api/health`);
     console.log(`Account file: ${storePath}`);
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
+    for (const line of oauthStartupLines()) console.log(line);
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
       console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');

@@ -1,7 +1,7 @@
 # Hopewick — AOD recovery support & AI recovery companion 🕯️
 
 **Hopewick** (a small light that keeps burning) is a warm, non-judgemental **AI recovery companion** that runs in your browser. The product tagline is **AOD recovery support between sessions**. Faith content is optional (Preferences / About). It can also switch to an everyday **Friend** mode.
-The marketing site and companion are static HTML (no build step, no external CDNs). **Hopewick Plus** (AU$20/month) adds a small Node account server for email sign-in and Stripe — see [SETUP.md](SETUP.md). Chats stay in the browser.
+The marketing site and companion are static HTML (no build step, no external CDNs). **Hopewick Plus** (AU$20/month) adds a small Node account server for email sign-in, Sign in with Google, Sign in with Apple, and Stripe — see [SETUP.md](SETUP.md). Chats stay in the browser.
 
 **Live:**
 - Website (landing page): https://dwayne260211.github.io/hopewick/
@@ -71,7 +71,7 @@ The **Get help now** button is always at the top of the screen. First-run onboar
 
 Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and Hope chat. **Daily message limits:** Free is 5 messages/day. Hopewick Plus, including a 3-day trial and complimentary founder access, has no daily message limit. The account server enforces the free cap on hosted Hope (`POST /api/hope/chat`). The browser never sees the model key. Organisation plans are coming soon (the pilot sheet is still the conversation for services). New Plus Checkout sessions send `subscription_data[trial_period_days]=3` with the existing monthly price. See [SETUP.md](SETUP.md).
 
-Sign-in is an email magic link. In the companion the screen is **Hopewick Plus**. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when that variable is unset, the only address is the founder’s Plus email, not the organisations inbox.
+Sign-in is an email magic link, plus **Sign in with Google** and **Sign in with Apple** when those providers are configured on the server. The same email is the same account, including Plus. In the companion the screen is **Hopewick Plus**. Checkout needs a signed-in account. Chats are not uploaded — the account stores email and subscription status. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when that variable is unset, the only address is the founder’s Plus email, not the organisations inbox. Buttons stay hidden until the Google or Apple environment variables are set.
 
 Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, and in production `RESEND_API_KEY` plus `MAGIC_LINK_FROM`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
 

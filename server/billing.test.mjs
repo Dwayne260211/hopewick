@@ -34,6 +34,13 @@ async function listen(env, stripeCalls) {
     OPENAI_MODEL: process.env.OPENAI_MODEL,
     HOPEWICK_FREE_DAILY: process.env.HOPEWICK_FREE_DAILY,
     HOPEWICK_PLUS_DAILY: process.env.HOPEWICK_PLUS_DAILY,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    APPLE_CLIENT_ID: process.env.APPLE_CLIENT_ID,
+    APPLE_TEAM_ID: process.env.APPLE_TEAM_ID,
+    APPLE_KEY_ID: process.env.APPLE_KEY_ID,
+    APPLE_PRIVATE_KEY: process.env.APPLE_PRIVATE_KEY,
+    OAUTH_STATE_SECRET: process.env.OAUTH_STATE_SECRET,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -47,6 +54,13 @@ async function listen(env, stripeCalls) {
   delete process.env.OPENAI_MODEL;
   delete process.env.HOPEWICK_FREE_DAILY;
   delete process.env.HOPEWICK_PLUS_DAILY;
+  delete process.env.GOOGLE_CLIENT_ID;
+  delete process.env.GOOGLE_CLIENT_SECRET;
+  delete process.env.APPLE_CLIENT_ID;
+  delete process.env.APPLE_TEAM_ID;
+  delete process.env.APPLE_KEY_ID;
+  delete process.env.APPLE_PRIVATE_KEY;
+  delete process.env.OAUTH_STATE_SECRET;
   Object.assign(process.env, env);
 
   const openaiCalls = [];
