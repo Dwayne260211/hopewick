@@ -134,20 +134,15 @@ def test_church_chat_chip():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 1280, "height": 900})
-            page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
-            page.wait_for_selector("#input", timeout=20000)
-            chip = page.query_selector('button.starter:has-text("Find a church")')
-            if chip and chip.is_visible():
-                chip.click()
-            else:
-                page.fill("#input", "Can you help me find a church near me?")
-                page.click("#sendBtn")
-                page.wait_for_timeout(2000)
-                bar = page.query_selector("#churchSuggest:not([hidden]) button")
-                if bar:
-                    bar.click()
-                else:
-                    page.evaluate("openChurch()")
+            page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
+            page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
+            page.click("#launchPrefsContinue")
+            page.click("#appTabChat")
+            page.wait_for_selector("#input", state="visible", timeout=20000)
+            page.fill("#input", "Can you help me find a church near me?")
+            page.click("#sendBtn")
+            page.wait_for_selector('#hopeGateway button[data-hope-tool="church"]', timeout=10000)
+            page.click('#hopeGateway button[data-hope-tool="church"]')
             page.wait_for_function("() => document.getElementById('churchDlg')?.open === true", timeout=10000)
             assert page.eval_on_selector("#churchDlg", "el => el.open")
             browser.close()

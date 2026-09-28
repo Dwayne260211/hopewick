@@ -488,22 +488,38 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .home-sober .days { font-size: 1.65rem; font-weight: 800; color: var(--accent-strong); line-height: 1; }
 .home-sober .lbl { font-size: .85rem; color: var(--muted); line-height: 1.3; }
-.home-shortcuts {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-.home-shortcut {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
-  padding: 14px 14px; border-radius: var(--radius-sm);
-  border: 1px solid var(--border); background: var(--surface);
-  text-align: left; font-size: .92rem; font-weight: 600;
+.need-now {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px 10px;
   box-shadow: var(--shadow);
-  transition: border-color .15s, background .15s, transform .15s;
 }
-.home-shortcut:hover { border-color: var(--accent); background: var(--surface-2); transform: translateY(-1px); }
-.home-shortcut .ico { font-size: 1.35rem; line-height: 1; }
-.home-shortcut .sub { font-size: .78rem; font-weight: 500; color: var(--muted); }
+.need-now h2 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.need-now-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.need-chip {
+  flex: 1 1 calc(33.33% - 6px);
+  max-width: calc(33.33% - 4px);
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 6px 8px;
+  border-radius: 14px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text);
+  font: inherit; font-size: .78rem; font-weight: 700; line-height: 1.2;
+  text-align: center; white-space: normal;
+}
+.need-chip:hover { border-color: var(--accent); background: var(--accent-soft); }
+.need-chip.urgent {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+  background: var(--danger-soft);
+  color: var(--text);
+}
+.need-chip.urgent:hover { filter: brightness(.98); }
 .home-checkin-done {
   text-align: center; font-size: .9rem; color: var(--muted);
   padding: 10px 12px; border-radius: 12px; background: var(--surface-2);
@@ -969,6 +985,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .crisis-card .crisis-about {
   margin: 8px 0 0; font-size: .8rem; color: var(--muted); line-height: 1.35;
 }
+.crisis-card .crisis-open { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .about-body .about-short { margin: 8px 0 14px; padding-left: 1.15em; }
 .about-more {
   margin: 12px 0 4px; border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -1248,9 +1265,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .check-item .ci-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .check-item.unsafe { border-color: color-mix(in srgb, var(--danger) 35%, var(--border)); }
 .breaker-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.messages > .tool-suggest { margin-bottom: 8px; }
-.tool-suggest { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 12px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--border)); background: var(--accent-soft); font-size: .9rem; }
-.tool-suggest .lbl { color: var(--muted); }
+.messages > .tool-suggest,
+.messages > .hope-gateway { margin-bottom: 8px; }
+.tool-suggest,
+.hope-gateway { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 10px 12px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--border)); background: var(--accent-soft); font-size: .9rem; }
+.tool-suggest .lbl,
+.hope-gateway .lbl { color: var(--muted); font-weight: 650; }
+.hope-gateway.is-crisis {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--danger) 50%, var(--border));
+  background: var(--danger-soft);
+}
+.hope-gateway .btn { white-space: normal; text-align: center; }
 .selfcare-prog { font-size: .88rem; color: var(--muted); margin: 8px 0 4px; text-align: center; }
 .selfcare-warm { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); font-size: .9rem; color: var(--muted); text-align: center; }
 
@@ -3607,6 +3633,22 @@ const ICON_SPEAK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
 const ICON_COPY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const ICON_RETRY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
 
+/** Strip a trailing `TOOLS: id, id` line Hope uses so the app can open tools.
+ *  The line is never shown, spoken, or copied. Unknown ids are ignored later. */
+function splitToolLine(content) {
+  const raw = String(content || '');
+  const text = raw.replace(/\s+$/, '');
+  const lines = text.split('\n');
+  let end = lines.length - 1;
+  while (end >= 0 && !lines[end].trim()) end -= 1;
+  if (end < 0) return { text: '', ids: [] };
+  const m = lines[end].trim().match(/^TOOLS:\s*([a-z0-9, ]+)$/i);
+  if (!m) return { text: raw, ids: [] };
+  const ids = m[1].split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  return { text: lines.slice(0, end).join('\n').replace(/\s+$/, ''), ids };
+}
+function replyForDisplay(content) { return splitToolLine(content).text; }
+
 /** The in-chat safety card shown instantly when risk words are detected (no model needed).
  *  Leads with what to do in this moment; Hope disclaimer is secondary. */
 function crisisCardHtml(kind) {
@@ -3642,17 +3684,36 @@ function messageEl(msg) {
   if (msg.card === 'crisis') {
     wrap.innerHTML = crisisCardHtml(msg.crisisKind);
     wrap.querySelectorAll('[data-companion]').forEach(e => { e.textContent = companionName(); });
+    const card = wrap.querySelector('.crisis-card');
+    const opens = document.createElement('div');
+    opens.className = 'crisis-open';
+    const help = document.createElement('button');
+    help.type = 'button';
+    help.className = 'btn btn-sm btn-primary';
+    help.textContent = 'Open Get help';
+    help.addEventListener('click', () => openHelp());
+    opens.appendChild(help);
+    if ((msg.crisisKind || '') === 'dv') {
+      const dv = document.createElement('button');
+      dv.type = 'button';
+      dv.className = 'btn btn-sm';
+      dv.textContent = 'Open domestic & family violence';
+      dv.addEventListener('click', () => setAppTab('dv'));
+      opens.appendChild(dv);
+    }
+    (card || wrap).appendChild(opens);
     row.appendChild(wrap);
     return { row, bubble: wrap, tools: document.createElement('div') };
   }
 
+  const shown = (msg.role === 'assistant' && !msg.error) ? replyForDisplay(msg.content) : msg.content;
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   const who = document.createElement('span');
   who.className = 'sr-only';
   who.textContent = msg.role === 'user' ? 'You said: ' : `${companionName()} said: `;
-  if (msg.role === 'user' || msg.error) bubble.textContent = msg.content;
-  else bubble.innerHTML = renderMarkdown(msg.content);
+  if (msg.role === 'user' || msg.error) bubble.textContent = shown;
+  else bubble.innerHTML = renderMarkdown(shown);
   wrap.appendChild(who);
   wrap.appendChild(bubble);
 
@@ -3665,8 +3726,9 @@ function messageEl(msg) {
     tools.appendChild(t);
   }
   if (msg.role === 'assistant' && !msg.error) {
-    tools.appendChild(toolBtn(ICON_SPEAK, 'Read aloud', () => speak(msg.content)));
-    tools.appendChild(toolBtn(ICON_COPY, 'Copy message', () => copyText(msg.content)));
+    const plain = replyForDisplay(msg.content);
+    tools.appendChild(toolBtn(ICON_SPEAK, 'Read aloud', () => speak(plain)));
+    tools.appendChild(toolBtn(ICON_COPY, 'Copy message', () => copyText(plain)));
   }
   if (msg.error) tools.appendChild(toolBtn(ICON_RETRY, 'Try again', () => retryLast()));
   wrap.appendChild(tools);
@@ -4063,6 +4125,53 @@ function todayPlusNoteEl() {
   return note;
 }
 
+function openTodayReading() {
+  todayExpanded = true;
+  if (appTab !== 'home') setAppTab('home');
+  else renderHome();
+  const card = document.getElementById('todayCard');
+  if (card) card.scrollIntoView({ block: 'start' });
+}
+function needNowEl() {
+  const section = document.createElement('section');
+  section.className = 'need-now';
+  section.id = 'needNow';
+  section.setAttribute('aria-labelledby', 'needNowHeading');
+  const heading = document.createElement('h2');
+  heading.id = 'needNowHeading';
+  heading.textContent = 'What do you need right now?';
+  section.appendChild(heading);
+  const chips = document.createElement('div');
+  chips.className = 'need-now-chips';
+  const items = [
+    { id: 'help', label: 'Get help', title: 'Crisis lines and AOD support. Always free.', urgent: true, action: () => openHelp() },
+    { id: 'dv', label: 'Not safe at home', title: 'Domestic and family violence support. Always free.', urgent: true, action: () => setAppTab('dv') },
+    { id: 'craving', label: 'A craving', title: 'Open circuit breakers', action: () => openBreakers() },
+    { id: 'chat', label: 'Talk to ' + companionName(), title: 'Open chat', action: () => setAppTab('chat') },
+    { id: 'today', label: 'Today’s reading', title: 'Word for the day and Just for today', action: () => openTodayReading() },
+    { id: 'journal', label: 'Journal', title: 'Write it down', action: () => openJournal() },
+  ];
+  if (settings.faith !== 'none') {
+    items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => openBible() });
+  }
+  items.push(
+    { id: 'resume', label: 'Resume', title: 'Free resume builder', action: () => setAppTab('resume') },
+    { id: 'meeting', label: 'A meeting', title: 'Find an AA, NA, or SMART meeting', action: () => openMeetings() },
+  );
+  for (const it of items) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'need-chip' + (it.urgent ? ' urgent' : '');
+    b.dataset.need = it.id;
+    b.textContent = it.label;
+    b.title = it.title;
+    b.setAttribute('aria-label', it.label + '. ' + it.title);
+    b.addEventListener('click', it.action);
+    chips.appendChild(b);
+  }
+  section.appendChild(chips);
+  return section;
+}
 function renderHome() {
   if (!el.homeInner) return;
   const counsellor = isCounsellor();
@@ -4073,8 +4182,9 @@ function renderHome() {
   hero.className = 'home-hero';
   hero.innerHTML = '<div class="orb md" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
   $('h1', hero).textContent = greeting() + ' 🌿';
-  $('p', hero).textContent = `A safe space with ${companionName()}. Check in below, or open a tool whenever you need it.`;
+  $('p', hero).textContent = 'Pick what you need. Today’s reading is just below.';
   box.appendChild(hero);
+  box.appendChild(needNowEl());
   box.appendChild(todayCardEl());
   box.appendChild(todayPlusNoteEl());
 
@@ -4090,6 +4200,13 @@ function renderHome() {
     sober.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || 'clean'}. Open clean time tracker.`);
     sober.addEventListener('click', () => openCleanTime());
     box.appendChild(sober);
+  } else {
+    const setClean = document.createElement('button');
+    setClean.type = 'button';
+    setClean.className = 'btn';
+    setClean.textContent = 'Set clean time';
+    setClean.addEventListener('click', () => openCleanTime());
+    box.appendChild(setClean);
   }
 
   if (settings.moodCheck) {
@@ -4118,28 +4235,6 @@ function renderHome() {
     note.textContent = 'Today you’re grateful for: ' + g.items.join(' · ');
     box.appendChild(note);
   }
-
-  const shortcuts = document.createElement('div');
-  shortcuts.className = 'home-shortcuts';
-  shortcuts.setAttribute('aria-label', 'Shortcuts');
-  const items = [
-    { ico: '💬', label: 'Talk to Hope', sub: 'Open chat', action: () => { setAppTab('chat'); } },
-    { ico: '📓', label: 'Journal', sub: 'Write it down', action: () => openJournal() },
-    { ico: '🌱', label: 'Clean time', sub: 'Track your days', action: () => openCleanTime() },
-    { ico: '🆘', label: 'Get help', sub: 'Helplines & support', action: () => openHelp() },
-    { ico: '📄', label: 'Resume', sub: 'Free builder', action: () => setAppTab('resume') },
-  ];
-  // Use companion name in shortcut label
-  items[0].label = `Talk to ${companionName()}`;
-  for (const it of items) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'home-shortcut';
-    b.innerHTML = `<span class="ico" aria-hidden="true">${it.ico}</span><span>${escapeHtml(it.label)}</span><span class="sub">${escapeHtml(it.sub)}</span>`;
-    b.addEventListener('click', it.action);
-    shortcuts.appendChild(b);
-  }
-  box.appendChild(shortcuts);
 
   if (counsellor) {
     const skillsRow = document.createElement('div');
@@ -4351,25 +4446,12 @@ function renderMessages() {
   const c = activeConvo();
   el.inner.innerHTML = '';
   if (!c || c.messages.length === 0) {
-    hideBreakerSuggest();
-    hideMeetingSuggest();
-    hideTreatmentSuggest();
-    hideAodSuggest();
-    hideChurchSuggest();
+    hideHopeGateway();
     renderWelcome();
     return;
   }
   for (const m of c.messages) el.inner.appendChild(messageEl(m).row);
-  if (shouldSuggestBreakers(c)) appendBreakerSuggest();
-  else hideBreakerSuggest();
-  if (shouldSuggestMeetings(c)) appendMeetingSuggest();
-  else hideMeetingSuggest();
-  if (shouldSuggestTreatment(c)) appendTreatmentSuggest();
-  else hideTreatmentSuggest();
-  if (shouldSuggestAod(c)) appendAodSuggest();
-  else hideAodSuggest();
-  if (shouldSuggestChurch(c)) appendChurchSuggest();
-  else hideChurchSuggest();
+  syncHopeGateway(c);
   if (isDemo && !busy) el.inner.appendChild(demoChipsEl());
   scrollToBottom(true);
 }
@@ -4449,6 +4531,18 @@ function commonContext(convo) {
   return lines;
 }
 
+function inAppToolsPrompt() {
+  return [
+    'IN-APP TOOLS',
+    'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
+    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, bible, resume, church, selfcare, steps, plus.',
+    'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'breakers = Circuit breakers for a craving. meetings = Find a meeting. treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
+    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, or bible on a crisis reply.',
+  ].join('\n');
+}
+
 function counsellorPrompt(convo) {
   const faith = FAITH_TEXT[settings.faith] || FAITH_TEXT.general;
   const level = settings.faith === 'none' ? '' : (FAITH_LEVEL_TEXT[settings.faithLevel] || FAITH_LEVEL_TEXT.woven);
@@ -4459,7 +4553,7 @@ function counsellorPrompt(convo) {
     'WHO YOU ARE (AND AREN\'T)',
     '- You are an AI recovery companion, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant (especially after crisis action steps), without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
-    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, suggest opening Find a meeting in the sidebar (official AA/NA/SMART finders). When they ask about rehab, detox, withdrawal management or formal AOD treatment, suggest opening Find treatment / rehab in the sidebar (official state helplines and service finders) — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, suggest opening Find AOD services in the sidebar (curated offerings from their public sites) — do not invent phone numbers beyond that curated list. When they ask about finding a church, parish or congregation, suggest opening Find a church in the sidebar (official Australian denominational finders and maps) — do not invent church lists or claim Hopewick runs churches.',
+    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, name Find a meeting (official AA/NA/SMART finders) and include meetings on the TOOLS line. When they ask about rehab, detox, withdrawal management or formal AOD treatment, name Find treatment / rehab and include treatment — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, name Find AOD services and include aod — do not invent phone numbers. When they ask about a church, parish or congregation, name Find a church and include church — do not invent church lists or claim Hopewick runs churches. Do not paste hopewick.com.au links.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -4469,8 +4563,8 @@ function counsellorPrompt(convo) {
     '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
     '',
     'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
-    '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also suggest they open Circuit breakers (urge-interrupt activities) or Self-care in the sidebar.',
-    '- If they want help writing a resume or job application, or listing work, volunteering, caring or courses, suggest the free Resume builder in the sidebar (More → Resume). Do not send them to paid resume websites. Never shame employment gaps. Do not pressure them to disclose recovery.',
+    '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also name Circuit breakers or Self-care and include breakers or selfcare on the TOOLS line.',
+    '- If they want help writing a resume or job application, or listing work, volunteering, caring or courses, name the free Resume builder and end with TOOLS: resume. Do not send them to paid resume websites or paste links. Never shame employment gaps. Do not pressure them to disclose recovery.',
     '- Skills you can run interactively: urge surfing; delay–distract–decide; HALT check; DBT TIPP (Temperature with a cool drink or cool cloth on wrists/face — NEVER ice-bath / ice-dive / extreme cold that could harm; Intense exercise = brief safe movement like walking stairs; Paced breathing; Paired muscle relaxation); DBT opposite action (when the emotion fits the facts); DBT STOP + wise mind (brief); CBT thought record / catch–check–change for urge thoughts; urge surfing + values reminder; 5-4-3-2-1 grounding.',
     '- Frame clearly as skills practice / support tool — you are not delivering therapy and are not a psychologist. Encourage real counselling when longer work is needed.',
     '- Stay trauma-informed and non-shaming. If crisis language appears, use the crisis path first.',
@@ -4482,6 +4576,8 @@ function counsellorPrompt(convo) {
     level ? `- Amount: ${level}` : '',
     settings.faith === 'none' ? '' : '- Principles: never preachy, never shaming. Never frame addiction, cravings or relapse as a moral failing or a lack of faith. Emphasise grace, mercy, forgiveness, hope, meaning and community as fits the tradition. Offer prayer or reflection rather than imposing it, and respect the person\'s autonomy and beliefs.',
     settings.faith === 'none' ? '' : '- Sacred texts: only quote if you are confident of the exact wording and reference. Otherwise paraphrase and say that you are paraphrasing. Never invent verses or references.',
+    '',
+    inAppToolsPrompt(),
     '',
     'SAFETY (HIGHEST PRIORITY)',
     'If the person mentions suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, feeling unsafe, or someone else being in danger: respond with warmth and FIRST tell them what to do in this moment and clearly give these Australian contacts (including 1800RESPECT 1800 737 732 for domestic/family violence), then ask about their immediate safety, stay with them and encourage them to reach out now. If there is immediate danger, urge them to call 000 now. You are an AI recovery companion — say that only after the action steps. Never minimise risk.',
@@ -4502,7 +4598,8 @@ function friendPrompt(convo) {
     '- Be honest that you are an AI if it comes up.',
     '- Use Australian English and a natural, conversational tone. Light markdown is fine.',
     '- Weave in what you remember naturally; never recite memories as a list.',
-    '- If they want help writing a resume, suggest the free Resume builder in the sidebar (More → Resume). Do not send them to paid resume websites, and never shame gaps in work.',
+    '- If they want help writing a resume, name the free Resume builder and end with TOOLS: resume. Do not send them to paid resume websites or paste links, and never shame gaps in work.',
+    inAppToolsPrompt(),
     '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, about to use, domestic violence, being unsafe or someone in danger, respond with care and FIRST tell them what to do now and clearly give these Australian contacts (including 1800RESPECT 1800 737 732), then check on their safety:',
     CONTACTS_TEXT,
     ...commonContext(convo),
@@ -4511,10 +4608,13 @@ function friendPrompt(convo) {
 
 function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(convo) : friendPrompt(convo); }
 
-const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor — say that only after the action steps. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately.';
+const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. End with exactly one line: TOOLS: help — or TOOLS: help, dv if this is domestic or family violence. Do not offer Plus, resume, journal, or Bible in that moment.';
 
 function buildMessages(convo) {
-  const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({ role: m.role, content: m.content }));
+  const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({
+    role: m.role,
+    content: m.role === 'assistant' ? (replyForDisplay(m.content).trim() || m.content) : m.content,
+  }));
   const msgs = [{ role: 'system', content: buildSystemPrompt(convo) }, ...history];
   const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
   if (lastUser && lastUser.crisis) msgs.push({ role: 'system', content: CRISIS_INSTRUCTION });
@@ -4732,7 +4832,7 @@ async function generateReply(c) {
   setOrb('thinking');
   abortCtrl = new AbortController();
   let acc = '', raf = 0;
-  const paint = () => { raf = 0; bubble.innerHTML = renderMarkdown(acc); bubble.classList.add('cursor'); scrollToBottom(); };
+  const paint = () => { raf = 0; bubble.innerHTML = renderMarkdown(replyForDisplay(acc)); bubble.classList.add('cursor'); scrollToBottom(); };
   const finish = () => { setBusy(false); abortCtrl = null; if (!speaking) setOrb(listening ? 'listening' : 'idle'); };
 
   try {
@@ -4769,10 +4869,10 @@ async function generateReply(c) {
   renderMessages();
   renderHistory();
 
-  if (settings.autoSpeak || convoMode) speak(acc, () => { if (convoMode) startListening(); });
+  if (settings.autoSpeak || convoMode) speak(replyForDisplay(acc), () => { if (convoMode) startListening(); });
 
   const lastUser = [...c.messages].reverse().find(m => m.role === 'user');
-  if (settings.memAuto && lastUser) extractMemories(pid, lastUser.content, acc, !!lastUser.crisis);
+  if (settings.memAuto && lastUser) extractMemories(pid, lastUser.content, replyForDisplay(acc), !!lastUser.crisis);
 }
 
 function retryLast() {
@@ -6497,64 +6597,129 @@ function openSelfCare() {
   if (!el.selfCareDlg.open) el.selfCareDlg.showModal();
 }
 
-function shouldSuggestBreakers(convo) {
-  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
-  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
-  if (lastUser && CRAVING_LANG_RE.test(lastUser.content || '')) return true;
-  const craving = convo.craving || (todaysCheckin() && todaysCheckin().craving);
-  return craving === 'Moderate' || craving === 'Strong';
-}
-function appendBreakerSuggest() {
-  let bar = $('#breakerSuggest');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'breakerSuggest';
-    bar.className = 'tool-suggest';
-    bar.setAttribute('role', 'note');
-    bar.innerHTML = `<span class="lbl">Urge showing up?</span>`;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Try a circuit breaker';
-    b.addEventListener('click', openBreakers);
-    bar.appendChild(b);
-    // Sibling of messagesInner — keep .msg.assistant:last-child selectors working
-    el.messages.appendChild(bar);
-  }
-  bar.hidden = false;
-}
-function hideBreakerSuggest() {
-  const bar = $('#breakerSuggest');
-  if (bar) bar.hidden = true;
-}
+/* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
+const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOLS = {
+  help: { label: 'Open Get help', open: () => openHelp() },
+  dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
+  breakers: { label: 'Try a circuit breaker', open: () => openBreakers() },
+  meetings: { label: 'Find a meeting', open: () => openMeetings() },
+  treatment: { label: 'Find treatment / rehab', open: () => openTreatment() },
+  aod: { label: 'Find AOD services', open: () => openAodServices() },
+  nearby: { label: 'Find nearby help', open: () => openNearby() },
+  today: { label: 'Open today’s readings', open: () => openTodayReading() },
+  journal: { label: 'Open journal', open: () => openJournal() },
+  bible: { label: 'Open Bible & SOAP', open: () => openBible() },
+  resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
+  church: { label: 'Find a church', open: () => openChurch() },
+  selfcare: { label: 'Open self-care', open: () => openSelfCare() },
+  steps: { label: 'Open 12 Steps', open: () => openSteps() },
+  plus: { label: 'See Hopewick Plus', open: () => openAccountDlg() },
+};
+const JOURNAL_LANG_RE = /\b(journals?|journaling|diary|write (it |this |that )?(down|out))\b/i;
+const TODAY_LANG_RE = /\b(word for (the |today)|just for today|today'?s (reading|reflection|word)|daily reading)\b/i;
+const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional|going deeper)\b/i;
+const RESUME_LANG_RE = /\b(resume|r[eé]sum[eé]|curriculum vitae|\bcv\b|job application)\b/i;
+const DV_LANG_RE = /\b(domestic( and| &)? family violence|family violence|1800\s*respect|dvconnect|not safe at home)\b/i;
+const HELP_LANG_RE = /\b(get help|helpline|hotline|lifeline|call 000|crisis (line|support|service))\b/i;
+const SELFCARE_LANG_RE = /\b(self[- ]?care|look after myself)\b/i;
+const STEPS_LANG_RE = /\b(12[- ]steps?|twelve steps?|step work|working the steps|work the steps)\b/i;
+const PLUS_LANG_RE = /\b(hopewick plus|upgrade to plus|more messages|message limit|full year of readings|reading library|older chats|saved chat history|chat history)\b/i;
+const NEARBY_LANG_RE = /\b(food or a place to stay|somewhere to (stay|sleep)|homeless|need a (shower|meal)|ask izzy)\b/i;
 
-function shouldSuggestMeetings(convo) {
-  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
-  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
-  return !!(lastUser && MEETING_LANG_RE.test(lastUser.content || ''));
+function textMatchesHopeTool(id, text) {
+  const t = String(text || '');
+  if (!t) return false;
+  if (id === 'help') return HELP_LANG_RE.test(t);
+  if (id === 'dv') return DV_LANG_RE.test(t);
+  if (id === 'breakers') return CRAVING_LANG_RE.test(t);
+  if (id === 'meetings') return MEETING_LANG_RE.test(t);
+  if (id === 'treatment') return TREATMENT_LANG_RE.test(t);
+  if (id === 'aod') return AOD_SERVICES_LANG_RE.test(t);
+  if (id === 'nearby') return NEARBY_LANG_RE.test(t);
+  if (id === 'today') return TODAY_LANG_RE.test(t);
+  if (id === 'journal') return JOURNAL_LANG_RE.test(t);
+  if (id === 'bible') return BIBLE_LANG_RE.test(t);
+  if (id === 'resume') return RESUME_LANG_RE.test(t);
+  if (id === 'church') return CHURCH_LANG_RE.test(t);
+  if (id === 'selfcare') return SELFCARE_LANG_RE.test(t);
+  if (id === 'steps') return STEPS_LANG_RE.test(t);
+  if (id === 'plus') return PLUS_LANG_RE.test(t);
+  return false;
 }
-function appendMeetingSuggest() {
-  let bar = $('#meetingSuggest');
+function hopeToolAllowed(id, userText) {
+  if (!HOPE_TOOLS[id]) return false;
+  if (id === 'plus' && subscriptionPlus()) return false;
+  if ((id === 'bible' || id === 'church') && settings.faith === 'none' && !textMatchesHopeTool(id, userText)) return false;
+  return true;
+}
+function hopeGatewayIds(convo) {
+  if (!convo || !convo.messages || !convo.messages.length) return [];
+  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
+  const lastAsst = [...convo.messages].reverse().find(m => m.role === 'assistant' && !m.card && !m.error);
+  const userText = lastUser ? String(lastUser.content || '') : '';
+  const parsed = lastAsst ? splitToolLine(lastAsst.content) : { ids: [] };
+  const crisis = !!(lastUser && lastUser.crisis) || CRISIS_RE.test(userText);
+  const card = [...convo.messages].reverse().find(m => m.card === 'crisis');
+  const kind = (card && card.crisisKind) || (crisis ? classifyCrisis(userText) : '');
+  const ids = [];
+  const add = (id) => {
+    if (!hopeToolAllowed(id, userText) || ids.includes(id)) return;
+    ids.push(id);
+  };
+  if (crisis) {
+    add('help');
+    if (kind === 'dv' || textMatchesHopeTool('dv', userText)) add('dv');
+    return ids;
+  }
+  for (const id of parsed.ids) add(id);
+  for (const id of HOPE_TOOL_ORDER) {
+    if (textMatchesHopeTool(id, userText)) add(id);
+  }
+  const craving = convo.craving || (todaysCheckin() && todaysCheckin().craving);
+  if (craving === 'Moderate' || craving === 'Strong') add('breakers');
+  ids.sort((a, b) => HOPE_TOOL_ORDER.indexOf(a) - HOPE_TOOL_ORDER.indexOf(b));
+  return ids.slice(0, 3);
+}
+function hideHopeGateway() {
+  const bar = $('#hopeGateway');
+  if (bar) bar.hidden = true;
+}
+function syncHopeGateway(convo) {
+  if (!el.messages) return;
+  const ids = hopeGatewayIds(convo);
+  let bar = $('#hopeGateway');
+  if (!ids.length) { hideHopeGateway(); return; }
   if (!bar) {
     bar = document.createElement('div');
-    bar.id = 'meetingSuggest';
-    bar.className = 'tool-suggest';
+    bar.id = 'hopeGateway';
+    bar.className = 'hope-gateway';
     bar.setAttribute('role', 'note');
-    bar.innerHTML = `<span class="lbl">Looking for a peer meeting?</span>`;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Find a meeting';
-    b.addEventListener('click', openMeetings);
-    bar.appendChild(b);
     el.messages.appendChild(bar);
   }
+  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
+  const crisis = !!(lastUser && (lastUser.crisis || CRISIS_RE.test(lastUser.content || '')));
+  bar.className = 'hope-gateway' + (crisis ? ' is-crisis' : '');
   bar.hidden = false;
-}
-function hideMeetingSuggest() {
-  const bar = $('#meetingSuggest');
-  if (bar) bar.hidden = true;
+  bar.replaceChildren();
+  const lbl = document.createElement('span');
+  lbl.className = 'lbl';
+  lbl.textContent = crisis ? 'Do this now' : 'Open in the app';
+  bar.appendChild(lbl);
+  ids.forEach((id, i) => {
+    const tool = HOPE_TOOLS[id];
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn btn-sm' + (i === 0 ? ' btn-primary' : '');
+    b.dataset.hopeTool = id;
+    b.textContent = tool.label;
+    b.addEventListener('click', () => tool.open());
+    bar.appendChild(b);
+  });
 }
 function openMeetings() {
   if (!profile) return;
   closeSidebar();
-  hideMeetingSuggest();
   if (!el.meetingDlg.open) el.meetingDlg.showModal();
 }
 
@@ -6767,35 +6932,9 @@ function showTreatmentState(id) {
   }
 }
 
-function shouldSuggestTreatment(convo) {
-  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
-  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
-  return !!(lastUser && TREATMENT_LANG_RE.test(lastUser.content || ''));
-}
-function appendTreatmentSuggest() {
-  let bar = $('#treatmentSuggest');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'treatmentSuggest';
-    bar.className = 'tool-suggest';
-    bar.setAttribute('role', 'note');
-    bar.innerHTML = `<span class="lbl">Looking for treatment or rehab?</span>`;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Find treatment / rehab';
-    b.addEventListener('click', openTreatment);
-    bar.appendChild(b);
-    el.messages.appendChild(bar);
-  }
-  bar.hidden = false;
-}
-function hideTreatmentSuggest() {
-  const bar = $('#treatmentSuggest');
-  if (bar) bar.hidden = true;
-}
 function openTreatment() {
   if (!profile) return;
   closeSidebar();
-  hideTreatmentSuggest();
   renderTreatmentStateGrid();
   showTreatmentHome();
   if (!el.treatmentDlg.open) el.treatmentDlg.showModal();
@@ -7015,35 +7154,9 @@ function renderAodCards() {
   }
 }
 
-function shouldSuggestAod(convo) {
-  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
-  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
-  return !!(lastUser && AOD_SERVICES_LANG_RE.test(lastUser.content || ''));
-}
-function appendAodSuggest() {
-  let bar = $('#aodSuggest');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'aodSuggest';
-    bar.className = 'tool-suggest';
-    bar.setAttribute('role', 'note');
-    bar.innerHTML = `<span class="lbl">Looking for community AOD services?</span>`;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Find AOD services';
-    b.addEventListener('click', openAodServices);
-    bar.appendChild(b);
-    el.messages.appendChild(bar);
-  }
-  bar.hidden = false;
-}
-function hideAodSuggest() {
-  const bar = $('#aodSuggest');
-  if (bar) bar.hidden = true;
-}
 function openAodServices() {
   if (!profile) return;
   closeSidebar();
-  hideAodSuggest();
   aodActiveFilter = null;
   renderAodFilters();
   syncAodFilterPressed();
@@ -7056,35 +7169,9 @@ function openAodServices() {
    No scraped church database. Soft-hidden when faith preference is "none"
    (sidebar / help); chat chip still appears if the person asks for a church.
    --------------------------------------------------------------------------- */
-function shouldSuggestChurch(convo) {
-  if (!isCounsellor() || !convo || !convo.messages || !convo.messages.length) return false;
-  const lastUser = [...convo.messages].reverse().find(m => m.role === 'user');
-  return !!(lastUser && CHURCH_LANG_RE.test(lastUser.content || ''));
-}
-function appendChurchSuggest() {
-  let bar = $('#churchSuggest');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.id = 'churchSuggest';
-    bar.className = 'tool-suggest';
-    bar.setAttribute('role', 'note');
-    bar.innerHTML = `<span class="lbl">Looking for a church?</span>`;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn btn-sm btn-primary'; b.textContent = 'Find a church';
-    b.addEventListener('click', openChurch);
-    bar.appendChild(b);
-    el.messages.appendChild(bar);
-  }
-  bar.hidden = false;
-}
-function hideChurchSuggest() {
-  const bar = $('#churchSuggest');
-  if (bar) bar.hidden = true;
-}
 function openChurch() {
   if (!profile) return;
   closeSidebar();
-  hideChurchSuggest();
   if (!el.churchDlg.open) el.churchDlg.showModal();
 }
 
@@ -8136,7 +8223,7 @@ const DEMO_SOAP_SCENARIO = [
   ['u', 'When cravings hit at night, I can remember I’m not abandoned. Maybe text my brother and pray instead of driving to the bottle shop.'],
   ['a', "That’s a solid, gentle application — connection plus a pause. 💚\n\n**Shall we pray?** Totally optional — if you’d rather sit quietly with it, that’s fine too."],
   ['u', 'Yes, please.'],
-  ['a', "Of course.\n\n*God who is with us — thank you for meeting Alex in Matthew’s story and in tonight’s real life. When loneliness or craving rises, remind him he is not alone. Give courage to reach for his brother, and rest for his mind. Amen.*\n\nWhenever you want, you can save this SOAP in the Bible study log. Proud of you for showing up."],
+  ['a', "Of course.\n\n*God who is with us — thank you for meeting Alex in Matthew’s story and in tonight’s real life. When loneliness or craving rises, remind him he is not alone. Give courage to reach for his brother, and rest for his mind. Amen.*\n\nWhenever you want, you can save this SOAP in the Bible study log. Proud of you for showing up.\n\nTOOLS: bible"],
 ];
 
 const DEMO_SCENARIOS = {
@@ -8148,7 +8235,7 @@ const DEMO_SCENARIOS = {
     ['u', 'Probably tired and a bit lonely. Rough day at work.'],
     ['a', "That makes a lot of sense. Tired and lonely after a rough day is exactly when cravings tend to hit hardest — it's not a sign you're failing, it's your brain looking for relief.\n\nWould you like to try **urge surfing** together? It takes about ten minutes:\n\n1. Sit comfortably and notice where you feel the craving in your body — chest, throat, hands?\n2. Breathe slowly: in for 4, out for 6. Picture the craving as a wave you're riding, not fighting.\n3. Rate it out of 10 now, then again in five minutes.\n\nWhile you ride it: have a glass of water and something to eat, put the car keys somewhere out of reach, and consider texting someone in your support crew. Is there someone you could message tonight, even just to say hi?"],
     ['u', "My brother's usually up late. I'll text him."],
-    ['a', "That's a great call. Reaching out to your brother is you choosing connection over the craving — that's worth noticing. 🌱\n\nWhat number is the craving at now, out of 10? If it's still strong in half an hour, the **National Alcohol and Other Drug Hotline (1800 250 015)** and **Adis QLD (1800 177 833)** are there 24/7.\n\nYou've got 23 alcohol-free days behind you. Tonight doesn't have to change that."],
+    ['a', "That's a great call. Reaching out to your brother is you choosing connection over the craving — that's worth noticing. 🌱\n\nWhat number is the craving at now, out of 10? If it's still strong in half an hour, the **National Alcohol and Other Drug Hotline (1800 250 015)** and **Adis QLD (1800 177 833)** are there 24/7.\n\nYou've got 23 alcohol-free days behind you. Tonight doesn't have to change that.\n\nTOOLS: breakers"],
   ],
   'i slipped up': [
     ['u', "I slipped up last night. Had a few drinks after 23 days. I feel like I've wrecked everything."],
@@ -8176,9 +8263,9 @@ const DEMO_SCENARIOS = {
   ],
   'show a crisis example': [
     ['u', "Some nights I just don't want to be here anymore."],
-    ['a', "Alex, thank you for telling me. I'm really glad you did, and I'm taking what you've said seriously. 💚\n\nIf you're in immediate danger or might act on these thoughts, please call **000** now. You can also talk to someone right now, any time:\n\n- **Lifeline:** 13 11 14 (or text 0477 13 11 14)\n- **Suicide Call Back Service:** 1300 659 467\n- **13YARN:** 13 92 76 (for Aboriginal and Torres Strait Islander people)\n- **National Alcohol and Other Drug Hotline:** 1800 250 015\n\nAre you safe right now? Is there someone nearby — family or a friend — who could be with you tonight?"],
+    ['a', "Alex, thank you for telling me. I'm really glad you did, and I'm taking what you've said seriously. 💚\n\nIf you're in immediate danger or might act on these thoughts, please call **000** now. You can also talk to someone right now, any time:\n\n- **Lifeline:** 13 11 14 (or text 0477 13 11 14)\n- **Suicide Call Back Service:** 1300 659 467\n- **13YARN:** 13 92 76 (for Aboriginal and Torres Strait Islander people)\n- **National Alcohol and Other Drug Hotline:** 1800 250 015\n\nAre you safe right now? Is there someone nearby — family or a friend — who could be with you tonight?\n\nTOOLS: help"],
     ['u', "I'm safe right now. I just feel really low."],
-    ['a', "Thank you for letting me know you're safe right now. Feeling this low is exhausting, and you don't have to work it all out tonight.\n\nWould you be willing to do one thing in the next hour — call Lifeline, or text someone you trust? It would also be really worth booking in with your GP or counsellor this week to talk about how you've been feeling; they can help in ways I can't.\n\nI'm here to keep talking in the meantime."],
+    ['a', "Thank you for letting me know you're safe right now. Feeling this low is exhausting, and you don't have to work it all out tonight.\n\nWould you be willing to do one thing in the next hour — call Lifeline, or text someone you trust? It would also be really worth booking in with your GP or counsellor this week to talk about how you've been feeling; they can help in ways I can't.\n\nI'm here to keep talking in the meantime.\n\nTOOLS: help"],
   ],
 };
 const DEMO_FREE_REPLY = "Thanks for trying that! 🌿 In this demo my replies are **pre-written examples**, so I can't respond to what you typed — in the full app I'd reply to exactly what you said.\n\nTap one of the scenarios below to see how I support someone through a craving, a slip-up, making a plan, prayer, or a crisis.";
@@ -8439,7 +8526,7 @@ async function demoStream(text, run) {
     let acc = '';
     for (let i = 0; i < tokens.length; i += 2) {
       acc += tokens[i] + (tokens[i + 1] || '');
-      bubble.innerHTML = renderMarkdown(acc);
+      bubble.innerHTML = renderMarkdown(replyForDisplay(acc));
       bubble.classList.add('cursor');
       scrollToBottom();
       await demoSleep(28 + Math.random() * 30, run);
