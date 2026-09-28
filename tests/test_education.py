@@ -114,6 +114,14 @@ def _enter_demo(page, base):
     page.wait_for_selector("#needNow", timeout=10000)
 
 
+def _assert_notes_not_in_dom(page, cards_id, markers):
+    """Full cards must be absent from the DOM, not only visually hidden."""
+    assert page.locator(f"{cards_id} article").count() == 0
+    raw = page.locator(cards_id).text_content() or ""
+    for marker in markers:
+        assert marker not in raw
+
+
 def _assert_hosted_chat_only(page):
     """Free and Plus use hosted Hope. Developer / own-key UI stays hidden."""
     assert page.locator("#sideDeveloperBtn").is_hidden()
@@ -171,6 +179,7 @@ def test_education_plus_gate_phone():
                 assert marker not in free_gut
             assert page.locator("#gutLibrary").is_hidden()
             assert page.locator("#gutPlusBtn").is_visible()
+            _assert_notes_not_in_dom(page, "#gutCards", GUT_BODY)
             page.click("#gutPlusBtn")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
@@ -192,6 +201,9 @@ def test_education_plus_gate_phone():
                 assert marker not in free_brain
             assert page.locator("#brainLibrary").is_hidden()
             assert page.locator("#brainPlusBtn").is_visible()
+            _assert_notes_not_in_dom(page, "#brainCards", BRAIN_BODY)
+            assert page.locator('#brainDlg button:has-text("Open SMART goals")').count() == 0
+            assert page.locator('#brainDlg button:has-text("Open journal")').count() == 0
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('brainDlg')?.open !== true")
 
