@@ -3779,7 +3779,10 @@ function messageEl(msg) {
   }
   if (msg.role === 'assistant' && !msg.error) {
     const plain = replyForDisplay(msg.content);
-    tools.appendChild(toolBtn(ICON_SPEAK, 'Read aloud', () => speak(plain)));
+    const speakBtn = toolBtn(ICON_SPEAK, 'Read aloud', () => readMessageAloud(plain, speakBtn));
+    speakBtn.dataset.readAloud = '1';
+    speakBtn.setAttribute('aria-pressed', 'false');
+    tools.appendChild(speakBtn);
     tools.appendChild(toolBtn(ICON_COPY, 'Copy message', () => copyText(plain)));
   }
   if (msg.error) tools.appendChild(toolBtn(ICON_RETRY, 'Try again', () => retryLast()));
@@ -8239,9 +8242,22 @@ el.disclaimerDlg.addEventListener('cancel', (e) => e.preventDefault()); // needs
 
 /* ---------------------------------------------------------------------------
    Voice: text-to-speech (speechSynthesis)
+   Safari / iOS (including the Home Screen PWA) drops a speak() that shares a
+   turn with cancel(), and often never fires onend. Ignoring those errors left
+   the header stuck on “Speaking…” with no audio. Keep the utterance referenced
+   so it is not garbage-collected, and only cancel when the engine is actually busy.
    --------------------------------------------------------------------------- */
 const tts = ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) ? window.speechSynthesis : null;
 let speaking = false;
+let speakGen = 0;
+let speakWatch = null;
+let speakKeepAlive = null;
+let currentUtterance = null;
+const liveUtterances = [];
+let activeSpeakText = '';
+let speakBtnEl = null;
+let speakDone = null;
+let speakQuiet = true;
 function getVoices() { try { return tts ? tts.getVoices() : []; } catch (e) { return []; } }
 function populateVoices() {
   const sel = $('#setVoice');
@@ -8262,40 +8278,234 @@ if (tts && typeof tts.addEventListener === 'function') {
 }
 function pickVoice() {
   const voices = getVoices();
-  return voices.find(v => v.voiceURI === settings.voiceURI)
-    || voices.find(v => /^en[-_]AU$/i.test(v.lang))
-    || voices.find(v => /^en/i.test(v.lang)) || null;
+  const chosen = voices.find(v => v.voiceURI === settings.voiceURI);
+  if (chosen) return chosen;
+  const prefer = (list) => list.find(v => v.localService) || list[0] || null;
+  return prefer(voices.filter(v => /^en[-_]AU$/i.test(v.lang)))
+    || prefer(voices.filter(v => /^en/i.test(v.lang)))
+    || null;
 }
-/** Speak text in sentence chunks (avoids Chrome's ~15 s cut-off). */
-function speak(md, onDone) {
-  if (!tts) { if (onDone) onDone(); return; }
-  stopSpeaking();
-  const text = toSpeakable(md);
-  if (!text) { if (onDone) onDone(); return; }
-  const chunks = text.match(/[^.!?…]+[.!?…]+["')\]]*|[^.!?…]+$/g) || [text];
-  const voice = pickVoice();
+function engineFlags() {
+  const flags = { speaking: false, pending: false, paused: false };
+  if (!tts) return flags;
+  try {
+    flags.speaking = !!tts.speaking;
+    flags.pending = !!tts.pending;
+    flags.paused = !!tts.paused;
+  } catch (e) { /* ignore */ }
+  return flags;
+}
+function engineAudible() {
+  const f = engineFlags();
+  return f.speaking && !f.paused;
+}
+function engineActive() {
+  const f = engineFlags();
+  return f.speaking || f.pending || f.paused;
+}
+function clearSpeakTimers() {
+  if (speakWatch) { clearTimeout(speakWatch); speakWatch = null; }
+  if (speakKeepAlive) { clearInterval(speakKeepAlive); speakKeepAlive = null; }
+}
+function markSpeakBtn(btn) {
+  if (speakBtnEl && speakBtnEl !== btn) {
+    speakBtnEl.setAttribute('aria-pressed', 'false');
+    speakBtnEl.setAttribute('aria-label', 'Read aloud');
+    speakBtnEl.title = 'Read aloud';
+  }
+  speakBtnEl = btn || null;
+  if (!btn) return;
+  btn.setAttribute('aria-pressed', 'true');
+  btn.setAttribute('aria-label', 'Stop reading');
+  btn.title = 'Stop reading';
+}
+function finishSpeaking(gen, opts) {
+  if (gen !== speakGen) return;
+  const done = speakDone;
+  const failed = !!(opts && opts.failed);
+  const quiet = speakQuiet;
+  clearSpeakTimers();
+  speakGen++;
+  speaking = false;
+  activeSpeakText = '';
+  speakDone = null;
+  currentUtterance = null;
+  markSpeakBtn(null);
+  if (busy) setOrb('thinking');
+  else setOrb(listening ? 'listening' : 'idle');
+  if (failed && !quiet) toast('Couldn’t read that aloud. Tap the speaker to try again.', true);
+  if (done) done();
+}
+function holdUtterance(u) {
+  currentUtterance = u;
+  liveUtterances.push(u);
+  if (liveUtterances.length > 8) liveUtterances.shift();
+}
+/** Sentence chunks, split again if very long (Chrome’s ~15s cutoff and iOS stalls). */
+function speakChunks(text) {
+  const parts = text.match(/[^.!?…]+[.!?…]+["')\]]*|[^.!?…]+$/g) || [text];
+  const out = [];
+  for (const part of parts) {
+    const sentence = part.trim();
+    if (!sentence) continue;
+    if (sentence.length <= 180) { out.push(sentence); continue; }
+    let buf = '';
+    for (const piece of sentence.split(/\s+/)) {
+      const next = buf ? buf + ' ' + piece : piece;
+      if (next.length > 180 && buf) { out.push(buf); buf = piece; }
+      else buf = next;
+    }
+    if (buf) out.push(buf);
+  }
+  return out.length ? out : [text];
+}
+function armChunkWatch(gen, chunk, started) {
+  clearTimeout(speakWatch);
+  const rate = Math.min(2, Math.max(0.5, Number(settings.rate) || 1));
+  const ms = Math.min(120000, Math.max(8000, (chunk.length / (7 * rate)) * 1000 + 4000));
+  speakWatch = setTimeout(() => {
+    if (gen !== speakGen || !speaking) return;
+    let live = false;
+    try { live = !!(tts.speaking || tts.pending); } catch (e) { /* ignore */ }
+    if (live) {
+      try { if (tts.paused) tts.resume(); } catch (e) { /* ignore */ }
+      speakWatch = setTimeout(() => {
+        if (gen !== speakGen || !speaking) return;
+        finishSpeaking(gen, { failed: !started.value });
+        try { tts.cancel(); } catch (e) { /* ignore */ }
+      }, 3000);
+      return;
+    }
+    finishSpeaking(gen, { failed: !started.value });
+  }, ms);
+}
+function armStartWatch(gen, started) {
+  clearTimeout(speakWatch);
+  speakWatch = setTimeout(() => {
+    if (gen !== speakGen || !speaking || started.value) return;
+    let live = false;
+    let paused = false;
+    try { live = !!(tts.speaking || tts.pending); paused = !!tts.paused; } catch (e) { /* ignore */ }
+    if (paused) { try { tts.resume(); } catch (e) { /* ignore */ } }
+    if (!live && !paused) { finishSpeaking(gen, { failed: true }); return; }
+    speakWatch = setTimeout(() => {
+      if (gen !== speakGen || !speaking || started.value) return;
+      finishSpeaking(gen, { failed: true });
+      try { tts.cancel(); } catch (e) { /* ignore */ }
+    }, 1000);
+  }, 1500);
+}
+function beginChunks(gen, text, btn, session) {
+  if (gen !== speakGen || !tts) return;
+  const chunks = speakChunks(text);
+  if (!chunks.length) { finishSpeaking(gen); return; }
   let i = 0;
   speaking = true;
+  activeSpeakText = text;
   setOrb('speaking');
+  markSpeakBtn(btn);
+  speakKeepAlive = setInterval(() => {
+    if (gen !== speakGen || !speaking) return;
+    try { if (tts.paused) tts.resume(); } catch (e) { /* ignore */ }
+  }, 8000);
   const next = () => {
-    if (!speaking) return;
-    if (i >= chunks.length) { speaking = false; setOrb(busy ? 'thinking' : 'idle'); if (onDone) onDone(); return; }
-    const u = new SpeechSynthesisUtterance(chunks[i++].trim());
-    if (voice) u.voice = voice;
-    u.lang = voice ? voice.lang : 'en-AU';
-    u.rate = settings.rate; u.pitch = settings.pitch;
-    u.onend = next;
-    u.onerror = (e) => { if (e.error !== 'interrupted' && e.error !== 'canceled') next(); };
-    tts.speak(u);
+    if (gen !== speakGen || !speaking) return;
+    if (i >= chunks.length) { finishSpeaking(gen); return; }
+    const chunk = chunks[i++].trim();
+    if (!chunk) { next(); return; }
+    const started = { value: false };
+    const u = new SpeechSynthesisUtterance(chunk);
+    holdUtterance(u);
+    const voice = (session && session.voice) || pickVoice();
+    if (voice) { try { u.voice = voice; } catch (e) { /* ignore */ } }
+    u.lang = voice && voice.lang ? voice.lang : 'en-AU';
+    u.rate = session ? session.rate : 1;
+    u.pitch = session ? session.pitch : 1;
+    u.onstart = () => {
+      if (gen !== speakGen || !speaking) return;
+      started.value = true;
+      armChunkWatch(gen, chunk, started);
+    };
+    u.onend = () => {
+      if (gen !== speakGen || !speaking) return;
+      next();
+    };
+    u.onerror = () => {
+      if (gen !== speakGen || !speaking) return;
+      finishSpeaking(gen, { failed: !started.value });
+    };
+    armStartWatch(gen, started);
+    try {
+      if (tts.paused) tts.resume();
+      tts.speak(u);
+    } catch (e) {
+      finishSpeaking(gen, { failed: true });
+    }
   };
   next();
 }
-function stopSpeaking() {
-  if (!tts) return;
-  const was = speaking;
+/** Speak text. onDone runs when the read finishes or fails (not when the user stops it). */
+function speak(md, onDone, opts) {
+  if (!tts) { if (typeof onDone === 'function') onDone(); return; }
+  const text = toSpeakable(md || '');
+  if (!text) { if (typeof onDone === 'function') onDone(); return; }
+  try { tts.getVoices(); } catch (e) { /* ignore */ }
+  try { if (tts.paused) tts.resume(); } catch (e) { /* ignore */ }
+  // Only cancel a busy engine. cancel() while idle makes Safari/iOS drop the
+  // next speak(), which is what left the header on “Speaking…” with no audio.
+  const replace = engineActive();
+  const gen = ++speakGen;
   speaking = false;
-  try { tts.cancel(); } catch (e) { /* ignore */ }
-  if (was && !busy) setOrb(listening ? 'listening' : 'idle');
+  clearSpeakTimers();
+  currentUtterance = null;
+  if (replace) { try { tts.cancel(); } catch (e) { /* ignore */ } }
+  speakDone = typeof onDone === 'function' ? onDone : null;
+  speakQuiet = typeof onDone === 'function' || !!(opts && opts.quiet);
+  activeSpeakText = text;
+  const btn = opts && opts.btn;
+  const session = {
+    voice: pickVoice(),
+    rate: Math.min(2, Math.max(0.5, Number(settings.rate) || 1)),
+    pitch: Math.min(1.5, Math.max(0.5, Number(settings.pitch) || 1)),
+  };
+  const start = () => beginChunks(gen, text, btn, session);
+  // cancel() on Safari/iOS swallows a speak() in the same turn.
+  if (replace) setTimeout(start, 60);
+  else start();
+}
+function readMessageAloud(md, btn) {
+  const text = toSpeakable(md || '');
+  if (!tts) { toast('Speech isn’t supported in this browser', true); return; }
+  if (!text) return;
+  const same = speaking && activeSpeakText === text;
+  if (same && engineAudible()) { stopSpeaking(); return; }
+  if (same && engineFlags().paused) {
+    try { tts.resume(); } catch (e) { /* ignore */ }
+    if (engineAudible()) return;
+  }
+  speak(md, null, { btn });
+}
+function stopSpeaking() {
+  const was = speaking;
+  speakGen++;
+  speaking = false;
+  activeSpeakText = '';
+  speakDone = null;
+  currentUtterance = null;
+  clearSpeakTimers();
+  markSpeakBtn(null);
+  if (tts && engineActive()) {
+    try { if (tts.paused) tts.resume(); } catch (e) { /* ignore */ }
+    try { tts.cancel(); } catch (e) { /* ignore */ }
+  }
+  if (was) setOrb(busy ? 'thinking' : (listening ? 'listening' : 'idle'));
+}
+if (tts) {
+  try { tts.getVoices(); } catch (e) { /* ignore */ }
+  document.addEventListener('pointerdown', () => {
+    try { tts.getVoices(); } catch (e) { /* ignore */ }
+    if (!speaking) { try { if (tts.paused) tts.resume(); } catch (e) { /* ignore */ } }
+  }, { passive: true });
 }
 $('#testVoiceBtn').addEventListener('click', () => {
   if (!tts) { toast('Speech isn’t supported in this browser', true); return; }
