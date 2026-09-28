@@ -45,6 +45,13 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `HOPEWICK_DEV` | Local only | `1` shows the magic link in the app and the server log, and enables `POST /api/billing/dev-set`. Set `0` in production. Defaults on unless `NODE_ENV=production`. |
 | `RESEND_API_KEY` | Production email | Required in production. With `MAGIC_LINK_FROM`, sign-in links are emailed via [Resend](https://resend.com). Without both, production sign-in returns 503 and does not reveal the link. |
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
+| `GOOGLE_CLIENT_ID` | For Google sign-in | Web client ID. With `GOOGLE_CLIENT_SECRET`, shows **Sign in with Google**. |
+| `GOOGLE_CLIENT_SECRET` | For Google sign-in | Web client secret. Never commit it. |
+| `APPLE_CLIENT_ID` | For Apple sign-in | Services ID (not the App ID). Example shape: `au.com.hopewick.web`. |
+| `APPLE_TEAM_ID` | For Apple sign-in | 10-character Team ID. |
+| `APPLE_KEY_ID` | For Apple sign-in | Key ID of the Sign in with Apple key. |
+| `APPLE_PRIVATE_KEY` | For Apple sign-in | Contents of the `.p8` file. Use `\n` for line breaks. Never commit it. |
+| `OAUTH_STATE_SECRET` | Recommended | Long random string so a restart during sign-in still accepts the return. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
 | `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. |
 | `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. Complimentary Plus is not sent to Stripe Checkout. The same list is the only one that can see Settings → Developer in the companion. |
@@ -55,6 +62,68 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 Do not commit real keys. Placeholders in `.env.example` are not live credentials.
 
 Settings → Developer (API key, model endpoint, own provider, and invite redeem when that control is enabled) stays hidden unless the signed-in Hopewick account email is on `FOUNDER_PLUS_EMAILS`. The companion reads the `founder` flag from `GET /api/auth/me`, which uses the same check as complimentary Plus. Guest, free, and other Plus accounts do not see it and cannot add, edit, or paste a personal API key. A key already stored in this browser does not replace hosted Hope for those accounts. `admin@bridge-bite-co.com` does not see it. The name typed on a local profile does not unlock it. Crisis support and domestic and family violence resources stay free.
+
+## Sign in with Google and Apple
+
+The email magic link stays. Google and Apple are extra buttons on the same Hopewick Plus screen (and on the plans card, once configured). If the variables for a provider are missing or the Apple key cannot be read, that button stays hidden, the server log says so, and the rest of the site keeps working. Nothing here is a secret in git.
+
+The Hopewick account is the email address. A verified Google or Apple email that matches a magic-link account is the same account, so Plus, the Stripe customer, and the founder check stay with that email. `dwaynesimons1990@gmail.com` is still the founder. `admin@bridge-bite-co.com` is still not.
+
+If the emails differ, Hopewick does not merge the accounts. Apple’s Hide My Email address (`@privaterelay.appleid.com`) is a different email, so it is a different account with its own Plus status. A provider already linked to an account keeps signing into that account, and the stored Hopewick email is not replaced. Two different Google accounts cannot share one Hopewick email.
+
+No provider access tokens or refresh tokens are stored or written to the log. The session is the same `hopewick_session` cookie as the magic link. The return is checked with a short-lived `state` cookie (`SameSite=Lax` on http, `SameSite=None; Secure` on https, which Apple’s form POST needs).
+
+### Redirect URIs
+
+Register these exactly. `PUBLIC_BASE_URL` must be the same origin. `www` is sent to the apex before sign-in, so do not register `www`.
+
+| | Production | Local |
+|---|---|---|
+| Google | `https://hopewick.com.au/api/auth/google/callback` | `http://127.0.0.1:8787/api/auth/google/callback` |
+| Apple | `https://hopewick.com.au/api/auth/apple/callback` | Apple’s Services ID return URL has to be HTTPS, so test Apple on the live site |
+
+### Google Cloud Console
+
+1. Open [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → OAuth consent screen. User type **External**. App name **Hopewick**. Support email: the founder’s. Authorised domain: `hopewick.com.au`. Scopes: openid, email, and profile.
+2. APIs & Services → Credentials → Create credentials → **OAuth client ID** → **Web application**.
+3. Authorised JavaScript origin: `https://hopewick.com.au`.
+4. Authorised redirect URI: `https://hopewick.com.au/api/auth/google/callback`. For a local trial, also add `http://127.0.0.1:8787/api/auth/google/callback`.
+5. Copy the client ID and client secret into Render as `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Do not commit them.
+
+### Apple Developer
+
+Sign in with Apple for the web needs a primary App ID and a Services ID. The Services ID is what Hopewick sends as the client id.
+
+1. [Identifiers](https://developer.apple.com/account/resources/identifiers/list) → App IDs. Register an App ID (for example bundle id `au.com.hopewick`) and enable **Sign in with Apple**. This primary App ID is required even before a native app ships.
+2. Identifiers → Services IDs. Register a Services ID, for example `au.com.hopewick.web`. That value is `APPLE_CLIENT_ID`. Enable **Sign in with Apple** → Configure.
+3. Primary App ID: the App ID from step 1. Domain: `hopewick.com.au`. Return URL: `https://hopewick.com.au/api/auth/apple/callback`.
+4. [Keys](https://developer.apple.com/account/resources/authkeys/list) → create a key, enable **Sign in with Apple**, and link the primary App ID. Download the `.p8` once. The Key ID is `APPLE_KEY_ID`. The Team ID (10 characters, Membership page) is `APPLE_TEAM_ID`.
+5. On Render, set `APPLE_PRIVATE_KEY` to the `.p8` contents. Keep the `BEGIN PRIVATE KEY` and `END PRIVATE KEY` lines, and use `\n` between lines so it stays one environment value. Do not commit the file.
+
+The button text is **Sign in with Apple**, on Apple’s black button (white when the page is in dark mode), with the Apple mark. It is not a custom badge.
+
+### Render
+
+Paste these in the Dashboard. They are `sync: false` in `render.yaml`. Saving a variable redeploys.
+
+| Variable | Value |
+|---|---|
+| `GOOGLE_CLIENT_ID` | Web client ID. It ends with `.apps.googleusercontent.com`. |
+| `GOOGLE_CLIENT_SECRET` | Web client secret. |
+| `APPLE_CLIENT_ID` | Services ID, for example `au.com.hopewick.web`. |
+| `APPLE_TEAM_ID` | 10-character Team ID. |
+| `APPLE_KEY_ID` | Key ID of the Sign in with Apple key. |
+| `APPLE_PRIVATE_KEY` | `.p8` PEM, with `\n` for line breaks. |
+| `OAUTH_STATE_SECRET` | A long random string (32 bytes or more). |
+
+After deploy, the log should stop saying that provider’s button is hidden. Open https://hopewick.com.au/app/?account=1 . **Sign in with Google** and **Sign in with Apple** sit above the email link. `GET /api/billing/config` reports `googleSignIn` and `appleSignIn`.
+
+### How to test
+
+1. Magic link still works: request a link, open it, and confirm you are signed in.
+2. Google, with an account whose email matches that magic-link user: you should land on the same account and the same Plus status. Founder Plus still applies only to `dwaynesimons1990@gmail.com`.
+3. Apple: if you choose Share My Email and it is the same address, it is the same account. Hide My Email creates a relay address and a separate account.
+4. Remove one provider’s variables and redeploy. That button disappears. The email form remains.
 
 In the Stripe Dashboard (test mode):
 
@@ -133,7 +202,7 @@ curl -s -X POST http://127.0.0.1:8787/api/billing/dev-set \
 npm run test:billing
 ```
 
-That checks magic-link sign-in, Checkout refusing anonymous users, a mocked Stripe Checkout session, webhook signature failure, and active/canceled updates. It does not call Stripe’s network.
+That checks magic-link sign-in, Sign in with Google, Sign in with Apple, Checkout refusing anonymous users, a mocked Stripe Checkout session, webhook signature failure, and active/canceled updates. It does not call Stripe, Google, or Apple.
 
 ## Production
 
@@ -164,6 +233,13 @@ Create these in the Render Dashboard when the blueprint asks. Do not put the sec
 | `STRIPE_WEBHOOK_SECRET` | Signing secret of the endpoint below (`whsec_...`). |
 | `RESEND_API_KEY` | Resend → API keys (`re_...`). |
 | `MAGIC_LINK_FROM` | `Hopewick <hello@hopewick.com.au>` after that domain is verified in Resend. |
+| `GOOGLE_CLIENT_ID` | Google Cloud → Credentials → OAuth client ID (Web). |
+| `GOOGLE_CLIENT_SECRET` | Same credential. Secret. |
+| `APPLE_CLIENT_ID` | Apple Services ID. |
+| `APPLE_TEAM_ID` | Apple Team ID. |
+| `APPLE_KEY_ID` | Sign in with Apple key ID. |
+| `APPLE_PRIVATE_KEY` | The `.p8` PEM. Secret. Use `\n` for line breaks. |
+| `OAUTH_STATE_SECRET` | A long random string. |
 | `OPENAI_API_KEY` | The key already set on the Azure function app `hopewick-api`. Server only. |
 | `OPENAI_MODEL` | Optional. `gpt-4o-mini` if unset. |
 
@@ -275,4 +351,4 @@ TODO: a service worker is not included. Do not add one until caching of `app/ind
 
 ## Security
 
-Magic links expire after 30 minutes and work once. Sessions are random tokens stored as SHA-256 hashes, in an `HttpOnly` cookie, for 30 days. Webhooks require a valid `Stripe-Signature`. Do not put secret keys in HTML or in git.
+Magic links expire after 30 minutes and work once. Sessions are random tokens stored as SHA-256 hashes, in an `HttpOnly` cookie, for 30 days. Google and Apple returns must match a 10-minute `state` cookie. Webhooks require a valid `Stripe-Signature`. Do not put secret keys, the Apple private key, or provider tokens in HTML, logs, or git.

@@ -42,6 +42,23 @@ services:
         sync: false
       - key: MAGIC_LINK_FROM
         sync: false
+      # Sign in with Google and Apple. Leave unset to hide the buttons.
+      # Redirects: https://hopewick.com.au/api/auth/google/callback
+      #            https://hopewick.com.au/api/auth/apple/callback
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: APPLE_CLIENT_ID
+        sync: false
+      - key: APPLE_TEAM_ID
+        sync: false
+      - key: APPLE_KEY_ID
+        sync: false
+      - key: APPLE_PRIVATE_KEY
+        sync: false
+      - key: OAUTH_STATE_SECRET
+        sync: false
       # Founder complimentary Plus. Not the organisations inbox.
       - key: FOUNDER_PLUS_EMAILS
         value: dwaynesimons1990@gmail.com

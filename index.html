@@ -13,7 +13,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hopewick · Faith-sensitive AOD support, between sessions</title>
 <meta name="description" content="Hopewick is an AI AOD recovery companion from BRIDGE&BITE.CO PTY LTD (ABN 83 692 080 792) — support between sessions for people in recovery, and for Australian rehabs and AOD services.">
-<meta name="build" content="hopewick-v5.20">
+<meta name="build" content="hopewick-v5.21">
 <meta name="theme-color" content="#3f8f5f">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -48,6 +48,8 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
   :root { --bg: #0e1612; --surface: #151f19; --surface-2: #1b2821; --text: #e3eee6; --muted: #9ab0a1;
     --accent: #6cc190; --accent-strong: #8fd6ab; --accent-soft: #1f3a2a; --accent-contrast: #0c1a12;
     --border: #26372d; --danger: #ef8a7f; --danger-soft: #3a1f1c; --shadow: 0 10px 30px rgba(0,0,0,.35); color-scheme: dark; }
+  .oauth-apple, .oauth-apple:hover { background: #fff; color: #000; border-color: #fff; }
+  .oauth-apple:hover { background: #e8e8e8; }
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -148,6 +150,17 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
 .plan .who { margin: 0; color: var(--muted); font-size: .92rem; }
 .plan ul { margin: 8px 0 12px; }
 .plan .plan-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+[hidden] { display: none !important; }
+.signin-options { flex-direction: column; align-items: stretch; }
+.signin-options .btn { width: 100%; }
+.oauth-btn { min-height: 44px; border-radius: 8px; font-weight: 600; gap: 10px; }
+.oauth-btn svg { flex: none; display: block; }
+.oauth-google, .oauth-google:hover { background: #fff; color: #1f1f1f; border-color: #747775; }
+.oauth-google:hover { background: #f7f8f8; }
+.oauth-apple, .oauth-apple:hover { background: #000; color: #fff; border-color: #000; }
+.oauth-apple:hover { background: #1a1a1a; }
+.oauth-or { margin: 0; text-align: center; color: var(--muted); font-size: .85rem; }
+.oauth-btn:focus-visible { outline: none; box-shadow: var(--focus); }
 .plan-soon { margin-top: 16px; }
 .plan-soon h3 { margin-top: 0; }
 .message-caps { margin: 4px 0 18px; }
@@ -345,7 +358,7 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
       <p class="section-lede">Chats stay on the device. An account stores your email and whether Hopewick Plus is active.</p>
       <div class="grid g3">
         <div class="card"><h3>Stays on the device</h3><p>Chats, memories, check-ins and settings stay in the browser on the device being used. If you sign in for Hopewick Plus, we store your email and subscription status — not your conversations.</p></div>
-        <div class="card"><h3>Your account</h3><p>Hopewick Plus sign-in is an email link. We keep the email and whether Plus is active. Conversations are not uploaded.</p></div>
+        <div class="card"><h3>Your account</h3><p>Hopewick Plus sign-in can be Google, Apple, or an email link. We keep the email and whether Plus is active. Conversations are not uploaded.</p></div>
         <div class="card"><h3>Organisations</h3><p>Seat plans for rehabs, AOD services and clinics are not on sale yet. A pilot is how a service can talk about using Hope with the people they support.</p></div>
       </div>
       <p class="callout">Profile PINs are a light privacy lock for shared devices, not strong security. Anyone with access to the browser's storage could still read the data. People can export or delete their own data at any time.</p>
@@ -440,7 +453,10 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
             <li>Your saved chat history</li>
             <li>Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet</li>
           </ul>
-          <div class="plan-actions">
+          <div class="plan-actions signin-options" id="plusSignIn">
+            <a class="btn oauth-btn oauth-google" id="marketingGoogle" hidden href="/api/auth/google?next=%2Fapp%2F%3Fsignedin%3D1"><svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true" focusable="false"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>Sign in with Google</a>
+            <a class="btn oauth-btn oauth-apple" id="marketingApple" hidden href="/api/auth/apple?next=%2Fapp%2F%3Fsignedin%3D1"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>Sign in with Apple</a>
+            <p class="oauth-or" id="marketingOauthOr" hidden>or use an email link</p>
             <a class="btn btn-primary" href="app/?account=1">Email me a sign-in link</a>
           </div>
         </article>
@@ -518,6 +534,23 @@ section h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin: 0 0 10px; letter-s
     returning = !!(profiles && Array.isArray(profiles.list) && profiles.list.length) || localStorage.getItem('eden.settings.v1') !== null;
   } catch (e) { returning = false; }
   if (returning) document.getElementById('welcomeBack').classList.add('show');
+})();
+
+/* Show Google and Apple only when this server has those providers configured. */
+(function oauthButtons() {
+  const google = document.getElementById('marketingGoogle');
+  const apple = document.getElementById('marketingApple');
+  const or = document.getElementById('marketingOauthOr');
+  if (!google && !apple) return;
+  fetch('/api/billing/config', { headers: { Accept: 'application/json' } })
+    .then((response) => (response.ok ? response.json() : null))
+    .then((config) => {
+      if (!config) return;
+      if (config.googleSignIn && google) google.hidden = false;
+      if (config.appleSignIn && apple) apple.hidden = false;
+      if (or && (config.googleSignIn || config.appleSignIn)) or.hidden = false;
+    })
+    .catch(() => {});
 })();
 </script>
 </body>

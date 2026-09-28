@@ -1,6 +1,7 @@
 /**
  * Tiny JSON file store for Hopewick accounts.
- * Holds email, magic-link and session hashes, and Stripe subscription status.
+ * Holds email, magic-link and session hashes, OAuth provider subject ids,
+ * and Stripe subscription status. Provider tokens are not stored.
  * Conversations are not stored here — they stay in the browser.
  */
 import crypto from 'node:crypto';
@@ -68,6 +69,12 @@ export function createStore(filePath) {
       const now = Date.now();
       return data.users.find((u) => u.magic && u.magic.hash === h && u.magic.expiresAt > now) || null;
     },
+    findByProvider(provider, sub) {
+      if (provider !== 'google' && provider !== 'apple') return null;
+      const id = String(sub || '');
+      if (!id) return null;
+      return data.users.find((u) => u.providers && u.providers[provider] && u.providers[provider].sub === id) || null;
+    },
     list() {
       return data.users.slice();
     },
@@ -78,6 +85,7 @@ export function createStore(filePath) {
         createdAt: new Date().toISOString(),
         magic: null,
         session: null,
+        providers: {},
         stripeCustomerId: null,
         stripeSubscriptionId: null,
         subscriptionStatus: 'none',
