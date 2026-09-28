@@ -1,26 +1,30 @@
 # Hopewick Plus — accounts and Stripe
 
-Individual subscriptions are **AU$20 per month** (AUD). The marketing site and companion stay static HTML. Sign-in, Stripe Checkout, the Customer Portal, and the webhook run in a small Node server (`server/index.js`) with no extra npm packages.
+Individual subscriptions are a **3-day free trial, then AU$20 per month** (AUD). The marketing site and companion stay static HTML. Sign-in, Stripe Checkout, the Customer Portal, and the webhook run in a small Node server (`server/index.js`) with no extra npm packages.
 
 Chats, memories, and readings stay in the browser. The account file stores **email and subscription status only**.
 
-Crisis lines, domestic and family violence support, Get help, the public demo, and **today’s** Word for the day and Just for today stay free.
+Crisis lines, domestic and family violence support, Get help, Hope chat at the free daily cap, the public demo, and **today’s** Word for the day and Just for today stay free. SMART goals, the journal, the resume builder, and education libraries (nutrition now; gut health and neuroplasticity when they arrive) need Hopewick Plus.
 
 Organisation and clinic seat plans are **not** for sale here. They remain “coming soon”. The existing pilot sheet (`pilot-pricing.html`) is unchanged as a conversation starter for services.
 
 ## Free and paid
 
-| | Free | Hopewick Plus (AU$20/month) |
+| | Free | Hopewick Plus (3 days free, then AU$20/month) |
 |---|---|---|
 | Website | Yes | Yes |
 | Crisis, domestic and family violence, Get help | Always | Always |
+| Hope chat | 20 messages/day | 200 messages/day |
 | Chat history | Latest conversation on a free account | Saved chat history on this device |
 | Daily message limit (marketing policy) | 20 messages/day | 200 messages/day |
 | Reading library (any day of the year) | Today only | Yes |
-| Resume builder | Yes — saved on this device | Included, still free |
+| SMART goals | Tease only | Full weekly editor, on this device |
+| Journal | Tab with an upgrade | Write, edit, deepen |
+| Resume builder | Tease only | Builder and PDF, on this device |
+| Education libraries | Names and an upgrade | Nutrition now. Gut health and neuroplasticity stay Plus-only when they arrive |
 | Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
 
-Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and the resume builder. Scripted sample conversations stay at `app/?demo=1` for organisation trials.
+Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
 
 The daily message limits (Free 20 messages/day, Hopewick Plus 200 messages/day) are enforced by the account server on hosted Hope (`POST /api/hope/chat`). The marketing site and the Hopewick Plus screen use the same numbers.
 
@@ -59,6 +63,16 @@ In the Stripe Dashboard (test mode):
 3. Add a webhook endpoint. Production URL: **`https://hopewick.com.au/api/billing/webhook`**. Events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. Copy the endpoint’s `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 The server marks Plus **active** for Stripe statuses `active` and `trialing`. `canceled`, `past_due`, `unpaid`, `incomplete`, and `paused` do not unlock paid features. Cancellation comes from `customer.subscription.deleted` (and from `updated` when Stripe reports a non-Plus status).
+
+## 3-day trial (code, not a Dashboard setting)
+
+New Checkout sessions set `subscription_data[trial_period_days]=3` on the existing recurring price (`STRIPE_PRICE_ID`). The live or test price id does not change. Stripe collects a card at Checkout (`payment_method_collection=always`) and bills that price when the 3 days end. `trialing` already counts as Plus, so the webhook turns Plus on before the first invoice. When the trial ends, `customer.subscription.updated` moves the status to `active` or `past_due`.
+
+A person who already has a Stripe subscription id on the account — including after they cancel — does not get a second trial. The founder address (`dwaynesimons1990@gmail.com`, unless `FOUNDER_PLUS_EMAILS` overrides it) never goes through Checkout.
+
+**Stripe Dashboard:** you do not need to add a trial on the Price, Product, or Billing settings. Leave any default trial at none / 0 days. Do not also turn on a free trial on the AU$20 price. A second trial on the price can make Checkout reject `trial_period_days` or apply a different length. If Checkout returns an error that the price already has a trial, remove that trial in the Dashboard and keep the code setting.
+
+The Customer Portal does not need a change. A trialing subscription can be canceled there the same way as a paid one, when cancellation is enabled. Webhook events stay `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`.
 
 ## Run it locally
 

@@ -9,6 +9,7 @@
  * OPENAI_API_KEY on this server (the same key can already exist on the
  * Azure invite proxy). The browser never receives it.
  *
+ * Plus Checkout includes a 3-day trial, then the existing monthly price.
  * Daily caps: Free 20 messages, Hopewick Plus (including complimentary
  * founder emails) 200. Counts use the Australia/Brisbane calendar day.
  * Conversations are not stored — only email, subscription status, and
@@ -50,6 +51,7 @@ const SESSION_MS = 30 * 24 * 60 * 60 * 1000;
 const MAGIC_MS = 30 * 60 * 1000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PLUS_OK = new Set(['active', 'trialing']);
+const PLUS_TRIAL_DAYS = 3;
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -372,6 +374,7 @@ async function handleApi(store, req, res, url) {
       devMagic: devMode(),
       currency: 'aud',
       amountLabel: 'AU$20/month',
+      trialDays: PLUS_TRIAL_DAYS,
       hopeHosted: hopeConfigured(),
       freeDailyMessages: freeDailyCap(),
       plusDailyMessages: plusDailyCap(),
@@ -501,7 +504,7 @@ async function handleApi(store, req, res, url) {
       store.save(user);
     }
     const base = publicBase(req);
-    const session = await stripeRequest('POST', '/checkout/sessions', {
+    const sessionParams = {
       mode: 'subscription',
       customer: user.stripeCustomerId,
       client_reference_id: user.id,
@@ -514,7 +517,14 @@ async function handleApi(store, req, res, url) {
       'subscription_data[metadata][userId]': user.id,
       allow_promotion_codes: 'true',
       locale: 'en',
-    });
+      // Collect a card now so the existing monthly price bills when the trial ends.
+      payment_method_collection: 'always',
+    };
+    // First subscription only. A canceled account already has a Stripe subscription id.
+    if (!user.stripeSubscriptionId) {
+      sessionParams['subscription_data[trial_period_days]'] = String(PLUS_TRIAL_DAYS);
+    }
+    const session = await stripeRequest('POST', '/checkout/sessions', sessionParams);
     json(res, 200, { url: session.url, id: session.id });
     return;
   }
@@ -656,7 +666,7 @@ async function handleHopeChat(store, req, res) {
     return;
   }
   if (!hopeConfigured()) {
-    json(res, 503, { error: { message: 'Hosted Hope is not connected on this server yet. Today’s Readings, crisis support, Get help, and the resume builder still work.', code: 'unconfigured' } });
+    json(res, 503, { error: { message: 'Hosted Hope is not connected on this server yet. Today’s Readings, crisis support, and Get help still work.', code: 'unconfigured' } });
     return;
   }
   const admission = admitHopeCall(user, { purpose, crisis });

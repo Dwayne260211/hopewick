@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Free weekly SMART goals, and Journal on the tab bar (News lives in More)."""
+"""SMART goals and the journal tab. The editor and full journal need Hopewick Plus."""
 from __future__ import annotations
 
 import json
@@ -14,7 +14,7 @@ APP = ROOT / "app" / "index.html"
 
 def test_static_goals_and_journal_nav():
     text = APP.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.15'" in text
+    assert "EDEN_BUILD = 'hopewick-v5.16'" in text
     assert "function openGoals" in text
     assert "function weekStartSunday" in text
     assert "eden.p.<id>.goals" in text
@@ -37,6 +37,13 @@ def test_static_goals_and_journal_nav():
     assert "Add a profile is part of Hopewick Plus" in text
     assert "function openNutrition" in text
     assert "nutritionLibrary" in text
+    assert 'id="goalsGate"' in text
+    assert 'id="journalGate"' in text
+    assert 'id="resumeGate"' in text
+    assert "SMART goals are part of Hopewick Plus" in text
+    assert "The journal is part of Hopewick Plus" in text
+    assert "gut health and neuroplasticity" in text.lower()
+    assert "Start 3-day free trial" in text
 
 
 def _server():
@@ -79,15 +86,16 @@ def test_smart_goals_journal_nav_and_guards():
             for need in ("help", "dv", "craving", "chat", "today", "journal", "bible", "resume", "meeting"):
                 assert page.locator(f'#needNow [data-need="{need}"]').count() == 1, need
 
-            # Journal tab is a real destination. News is under More. DV stays top-level.
+            # Journal tab stays. Free sees the trial screen, not the editor.
             page.click("#appTabJournal")
             page.wait_for_selector("#journalView:not([hidden])")
             assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
             assert page.locator("#homeView").is_hidden()
             assert "Journal" in page.inner_text("#journalTitle")
-            page.fill("#jBody", "A line for today")
-            page.click("#jSaveBtn")
-            assert "A line for today" in page.inner_text("#journalList")
+            assert page.locator("#journalWorkspace").is_hidden()
+            assert page.locator("#journalPlusBtn").is_visible()
+            assert "part of Hopewick Plus" in page.inner_text("#journalView")
+            assert "3 days free" in page.inner_text("#journalGate")
 
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")
@@ -148,15 +156,18 @@ def test_smart_goals_journal_nav_and_guards():
             intro = page.inner_text("#goalsIntro")
             assert "not a SMART Recovery meeting" in intro
             assert "Find a meeting" in intro
-            assert page.locator("#goalCard0").count() == 1
-            assert page.locator("#goalCard1").count() == 1
-            assert "Specific" in page.inner_text("#goalCard0")
-            assert "Measurable" in page.inner_text("#goalCard0")
-            assert "Achievable" in page.inner_text("#goalCard0")
-            assert "Relevant" in page.inner_text("#goalCard0")
-            assert "Time-bound" in page.inner_text("#goalCard0")
             assert page.evaluate("() => subscriptionPlus()") is False
-            assert "part of Hopewick Plus" not in page.inner_text("#goalsDlg")
+            assert page.locator("#goalsEditor").is_hidden()
+            assert page.locator("#goalCard0").count() == 0
+            assert page.locator("#goalsPlusBtn").is_visible()
+            gate = page.inner_text("#goalsGate")
+            assert "Specific" in gate
+            assert "Measurable" in gate
+            assert "Achievable" in gate
+            assert "Relevant" in gate
+            assert "Time-bound" in gate
+            assert "part of Hopewick Plus" in page.inner_text("#goalsDlg")
+            assert "3 days free" in gate
             page.keyboard.press("Escape")
             page.wait_for_function("() => !busy", timeout=20000)
 
@@ -199,6 +210,17 @@ def test_smart_goals_journal_nav_and_guards():
             fresh.wait_for_selector("#app.sidebar-open")
             fresh.click("#sideGoalsBtn")
             fresh.wait_for_function("() => document.getElementById('goalsDlg')?.open === true")
+            assert fresh.locator("#goalsEditor").is_hidden()
+            assert fresh.locator("#goalsPlusBtn").is_visible()
+            fresh.evaluate(
+                """() => {
+                  billingState.signedIn = true;
+                  billingState.plus = true;
+                  billingState.subscriptionStatus = 'trialing';
+                  renderGoals();
+                }"""
+            )
+            fresh.wait_for_selector("#goal0specific")
             fresh.fill("#goal0specific", "Text my brother once")
             fresh.fill("#goal0measurable", "One message sent")
             fresh.fill("#goal0achievable", "A short hello is enough")
@@ -225,6 +247,13 @@ def test_smart_goals_journal_nav_and_guards():
             fresh.locator("#profileList .profile-card", has_text="Sam").click()
             fresh.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
             _dismiss_disclaimer(fresh)
+            fresh.evaluate(
+                """() => {
+                  billingState.signedIn = true;
+                  billingState.plus = true;
+                  billingState.subscriptionStatus = 'trialing';
+                }"""
+            )
             fresh.click("#appTabMore")
             fresh.wait_for_selector("#app.sidebar-open")
             fresh.click("#sideGoalsBtn")
@@ -262,8 +291,15 @@ def test_smart_goals_journal_nav_and_guards():
             assert "OLD WEEK GOAL" not in hidden["text"]
             assert "Text my brother" not in hidden["text"]
 
-            # Second profile stays Plus-only.
+            # Second profile stays Plus-only. This visit is not a paid account.
             fresh.keyboard.press("Escape")
+            fresh.evaluate(
+                """() => {
+                  billingState.signedIn = false;
+                  billingState.plus = false;
+                  billingState.subscriptionStatus = 'none';
+                }"""
+            )
             fresh.click("#switchBtn")
             fresh.wait_for_selector("#pickerDlg[open] .profile-card")
             assert fresh.locator("#addPersonBtn").is_hidden()

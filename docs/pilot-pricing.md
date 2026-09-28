@@ -1,6 +1,6 @@
 # Hopewick — Pilot pricing
 
-**Individuals:** Hopewick Plus is **AU$20/month** (AUD) on the marketing site. See [SETUP.md](../SETUP.md) for Stripe. Organisation and clinic seat plans in the product are **coming soon** — this sheet is the conversation for services, not the live checkout.
+**Individuals:** Hopewick Plus is a **3-day free trial, then AU$20/month** (AUD) on the marketing site. See [SETUP.md](../SETUP.md) for Stripe. Organisation and clinic seat plans in the product are **coming soon** — this sheet is the conversation for services, not the live checkout.
 
 **One-liner:** Hopewick keeps hope lit between sessions — an AI AOD recovery companion (Hope) for people in recovery. Staff issue invite codes; they are not the main users.
 
