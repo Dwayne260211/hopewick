@@ -177,3 +177,192 @@ def test_need_now_and_hope_gateway():
             browser.close()
     finally:
         httpd.shutdown()
+
+
+def _reset_home(page):
+    page.evaluate(
+        """() => {
+          document.querySelectorAll('dialog').forEach((d) => { if (d.open) d.close(); });
+          setAppTab('home');
+        }"""
+    )
+    page.wait_for_selector("#homeView:not([hidden])")
+    page.wait_for_selector("#needNow")
+    page.wait_for_function(
+        """() => [...document.querySelectorAll('dialog')].every((d) => !d.open)
+          && !document.getElementById('homeView').hidden
+          && document.querySelector('#appTabHome')?.getAttribute('aria-current') === 'page'"""
+    )
+
+
+def _wait_dialog_on_top(page, dlg_id):
+    """The open dialog, not Home underneath it, is what a tap would hit."""
+    page.wait_for_function(
+        """(id) => {
+          const d = document.getElementById(id);
+          if (!d || !d.open) return false;
+          const r = d.getBoundingClientRect();
+          if (r.width < 40 || r.height < 40) return false;
+          const hit = document.elementFromPoint(
+            Math.floor(r.left + r.width / 2),
+            Math.floor(r.top + Math.min(36, r.height / 2))
+          );
+          return !!(hit && (hit === d || d.contains(hit)));
+        }""",
+        arg=dlg_id,
+        timeout=5000,
+    )
+
+
+def _wait_view_on_top(page, view_id):
+    page.wait_for_function(
+        """(id) => {
+          const view = document.getElementById(id);
+          if (!view || view.hidden) return false;
+          if ([...document.querySelectorAll('dialog')].some((d) => d.open)) return false;
+          const hit = document.elementFromPoint(
+            Math.floor(window.innerWidth / 2),
+            Math.floor(window.innerHeight * 0.42)
+          );
+          return !!(hit && (hit === view || view.contains(hit)));
+        }""",
+        arg=view_id,
+        timeout=5000,
+    )
+
+
+def test_every_need_now_chip_click():
+    """Click each Home need-now chip and require its own screen, not Home or another tab."""
+    from playwright.sync_api import sync_playwright
+
+    httpd = _server()
+    port = httpd.server_address[1]
+    base = f"http://127.0.0.1:{port}"
+    results = []
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
+            page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
+            page.click("#launchPrefsContinue")
+            _reset_home(page)
+
+            def click_chip(need, label):
+                chip = page.locator(f'#needNow [data-need="{need}"]')
+                assert chip.count() == 1, need
+                text = chip.inner_text().strip()
+                assert text == label, (need, text, label)
+                chip.click()
+
+            def check(name, fn):
+                try:
+                    _reset_home(page)
+                    fn()
+                    results.append((name, "pass"))
+                except Exception as exc:
+                    results.append((name, f"FAIL: {exc}"))
+
+            def help_chip():
+                click_chip("help", "Get help")
+                _wait_dialog_on_top(page, "helpDlg")
+                assert "Get help now" in page.inner_text("#helpTitle")
+                assert "1800 250 015" in page.inner_text("#helpDlg")
+                assert "Domestic & family violence" not in page.inner_text("#helpDlg")
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+                assert page.locator("#dvView").is_hidden()
+
+            def dv_chip():
+                click_chip("dv", "Not safe at home")
+                _wait_view_on_top(page, "dvView")
+                assert page.locator("#homeView").is_hidden()
+                assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "false"
+                assert "1800 737 732" in page.inner_text("#dvView")
+
+            def craving_chip():
+                click_chip("craving", "A craving")
+                _wait_dialog_on_top(page, "circuitBreakerDlg")
+                assert "Circuit breakers" in page.inner_text("#breakerTitle")
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+                assert page.evaluate("() => document.getElementById('homeView').hidden") is False
+
+            def chat_chip():
+                label = page.locator('#needNow [data-need="chat"]').inner_text().strip()
+                assert label.startswith("Talk to "), label
+                page.click('#needNow [data-need="chat"]')
+                _wait_view_on_top(page, "messages")
+                assert page.locator("#homeView").is_hidden()
+                assert page.locator("#appTabChat").get_attribute("aria-current") == "page"
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "false"
+                assert page.locator("#input").is_visible()
+
+            def today_chip():
+                click_chip("today", "Today’s reading")
+                _wait_view_on_top(page, "homeView")
+                assert page.locator("#todayCard").get_attribute("class").find("is-expanded") != -1
+                assert page.locator("#todayExpand").get_attribute("aria-expanded") == "true"
+                assert page.locator("#todayWordReading").is_visible()
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+                assert page.evaluate("() => [...document.querySelectorAll('dialog')].every(d => !d.open)")
+
+            def journal_chip():
+                click_chip("journal", "Journal")
+                _wait_dialog_on_top(page, "journalDlg")
+                assert "Journal" in page.inner_text("#journalTitle")
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+
+            def bible_chip():
+                click_chip("bible", "Bible & SOAP")
+                _wait_dialog_on_top(page, "bibleDlg")
+                title = page.inner_text("#bibleTitle")
+                assert "Bible" in title and "SOAP" in title, title
+                assert page.locator("#bibleSoapPanel").is_visible()
+                assert page.locator("#bibleDeeperPanel").is_hidden()
+                assert page.locator("#bibleReaderPanel").is_hidden()
+                assert page.locator("#bibleTabSoap").get_attribute("aria-selected") == "true"
+                assert page.locator("#bibleStartSoap").is_visible()
+                assert page.evaluate("() => document.getElementById('homeView').hidden") is False
+                assert page.evaluate("() => appTab") == "home"
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+                assert page.locator("#messages").is_hidden()
+                page.click("#bibleStartSoap")
+                _wait_view_on_top(page, "messages")
+                assert page.evaluate("() => document.getElementById('bibleDlg').open") is False
+                assert page.locator("#homeView").is_hidden()
+                assert page.locator("#appTabChat").get_attribute("aria-current") == "page"
+                page.wait_for_function(
+                    "() => (document.getElementById('messagesInner')?.innerText || '').includes('SOAP')",
+                    timeout=15000,
+                )
+
+            def resume_chip():
+                click_chip("resume", "Resume")
+                _wait_view_on_top(page, "resumeView")
+                assert page.locator("#homeView").is_hidden()
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "false"
+                assert page.evaluate("() => appTab") == "resume"
+
+            def meeting_chip():
+                click_chip("meeting", "A meeting")
+                _wait_dialog_on_top(page, "meetingDlg")
+                assert "Find a meeting" in page.inner_text("#meetingTitle")
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+                assert page.locator("#resumeView").is_hidden()
+
+            check("Get help", help_chip)
+            check("Not safe at home", dv_chip)
+            check("craving", craving_chip)
+            check("chat", chat_chip)
+            check("today’s reading", today_chip)
+            check("journal", journal_chip)
+            check("Bible & SOAP", bible_chip)
+            check("resume", resume_chip)
+            check("meeting", meeting_chip)
+            browser.close()
+    finally:
+        httpd.shutdown()
+    for name, status in results:
+        print(f"CHIP {name}: {status}")
+    failed = [f"{name}: {status}" for name, status in results if not status.startswith("pass")]
+    assert not failed, "\n".join(failed)
