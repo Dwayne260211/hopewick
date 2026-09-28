@@ -8235,6 +8235,7 @@ function openSettings(focusId, tabHint) {
     $('#setKey').value = '';
     if (ownToggle) ownToggle.checked = false;
   }
+  syncOwnKeyFields();
   setKeyVisible(false);
   $('#setStream').checked = settings.stream;
   $('#setName').value = companionName();
