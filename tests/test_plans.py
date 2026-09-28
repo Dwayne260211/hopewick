@@ -43,6 +43,28 @@ def test_marketing_plans_copy():
         assert "admin@bridge-bite-co.com" not in bit[:180]
 
 
+def test_marketing_cbt_dbt_coming_soon():
+    """Landing teaser only — name each approach once, and do not claim the tools exist yet."""
+    page = (ROOT / "index.html").read_text(encoding="utf-8")
+    assert 'id="practices"' in page
+    section = page.split('id="practices"', 1)[1].split("</section>", 1)[0]
+    assert "Coming soon to the app" in section
+    assert "COMING SOON" in section
+    assert section.count("CBT (Cognitive Behavioural Therapy)") == 1
+    assert section.count("DBT (Dialectical Behaviour Therapy)") == 1
+    assert ">CBT</h3>" in section
+    assert ">DBT</h3>" in section
+    assert "self-help style tools" in section
+    assert "counsellor" in section.lower()
+    assert "still on the way" in section
+    assert "Hopewick Plus" in section
+    assert "AU$20" in section
+    # The hero stays the recovery pitch; this teaser is its own section.
+    hero = page.split('class="hero"', 1)[1].split("</section>", 1)[0]
+    assert "Cognitive Behavioural Therapy" not in hero
+    assert "Dialectical Behaviour Therapy" not in hero
+
+
 def test_companion_gates_premium_not_crisis():
     app = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
     assert 'id="accountDlg"' in app
