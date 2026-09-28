@@ -41,7 +41,7 @@ REQUIRED_URLS = [
 
 def test_static_header_and_info():
     text = APP.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.19'" in text
+    assert "EDEN_BUILD = 'hopewick-v5.20'" in text
     topbar = re.search(r'<header class="topbar">.*?</header>', text, re.S).group(0)
     actions = re.search(r'<div class="topbar-actions">.*?</div>', topbar, re.S).group(0)
     # Menu + Get help + profile + hands-free. Preferences are not in the header.
