@@ -43,26 +43,24 @@ def test_marketing_plans_copy():
         assert "admin@bridge-bite-co.com" not in bit[:180]
 
 
-def test_marketing_cbt_dbt_coming_soon():
-    """Landing teaser only — name each approach once, and do not claim the tools exist yet."""
+def test_marketing_mobile_coming_soon():
+    """Landing teaser only — founder copy for iPhone and Android, with no store links yet."""
     page = (ROOT / "index.html").read_text(encoding="utf-8")
-    assert 'id="practices"' in page
-    section = page.split('id="practices"', 1)[1].split("</section>", 1)[0]
-    assert "Coming soon to the app" in section
+    assert 'id="mobile"' in page
+    assert 'id="practices"' not in page
+    section = page.split('id="mobile"', 1)[1].split("</section>", 1)[0]
+    assert "Hopewick is coming to mobile" in section
+    assert "The Hopewick app is coming soon to iPhone and Android." in section
+    assert "Take Hope with you wherever you go, with recovery support, check-ins, tools, journalling and more right from your phone." in section
+    assert "Coming soon to the Apple App Store and Google Play." in section
     assert "COMING SOON" in section
-    assert section.count("CBT (Cognitive Behavioural Therapy)") == 1
-    assert section.count("DBT (Dialectical Behaviour Therapy)") == 1
-    assert ">CBT</h3>" in section
-    assert ">DBT</h3>" in section
-    assert "self-help style tools" in section
-    assert "counsellor" in section.lower()
-    assert "still on the way" in section
-    assert "Hopewick Plus" in section
-    assert "AU$20" in section
-    # The hero stays the recovery pitch; this teaser is its own section.
-    hero = page.split('class="hero"', 1)[1].split("</section>", 1)[0]
-    assert "Cognitive Behavioural Therapy" not in hero
-    assert "Dialectical Behaviour Therapy" not in hero
+    assert "apps.apple.com" not in section
+    assert "play.google.com" not in section
+    assert "Coming soon to the app" not in page
+    assert "Cognitive Behavioural Therapy" not in page
+    assert "Dialectical Behaviour Therapy" not in page
+    assert ">CBT</h3>" not in page
+    assert ">DBT</h3>" not in page
 
 
 def test_companion_gates_premium_not_crisis():
