@@ -1266,6 +1266,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   background: var(--accent-soft);
 }
 .nut-gate p { margin: 0 0 8px; font-size: .92rem; }
+.plus-feature-gate .btn-primary { margin-top: 4px; }
+#journalWorkspace[hidden],
+#goalsEditor[hidden],
+#resumeBuilder[hidden] { display: none !important; }
+h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
+@media (max-width: 420px) {
+  .plus-feature-gate .btn-primary { width: 100%; }
+}
 .nut-tease { margin: 0 0 12px; padding-left: 1.2em; font-size: .92rem; }
 .nut-library { margin-top: 16px; }
 .nut-kicker {
@@ -1526,15 +1534,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </button>
       <button class="btn btn-ghost" type="button" data-open="journal" id="sideJournalBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Journal
+        Journal <span class="plus-pill" id="journalSidePlusPill">Plus</span>
       </button>
       <button class="btn btn-ghost" type="button" data-open="goals" id="sideGoalsBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
-        SMART goals
+        SMART goals <span class="plus-pill" id="goalsPlusPill">Plus</span>
       </button>
       <button class="btn btn-ghost" type="button" data-open="resume" id="sideResumeBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
-        Resume
+        Resume <span class="plus-pill" id="resumeSidePlusPill">Plus</span>
       </button>
       <button class="btn btn-ghost" type="button" data-open="steps">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
@@ -1646,12 +1654,12 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p><strong>Hopewick Plus — AU$20/month.</strong> Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p><strong>Hopewick Plus — 3 days free, then AU$20/month.</strong> SMART goals, the journal, the resume builder, nutrition notes, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Hopewick Plus</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
     <div class="banner" id="keyBanner" hidden>
-      <p id="keyBannerText">Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder stay available.</p>
+      <p id="keyBannerText">Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, domestic and family violence resources, and Get Help stay available.</p>
       <div class="banner-actions">
         <button class="btn btn-primary btn-sm" type="button" id="keyBannerSignIn">Sign in</button>
         <button class="btn btn-sm" type="button" id="keyBannerInvite" data-invite-entry hidden>Enter invite code</button>
@@ -1821,9 +1829,11 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     <section class="resume-view" id="resumeView" hidden aria-label="Resume builder">
       <div class="resume-inner">
         <div class="home-hero">
-          <h1 id="resumeTitle" tabindex="-1">Resume builder</h1>
-          <p id="resumeLede">Write a simple resume in your own words. This is free in <span data-brand>Hopewick</span> — it is not part of Plus. Your draft stays on this device.</p>
+          <h1 id="resumeTitle" tabindex="-1">Resume builder <span class="plus-pill" id="resumePlusPill">Plus</span></h1>
+          <p id="resumeLede">The resume builder is part of Hopewick Plus. Start a 3-day free trial, then AU$20/month. Your draft stays on this device once Plus is active.</p>
         </div>
+        <div id="resumeGate" class="nut-gate plus-feature-gate"></div>
+        <div id="resumeBuilder" hidden>
         <p class="resume-note" id="resumeGapNote">A gap in paid work is ordinary. Volunteering, courses, casual work, and caring for someone all belong here. You do not have to mention recovery unless you want to.</p>
         <div class="resume-steps" id="resumeSteps" role="tablist" aria-label="Resume steps"></div>
         <div class="resume-layout">
@@ -1899,15 +1909,18 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
             <div id="resumePreview" class="resume-paper" aria-live="polite"></div>
           </aside>
         </div>
+        </div>
       </div>
     </section>
 
     <section class="journal-view" id="journalView" hidden aria-label="Journal">
       <div class="journal-inner">
         <div class="home-hero">
-          <h1 id="journalTitle">Journal</h1>
-          <p>A private place for your thoughts. Deepen reflection with <span data-companion>Hope</span> when you want more emotional depth — never a diagnosis.</p>
+          <h1 id="journalTitle" tabindex="-1">Journal <span class="plus-pill" id="journalPlusPill">Plus</span></h1>
+          <p id="journalLede">A private place for your thoughts. Writing, editing, and deepening a reflection are part of Hopewick Plus. This tab stays here so you can see what’s included.</p>
         </div>
+        <div id="journalGate" class="nut-gate plus-feature-gate"></div>
+        <div id="journalWorkspace" hidden>
         <div id="journalCompose">
           <div class="field">
             <label for="jTitle">Title <span class="help">(optional)</span></label>
@@ -1926,6 +1939,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         </div>
         <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 8px">Your entries</h2>
         <ul class="journal-list" id="journalList" aria-label="Journal entries"></ul>
+        </div>
       </div>
     </section>
 
@@ -2072,13 +2086,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </ul>
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Hopewick Plus</button>
-      <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p class="help" style="margin:8px 0 0">Hopewick Plus — 3 days free, then AU$20/month. SMART goals, the journal, the resume builder, nutrition notes, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 20 messages a day. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
-        <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
+        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition notes (gut health and neuroplasticity stay Plus-only when they arrive), clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
@@ -2145,7 +2159,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </button>
   </form>
   <div class="dlg-body">
-    <p class="lede" id="needAiLede">Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, Get Help, and the resume builder stay available.</p>
+    <p class="lede" id="needAiLede">Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, and Get Help stay available.</p>
     <div class="need-ai-actions">
       <button class="btn btn-primary" type="button" id="needAiSignInBtn">Sign in</button>
       <button class="btn" type="button" id="needAiInviteBtn" data-invite-entry hidden>Enter invite code</button>
@@ -2185,7 +2199,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 <!-- ============================ Hopewick Plus ============================ -->
 <dialog id="accountDlg" class="account-dlg" aria-labelledby="accountTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="accountTitle">Hopewick Plus — AU$20/month</h2>
+    <h2 id="accountTitle">Hopewick Plus — 3 days free, then AU$20/month</h2>
     <button class="icon-btn" value="close" aria-label="Close Hopewick Plus">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
@@ -2445,19 +2459,22 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
-<!-- ============================ Weekly SMART goals (free) ============================ -->
+<!-- ============================ Weekly SMART goals (Hopewick Plus) ============================ -->
 <dialog id="goalsDlg" aria-labelledby="goalsTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="goalsTitle">🎯 SMART goals</h2>
+    <h2 id="goalsTitle">🎯 SMART goals <span class="plus-pill" id="goalsTitlePill">Plus</span></h2>
     <button class="icon-btn" value="close" aria-label="Close SMART goals">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body">
-    <p id="goalsIntro" style="margin:12px 0 0">Two small goals for this week, Sunday to Saturday. This is your own plan in <span data-brand>Hopewick</span> — not a SMART Recovery meeting. To find a meeting, use <strong>Find a meeting</strong>.</p>
-    <p class="help" id="goalsWeekLabel"></p>
-    <div id="goalsList"></div>
-    <p class="help" id="goalsSaved" aria-live="polite"></p>
+    <p id="goalsIntro" style="margin:12px 0 0">Two small goals for this week, Sunday to Saturday. This is your own plan in <span data-brand>Hopewick</span> — not a SMART Recovery meeting. To find a meeting, use <strong>Find a meeting</strong>. The full editor is part of Hopewick Plus.</p>
+    <div id="goalsGate" class="nut-gate plus-feature-gate"></div>
+    <div id="goalsEditor" hidden>
+      <p class="help" id="goalsWeekLabel"></p>
+      <div id="goalsList"></div>
+      <p class="help" id="goalsSaved" aria-live="polite"></p>
+    </div>
   </div>
 </dialog>
 
@@ -2864,7 +2881,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
-<!-- ============================ Nutrition (Hopewick Plus library) ============================ -->
+<!-- ============================ Nutrition (Hopewick Plus education library) ============================ -->
+<!-- Gut health and neuroplasticity libraries are upcoming and stay Plus-only. Do not show them on Free. -->
 <dialog id="nutritionDlg" aria-labelledby="nutritionTitle">
   <form method="dialog" class="dlg-head">
     <h2 id="nutritionTitle">🥗 Nutrition</h2>
@@ -2991,15 +3009,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.moods         per-person daily check-in / mood history
      eden.p.<id>.gratitude     per-person morning gratitude entries
      eden.p.<id>.journal       per-person journal entries
-     eden.p.<id>.goals         per-person weekly SMART goals (free; not a meeting finder)
+     eden.p.<id>.goals         per-person weekly SMART goals (Hopewick Plus; not a meeting finder)
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
      eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
-     eden.p.<id>.resume        per-person resume draft (free; not part of Plus)
+     eden.p.<id>.resume        per-person resume draft (Hopewick Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.15';
+const EDEN_BUILD = 'hopewick-v5.16';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -3027,7 +3045,7 @@ function save(key, value) {
 const SHARED_KEYS = ['baseUrl', 'model', 'apiKey', 'stream', 'useOwnKey'];
 const SETTINGS_VERSION = 2; // v2 = counsellor mode introduced (migrates everyone once)
 const DEFAULT_SHARED = { baseUrl: 'https://api.openai.com/v1', model: 'gpt-4o-mini', apiKey: '', stream: true, useOwnKey: false };
-const HOSTED_SIGNIN_COPY = 'Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, Get Help, and the resume builder stay available.';
+const HOSTED_SIGNIN_COPY = 'Sign in to chat with Hope. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Today’s Readings, crisis support, and Get Help stay available.';
 /* Hopewick company-held API (Azure Functions).
    Redeem POSTs to {HOPEWICK_INVITE_API}/redeem; response baseUrl is used for /chat/completions.
    Production Azure is the default so invite flow works on hopewick.com.au without a personal OpenAI key.
@@ -4000,9 +4018,15 @@ function setAppTab(tab, opts = {}) {
   } else if (next === 'resume') {
     showResume(changed);
   } else if (next === 'journal') {
-    if (changed) prepareJournalCompose();
-    renderJournalList();
-    if (!opts.skipFocus) setTimeout(() => { const body = $('#jBody'); if (body) body.focus(); }, 60);
+    syncJournalGate();
+    if (subscriptionPlus()) {
+      if (changed) prepareJournalCompose();
+      renderJournalList();
+      if (!opts.skipFocus) setTimeout(() => { const body = $('#jBody'); if (body) body.focus(); }, 60);
+    } else if (!opts.skipFocus) {
+      const title = $('#journalTitle');
+      if (title) setTimeout(() => title.focus(), 60);
+    }
   } else if (next !== 'info' && (changed || opts.forceRender)) {
     renderMessages();
     if (!opts.skipFocus) focusInput();
@@ -4241,7 +4265,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4275,13 +4299,13 @@ function needNowEl() {
     { id: 'craving', label: 'A craving', title: 'Open circuit breakers', action: () => openBreakers() },
     { id: 'chat', label: 'Talk to ' + companionName(), title: 'Open chat', action: () => setAppTab('chat') },
     { id: 'today', label: 'Today’s reading', title: 'Word for the day and Just for today', action: () => openTodayReading() },
-    { id: 'journal', label: 'Journal', title: 'Write it down', action: () => openJournal() },
+    { id: 'journal', label: 'Journal', title: 'Journal is part of Hopewick Plus', action: () => openJournal() },
   ];
   if (settings.faith !== 'none') {
     items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => setAppTab('bible') });
   }
   items.push(
-    { id: 'resume', label: 'Resume', title: 'Free resume builder', action: () => setAppTab('resume') },
+    { id: 'resume', label: 'Resume', title: 'Resume builder is part of Hopewick Plus', action: () => setAppTab('resume') },
     { id: 'meeting', label: 'A meeting', title: 'Find an AA, NA, or SMART meeting', action: () => openMeetings() },
   );
   for (const it of items) {
@@ -4924,7 +4948,7 @@ async function sendMessage(textOverride) {
   const crisisKind = crisis ? classifyCrisis(text) : null;
   if (!canCallModel() && !crisis) {
     promptNeedAi(billingState.signedIn
-      ? 'Hope could not start a reply from this account yet. Today’s Readings, crisis support, Get Help, and the resume builder stay available.'
+      ? 'Hope could not start a reply from this account yet. Today’s Readings, crisis support, and Get Help stay available.'
       : HOSTED_SIGNIN_COPY);
     return;
   }
@@ -5219,8 +5243,64 @@ function saveTodaysGratitude(items) {
 }
 
 /* ---------------------------------------------------------------------------
-   Journal + deepen reflection
+   Journal + deepen reflection (full journal is Hopewick Plus)
    --------------------------------------------------------------------------- */
+function renderPlusFeatureGate(host, spec) {
+  if (!host || !spec) return;
+  const open = subscriptionPlus();
+  host.hidden = open;
+  host.replaceChildren();
+  if (open) return;
+  const lead = document.createElement('p');
+  lead.textContent = spec.lead;
+  host.appendChild(lead);
+  if (spec.items && spec.items.length) {
+    const ul = document.createElement('ul');
+    ul.className = 'nut-tease';
+    if (spec.listLabel) ul.setAttribute('aria-label', spec.listLabel);
+    for (const item of spec.items) {
+      const li = document.createElement('li');
+      li.textContent = item;
+      ul.appendChild(li);
+    }
+    host.appendChild(ul);
+  }
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn btn-primary';
+  if (spec.buttonId) btn.id = spec.buttonId;
+  btn.textContent = 'Start 3-day free trial';
+  btn.addEventListener('click', () => {
+    if (typeof spec.close === 'function') spec.close();
+    openAccountDlg();
+  });
+  host.appendChild(btn);
+  const help = document.createElement('p');
+  help.className = 'help';
+  help.style.marginTop = '10px';
+  help.textContent = spec.help || '3 days free, then AU$20/month. Cancel anytime.';
+  host.appendChild(help);
+}
+function syncPlusFeaturePills() {
+  const plus = subscriptionPlus();
+  ['nutritionPlusPill', 'journalPlusPill', 'journalSidePlusPill', 'goalsPlusPill', 'goalsTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
+    const pill = document.getElementById(id);
+    if (pill) pill.hidden = plus;
+  });
+}
+function syncJournalGate() {
+  const plus = subscriptionPlus();
+  const workspace = $('#journalWorkspace');
+  if (workspace) workspace.hidden = !plus;
+  renderPlusFeatureGate($('#journalGate'), {
+    lead: 'The journal is part of Hopewick Plus. This tab stays on Free so you can see what’s here. Writing, editing, and deepening a reflection need Plus.',
+    items: ['Write a private entry', 'Edit or delete what you wrote', 'Deepen a reflection with Hope'],
+    listLabel: 'Journal tools with Hopewick Plus',
+    buttonId: 'journalPlusBtn',
+    help: '3 days free, then AU$20/month. Cancel anytime. Today’s Readings, Get help, and domestic and family violence support stay free.',
+  });
+  syncPlusFeaturePills();
+}
 function prepareJournalCompose() {
   journalEditId = null;
   const title = $('#jTitle');
@@ -5240,7 +5320,10 @@ function openJournal() {
   setAppTab('journal');
 }
 function renderJournalList() {
+  syncJournalGate();
+  if (!subscriptionPlus()) return;
   const list = $('#journalList');
+  if (!list) return;
   list.innerHTML = '';
   const sorted = [...journal].sort((a, b) => (b.updated || b.created) - (a.updated || a.created));
   if (!sorted.length) {
@@ -5291,6 +5374,7 @@ $('#jCancelEdit').addEventListener('click', () => {
   $('#jRefineOut').hidden = true;
 });
 $('#jSaveBtn').addEventListener('click', () => {
+  if (!subscriptionPlus()) { openAccountDlg(); return; }
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write something first.', true); $('#jBody').focus(); return; }
@@ -5314,6 +5398,7 @@ $('#jSaveBtn').addEventListener('click', () => {
   renderJournalList();
 });
 $('#jRefineBtn').addEventListener('click', async () => {
+  if (!subscriptionPlus()) { openAccountDlg(); return; }
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write an entry first, then deepen it.', true); return; }
@@ -6850,8 +6935,8 @@ function openSelfCare() {
 }
 
 /* ---------------------------------------------------------------------------
-   Weekly SMART goals — two per Sunday–Saturday week, free, on this device.
-   Not the SMART Recovery meeting finder.
+   Weekly SMART goals — two per Sunday–Saturday week, Hopewick Plus, on this device.
+   Not the SMART Recovery meeting finder. Free sees the entry; the editor needs Plus.
    --------------------------------------------------------------------------- */
 const GOAL_FIELDS = [
   { key: 'specific', label: 'Specific', prompt: 'What will you do?', hint: 'One clear action, in your own words.' },
@@ -6919,16 +7004,45 @@ function readGoalCard(index) {
   if (done) goal.done = !!done.checked;
   return goal;
 }
+function syncGoalsGate() {
+  const plus = subscriptionPlus();
+  const editor = $('#goalsEditor');
+  if (editor) editor.hidden = !plus;
+  renderPlusFeatureGate($('#goalsGate'), {
+    lead: 'SMART goals are part of Hopewick Plus. Free can open this screen and see the shape of a goal. The full editor needs Plus.',
+    items: [
+      'Specific — what you will do',
+      'Measurable — how you will know',
+      'Achievable — small enough for this week',
+      'Relevant — why it matters',
+      'Time-bound — when this week',
+    ],
+    listLabel: 'SMART goal fields with Hopewick Plus',
+    buttonId: 'goalsPlusBtn',
+    close: () => { if (el.goalsDlg && el.goalsDlg.open) el.goalsDlg.close(); },
+    help: '3 days free, then AU$20/month. Cancel anytime. This is your own plan, not a SMART Recovery meeting. Find a meeting stays available.',
+  });
+  syncPlusFeaturePills();
+}
 function commitGoal(index, goal) {
+  if (!subscriptionPlus()) return;
   const { week } = ensureCurrentWeek();
   week.goals[index] = normalizeOneGoal(goal);
   saveGoals();
   goalsNote(isDemo ? '' : 'Saved on this device.');
 }
 function renderGoals() {
+  syncGoalsGate();
   const list = $('#goalsList');
   const label = $('#goalsWeekLabel');
   if (!list) return;
+  if (!subscriptionPlus()) {
+    list.replaceChildren();
+    if (label) label.textContent = '';
+    const locked = $('#goalsSaved');
+    if (locked) locked.textContent = '';
+    return;
+  }
   const { key, week } = ensureCurrentWeek();
   if (label) label.textContent = 'This week: ' + formatWeekRange(key) + '. Next Sunday starts a fresh pair.';
   list.replaceChildren();
@@ -7059,7 +7173,7 @@ function renderGoals() {
   if (note && !note.textContent) {
     note.textContent = isDemo
       ? 'This demo visit only — not saved on this device.'
-      : 'Free. Stays on this device.';
+      : 'Stays on this device.';
   }
 }
 function openGoals() {
@@ -7679,8 +7793,7 @@ function openSkills() {
 }
 
 function syncNutritionPlusPill() {
-  const pill = $('#nutritionPlusPill');
-  if (pill) pill.hidden = subscriptionPlus();
+  syncPlusFeaturePills();
 }
 function renderNutritionGate() {
   const gate = $('#nutritionGate');
@@ -7690,7 +7803,7 @@ function renderNutritionGate() {
   gate.replaceChildren();
   if (open) return;
   const lead = document.createElement('p');
-  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library.';
+  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library. Education libraries stay with Plus. Gut health and neuroplasticity are coming, and they stay Plus-only.';
   gate.appendChild(lead);
   const benefitLabel = document.createElement('p');
   benefitLabel.className = 'nut-filter-label';
@@ -7722,7 +7835,7 @@ function renderNutritionGate() {
   btn.type = 'button';
   btn.className = 'btn btn-primary';
   btn.id = 'nutritionPlusBtn';
-  btn.textContent = 'Hopewick Plus';
+  btn.textContent = 'Start 3-day free trial';
   btn.addEventListener('click', () => {
     if (el.nutritionDlg && el.nutritionDlg.open) el.nutritionDlg.close();
     openAccountDlg();
@@ -7731,7 +7844,7 @@ function renderNutritionGate() {
   const help = document.createElement('p');
   help.className = 'help';
   help.style.marginTop = '10px';
-  help.textContent = 'With or without Plus: drink water through the day and eat something ordinary. In a crisis, use Get help and call 000.';
+  help.textContent = '3 days free, then AU$20/month. Cancel anytime. With or without Plus: drink water through the day and eat something ordinary. In a crisis, use Get help and call 000.';
   gate.appendChild(help);
 }
 function nutritionFilterChip(label, pressed, attr, value, onClick) {
@@ -8074,11 +8187,11 @@ function syncKeyBanner() {
   banner.hidden = false;
   if (!text) return;
   if (!billingState.reachable) {
-    text.textContent = 'Chat with Hope needs the Hopewick site, where sign-in runs. Today’s Readings, crisis support, Get Help, and the resume builder stay available here.';
+    text.textContent = 'Chat with Hope needs the Hopewick site, where sign-in runs. Today’s Readings, crisis support, and Get Help stay available here.';
   } else if (!signedIn) {
     text.textContent = HOSTED_SIGNIN_COPY;
   } else if (billingState.hopeHosted === false) {
-    text.textContent = 'Hosted Hope is not connected on this server yet. Today’s Readings, crisis support, Get Help, and the resume builder stay available.';
+    text.textContent = 'Hosted Hope is not connected on this server yet. Today’s Readings, crisis support, and Get Help stay available.';
   } else {
     text.textContent = HOSTED_SIGNIN_COPY;
   }
@@ -9266,10 +9379,10 @@ const SHOW_INVITE_ENTRY = false;
 /** Set once the signed-in account is known. Invite redeem stays off unless this and SHOW_INVITE_ENTRY are both on. */
 let founderDeveloperOn = false;
 const INVITE_COPY = {
-  keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder are ready. Live chat uses an invite code, or your own key under Advanced.',
-  needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, Get Help, and the resume builder do not need it.',
+  keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, and Get Help are ready. Live chat uses an invite code, or your own key under Advanced.',
+  needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, and Get Help do not need it.',
   needAiHosted: 'With a hosted invite, messages go via Bridge&Bite then the model provider — not stored as an account chat history in this app.',
-  advanced: 'Live chat uses an invite code, or your own key below. Today’s Readings, crisis support, Get Help, and the resume builder do not need a key.',
+  advanced: 'Live chat uses an invite code, or your own key below. Today’s Readings, crisis support, and Get Help do not need a key.',
   advancedHosted: 'Hosted / invite mode: messages go via Bridge&Bite then the model provider. Own-key Advanced still talks only to the URL you set.',
 };
 function liveChatNeed(prefix) {
@@ -9616,9 +9729,26 @@ $('#dvQuickExit')?.addEventListener('click', () => {
 });
 
 /* ---------------------------------------------------------------------------
-   Resume builder — free, per person, stored like other companion data.
-   The PDF is the person's own words. It is not gated on Hopewick Plus.
+   Resume builder — Hopewick Plus, per person, stored like other companion data.
+   Free sees the upgrade. The PDF is the person's own words.
    --------------------------------------------------------------------------- */
+function syncResumeGate() {
+  const plus = subscriptionPlus();
+  const builder = $('#resumeBuilder');
+  if (builder) builder.hidden = !plus;
+  renderPlusFeatureGate($('#resumeGate'), {
+    lead: 'The resume builder is part of Hopewick Plus. Free can open this screen. The steps, preview, and PDF download need Plus. Your draft stays on this device once Plus is active.',
+    items: ['Contact details and a short summary', 'Work, volunteering, and caring', 'Education, skills, and references', 'A plain PDF, kept on this device'],
+    listLabel: 'Resume builder with Hopewick Plus',
+    buttonId: 'resumePlusBtn',
+    help: '3 days free, then AU$20/month. Cancel anytime.',
+  });
+  const lede = $('#resumeLede');
+  if (lede && !plus) {
+    lede.textContent = 'The resume builder is part of Hopewick Plus. Start a 3-day free trial, then AU$20/month. Your draft stays on this device once Plus is active.';
+  }
+  syncPlusFeaturePills();
+}
 function resumePaintKey() {
   return (profile && profile.id ? profile.id : '') + (isDemo ? ':demo' : '');
 }
@@ -9853,8 +9983,8 @@ function updateResumeSavedNote() {
   const lede = $('#resumeLede');
   if (lede) {
     lede.textContent = isDemo
-      ? `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. In the demo, the draft lasts for this visit only.`
-      : `Write a simple resume in your own words. This is free in ${BRAND.name} — it is not part of Plus. Your draft stays on this device.`;
+      ? 'Write a simple resume in your own words. In the demo, the draft lasts for this visit only.'
+      : 'Write a simple resume in your own words. Your draft stays on this device.';
   }
 }
 function onResumeChanged() {
@@ -9893,6 +10023,14 @@ function paintResumeForm() {
   updateResumeSavedNote();
 }
 function showResume(changed) {
+  syncResumeGate();
+  if (!subscriptionPlus()) {
+    if (changed) {
+      const title = $('#resumeTitle');
+      if (title) title.focus();
+    }
+    return;
+  }
   if (resumePaintedFor !== resumePaintKey()) paintResumeForm();
   else {
     ensureResumeSteps();
@@ -9907,6 +10045,7 @@ function showResume(changed) {
   }
 }
 function downloadResume() {
+  if (!subscriptionPlus()) { openAccountDlg(); return; }
   if (!HopewickResume.resumeHasContent(resumeState)) {
     toast('Add a name, or a few lines, before downloading.', true);
     return;
@@ -9924,6 +10063,7 @@ function downloadResume() {
   toast('Resume downloaded');
 }
 function clearResumeDraft() {
+  if (!subscriptionPlus()) { openAccountDlg(); return; }
   if (!confirm('Clear this resume draft? This removes what you have written here.')) return;
   resumeState = HopewickResume.emptyResume();
   resumeStep = 'contact';
@@ -10122,6 +10262,13 @@ async function refreshBilling() {
       renderHistory();
       if (appTab === 'home') renderHome();
       if (el.nutritionDlg && el.nutritionDlg.open) renderNutrition();
+      if (appTab === 'journal') {
+        syncJournalGate();
+        if (subscriptionPlus()) renderJournalList();
+      }
+      if (appTab === 'resume') showResume(false);
+      if (el.goalsDlg && el.goalsDlg.open) renderGoals();
+      syncPlusFeaturePills();
       syncKeyBanner();
     }
   } catch (_) { /* home may not be ready on the very first tick */ }
@@ -10140,12 +10287,46 @@ async function refreshHopeUsage() {
 function appendPlusOffer(body) {
   const price = document.createElement('p');
   price.className = 'plus-price';
-  price.innerHTML = 'AU$20<span>/month</span>';
+  price.innerHTML = '3 days free, then AU$20<span>/month</span>';
   body.appendChild(price);
   const kicker = document.createElement('p');
   kicker.className = 'plus-kicker';
-  kicker.textContent = 'Cancel anytime. One subscription per person.';
+  kicker.textContent = 'Then AU$20/month. Cancel anytime. One subscription per person.';
   body.appendChild(kicker);
+  if (!subscriptionPlus()) {
+    const actions = document.createElement('div');
+    actions.className = 'account-actions';
+    const sub = document.createElement('button');
+    sub.type = 'button';
+    sub.className = 'btn btn-primary';
+    sub.id = 'startPlusBtn';
+    sub.textContent = 'Start 3-day free trial';
+    if (!billingState.reachable || (billingState.signedIn && !billingState.checkoutReady)) {
+      sub.disabled = true;
+    } else if (!billingState.signedIn) {
+      sub.addEventListener('click', () => {
+        const email = $('#accountEmail');
+        if (email) email.focus();
+        const status = $('#accountStatus');
+        if (status) status.textContent = 'Enter your email and we’ll send a sign-in link. Then you can start a 3-day free trial.';
+      });
+    } else {
+      sub.addEventListener('click', () => startCheckout());
+    }
+    actions.appendChild(sub);
+    body.appendChild(actions);
+    if (billingState.reachable && billingState.signedIn && !billingState.checkoutReady) {
+      const pay = document.createElement('p');
+      pay.className = 'help';
+      pay.textContent = 'Payments aren’t configured yet.';
+      body.appendChild(pay);
+    } else if (billingState.reachable && !billingState.signedIn) {
+      const hint = document.createElement('p');
+      hint.className = 'help';
+      hint.textContent = 'Sign in below, then start a 3-day free trial.';
+      body.appendChild(hint);
+    }
+  }
   const caps = document.createElement('div');
   caps.className = 'message-caps';
   caps.setAttribute('aria-label', 'Daily message limits');
@@ -10176,9 +10357,13 @@ function appendPlusOffer(body) {
   list.className = 'plus-checklist';
   [
     '200 messages a day with Hope',
-    'Clean time tracker, SOAP reflections, and journal tools',
+    'SMART goals for the week',
+    'Journal — write, edit, and deepen a reflection',
+    'Resume builder, kept on this device',
     'Nutrition notes — food, water, and supplements people ask about',
-    'Going Deeper faith content and 12 Steps practice',
+    'Education libraries stay with Plus. Gut health and neuroplasticity are coming, and they stay Plus-only',
+    'Clean time tracker, SOAP reflections, and 12 Steps practice',
+    'Going Deeper faith content',
     'The full year of readings',
     'Add another profile on this device',
     'Keep your conversation history on this device. Cloud sync is not enabled.',
@@ -10188,43 +10373,9 @@ function appendPlusOffer(body) {
     list.appendChild(li);
   });
   body.appendChild(list);
-  if (!subscriptionPlus()) {
-    const actions = document.createElement('div');
-    actions.className = 'account-actions';
-    const sub = document.createElement('button');
-    sub.type = 'button';
-    sub.className = 'btn btn-primary';
-    sub.id = 'startPlusBtn';
-    sub.textContent = 'Start Hopewick Plus';
-    if (!billingState.reachable || (billingState.signedIn && !billingState.checkoutReady)) {
-      sub.disabled = true;
-    } else if (!billingState.signedIn) {
-      sub.addEventListener('click', () => {
-        const email = $('#accountEmail');
-        if (email) email.focus();
-        const status = $('#accountStatus');
-        if (status) status.textContent = 'Enter your email and we’ll send a sign-in link. Then you can start Hopewick Plus.';
-      });
-    } else {
-      sub.addEventListener('click', () => startCheckout());
-    }
-    actions.appendChild(sub);
-    body.appendChild(actions);
-    if (billingState.reachable && billingState.signedIn && !billingState.checkoutReady) {
-      const pay = document.createElement('p');
-      pay.className = 'help';
-      pay.textContent = 'Payments aren’t configured yet.';
-      body.appendChild(pay);
-    } else if (billingState.reachable && !billingState.signedIn) {
-      const hint = document.createElement('p');
-      hint.className = 'help';
-      hint.textContent = 'Sign in below, then start Hopewick Plus.';
-      body.appendChild(hint);
-    }
-  }
   const crisis = document.createElement('p');
   crisis.className = 'crisis-free-note';
-  crisis.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. In danger call 000. Lifeline 13 11 14. 1800RESPECT 1800 737 732.';
+  crisis.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 20 messages a day. In danger call 000. Lifeline 13 11 14. 1800RESPECT 1800 737 732.';
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
@@ -10288,8 +10439,10 @@ function paintAccount() {
   status.className = 'account-status' + (subscriptionPlus() ? ' ok' : '');
   status.id = 'accountStatus';
   status.textContent = statusLabel(billingState.subscriptionStatus) + (subscriptionPlus()
-    ? '. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.'
-    : '. AU$20/month. Cancel anytime.');
+    ? (billingState.subscriptionStatus === 'trialing'
+      ? '. Your 3-day trial is active. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.'
+      : '. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.')
+    : '. 3 days free, then AU$20/month. Cancel anytime.');
   body.appendChild(status);
   const allowance = document.createElement('p');
   allowance.className = 'hosted-privacy';

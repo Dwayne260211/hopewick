@@ -106,7 +106,7 @@ test('filename uses the name', () => {
   assert.equal(R.resumeFilename(R.emptyResume()), 'resume.pdf');
 });
 
-test('companion wires a free resume screen and does not gate it', () => {
+test('companion gates the resume builder on Hopewick Plus', () => {
   const app = readFileSync(new URL('../app/index.html', import.meta.url), 'utf8');
   const plans = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(app, /src="resume\.js"/);
@@ -115,9 +115,13 @@ test('companion wires a free resume screen and does not gate it', () => {
   assert.match(app, /id="resumeDownload"/);
   assert.match(app, /eden\.p\.<id>\.resume/);
   assert.match(app, /'resume'/);
-  assert.match(app, /not part of Plus/);
-  assert.doesNotMatch(app.slice(app.indexOf('Resume builder — free'), app.indexOf('Hopewick Plus — email sign-in')), /subscriptionPlus\(/);
-  assert.match(plans, /Resume builder in the app/);
+  assert.match(app, /function syncResumeGate/);
+  assert.match(app, /id="resumeGate"/);
+  assert.match(app, /id="resumeBuilder" hidden/);
+  assert.match(app, /The resume builder is part of Hopewick Plus/);
+  assert.doesNotMatch(app, /not part of Plus/);
+  assert.match(plans, /The resume builder, kept on this device/);
+  assert.match(plans, /3 days free/);
   assert.match(app, /id="helpBtn"/);
   assert.match(app, /id="dvView"/);
   assert.match(app, /Word for the day/);

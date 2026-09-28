@@ -184,7 +184,7 @@ export function rollbackSpend(user, admission) {
 export function capMessage(user, limit) {
   const plus = publicUser(user).plus;
   if (plus) {
-    return `You’ve used today’s ${limit} Hopewick Plus messages. The count resets overnight (Brisbane time). Today’s Readings, crisis support, Get help, and the resume builder stay available.`;
+    return `You’ve used today’s ${limit} Hopewick Plus messages. The count resets overnight (Brisbane time). Today’s Readings, crisis support, and Get help stay available.`;
   }
-  return `You’ve used today’s ${limit} free messages with Hope. Hopewick Plus includes 200 messages a day. The count resets overnight (Brisbane time). Today’s Readings, crisis support, Get help, and the resume builder stay available.`;
+  return `You’ve used today’s ${limit} free messages with Hope. Hopewick Plus includes 200 messages a day. The count resets overnight (Brisbane time). Today’s Readings, crisis support, and Get help stay available.`;
 }

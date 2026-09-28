@@ -163,12 +163,15 @@ test('magic link signs in and checkout requires that session', async () => {
     assert.match(checkoutCall.body, /mode=subscription/);
     assert.match(checkoutCall.body, /price_test_placeholder/);
     assert.match(checkoutCall.body, new RegExp(`metadata%5BuserId%5D=${user.id}|metadata\\[userId\\]=${user.id}`));
+    assert.match(checkoutCall.body, /subscription_data%5Btrial_period_days%5D=3/);
+    assert.match(checkoutCall.body, /payment_method_collection=always/);
 
     const config = await fetch(`${app.base}/api/billing/config`);
     const cfg = await config.json();
     assert.equal(cfg.publishableKey, 'pk_test_placeholder');
     assert.equal(cfg.checkoutReady, true);
     assert.equal(cfg.amountLabel, 'AU$20/month');
+    assert.equal(cfg.trialDays, 3);
   } finally {
     await app.close();
   }
@@ -183,6 +186,32 @@ test('webhook marks the subscription active and then canceled', async () => {
   try {
     const session = await signIn(app.base, 'sam@example.com');
     const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+
+    const trialPayload = JSON.stringify({
+      id: 'evt_trial',
+      type: 'customer.subscription.updated',
+      data: {
+        object: {
+          id: 'sub_live',
+          customer: 'cus_from_webhook',
+          status: 'trialing',
+          current_period_end: 1893456000,
+          metadata: { userId: me.id },
+        },
+      },
+    });
+    const trial = await fetch(`${app.base}/api/billing/webhook`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Stripe-Signature': stripeSignature(trialPayload, 'whsec_test_secret'),
+      },
+      body: trialPayload,
+    });
+    assert.equal(trial.status, 200);
+    const duringTrial = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(duringTrial.subscriptionStatus, 'trialing');
+    assert.equal(duringTrial.plus, true);
 
     const activePayload = JSON.stringify({
       id: 'evt_active',
@@ -238,6 +267,17 @@ test('webhook marks the subscription active and then canceled', async () => {
     const done = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
     assert.equal(done.subscriptionStatus, 'canceled');
     assert.equal(done.plus, false);
+
+    stripeCalls.length = 0;
+    const again = await fetch(`${app.base}/api/billing/checkout`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    assert.equal(again.status, 200);
+    const againCall = stripeCalls.find((call) => call.url.includes('/checkout/sessions'));
+    assert.ok(againCall);
+    assert.doesNotMatch(againCall.body, /trial_period_days/);
 
     const portal = await fetch(`${app.base}/api/billing/portal`, {
       method: 'POST',

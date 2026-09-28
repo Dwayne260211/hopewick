@@ -21,6 +21,8 @@ def test_marketing_plans_copy():
     assert "Organisations and clinics" in page
     assert "Today’s Readings" in page
     assert "resume builder" in page.lower()
+    assert "3-day free trial" in page or "3 days free" in page
+    assert "gut health and neuroplasticity" in page.lower()
     assert "Email me a sign-in link" in page
     assert "crisis" in page.lower()
     assert "Add Hopewick to your home screen as a web app today." in page
@@ -54,7 +56,7 @@ def test_companion_gates_premium_not_crisis():
     assert "20 messages/day" in app
     assert "200 messages/day" in app
     assert "Email me a sign-in link" in app
-    assert "Hopewick Plus — AU$20/month" in app
+    assert "Hopewick Plus — 3 days free, then AU$20/month" in app
     assert "Plans & account" not in app
     assert "Plans &amp; account" not in app
     assert "Join waitlist" not in app
@@ -62,7 +64,13 @@ def test_companion_gates_premium_not_crisis():
     assert "Add Hopewick to your home screen as a web app today." in app
     assert "The Play Store app isn’t ready yet." in app
     assert "Older chats are part of Hopewick Plus" in app
-    assert "Start Hopewick Plus" in app
+    assert "Start 3-day free trial" in app
+    assert "3 days free, then AU$20" in app
+    assert "SMART goals are part of Hopewick Plus" in app
+    assert 'id="journalGate"' in app
+    assert 'id="resumeGate"' in app
+    assert 'id="goalsGate"' in app
+    assert "gut health and neuroplasticity" in app.lower()
     assert "Start talking to Hope" in app
     assert "What brings you here" in app
     assert "Keep your conversation history on this device" in app
