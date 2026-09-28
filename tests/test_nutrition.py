@@ -48,7 +48,7 @@ def test_static_nutrition_copy_and_gate():
     assert "Why people in recovery often look at it" in text
     assert "Practical notes" in text
     assert "nutrition: { label: 'Open nutrition'" in text
-    assert "data-need=\"nutrition\"" in text or "id: 'nutrition'" in text
+    assert "id: 'nutrition'" not in text  # Home chips stay as they are; today’s reading stays up
     assert "Do not add plus, resume, bible, or nutrition on a crisis reply." in text
     for marker in LIBRARY_MARKERS:
         assert marker in library
@@ -89,13 +89,17 @@ def test_nutrition_plus_free_and_crisis():
             page = browser.new_page(viewport={"width": 390, "height": 844})
             _enter_demo(page, base)
 
-            assert page.locator('#needNow [data-need="nutrition"]').count() == 1
+            assert page.locator('#needNow [data-need="nutrition"]').count() == 0
             assert page.locator('#needNow [data-need="help"]').count() == 1
             assert page.locator('#needNow [data-need="dv"]').count() == 1
-            assert page.locator("#nutritionPlusPill").is_visible()
+            heading_box = page.locator("#todayHeading").bounding_box()
+            assert heading_box is not None and heading_box["y"] < 520
+            assert page.evaluate("() => document.getElementById('nutritionPlusPill').hidden") is False
             assert page.locator("#sideDeveloperBtn").is_hidden()
 
-            page.click('#needNow [data-need="nutrition"]')
+            page.click("#menuBtn")
+            page.wait_for_selector("#sidebar", state="visible")
+            page.click('#sidebar [data-open="nutrition"]')
             page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
             free_text = page.inner_text("#nutritionDlg")
             assert "General information only — not medical advice" in free_text
@@ -123,10 +127,13 @@ def test_nutrition_plus_free_and_crisis():
                   syncNutritionPlusPill();
                 }"""
             )
-            page.click('#needNow [data-need="nutrition"]')
+            assert page.evaluate("() => document.getElementById('nutritionPlusPill').hidden") is True
+            page.click("#menuBtn")
+            page.wait_for_selector("#sidebar", state="visible")
+            page.click('#sidebar [data-open="nutrition"]')
             page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
-            page.wait_for_selector('#nutritionLibrary:not([hidden])')
-            plus_text = page.inner_text("#nutritionDlg")
+            page.wait_for_selector('#nutritionLibrary:not([hidden]) article[data-nutrient="nac"]')
+            plus_text = page.locator("#nutritionDlg").text_content()
             assert "What it is" in plus_text
             assert "Why people in recovery often look at it" in plus_text
             assert "Practical notes" in plus_text
@@ -134,7 +141,6 @@ def test_nutrition_plus_free_and_crisis():
                 assert marker in plus_text
             assert "not a treatment for addiction" in plus_text
             assert page.locator("#nutritionGate").is_hidden()
-            assert page.locator("#nutritionPlusPill").is_hidden()
             assert not re.search(r"\b\d+\s*mg\b", plus_text, re.I)
             page.select_option("#nutritionSelect", "alcohol")
             assert "thiamine" in page.inner_text("#nutritionPanel").lower()
