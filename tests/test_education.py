@@ -80,6 +80,18 @@ def test_static_education_copy_and_gate():
     assert "clinically proven" not in cards.lower()
     assert "cures addiction" not in cards.lower()
     assert "treats addiction" not in cards.lower()
+    # Education must not surface bring-your-own-key. That panel stays founder-only.
+    gut_html = text.split('<dialog id="gutDlg"', 1)[1].split("</dialog>", 1)[0]
+    brain_html = text.split('<dialog id="brainDlg"', 1)[1].split("</dialog>", 1)[0]
+    for blob in (cards, gut_html, brain_html):
+        low = blob.lower()
+        assert "api key" not in low
+        assert "use my own api key" not in low
+        assert "add an api key" not in low
+    side = re.search(r'<button[^>]*id="sideDeveloperBtn"[^>]*>.*?</button>', text, re.S)
+    assert side and "hidden" in side.group(0)
+    assert "function founderDeveloperVisible" in text
+    assert "billingState.founder" in text
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
     assert 'content="hopewick-v5.17"' in landing
     assert "Gut health and neuroplasticity notes — plain language, Plus only" in landing
@@ -100,6 +112,20 @@ def _enter_demo(page, base):
     page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
     page.click("#launchPrefsContinue")
     page.wait_for_selector("#needNow", timeout=10000)
+
+
+def _assert_hosted_chat_only(page):
+    """Free and Plus use hosted Hope. Developer / own-key UI stays hidden."""
+    assert page.locator("#sideDeveloperBtn").is_hidden()
+    assert page.locator("#tabDeveloper").is_hidden()
+    assert page.evaluate("() => document.getElementById('panelAdvanced').hidden") is True
+    assert page.evaluate("() => !founderDeveloperVisible()") is True
+    for dlg in ("#gutDlg", "#brainDlg", "#nutritionDlg", "#accountDlg"):
+        if page.locator(dlg).count() == 0:
+            continue
+        text = (page.locator(dlg).text_content() or "").lower()
+        assert "use my own api key" not in text
+        assert "add an api key" not in text
 
 
 def _open_side(page, target):
@@ -131,6 +157,7 @@ def test_education_plus_gate_phone():
             assert page.locator('#needNow [data-need="bible"]').count() == 1
             assert page.evaluate("() => document.getElementById('gutPlusPill').hidden") is False
             assert page.evaluate("() => document.getElementById('brainPlusPill').hidden") is False
+            _assert_hosted_chat_only(page)
 
             _open_side(page, "gut")
             page.wait_for_function("() => document.getElementById('gutDlg')?.open === true")
@@ -150,6 +177,7 @@ def test_education_plus_gate_phone():
             assert "gut health and neuroplasticity" in account.lower()
             assert "Nutrition notes" in account
             assert "Nutrition notes" in account
+            _assert_hosted_chat_only(page)
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
 
@@ -171,14 +199,17 @@ def test_education_plus_gate_phone():
                 """() => {
                   billingState.signedIn = true;
                   billingState.plus = true;
+                  billingState.founder = false;
                   renderGut();
                   renderBrain();
                   syncEducationPlusPills();
                   syncNutritionPlusPill();
+                  syncDeveloperChrome();
                 }"""
             )
             assert page.evaluate("() => document.getElementById('gutPlusPill').hidden") is True
             assert page.evaluate("() => document.getElementById('brainPlusPill').hidden") is True
+            _assert_hosted_chat_only(page)
 
             _open_side(page, "gut")
             page.wait_for_function("() => document.getElementById('gutDlg')?.open === true")
