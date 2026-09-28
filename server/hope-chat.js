@@ -5,8 +5,7 @@
  */
 import { publicUser } from './store.js';
 
-export const FREE_DAILY_DEFAULT = 20;
-export const PLUS_DAILY_DEFAULT = 200;
+export const FREE_DAILY_DEFAULT = 5;
 const MAX_MESSAGES = 40;
 const MAX_CONTENT = 12000;
 const MAX_TOKENS = 600;
@@ -25,8 +24,9 @@ export function freeDailyCap() {
   return dailyCap('HOPEWICK_FREE_DAILY', FREE_DAILY_DEFAULT);
 }
 
-export function plusDailyCap() {
-  return dailyCap('HOPEWICK_PLUS_DAILY', PLUS_DAILY_DEFAULT);
+/** Plus, a 3-day trial, and complimentary founder accounts have no daily message cap. */
+export function hasUnlimitedHope(user) {
+  return publicUser(user).plus === true;
 }
 
 /** Calendar day in Australia/Brisbane (no daylight saving). */
@@ -43,8 +43,9 @@ export function hopeConfigured() {
   return Boolean(String(process.env.OPENAI_API_KEY || '').trim());
 }
 
+/** A number for Free. null means no daily cap (Plus, trialing, founder). */
 export function limitForUser(user) {
-  return publicUser(user).plus ? plusDailyCap() : freeDailyCap();
+  return hasUnlimitedHope(user) ? null : freeDailyCap();
 }
 
 export function ensureUsage(user, now = new Date()) {
@@ -65,7 +66,7 @@ export function usageSnapshot(user, now = new Date()) {
     day: usage.day,
     used: usage.count,
     limit,
-    remaining: Math.max(0, limit - usage.count),
+    remaining: limit == null ? null : Math.max(0, limit - usage.count),
     plus: view.plus,
     complimentary: view.complimentary,
     hopeConfigured: hopeConfigured(),
@@ -161,7 +162,7 @@ export function admitHopeCall(user, { purpose, crisis, now = new Date() } = {}) 
     return { ok: true, spend: 'memory', usage, limit };
   }
   if (crisis) return { ok: true, spend: 'none', usage, limit, crisis: true };
-  if (usage.count >= limit) {
+  if (limit != null && usage.count >= limit) {
     return { ok: false, status: 429, code: 'daily_cap', usage, limit };
   }
   return { ok: true, spend: 'chat', usage, limit };
@@ -182,9 +183,9 @@ export function rollbackSpend(user, admission) {
 }
 
 export function capMessage(user, limit) {
-  const plus = publicUser(user).plus;
-  if (plus) {
-    return `You’ve used today’s ${limit} Hopewick Plus messages. The count resets overnight (Brisbane time). Today’s Readings, crisis support, and Get help stay available.`;
+  const n = limit == null ? freeDailyCap() : limit;
+  if (hasUnlimitedHope(user)) {
+    return 'Hopewick Plus has no daily message limit. Today’s Readings, crisis support, and Get help stay available.';
   }
-  return `You’ve used today’s ${limit} free messages with Hope. Hopewick Plus includes 200 messages a day. The count resets overnight (Brisbane time). Today’s Readings, crisis support, and Get help stay available.`;
+  return `You’ve used today’s ${n} free messages with Hope. Hopewick Plus has no daily message limit. The count resets overnight (Brisbane time). Today’s Readings, crisis support, and Get help stay available.`;
 }

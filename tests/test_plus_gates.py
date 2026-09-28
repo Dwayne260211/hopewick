@@ -77,8 +77,10 @@ def test_phone_gates_free_then_plus():
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
             assert "3 days free, then AU$20" in account
-            assert "20 messages/day" in account
-            assert "200 messages/day" in account
+            assert "5 messages/day" in account
+            assert "No daily limit" in account
+            assert "No daily message limit" in account
+            assert "200 messages/day" not in account
             assert "SMART goals" in account
             assert "Resume builder" in account
             assert "Nutrition notes" in account

@@ -47,7 +47,7 @@ def _cards_source() -> str:
 def test_static_education_copy_and_gate():
     text = APP.read_text(encoding="utf-8")
     cards = _cards_source()
-    assert "EDEN_BUILD = 'hopewick-v5.17'" in text
+    assert "EDEN_BUILD = 'hopewick-v5.18'" in text
     assert "function openGut" in text
     assert "function openBrain" in text
     assert "function renderGut" in text
@@ -93,7 +93,7 @@ def test_static_education_copy_and_gate():
     assert "function founderDeveloperVisible" in text
     assert "billingState.founder" in text
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
-    assert 'content="hopewick-v5.17"' in landing
+    assert 'content="hopewick-v5.18"' in landing
     assert "Gut health and neuroplasticity notes — plain language, Plus only" in landing
     assert ">Gut health</h3>" in landing
     assert ">Brain habits</h3>" in landing
