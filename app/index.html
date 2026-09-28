@@ -450,13 +450,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .info-view,
 .dv-view,
 .resume-view,
+.journal-view,
 .launch-prefs {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 10px 16px 12px;
 }
-.info-inner, .dv-inner, .launch-prefs-inner {
+.info-inner, .dv-inner, .journal-inner, .launch-prefs-inner {
   max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px;
 }
 .info-view h2, .dv-view h2 { font-size: 1.08rem; margin: 10px 0 0; font-weight: 700; }
@@ -470,6 +471,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .info-view[hidden],
 .dv-view[hidden],
 .resume-view[hidden],
+.journal-view[hidden],
 .launch-prefs[hidden],
 .messages[hidden],
 .composer-wrap[hidden] { display: none !important; }
@@ -718,32 +720,44 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-info .composer-wrap,
 .app.tab-dv .composer-wrap,
 .app.tab-resume .composer-wrap,
+.app.tab-journal .composer-wrap,
 .app.showing-launch-prefs .composer-wrap { display: none !important; }
 .app.tab-home .messages,
 .app.tab-info .messages,
 .app.tab-dv .messages,
 .app.tab-resume .messages,
+.app.tab-journal .messages,
 .app.showing-launch-prefs .messages { display: none !important; }
 .app.tab-chat .home-view,
 .app.tab-info .home-view,
 .app.tab-dv .home-view,
 .app.tab-resume .home-view,
+.app.tab-journal .home-view,
 .app.showing-launch-prefs .home-view { display: none !important; }
 .app.tab-home .info-view,
 .app.tab-chat .info-view,
 .app.tab-dv .info-view,
 .app.tab-resume .info-view,
+.app.tab-journal .info-view,
 .app.showing-launch-prefs .info-view { display: none !important; }
 .app.tab-home .dv-view,
 .app.tab-chat .dv-view,
 .app.tab-info .dv-view,
 .app.tab-resume .dv-view,
+.app.tab-journal .dv-view,
 .app.showing-launch-prefs .dv-view { display: none !important; }
 .app.tab-home .resume-view,
 .app.tab-chat .resume-view,
 .app.tab-info .resume-view,
 .app.tab-dv .resume-view,
+.app.tab-journal .resume-view,
 .app.showing-launch-prefs .resume-view { display: none !important; }
+.app.tab-home .journal-view,
+.app.tab-chat .journal-view,
+.app.tab-info .journal-view,
+.app.tab-dv .journal-view,
+.app.tab-resume .journal-view,
+.app.showing-launch-prefs .journal-view { display: none !important; }
 .sidebar-foot .btn[aria-current="page"] {
   background: var(--accent-soft);
   color: var(--accent-strong);
@@ -754,7 +768,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .toasts { bottom: calc(72px + env(safe-area-inset-bottom)); }
 
 @media (max-width: 860px) {
-  .home-view, .info-view, .dv-view, .resume-view { padding: 8px 10px 8px; }
+  .home-view, .info-view, .dv-view, .resume-view, .journal-view { padding: 8px 10px 8px; }
   .bottom-nav { gap: 2px; padding-left: 4px; padding-right: 4px; }
   .bottom-nav-btn { font-size: .58rem; padding: 5px 2px; }
   .bottom-nav-btn svg { width: 20px; height: 20px; }
@@ -1300,6 +1314,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .check-item .ci-meta { font-size: .78rem; color: var(--muted); margin-top: 2px; }
 .check-item .ci-actions { display: flex; gap: 4px; flex-shrink: 0; }
 .check-item.unsafe { border-color: color-mix(in srgb, var(--danger) 35%, var(--border)); }
+.goal-card { border: 1px solid var(--border); background: var(--surface-2); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.goal-card.done { border-color: var(--accent); background: var(--accent-soft); }
+.goal-card h3 { margin: 0; font-size: 1rem; }
+.goal-summary { margin: 0; display: flex; flex-direction: column; gap: 4px; font-size: .92rem; }
+.goal-summary strong { font-weight: 650; }
+.goal-head { display: flex; align-items: center; gap: 10px; }
+.goal-head label { font-weight: 650; }
 .breaker-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .messages > .tool-suggest,
 .messages > .hope-gateway { margin-bottom: 8px; }
@@ -1503,9 +1524,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         Self-care
       </button>
-      <button class="btn btn-ghost" type="button" data-open="journal">
+      <button class="btn btn-ghost" type="button" data-open="journal" id="sideJournalBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         Journal
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="goals" id="sideGoalsBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+        SMART goals
       </button>
       <button class="btn btn-ghost" type="button" data-open="resume" id="sideResumeBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
@@ -1526,6 +1551,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
+      </button>
+      <button class="btn btn-ghost" type="button" id="sideInfoBtn" data-open="info" aria-current="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>
+        News &amp; resources
       </button>
       <div class="side-section-label">Find support</div>
       <button class="btn btn-ghost" type="button" data-open="nearby">
@@ -1873,6 +1902,33 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </div>
     </section>
 
+    <section class="journal-view" id="journalView" hidden aria-label="Journal">
+      <div class="journal-inner">
+        <div class="home-hero">
+          <h1 id="journalTitle">Journal</h1>
+          <p>A private place for your thoughts. Deepen reflection with <span data-companion>Hope</span> when you want more emotional depth — never a diagnosis.</p>
+        </div>
+        <div id="journalCompose">
+          <div class="field">
+            <label for="jTitle">Title <span class="help">(optional)</span></label>
+            <input id="jTitle" type="text" maxlength="120" placeholder="What's on your mind?">
+          </div>
+          <div class="field">
+            <label for="jBody">Entry</label>
+            <textarea id="jBody" rows="5" maxlength="8000" placeholder="Write freely…"></textarea>
+          </div>
+          <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" type="button" id="jSaveBtn">Save entry</button>
+            <button class="btn" type="button" id="jRefineBtn">Deepen reflection</button>
+            <button class="btn btn-ghost" type="button" id="jCancelEdit" hidden>Cancel edit</button>
+          </div>
+          <div id="jRefineOut" hidden></div>
+        </div>
+        <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 8px">Your entries</h2>
+        <ul class="journal-list" id="journalList" aria-label="Journal entries"></ul>
+      </div>
+    </section>
+
     <section class="messages" id="messages" aria-label="Conversation">
       <div class="messages-inner" id="messagesInner" role="log" aria-live="polite" aria-relevant="additions"></div>
     </section>
@@ -1909,9 +1965,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
         <span>Domestic&nbsp;&amp; family violence</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabInfo" data-tab="info" aria-current="false" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>
-        <span>News&nbsp;&amp; resources</span>
+      <button type="button" class="bottom-nav-btn" id="appTabJournal" data-tab="journal" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Journal</span>
       </button>
       <button type="button" class="bottom-nav-btn" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-controls="sidebar" aria-haspopup="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -2389,34 +2445,19 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
-<!-- ============================ Journal dialog ============================ -->
-<dialog id="journalDlg" aria-labelledby="journalTitle">
+<!-- ============================ Weekly SMART goals (free) ============================ -->
+<dialog id="goalsDlg" aria-labelledby="goalsTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="journalTitle">📓 Journal</h2>
-    <button class="icon-btn" value="close" aria-label="Close journal">
+    <h2 id="goalsTitle">🎯 SMART goals</h2>
+    <button class="icon-btn" value="close" aria-label="Close SMART goals">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body">
-    <p class="help" style="margin:10px 0 0">A private place for your thoughts. Deepen reflection with <span data-companion>Hope</span> when you want more emotional depth — never a diagnosis.</p>
-    <div id="journalCompose">
-      <div class="field">
-        <label for="jTitle">Title <span class="help">(optional)</span></label>
-        <input id="jTitle" type="text" maxlength="120" placeholder="What's on your mind?">
-      </div>
-      <div class="field">
-        <label for="jBody">Entry</label>
-        <textarea id="jBody" rows="5" maxlength="8000" placeholder="Write freely…"></textarea>
-      </div>
-      <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-primary" type="button" id="jSaveBtn">Save entry</button>
-        <button class="btn" type="button" id="jRefineBtn">Deepen reflection</button>
-        <button class="btn btn-ghost" type="button" id="jCancelEdit" hidden>Cancel edit</button>
-      </div>
-      <div id="jRefineOut" hidden></div>
-    </div>
-    <h3 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 8px">Your entries</h3>
-    <ul class="journal-list" id="journalList" aria-label="Journal entries"></ul>
+    <p id="goalsIntro" style="margin:12px 0 0">Two small goals for this week, Sunday to Saturday. This is your own plan in <span data-brand>Hopewick</span> — not a SMART Recovery meeting. To find a meeting, use <strong>Find a meeting</strong>.</p>
+    <p class="help" id="goalsWeekLabel"></p>
+    <div id="goalsList"></div>
+    <p class="help" id="goalsSaved" aria-live="polite"></p>
   </div>
 </dialog>
 
@@ -2950,6 +2991,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.moods         per-person daily check-in / mood history
      eden.p.<id>.gratitude     per-person morning gratitude entries
      eden.p.<id>.journal       per-person journal entries
+     eden.p.<id>.goals         per-person weekly SMART goals (free; not a meeting finder)
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
      eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
@@ -2957,7 +2999,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
      eden.p.<id>.resume        per-person resume draft (free; not part of Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-const EDEN_BUILD = 'hopewick-v5.14';
+const EDEN_BUILD = 'hopewick-v5.15';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -2967,7 +3009,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'steps', 'bible', 'breakers', 'selfcare', 'resume', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'steps', 'bible', 'breakers', 'selfcare', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -3255,12 +3297,14 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
-let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'info' | 'resume' — More opens sidebar, not a tab destination
+let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'journal' | 'info' | 'resume' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
 let pendingStartChat = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
+let goalsState = { weeks: {} }; // weeks[sundayIso] = { goals: [goal, goal] } — Sunday–Saturday, free
+let goalsEditing = [true, true];
 let stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
 let bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
 let bibleTab = 'soap';
@@ -3287,16 +3331,16 @@ const el = {
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
-  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), launchPrefs: $('#launchPrefs'),
+  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), journalView: $('#journalView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
-  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabDv: $('#appTabDv'), tabInfo: $('#appTabInfo'), tabMore: $('#appTabMore'),
-  sideDvBtn: $('#sideDvBtn'), sideResumeBtn: $('#sideResumeBtn'),
+  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabDv: $('#appTabDv'), tabJournal: $('#appTabJournal'), tabMore: $('#appTabMore'),
+  sideDvBtn: $('#sideDvBtn'), sideResumeBtn: $('#sideResumeBtn'), sideJournalBtn: $('#sideJournalBtn'), sideInfoBtn: $('#sideInfoBtn'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
-  cleanTimeDlg: $('#cleanTimeDlg'), journalDlg: $('#journalDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
+  cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
   toasts: $('#toasts'),
@@ -3382,6 +3426,7 @@ function loadProfileData(pid) {
   moods = load(pk(pid, 'moods'), []);
   gratitude = load(pk(pid, 'gratitude'), []);
   journal = load(pk(pid, 'journal'), []);
+  goalsState = normalizeGoals(load(pk(pid, 'goals'), {}));
   stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, load(pk(pid, 'steps'), {}));
   bibleProgress = normalizeBible(load(pk(pid, 'bible'), {}));
   breakersState = normalizeBreakers(load(pk(pid, 'breakers'), {}));
@@ -3412,6 +3457,16 @@ function saveMemories() { if (isDemo) return; save(pk(profile.id, 'memories'), m
 function saveMoods() { if (isDemo) return; save(pk(profile.id, 'moods'), moods); }
 function saveGratitude() { if (isDemo) return; save(pk(profile.id, 'gratitude'), gratitude); }
 function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), journal); }
+function saveGoals() {
+  if (isDemo || !profile) return;
+  const keys = Object.keys(goalsState.weeks || {}).sort();
+  if (keys.length > 60) {
+    keys.slice(0, keys.length - 60).forEach(k => { delete goalsState.weeks[k]; });
+  }
+  save(pk(profile.id, 'goals'), goalsState);
+  const note = $('#goalsSaved');
+  if (note && el.goalsDlg && el.goalsDlg.open) note.textContent = 'Saved on this device.';
+}
 function saveSteps() { if (isDemo) return; save(pk(profile.id, 'steps'), stepsProgress); }
 function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), bibleProgress); }
 function saveBreakers() { if (isDemo) return; save(pk(profile.id, 'breakers'), breakersState); }
@@ -3809,7 +3864,7 @@ async function copyText(text) {
 
 
 /* ---------------------------------------------------------------------------
-   App tabs: Home | Chat | Domestic & family violence | News & resources | More (More opens sidebar)
+   App tabs: Home | Chat | Domestic & family violence | Journal | More (More opens sidebar; News & resources lives there)
    --------------------------------------------------------------------------- */
 function dismissLaunchPrefs() {
   launchPrefsOpen = false;
@@ -3847,15 +3902,18 @@ function showLaunchPrefs() {
   if (el.infoView) el.infoView.hidden = true;
   if (el.dvView) el.dvView.hidden = true;
   if (el.resumeView) el.resumeView.hidden = true;
+  if (el.journalView) el.journalView.hidden = true;
   if (el.messages) el.messages.hidden = true;
   if (el.composerWrap) el.composerWrap.hidden = true;
-  [el.tabHome, el.tabChat, el.tabDv, el.tabInfo, el.tabMore].forEach(b => {
+  [el.tabHome, el.tabChat, el.tabDv, el.tabJournal, el.tabMore].forEach(b => {
     if (!b) return;
     b.setAttribute('aria-current', 'false');
     b.setAttribute('aria-pressed', 'false');
   });
   if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', 'false');
   if (el.sideResumeBtn) el.sideResumeBtn.setAttribute('aria-current', 'false');
+  if (el.sideJournalBtn) el.sideJournalBtn.setAttribute('aria-current', 'false');
+  if (el.sideInfoBtn) el.sideInfoBtn.setAttribute('aria-current', 'false');
   const title = $('#launchPrefsTitle');
   const disclaimerOpen = el.disclaimerDlg && el.disclaimerDlg.open;
   if (!disclaimerOpen && title) title.focus();
@@ -3888,7 +3946,7 @@ function setAppTab(tab, opts = {}) {
     else openSidebar();
     return;
   }
-  // Bible & SOAP is the study dialog. These ids are not Home/Chat/DV/News/Resume tabs.
+  // Bible & SOAP is the study dialog. These ids are not Home/Chat/DV/Journal/Resume tabs.
   if (tab === 'bible' || tab === 'soap') {
     openBible();
     return;
@@ -3899,7 +3957,7 @@ function setAppTab(tab, opts = {}) {
     return;
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
-  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : 'home';
+  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : tab === 'journal' ? 'journal' : 'home';
   const changed = appTab !== next;
   appTab = next;
   el.app.classList.toggle('tab-home', next === 'home');
@@ -3907,10 +3965,12 @@ function setAppTab(tab, opts = {}) {
   el.app.classList.toggle('tab-info', next === 'info');
   el.app.classList.toggle('tab-dv', next === 'dv');
   el.app.classList.toggle('tab-resume', next === 'resume');
+  el.app.classList.toggle('tab-journal', next === 'journal');
   if (el.homeView) el.homeView.hidden = next !== 'home';
   if (el.infoView) el.infoView.hidden = next !== 'info';
   if (el.dvView) el.dvView.hidden = next !== 'dv';
   if (el.resumeView) el.resumeView.hidden = next !== 'resume';
+  if (el.journalView) el.journalView.hidden = next !== 'journal';
   if (el.messages) el.messages.hidden = next !== 'chat';
   if (el.composerWrap) el.composerWrap.hidden = next !== 'chat';
   const mark = (btn, on) => {
@@ -3920,10 +3980,12 @@ function setAppTab(tab, opts = {}) {
   };
   mark(el.tabHome, next === 'home');
   mark(el.tabChat, next === 'chat');
-  mark(el.tabInfo, next === 'info');
   mark(el.tabDv, next === 'dv');
+  mark(el.tabJournal, next === 'journal');
   if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', next === 'dv' ? 'page' : 'false');
   if (el.sideResumeBtn) el.sideResumeBtn.setAttribute('aria-current', next === 'resume' ? 'page' : 'false');
+  if (el.sideJournalBtn) el.sideJournalBtn.setAttribute('aria-current', next === 'journal' ? 'page' : 'false');
+  if (el.sideInfoBtn) el.sideInfoBtn.setAttribute('aria-current', next === 'info' ? 'page' : 'false');
   if (el.tabMore) {
     el.tabMore.setAttribute('aria-current', 'false');
     el.tabMore.setAttribute('aria-pressed', 'false');
@@ -3934,6 +3996,10 @@ function setAppTab(tab, opts = {}) {
     renderInfoRegion();
   } else if (next === 'resume') {
     showResume(changed);
+  } else if (next === 'journal') {
+    if (changed) prepareJournalCompose();
+    renderJournalList();
+    if (!opts.skipFocus) setTimeout(() => { const body = $('#jBody'); if (body) body.focus(); }, 60);
   } else if (next !== 'info' && (changed || opts.forceRender)) {
     renderMessages();
     if (!opts.skipFocus) focusInput();
@@ -4592,11 +4658,11 @@ function inAppToolsPrompt() {
   return [
     'IN-APP TOOLS',
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
-    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, nutrition, bible, resume, church, selfcare, steps, plus.',
+    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, nutrition, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
-    'breakers = Circuit breakers for a craving. meetings = Find a meeting. treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
-    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
+    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add goals on a crisis reply.',
   ].join('\n');
 }
 
@@ -4618,7 +4684,7 @@ function counsellorPrompt(convo) {
     '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
     '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure.',
     '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
-    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
+    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. When they want to write, edit, or check two goals for this week, name SMART goals and include goals on the TOOLS line. That screen is free and stays on their device. It is not a SMART Recovery meeting — a meeting request uses meetings. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
     '',
     'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
     '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also name Circuit breakers or Self-care and include breakers or selfcare on the TOOLS line.',
@@ -4657,6 +4723,7 @@ function friendPrompt(convo) {
     '- Use Australian English and a natural, conversational tone. Light markdown is fine.',
     '- Weave in what you remember naturally; never recite memories as a list.',
     '- If they want help writing a resume, name the free Resume builder and end with TOOLS: resume. Do not send them to paid resume websites or paste links, and never shame gaps in work.',
+    '- If they want to set or review SMART goals for the week, name SMART goals and end with TOOLS: goals. That screen is not a SMART Recovery meeting.',
     inAppToolsPrompt(),
     '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, about to use, domestic violence, being unsafe or someone in danger, respond with care and FIRST tell them what to do now and clearly give these Australian contacts (including 1800RESPECT 1800 737 732), then check on their safety:',
     CONTACTS_TEXT,
@@ -5151,19 +5218,23 @@ function saveTodaysGratitude(items) {
 /* ---------------------------------------------------------------------------
    Journal + deepen reflection
    --------------------------------------------------------------------------- */
+function prepareJournalCompose() {
+  journalEditId = null;
+  const title = $('#jTitle');
+  const body = $('#jBody');
+  const cancel = $('#jCancelEdit');
+  const out = $('#jRefineOut');
+  const saveBtn = $('#jSaveBtn');
+  if (title) title.value = '';
+  if (body) body.value = '';
+  if (cancel) cancel.hidden = true;
+  if (out) { out.hidden = true; out.innerHTML = ''; }
+  if (saveBtn) saveBtn.textContent = 'Save entry';
+}
 function openJournal() {
   if (!profile) return;
   closeSidebar();
-  journalEditId = null;
-  $('#jTitle').value = '';
-  $('#jBody').value = '';
-  $('#jCancelEdit').hidden = true;
-  $('#jRefineOut').hidden = true;
-  $('#jRefineOut').innerHTML = '';
-  $('#jSaveBtn').textContent = 'Save entry';
-  renderJournalList();
-  if (!el.journalDlg.open) el.journalDlg.showModal();
-  setTimeout(() => $('#jBody').focus(), 60);
+  setAppTab('journal');
 }
 function renderJournalList() {
   const list = $('#journalList');
@@ -6775,8 +6846,230 @@ function openSelfCare() {
   if (!el.selfCareDlg.open) el.selfCareDlg.showModal();
 }
 
+/* ---------------------------------------------------------------------------
+   Weekly SMART goals — two per Sunday–Saturday week, free, on this device.
+   Not the SMART Recovery meeting finder.
+   --------------------------------------------------------------------------- */
+const GOAL_FIELDS = [
+  { key: 'specific', label: 'Specific', prompt: 'What will you do?', hint: 'One clear action, in your own words.' },
+  { key: 'measurable', label: 'Measurable', prompt: 'How will you know?', hint: 'Something you can count or notice.' },
+  { key: 'achievable', label: 'Achievable', prompt: 'Small enough for this week?', hint: 'If it feels too big, shrink it. A small win counts.' },
+  { key: 'relevant', label: 'Relevant', prompt: 'Why this matters', hint: 'How it helps your recovery, or someone you care about.' },
+  { key: 'timebound', label: 'Time-bound', prompt: 'When this week?', hint: 'A day or a time between Sunday and Saturday.' },
+];
+function emptyGoal() {
+  return { specific: '', measurable: '', achievable: '', relevant: '', timebound: '', done: false };
+}
+function normalizeOneGoal(raw) {
+  const g = emptyGoal();
+  const src = raw && typeof raw === 'object' ? raw : {};
+  for (const f of GOAL_FIELDS) g[f.key] = String(src[f.key] || '').trim().slice(0, 240);
+  g.done = !!src.done;
+  return g;
+}
+function normalizeGoals(raw) {
+  const weeks = {};
+  const src = raw && typeof raw === 'object' && raw.weeks && typeof raw.weeks === 'object' ? raw.weeks : {};
+  for (const [key, week] of Object.entries(src)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) continue;
+    const list = week && Array.isArray(week.goals) ? week.goals : [];
+    weeks[key] = { goals: [0, 1].map(i => normalizeOneGoal(list[i])) };
+  }
+  return { weeks };
+}
+/** Sunday of the device-local week (Sunday–Saturday). */
+function weekStartSunday(d = new Date()) {
+  const start = new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay());
+  return localDate(start);
+}
+function formatWeekRange(sundayIso) {
+  const start = parseLocalDate(sundayIso);
+  if (!start) return '';
+  const end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6);
+  const fmt = new Intl.DateTimeFormat('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
+  return fmt.format(start) + ' – ' + fmt.format(end);
+}
+function goalHasText(goal) {
+  return GOAL_FIELDS.some(f => String(goal && goal[f.key] || '').trim());
+}
+function ensureCurrentWeek() {
+  const key = weekStartSunday();
+  if (!goalsState.weeks[key]) goalsState.weeks[key] = { goals: [emptyGoal(), emptyGoal()] };
+  goalsState.weeks[key].goals = [0, 1].map(i => normalizeOneGoal(goalsState.weeks[key].goals[i]));
+  return { key, week: goalsState.weeks[key] };
+}
+function goalsNote(text) {
+  const note = $('#goalsSaved');
+  if (!note) return;
+  if (isDemo) note.textContent = text || 'This demo visit only — not saved on this device.';
+  else note.textContent = text || 'Saved on this device.';
+}
+function readGoalCard(index) {
+  const card = document.getElementById('goalCard' + index);
+  const goal = emptyGoal();
+  if (!card) return goal;
+  for (const f of GOAL_FIELDS) {
+    const input = card.querySelector('[data-goal-field="' + f.key + '"]');
+    if (input) goal[f.key] = String(input.value || '').trim().slice(0, 240);
+  }
+  const done = card.querySelector('input[type="checkbox"]');
+  if (done) goal.done = !!done.checked;
+  return goal;
+}
+function commitGoal(index, goal) {
+  const { week } = ensureCurrentWeek();
+  week.goals[index] = normalizeOneGoal(goal);
+  saveGoals();
+  goalsNote(isDemo ? '' : 'Saved on this device.');
+}
+function renderGoals() {
+  const list = $('#goalsList');
+  const label = $('#goalsWeekLabel');
+  if (!list) return;
+  const { key, week } = ensureCurrentWeek();
+  if (label) label.textContent = 'This week: ' + formatWeekRange(key) + '. Next Sunday starts a fresh pair.';
+  list.replaceChildren();
+  week.goals.forEach((goal, index) => {
+    const editing = !!goalsEditing[index] || !goalHasText(goal);
+    const card = document.createElement('article');
+    card.className = 'goal-card' + (goal.done ? ' done' : '');
+    card.id = 'goalCard' + index;
+    const head = document.createElement('div');
+    head.className = 'goal-head';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.id = 'goalDone' + index;
+    cb.checked = !!goal.done;
+    cb.setAttribute('aria-label', 'Goal ' + (index + 1) + ' done for this week');
+    const lab = document.createElement('label');
+    lab.htmlFor = cb.id;
+    lab.textContent = 'Goal ' + (index + 1) + (goal.done ? ' · done' : '');
+    head.appendChild(cb);
+    head.appendChild(lab);
+    card.appendChild(head);
+    if (editing) {
+      for (const f of GOAL_FIELDS) {
+        const field = document.createElement('div');
+        field.className = 'field';
+        const fl = document.createElement('label');
+        fl.htmlFor = 'goal' + index + f.key;
+        fl.textContent = f.label + ' — ' + f.prompt;
+        const input = document.createElement('textarea');
+        input.id = fl.htmlFor;
+        input.rows = 2;
+        input.maxLength = 240;
+        input.dataset.goalField = f.key;
+        input.value = goal[f.key] || '';
+        input.placeholder = f.hint;
+        input.setAttribute('aria-describedby', fl.htmlFor + 'Hint');
+        const hint = document.createElement('p');
+        hint.className = 'help';
+        hint.id = fl.htmlFor + 'Hint';
+        hint.textContent = f.hint;
+        input.addEventListener('input', () => {
+          const { week: live } = ensureCurrentWeek();
+          live.goals[index][f.key] = input.value.slice(0, 240);
+          live.goals[index].done = cb.checked;
+          saveGoals();
+          goalsNote(isDemo ? '' : 'Saved on this device.');
+        });
+        field.appendChild(fl);
+        field.appendChild(input);
+        field.appendChild(hint);
+        card.appendChild(field);
+      }
+    } else {
+      const summary = document.createElement('div');
+      summary.className = 'goal-summary';
+      for (const f of GOAL_FIELDS) {
+        if (!goal[f.key]) continue;
+        const p = document.createElement('p');
+        const strong = document.createElement('strong');
+        strong.textContent = f.prompt + ' ';
+        p.appendChild(strong);
+        p.appendChild(document.createTextNode(goal[f.key]));
+        summary.appendChild(p);
+      }
+      card.appendChild(summary);
+    }
+    const actions = document.createElement('div');
+    actions.className = 'row';
+    actions.style.gap = '8px';
+    actions.style.flexWrap = 'wrap';
+    if (editing) {
+      const saveBtn = document.createElement('button');
+      saveBtn.type = 'button';
+      saveBtn.className = 'btn btn-primary btn-sm';
+      saveBtn.textContent = 'Save goal';
+      saveBtn.addEventListener('click', () => {
+        const next = readGoalCard(index);
+        if (!goalHasText(next)) { toast('Write what you will do, or clear this goal.', true); return; }
+        commitGoal(index, next);
+        goalsEditing[index] = false;
+        renderGoals();
+        toast('Goal saved');
+      });
+      actions.appendChild(saveBtn);
+    } else {
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'btn btn-sm';
+      editBtn.textContent = 'Edit';
+      editBtn.addEventListener('click', () => {
+        goalsEditing[index] = true;
+        renderGoals();
+        const first = document.querySelector('#goalCard' + index + ' textarea');
+        if (first) first.focus();
+      });
+      actions.appendChild(editBtn);
+    }
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'btn btn-ghost btn-sm';
+    clearBtn.textContent = 'Clear';
+    clearBtn.addEventListener('click', () => {
+      if (!confirm('Clear this goal for this week?')) return;
+      commitGoal(index, emptyGoal());
+      goalsEditing[index] = true;
+      renderGoals();
+      toast('Goal cleared');
+    });
+    actions.appendChild(clearBtn);
+    card.appendChild(actions);
+    cb.addEventListener('change', () => {
+      const { week: live } = ensureCurrentWeek();
+      if (editing) {
+        const next = readGoalCard(index);
+        next.done = cb.checked;
+        live.goals[index] = normalizeOneGoal(next);
+      } else {
+        live.goals[index].done = cb.checked;
+      }
+      card.classList.toggle('done', cb.checked);
+      lab.textContent = 'Goal ' + (index + 1) + (cb.checked ? ' · done' : '');
+      saveGoals();
+      goalsNote(isDemo ? '' : 'Saved on this device.');
+    });
+    list.appendChild(card);
+  });
+  const note = $('#goalsSaved');
+  if (note && !note.textContent) {
+    note.textContent = isDemo
+      ? 'This demo visit only — not saved on this device.'
+      : 'Free. Stays on this device.';
+  }
+}
+function openGoals() {
+  if (!profile) return;
+  closeSidebar();
+  const { week } = ensureCurrentWeek();
+  goalsEditing = week.goals.map(g => !goalHasText(g));
+  renderGoals();
+  if (!el.goalsDlg.open) el.goalsDlg.showModal();
+}
+
 /* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
-const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'nutrition', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'nutrition', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
 const HOPE_TOOLS = {
   help: { label: 'Open Get help', open: () => openHelp() },
   dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
@@ -6787,6 +7080,7 @@ const HOPE_TOOLS = {
   nearby: { label: 'Find nearby help', open: () => openNearby() },
   today: { label: 'Open today’s readings', open: () => openTodayReading() },
   journal: { label: 'Open journal', open: () => openJournal() },
+  goals: { label: 'Open SMART goals', open: () => openGoals() },
   nutrition: { label: 'Open nutrition', open: () => openNutrition() },
   bible: { label: 'Open Bible & SOAP', open: () => setAppTab('bible') },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
@@ -6796,6 +7090,7 @@ const HOPE_TOOLS = {
   plus: { label: 'See Hopewick Plus', open: () => openAccountDlg() },
 };
 const JOURNAL_LANG_RE = /\b(journals?|journaling|diary|write (it |this |that )?(down|out))\b/i;
+const GOALS_LANG_RE = /\b((?:my |a |the |two |weekly |this week'?s )?smart goals?|goals? for (?:this |the )?week|weekly goals?)\b/i;
 const NUTRITION_LANG_RE = /\b(nutritions?|supplements?|vitamins?|fish oils?|omega-?3s?|n-?acetyl\s?cysteine|\bnac\b|magnesium|multivitamins?|b-?complex|thiamine|hydrat(?:e|ion|ing)|vitamin d|healthy eating|what (?:should|can) i eat)\b/i;
 const TODAY_LANG_RE = /\b(word for (the |today)|just for today|today'?s (reading|reflection|word)|daily reading)\b/i;
 const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional|going deeper)\b/i;
@@ -6819,6 +7114,7 @@ function textMatchesHopeTool(id, text) {
   if (id === 'nearby') return NEARBY_LANG_RE.test(t);
   if (id === 'today') return TODAY_LANG_RE.test(t);
   if (id === 'journal') return JOURNAL_LANG_RE.test(t);
+  if (id === 'goals') return GOALS_LANG_RE.test(t);
   if (id === 'nutrition') return NUTRITION_LANG_RE.test(t);
   if (id === 'bible') return BIBLE_LANG_RE.test(t);
   if (id === 'resume') return RESUME_LANG_RE.test(t);
@@ -7941,7 +8237,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
+    gratitude, journal, goals: goalsState, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -7975,6 +8271,7 @@ $('#importFile').addEventListener('change', async (e) => {
     moods = Array.isArray(data.moods) ? data.moods.filter(m => m && m.date) : [];
     gratitude = Array.isArray(data.gratitude) ? data.gratitude.filter(g => g && g.date) : [];
     journal = Array.isArray(data.journal) ? data.journal.filter(j => j && j.id) : [];
+    goalsState = normalizeGoals(data.goals || {});
     stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, data.steps || {});
     bibleProgress = normalizeBible(data.bible || {});
     breakersState = normalizeBreakers(data.breakers || {});
@@ -7986,7 +8283,7 @@ $('#importFile').addEventListener('change', async (e) => {
     }
     activeId = null;
     settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
@@ -8077,7 +8374,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
-  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
   renderPicker();
@@ -8389,7 +8686,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -8411,6 +8708,8 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'prefs') showLaunchPrefs();
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
+  else if (o === 'goals') openGoals();
+  else if (o === 'info' || o === 'news') { closeSidebar(); setAppTab('info'); }
   else if (o === 'steps') openSteps();
   else if (o === 'bible' || o === 'soap') setAppTab('bible');
   else if (o === 'nearby') openNearby();
@@ -8438,7 +8737,7 @@ el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-op
 el.tabHome?.addEventListener('click', () => setAppTab('home'));
 el.tabChat?.addEventListener('click', () => setAppTab('chat'));
 el.tabDv?.addEventListener('click', () => setAppTab('dv'));
-el.tabInfo?.addEventListener('click', () => setAppTab('info'));
+el.tabJournal?.addEventListener('click', () => setAppTab('journal'));
 el.tabMore?.addEventListener('click', () => setAppTab('more'));
 
 el.scrim.addEventListener('click', closeSidebar);
@@ -8452,7 +8751,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -8687,7 +8986,7 @@ function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.journalDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -8698,6 +8997,7 @@ function enterDemo() {
   });
   convos = []; memories = sample.memories; moods = sample.moods;
   journal = sample.journal; gratitude = sample.gratitude;
+  goalsState = normalizeGoals({});
   stepsProgress = sample.steps; bibleProgress = sample.bible;
   breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
   resumeState = HopewickResume.emptyResume();
@@ -8718,6 +9018,7 @@ function exitDemo() {
   hideAccessBanner();
   profile = null;
   convos = []; memories = []; moods = []; gratitude = []; journal = [];
+  goalsState = { weeks: {} };
   stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
   bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
   breakersState = { custom: [], tried: { date: '', ids: [] } };

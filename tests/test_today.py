@@ -146,10 +146,13 @@ def test_today_card_on_home():
             # Existing destinations stay put.
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert "Home" in nav
-            assert "News & resources" in nav
+            assert "Journal" in nav
+            assert "News" not in nav
             assert "Domestic & family violence" in nav
             assert page.is_visible("#helpBtn")
-            page.click("#appTabInfo")
+            page.click("#appTabMore")
+            page.wait_for_selector("#app.sidebar-open")
+            page.click("#sideInfoBtn")
             page.wait_for_selector("#infoView:not([hidden])")
             assert page.is_hidden("#todayCard")
             assert "News & resources" in page.inner_text("#infoView")

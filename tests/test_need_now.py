@@ -19,7 +19,10 @@ def test_static_need_and_gateway():
     assert "function splitToolLine" in text
     assert "IN-APP TOOLS" in text
     assert 'id="appTabDv"' in text
-    assert 'id="appTabInfo"' in text
+    assert 'id="appTabJournal"' in text
+    assert 'id="sideInfoBtn"' in text
+    assert 'id="sideGoalsBtn"' in text
+    assert "Open SMART goals" in text
     help_dlg = text.split('<dialog id="helpDlg"', 1)[1].split("</dialog>", 1)[0]
     assert "Domestic & family violence" not in help_dlg
     assert "Open Get help" in text
@@ -61,7 +64,8 @@ def test_need_now_and_hope_gateway():
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert "Home" in nav and "Chat" in nav
             assert "Domestic & family violence" in nav
-            assert "News & resources" in nav
+            assert "Journal" in nav
+            assert "News" not in nav
             assert page.locator("#sideDeveloperBtn").is_hidden()
             assert page.locator("#keyBannerInvite").is_hidden()
 
@@ -109,8 +113,14 @@ def test_need_now_and_hope_gateway():
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('bibleDlg')?.open !== true")
 
+            page.click('#needNow [data-need="journal"]')
+            page.wait_for_selector("#journalView:not([hidden])")
+            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert page.locator("#homeView").is_hidden()
+            page.click("#appTabHome")
+            page.wait_for_selector("#needNow")
+
             for need, dlg in (
-                ("journal", "journalDlg"),
                 ("meeting", "meetingDlg"),
                 ("craving", "circuitBreakerDlg"),
                 ("help", "helpDlg"),
@@ -135,8 +145,10 @@ def test_need_now_and_hope_gateway():
             page.wait_for_selector('#hopeGateway button[data-hope-tool="journal"]', timeout=10000)
             assert "TOOLS:" not in page.inner_text("#messagesInner")
             page.click('#hopeGateway button[data-hope-tool="journal"]')
-            page.wait_for_function("() => document.getElementById('journalDlg')?.open === true")
-            page.keyboard.press("Escape")
+            page.wait_for_selector("#journalView:not([hidden])")
+            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            page.click("#appTabChat")
+            page.wait_for_selector("#input", state="visible")
             page.wait_for_function("() => !busy", timeout=20000)
 
             page.fill("#input", "my partner is hurting me")
@@ -308,9 +320,11 @@ def test_every_need_now_chip_click():
 
             def journal_chip():
                 click_chip("journal", "Journal")
-                _wait_dialog_on_top(page, "journalDlg")
+                _wait_view_on_top(page, "journalView")
                 assert "Journal" in page.inner_text("#journalTitle")
-                assert page.locator("#appTabHome").get_attribute("aria-current") == "page"
+                assert page.locator("#homeView").is_hidden()
+                assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+                assert page.locator("#appTabHome").get_attribute("aria-current") == "false"
 
             def bible_chip():
                 click_chip("bible", "Bible & SOAP")

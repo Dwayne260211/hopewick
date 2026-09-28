@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hopewick v5.13 — launch preferences, News & resources, and a top-level DV view."""
+"""Launch preferences, News & resources (in More), Journal tab, and a top-level DV view."""
 from __future__ import annotations
 
 import re
@@ -41,7 +41,7 @@ REQUIRED_URLS = [
 
 def test_static_header_and_info():
     text = APP.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.13'" in text
+    assert "EDEN_BUILD = 'hopewick-v5.15'" in text
     topbar = re.search(r'<header class="topbar">.*?</header>', text, re.S).group(0)
     actions = re.search(r'<div class="topbar-actions">.*?</div>', topbar, re.S).group(0)
     # Menu + Get help + profile + hands-free. Preferences are not in the header.
@@ -53,7 +53,9 @@ def test_static_header_and_info():
     assert 'id="themeBtn"' not in topbar
     assert 'id="autoSpeakBtn"' not in topbar
     assert 'id="launchPrefs"' in text
-    assert 'id="appTabInfo"' in text
+    assert 'id="appTabJournal"' in text
+    assert 'id="sideInfoBtn"' in text
+    assert 'id="journalView"' in text
     assert 'id="appTabDv"' in text
     assert 'id="sideDvBtn"' in text
     assert 'id="dvView"' in text
@@ -125,13 +127,21 @@ def test_launch_prefs_and_info_ui():
             page.wait_for_selector("#homeView:not([hidden])")
 
             nav = " ".join(page.inner_text("#bottomNav").split())
-            assert "News & resources" in nav
+            assert "Journal" in nav
+            assert "News" not in nav
             assert "Domestic & family violence" in nav
             assert "Info" not in nav
+            assert page.is_visible("#helpBtn")
 
-            page.click("#appTabInfo")
+            page.click("#appTabJournal")
+            page.wait_for_selector("#journalView:not([hidden])")
+            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert "Journal" in page.inner_text("#journalTitle")
+            page.click("#appTabMore")
+            page.wait_for_selector("#app.sidebar-open")
+            page.click("#sideInfoBtn")
             page.wait_for_selector("#infoView:not([hidden])")
-            assert page.locator("#appTabInfo").get_attribute("aria-current") == "page"
+            assert page.locator("#sideInfoBtn").get_attribute("aria-current") == "page"
             body = page.inner_text("#infoView")
             assert "News & resources" in body
             assert "QuIVAA" in body
@@ -184,18 +194,19 @@ def test_launch_prefs_and_info_ui():
             page.click("#sideDvBtn")
             page.wait_for_function("() => !document.getElementById('app').classList.contains('sidebar-open')")
             page.wait_for_selector("#dvView:not([hidden])")
-            page.locator("#appTabInfo").focus()
+            page.locator("#appTabJournal").focus()
             page.keyboard.press("Enter")
-            page.wait_for_selector("#infoView:not([hidden])")
-            assert page.locator("#appTabInfo").get_attribute("aria-pressed") == "true"
+            page.wait_for_selector("#journalView:not([hidden])")
+            assert page.locator("#appTabJournal").get_attribute("aria-pressed") == "true"
 
             page.set_viewport_size({"width": 1280, "height": 900})
             page.click("#sideDvBtn")
             page.wait_for_selector("#dvView:not([hidden])")
             assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
             page.screenshot(path=str(shot_dir / "v513-dv-desktop.png"))
-            page.click("#appTabInfo")
+            page.click("#sideInfoBtn")
             page.wait_for_selector("#infoView:not([hidden])")
+            assert page.locator("#sideInfoBtn").get_attribute("aria-current") == "page"
             page.screenshot(path=str(shot_dir / "v513-news-desktop.png"))
             page.click("#sideAboutBtn")  # sidebar is visible on desktop; ensures More menu still works
             page.wait_for_function("() => document.getElementById('aboutDlg')?.open === true")
