@@ -1943,8 +1943,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </form>
     <div class="picker-actions">
       <button class="btn btn-primary" type="button" id="addPersonBtn">+ Add your profile</button>
+      <button class="btn" type="button" id="addPersonPlusBtn" hidden>Hopewick Plus</button>
       <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage profiles</button>
     </div>
+    <p class="privacy-note" id="addPersonPlusNote" hidden>Add a profile is part of Hopewick Plus. You can still open the profile you already have.</p>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
       <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand>Hopewick</span></button>
@@ -3886,6 +3888,11 @@ function setAppTab(tab, opts = {}) {
     else openSidebar();
     return;
   }
+  // Bible & SOAP is the study dialog. These ids are not Home/Chat/DV/News/Resume tabs.
+  if (tab === 'bible' || tab === 'soap') {
+    openBible();
+    return;
+  }
   if (launchPrefsOpen && opts.keepPrefs) {
     if (el.launchPrefs) el.launchPrefs.hidden = false;
     el.app.classList.add('showing-launch-prefs');
@@ -4202,7 +4209,7 @@ function needNowEl() {
     { id: 'journal', label: 'Journal', title: 'Write it down', action: () => openJournal() },
   ];
   if (settings.faith !== 'none') {
-    items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => openBible() });
+    items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => setAppTab('bible') });
   }
   items.push(
     { id: 'resume', label: 'Resume', title: 'Free resume builder', action: () => setAppTab('resume') },
@@ -6046,6 +6053,7 @@ function themeBibleSystemExtra(lesson) {
 function startTodaysSoap() {
   const reading = todaySoapReading();
   el.bibleDlg.close();
+  setAppTab('chat', { skipFocus: true });
   if (isDemo) {
     playScenario(DEMO_SOAP_SCENARIO, true);
     return;
@@ -6068,6 +6076,7 @@ function startTodaysSoap() {
 }
 function startThemeBibleChat(lesson) {
   el.bibleDlg.close();
+  setAppTab('chat', { skipFocus: true });
   const c = newConversation();
   c.kind = 'bible';
   c.lessonId = lesson.id;
@@ -6243,6 +6252,7 @@ async function showDdDay(dayId) {
 function startDdHopeChat(day) {
   if (!day) return;
   el.bibleDlg.close();
+  setAppTab('chat', { skipFocus: true });
   const c = newConversation();
   c.kind = 'bible';
   c.divingDeeper = true;
@@ -6778,7 +6788,7 @@ const HOPE_TOOLS = {
   today: { label: 'Open today’s readings', open: () => openTodayReading() },
   journal: { label: 'Open journal', open: () => openJournal() },
   nutrition: { label: 'Open nutrition', open: () => openNutrition() },
-  bible: { label: 'Open Bible & SOAP', open: () => openBible() },
+  bible: { label: 'Open Bible & SOAP', open: () => setAppTab('bible') },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
   church: { label: 'Find a church', open: () => openChurch() },
   selfcare: { label: 'Open self-care', open: () => openSelfCare() },
@@ -6835,6 +6845,7 @@ function hopeGatewayIds(convo) {
   const kind = (card && card.crisisKind) || (crisis ? classifyCrisis(userText) : '');
   const ids = [];
   const add = (id) => {
+    if (id === 'soap') id = 'bible';
     if (!hopeToolAllowed(id, userText) || ids.includes(id)) return;
     ids.push(id);
   };
@@ -8038,6 +8049,26 @@ function renderPicker() {
     $('.delete', li).addEventListener('click', () => deleteProfile(p));
     list.appendChild(li);
   }
+  syncProfileAddUi();
+}
+/** The first profile is free. Another profile on this device is Hopewick Plus. */
+function profileAddAllowed() {
+  const count = profilesState && Array.isArray(profilesState.list) ? profilesState.list.length : 0;
+  if (count === 0) return true;
+  return subscriptionPlus();
+}
+function syncProfileAddUi() {
+  const allowed = profileAddAllowed();
+  const btn = $('#addPersonBtn');
+  const plusBtn = $('#addPersonPlusBtn');
+  const note = $('#addPersonPlusNote');
+  if (btn) btn.hidden = !allowed;
+  if (plusBtn) plusBtn.hidden = allowed;
+  if (note) note.hidden = allowed;
+  if (!allowed) {
+    const form = $('#addPersonForm');
+    if (form) form.hidden = true;
+  }
 }
 function showPicker() {
   if (isDemo) exitDemo();
@@ -8110,16 +8141,24 @@ el.pickerDlg.addEventListener('cancel', (e) => {
 });
 
 $('#addPersonBtn').addEventListener('click', () => {
+  if (!profileAddAllowed()) { openAccountDlg(); return; }
   $('#pinForm').hidden = true;
   $('#addPersonForm').hidden = false;
   $('#addPersonInput').value = '';
   $('#addPersonInput').focus();
 });
+$('#addPersonPlusBtn').addEventListener('click', () => openAccountDlg());
 $('#addPersonCancel').addEventListener('click', () => { $('#addPersonForm').hidden = true; });
 $('#addPersonForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const name = $('#addPersonInput').value.trim();
   if (!name) return;
+  if (!profileAddAllowed()) {
+    $('#addPersonForm').hidden = true;
+    $('#pinError').textContent = '';
+    openAccountDlg();
+    return;
+  }
   if (nameTaken(name)) { $('#pinError').textContent = 'A profile already has that name.'; return; }
   const id = uid();
   profilesState.list.push({ id, name, pin: null, created: Date.now() });
@@ -8373,7 +8412,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
   else if (o === 'steps') openSteps();
-  else if (o === 'bible') openBible();
+  else if (o === 'bible' || o === 'soap') setAppTab('bible');
   else if (o === 'nearby') openNearby();
   else if (o === 'nutrition') openNutrition();
   else if (o === 'skills') openSkills();
@@ -9564,6 +9603,7 @@ async function refreshBilling() {
     libraryPick = null;
   }
   if (!subscriptionPlus()) libraryPick = null;
+  if (typeof syncProfileAddUi === 'function') syncProfileAddUi();
   await refreshHopeUsage();
   paintAccount();
   try {
@@ -9629,6 +9669,7 @@ function appendPlusOffer(body) {
     'Nutrition notes — food, water, and supplements people ask about',
     'Going Deeper faith content and 12 Steps practice',
     'The full year of readings',
+    'Add another profile on this device',
     'Keep your conversation history on this device. Cloud sync is not enabled.',
   ].forEach(text => {
     const li = document.createElement('li');
