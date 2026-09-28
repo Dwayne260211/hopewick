@@ -923,6 +923,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   display: inline-block; margin-left: 6px; font-size: .68rem; font-weight: 800; letter-spacing: .04em;
   background: var(--accent-soft); color: var(--accent-strong); border-radius: 999px; padding: 1px 6px; vertical-align: middle;
 }
+.plus-pill[hidden] { display: none !important; }
 .banner .banner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* Profile picker */
@@ -1244,6 +1245,41 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .empty-hint { color: var(--muted); font-size: .9rem; padding: 12px 4px; text-align: center; }
 .nut-panel h3 { font-size: 1rem; margin: 14px 0 6px; }
 .nut-panel ul { margin: 0 0 8px; padding-left: 1.2em; font-size: .92rem; }
+.nut-lead { margin: 12px 0 0; font-size: .92rem; }
+.nut-gate {
+  margin-top: 14px; padding: 12px 14px; border-radius: 14px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: var(--accent-soft);
+}
+.nut-gate p { margin: 0 0 8px; font-size: .92rem; }
+.nut-tease { margin: 0 0 12px; padding-left: 1.2em; font-size: .92rem; }
+.nut-library { margin-top: 16px; }
+.nut-kicker {
+  font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 8px;
+}
+.nut-items { display: flex; flex-direction: column; gap: 10px; }
+.nut-item {
+  border: 1px solid var(--border); background: var(--surface-2);
+  border-radius: 14px; padding: 12px 14px;
+}
+.nut-item h3 { margin: 0; font-size: 1.02rem; }
+.nut-item h4 {
+  margin: 10px 0 2px; font-size: .72rem; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--muted); font-weight: 700;
+}
+.nut-item p { margin: 0; font-size: .92rem; line-height: 1.45; }
+.nut-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 4px; }
+.nut-filters .chip { cursor: pointer; }
+.nut-filter-label { font-size: .78rem; font-weight: 700; color: var(--muted); margin: 12px 0 6px; }
+.nut-pair-grid {
+  display: grid; grid-template-columns: 6.6rem 1fr; gap: 6px 10px; margin: 0;
+}
+.nut-pair-grid dt {
+  margin: 0; font-size: .72rem; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--muted); font-weight: 700;
+}
+.nut-pair-grid dd { margin: 0; font-size: .92rem; line-height: 1.45; }
 .nut-check { list-style: none; padding: 0; margin: 0; }
 .nut-check li { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: .92rem; }
 .nut-check input { margin-top: 3px; accent-color: var(--accent); }
@@ -1485,7 +1521,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       </button>
       <button class="btn btn-ghost" type="button" data-open="nutrition">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
-        Nutrition
+        Nutrition <span class="plus-pill" id="nutritionPlusPill">Plus</span>
       </button>
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
@@ -1581,7 +1617,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p><strong>Hopewick Plus — AU$20/month.</strong> Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p><strong>Hopewick Plus — AU$20/month.</strong> Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Hopewick Plus</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
@@ -1978,13 +2014,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </ul>
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Hopewick Plus</button>
-      <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p class="help" style="margin:8px 0 0">Hopewick Plus — AU$20/month. Unlock the full Hopewick experience with your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, Get Help, and the resume builder. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
-        <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
+        <li><strong>Hopewick Plus.</strong> AU$20 a month for one person: clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 20 messages a day. Hopewick Plus is 200 messages a day. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
@@ -2785,36 +2821,50 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   </div>
 </dialog>
 
-<!-- ============================ Nutrition / recovery ============================ -->
+<!-- ============================ Nutrition (Hopewick Plus library) ============================ -->
 <dialog id="nutritionDlg" aria-labelledby="nutritionTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="nutritionTitle">🥗 Nutrition &amp; recovery</h2>
+    <h2 id="nutritionTitle">🥗 Nutrition</h2>
     <button class="icon-btn" value="close" aria-label="Close nutrition">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </form>
   <div class="dlg-body">
     <div class="crisis-card" id="nutritionSafety" role="note" style="margin-top:12px">
-      <h3>Support education only — not medical advice</h3>
-      <p>This is general information for recovery and comedown care. It is <strong>not</strong> a substitute for a GP, dietitian or withdrawal management service. Nutrition alone does not “counter” a substance.</p>
-      <p><strong>Alcohol and benzodiazepine withdrawal can be dangerous</strong> (including seizures). Please see a doctor or AOD service — call <a href="tel:000">000</a> for severe symptoms (confusion, seizures, chest pain, trouble breathing).</p>
+      <h3>General information only — not medical advice</h3>
+      <p>Hopewick does not diagnose you, prescribe a dose, or treat addiction. Nothing here is a substitute for a GP, pharmacist, dietitian, or withdrawal care, and it is not crisis support. Interactions and what you need are individual.</p>
+      <p>Talk to a GP or pharmacist before you start, stop, or change a supplement or medicine — including NAC, fish oil, vitamins, and magnesium.</p>
+      <p><strong>Alcohol and benzodiazepine withdrawal can be dangerous</strong> (including seizures). See a doctor or an AOD service. Call <a href="tel:000">000</a> for severe symptoms (confusion, seizures, chest pain, trouble breathing). If someone may have taken too much paracetamol, call <a href="tel:000">000</a> or the Poisons Information Centre <a href="tel:131126">13 11 26</a>. A shop supplement is not the response to that.</p>
     </div>
-    <div class="field" style="margin-top:14px">
-      <label for="nutritionSelect">What are you recovering from / supporting?</label>
-      <select id="nutritionSelect">
-        <option value="">Choose one…</option>
-      </select>
-    </div>
-    <div id="nutritionPanel" hidden></div>
-    <div id="nutritionHydration" style="margin-top:16px" hidden>
-      <h3 style="font-size:1rem;margin:0 0 8px">Simple hydration reminder</h3>
-      <p class="help" style="margin:0 0 8px">Rough guide only — sip water through the day; seek care if you can’t keep fluids down.</p>
-      <div class="radio-row" role="radiogroup" aria-label="Body weight band">
-        <label><input type="radio" name="nutWeight" value="s"> Under ~60 kg</label>
-        <label><input type="radio" name="nutWeight" value="m" checked> ~60–85 kg</label>
-        <label><input type="radio" name="nutWeight" value="l"> Over ~85 kg</label>
+    <p class="nut-lead" id="nutritionIntro">Food and water come first. A health habit can be the next meal or a glass of water. Supplements, if you consider them at all, are a conversation with a GP or pharmacist — not a plan from an app.</p>
+    <div id="nutritionGate" class="nut-gate"></div>
+    <div id="nutritionLibrary" hidden>
+      <p class="nut-kicker">Benefit ↔ nutrient</p>
+      <p class="help" id="nutritionLookupHelp" style="margin:0 0 4px">Each row is one pairing people ask about. It is not a result Hopewick promises, and it is not a dose. Look up a benefit, or pick a nutrient to see the benefits listed for it. Talk to a GP or pharmacist before you start anything.</p>
+      <p class="nut-filter-label" id="nutritionBenefitLabel">Look up by benefit</p>
+      <div id="nutritionBenefitFilters" class="nut-filters" role="group" aria-labelledby="nutritionBenefitLabel"></div>
+      <p class="nut-filter-label" id="nutritionNutrientLabel">Look up by nutrient</p>
+      <div id="nutritionNutrientFilters" class="nut-filters" role="group" aria-labelledby="nutritionNutrientLabel"></div>
+      <div class="nut-items" id="nutritionPairs"></div>
+      <h3 class="nut-kicker" style="margin-top:18px">Food while a habit is changing</h3>
+      <p class="help" style="margin:0 0 8px">Optional food ideas if a particular substance has been part of life. Not a detox, and not a substitute for a doctor.</p>
+      <div class="field">
+        <label for="nutritionSelect">What are you recovering from / supporting?</label>
+        <select id="nutritionSelect">
+          <option value="">Choose one…</option>
+        </select>
       </div>
-      <p id="nutHydrateMsg" class="help" style="margin-top:8px"></p>
+      <div id="nutritionPanel" hidden></div>
+      <div id="nutritionHydration" style="margin-top:16px" hidden>
+        <h3 style="font-size:1rem;margin:0 0 8px">Simple hydration reminder</h3>
+        <p class="help" style="margin:0 0 8px">Rough guide only — sip water through the day. It is not a target you must hit. Seek care if you can’t keep fluids down. Heart, kidney, and other conditions change what is right for you.</p>
+        <div class="radio-row" role="radiogroup" aria-label="Body weight band">
+          <label><input type="radio" name="nutWeight" value="s"> Under ~60 kg</label>
+          <label><input type="radio" name="nutWeight" value="m" checked> ~60–85 kg</label>
+          <label><input type="radio" name="nutWeight" value="l"> Over ~85 kg</label>
+        </div>
+        <p id="nutHydrateMsg" class="help" style="margin-top:8px"></p>
+      </div>
     </div>
   </div>
 </dialog>
@@ -4115,7 +4165,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — AU$20/month unlocks your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, journal tools, nutrition notes, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4535,11 +4585,11 @@ function inAppToolsPrompt() {
   return [
     'IN-APP TOOLS',
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
-    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, bible, resume, church, selfcare, steps, plus.',
+    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, nutrition, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting. treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
-    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, or bible on a crisis reply.',
+    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply.',
   ].join('\n');
 }
 
@@ -4554,6 +4604,7 @@ function counsellorPrompt(convo) {
     '- You are an AI recovery companion, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant (especially after crisis action steps), without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
     '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, name Find a meeting (official AA/NA/SMART finders) and include meetings on the TOOLS line. When they ask about rehab, detox, withdrawal management or formal AOD treatment, name Find treatment / rehab and include treatment — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, name Find AOD services and include aod — do not invent phone numbers. When they ask about a church, parish or congregation, name Find a church and include church — do not invent church lists or claim Hopewick runs churches. Do not paste hopewick.com.au links.',
+    '- If they ask about food, hydration, vitamins, or supplements (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, or a multivitamin), or about sleep, mood support, liver or antioxidant interest, heart and brain oils, or energy in that nutrition sense, name Nutrition and include nutrition on the TOOLS line. The screen pairs a benefit people ask about with a nutrient. Describe that pairing as a question for a GP or pharmacist, not as an effect you promise. Do not prescribe a dose. Do not say these products treat, cure, or prevent addiction or withdrawal. Prefer food and water. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -4608,7 +4659,7 @@ function friendPrompt(convo) {
 
 function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(convo) : friendPrompt(convo); }
 
-const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. End with exactly one line: TOOLS: help — or TOOLS: help, dv if this is domestic or family violence. Do not offer Plus, resume, journal, or Bible in that moment.';
+const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. End with exactly one line: TOOLS: help — or TOOLS: help, dv if this is domestic or family violence. Do not offer Plus, resume, journal, Bible, or nutrition in that moment.';
 
 function buildMessages(convo) {
   const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({
@@ -6238,6 +6289,123 @@ let nearbyLastCoarse = ''; // in-memory only; never precise GPS in localStorage
 /* ---------------------------------------------------------------------------
    Nutrition & recovery (educational, food-first — not medical advice)
    --------------------------------------------------------------------------- */
+/* Plus library. Benefit ↔ nutrient pairings people ask about.
+   Not a promised effect, not a dose, not a treatment for addiction. */
+const NUTRITION_BENEFITS = [
+  { id: 'sleep', label: 'Sleep' },
+  { id: 'mood', label: 'Mood support' },
+  { id: 'liver', label: 'Liver / antioxidant interest' },
+  { id: 'heart', label: 'Heart & brain oils' },
+  { id: 'energy', label: 'Energy' },
+  { id: 'hydration', label: 'Hydration' },
+];
+const NUTRITION_LIBRARY = [
+  {
+    id: 'food',
+    label: 'Vitamin-rich foods',
+    what: 'Ordinary meals with some colour and protein. Fruit, vegetables, eggs, yoghurt, cheese, legumes, wholegrains, nuts, and oily fish if you eat it. Vegemite on toast counts.',
+  },
+  {
+    id: 'hydration',
+    label: 'Water / fluids',
+    what: 'Water and other ordinary drinks spread through the day. Soup, milk, and diluted juice count. It is not a detox flush.',
+  },
+  {
+    id: 'nac',
+    label: 'NAC (N-acetylcysteine)',
+    what: 'NAC is short for N-acetylcysteine, a form of the amino acid cysteine. In Australia you may see it sold as a supplement. Hospitals use a medical form of NAC in a different, urgent situation. A shop supplement and hospital treatment are not the same thing.',
+  },
+  {
+    id: 'fish-oil',
+    label: 'Fish oil / omega-3',
+    what: 'Omega-3s are fats in oily fish such as salmon, sardines, and mackerel. Fish-oil capsules are a supplement form of those fats (often called EPA and DHA). Algae oil is an option if you do not eat fish.',
+  },
+  {
+    id: 'vitamin-d',
+    label: 'Vitamin D',
+    what: 'A vitamin your skin makes from sunlight. Small amounts are also in oily fish, eggs, and some fortified milks and spreads.',
+  },
+  {
+    id: 'b-complex',
+    label: 'B-complex',
+    what: 'B vitamins are a group, including thiamine (B1), that come from food. A B-complex tablet bundles several of them together.',
+  },
+  {
+    id: 'magnesium',
+    label: 'Magnesium',
+    what: 'A mineral in nuts, seeds, leafy greens, legumes, and wholegrains.',
+  },
+  {
+    id: 'multivitamin',
+    label: 'Multivitamin',
+    what: 'One tablet that combines a range of vitamins and minerals, usually in modest amounts.',
+  },
+];
+const NUTRITION_PAIRINGS = [
+  {
+    benefit: 'sleep',
+    nutrient: 'magnesium',
+    note: 'People ask about magnesium for sleep, and for tight or restless muscles. It is not a sleeping tablet and not a treatment for withdrawal. Food first: nuts, seeds, leafy greens, legumes, wholegrains. If you still want a supplement, ask a pharmacist and mention kidney health and your other medicines. Some products upset the stomach. Hopewick does not recommend a dose or a brand.',
+  },
+  {
+    benefit: 'sleep',
+    nutrient: 'food',
+    note: 'The food pairing for sleep is a regular evening meal, magnesium-rich foods (nuts, seeds, leafy greens), and less late caffeine. A meal is not a sleeping medicine.',
+  },
+  {
+    benefit: 'mood',
+    nutrient: 'fish-oil',
+    note: 'People ask about fish oil for mood support. A capsule is not a treatment for depression, addiction, or withdrawal. Food first: salmon, sardines, or mackerel, or an algae-based food if you do not eat fish. Ask a pharmacist before capsules if you take blood-thinning medicine, are pregnant, or already take other products. No dose is given here.',
+  },
+  {
+    benefit: 'mood',
+    nutrient: 'vitamin-d',
+    note: 'People ask about vitamin D for mood support when they have been indoors. Whether a level is low is a blood test and a GP. Hopewick cannot tell you that you are low. A tablet is not a mood treatment and not a treatment for addiction. Short, safe time outdoors comes first — Slip, Slop, Slap, and don’t burn.',
+  },
+  {
+    benefit: 'liver',
+    nutrient: 'nac',
+    note: 'People ask about NAC for liver and antioxidant interest because it is involved in the body’s own antioxidant system (glutathione). Researchers have also studied it alongside cravings. Findings are mixed. Any benefit is uncertain and individual. It is not a liver cleanse, not a treatment for addiction, and it does not replace counselling, meetings, a GP, or an AOD service. Hopewick does not give a dose. Protein foods — eggs, meat, dairy, legumes, tofu — already contain cysteine. If someone may have taken too much paracetamol, call 000 or the Poisons Information Centre on 13 11 26. Do not handle that with a shop supplement.',
+  },
+  {
+    benefit: 'heart',
+    nutrient: 'fish-oil',
+    note: 'People ask about fish oil for heart and brain interest because oily fish contain omega-3 fats (EPA and DHA). A capsule is not a treatment for heart disease, not a brain medicine, and not a treatment for addiction. The food pairing is a meal of salmon, sardines, or mackerel. Ask a pharmacist before capsules, especially with blood-thinning medicine. No dose is given here.',
+  },
+  {
+    benefit: 'heart',
+    nutrient: 'food',
+    note: 'The food pairing for heart and brain oils is oily fish itself (salmon, sardines, mackerel), or an algae-based food if you do not eat fish. One meal is the step. It is not a treatment for heart disease.',
+  },
+  {
+    benefit: 'energy',
+    nutrient: 'b-complex',
+    note: 'People ask about a B-complex for energy. B vitamins help the body turn food into energy. A tablet is not an energy drink, not a stimulant replacement, and not a treatment for fatigue or addiction. After heavy alcohol use, thiamine (B1) can run low — that decision belongs to a GP or pharmacist, who may want a specific product. Do not stop a vitamin a doctor has already prescribed. Food: Vegemite and other yeast spreads, wholegrain bread, fortified cereals, legumes, eggs, leafy greens, pork, or fortified alternatives. No dose is given here.',
+  },
+  {
+    benefit: 'energy',
+    nutrient: 'vitamin-d',
+    note: 'People ask about vitamin D for energy when they feel run down. Tiredness has many causes. A GP can check a level. Hopewick cannot. Do not take a high dose because a webpage suggested one. Safe sun and food come first.',
+  },
+  {
+    benefit: 'energy',
+    nutrient: 'multivitamin',
+    note: 'People ask about a multivitamin for energy when eating has been patchy. It is a backup while meals are rebuilt. It does not create energy, it does not replace food, it does not detox the body, and it is not a treatment for addiction. More tablets are not better. Show the packet to a pharmacist and say what else you take, including prescribed medicines. Skip anything sold as a liver flush, an addiction fix, or a rapid detox.',
+  },
+  {
+    benefit: 'energy',
+    nutrient: 'food',
+    note: 'The food pairing for energy is a regular plate: some protein (eggs, beans, yoghurt, cheese, meat, or tofu) and a carbohydrate you already eat. That is everyday food, not a treatment. If weight is dropping quickly, talk to a GP or dietitian.',
+  },
+  {
+    benefit: 'hydration',
+    nutrient: 'hydration',
+    note: 'The pairing for hydration is water and ordinary drinks, not a vitamin. People look this up because alcohol and some other drugs leave them dry, and thirst can sit next to a craving. Sip through the day rather than drinking litres at once. It does not cancel a substance. Skip energy drinks as a stand-in. If you have been very sweaty or vomiting, a pharmacist can say whether an oral rehydration drink is useful. If you cannot keep fluids down, or you are confused or faint, seek care — call 000 if it is severe. The rough guide further down is not a target. Heart, kidney, and other conditions change how much fluid is right.',
+  },
+];
+let nutritionBenefitFilter = 'all';
+let nutritionNutrientFilter = 'all';
+
 const NUTRITION_TOPICS = [
   {
     id: 'alcohol',
@@ -6598,7 +6766,7 @@ function openSelfCare() {
 }
 
 /* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
-const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'nutrition', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
 const HOPE_TOOLS = {
   help: { label: 'Open Get help', open: () => openHelp() },
   dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
@@ -6609,6 +6777,7 @@ const HOPE_TOOLS = {
   nearby: { label: 'Find nearby help', open: () => openNearby() },
   today: { label: 'Open today’s readings', open: () => openTodayReading() },
   journal: { label: 'Open journal', open: () => openJournal() },
+  nutrition: { label: 'Open nutrition', open: () => openNutrition() },
   bible: { label: 'Open Bible & SOAP', open: () => openBible() },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
   church: { label: 'Find a church', open: () => openChurch() },
@@ -6617,6 +6786,7 @@ const HOPE_TOOLS = {
   plus: { label: 'See Hopewick Plus', open: () => openAccountDlg() },
 };
 const JOURNAL_LANG_RE = /\b(journals?|journaling|diary|write (it |this |that )?(down|out))\b/i;
+const NUTRITION_LANG_RE = /\b(nutritions?|supplements?|vitamins?|fish oils?|omega-?3s?|n-?acetyl\s?cysteine|\bnac\b|magnesium|multivitamins?|b-?complex|thiamine|hydrat(?:e|ion|ing)|vitamin d|healthy eating|what (?:should|can) i eat)\b/i;
 const TODAY_LANG_RE = /\b(word for (the |today)|just for today|today'?s (reading|reflection|word)|daily reading)\b/i;
 const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional|going deeper)\b/i;
 const RESUME_LANG_RE = /\b(resume|r[eé]sum[eé]|curriculum vitae|\bcv\b|job application)\b/i;
@@ -6639,6 +6809,7 @@ function textMatchesHopeTool(id, text) {
   if (id === 'nearby') return NEARBY_LANG_RE.test(t);
   if (id === 'today') return TODAY_LANG_RE.test(t);
   if (id === 'journal') return JOURNAL_LANG_RE.test(t);
+  if (id === 'nutrition') return NUTRITION_LANG_RE.test(t);
   if (id === 'bible') return BIBLE_LANG_RE.test(t);
   if (id === 'resume') return RESUME_LANG_RE.test(t);
   if (id === 'church') return CHURCH_LANG_RE.test(t);
@@ -7197,21 +7368,179 @@ function openSkills() {
   if (!el.skillsDlg.open) el.skillsDlg.showModal();
 }
 
+function syncNutritionPlusPill() {
+  const pill = $('#nutritionPlusPill');
+  if (pill) pill.hidden = subscriptionPlus();
+}
+function renderNutritionGate() {
+  const gate = $('#nutritionGate');
+  if (!gate) return;
+  const open = subscriptionPlus();
+  gate.hidden = open;
+  gate.replaceChildren();
+  if (open) return;
+  const lead = document.createElement('p');
+  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library.';
+  gate.appendChild(lead);
+  const benefitLabel = document.createElement('p');
+  benefitLabel.className = 'nut-filter-label';
+  benefitLabel.textContent = 'Benefits in Plus';
+  gate.appendChild(benefitLabel);
+  const benefits = document.createElement('ul');
+  benefits.className = 'nut-tease';
+  benefits.setAttribute('aria-label', 'Benefits included with Hopewick Plus');
+  for (const benefit of NUTRITION_BENEFITS) {
+    const li = document.createElement('li');
+    li.textContent = benefit.label;
+    benefits.appendChild(li);
+  }
+  gate.appendChild(benefits);
+  const nutrientLabel = document.createElement('p');
+  nutrientLabel.className = 'nut-filter-label';
+  nutrientLabel.textContent = 'Nutrients in Plus';
+  gate.appendChild(nutrientLabel);
+  const ul = document.createElement('ul');
+  ul.className = 'nut-tease';
+  ul.setAttribute('aria-label', 'Nutrients included with Hopewick Plus');
+  for (const item of NUTRITION_LIBRARY) {
+    const li = document.createElement('li');
+    li.textContent = item.label;
+    ul.appendChild(li);
+  }
+  gate.appendChild(ul);
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn btn-primary';
+  btn.id = 'nutritionPlusBtn';
+  btn.textContent = 'Hopewick Plus';
+  btn.addEventListener('click', () => {
+    if (el.nutritionDlg && el.nutritionDlg.open) el.nutritionDlg.close();
+    openAccountDlg();
+  });
+  gate.appendChild(btn);
+  const help = document.createElement('p');
+  help.className = 'help';
+  help.style.marginTop = '10px';
+  help.textContent = 'With or without Plus: drink water through the day and eat something ordinary. In a crisis, use Get help and call 000.';
+  gate.appendChild(help);
+}
+function nutritionFilterChip(label, pressed, attr, value, onClick) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'chip';
+  b.textContent = label;
+  b.setAttribute(attr, value);
+  b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+  b.addEventListener('click', onClick);
+  return b;
+}
+function renderNutritionLookup() {
+  const benefitBox = $('#nutritionBenefitFilters');
+  const nutrientBox = $('#nutritionNutrientFilters');
+  const pairs = $('#nutritionPairs');
+  if (!benefitBox || !nutrientBox || !pairs) return;
+  benefitBox.replaceChildren();
+  nutrientBox.replaceChildren();
+  pairs.replaceChildren();
+  if (!subscriptionPlus()) return;
+  const setBenefit = (id) => {
+    nutritionBenefitFilter = id;
+    renderNutritionLookup();
+  };
+  const setNutrient = (id) => {
+    nutritionNutrientFilter = id;
+    renderNutritionLookup();
+  };
+  benefitBox.appendChild(nutritionFilterChip('All benefits', nutritionBenefitFilter === 'all', 'data-benefit-filter', 'all', () => setBenefit('all')));
+  for (const benefit of NUTRITION_BENEFITS) {
+    benefitBox.appendChild(nutritionFilterChip(
+      benefit.label,
+      nutritionBenefitFilter === benefit.id,
+      'data-benefit-filter',
+      benefit.id,
+      () => setBenefit(benefit.id)
+    ));
+  }
+  nutrientBox.appendChild(nutritionFilterChip('All nutrients', nutritionNutrientFilter === 'all', 'data-nutrient-filter', 'all', () => setNutrient('all')));
+  for (const item of NUTRITION_LIBRARY) {
+    nutrientBox.appendChild(nutritionFilterChip(
+      item.label,
+      nutritionNutrientFilter === item.id,
+      'data-nutrient-filter',
+      item.id,
+      () => setNutrient(item.id)
+    ));
+  }
+  const rows = NUTRITION_PAIRINGS.filter(pair => {
+    if (nutritionBenefitFilter !== 'all' && pair.benefit !== nutritionBenefitFilter) return false;
+    if (nutritionNutrientFilter !== 'all' && pair.nutrient !== nutritionNutrientFilter) return false;
+    return true;
+  });
+  if (!rows.length) {
+    const empty = document.createElement('p');
+    empty.className = 'empty-hint';
+    empty.id = 'nutritionPairEmpty';
+    empty.textContent = 'No pairing for that combination. Clear one filter to see what is listed.';
+    pairs.appendChild(empty);
+    return;
+  }
+  for (const pair of rows) {
+    const benefit = NUTRITION_BENEFITS.find(b => b.id === pair.benefit);
+    const nutrient = NUTRITION_LIBRARY.find(n => n.id === pair.nutrient);
+    if (!benefit || !nutrient) continue;
+    const card = document.createElement('article');
+    card.className = 'nut-item nut-pair';
+    card.dataset.benefit = pair.benefit;
+    card.dataset.nutrient = pair.nutrient;
+    const dl = document.createElement('dl');
+    dl.className = 'nut-pair-grid';
+    const addRow = (term, text) => {
+      const dt = document.createElement('dt');
+      dt.textContent = term;
+      const dd = document.createElement('dd');
+      dd.textContent = text;
+      dl.append(dt, dd);
+    };
+    addRow('Benefit', benefit.label);
+    addRow('Nutrient', nutrient.label);
+    addRow('What it is', nutrient.what);
+    addRow('Notes', pair.note);
+    card.appendChild(dl);
+    pairs.appendChild(card);
+  }
+}
+function renderNutrition() {
+  const plus = subscriptionPlus();
+  const lib = $('#nutritionLibrary');
+  if (lib) lib.hidden = !plus;
+  renderNutritionGate();
+  renderNutritionLookup();
+  if (plus) {
+    const sel = $('#nutritionSelect');
+    if (sel && sel.options.length <= 1) {
+      for (const t of NUTRITION_TOPICS) {
+        const o = document.createElement('option');
+        o.value = t.id;
+        o.textContent = t.label;
+        sel.appendChild(o);
+      }
+    }
+    const hydration = $('#nutritionHydration');
+    if (hydration) hydration.hidden = false;
+    updateNutHydration();
+    renderNutritionPanel();
+  } else {
+    const panel = $('#nutritionPanel');
+    if (panel) { panel.hidden = true; panel.innerHTML = ''; }
+  }
+  syncNutritionPlusPill();
+}
 function openNutrition() {
   if (!profile) return;
   closeSidebar();
-  const sel = $('#nutritionSelect');
-  if (sel.options.length <= 1) {
-    for (const t of NUTRITION_TOPICS) {
-      const o = document.createElement('option');
-      o.value = t.id; o.textContent = t.label;
-      sel.appendChild(o);
-    }
-  }
-  if (isDemo && !sel.value) sel.value = 'alcohol';
-  renderNutritionPanel();
-  updateNutHydration();
-  $('#nutritionHydration').hidden = false;
+  nutritionBenefitFilter = 'all';
+  nutritionNutrientFilter = 'all';
+  renderNutrition();
   if (!el.nutritionDlg.open) el.nutritionDlg.showModal();
 }
 function renderNutritionPanel() {
@@ -7225,7 +7554,7 @@ function renderNutritionPanel() {
   panel.innerHTML = `
     <h3>How the body can be affected</h3>
     <p style="font-size:.92rem;margin:0">${escapeHtml(t.body)}</p>
-    <h3>Food-first nutrients that may help support recovery</h3>
+    <h3>Foods that are often easier to manage</h3>
     <ul>${t.nutrients.map(n => `<li><strong>${escapeHtml(n.n)}:</strong> ${escapeHtml(n.food)}</li>`).join('')}</ul>
     <p class="help">Prefer food sources. If a pharmacist or GP suggests a supplement (for example thiamine after heavy drinking), ask them about dose — we don’t recommend DIY high-dose stacks or detox kits.</p>
     <h3>Simple daily checklist</h3>
@@ -9228,6 +9557,7 @@ async function refreshBilling() {
   if (label) {
     label.textContent = subscriptionPlus() ? 'Plus · account' : 'Hopewick Plus';
   }
+  syncNutritionPlusPill();
   if (!libraryPick || subscriptionPlus()) {
     /* keep a library day only while Plus is active */
   } else {
@@ -9240,6 +9570,7 @@ async function refreshBilling() {
     if (profile || isDemo) {
       renderHistory();
       if (appTab === 'home') renderHome();
+      if (el.nutritionDlg && el.nutritionDlg.open) renderNutrition();
       syncKeyBanner();
     }
   } catch (_) { /* home may not be ready on the very first tick */ }
@@ -9295,6 +9626,7 @@ function appendPlusOffer(body) {
   [
     '200 messages a day with Hope',
     'Clean time tracker, SOAP reflections, and journal tools',
+    'Nutrition notes — food, water, and supplements people ask about',
     'Going Deeper faith content and 12 Steps practice',
     'The full year of readings',
     'Keep your conversation history on this device. Cloud sync is not enabled.',

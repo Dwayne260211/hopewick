@@ -1,0 +1,213 @@
+#!/usr/bin/env python3
+"""Hopewick Plus nutrition notes: library for Plus, upgrade path for Free, crisis untouched."""
+from __future__ import annotations
+
+import re
+import threading
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+APP = ROOT / "app" / "index.html"
+
+LIBRARY_MARKERS = (
+    "Findings are mixed",
+    "Fish-oil capsules are a supplement form",
+    "Slip, Slop, Slap",
+    "Hopewick does not give a dose",
+    "Hopewick does not recommend a dose or a brand",
+)
+
+
+def _library_source() -> str:
+    text = APP.read_text(encoding="utf-8")
+    return text.split("const NUTRITION_BENEFITS = [", 1)[1].split("const NUTRITION_TOPICS = [", 1)[0]
+
+
+def test_static_nutrition_copy_and_gate():
+    text = APP.read_text(encoding="utf-8")
+    library = _library_source()
+    assert "function renderNutrition" in text
+    assert "function openNutrition" in text
+    assert 'id="nutritionLibrary" hidden' in text
+    assert 'id="nutritionSafety"' in text
+    assert "not medical advice" in text
+    assert "Talk to a GP or pharmacist" in text
+    assert "13 11 26" in text
+    assert "not crisis support" in text
+    assert "NAC (N-acetylcysteine)" in library
+    assert "Fish oil / omega-3" in library
+    assert "Vitamin D" in library
+    assert "B-complex" in library
+    assert "Magnesium" in library
+    assert "Multivitamin" in library
+    assert "Vitamin-rich foods" in library
+    assert "Hydration" in library
+    assert "Benefit ↔ nutrient" in text
+    assert "Look up by benefit" in text
+    assert "Look up by nutrient" in text
+    assert "const NUTRITION_PAIRINGS" in text
+    for benefit in ("Sleep", "Mood support", "Liver / antioxidant interest", "Heart & brain oils", "Energy", "Hydration"):
+        assert benefit in library
+    assert "What it is" in text
+    assert "data-benefit-filter" in text
+    assert "data-nutrient-filter" in text
+    assert "nutrition: { label: 'Open nutrition'" in text
+    assert "id: 'nutrition'" not in text  # Home chips stay as they are; today’s reading stays up
+    assert "Do not add plus, resume, bible, or nutrition on a crisis reply." in text
+    for marker in LIBRARY_MARKERS:
+        assert marker in library
+    # No supplement doses and no therapeutic-advertising claims in the notes.
+    assert not re.search(r"\b\d+\s*mg\b", library, re.I)
+    assert "clinically proven" not in library.lower()
+    assert "cures addiction" not in library.lower()
+    assert "treats addiction" not in library.lower()
+    assert "dwaynesimons1990@gmail.com" not in text
+    landing = (ROOT / "index.html").read_text(encoding="utf-8")
+    assert "Nutrition notes — food, water, and supplements people ask about" in landing
+    assert "Essential support stays free" in landing
+
+
+def _server():
+    handler = partial(SimpleHTTPRequestHandler, directory=str(ROOT))
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    return httpd
+
+
+def _enter_demo(page, base):
+    page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
+    page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
+    page.click("#launchPrefsContinue")
+    page.wait_for_selector("#needNow", timeout=10000)
+
+
+def test_nutrition_plus_free_and_crisis():
+    from playwright.sync_api import sync_playwright
+
+    httpd = _server()
+    port = httpd.server_address[1]
+    base = f"http://127.0.0.1:{port}"
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            _enter_demo(page, base)
+
+            assert page.locator('#needNow [data-need="nutrition"]').count() == 0
+            assert page.locator('#needNow [data-need="help"]').count() == 1
+            assert page.locator('#needNow [data-need="dv"]').count() == 1
+            heading_box = page.locator("#todayHeading").bounding_box()
+            assert heading_box is not None and heading_box["y"] < 520
+            assert page.evaluate("() => document.getElementById('nutritionPlusPill').hidden") is False
+            assert page.locator("#sideDeveloperBtn").is_hidden()
+
+            page.click("#menuBtn")
+            page.wait_for_selector("#sidebar", state="visible")
+            page.click('#sidebar [data-open="nutrition"]')
+            page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
+            free_text = page.inner_text("#nutritionDlg")
+            assert "General information only — not medical advice" in free_text
+            assert "Talk to a GP or pharmacist" in free_text
+            assert "13 11 26" in free_text
+            assert "not the full library" in free_text
+            assert "NAC (N-acetylcysteine)" in free_text
+            for marker in LIBRARY_MARKERS:
+                assert marker not in free_text
+            assert page.locator("#nutritionLibrary").is_hidden()
+            assert page.locator("#nutritionPlusBtn").is_visible()
+
+            page.click("#nutritionPlusBtn")
+            page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+            assert "Hopewick Plus" in page.inner_text("#accountDlg")
+            assert "Nutrition notes" in page.inner_text("#accountDlg")
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
+
+            page.evaluate(
+                """() => {
+                  billingState.signedIn = true;
+                  billingState.plus = true;
+                  renderNutrition();
+                  syncNutritionPlusPill();
+                }"""
+            )
+            assert page.evaluate("() => document.getElementById('nutritionPlusPill').hidden") is True
+            page.click("#menuBtn")
+            page.wait_for_selector("#sidebar", state="visible")
+            page.click('#sidebar [data-open="nutrition"]')
+            page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
+            page.wait_for_selector('#nutritionLibrary:not([hidden]) article[data-nutrient="nac"]')
+            plus_text = page.locator("#nutritionDlg").text_content()
+            assert "Benefit" in plus_text
+            assert "Nutrient" in plus_text
+            assert "What it is" in plus_text
+            assert "Notes" in plus_text
+            for marker in LIBRARY_MARKERS:
+                assert marker in plus_text
+            assert "not a treatment for addiction" in plus_text
+            assert page.locator("#nutritionGate").is_hidden()
+            assert not re.search(r"\b\d+\s*mg\b", plus_text, re.I)
+
+            page.click('[data-benefit-filter="sleep"]')
+            page.wait_for_selector('.nut-pair[data-benefit="sleep"]')
+            assert page.locator('.nut-pair[data-nutrient="nac"]').count() == 0
+            sleep_text = page.locator("#nutritionPairs").text_content()
+            assert "Sleep" in sleep_text
+            assert "Magnesium" in sleep_text
+
+            page.click('[data-nutrient-filter="nac"]')
+            page.wait_for_selector("#nutritionPairEmpty")
+
+            page.click('[data-benefit-filter="all"]')
+            page.wait_for_selector('.nut-pair[data-nutrient="nac"]')
+            nac_text = page.locator('.nut-pair[data-nutrient="nac"]').text_content()
+            assert "Liver / antioxidant interest" in nac_text
+            assert "NAC (N-acetylcysteine)" in nac_text
+            assert "Sleep" not in nac_text
+
+            page.click('[data-nutrient-filter="fish-oil"]')
+            page.wait_for_selector('.nut-pair[data-nutrient="fish-oil"][data-benefit="mood"]')
+            assert page.locator('.nut-pair[data-nutrient="fish-oil"][data-benefit="heart"]').count() == 1
+            page.click('[data-nutrient-filter="all"]')
+            page.click('[data-benefit-filter="all"]')
+            page.select_option("#nutritionSelect", "alcohol")
+            assert "thiamine" in page.inner_text("#nutritionPanel").lower()
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('nutritionDlg')?.open !== true")
+
+            page.click("#appTabChat")
+            page.wait_for_selector("#input", state="visible")
+            page.fill("#input", "What about NAC and fish oil?")
+            page.click("#sendBtn")
+            page.wait_for_selector('#hopeGateway button[data-hope-tool="nutrition"]', timeout=10000)
+            assert page.locator('#hopeGateway button[data-hope-tool="help"]').count() == 0
+            page.click('#hopeGateway button[data-hope-tool="nutrition"]')
+            page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
+            assert "Fish oil / omega-3" in page.inner_text("#nutritionDlg")
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => !busy", timeout=20000)
+
+            page.fill("#input", "my partner is hurting me and I also want NAC")
+            page.click("#sendBtn")
+            page.wait_for_selector(".crisis-card")
+            page.wait_for_selector('#hopeGateway.is-crisis button[data-hope-tool="help"]')
+            assert page.locator('#hopeGateway button[data-hope-tool="nutrition"]').count() == 0
+            assert page.locator('#hopeGateway button[data-hope-tool="plus"]').count() == 0
+            assert "1800RESPECT" in page.inner_text(".crisis-card")
+            page.wait_for_function("() => !busy", timeout=20000)
+
+            page.click("#appTabHome")
+            page.wait_for_selector("#needNow")
+            page.click('#needNow [data-need="dv"]')
+            page.wait_for_selector("#dvView:not([hidden])")
+            assert "1800 737 732" in page.inner_text("#dvView")
+            page.click("#appTabHome")
+            page.wait_for_selector("#todayCard")
+            page.click('#needNow [data-need="help"]')
+            page.wait_for_function("() => document.getElementById('helpDlg')?.open === true")
+            assert "Domestic & family violence" not in page.inner_text("#helpDlg")
+            browser.close()
+    finally:
+        httpd.shutdown()
