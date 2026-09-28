@@ -91,7 +91,7 @@ Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` 
 
 1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
 2. Read the short one-time disclaimer.
-3. **Sign in** (email magic link) and chat with Hope. Free is 20 messages a day. Hopewick Plus, including complimentary founder access, is 200 messages a day. No personal API key. Settings → Developer (own API key, model endpoint, own provider, and invite redeem when that entry is turned on) is visible only when the signed-in account email is on `FOUNDER_PLUS_EMAILS`. A profile name does not unlock it. Guest, free, other Plus accounts, and `admin@bridge-bite-co.com` do not see it.
+3. **Sign in** (email magic link) and chat with Hope. Free is 20 messages a day. Hopewick Plus, including complimentary founder access, is 200 messages a day. No personal API key. Settings → Developer (own API key, model endpoint, own provider, and invite redeem when that entry is turned on) is visible only when the signed-in account email is on `FOUNDER_PLUS_EMAILS`. A profile name does not unlock it. Guest, free, other Plus accounts, and `admin@bridge-bite-co.com` do not see it and cannot paste a key. A key already in this browser does not replace hosted Hope for those accounts.
 
 ## Features
 

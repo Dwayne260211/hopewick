@@ -54,7 +54,7 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 
 Do not commit real keys. Placeholders in `.env.example` are not live credentials.
 
-Settings → Developer (API key, model endpoint, own provider, and invite redeem when that control is enabled) stays hidden unless the signed-in Hopewick account email is on `FOUNDER_PLUS_EMAILS`. The companion reads the `founder` flag from `GET /api/auth/me`, which uses the same check as complimentary Plus. Guest, free, and other Plus accounts do not see it. `admin@bridge-bite-co.com` does not see it. The name typed on a local profile does not unlock it. Crisis support and domestic and family violence resources stay free.
+Settings → Developer (API key, model endpoint, own provider, and invite redeem when that control is enabled) stays hidden unless the signed-in Hopewick account email is on `FOUNDER_PLUS_EMAILS`. The companion reads the `founder` flag from `GET /api/auth/me`, which uses the same check as complimentary Plus. Guest, free, and other Plus accounts do not see it and cannot add, edit, or paste a personal API key. A key already stored in this browser does not replace hosted Hope for those accounts. `admin@bridge-bite-co.com` does not see it. The name typed on a local profile does not unlock it. Crisis support and domestic and family violence resources stay free.
 
 In the Stripe Dashboard (test mode):
 

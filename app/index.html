@@ -2388,33 +2388,33 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
           <button class="btn btn-sm" type="button" id="advInviteBtn" data-invite-entry hidden>Enter invite code</button>
         </div>
       </details>
-      <details class="own-key-details" id="ownKeyDetails">
+      <details class="own-key-details" id="ownKeyDetails" hidden>
         <summary>Use my own API key</summary>
         <div class="own-key-body">
           <fieldset>
             <legend>Connection <span class="help" style="font-weight:500">(shared on this device)</span></legend>
             <p class="help" style="margin:6px 0 0">Only if you are developing Hopewick. A key stays in this browser and is sent only to the URL below. Paying customers should leave this off.</p>
-            <div class="check"><input type="checkbox" id="setUseOwnKey"><label for="setUseOwnKey">Send chat to this provider instead of hosted Hope</label></div>
+            <div class="check"><input type="checkbox" id="setUseOwnKey" disabled><label for="setUseOwnKey">Send chat to this provider instead of hosted Hope</label></div>
             <div class="field">
               <label for="setBaseUrl">Provider base URL</label>
-              <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp">
+              <input id="setBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" aria-describedby="baseUrlHelp" disabled>
               <span class="help" id="baseUrlHelp">Any OpenAI-compatible Chat Completions endpoint (OpenAI, OpenRouter, Groq, xAI, a local server…).</span>
             </div>
             <div class="field">
               <label for="setModel">Model</label>
-              <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false">
+              <input id="setModel" type="text" placeholder="gpt-4o-mini" spellcheck="false" disabled>
             </div>
             <div class="field">
               <label for="setKey">API key</label>
               <div class="key-wrap">
-                <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp">
-                <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key">Show</button>
+                <input id="setKey" type="password" placeholder="sk-…" spellcheck="false" autocomplete="off" aria-describedby="keyHelp" disabled>
+                <button class="btn btn-sm" type="button" id="toggleKeyBtn" aria-pressed="false" aria-label="Show API key" disabled>Show</button>
               </div>
               <span class="help" id="keyHelp">Stored only in this browser's localStorage and sent only to the base URL above.</span>
             </div>
-            <div class="check"><input type="checkbox" id="setStream"><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
+            <div class="check"><input type="checkbox" id="setStream" disabled><label for="setStream">Stream replies (falls back automatically if unsupported)</label></div>
             <div class="row" style="margin-top:10px">
-              <button class="btn btn-sm" type="button" id="testConnBtn">Test connection</button>
+              <button class="btn btn-sm" type="button" id="testConnBtn" disabled>Test connection</button>
             </div>
             <div class="test-result" id="testResult" role="status" aria-live="polite"></div>
           </fieldset>
@@ -3589,7 +3589,8 @@ function providerFrom(src) {
   return out;
 }
 function usingOwnProvider() {
-  return !!(settings.useOwnKey && String(settings.apiKey || '').trim());
+  // A personal key is founder-only. Free, Plus, guests, and a signed-out profile use hosted Hope.
+  return founderDeveloperVisible() && !!(settings.useOwnKey && String(settings.apiKey || '').trim());
 }
 function hostedChatAvailable() {
   return !isDemo && !usingOwnProvider() && billingState.reachable && billingState.signedIn;
@@ -4866,7 +4867,7 @@ async function apiErrorFrom(res) {
  */
 async function chatCompletion(messages, opts = {}) {
   if (isDemo) throw new ApiError('Demo mode never calls the API.', 0);
-  if (opts.direct || usingOwnProvider()) return providerChatCompletion(messages, opts);
+  if (founderDeveloperVisible() && (opts.direct || usingOwnProvider())) return providerChatCompletion(messages, opts);
   return hostedChatCompletion(messages, opts);
 }
 
@@ -8530,9 +8531,15 @@ function openSettings(focusId, tabHint) {
   $('#setGratCheck').checked = settings.gratCheck !== false;
   $('#setBaseUrl').value = settings.baseUrl;
   $('#setModel').value = settings.model;
-  $('#setKey').value = settings.apiKey;
   const ownToggle = $('#setUseOwnKey');
-  if (ownToggle) ownToggle.checked = !!settings.useOwnKey;
+  if (founderDeveloperVisible()) {
+    $('#setKey').value = settings.apiKey;
+    if (ownToggle) ownToggle.checked = !!settings.useOwnKey;
+  } else {
+    $('#setKey').value = '';
+    if (ownToggle) ownToggle.checked = false;
+  }
+  syncOwnKeyFields();
   setKeyVisible(false);
   $('#setStream').checked = settings.stream;
   $('#setName').value = companionName();
@@ -8564,7 +8571,7 @@ function openSettings(focusId, tabHint) {
 }
 function readSettingsForm() {
   const lvl = $$('input[name="faithLevel"]').find(r => r.checked);
-  return Object.assign({}, settings, {
+  const next = Object.assign({}, settings, {
     mode: $('#setMode').value,
     faith: $('#setFaith').value,
     faithLevel: lvl ? lvl.value : 'woven',
@@ -8573,11 +8580,6 @@ function readSettingsForm() {
     soberWhy: $('#setSoberWhy').value.trim(),
     moodCheck: $('#setMoodCheck').checked,
     gratCheck: $('#setGratCheck').checked,
-    baseUrl: $('#setBaseUrl').value.trim() || DEFAULT_SHARED.baseUrl,
-    model: $('#setModel').value.trim() || DEFAULT_SHARED.model,
-    apiKey: $('#setKey').value.trim(),
-    useOwnKey: !!($('#setUseOwnKey') && $('#setUseOwnKey').checked),
-    stream: $('#setStream').checked,
     name: $('#setName').value.trim() || BRAND.companion,
     traits: [...draftTraits],
     traitsCustom: $('#setTraitsCustom').value.trim(),
@@ -8590,6 +8592,15 @@ function readSettingsForm() {
     autoSpeak: $('#setAutoSpeak').checked,
     theme: $('#setTheme').value,
   });
+  // Free and Plus cannot add or change a personal key. Leave any stored founder key untouched.
+  if (founderDeveloperVisible()) {
+    next.baseUrl = $('#setBaseUrl').value.trim() || DEFAULT_SHARED.baseUrl;
+    next.model = $('#setModel').value.trim() || DEFAULT_SHARED.model;
+    next.apiKey = $('#setKey').value.trim();
+    next.useOwnKey = !!($('#setUseOwnKey') && $('#setUseOwnKey').checked);
+    next.stream = $('#setStream').checked;
+  }
+  return next;
 }
 function setKeyVisible(show) {
   $('#setKey').type = show ? 'text' : 'password';
@@ -8634,6 +8645,11 @@ $('#setPitch').addEventListener('input', (e) => { $('#pitchVal').textContent = N
 $('#setTheme').addEventListener('change', (e) => { settings.theme = e.target.value; applyTheme(); });
 $('#testConnBtn').addEventListener('click', async () => {
   const out = $('#testResult');
+  if (!founderDeveloperVisible()) {
+    out.className = 'test-result';
+    out.textContent = '';
+    return;
+  }
   const prev = settings;
   settings = readSettingsForm();
   out.className = 'test-result'; out.textContent = 'Testing…';
@@ -9705,11 +9721,11 @@ function syncInviteEntryUi() {
     node.hidden = !showInvite;
   });
   const own = document.getElementById('keyBannerOwnKey');
-  if (own) own.hidden = !!SHOW_INVITE_ENTRY;
+  if (own) own.hidden = !founderDeveloperOn;
   const advBtn = document.getElementById('needAiAdvancedBtn');
   if (advBtn) {
     advBtn.hidden = !founderDeveloperOn;
-    advBtn.classList.toggle('btn-primary', !showInvite);
+    advBtn.classList.toggle('btn-primary', !showInvite && founderDeveloperOn);
   }
   if (!showInvite) return;
   const bannerP = document.getElementById('keyBannerText');
@@ -9736,6 +9752,7 @@ function openInviteDlg() {
 }
 function closeInviteDlg() { if (el.inviteDlg && el.inviteDlg.open) el.inviteDlg.close(); }
 async function redeemInviteCode(code) {
+  if (!founderDeveloperVisible()) throw new Error('Invite redeem is not available on this account.');
   const cleaned = String(code || '').trim();
   if (!cleaned) throw new Error('Enter an invite code.');
   const r = await fetch(`${HOPEWICK_INVITE_API}/redeem`, {
@@ -10457,6 +10474,24 @@ const FREE_HISTORY_KEEP = 1;
 function founderDeveloperVisible() {
   return !!(billingState.signedIn && billingState.founder);
 }
+function syncOwnKeyFields() {
+  const on = founderDeveloperVisible();
+  ['setKey', 'setBaseUrl', 'setModel', 'setUseOwnKey', 'setStream', 'testConnBtn', 'toggleKeyBtn'].forEach((id) => {
+    const node = document.getElementById(id);
+    if (node) node.disabled = !on;
+  });
+  const details = document.getElementById('ownKeyDetails');
+  if (details) {
+    details.hidden = !on;
+    if (!on) details.open = false;
+  }
+  if (!on) {
+    const key = document.getElementById('setKey');
+    if (key) key.value = '';
+    const own = document.getElementById('setUseOwnKey');
+    if (own) own.checked = false;
+  }
+}
 function syncDeveloperChrome() {
   const show = founderDeveloperVisible();
   founderDeveloperOn = show;
@@ -10464,6 +10499,7 @@ function syncDeveloperChrome() {
     const node = $(sel);
     if (node) node.hidden = !show;
   });
+  syncOwnKeyFields();
   if (!show) {
     const selected = $('.settings-tabs [role="tab"][aria-selected="true"]');
     if (selected && (selected.dataset.settingsTab === 'advanced' || selected.dataset.settingsTab === 'developer')) {
