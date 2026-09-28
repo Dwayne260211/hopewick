@@ -3886,6 +3886,11 @@ function setAppTab(tab, opts = {}) {
     else openSidebar();
     return;
   }
+  // Bible & SOAP is the study dialog. These ids are not Home/Chat/DV/News/Resume tabs.
+  if (tab === 'bible' || tab === 'soap') {
+    openBible();
+    return;
+  }
   if (launchPrefsOpen && opts.keepPrefs) {
     if (el.launchPrefs) el.launchPrefs.hidden = false;
     el.app.classList.add('showing-launch-prefs');
@@ -4202,7 +4207,7 @@ function needNowEl() {
     { id: 'journal', label: 'Journal', title: 'Write it down', action: () => openJournal() },
   ];
   if (settings.faith !== 'none') {
-    items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => openBible() });
+    items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => setAppTab('bible') });
   }
   items.push(
     { id: 'resume', label: 'Resume', title: 'Free resume builder', action: () => setAppTab('resume') },
@@ -6046,6 +6051,7 @@ function themeBibleSystemExtra(lesson) {
 function startTodaysSoap() {
   const reading = todaySoapReading();
   el.bibleDlg.close();
+  setAppTab('chat', { skipFocus: true });
   if (isDemo) {
     playScenario(DEMO_SOAP_SCENARIO, true);
     return;
@@ -6068,6 +6074,7 @@ function startTodaysSoap() {
 }
 function startThemeBibleChat(lesson) {
   el.bibleDlg.close();
+  setAppTab('chat', { skipFocus: true });
   const c = newConversation();
   c.kind = 'bible';
   c.lessonId = lesson.id;
@@ -6243,6 +6250,7 @@ async function showDdDay(dayId) {
 function startDdHopeChat(day) {
   if (!day) return;
   el.bibleDlg.close();
+  setAppTab('chat', { skipFocus: true });
   const c = newConversation();
   c.kind = 'bible';
   c.divingDeeper = true;
@@ -6778,7 +6786,7 @@ const HOPE_TOOLS = {
   today: { label: 'Open today’s readings', open: () => openTodayReading() },
   journal: { label: 'Open journal', open: () => openJournal() },
   nutrition: { label: 'Open nutrition', open: () => openNutrition() },
-  bible: { label: 'Open Bible & SOAP', open: () => openBible() },
+  bible: { label: 'Open Bible & SOAP', open: () => setAppTab('bible') },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
   church: { label: 'Find a church', open: () => openChurch() },
   selfcare: { label: 'Open self-care', open: () => openSelfCare() },
@@ -6835,6 +6843,7 @@ function hopeGatewayIds(convo) {
   const kind = (card && card.crisisKind) || (crisis ? classifyCrisis(userText) : '');
   const ids = [];
   const add = (id) => {
+    if (id === 'soap') id = 'bible';
     if (!hopeToolAllowed(id, userText) || ids.includes(id)) return;
     ids.push(id);
   };
@@ -8373,7 +8382,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
   else if (o === 'steps') openSteps();
-  else if (o === 'bible') openBible();
+  else if (o === 'bible' || o === 'soap') setAppTab('bible');
   else if (o === 'nearby') openNearby();
   else if (o === 'nutrition') openNutrition();
   else if (o === 'skills') openSkills();

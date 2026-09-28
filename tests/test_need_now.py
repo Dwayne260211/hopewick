@@ -88,6 +88,46 @@ def test_need_now_and_hope_gateway():
             page.click('#needNow [data-need="today"]')
             assert page.locator("#todayExpand").get_attribute("aria-expanded") == "true"
 
+            page.click('#needNow [data-need="bible"]')
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open === true")
+            assert "SOAP" in page.inner_text("#bibleTitle")
+            assert page.locator("#bibleSoapPanel").is_visible()
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open !== true")
+
+            # A bible/soap tab id must open the study, not fall through to Home.
+            page.evaluate("() => setAppTab('soap')")
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open === true")
+            assert page.locator("#bibleSoapPanel").is_visible()
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open !== true")
+
+            page.click("#appTabMore")
+            page.click("#sideBibleBtn")
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open === true")
+            assert page.locator("#bibleSoapPanel").is_visible()
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open !== true")
+
+            for need, dlg in (
+                ("journal", "journalDlg"),
+                ("meeting", "meetingDlg"),
+                ("craving", "circuitBreakerDlg"),
+                ("help", "helpDlg"),
+            ):
+                page.click(f'#needNow [data-need="{need}"]')
+                page.wait_for_function(
+                    f"() => document.getElementById('{dlg}')?.open === true",
+                    timeout=5000,
+                )
+                page.keyboard.press("Escape")
+                page.wait_for_function(f"() => document.getElementById('{dlg}')?.open !== true")
+
+            page.click('#needNow [data-need="resume"]')
+            page.wait_for_selector("#resumeView:not([hidden])")
+            page.click("#appTabHome")
+            page.wait_for_selector("#needNow")
+
             page.click("#appTabChat")
             page.wait_for_selector("#input", state="visible")
             page.fill("#input", "Please open my journal")
@@ -118,6 +158,22 @@ def test_need_now_and_hope_gateway():
             assert page.locator("#hopeGateway").get_attribute("class").find("is-crisis") == -1
             page.click('#hopeGateway button[data-hope-tool="plus"]')
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
+            page.wait_for_function("() => !busy", timeout=20000)
+
+            page.click("#appTabHome")
+            page.wait_for_selector('#needNow [data-need="bible"]')
+            page.click('#needNow [data-need="bible"]')
+            page.wait_for_function("() => document.getElementById('bibleDlg')?.open === true")
+            page.click("#bibleStartSoap")
+            page.wait_for_selector("#messages:not([hidden])")
+            assert page.locator("#homeView").is_hidden()
+            assert page.locator("#appTabChat").get_attribute("aria-current") == "page"
+            page.wait_for_function(
+                "() => (document.getElementById('messagesInner')?.innerText || '').includes('SOAP')",
+                timeout=15000,
+            )
             browser.close()
     finally:
         httpd.shutdown()
