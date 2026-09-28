@@ -187,3 +187,115 @@ def test_new_user_picker_and_demo_privacy():
             browser.close()
     finally:
         httpd.shutdown()
+
+
+def _profile_names(page):
+    raw = page.evaluate("() => localStorage.getItem('eden.profiles.v1')")
+    if not raw:
+        return []
+    return [p["name"] for p in json.loads(raw)["list"]]
+
+
+def test_add_extra_profile_requires_plus():
+    """First profile stays free. Adding another opens Plus. Switching still works."""
+    from playwright.sync_api import sync_playwright
+
+    httpd = _server()
+    port = httpd.server_address[1]
+    base = f"http://127.0.0.1:{port}"
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            page.goto(f"{base}/app/", wait_until="domcontentloaded")
+            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            page.click("#onboardLaterBtn")
+            page.wait_for_function("() => billingState.loaded")
+            page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
+            assert page.locator("#addPersonBtn").is_visible()
+            assert page.locator("#addPersonPlusNote").is_hidden()
+            assert page.evaluate("() => subscriptionPlus()") is False
+
+            page.fill("#addPersonInput", "Sam")
+            page.locator("#addPersonForm button[type=submit]").click()
+            page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
+            assert _profile_names(page) == ["Sam"]
+            if page.locator("#disclaimerDlg[open]").count():
+                page.click("#discOkBtn")
+                page.wait_for_function("() => document.getElementById('disclaimerDlg').open !== true")
+
+            page.click("#switchBtn")
+            page.wait_for_selector("#pickerDlg[open] .profile-card")
+            assert page.locator("#profileList .pname").all_text_contents() == ["Sam"]
+            assert page.locator("#addPersonBtn").is_hidden()
+            assert page.locator("#addPersonForm").is_hidden()
+            assert page.locator("#addPersonPlusBtn").is_visible()
+            assert "Add a profile is part of Hopewick Plus" in page.inner_text("#addPersonPlusNote")
+
+            page.click("#addPersonPlusBtn")
+            page.wait_for_selector("#accountDlg[open]")
+            assert "Hopewick Plus" in page.inner_text("#accountTitle")
+            assert "Add another profile" in page.inner_text("#accountDlg")
+            page.click("#accountCloseBtn")
+            page.wait_for_function("() => document.getElementById('accountDlg').open !== true")
+
+            page.evaluate("() => { document.getElementById('addPersonForm').hidden = false; }")
+            page.fill("#addPersonInput", "Riley")
+            page.locator("#addPersonForm button[type=submit]").click()
+            page.wait_for_selector("#accountDlg[open]")
+            assert _profile_names(page) == ["Sam"]
+            page.click("#accountCloseBtn")
+            page.wait_for_function("() => document.getElementById('accountDlg').open !== true")
+
+            page.locator("#profileList .profile-card", has_text="Sam").click()
+            page.wait_for_function("() => !document.getElementById('pickerDlg').open")
+            assert page.locator("#switchName").text_content().strip() == "Sam"
+
+            page.evaluate(
+                """() => {
+                  billingState.signedIn = true;
+                  billingState.plus = true;
+                  billingState.subscriptionStatus = 'active';
+                  syncProfileAddUi();
+                }"""
+            )
+            page.click("#switchBtn")
+            page.wait_for_selector("#pickerDlg[open] #addPersonBtn:not([hidden])")
+            assert page.locator("#addPersonPlusNote").is_hidden()
+            assert page.locator("#profileList .pname").all_text_contents() == ["Sam"]
+            page.click("#addPersonBtn")
+            page.wait_for_selector("#addPersonForm:not([hidden])")
+            page.fill("#addPersonInput", "Riley")
+            page.locator("#addPersonForm button[type=submit]").click()
+            page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Riley'")
+            assert _profile_names(page) == ["Sam", "Riley"]
+            if page.locator("#disclaimerDlg[open]").count():
+                page.click("#discOkBtn")
+                page.wait_for_function("() => document.getElementById('disclaimerDlg').open !== true")
+
+            page.evaluate(
+                """() => {
+                  billingState.plus = false;
+                  billingState.signedIn = true;
+                  billingState.subscriptionStatus = 'none';
+                  syncProfileAddUi();
+                }"""
+            )
+            page.click("#switchBtn")
+            page.wait_for_selector("#pickerDlg[open] .profile-card")
+            assert page.locator("#profileList .pname").all_text_contents() == ["Sam", "Riley"]
+            assert page.locator("#addPersonBtn").is_hidden()
+            assert page.locator("#addPersonPlusBtn").is_visible()
+            page.evaluate("() => { document.getElementById('addPersonForm').hidden = false; }")
+            page.fill("#addPersonInput", "Casey")
+            page.locator("#addPersonForm button[type=submit]").click()
+            page.wait_for_selector("#accountDlg[open]")
+            assert _profile_names(page) == ["Sam", "Riley"]
+            page.click("#accountCloseBtn")
+            page.wait_for_function("() => document.getElementById('accountDlg').open !== true")
+            page.locator("#profileList .profile-card", has_text="Sam").click()
+            page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
+            assert page.evaluate("() => subscriptionPlus()") is False
+            browser.close()
+    finally:
+        httpd.shutdown()

@@ -1943,8 +1943,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
     </form>
     <div class="picker-actions">
       <button class="btn btn-primary" type="button" id="addPersonBtn">+ Add your profile</button>
+      <button class="btn" type="button" id="addPersonPlusBtn" hidden>Hopewick Plus</button>
       <button class="btn btn-ghost" type="button" id="managePeopleBtn" aria-pressed="false">Manage profiles</button>
     </div>
+    <p class="privacy-note" id="addPersonPlusNote" hidden>Add a profile is part of Hopewick Plus. You can still open the profile you already have.</p>
     <p class="privacy-note">PINs are a light privacy lock for a shared device, not strong security — anyone with access to this browser's storage could still read the data.</p>
     <p class="privacy-note">
       <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand>Hopewick</span></button>
@@ -8047,6 +8049,26 @@ function renderPicker() {
     $('.delete', li).addEventListener('click', () => deleteProfile(p));
     list.appendChild(li);
   }
+  syncProfileAddUi();
+}
+/** The first profile is free. Another profile on this device is Hopewick Plus. */
+function profileAddAllowed() {
+  const count = profilesState && Array.isArray(profilesState.list) ? profilesState.list.length : 0;
+  if (count === 0) return true;
+  return subscriptionPlus();
+}
+function syncProfileAddUi() {
+  const allowed = profileAddAllowed();
+  const btn = $('#addPersonBtn');
+  const plusBtn = $('#addPersonPlusBtn');
+  const note = $('#addPersonPlusNote');
+  if (btn) btn.hidden = !allowed;
+  if (plusBtn) plusBtn.hidden = allowed;
+  if (note) note.hidden = allowed;
+  if (!allowed) {
+    const form = $('#addPersonForm');
+    if (form) form.hidden = true;
+  }
 }
 function showPicker() {
   if (isDemo) exitDemo();
@@ -8119,16 +8141,24 @@ el.pickerDlg.addEventListener('cancel', (e) => {
 });
 
 $('#addPersonBtn').addEventListener('click', () => {
+  if (!profileAddAllowed()) { openAccountDlg(); return; }
   $('#pinForm').hidden = true;
   $('#addPersonForm').hidden = false;
   $('#addPersonInput').value = '';
   $('#addPersonInput').focus();
 });
+$('#addPersonPlusBtn').addEventListener('click', () => openAccountDlg());
 $('#addPersonCancel').addEventListener('click', () => { $('#addPersonForm').hidden = true; });
 $('#addPersonForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const name = $('#addPersonInput').value.trim();
   if (!name) return;
+  if (!profileAddAllowed()) {
+    $('#addPersonForm').hidden = true;
+    $('#pinError').textContent = '';
+    openAccountDlg();
+    return;
+  }
   if (nameTaken(name)) { $('#pinError').textContent = 'A profile already has that name.'; return; }
   const id = uid();
   profilesState.list.push({ id, name, pin: null, created: Date.now() });
@@ -9573,6 +9603,7 @@ async function refreshBilling() {
     libraryPick = null;
   }
   if (!subscriptionPlus()) libraryPick = null;
+  if (typeof syncProfileAddUi === 'function') syncProfileAddUi();
   await refreshHopeUsage();
   paintAccount();
   try {
@@ -9638,6 +9669,7 @@ function appendPlusOffer(body) {
     'Nutrition notes — food, water, and supplements people ask about',
     'Going Deeper faith content and 12 Steps practice',
     'The full year of readings',
+    'Add another profile on this device',
     'Keep your conversation history on this device. Cloud sync is not enabled.',
   ].forEach(text => {
     const li = document.createElement('li');
