@@ -5,8 +5,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 
@@ -53,8 +56,9 @@ def test_developer_chrome_is_hidden_until_founder_account():
     assert "own.hidden = !founderDeveloperOn" in app
 
     fn = re.search(r"function founderDeveloperVisible\(\) \{.*?\n\}", app, re.S).group(0)
-    assert "billingState.signedIn" in fn
-    assert "billingState.founder" in fn
+    assert "sessionGate.founder()" in fn
+    assert "billingState.founder" not in fn
+    assert "billingState.signedIn" not in fn
     assert "profile" not in fn
     assert "userName" not in fn
     assert "setProfileName" not in fn
@@ -202,10 +206,15 @@ def test_non_founder_cannot_add_an_api_key():
             page.evaluate(
                 """() => {
                   billingState.founder = true;
+                  billingState.signedIn = true;
                   billingState.email = 'founder@example.com';
                   syncDeveloperChrome();
                 }"""
             )
+            assert page.locator("#tabDeveloper").is_hidden()
+            assert page.evaluate("() => founderDeveloperVisible()") is False
+            assert page.evaluate("() => usingOwnProvider()") is False
+            grant_server_session(page, plus=True, founder=True)
             page.click("#tabDeveloper")
             page.wait_for_selector("#panelAdvanced:not([hidden])")
             page.click("#ownKeyDetails > summary")
@@ -226,13 +235,8 @@ def test_non_founder_cannot_add_an_api_key():
             assert kept["apiKey"] == "sk-founder"
             assert kept["own"] is True
 
-            page.evaluate(
-                """() => {
-                  billingState.founder = false;
-                  billingState.plus = true;
-                  syncDeveloperChrome();
-                }"""
-            )
+            grant_server_session(page, plus=True, founder=False)
+            page.evaluate("() => syncDeveloperChrome()")
             assert page.locator("#tabDeveloper").is_hidden()
             assert page.locator("#setKey").is_hidden()
             assert page.locator("#ownKeyDetails").is_hidden()

@@ -43,9 +43,11 @@ def test_my_account_page_and_nav():
     assert "data-account-section=\"payment\"" in app
     assert "data-account-section=\"billing\"" in app
     assert "data-account-section=\"notifications\"" in app
-    # The bottom bar stays Home, Chat, Domestic & family violence, Journal, More.
+    # Bottom bar is Home, Chat, Chats, Domestic & family violence, Journal, More.
+    # My Account stays out of that bar (header button and sidebar).
     nav = app.split('id="bottomNav"', 1)[1].split("</nav>", 1)[0]
-    assert nav.count("bottom-nav-btn") == 5
+    assert nav.count("bottom-nav-btn") == 6
+    assert 'id="appTabChats"' in nav
     assert 'id="myAccountBtn"' not in nav
     assert 'data-tab="account"' not in nav
     # More still opens the sidebar, and that sidebar links to My Account.

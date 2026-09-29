@@ -6,8 +6,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 
 
 def _server():
@@ -18,15 +21,7 @@ def _server():
 
 
 def _grant_plus(page, on):
-    page.evaluate(
-        """(on) => {
-          billingState.signedIn = !!on;
-          billingState.plus = !!on;
-          billingState.subscriptionStatus = on ? 'trialing' : 'none';
-          syncPlusFeaturePills();
-        }""",
-        on,
-    )
+    grant_server_session(page, plus=bool(on), founder=False, status='trialing' if on else 'none')
 
 
 def test_phone_gates_free_then_plus():

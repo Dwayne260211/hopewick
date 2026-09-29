@@ -3,7 +3,7 @@
  * Holds email, an optional name and phone, a scrypt password hash when one
  * is set, magic-link and session hashes, and Stripe subscription status.
  * Card numbers are never stored here.
- * Conversations are not stored here — they stay in the browser.
+ * Saved chats live in chats.json, not in this account file.
  * Passwords are never stored in plaintext.
  */
 import crypto from 'node:crypto';

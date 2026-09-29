@@ -7,8 +7,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 DISCLAIMER = (
@@ -42,8 +45,9 @@ CATEGORIES = (
 
 
 def _library_source() -> str:
-    text = APP.read_text(encoding="utf-8")
-    return text.split("const NUTRITION_CARDS = [", 1)[1].split("/* ---------------------------------------------------------------------------\n   Circuit breakers", 1)[0]
+    import json
+    lib = json.loads((ROOT / "server" / "library" / "education.json").read_text(encoding="utf-8"))
+    return json.dumps({"categories": lib["nutritionCategories"], "cards": lib["nutritionCards"]})
 
 
 def test_static_nutrition_copy_and_gate():
@@ -77,6 +81,10 @@ def test_static_nutrition_copy_and_gate():
     assert "eden.p.<id>.nutrition" in text
     for category in CATEGORIES:
         assert category in text
+    card_stub = text.split("const NUTRITION_CARDS = [", 1)[1].split("];", 1)[0]
+    for marker in PLUS_ONLY:
+        assert marker in library
+        assert marker not in card_stub
     assert "NAC (N-acetylcysteine)" in library
     assert "Fish oil / omega-3" in library
     assert "Vitamin D" in library
@@ -168,14 +176,8 @@ def test_nutrition_plus_free_and_crisis():
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
 
-            page.evaluate(
-                """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  renderNutrition();
-                  syncNutritionPlusPill();
-                }"""
-            )
+            grant_server_session(page, plus=True, founder=False)
+            page.evaluate("() => { renderNutrition(); syncNutritionPlusPill(); }")
             assert page.evaluate("() => document.getElementById('nutritionPlusPill').hidden") is True
             page.click("#menuBtn")
             page.wait_for_selector("#sidebar", state="visible")

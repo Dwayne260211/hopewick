@@ -1073,7 +1073,18 @@ test('optional password on the first sign-in link is saved, and magic link still
       body: JSON.stringify({ email: 'only-link@example.com', password: secret }),
     });
     assert.equal(missing.status, 401);
-    assert.equal((await missing.json()).code, 'password_missing');
+    const missingBody = await missing.json();
+    assert.equal(missingBody.code, 'password');
+    assert.equal(missingBody.error, 'That email or password is not right.');
+    const unknownLogin = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'nobody-here@example.com', password: secret }),
+    });
+    const unknownBody = await unknownLogin.json();
+    assert.equal(unknownLogin.status, 401);
+    assert.equal(unknownBody.code, missingBody.code);
+    assert.equal(unknownBody.error, missingBody.error);
     const still = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: linkOnly } })).json();
     assert.equal(still.signedIn, true);
     assert.equal(still.hasPassword, false);
@@ -1409,6 +1420,88 @@ test('cancel waits until period end, delete cancels a live subscription, and car
     const founderStill = await (await fetch(`${app.base}/api/account`, { headers: { cookie: founder } })).json();
     assert.equal(founderStill.email, 'dwaynesimons1990@gmail.com');
     assert.equal(founderStill.plan, 'Founder access');
+  } finally {
+    await app.close();
+  }
+});
+
+test('plus library stays off the free page and crisis at the cap does not call the model', async () => {
+  const app = await listen({
+    OPENAI_API_KEY: 'sk-test-hope-secret',
+    HOPEWICK_FREE_DAILY: '1',
+  }, []);
+  try {
+    const anon = await fetch(`${app.base}/api/plus/library`);
+    assert.equal(anon.status, 401);
+
+    const free = await signIn(app.base, 'library-free@example.com');
+    const denied = await fetch(`${app.base}/api/plus/library`, { headers: { cookie: free } });
+    assert.equal(denied.status, 403);
+
+    const today = await (await fetch(`${app.base}/api/readings/today`)).json();
+    assert.equal(typeof today.word, 'string');
+    assert.equal(typeof today.wordReading, 'string');
+    assert.equal(typeof today.jftReading, 'string');
+    assert.equal(today.words, undefined);
+    assert.equal(today.jft, undefined);
+    assert.equal(Array.isArray(today.wordReading), false);
+
+    const hidden = await fetch(`${app.base}/app/data/word-for-the-day.js`);
+    assert.equal(hidden.status, 404);
+    const hiddenJft = await fetch(`${app.base}/app/data/just-for-today.js`);
+    assert.equal(hiddenJft.status, 404);
+
+    const trial = await signIn(app.base, 'library-trial@example.com');
+    const trialSet = await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: trial, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'trialing' }),
+    });
+    assert.equal(trialSet.status, 200);
+    const trialLib = await (await fetch(`${app.base}/api/plus/library`, { headers: { cookie: trial } })).json();
+    assert.equal(trialLib.ok, true);
+    assert.equal(trialLib.words.length, 365);
+    assert.equal(trialLib.jft.length, 365);
+    assert.ok(trialLib.nutritionCards.length > 0);
+    assert.ok(trialLib.goingDeeper.length > 0);
+
+    const active = await signIn(app.base, 'library-active@example.com');
+    await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: active, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'active' }),
+    });
+    const activeLib = await fetch(`${app.base}/api/plus/library`, { headers: { cookie: active } });
+    assert.equal(activeLib.status, 200);
+
+    const founder = await signIn(app.base, 'dwaynesimons1990@gmail.com');
+    const founderLib = await fetch(`${app.base}/api/plus/library`, { headers: { cookie: founder } });
+    assert.equal(founderLib.status, 200);
+
+    const crisisUser = await signIn(app.base, 'crisis-cap@example.com');
+    const first = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: crisisUser, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'Just checking in today' }] }),
+    });
+    assert.equal(first.status, 200);
+    assert.equal(app.openaiCalls.length, 1);
+    const used = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: crisisUser } })).json();
+    assert.equal(used.used, 1);
+    assert.equal(used.remaining, 0);
+
+    const second = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: crisisUser, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'I want to die' }] }),
+    });
+    const secondBody = await second.json();
+    assert.equal(second.status, 200);
+    assert.match(secondBody.choices[0].message.content, /000/);
+    assert.match(secondBody.choices[0].message.content, /1800 250 015/);
+    assert.equal(app.openaiCalls.length, 1);
+    const still = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: crisisUser } })).json();
+    assert.equal(still.used, 1);
   } finally {
     await app.close();
   }

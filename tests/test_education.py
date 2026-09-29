@@ -7,8 +7,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 GUT_TITLES = (
@@ -45,8 +48,7 @@ BRAIN_BODY = (
 
 
 def _cards_source() -> str:
-    text = APP.read_text(encoding="utf-8")
-    return text.split("const GUT_CARDS = [", 1)[1].split("function syncEducationPlusPills", 1)[0]
+    return (ROOT / "server" / "library" / "education.json").read_text(encoding="utf-8")
 
 
 def test_static_education_copy_and_gate():
@@ -81,14 +83,16 @@ def test_static_education_copy_and_gate():
     assert "id: 'nutrition'" not in text
     for title in GUT_TITLES + BRAIN_TITLES:
         assert title in cards
+    edu_stub = text.split("const GUT_CARDS = [", 1)[1].split("function syncEducationPlusPills", 1)[0]
     for marker in GUT_BODY + BRAIN_BODY:
         assert marker in cards
+        assert marker not in edu_stub
     assert "About this information" in text
     assert "Felitti, Anda, and colleagues" in cards
     assert "animal research" in cards.lower()
     assert "motivation, movement, and learning from reward" in cards
     assert "yoghurt, kefir, sauerkraut, kimchi, and miso" in cards
-    gut_only = cards.split("const BRAIN_CARDS", 1)[0]
+    gut_only = __import__("json").dumps(__import__("json").loads(cards)["gutCards"])
     for banned in (
         "tiny living community",
         "sit next to how you feel",
@@ -230,11 +234,9 @@ def test_education_plus_gate_phone():
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('brainDlg')?.open !== true")
 
+            grant_server_session(page, plus=True, founder=False)
             page.evaluate(
                 """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  billingState.founder = false;
                   renderGut();
                   renderBrain();
                   syncEducationPlusPills();

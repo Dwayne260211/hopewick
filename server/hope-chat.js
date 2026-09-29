@@ -1,6 +1,6 @@
 /**
  * Hosted Hope chat: daily caps and request checks.
- * Conversations are not stored. Only a per-account day counter is kept.
+ * This call does not write the transcript. Saved chats are /api/chats. Only a per-account day counter is kept here.
  * The OpenAI key stays in the server environment.
  */
 import { publicUser } from './store.js';
@@ -153,7 +153,8 @@ export function openAiEndpoint() {
 
 /**
  * Decide whether this call may proceed, and whether it spends a daily message.
- * Crisis replies are never refused for the cap. They do not spend a message.
+ * A crisis reply under the free cap spends one message and may call the model.
+ * At the cap, crisis is a static reply: no model call and no extra spend.
  * Memory extraction does not spend a chat message.
  */
 export function admitHopeCall(user, { purpose, crisis, now = new Date() } = {}) {
@@ -166,11 +167,13 @@ export function admitHopeCall(user, { purpose, crisis, now = new Date() } = {}) 
     }
     return { ok: true, spend: 'memory', usage, limit };
   }
-  if (crisis) return { ok: true, spend: 'none', usage, limit, crisis: true };
+  if (crisis && limit != null && usage.count >= limit) {
+    return { ok: true, staticOnly: true, spend: 'none', usage, limit, crisis: true };
+  }
   if (limit != null && usage.count >= limit) {
     return { ok: false, status: 429, code: 'daily_cap', usage, limit };
   }
-  return { ok: true, spend: 'chat', usage, limit };
+  return { ok: true, spend: 'chat', usage, limit, crisis: crisis === true };
 }
 
 export function commitSpend(user, admission) {

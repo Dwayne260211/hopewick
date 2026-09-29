@@ -7,8 +7,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 COLD_TITLES = (
@@ -35,8 +38,9 @@ COLD_BODY = (
 
 
 def _cold_source() -> str:
-    text = APP.read_text(encoding="utf-8")
-    return text.split("const COLD_CARDS = [", 1)[1].split("function syncEducationPlusPills", 1)[0]
+    import json
+    lib = json.loads((ROOT / "server" / "library" / "education.json").read_text(encoding="utf-8"))
+    return json.dumps(lib["coldCards"])
 
 
 def test_static_cold_education_copy_and_gate():
@@ -62,8 +66,10 @@ def test_static_cold_education_copy_and_gate():
     assert "Before you get in" in text
     for title in COLD_TITLES:
         assert title in cards
+    cold_stub = APP.read_text(encoding="utf-8").split("const COLD_CARDS = [", 1)[1].split("];", 1)[0]
     for marker in COLD_BODY:
         assert marker in cards
+        assert marker not in cold_stub
     assert "As of 2026" in cards
     assert "2017 review in Experimental Physiology" in cards
     assert "small 2023 study in the journal Biology" in cards
@@ -176,15 +182,8 @@ def test_cold_education_plus_gate_phone():
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('coldDlg')?.open !== true")
 
-            page.evaluate(
-                """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  billingState.founder = false;
-                  renderCold();
-                  syncEducationPlusPills();
-                }"""
-            )
+            grant_server_session(page, plus=True, founder=False)
+            page.evaluate("() => { renderCold(); syncEducationPlusPills(); }")
             assert page.evaluate("() => document.getElementById('coldPlusPill').hidden") is True
 
             _open_side(page, "cold")

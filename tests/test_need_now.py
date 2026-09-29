@@ -2,12 +2,28 @@
 """Home “what do you need” chips, and Hope opening in-app tools."""
 from __future__ import annotations
 
+import json
+import re
 import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _install_readings(page):
+    """The free page no longer ships the year. Tests that open a reading inject it."""
+    def arr(name, file):
+        text = (ROOT / "app" / "data" / file).read_text(encoding="utf-8")
+        match = re.search(rf"var {name} = (\[.*\]);\s*$", text, re.S)
+        return json.loads(match.group(1))
+    page.add_init_script(
+        "window.WORD_FOR_THE_DAY = " + json.dumps(arr("WORD_FOR_THE_DAY", "word-for-the-day.js"))
+        + "; window.JUST_FOR_TODAY = " + json.dumps(arr("JUST_FOR_TODAY", "just-for-today.js"))
+        + ";"
+    )
+
 APP = ROOT / "app" / "index.html"
 
 
@@ -46,6 +62,7 @@ def test_need_now_and_hope_gateway():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
+            _install_readings(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")
@@ -255,6 +272,7 @@ def test_every_need_now_chip_click():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
+            _install_readings(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")

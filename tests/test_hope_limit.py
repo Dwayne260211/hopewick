@@ -6,8 +6,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 LAND = ROOT / "index.html"
 HOPE = ROOT / "server" / "hope-chat.js"
@@ -24,7 +27,7 @@ def test_static_hope_limit_copy():
     assert "They reset at midnight, Brisbane time." in text
     assert "Hopewick Plus has no daily limit with Hope." in text
     assert "A 3-day trial is there if you’d like to keep talking." in text
-    assert "Crisis messages aren’t counted." in text
+    assert "If you’re in danger at today’s limit, Hope shows the crisis numbers without using the model." in text
     assert 'id="hopeLimitHelp"' in text
     assert 'id="hopeLimitDv"' in text
     assert 'id="hopeLimitHome"' in text
@@ -59,38 +62,32 @@ def _arm(page, **opts):
         "demo": False,
     }
     defaults.update(opts)
-    page.evaluate(
-        """(opts) => {
-          isDemo = !!opts.demo;
-          billingState.loaded = true;
-          billingState.reachable = true;
-          billingState.signedIn = true;
-          billingState.plus = !!opts.plus;
-          billingState.subscriptionStatus = opts.plus ? 'active' : 'none';
-          billingState.hopeHosted = true;
-          billingState.checkoutReady = !!opts.checkout;
-          billingState.complimentary = false;
-          billingState.founder = false;
-          if (opts.plus) {
-            billingState.hopeUsage = {
-              day: '2026-09-29', used: 8, limit: null, remaining: null,
-              plus: true, trialEligible: false, resetLabel: null,
-            };
-          } else {
-            billingState.hopeUsage = {
-              day: '2026-09-29',
-              used: opts.limit - opts.remaining,
-              limit: opts.limit,
-              remaining: opts.remaining,
-              plus: false,
-              trialEligible: !!opts.trial,
-              resetLabel: 'midnight, Brisbane time',
-            };
-          }
-          syncHopeAllowance();
-        }""",
-        defaults,
+    page.evaluate("(demo) => { isDemo = !!demo; }", defaults["demo"])
+    if defaults["plus"]:
+        usage = {
+            "day": "2026-09-29", "used": 8, "limit": None, "remaining": None,
+            "plus": True, "trialEligible": False, "resetLabel": None,
+        }
+    else:
+        usage = {
+            "day": "2026-09-29",
+            "used": defaults["limit"] - defaults["remaining"],
+            "limit": defaults["limit"],
+            "remaining": defaults["remaining"],
+            "plus": False,
+            "trialEligible": bool(defaults["trial"]),
+            "resetLabel": "midnight, Brisbane time",
+        }
+    page.evaluate("(usage) => { window.__hopeUsageLive = usage; }", usage)
+    grant_server_session(
+        page,
+        plus=bool(defaults["plus"]),
+        founder=False,
+        checkout=bool(defaults["checkout"]),
+        usage=usage,
+        library="auto" if defaults["plus"] else None,
     )
+    page.evaluate("(demo) => { isDemo = !!demo; syncHopeAllowance(); }", defaults["demo"])
 
 
 def _install_fetch(page):
@@ -116,6 +113,10 @@ def _install_fetch(page):
                 return new Response(JSON.stringify({
                   choices: [{ message: { role: 'assistant', content } }],
                 }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+              }
+              if (window.__hopeUsageLive) {
+                window.__hopeUsageLive.remaining = 0;
+                window.__hopeUsageLive.used = window.__hopeUsageLive.limit || 5;
               }
               return new Response(JSON.stringify({
                 error: {
@@ -174,7 +175,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             assert "They reset at midnight, Brisbane time." in limit
             assert "no daily limit with Hope" in limit
             assert "3-day trial" in limit
-            assert "Crisis messages aren’t counted." in limit
+            assert "without using the model" in limit
             assert "Get help" in limit
             assert page.input_value("#input") == "Can we talk about cravings?"
             assert page.locator(".msg.error").count() == 0

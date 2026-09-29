@@ -471,13 +471,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .resume-view,
 .journal-view,
 .my-account-view,
+.chats-view,
 .launch-prefs {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 10px 16px 12px;
 }
-.info-inner, .dv-inner, .journal-inner, .launch-prefs-inner {
+.info-inner, .dv-inner, .journal-inner, .chats-inner, .launch-prefs-inner {
   max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px;
 }
 .info-view h2, .dv-view h2 { font-size: 1.08rem; margin: 10px 0 0; font-weight: 700; }
@@ -493,6 +494,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .resume-view[hidden],
 .journal-view[hidden],
 .my-account-view[hidden],
+.chats-view[hidden],
 .launch-prefs[hidden],
 .messages[hidden],
 .composer-wrap[hidden] { display: none !important; }
@@ -804,6 +806,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-resume .composer-wrap,
 .app.tab-journal .composer-wrap,
 .app.tab-account .composer-wrap,
+.app.tab-chats .composer-wrap,
 .app.showing-launch-prefs .composer-wrap { display: none !important; }
 .app.tab-home .messages,
 .app.tab-info .messages,
@@ -811,6 +814,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-resume .messages,
 .app.tab-journal .messages,
 .app.tab-account .messages,
+.app.tab-chats .messages,
 .app.showing-launch-prefs .messages { display: none !important; }
 .app.tab-chat .home-view,
 .app.tab-info .home-view,
@@ -818,6 +822,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-resume .home-view,
 .app.tab-journal .home-view,
 .app.tab-account .home-view,
+.app.tab-chats .home-view,
 .app.showing-launch-prefs .home-view { display: none !important; }
 .app.tab-home .info-view,
 .app.tab-chat .info-view,
@@ -825,6 +830,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-resume .info-view,
 .app.tab-journal .info-view,
 .app.tab-account .info-view,
+.app.tab-chats .info-view,
 .app.showing-launch-prefs .info-view { display: none !important; }
 .app.tab-home .dv-view,
 .app.tab-chat .dv-view,
@@ -832,6 +838,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-resume .dv-view,
 .app.tab-journal .dv-view,
 .app.tab-account .dv-view,
+.app.tab-chats .dv-view,
 .app.showing-launch-prefs .dv-view { display: none !important; }
 .app.tab-home .resume-view,
 .app.tab-chat .resume-view,
@@ -839,6 +846,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-dv .resume-view,
 .app.tab-journal .resume-view,
 .app.tab-account .resume-view,
+.app.tab-chats .resume-view,
 .app.showing-launch-prefs .resume-view { display: none !important; }
 .app.tab-home .journal-view,
 .app.tab-chat .journal-view,
@@ -846,14 +854,24 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-dv .journal-view,
 .app.tab-resume .journal-view,
 .app.tab-account .journal-view,
+.app.tab-chats .journal-view,
 .app.showing-launch-prefs .journal-view { display: none !important; }
 .app.tab-home .my-account-view,
 .app.tab-chat .my-account-view,
+.app.tab-chats .my-account-view,
 .app.tab-info .my-account-view,
 .app.tab-dv .my-account-view,
 .app.tab-resume .my-account-view,
 .app.tab-journal .my-account-view,
 .app.showing-launch-prefs .my-account-view { display: none !important; }
+.app.tab-home .chats-view,
+.app.tab-chat .chats-view,
+.app.tab-account .chats-view,
+.app.tab-info .chats-view,
+.app.tab-dv .chats-view,
+.app.tab-resume .chats-view,
+.app.tab-journal .chats-view,
+.app.showing-launch-prefs .chats-view { display: none !important; }
 .sidebar-foot .btn[aria-current="page"] {
   background: var(--accent-soft);
   color: var(--accent-strong);
@@ -864,7 +882,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .toasts { bottom: calc(72px + env(safe-area-inset-bottom)); }
 
 @media (max-width: 860px) {
-  .home-view, .info-view, .dv-view, .resume-view, .journal-view, .my-account-view { padding: 8px 10px 8px; }
+  .home-view, .info-view, .dv-view, .resume-view, .journal-view, .my-account-view, .chats-view { padding: 8px 10px 8px; }
   .bottom-nav { gap: 2px; padding-left: 4px; padding-right: 4px; }
   .bottom-nav-btn { font-size: .58rem; padding: 5px 2px; }
   .bottom-nav-btn svg { width: 20px; height: 20px; }
@@ -915,7 +933,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 
 /* Onboarding + About */
-#onboardingDlg, #aboutDlg { width: min(440px, calc(100vw - 24px)); }
+#onboardingDlg, #aboutDlg, #signInDlg { width: min(440px, calc(100vw - 24px)); }
+#signInDlg .onboard-body { text-align: left; }
+#signInDlg .onboard-body h2 { text-align: center; }
+#signInDlg .account-signin-title { display: none; }
 .onboard-body, .about-body { padding: 26px 22px 18px; text-align: center; }
 .onboard-body h2, .about-body h2 { margin: 12px 0 8px; font-size: 1.35rem; }
 .onboard-body > p, .about-body > p { margin: 0 0 12px; color: var(--muted); line-height: 1.45; }
@@ -1386,7 +1407,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .grat-card .grat-inputs { display: flex; flex-direction: column; gap: 6px; }
 .grat-card input { width: 100%; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 8px 11px; }
 .grat-card .row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-.journal-list, .steps-list, .bible-list, .entry-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.journal-list, .steps-list, .bible-list, .entry-list, .chats-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.chats-list li { display: flex; align-items: stretch; gap: 4px; }
+.chats-list li.active .j-item { box-shadow: inset 3px 0 0 var(--accent); }
+.chats-list .open-chat { flex: 1; min-width: 0; text-align: left; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; }
+.chats-list .title { display: block; font-weight: 650; }
+.chats-list .preview { display: block; color: var(--muted); font-size: .88rem; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chats-list .meta { display: block; color: var(--muted); font-size: .75rem; margin-top: 4px; }
+.chats-list .del { align-self: center; }
+.chats-empty { color: var(--muted); font-size: .9rem; padding: 12px 4px; }
 .j-item, .step-card, .bible-card { border: 1px solid var(--border); background: var(--surface-2); border-radius: 14px; padding: 12px 14px; }
 .j-item h3, .step-card h3, .bible-card h3 { margin: 0 0 4px; font-size: 1rem; }
 .j-item .meta, .step-card .meta, .bible-card .meta { font-size: .78rem; color: var(--muted); margin-bottom: 6px; }
@@ -1716,7 +1745,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <span class="lbl" id="soberLbl">days</span>
     </button>
     <div class="history-label" id="historyLabel">Conversations</div>
-    <p class="history-device" id="historyDeviceNote">Keep your conversation history on this device. Cloud sync is not enabled.</p>
+    <p class="history-device" id="historyDeviceNote">Kept on this device. Signed in, this profile’s chats are also saved to your account.</p>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
     <div class="sidebar-foot" id="sidebarTools" tabindex="-1" aria-label="More tools, settings, and education">
       <div class="side-section-label">Recovery tools</div>
@@ -2140,6 +2169,17 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       </div>
     </section>
 
+    <section class="chats-view" id="chatsView" hidden aria-label="Chats">
+      <div class="chats-inner">
+        <div class="home-hero">
+          <h1 id="chatsTitle" tabindex="-1">Chats</h1>
+          <p id="chatsLede">Past conversations for this profile. They stay on this device, and on your account when you are signed in.</p>
+        </div>
+        <button class="btn btn-primary" type="button" id="chatsNewBtn">New chat</button>
+        <ul class="chats-list" id="chatsList" aria-label="Past conversations"></ul>
+      </div>
+    </section>
+
     <section class="journal-view" id="journalView" hidden aria-label="Journal">
       <div class="journal-inner">
         <div class="home-hero">
@@ -2243,7 +2283,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
           <button class="btn btn-sm" type="button" id="hopeLimitDv">Domestic &amp; family violence</button>
           <button class="btn btn-sm" type="button" id="hopeLimitHome">Today’s Readings</button>
         </div>
-        <p class="hope-limit-note" id="hopeLimitNote">If you’re in danger, you can still message Hope. Crisis messages aren’t counted. Today’s Readings, Get help, and domestic and family violence support stay free.</p>
+        <p class="hope-limit-note" id="hopeLimitNote">If you’re in danger at today’s limit, Hope shows the crisis numbers without using the model. Today’s Readings, Get help, and domestic and family violence support stay free.</p>
       </div>
       <p class="hope-allowance" id="hopeAllowance" hidden></p>
       <div class="convo-mode-bar" id="convoBar" hidden>
@@ -2272,6 +2312,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <button type="button" class="bottom-nav-btn" id="appTabChat" data-tab="chat" aria-current="false" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
         <span>Chat</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" id="appTabChats" data-tab="chats" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        <span>Chats</span>
       </button>
       <button type="button" class="bottom-nav-btn" id="appTabDv" data-tab="dv" aria-current="false" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
@@ -2320,6 +2364,17 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand>Hopewick</span></button>
       · <a href="../" id="aboutLink">Landing page</a> · <span data-copyright></span>
     </p>
+  </div>
+</dialog>
+
+<!-- ============================ Sign in (before profile setup) ============================ -->
+<dialog id="signInDlg" aria-labelledby="signInTitle">
+  <div class="onboard-body">
+    <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
+    <h2 id="signInTitle">Sign in</h2>
+    <p class="lead">Sign in or create an account. Your name, what brings you here, and faith preference come after this.</p>
+    <div id="signInBody"></div>
+    <p class="privacy-note"><a href="../">Landing page</a></p>
   </div>
 </dialog>
 
@@ -2389,12 +2444,12 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
-        <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
+        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats are also saved to your account so they come back. Hopewick staff do not get a live feed of the conversation.</li>
         <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, and today’s message count — not your chats, and never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, today’s message count, and this profile’s saved chats. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -2438,7 +2493,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <li>It is <strong>not a registered counsellor, doctor or clinician</strong>, and it can make mistakes.</li>
       <li>It can't diagnose or advise on withdrawal, detox or medications. Stopping alcohol or benzodiazepines suddenly can be dangerous — please talk to a doctor.</li>
       <li>In an emergency call <strong>000</strong>. The <strong>Get help now</strong> button is always at the top of the screen.</li>
-      <li>Chats are stored only on this device. Hosted Hope sends messages to Hopewick to create a reply and does not keep an account chat history.</li>
+      <li>Chats are kept on this device. Signed in, they are also saved to your Hopewick account for this profile. Hosted Hope sends messages to create a reply. Staff do not get a dashboard of the conversation.</li>
     </ul>
   </div>
   <div class="dlg-foot">
@@ -2462,7 +2517,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <button class="btn btn-primary" type="button" id="needAiSignInBtn">Sign in</button>
       <button class="btn" type="button" id="needAiInviteBtn" data-invite-entry hidden>Enter invite code</button>
     </div>
-    <p class="hosted-privacy" id="needAiHostedNote">Messages go to Hopewick to create a reply. They stay in this browser — we don’t keep an account chat history. You do not need an API key.</p>
+    <p class="hosted-privacy" id="needAiHostedNote">Messages go to Hopewick to create a reply. Signed in, this profile’s chats are saved to your account and kept in this browser. You do not need an API key.</p>
   </div>
   <div class="dlg-foot">
     <button class="btn" type="button" id="needAiCloseBtn">Not now</button>
@@ -2692,7 +2747,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 
     <fieldset>
       <legend>Your data</legend>
-      <p class="help" style="margin:6px 0 10px">Keep your conversation history on this device. Cloud sync is not enabled. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
+      <p class="help" style="margin:6px 0 10px">Kept on this device. Signed in, this profile’s chats are also saved to your account. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
       <div class="row">
         <button class="btn btn-sm" type="button" id="exportBtn">Export JSON</button>
         <button class="btn btn-sm" type="button" id="importBtn">Import JSON</button>
@@ -3440,8 +3495,6 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
-<script src="data/word-for-the-day.js"></script>
-<script src="data/just-for-today.js"></script>
 <script src="data/going-deeper.js"></script>
 <script src="resume.js"></script>
 <script>
@@ -3770,7 +3823,7 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
-let appTab = 'home';       // 'home' | 'chat' | 'dv' | 'journal' | 'info' | 'resume' — More opens sidebar, not a tab destination
+let appTab = 'home';       // 'home' | 'chat' | 'chats' | 'dv' | 'journal' | 'info' | 'resume' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
 let pendingStartChat = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
@@ -3815,15 +3868,15 @@ const el = {
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
-  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), journalView: $('#journalView'), myAccountView: $('#myAccountView'), launchPrefs: $('#launchPrefs'),
+  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), journalView: $('#journalView'), chatsView: $('#chatsView'), myAccountView: $('#myAccountView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
-  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabDv: $('#appTabDv'), tabJournal: $('#appTabJournal'), tabMore: $('#appTabMore'),
+  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabChats: $('#appTabChats'), tabDv: $('#appTabDv'), tabJournal: $('#appTabJournal'), tabMore: $('#appTabMore'),
   sideDvBtn: $('#sideDvBtn'), sideResumeBtn: $('#sideResumeBtn'), sideJournalBtn: $('#sideJournalBtn'), sideInfoBtn: $('#sideInfoBtn'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'), myAccountBtn: $('#myAccountBtn'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
-  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
+  settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), signInDlg: $('#signInDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), plansDlg: $('#plansDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'), deeperDlg: $('#deeperDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), gutDlg: $('#gutDlg'), brainDlg: $('#brainDlg'), coldDlg: $('#coldDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
@@ -3888,7 +3941,15 @@ function migrateStorage() {
   save(K.profiles, profilesState);
 }
 
-function saveProfiles() { if (!isDemo) save(K.profiles, profilesState); }
+function saveProfiles() {
+  if (isDemo) return;
+  // Demo hides an untouched factory list in memory. Do not write that empty list over it.
+  if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length === 0) {
+    const stored = load(K.profiles, null);
+    if (isUntouchedFactorySeed(stored)) return;
+  }
+  save(K.profiles, profilesState);
+}
 function findProfile(id) { return profilesState.list.find(p => p.id === id) || null; }
 
 /** Load one person's data into the app state (applying the v2 mode migration once). */
@@ -3947,7 +4008,132 @@ function saveSettings() {
   save(pk(profile.id, 'settings'), ps);
   save(K.shared, shared);
 }
-function persistConvos() { if (isDemo) return; save(pk(profile.id, 'convos'), convos); save(pk(profile.id, 'active'), activeId); }
+let removedChatIds = [];
+let chatSyncTimer = null;
+let chatPullKey = '';
+let chatPulling = null;
+let chatHoldPull = false;
+function persistConvos() {
+  if (isDemo || !profile) return;
+  save(pk(profile.id, 'convos'), convos);
+  save(pk(profile.id, 'active'), activeId);
+  scheduleChatSync();
+}
+function scheduleChatSync() {
+  if (isDemo || !profile || !billingState.signedIn) return;
+  clearTimeout(chatSyncTimer);
+  chatSyncTimer = setTimeout(() => { pushAccountChats().catch(() => {}); }, 450);
+}
+function chatProfileId() {
+  return (profile && (profile.chatKey || profile.id)) || '';
+}
+function chooseChatBucket(profiles) {
+  if (!profile) return null;
+  const list = Array.isArray(profiles) ? profiles : [];
+  if (profile.chatKey) return list.find(p => p.id === profile.chatKey) || null;
+  const byId = list.find(p => p.id === profile.id);
+  if (byId) return byId;
+  const name = String(profile.name || '').trim().toLowerCase();
+  const named = name ? list.filter(p => String(p.name || '').trim().toLowerCase() === name) : [];
+  if (named.length === 1) return named[0];
+  if (list.length === 1 && profilesState && Array.isArray(profilesState.list) && profilesState.list.length === 1) return list[0];
+  return null;
+}
+function mergeRemoteConversations(remote) {
+  const map = new Map();
+  for (const c of convos) if (c && c.id) map.set(c.id, c);
+  for (const raw of (Array.isArray(remote) ? remote : [])) {
+    if (!raw || !raw.id) continue;
+    const prev = map.get(raw.id);
+    if (!prev) {
+      const copy = Object.assign({}, raw);
+      if (!copy.accountId && billingState.id) copy.accountId = billingState.id;
+      map.set(copy.id, copy);
+      continue;
+    }
+    const pu = Number(prev.updated) || 0;
+    const ru = Number(raw.updated) || 0;
+    const longer = (raw.messages || []).length > (prev.messages || []).length ? raw : prev;
+    const winner = Object.assign({}, pu === ru ? longer : (ru > pu ? raw : prev));
+    if (!winner.accountId && (prev.accountId || raw.accountId || billingState.id)) {
+      winner.accountId = prev.accountId || raw.accountId || billingState.id;
+    }
+    map.set(winner.id, winner);
+  }
+  convos = [...map.values()];
+}
+function conversationsForAccount() {
+  const id = billingState.id;
+  const mine = [];
+  for (const c of convos) {
+    if (!c || !c.messages || !c.messages.length) continue;
+    if (c.accountId && c.accountId !== id) continue;
+    if (!c.accountId && id) c.accountId = id;
+    mine.push(c);
+  }
+  return mine.sort((a, b) => (b.updated || 0) - (a.updated || 0)).slice(0, 80);
+}
+async function pushAccountChats() {
+  if (isDemo || !profile || !billingState.signedIn) return null;
+  const profileId = chatProfileId();
+  if (!profileId) return null;
+  const sentRemoved = removedChatIds.slice();
+  const active = activeConvo();
+  const conversations = conversationsForAccount();
+  save(pk(profile.id, 'convos'), convos);
+  const data = await billingFetch('/api/chats', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      profileId,
+      name: profile.name || '',
+      conversations,
+      activeId: active && active.messages && active.messages.length ? active.id : null,
+      removedIds: sentRemoved,
+    }),
+  });
+  if (sentRemoved.length) {
+    const sent = new Set(sentRemoved);
+    removedChatIds = removedChatIds.filter(id => !sent.has(id));
+  }
+  chatHoldPull = false;
+  if (data && data.profile && profile && data.profile.id && profile.chatKey !== data.profile.id) {
+    profile.chatKey = data.profile.id;
+    saveProfiles();
+  }
+  return data;
+}
+async function pullAccountChats(force) {
+  if (isDemo || !profile || !billingState.signedIn || chatHoldPull) return;
+  const key = (billingState.id || '') + ':' + chatProfileId();
+  if (!force && chatPullKey === key) return;
+  if (chatPulling) return chatPulling;
+  chatPulling = (async () => {
+    const data = await billingFetch('/api/chats');
+    if (!profile || !billingState.signedIn || chatHoldPull) return;
+    const bucket = chooseChatBucket(data && data.profiles);
+    if (bucket) {
+      if (profile.chatKey !== bucket.id) {
+        profile.chatKey = bucket.id;
+        saveProfiles();
+      }
+      mergeRemoteConversations(bucket.conversations || []);
+      const current = activeConvo();
+      const currentEmpty = !current || !current.messages || !current.messages.length;
+      if (currentEmpty && bucket.activeId && convos.some(c => c.id === bucket.activeId && c.messages && c.messages.length)) {
+        activeId = bucket.activeId;
+      }
+      save(pk(profile.id, 'convos'), convos);
+      save(pk(profile.id, 'active'), activeId);
+      renderHistory();
+      if (appTab === 'chats') renderChatsList();
+      if (appTab === 'chat') renderMessages();
+    }
+    chatPullKey = (billingState.id || '') + ':' + chatProfileId();
+    await pushAccountChats();
+  })().finally(() => { chatPulling = null; });
+  return chatPulling;
+}
 function saveMemories() { if (isDemo) return; save(pk(profile.id, 'memories'), memories); }
 function saveMoods() { if (isDemo) return; save(pk(profile.id, 'moods'), moods); }
 function saveGratitude() { if (isDemo) return; save(pk(profile.id, 'gratitude'), gratitude); }
@@ -4179,6 +4365,7 @@ function newConversation() {
   const current = activeConvo();
   if (current && current.messages.length === 0) { renderAll(); if (appTab === 'chat') focusInput(); return current; }
   const c = { id: uid(), title: 'New chat', created: Date.now(), updated: Date.now(), mood: null, craving: null, messages: [] };
+  if (billingState.signedIn && billingState.id) c.accountId = billingState.id;
   convos.unshift(c);
   activeId = c.id;
   convos = convos.filter(x => x.id === activeId || x.messages.length > 0);
@@ -4205,16 +4392,65 @@ function openConversation(id) {
 function deleteConversation(id) {
   const c = convos.find(x => x.id === id);
   if (!c || !confirm(`Delete “${c.title}”? This can't be undone.`)) return;
+  removedChatIds.push(id);
   convos = convos.filter(x => x.id !== id);
-  if (activeId === id) { activeId = null; newConversation(); } else { persistConvos(); renderHistory(); }
+  if (activeId === id) { activeId = null; newConversation(); } else { persistConvos(); renderHistory(); if (appTab === 'chats') renderChatsList(); }
   toast('Conversation deleted');
 }
 
 const ICON_TRASH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>';
 const ICON_EDIT = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 
+function convoPreview(c) {
+  const msgs = (c.messages || []).filter(m => m && !m.card && String(m.content || '').trim());
+  const last = msgs[msgs.length - 1];
+  if (!last) return 'No messages yet';
+  const text = String(last.content).replace(/\s+/g, ' ').trim();
+  return text.length > 90 ? text.slice(0, 88).trim() + '…' : text;
+}
+function convoVisible(c) {
+  if (!c) return false;
+  if (!billingState.signedIn || !billingState.id) return true;
+  return !c.accountId || c.accountId === billingState.id;
+}
+function listedConvos() {
+  return convos.filter(c => c && c.messages && c.messages.length && convoVisible(c)).sort((a, b) => (b.updated || 0) - (a.updated || 0));
+}
+function renderChatsList() {
+  const listEl = $('#chatsList');
+  if (!listEl) return;
+  const list = listedConvos();
+  listEl.innerHTML = '';
+  if (!list.length) {
+    listEl.innerHTML = '<li class="chats-empty">No conversations yet. Start one with New chat, or say hello in Chat.</li>';
+    return;
+  }
+  for (const c of list) {
+    const li = document.createElement('li');
+    if (c.id === activeId) li.className = 'active';
+    li.innerHTML = `<button class="open-chat" type="button"><span class="title"></span><span class="preview"></span><span class="meta"></span></button>
+      <button class="icon-btn del" type="button" title="Delete">${ICON_TRASH}</button>`;
+    const open = $('.open-chat', li);
+    if (c.id === activeId) open.setAttribute('aria-current', 'true');
+    const locked = conversationLocked(c.id);
+    $('.title', li).textContent = (c.mood ? c.mood.e + ' ' : '') + (c.title || 'New chat');
+    if (locked) {
+      const pill = document.createElement('span');
+      pill.className = 'plus-pill';
+      pill.textContent = 'Plus';
+      $('.title', li).appendChild(pill);
+    }
+    $('.preview', li).textContent = convoPreview(c);
+    $('.meta', li).textContent = relTime(c.updated);
+    open.setAttribute('aria-label', `Open chat: ${c.title || 'New chat'}`);
+    $('.del', li).setAttribute('aria-label', `Delete conversation: ${c.title || 'New chat'}`);
+    open.addEventListener('click', () => openConversation(c.id));
+    $('.del', li).addEventListener('click', () => deleteConversation(c.id));
+    listEl.appendChild(li);
+  }
+}
 function renderHistory() {
-  const list = convos.filter(c => c.messages.length > 0).sort((a, b) => b.updated - a.updated);
+  const list = listedConvos();
   el.history.innerHTML = '';
   if (!list.length) { el.history.innerHTML = '<li class="history-empty">No conversations yet — say hello! 👋</li>'; return; }
   for (const c of list) {
@@ -4415,9 +4651,10 @@ function showLaunchPrefs() {
   if (el.resumeView) el.resumeView.hidden = true;
   if (el.journalView) el.journalView.hidden = true;
   if (el.myAccountView) el.myAccountView.hidden = true;
+  if (el.chatsView) el.chatsView.hidden = true;
   if (el.messages) el.messages.hidden = true;
   if (el.composerWrap) el.composerWrap.hidden = true;
-  [el.tabHome, el.tabChat, el.tabDv, el.tabJournal, el.tabMore].forEach(b => {
+  [el.tabHome, el.tabChat, el.tabChats, el.tabDv, el.tabJournal, el.tabMore].forEach(b => {
     if (!b) return;
     b.setAttribute('aria-current', 'false');
     b.setAttribute('aria-pressed', 'false');
@@ -4481,11 +4718,13 @@ function setAppTab(tab, opts = {}) {
     return;
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
-  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : tab === 'journal' ? 'journal' : tab === 'account' ? 'account' : 'home';
+  // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
+  const next = tab === 'chat' ? 'chat' : tab === 'chats' ? 'chats' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : tab === 'journal' ? 'journal' : tab === 'account' ? 'account' : 'home';
   const changed = appTab !== next;
   appTab = next;
   el.app.classList.toggle('tab-home', next === 'home');
   el.app.classList.toggle('tab-chat', next === 'chat');
+  el.app.classList.toggle('tab-chats', next === 'chats');
   el.app.classList.toggle('tab-info', next === 'info');
   el.app.classList.toggle('tab-dv', next === 'dv');
   el.app.classList.toggle('tab-resume', next === 'resume');
@@ -4497,6 +4736,7 @@ function setAppTab(tab, opts = {}) {
   if (el.resumeView) el.resumeView.hidden = next !== 'resume';
   if (el.journalView) el.journalView.hidden = next !== 'journal';
   if (el.myAccountView) el.myAccountView.hidden = next !== 'account';
+  if (el.chatsView) el.chatsView.hidden = next !== 'chats';
   if (el.messages) el.messages.hidden = next !== 'chat';
   if (el.composerWrap) el.composerWrap.hidden = next !== 'chat';
   if (el.myAccountBtn) el.myAccountBtn.setAttribute('aria-pressed', next === 'account' ? 'true' : 'false');
@@ -4507,6 +4747,7 @@ function setAppTab(tab, opts = {}) {
   };
   mark(el.tabHome, next === 'home');
   mark(el.tabChat, next === 'chat');
+  mark(el.tabChats, next === 'chats');
   mark(el.tabDv, next === 'dv');
   mark(el.tabJournal, next === 'journal');
   if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', next === 'dv' ? 'page' : 'false');
@@ -4524,6 +4765,12 @@ function setAppTab(tab, opts = {}) {
     renderInfoRegion();
   } else if (next === 'resume') {
     showResume(changed);
+  } else if (next === 'chats') {
+    renderChatsList();
+    if (!opts.skipFocus) {
+      const title = $('#chatsTitle');
+      if (title) setTimeout(() => title.focus(), 60);
+    }
   } else if (next === 'journal') {
     syncJournalGate();
     if (subscriptionPlus()) {
@@ -4623,24 +4870,44 @@ function readingDayIndex(month, day) {
   return index;
 }
 /** Stable daily pair for a Brisbane calendar date. */
-function todayReflection(d = new Date()) {
-  const iso = brisbaneDateISO(d);
-  const [, m, day] = iso.split('-').map(Number);
-  const index = readingDayIndex(m, day);
-  const wordEntry = WORD_FOR_THE_DAY[index];
-  const jftEntry = JUST_FOR_TODAY[index];
+let todayPack = null;
+function readingPair(index) {
+  if (plusAccess.words && plusAccess.words[index] && plusAccess.jft && plusAccess.jft[index]) {
+    return { word: plusAccess.words[index], jft: plusAccess.jft[index] };
+  }
+  const words = (typeof WORD_FOR_THE_DAY !== 'undefined') ? WORD_FOR_THE_DAY : null;
+  const jft = (typeof JUST_FOR_TODAY !== 'undefined') ? JUST_FOR_TODAY : null;
+  if (words && jft && words[index] && jft[index]) return { word: words[index], jft: jft[index] };
+  if (todayPack && todayPack.index === index) {
+    return {
+      word: { word: todayPack.word, reading: todayPack.wordReading },
+      jft: { title: todayPack.title, reading: todayPack.jftReading },
+    };
+  }
+  return null;
+}
+function reflectionFromPair(iso, m, day, index, pair) {
+  const wordEntry = pair && pair.word;
+  const jftEntry = pair && pair.jft;
   return {
     iso,
     index,
     month: m,
     day,
     leap: m === 2 && day === 29,
-    word: wordEntry.word,
-    wordReading: wordEntry.reading,
-    title: jftEntry.title,
-    line: jftEntry.reading,
-    jftReading: jftEntry.reading,
+    word: wordEntry ? (wordEntry.word || '') : '',
+    wordReading: wordEntry ? (wordEntry.reading || '') : '',
+    title: jftEntry ? (jftEntry.title || '') : '',
+    line: jftEntry ? (jftEntry.reading || '') : '',
+    jftReading: jftEntry ? (jftEntry.reading || '') : '',
   };
+}
+/** Stable daily pair for a Brisbane calendar date. The year is not in the free page. */
+function todayReflection(d = new Date()) {
+  const iso = brisbaneDateISO(d);
+  const [, m, day] = iso.split('-').map(Number);
+  const index = readingDayIndex(m, day);
+  return reflectionFromPair(iso, m, day, index, readingPair(index));
 }
 function fillReading(el, text) {
   el.replaceChildren();
@@ -4654,20 +4921,12 @@ function fillReading(el, text) {
 }
 function readingForMonthDay(month, day) {
   const index = readingDayIndex(month, day);
-  const wordEntry = WORD_FOR_THE_DAY[index];
-  const jftEntry = JUST_FOR_TODAY[index];
-  return {
-    iso: `library-${month}-${day}`,
-    index,
-    month,
-    day,
-    leap: false,
-    word: wordEntry.word,
-    wordReading: wordEntry.reading,
-    title: jftEntry.title,
-    line: jftEntry.reading,
-    jftReading: jftEntry.reading,
-  };
+  const pair = (plusAccess.words && plusAccess.jft && plusAccess.words[index] && plusAccess.jft[index])
+    ? { word: plusAccess.words[index], jft: plusAccess.jft[index] }
+    : null;
+  const item = reflectionFromPair('library-' + month + '-' + day, month, day, index, pair);
+  item.leap = false;
+  return item;
 }
 function libraryDateLabel(month, day) {
   const dt = new Date(Date.UTC(2026, month - 1, day, 12, 0, 0));
@@ -4779,7 +5038,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Kept on this device. Signed in, this profile’s chats are also saved to your account. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4808,8 +5067,16 @@ function goingDeeperHomeEl() {
   card.append(h, p, b);
   return card;
 }
+let deeperTitleSnapshot = null;
+function rememberDeeperTitles() {
+  if (deeperTitleSnapshot) return;
+  const tracks = (typeof GOING_DEEPER_TRACKS !== 'undefined' && Array.isArray(GOING_DEEPER_TRACKS)) ? GOING_DEEPER_TRACKS : [];
+  deeperTitleSnapshot = JSON.parse(JSON.stringify(tracks));
+}
 function goingDeeperTracks() {
-  return (typeof GOING_DEEPER_TRACKS !== 'undefined' && Array.isArray(GOING_DEEPER_TRACKS)) ? GOING_DEEPER_TRACKS : [];
+  rememberDeeperTitles();
+  if (plusAccess.ready && Array.isArray(plusAccess.goingDeeper) && plusAccess.goingDeeper.length) return plusAccess.goingDeeper;
+  return deeperTitleSnapshot || [];
 }
 function deeperTrackById(id) {
   return goingDeeperTracks().find(t => t.id === id) || null;
@@ -7398,418 +7665,161 @@ const NUTRITION_KEEP = [
 ];
 const NUTRITION_CATEGORIES = [
   {
-    id: 'basics',
-    label: 'Rebuild the basics',
-    intro: 'Meals, fluids, protein, plants, and fibre. These are the rebuild. Eating breakfast, adding vegetables, or drinking water does not need medical permission.',
+    "id": "basics",
+    "label": "Rebuild the basics"
   },
   {
-    id: 'explore',
-    label: 'Explore',
-    intro: 'Nutritional approaches and supplements people hear about in recovery. Each note says what it is, why someone might try it, and what is actually known.',
+    "id": "explore",
+    "label": "Explore"
   },
   {
-    id: 'evidence',
-    label: 'What the evidence says',
-    intro: 'Quality of evidence, in ordinary language. Limited research is a reason to stay curious and honest. It is not proof, and it is not a reason to dismiss the question.',
+    "id": "evidence",
+    "label": "What the evidence says"
   },
   {
-    id: 'consider',
-    label: 'Things to consider',
-    intro: 'Medicines, health conditions, withdrawal, side effects, and interactions. These are the places where slowing down and getting personal advice matters.',
+    "id": "consider",
+    "label": "Things to consider"
   },
   {
-    id: 'questions',
-    label: 'Questions for your GP or pharmacist',
-    intro: 'Questions you can take to a GP, pharmacist, or dietitian. Use the ones that fit. Leave the rest.',
+    "id": "questions",
+    "label": "Questions for your GP or pharmacist"
   },
   {
-    id: 'experiment',
-    label: 'My experiment',
-    intro: '',
-  },
+    "id": "experiment",
+    "label": "My experiment"
+  }
 ];
 const NUTRITION_CARDS = [
   {
-    id: 'basics-meals',
-    category: 'basics',
-    title: 'Regular meals',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['Eating at roughly steady times, even when appetite is unreliable. Breakfast, or whatever the first meal of your day is, counts.'] },
-      { h: 'Why it matters', p: ['In active use, meals often disappear. A regular plate is one way to start rebuilding. Hunger and an empty stomach can sit next to irritability and cravings. Food does not cancel a craving. It gives your body something to work with.'] },
-      { h: 'Try this', p: ['Pick one meal you can repeat. Eggs on toast, yoghurt and fruit, beans on toast, or rice with something that has protein. Vegemite on toast counts. You do not need a new diet to start.'] },
-      { h: 'Notice', p: ['Energy, mood, and cravings in the hours after you eat — and on mornings you skip food.'] },
-    ],
+    "id": "basics-meals",
+    "category": "basics",
+    "title": "Regular meals"
   },
   {
-    id: 'basics-protein',
-    category: 'basics',
-    title: 'Protein on the plate',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['The part of a meal that helps you feel fed, and that gives the body material to repair. Eggs, yoghurt, cheese, milk, meat, fish, tofu, tempeh, beans, lentils, and nuts.'] },
-      { h: 'Why it matters', p: ['Appetite in early recovery can be low, huge, or absent. Protein at a meal often keeps people satisfied for longer. You can eat more of it without joining a named diet.'] },
-      { h: 'Try this', p: ['Include a protein food at two meals today.'] },
-      { h: 'Notice', p: ['How long it is until you feel hungry again, and whether your mood is steadier when you are actually fed.'] },
-    ],
+    "id": "basics-protein",
+    "category": "basics",
+    "title": "Protein on the plate"
   },
   {
-    id: 'basics-plants',
-    category: 'basics',
-    title: 'Fruit, vegetables, and fibre',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['Plant foods, and the roughage in them. Fruit, vegetables, oats, beans, lentils, wholegrain bread, nuts, and seeds.'] },
-      { h: 'Why it matters', p: ['These foods carry a lot of the vitamins and minerals a body uses while it rebuilds, and fibre feeds the gut. Opioids can slow the gut. Alcohol can irritate it. A piece of fruit or a handful of vegetables is ordinary care. It is not a cleanse.'] },
-      { h: 'Try this', p: ['Add one plant food to a meal you already eat. If you increase fibre, do it gradually and drink something with it, so your stomach is not surprised.'] },
-      { h: 'Notice', p: ['Energy, fullness, and how your gut feels over a few days.'] },
-    ],
+    "id": "basics-plants",
+    "category": "basics",
+    "title": "Fruit, vegetables, and fibre"
   },
   {
-    id: 'basics-fluids',
-    category: 'basics',
-    title: 'Fluids',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['Water and other ordinary drinks through the day. Soup, milk, and fruit count. This is not a detox flush.'] },
-      { h: 'Why it matters', p: ['Alcohol and some other drugs leave people dry, and thirst can sit next to a craving. Drinking water is part of rebuilding. You do not need permission to have a glass.'] },
-      { h: 'Try this', p: ['Keep water where you can see it. Sip through the day rather than drinking a large amount at once. More is reasonable in the heat or after sweating. Energy drinks are a poor stand-in for rest or sleep.'] },
-      { h: 'Notice', p: ['Headache, a dry mouth, and whether a craving softens after a drink of water. If you cannot keep fluids down, or you are confused or faint, that is urgent — call 000 if it is severe.'] },
-    ],
+    "id": "basics-fluids",
+    "category": "basics",
+    "title": "Fluids"
   },
   {
-    id: 'basics-enough',
-    category: 'basics',
-    title: 'Eating enough',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['Enough food for the day you are actually having. Not a perfect plan.'] },
-      { h: 'Why it matters', p: ['Early recovery can bring nausea, a small appetite, or eating that feels out of control. Both are common. Small, frequent, familiar foods beat an ideal menu. You are allowed to eat enough.'] },
-      { h: 'Try this', p: ['Three mini-meals if one big meal feels impossible. Keep yoghurt, toast, soup, cheese, fruit, or a smoothie where you can reach them.'] },
-      { h: 'Notice', p: ['Whether you are actually eating, not only thinking about nutrition. If your weight is falling quickly, tell a GP or a dietitian. That is about a change in your health, not about getting permission to eat.'] },
-    ],
+    "id": "basics-enough",
+    "category": "basics",
+    "title": "Eating enough"
   },
   {
-    id: 'basics-sleep',
-    category: 'basics',
-    title: 'Sleep and the evening meal',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['Sleep is not a nutrient. It belongs here because people ask what helps them rest, and the nutrition part is simple: a regular evening meal, and less caffeine late in the day.'] },
-      { h: 'Why it matters', p: ['Short sleep makes cravings and low mood louder. You do not have to solve sleep with a product.'] },
-      { h: 'Try this', p: ['Eat something in the evening if you have been skipping it. Move caffeine earlier if you can. Keep the hour before bed quieter than the rest of the day.'] },
-      { h: 'Notice', p: ['Which evenings you fall asleep more easily. Magnesium is one supplement people ask about for sleep. It is in Explore, with the evidence, if you want to read it. You can try the evening meal first.'] },
-    ],
+    "id": "basics-sleep",
+    "category": "basics",
+    "title": "Sleep and the evening meal"
   },
   {
-    id: 'protein-pattern',
-    category: 'explore',
-    title: 'Higher-protein eating',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: ['A way of building meals around protein foods, usually while still eating plants and some carbohydrates. It is not the same thing as a carnivore or ketogenic diet.'] },
-      { h: 'Why you might explore it', p: ['People in recovery sometimes find protein-heavy meals more satisfying, and they want to feel stronger. That curiosity is reasonable.'] },
-      { h: 'What the evidence says', p: ['Protein supporting fullness and the body’s repair is an established nutritional principle. There is not strong clinical evidence that a higher-protein diet is a treatment for addiction. You do not need a special diet to include more protein.'] },
-      { h: 'Things to consider', p: ['If you have kidney disease, or you have been told to limit protein, a big increase is a conversation with your GP or dietitian before you change the pattern. Gout can also be stirred up by some high-meat patterns.'] },
-      { h: 'Questions you could ask', items: [
-        'I have been eating more protein because I want to feel fuller. Is there any reason, given my kidneys or anything else, to keep that modest?',
-        'What would enough protein look like for me without a named diet?',
-      ] },
-    ],
+    "id": "protein-pattern",
+    "category": "explore",
+    "title": "Higher-protein eating"
   },
   {
-    id: 'vitamins',
-    category: 'explore',
-    title: 'Vitamins (B vitamins, vitamin D, and a multivitamin)',
-    tier: 'Established principle',
-    sections: [
-      { h: 'What it is', p: [
-        'Vitamins are nutrients you mostly get from food. B vitamins, including thiamine (B1), come from Vegemite and other yeast spreads, wholegrain bread, fortified cereals, legumes, eggs, meat, and leafy greens.',
-        'Vitamin D is made in skin from sunlight. Small amounts are also in oily fish, eggs, and some fortified milks and spreads. A multivitamin is one tablet that bundles modest amounts of several vitamins and minerals.',
-      ] },
-      { h: 'Why you might explore them', p: ['Eating has often been patchy. People wonder if they are low, tired, or run down, and whether a tablet would help while meals are rebuilt.'] },
-      { h: 'What the evidence says', p: [
-        'Getting vitamins from food is an established principle. Replacing a diagnosed deficiency is ordinary medicine. A blood test is how vitamin D is checked. Hopewick cannot tell you that you are low.',
-        'A multivitamin does not create energy, does not replace meals, and does not detox the body. It is not a treatment for addiction. Research on vitamins for mood or energy, in people who are not deficient, is limited.',
-        'After heavy alcohol use, thiamine can run low, and severe deficiency is a medical problem. Whether you need thiamine, and which product, belongs with a GP, pharmacist, or AOD service.',
-      ] },
-      { h: 'Things to consider', p: ['Do not stop a vitamin a doctor has already prescribed. Do not take a high dose because a webpage suggested one. Very high amounts of some vitamins can cause harm. Safe time outdoors comes before a vitamin D tablet — Slip, Slop, Slap, and don’t burn. If you already take other products, show a pharmacist the packet.'] },
-      { h: 'Questions you could ask', items: [
-        'After the way I was drinking, do I need thiamine continued or checked?',
-        'I have been indoors a lot. Is a vitamin D test useful, or is ordinary sunlight enough?',
-        'If my meals are still patchy, is a multivitamin a reasonable backup, and for how long?',
-      ] },
-    ],
+    "id": "vitamins",
+    "category": "explore",
+    "title": "Vitamins (B vitamins, vitamin D, and a multivitamin)"
   },
   {
-    id: 'magnesium',
-    category: 'explore',
-    title: 'Magnesium',
-    tier: 'Limited research',
-    sections: [
-      { h: 'What it is', p: ['A mineral in nuts, seeds, leafy greens, legumes, and wholegrains. A supplement is a concentrated form of that mineral. Some forms upset the stomach more than others.'] },
-      { h: 'Why you might explore it', p: ['Sleep, tight or restless muscles, and a wired feeling are common reasons people look up magnesium in recovery.'] },
-      { h: 'What the evidence says', p: ['Studies of magnesium for sleep are limited. Some people sleep better. Trials do not show a reliable sleeping-tablet effect. It is not a treatment for withdrawal, and it is not a treatment for addiction. The established part is the food.'] },
-      { h: 'Things to consider', p: ['Kidney disease matters, because the body may not clear extra magnesium. Some medicines are affected by mineral supplements. Stomach upset is a common reason people stop. A supplement is optional. The nuts, seeds, and greens are not.'] },
-      { h: 'Questions you could ask', items: [
-        'Is magnesium from food enough for me?',
-        'If I try a supplement, does anything I already take, or my kidney health, make that a poor idea?',
-        'What should make me stop?',
-      ] },
-    ],
+    "id": "magnesium",
+    "category": "explore",
+    "title": "Magnesium"
   },
   {
-    id: 'fish-oil',
-    category: 'explore',
-    title: 'Fish oil / omega-3',
-    tier: 'Limited research',
-    sections: [
-      { h: 'What it is', p: ['Omega-3s are fats in oily fish such as salmon, sardines, and mackerel. Fish-oil capsules are a supplement form of those fats, often listed as EPA and DHA. Algae oil is an option if you do not eat fish.'] },
-      { h: 'Why you might explore it', p: ['People ask about mood, the heart, and the brain. A meal of oily fish is the version that starts in the kitchen.'] },
-      { h: 'What the evidence says', p: ['Eating oily fish is an established part of heart-healthy eating. Research on fish-oil capsules for low mood is modest and mixed, often alongside other care. A capsule is not an antidepressant, not a brain medicine, and not a treatment for addiction.'] },
-      { h: 'Things to consider', p: ['Fish oil can add to bleeding risk if you take blood-thinning medicine. Pregnancy is a reason to check with a pharmacist before capsules. A fish meal does not need that conversation.'] },
-      { h: 'Questions you could ask', items: [
-        'I eat fish a couple of times a week. Is there a reason to add a capsule?',
-        'I take a blood thinner. Is fish oil a problem with it?',
-        'What side effects should I watch for?',
-      ] },
-    ],
+    "id": "fish-oil",
+    "category": "explore",
+    "title": "Fish oil / omega-3"
   },
   {
-    id: 'nac',
-    category: 'explore',
-    title: 'NAC (N-acetylcysteine)',
-    tier: 'Limited research',
-    sections: [
-      { h: 'What it is', p: ['NAC is short for N-acetylcysteine, a form of the amino acid cysteine. In Australia you may see it sold as a supplement. Hospitals use a medical form of NAC in a different, urgent situation: paracetamol poisoning. A shop supplement and that hospital treatment are not the same thing. Protein foods — eggs, meat, dairy, legumes, tofu — already contain cysteine.'] },
-      { h: 'Why you might explore it', p: ['People ask because NAC is involved in the body’s own antioxidant system (glutathione), and because researchers have studied it alongside cravings.'] },
-      { h: 'What the evidence says', p: ['Findings are mixed. One trial in younger people who used cannabis looked encouraging. A larger trial in adults did not find the same benefit. Other studies, including for other substances, are small or inconsistent. Any effect is uncertain and individual. NAC is not a liver cleanse, and it is not a treatment for addiction. It does not replace counselling, meetings, a GP, or an AOD service. Hopewick does not give a dose.'] },
-      { h: 'Things to consider', p: ['Nausea, stomach upset, and a strong smell are common. Asthma is a reason for extra care. If someone may have taken too much paracetamol, call 000 or the Poisons Information Centre on 13 11 26. Do not handle that with a shop supplement.'] },
-      { h: 'Questions you could ask', items: [
-        'Given what I use, and the medicines I take, is oral NAC something you would consider, or is food enough?',
-        'What did the cannabis research actually show, in plain language?',
-        'What side effects should make me stop?',
-      ] },
-    ],
+    "id": "nac",
+    "category": "explore",
+    "title": "NAC (N-acetylcysteine)"
   },
   {
-    id: 'ashwagandha',
-    category: 'explore',
-    title: 'Ashwagandha',
-    tier: 'Limited research',
-    sections: [
-      { h: 'What it is', p: ['Ashwagandha (Withania somnifera) is a root used in Ayurvedic tradition and sold as a capsule or powder. It is often called an adaptogen — a loose word for a herb people take for stress. That word is not a medical category.'] },
-      { h: 'Why you might explore it', p: ['Stress, sleep, and anxiety symptoms are why people in recovery hear about it. The interest is usually “I want to feel steadier,” not a hunt for a cure.'] },
-      { h: 'What the evidence says', p: ['Small trials have looked at perceived stress and sleep, sometimes with modest short-term changes. That is limited research. It has not been shown to treat addiction. Personal stories are common, and they are not the same as a trial.'] },
-      { h: 'Things to consider', p: ['Rare reports of liver injury have been serious enough for medicines regulators, including Australia’s Therapeutic Goods Administration, to publish safety notices. Ashwagandha may increase thyroid hormone activity, so thyroid disease or thyroid medicine matters. It is often avoided in pregnancy. It can add to sedation with alcohol or with sedating medicines. An autoimmune condition is another reason for a personal conversation before you try it.'] },
-      { h: 'Questions you could ask', items: [
-        'I am curious about ashwagandha for stress. With my medicines, and my liver and thyroid history, is this a poor fit?',
-        'What warning signs, including dark urine or yellow eyes, mean I should stop and be seen?',
-        'Is there a simpler sleep or stress step you would try first?',
-      ] },
-    ],
+    "id": "ashwagandha",
+    "category": "explore",
+    "title": "Ashwagandha"
   },
   {
-    id: 'restrictive-diets',
-    category: 'explore',
-    also: ['consider'],
-    title: 'Ketogenic and carnivore diets',
-    tier: 'Limited research',
-    sections: [
-      { h: 'What it is', p: [
-        'A ketogenic diet is very low in carbohydrate, higher in fat, and contains enough protein that the body shifts toward using ketones.',
-        'A carnivore diet is animal foods only — meat, fish, eggs, and sometimes dairy — and leaves out fruit, vegetables, grains, and legumes.',
-      ] },
-      { h: 'Why you might explore it', p: ['Some people in recovery want fewer cravings, steadier energy, or a simpler relationship with food. Others are curious because someone they trust felt mentally clearer. That curiosity is understandable. It is not an instruction. You do not need to follow either diet to recover.'] },
-      { h: 'What the evidence says', p: ['There is early research on ketogenic diets and alcohol, including a small human study during withdrawal and some animal research. It is not established care. The studies are small, and the results are uncertain. Carnivore eating is mostly individual stories. There is very little clinical research, and none that shows it is a treatment for addiction.'] },
-      { h: 'Things to consider', p: [
-        'Both patterns are restrictive. A ketogenic diet can be hard to sustain, and the first days can feel miserable. It is a poor fit in pregnancy, with a history of disordered eating, with gallbladder or significant pancreas trouble, and if you take medicines for diabetes — a sudden drop in carbohydrate can be dangerous with some of those medicines.',
-        'Carnivore eating removes fibre and many vitamins that plants provide, including vitamin C and folate when plants are truly absent. Constipation is common. Cholesterol can change. Kidney disease and gout are reasons to talk with a GP before a meat-heavy experiment. A few weeks of curiosity is still a dietary change with consequences.',
-      ] },
-      { h: 'Questions you could ask', items: [
-        'If I tried a lower-carbohydrate or meat-heavy pattern for a few weeks, what would you want to know about my health first?',
-        'What changes in energy, mood, gut, or blood tests should make me stop?',
-        'How do I keep plants and fibre in the week if I do not want to cut them out?',
-      ] },
-    ],
+    "id": "restrictive-diets",
+    "category": "explore",
+    "title": "Ketogenic and carnivore diets"
   },
   {
-    id: 'methylene-blue',
-    category: 'explore',
-    also: ['consider'],
-    caution: true,
-    title: 'Methylene blue — higher caution',
-    tier: 'Higher caution',
-    sections: [
-      { h: 'What it is', p: ['Methylene blue is a dye and a medicine used in hospitals for specific problems, including a blood condition called methemoglobinemia. It is not an ordinary wellness supplement. Online, people also talk about it for energy, mood, and mitochondria. That conversation is not the hospital use.'] },
-      { h: 'Why you might explore it', p: ['The stories sound bold: clarity, energy, a different kind of experiment while rebuilding. Curiosity makes sense. This one needs a professional in the conversation before any product does.'] },
-      { h: 'What the evidence says', p: ['Research on mood and cognition is early and limited. It is not a treatment for addiction. Personal experiments posted online are anecdotes. They are not a protocol, and this app will not turn them into one.'] },
-      { h: 'Things to consider', p: [
-        'Methylene blue can act like a monoamine oxidase inhibitor. Combined with many antidepressants — SSRIs, SNRIs, and other medicines that affect serotonin — it can contribute to serotonin syndrome. Agitation, confusion, heavy sweating, tremor, and fever are emergency symptoms. Call 000.',
-        'People with G6PD deficiency can break down red blood cells if they take it. Hopewick does not give a dose, a concentration, or a schedule. Urine or saliva can turn blue-green. That is a known effect of the substance, not a target.',
-      ] },
-      { h: 'Questions you could ask', items: [
-        'I have heard about methylene blue. Here are my medicines, including any antidepressant. Is this something I should leave alone?',
-        'Could G6PD deficiency, or anything else in my history, make it unsafe?',
-        'If I am only curious, what safer experiment would you rather I start with?',
-      ] },
-    ],
+    "id": "methylene-blue",
+    "category": "explore",
+    "title": "Methylene blue — higher caution"
   },
   {
-    id: 'evidence-kinds',
-    category: 'evidence',
-    title: 'Three kinds of knowledge',
-    tier: 'How to read this section',
-    sections: [
-      { h: 'Established nutritional principles', p: ['Enough food, regular meals, protein, fruit and vegetables, fibre, fluids, and the vitamins and minerals already in ordinary food. These are how bodies are fed while they rebuild. They are worth doing because they are basic care. They are not a cure for addiction, and they do not need a permission slip.'] },
-      { h: 'Emerging or limited research', p: ['Studies exist, and they do not yet add up to a settled treatment. The samples are small, the results disagree, or the people studied are not you. NAC and cravings, omega-3 capsules and mood, magnesium and sleep, ashwagandha and stress, vitamin D when a test shows you are low, and early ketogenic research around alcohol sit here. Interest is reasonable. Certainty is not. Where studies disagree, the honest summary is that the findings are mixed.'] },
-      { h: 'Individual experience', p: ['What one person noticed. That includes stories online, a friend’s week, and the founder note at the top of this screen. Personal experience can make you curious. It is not medical evidence, and it is kept separate from these cards on purpose.'] },
-    ],
+    "id": "evidence-kinds",
+    "category": "evidence",
+    "title": "Three kinds of knowledge"
   },
   {
-    id: 'evidence-claims',
-    category: 'evidence',
-    title: 'What these notes will not claim',
-    tier: 'How to read this section',
-    sections: [
-      { h: 'What the evidence says', p: [
-        'Hopewick will not call a supplement, a restrictive diet, or methylene blue a treatment for addiction. Strong clinical evidence would be needed for that claim. It is not there for the products in Explore.',
-        'Saying so is honesty. It is not a warning to leave yourself alone. You can still change one thing, pay attention, and talk with a professional when the change involves a medicine, a restrictive diet, withdrawal, or a compound such as methylene blue.',
-        'These notes do not give doses. They do not tell you to stop a prescribed medicine.',
-      ] },
-    ],
+    "id": "evidence-claims",
+    "category": "evidence",
+    "title": "What these notes will not claim"
   },
   {
-    id: 'evidence-stories',
-    category: 'evidence',
-    title: 'How to read a promising week',
-    tier: 'Personal stories',
-    sections: [
-      { h: 'What it is', p: ['One good week is information. It is not a trial. Changing five things at once makes it hard to know what helped.'] },
-      { h: 'Try this', p: ['Pick one change. Write why you tried it, how you felt, any side effects, and whether you will keep it, change it, or stop it. My experiment, at the end of this screen, is for that record.'] },
-    ],
+    "id": "evidence-stories",
+    "category": "evidence",
+    "title": "How to read a promising week"
   },
   {
-    id: 'consider-medicines',
-    category: 'consider',
-    title: 'Medicines and conditions that change the picture',
-    tier: 'Worth a personal conversation',
-    sections: [
-      { h: 'Things to consider', p: ['Most meals do not interact with your prescriptions. Some supplements and big dietary changes can. These are the combinations people most often need a pharmacist or GP to look at with them.'] },
-      { h: 'Examples, not a ban list', items: [
-        'Blood-thinning medicine and fish oil or omega-3 capsules.',
-        'Antidepressants and other serotonergic medicines with methylene blue — serotonin syndrome is an emergency.',
-        'Thyroid medicine, thyroid disease, pregnancy, or sedating medicines with ashwagandha.',
-        'Kidney disease with extra magnesium, or with a large jump in protein.',
-        'Diabetes medicines with a sudden ketogenic diet.',
-        'A vitamin a doctor has already started — do not stop it because of something you read here.',
-      ] },
-    ],
+    "id": "consider-medicines",
+    "category": "consider",
+    "title": "Medicines and conditions that change the picture"
   },
   {
-    id: 'consider-withdrawal',
-    category: 'consider',
-    title: 'Alcohol and benzodiazepine withdrawal',
-    tier: 'Medical care, not a meal plan',
-    sections: [
-      { h: 'What it is', p: ['Stopping alcohol or benzodiazepines after regular or heavy use can be medically dangerous, including seizures and confusion. That needs a doctor or an AOD service. It is a different subject from breakfast, water, or vegetables.'] },
-      { h: 'What food can still do', p: ['Regular meals, fluids, and rest can support comfort while proper withdrawal care happens. They do not replace a taper, a detox admission, or thiamine decisions after heavy drinking. Do not stop benzodiazepines suddenly on your own after regular use.'] },
-      { h: 'Emergency', p: ['Shaking that is severe, confusion, a seizure, chest pain, or trouble breathing: call 000.'] },
-    ],
+    "id": "consider-withdrawal",
+    "category": "consider",
+    "title": "Alcohol and benzodiazepine withdrawal"
   },
   {
-    id: 'consider-hospital',
-    category: 'consider',
-    title: 'A shop bottle is not hospital treatment',
-    tier: 'Worth a personal conversation',
-    sections: [
-      { h: 'What it is', p: ['Some names in Explore are also real hospital medicines, used for different reasons and in different forms. NAC in hospital is a treatment for paracetamol poisoning. Methylene blue in hospital is a treatment for specific medical problems. A wellness bottle is not either of those.'] },
-      { h: 'Emergency', p: ['If someone may have taken too much paracetamol, call 000 or the Poisons Information Centre on 13 11 26. Do not handle that with a shop supplement.'] },
-    ],
+    "id": "consider-hospital",
+    "category": "consider",
+    "title": "A shop bottle is not hospital treatment"
   },
   {
-    id: 'consider-effects',
-    category: 'consider',
-    title: 'Side effects worth writing down',
-    tier: 'Worth a personal conversation',
-    sections: [
-      { h: 'Notice', p: ['A side effect is information. It is not a failure, and it is not a reason to hide the experiment from yourself. Write it in My experiment.'] },
-      { h: 'Things to consider', items: [
-        'Stomach upset, nausea, rash, or a strong new smell from a product.',
-        'Dark urine or yellow eyes — stop ashwagandha if you are taking it, and be seen.',
-        'Agitation, confusion, heavy sweating, tremor, or fever after methylene blue and an antidepressant — call 000.',
-        'Weight falling quickly, or fluids that will not stay down.',
-      ] },
-    ],
+    "id": "consider-effects",
+    "category": "consider",
+    "title": "Side effects worth writing down"
   },
   {
-    id: 'questions-food',
-    category: 'questions',
-    title: 'About food and rebuilding',
-    sections: [
-      { h: 'Questions you could ask', items: [
-        'Am I eating enough for this stage of recovery, or is my weight changing in a way you want to check?',
-        'Would a dietitian who understands alcohol and other drugs be useful for me?',
-        'After heavy drinking, do I need thiamine continued or checked?',
-        'I have been indoors a lot. Is a vitamin D test worth doing?',
-      ] },
-    ],
+    "id": "questions-food",
+    "category": "questions",
+    "title": "About food and rebuilding"
   },
   {
-    id: 'questions-supplement',
-    category: 'questions',
-    title: 'About a supplement you are curious about',
-    sections: [
-      { h: 'Questions you could ask', p: ['Name the product — magnesium, fish oil, NAC, ashwagandha, a multivitamin, or something else — and take your medicine list with you.'] },
-      { h: 'A short list', items: [
-        'What is this, in plain language, and why do people in recovery talk about it?',
-        'Is what we know established, limited, or mostly personal stories?',
-        'Here are the medicines and products I already take. Does this add a problem?',
-        'What should I notice over the next couple of weeks?',
-        'What should make me stop and contact you?',
-        'Is food enough for the thing I am hoping to change?',
-      ] },
-    ],
+    "id": "questions-supplement",
+    "category": "questions",
+    "title": "About a supplement you are curious about"
   },
   {
-    id: 'questions-diet',
-    category: 'questions',
-    title: 'About a ketogenic or carnivore pattern',
-    sections: [
-      { h: 'Questions you could ask', p: ['You do not need anyone’s permission to keep eating vegetables. These questions are for a major restrictive change.'] },
-      { h: 'A short list', items: [
-        'I am interested because of a specific reason I can name. What would you want monitored if I tried this for a few weeks?',
-        'Given my kidneys, cholesterol, gout, pregnancy, eating history, or diabetes medicines, is this a poor fit?',
-        'How would I know it is not suiting me?',
-        'What would a less extreme version look like if I still want more protein and fewer chaotic meals?',
-      ] },
-    ],
+    "id": "questions-diet",
+    "category": "questions",
+    "title": "About a ketogenic or carnivore pattern"
   },
   {
-    id: 'questions-methylene',
-    category: 'questions',
-    title: 'About methylene blue',
-    sections: [
-      { h: 'Questions you could ask', items: [
-        'I take these medicines, including any antidepressant. Is methylene blue something I should not take?',
-        'Do I have any condition, such as G6PD deficiency, that would make it unsafe?',
-        'What warning signs mean emergency care, not a wait-and-see?',
-        'What is actually known, and what is only a personal story online?',
-      ] },
-    ],
+    "id": "questions-methylene",
+    "category": "questions",
+    "title": "About methylene blue"
   },
   {
-    id: 'questions-withdrawal',
-    category: 'questions',
-    title: 'If alcohol or benzodiazepines are in the picture',
-    sections: [
-      { h: 'Questions you could ask', items: [
-        'I am cutting down or stopping. Do I need medical withdrawal care, separate from anything I change in my food?',
-        'Who do I call if I get very shaky, confused, or feel a seizure coming? In that moment the answer is 000.',
-        'Does my AOD service or GP want me on thiamine while this is happening?',
-      ] },
-    ],
-  },
+    "id": "questions-withdrawal",
+    "category": "questions",
+    "title": "If alcohol or benzodiazepines are in the picture"
+  }
 ];
 
 
@@ -10030,13 +10040,15 @@ function renderNutritionBrowse() {
   filters.replaceChildren();
   box.replaceChildren();
   if (!subscriptionPlus()) return;
+  const nutritionCats = (plusAccess.nutritionCategories && plusAccess.nutritionCategories.length) ? plusAccess.nutritionCategories : [];
+  const nutritionNotes = (plusAccess.nutritionCards && plusAccess.nutritionCards.length) ? plusAccess.nutritionCards : [];
   const setCategory = (id) => {
     nutritionCategory = id;
     renderNutritionBrowse();
     renderNutritionExperiment();
   };
   filters.appendChild(nutritionFilterChip('All', nutritionCategory === 'all', 'data-nutrition-category', 'all', () => setCategory('all')));
-  for (const cat of NUTRITION_CATEGORIES) {
+  for (const cat of nutritionCats) {
     filters.appendChild(nutritionFilterChip(
       cat.label,
       nutritionCategory === cat.id,
@@ -10046,12 +10058,12 @@ function renderNutritionBrowse() {
     ));
   }
   const groups = nutritionCategory === 'all'
-    ? NUTRITION_CATEGORIES.filter(cat => cat.id !== 'experiment')
-    : NUTRITION_CATEGORIES.filter(cat => cat.id === nutritionCategory && cat.id !== 'experiment');
+    ? nutritionCats.filter(cat => cat.id !== 'experiment')
+    : nutritionCats.filter(cat => cat.id === nutritionCategory && cat.id !== 'experiment');
   for (const cat of groups) {
     const cards = nutritionCategory === 'all'
-      ? NUTRITION_CARDS.filter(card => card.category === cat.id)
-      : NUTRITION_CARDS.filter(card => card.category === cat.id || (card.also || []).includes(cat.id));
+      ? nutritionNotes.filter(card => card.category === cat.id)
+      : nutritionNotes.filter(card => card.category === cat.id || (card.also || []).includes(cat.id));
     if (!cards.length) continue;
     const group = document.createElement('section');
     group.className = 'nut-group';
@@ -10233,209 +10245,97 @@ function openNutrition() {
    --------------------------------------------------------------------------- */
 const GUT_CARDS = [
   {
-    id: 'gut-mood',
-    title: 'The gut and mood',
-    body: [
-      'The gut–brain axis is two-way traffic between the digestive tract and the brain. The vagus nerve carries a large share of the nerve signals. Hormones, immune messengers, and metabolites from the microbiome travel as well. Those microbes — bacteria and others, mostly in the large intestine — take part by making compounds that can influence the signals.',
-      'Food, short sleep, ongoing stress, and alcohol change both ends of that traffic. A hard week can show up as bloating, a shifted appetite, constipation, or a flatter mood. The connection is established, and the details are still being mapped. It is not a switch. One meal does not explain depression, anxiety, or addiction, and it does not treat them.',
-    ],
+    "id": "gut-mood",
+    "title": "The gut and mood"
   },
   {
-    id: 'serotonin',
-    title: 'Serotonin and dopamine, carefully',
-    body: [
-      'Most of the body’s serotonin is made in the gut, by enterochromaffin cells in the lining. Gut microbes can change how much those cells release. That serotonin does local work: gut movement, secretion, and signals to nearby nerves. It does not cross the blood–brain barrier in any amount that would lift mood. Serotonin involved in mood is made separately, inside the brain, from tryptophan that has crossed that barrier.',
-      'Dopamine is a different messenger. In the brain it is part of motivation, movement, and learning from reward. The gut has its own dopamine signalling, largely to do with motility. A fermented food or a capsule does not refill either system. Addiction is not a shortage of dopamine you can top up. Repeated use changes how the brain learns from reward. Food does not reverse that.',
-      'If mood is heavy, or you already take medicine for it, that belongs with your GP. Do not start or stop a medicine because of something you read about the gut.',
-    ],
+    "id": "serotonin",
+    "title": "Serotonin and dopamine, carefully"
   },
   {
-    id: 'probiotics',
-    title: 'Probiotics and fermented foods',
-    body: [
-      'A probiotic is a specific live microbe, supplied in an amount that has been shown to confer a benefit. That is a tighter definition than the word on a pot. Fermented foods people actually eat — yoghurt, kefir, sauerkraut, kimchi, and miso, plus some cheeses — can contain live cultures when they have not been pasteurised or cooked after fermenting. They are foods. A pharmacy capsule is a named strain with a count on the label. The two are not the same thing, and neither is a treatment for addiction.',
-      'Where the evidence is stronger, the use is narrow. Some strains reduce the chance of diarrhoea after antibiotics. Research on mood, sometimes marketed as psychobiotics, is early: small trials and mixed results, not a foundation for recovery. If your immune system is suppressed, you are pregnant, you are very unwell, or you take regular medicine, ask a GP or pharmacist before a shop probiotic. No brand and no dose belong here.',
-      'Some kombucha contains a little alcohol, and the level can rise if the bottle sits warm. If alcohol is part of your recovery, read the label, and skip it when you are unsure.',
-    ],
+    "id": "probiotics",
+    "title": "Probiotics and fermented foods"
   },
   {
-    id: 'fibre',
-    title: 'Fibre, the everyday helper',
-    body: [
-      'Dietary fibre is the part of plant food your own enzymes do not fully break down. Microbes in the colon ferment much of it and produce short-chain fatty acids: acetate, propionate, and butyrate. Butyrate is fuel for the cells lining the colon. The others take part in immune and metabolic signalling. That is the practical meaning of feeding the microbiome.',
-      'You get fibre from fruit, vegetables, oats, beans, lentils, wholegrain bread, nuts, and seeds. Increase it gradually and drink water with it. A sudden jump is a common reason for gas and cramping. If you have inflammatory bowel disease, a narrowing in the bowel, or you have already been told to limit fibre, set the pace with a dietitian. More on the first day is not an improvement.',
-    ],
+    "id": "fibre",
+    "title": "Fibre, the everyday helper"
   },
   {
-    id: 'habits',
-    title: 'Stress, sleep, alcohol, and recovery',
-    body: [
-      'The gut notices the same pressures recovery is already trying to steady. Ongoing stress changes motility, and it can shift which microbes are abundant, though human studies are less tidy than the animal work. Short sleep pushes in a similar direction. Alcohol irritates the lining and changes the mix of microbes. Opioids slow the gut. Constipation on them is common — mention it to a doctor, rather than buying a cleanse. Other drugs can flatten appetite or speed transit. Bloating, a changed appetite, constipation, or diarrhoea are the usual signs.',
-      'What helps is ordinary and repeatable: regular simple meals, water through the day, enough sleep, and less alcohol. Skip gut detox kits, reset powders, and anything sold as a fast fix for mood or addiction.',
-    ],
+    "id": "habits",
+    "title": "Stress, sleep, alcohol, and recovery"
   },
   {
-    id: 'gp',
-    title: 'When to talk to a GP or dietitian',
-    body: [
-      'See a GP promptly if pain continues, you see blood in the stool or in vomit, stools turn black, weight drops quickly without a clear reason, swallowing becomes difficult, or you cannot keep food or fluids down.',
-      'Talk it through before you overhaul how you eat if you already have a gut condition — coeliac disease, inflammatory bowel disease, liver disease, or IBS that is changing — or if you take regular medicine, including antibiotics, metformin, opioids, and many medicines used for mood. Once anything urgent is ruled out, an Accredited Practising Dietitian is the right person for the food.',
-    ],
-  },
+    "id": "gp",
+    "title": "When to talk to a GP or dietitian"
+  }
 ];
 const BRAIN_CARDS = [
   {
-    id: 'repetition',
-    title: 'Your brain learns from repetition',
-    body: [
-      'The capacity of the brain to change with experience is called neuroplasticity. It is established biology, not a slogan. Connections that are used become more efficient, and skills you practise become easier to start. That is learning. It is not a switch, and talk of “rewiring” oversells how fast the change is and how complete it can be.',
-      'What gets repeated is what becomes fluent. A cue, a response, and a consequence, run many times, is how both useful and costly habits form. Early on, the older pattern is still the easy one. Feeling awkward, or pulled backwards, usually means the new behaviour has had less practice. It does not mean you are a person who cannot learn.',
-      'Sleep, food, and a day that is not constantly overloaded are part of that biology. A mindset, an app, or a single insight does not stand in for practice, people, or care.',
-    ],
+    "id": "repetition",
+    "title": "Your brain learns from repetition"
   },
   {
-    id: 'defusion',
-    title: 'A thought is not an instruction',
-    body: [
-      'Minds produce words and pictures all day: predictions, memories, commentary, and the occasional sales pitch. Cognitive defusion, a skill from acceptance and commitment therapy, is the practice of seeing a thought as a thought — an event in the mind — rather than as an order or a settled fact.',
-      '“I can’t do this”, “one won’t matter”, and “I’ve already ruined it” can arrive with a strong sense of being true. That sense is not the same as evidence, and it is not a command. You can notice the sentence, name it (“the ruined-it story”), and still choose the next action.',
-      'This is not positive thinking, and it is not a debate you have to win. Arguing with a thought often glues you to it. The useful move is a little distance, then a choice.',
-    ],
+    "id": "defusion",
+    "title": "A thought is not an instruction"
   },
   {
-    id: 'acceptance',
-    title: 'Stop fighting every feeling',
-    body: [
-      'Acceptance, in this sense, means willingness: making room for a feeling so you can do something that matters. It does not mean liking the feeling, approving of what happened, or agreeing that you should stop wanting relief.',
-      'Experiential avoidance is the pattern of organising life to get rid of unwanted inner experience — anxiety, shame, boredom, grief, craving. Substances often work, for a while, as avoidance. The cost is that more of the day gets arranged around keeping the feeling away. Trying to force a feeling out often keeps it in the centre of attention.',
-      'Willingness is different. The feeling can be here while you send the text, leave, or go to the meeting. Present-moment awareness helps: notice where the feeling sits in the body, and what is actually in the room, instead of living only inside the story about it.',
-      'If a feeling comes with chest pain, confusion, or any plan to harm yourself or someone else, that is a safety matter. Willingness is not a reason to sit that out.',
-    ],
+    "id": "acceptance",
+    "title": "Stop fighting every feeling"
   },
   {
-    id: 'cravings',
-    title: 'Cravings are experiences, not commands',
-    body: [
-      'A craving is a learned surge: sensations, images, and a pull toward a familiar action. In behavioural terms it is often started by a cue and strengthened by reinforcement — the times that action brought relief, pleasure, numbness, or a sense of belonging. The surge can be intense without being a decision you have already made.',
-      'Urge surfing, from relapse-prevention work associated with Alan Marlatt, treats the urge as a wave you can watch. Urges rise, peak, and fall. You do not have to obey them, and you do not have to crush them. A practical version is small: notice where it sits, slow the out-breath, and rate it now and again a few minutes later. You are learning the shape of the wave, not performing calm.',
-      'If you may be in withdrawal from alcohol or benzodiazepines, a breathing exercise is not medical care. Stopping those suddenly after regular or heavy use can be dangerous and needs a doctor or an alcohol and other drug service.',
-    ],
+    "id": "cravings",
+    "title": "Cravings are experiences, not commands"
   },
   {
-    id: 'environment',
-    title: 'Your environment matters',
-    body: [
-      'Habits are sensitive to context. Places, times, people, and objects can start a sequence before a deliberate intention has formed. Changing the cue — the route, the hour, who is there, what is in the house — is how conditioning is handled. It is not a failure of character.',
-      'Stress, short sleep, hunger, and a day with no structure make an old loop more likely. Ordinary routine is one of the more reliable levers: a meal, a bedtime, a planned contact with someone safe.',
-      'There is a trauma-informed point here that is easy to oversimplify. After threat, the nervous system can treat a neutral cue as danger and push hard toward escape. That is a working description used in trauma-informed care, not a diagnosis, and not a story that removes choice. The Adverse Childhood Experiences research, noted in the last card, found a graded association between categories of childhood adversity and later health risks, including substance problems. Association is not destiny, and this app cannot assess a history.',
-      'Bruce Alexander’s Rat Park experiments are sometimes told as if they proved addiction is only a barren environment. They did not. Socially housed rats drank less morphine solution than isolated rats, in that laboratory setup. Animal findings can suggest questions. They do not prove a complete explanation of human addiction, which also involves the substance, learning, mental health, relationships, and access.',
-    ],
+    "id": "environment",
+    "title": "Your environment matters"
   },
   {
-    id: 'connection',
-    title: 'Connection matters in recovery',
-    body: [
-      'Recovery research uses the term recovery capital for resources a person can actually draw on. Robert Granfield and William Cloud described the internal and external means that help someone start and sustain change: practical things such as housing and transport, skills and health, and — centrally — other people.',
-      'Shame and isolation shrink the next available action. A group, a sponsor, one family member who will pick up, a colleague who knows a little: these are not decorations around abstinence. They are conditions in which a different behaviour is easier to repeat. Purpose and belonging sit in the same picture. Somewhere to be, and someone who expects you, protects a change more reliably than a private rule.',
-      'You do not owe your whole story to everyone. One steady relationship is a real start. In this app, a goal, a journal line, or a chat can hold a single next step. None of those replaces a person.',
-    ],
+    "id": "connection",
+    "title": "Connection matters in recovery"
   },
   {
-    id: 'values',
-    title: 'Values give you direction',
-    body: [
-      'Values, as acceptance and commitment therapy uses the word, are chosen directions: the sort of friend, parent, worker, or neighbour you are trying to be. They are not a mood you must feel first, and they are not goals you finish and file. Russ Harris’s The Happiness Trap is a plain-language account of this, drawn from the model developed by Steven C. Hayes and colleagues.',
-      'Feelings are a poor compass on their own. You can feel flat, angry, or pulled toward a substance and still take one step you respect. Instead of always asking, “How do I make this feeling go away?” a person can also ask, “What kind of person do I want to be while this feeling is here?”',
-      'That question does not clear the feeling. It gives the next hour a job that is larger than symptom control. Committed action is the follow-through: a small behaviour, repeated, including on days the inner weather has not changed.',
-    ],
+    "id": "values",
+    "title": "Values give you direction"
   },
   {
-    id: 'mind',
-    title: 'You do not have to believe everything your mind says',
-    body: [
-      'The mind comments constantly. Some comments are useful (“you have not eaten”). Some are old protection (“do not trust this”). Some are a brief for a substance. Treating every sentence as a report you must accept is not honesty. It is fusion: the story and the person have collapsed into one.',
-      'A workable check is practical rather than cheerful. Has this thought helped you act like the person you mean to be, or has it mostly narrowed the options? You can note the warning and still decline the instruction.',
-      'The claim that your thoughts create your reality says more than the psychology supports. Thoughts shape attention and action. They do not, on their own, create illness, trauma, housing, or another person’s choices. Forcing a positive thought is a different project, and it is not this one.',
-    ],
+    "id": "mind",
+    "title": "You do not have to believe everything your mind says"
   },
   {
-    id: 'discomfort',
-    title: 'Practice being uncomfortable',
-    body: [
-      'Psychological flexibility includes staying with discomfort when escaping it would cost something you care about. The first ten minutes of a meeting, a difficult conversation, boredom late in the evening, the physical feel of an urge: these are workable places to practise staying.',
-      'The practice is specific. Notice the sensation. Keep part of your attention on the room, not only on the story. Do one small thing you had already decided mattered. You are not trying to like the discomfort. You are finding out that it can be present while you act.',
-      'This is not a reason to ignore a medical symptom or an unsafe situation. Chest pain, trouble breathing, confusion, possible withdrawal, violence, or a plan to harm yourself or someone else is not a character exercise. If you are in danger, call 000. For medical risk, contact a GP or an alcohol and other drug service. In this app, use Get help now.',
-    ],
+    "id": "discomfort",
+    "title": "Practice being uncomfortable"
   },
   {
-    id: 'life',
-    title: 'Build a life, not only abstinence',
-    body: [
-      'For many people, stopping is necessary and still not the whole task. A life that is only “not using” is thin, and thin lives are hard to defend late at night. Purpose, routine, useful work, play, and people give a change something to stand inside.',
-      'Committed action is a series of small moves in a valued direction. It is not a personality overhaul, and it does not wait for motivation to arrive first. A lapse is information about a situation — the cue, the state you were in, the company — not proof that an old story was the true one.',
-      'Harm reduction belongs in the same conversation. Cutting down, safer use, and not using alone are real directions when abstinence is not where someone is. Abstinence with no belonging and no plan for the empty hours is a harder task than slogans suggest. Build a day you would actually stay for.',
-    ],
+    "id": "life",
+    "title": "Build a life, not only abstinence"
   },
   {
-    id: 'research',
-    title: 'Research behind these ideas',
-    body: [
-      'These notes rest on different kinds of source. They are not equally strong, and none of them is an assessment of you.',
-      'Psychological flexibility is the organising model in acceptance and commitment therapy, developed by Steven C. Hayes and colleagues, with Kirk Strosahl and Kelly Wilson among the main clinical authors. The processes usually named are acceptance, cognitive defusion, present-moment awareness, a sense of self larger than the current story, values, and committed action. ACT has been studied in many clinical trials, including for anxiety, depression, and substance use. Results are broadly supportive and not the same for every problem. It is a therapy with an evidence base, not a guarantee. Reading about it is not the same as working with a clinician.',
-      'Russ Harris’s The Happiness Trap is a widely used plain-language introduction to those ideas for general readers. The book itself is not a clinical trial.',
-      'Behavioural learning is older and well established. Responses that are cued and then reinforced tend to be repeated, and with repetition in a stable context they become more automatic. That is the core under popular “habit loop” language. Urge surfing comes from relapse-prevention work led by G. Alan Marlatt: watch an urge rise and fall rather than treat it as an order.',
-      'Neuroplasticity — experience-dependent change in the nervous system — is established neuroscience. The consumer line about rewiring a brain is not a research finding. It exaggerates speed, control, and how total the change is.',
-      'Recovery capital is a framework from the sociologists Robert Granfield and William Cloud, set out in their 1999 book Coming Clean and in later papers. It names internal and external resources people draw on in order to change, including relationships and practical stability. It is a useful account of those resources. It is not a score this app can calculate.',
-      'The Adverse Childhood Experiences study — Felitti, Anda, and colleagues, American Journal of Preventive Medicine, 1998 — reported a graded relationship. More categories of childhood abuse or household dysfunction lined up with higher rates of several adult health risks, including problematic substance use. That is an association in a large survey of adults. It is not proof that adversity is the single cause of addiction, and it is not a diagnosis.',
-      'Rat Park was a series of experiments by Bruce K. Alexander and colleagues in the late 1970s, first published in 1978 in Psychopharmacology (Alexander, Coambs, and Hadaway). In that setup, rats housed with other rats drank less morphine solution than rats kept alone. It is animal research. It does not show that environment, or a lack of connection, is a complete explanation of human addiction. Popular retellings often claim more than the experiments showed.',
-    ],
-  },
+    "id": "research",
+    "title": "Research behind these ideas"
+  }
 ];
 const COLD_CARDS = [
   {
-    id: 'stay',
-    title: 'Practise staying',
-    body: [
-      'Addiction often builds habits around immediate relief, avoidance, comfort, escape, and repeating a familiar behaviour even when it is destructive. Recovery can involve deliberately learning to do difficult things differently.',
-      'Recovery already asks you to do things that feel uncomfortable. This is another opportunity to practise staying instead of escaping. You knowingly step into the cold. You control your breathing. You stay present. You resist the urge to get out the moment your mind demands it. You complete something you committed to.',
-      'The purpose is that practice: discipline, willingness, commitment, and emotional regulation. It is learning that discomfort does not always need to be escaped.',
-    ],
+    "id": "stay",
+    "title": "Practise staying"
   },
   {
-    id: 'win',
-    title: 'The win is following through',
-    body: [
-      'The win is not how long you stay in the water. The win is making a commitment to yourself, facing the first urge to get out, staying present, and following through safely.',
-      'Sometimes the achievement is simply getting in when your mind says not to. You meet the first reaction. You breathe. You get out knowing you followed through.',
-    ],
+    "id": "win",
+    "title": "The win is following through"
   },
   {
-    id: 'after',
-    title: 'What some people notice afterwards',
-    body: [
-      'Some people describe cold exposure as helping them feel alert, refreshed, grounded, or mentally reset afterwards. Others do not feel any of that. Individual experiences vary.',
-      'If you feel clearer when you step out, that can be a welcome part of the practice. It is not a result this page can promise you. The reason to get in is the commitment you keep with yourself.',
-    ],
+    "id": "after",
+    "title": "What some people notice afterwards"
   },
   {
-    id: 'research',
-    title: 'What cold does to the body',
-    body: [
-      'As of 2026, published research describes real physiological responses to cold-water immersion. Most of it is in healthy people or in sport. That is different from evidence about addiction recovery: these studies are not trials of recovery from substance dependence.',
-      'A 2010 review in the British Journal of Sports Medicine (Bleakley and Davison) found that short cold-water immersion raises heart rate, blood pressure, breathing, and metabolism. That stress response is measurable. The review asked why athletes use cold after training, and it did not settle that sporting question. It did show that the heart and the lungs respond.',
-      'A 2017 review in Experimental Physiology (Tipton and colleagues) maps those human responses, including cold shock and strain on the heart. The physiology is described. Longer-term claims about health are less settled.',
-      'A small 2023 study in the journal Biology (Yankouskaya and colleagues) asked healthy adults who were new to cold-water swimming how they felt afterwards. On average, the group reported feeling more alert and more active, and less distressed. Scans in that same study were linked with more connection between some brain areas involved in attention and emotion. The scans were around a single immersion in healthy adults. They describe a response in the moment.',
-      'A 2013 review in PLoS ONE (Bieuzen, Bleakley, and Costello) looked at contrast water therapy — warmer water and colder water — after hard exercise. The trials were about muscle soreness in sport, and all of them had a high risk of bias. In those sport trials, contrast therapy looked better than rest alone for soreness, and not clearly better than other options used in sport.',
-    ],
+    "id": "research",
+    "title": "What cold does to the body"
   },
   {
-    id: 'spa',
-    title: 'A recovery spa, if you choose one',
-    body: [
-      'A recovery spa can be the same kind of practice. You choose something difficult, you stay with it, and you finish. Contrast therapy there means time in warmer water and colder water. It is still optional.',
-      'Hopewick does not endorse a venue, a brand, or a booking. The win is still the follow-through.',
-    ],
-  },
+    "id": "spa",
+    "title": "A recovery spa, if you choose one"
+  }
 ];
 function syncEducationPlusPills() {
   const plus = subscriptionPlus();
@@ -10496,7 +10396,7 @@ function renderEducationCards(box, cards, extra) {
     const h = document.createElement('h3');
     h.textContent = card.title;
     article.appendChild(h);
-    for (const para of card.body) {
+    for (const para of card.body || []) {
       const p = document.createElement('p');
       p.textContent = para;
       article.appendChild(p);
@@ -10531,7 +10431,7 @@ function renderGut() {
     dlg: el.gutDlg,
     freeHelp: 'With or without Plus: drink water and eat something ordinary if you can. In a crisis, use Get help and call 000.',
   });
-  renderEducationCards($('#gutCards'), GUT_CARDS);
+  renderEducationCards($('#gutCards'), educationLibrary('gutCards'));
   syncEducationPlusPills();
 }
 function openGut() {
@@ -10553,7 +10453,7 @@ function renderBrain() {
     freeHelp: 'With or without Plus: one person you can contact still matters. In a crisis, use Get help and call 000.',
   });
   const closeBrain = () => { if (el.brainDlg && el.brainDlg.open) el.brainDlg.close(); };
-  renderEducationCards($('#brainCards'), BRAIN_CARDS, {
+  renderEducationCards($('#brainCards'), educationLibrary('brainCards'), {
     connection: [
       { label: 'Open SMART goals', run: () => { closeBrain(); openGoals(); } },
       { label: 'Open journal', run: () => { closeBrain(); openJournal(); } },
@@ -10580,7 +10480,7 @@ function renderCold() {
     dlg: el.coldDlg,
     freeHelp: 'With or without Plus: read the safety note above before you try cold water. In a crisis, use Get help and call 000.',
   });
-  renderEducationCards($('#coldCards'), COLD_CARDS);
+  renderEducationCards($('#coldCards'), educationLibrary('coldCards'));
   syncEducationPlusPills();
 }
 function openCold() {
@@ -10980,7 +10880,10 @@ $('#importFile').addEventListener('change', async (e) => {
     if (!ps.settingsVersion) { ps.settingsVersion = SETTINGS_VERSION; ps.mode = ps.mode || 'counsellor'; }
     settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, ps, shared);
     if (!Array.isArray(settings.traits)) settings.traits = [...DEFAULT_PROFILE_SETTINGS.traits];
+    const previousIds = convos.map(c => c.id);
     convos = (data.conversations || []).filter(c => c && c.id && Array.isArray(c.messages));
+    const keptIds = new Set(convos.map(c => c.id));
+    previousIds.forEach(id => { if (!keptIds.has(id)) removedChatIds.push(id); });
     memories = (data.memories || []).filter(m => m && typeof m.text === 'string')
       .map(m => ({ id: m.id || uid(), text: m.text, created: m.created || Date.now(), source: m.source || 'manual' }));
     moods = Array.isArray(data.moods) ? data.moods.filter(m => m && m.date) : [];
@@ -11018,6 +10921,8 @@ $('#importFile').addEventListener('change', async (e) => {
 });
 $('#clearMineBtn').addEventListener('click', () => {
   if (!confirm(`Clear all of ${profile.name}'s chats, memories, check-ins, resume and settings? Other people's data is not affected. This cannot be undone.`)) return;
+  chatHoldPull = true;
+  convos.forEach(c => { if (c && c.id) removedChatIds.push(c.id); });
   PK.forEach(w => localStorage.removeItem(pk(profile.id, w)));
   loadProfileData(profile.id);
   el.settingsDlg.close();
@@ -11100,6 +11005,7 @@ function showPicker() {
   stopSpeaking();
   if (convoMode) setConvoMode(false);
   closeSidebar();
+  closeSignInGate();
   [el.settingsDlg, el.memoriesDlg, el.helpDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.onboardingDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   managing = false; pendingPid = null;
   $('#pinForm').hidden = true; $('#addPersonForm').hidden = true; $('#pinError').textContent = '';
@@ -11157,6 +11063,8 @@ function enterProfile(pid) {
   toast(`Hi ${profile.name} 👋`);
   maybeShowDisclaimer();
   if (startChat) focusInput();
+  chatPullKey = '';
+  if (billingState.signedIn) pullAccountChats(true).catch(() => {});
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -11631,6 +11539,8 @@ el.composer.addEventListener('submit', (e) => {
   if (busy) stopGeneration(); else sendMessage();
 });
 el.newChat.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); closeSidebar(); setAppTab('chat'); });
+const chatsNewBtn = $('#chatsNewBtn');
+if (chatsNewBtn) chatsNewBtn.addEventListener('click', () => { if (busy) stopGeneration(); stopSpeaking(); newConversation(); setAppTab('chat'); });
 $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   const o = b.dataset.open;
   if (o === 'settings') openSettings();
@@ -11689,6 +11599,7 @@ el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-op
 
 el.tabHome?.addEventListener('click', () => setAppTab('home'));
 el.tabChat?.addEventListener('click', () => setAppTab('chat'));
+el.tabChats?.addEventListener('click', () => setAppTab('chats'));
 el.tabDv?.addEventListener('click', () => setAppTab('dv'));
 el.tabJournal?.addEventListener('click', () => setAppTab('journal'));
 el.tabMore?.addEventListener('click', () => setAppTab('more'));
@@ -11941,7 +11852,7 @@ function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.pickerDlg, el.signInDlg, el.onboardingDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -11981,6 +11892,10 @@ function enterDemo() {
 function exitDemo() {
   demoRun++;
   isDemo = false;
+  const storedProfiles = load(K.profiles, null);
+  if (storedProfiles && Array.isArray(storedProfiles.list) && storedProfiles.list.length) {
+    profilesState = storedProfiles;
+  }
   dismissLaunchPrefs();
   hideAccessBanner();
   profile = null;
@@ -12045,7 +11960,7 @@ let founderDeveloperOn = false;
 const INVITE_COPY = {
   keyBanner: 'Today’s Readings, crisis support, domestic and family violence resources, and Get Help are ready. Live chat uses an invite code, or your own key under Advanced.',
   needAi: 'Live chat uses an invite code, or your own key under Advanced. Today’s Readings, crisis support, and Get Help do not need it.',
-  needAiHosted: 'With a hosted invite, messages go via Bridge&Bite then the model provider — not stored as an account chat history in this app.',
+  needAiHosted: 'With a hosted invite, messages go via Bridge&Bite then the model provider. Signed-in chats for this profile are saved to the account.',
   advanced: 'Live chat uses an invite code, or your own key below. Today’s Readings, crisis support, and Get Help do not need a key.',
   advancedHosted: 'Hosted / invite mode: messages go via Bridge&Bite then the model provider. Own-key Advanced still talks only to the URL you set.',
 };
@@ -12821,10 +12736,84 @@ const billingState = {
 };
 const FREE_HISTORY_KEEP = 1;
 
+/** Session flags from /api/auth/me only. Assigning billingState does not open Plus. */
+const sessionGate = (() => {
+  let signedIn = false;
+  let plus = false;
+  let founder = false;
+  return {
+    apply(user) {
+      signedIn = !!(user && user.signedIn);
+      plus = signedIn && !!(user && user.plus);
+      founder = signedIn && !!(user && user.founder);
+    },
+    clear() { signedIn = false; plus = false; founder = false; },
+    signedIn() { return signedIn; },
+    plus() { return plus; },
+    founder() { return founder; },
+  };
+})();
+const plusAccess = {
+  ready: false,
+  nutritionCategories: null,
+  nutritionCards: null,
+  gutCards: null,
+  brainCards: null,
+  coldCards: null,
+  goingDeeper: null,
+  words: null,
+  jft: null,
+};
+function clearPlusLibrary() {
+  plusAccess.ready = false;
+  plusAccess.nutritionCategories = null;
+  plusAccess.nutritionCards = null;
+  plusAccess.gutCards = null;
+  plusAccess.brainCards = null;
+  plusAccess.coldCards = null;
+  plusAccess.goingDeeper = null;
+  plusAccess.words = null;
+  plusAccess.jft = null;
+}
+function educationLibrary(key) {
+  const packed = plusAccess[key];
+  if (subscriptionPlus() && Array.isArray(packed) && packed.length) return packed;
+  return [];
+}
+async function installPlusLibrary() {
+  clearPlusLibrary();
+  if (!sessionGate.plus()) return;
+  try {
+    const pack = await billingFetch('/api/plus/library');
+    if (!pack || pack.ok !== true || !sessionGate.plus()) return;
+    plusAccess.nutritionCategories = pack.nutritionCategories || null;
+    plusAccess.nutritionCards = pack.nutritionCards || null;
+    plusAccess.gutCards = pack.gutCards || null;
+    plusAccess.brainCards = pack.brainCards || null;
+    plusAccess.coldCards = pack.coldCards || null;
+    plusAccess.goingDeeper = pack.goingDeeper || null;
+    plusAccess.words = pack.words || null;
+    plusAccess.jft = pack.jft || null;
+    plusAccess.ready = true;
+  } catch (_) {
+    clearPlusLibrary();
+  }
+}
+async function ensureTodayReading() {
+  if (typeof WORD_FOR_THE_DAY !== 'undefined' && typeof JUST_FOR_TODAY !== 'undefined') return;
+  if (todayPack && todayPack.word) return;
+  try {
+    const response = await fetch('/api/readings/today', { headers: { Accept: 'application/json' } });
+    if (!response.ok) return;
+    const data = await response.json();
+    if (data && typeof data.index === 'number' && data.word) todayPack = data;
+  } catch (_) { /* static preview has no account server */ }
+}
+
 /** True only when the signed-in Hopewick account email is on FOUNDER_PLUS_EMAILS.
  *  The server sets founder from that same list as complimentary Plus. A profile name does not. */
 function founderDeveloperVisible() {
-  return !!(billingState.signedIn && billingState.founder);
+  return sessionGate.founder();
 }
 function syncOwnKeyFields() {
   const on = founderDeveloperVisible();
@@ -12862,14 +12851,14 @@ function syncDeveloperChrome() {
 }
 
 function subscriptionPlus() {
-  return !!(billingState.signedIn && billingState.plus);
+  return sessionGate.plus() && plusAccess.ready;
 }
 function historyGateOn() {
   // Demo and signed-out local use stay open so org trials and existing chats are not walled off.
   return billingState.signedIn && !subscriptionPlus() && !isDemo;
 }
 function freeHistoryIds() {
-  const list = convos.filter(c => c.messages && c.messages.length > 0).sort((a, b) => b.updated - a.updated);
+  const list = listedConvos();
   return new Set(list.slice(0, FREE_HISTORY_KEEP).map(c => c.id));
 }
 function conversationLocked(id) {
@@ -12930,6 +12919,8 @@ async function refreshBilling() {
     billingState.phone = user.phone || '';
     billingState.cancelAtPeriodEnd = !!user.cancelAtPeriodEnd;
     billingState.hopeHosted = !!config.hopeHosted;
+    sessionGate.apply(user);
+    await installPlusLibrary();
   } catch (_) {
     billingState.reachable = false;
     billingState.signedIn = false;
@@ -12943,8 +12934,12 @@ async function refreshBilling() {
     billingState.cancelAtPeriodEnd = false;
     billingState.hopeHosted = false;
     billingState.hopeUsage = null;
+    sessionGate.clear();
+    clearPlusLibrary();
   }
   billingState.loaded = true;
+  try { routeFirstRun(); } catch (_) { /* profile screens are wired before boot */ }
+  await ensureTodayReading();
   syncDeveloperChrome();
   const label = $('#sideAccountLabel');
   if (label) {
@@ -12962,6 +12957,8 @@ async function refreshBilling() {
   await refreshHopeUsage();
   paintAccount();
   if (appTab === 'account') paintMyAccountIdentity();
+  if (profile && billingState.signedIn) pullAccountChats(false).catch(() => {});
+  else if (!billingState.signedIn) chatPullKey = '';
   try {
     if (profile || isDemo) {
       renderHistory();
@@ -12986,7 +12983,7 @@ async function refreshBilling() {
 /** Free Hope chat is capped. Plus, a trial, and a founder key are not. */
 function hopeAtDailyCap() {
   if (isDemo || usingOwnProvider() || subscriptionPlus()) return false;
-  if (!billingState.signedIn) return false;
+  if (!sessionGate.signedIn()) return false;
   const snap = billingState.hopeUsage;
   if (!snap || snap.limit == null) return false;
   const remaining = typeof snap.remaining === 'number'
@@ -13042,7 +13039,7 @@ function syncHopeAllowance() {
   }
   if (allowance) {
     const showCount = !capped && !!snap && typeof snap.limit === 'number' && typeof snap.remaining === 'number'
-      && snap.remaining > 0 && billingState.signedIn && !subscriptionPlus() && !isDemo && !usingOwnProvider();
+      && snap.remaining > 0 && sessionGate.signedIn() && !subscriptionPlus() && !isDemo && !usingOwnProvider();
     allowance.hidden = !showCount;
     if (showCount) allowance.textContent = `${snap.remaining} of ${snap.limit} left today`;
   }
@@ -13151,11 +13148,10 @@ function appendPlusOffer(body) {
     'Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence',
     'Gut health and neuroplasticity notes — plain language, Plus only',
     'Ice baths and recovery spa notes — plain language, Plus only',
-    'Clean time tracker, SOAP reflections, and 12 Steps practice',
     'Going Deeper study tracks — your tradition, or a values path',
     'The full year of readings',
     'Add another profile on this device',
-    'Keep your conversation history on this device. Cloud sync is not enabled.',
+    'Older chats stay open with Hopewick Plus. The latest chat stays free.',
   ].forEach(text => {
     const li = document.createElement('li');
     li.textContent = text;
@@ -13168,7 +13164,7 @@ function appendPlusOffer(body) {
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
-  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Your account knows your subscription. It doesn’t hold a dashboard of what you told Hope. Keep your conversation history on this device. Cloud sync is not enabled.</p>';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Hopewick staff do not get a dashboard of what you told Hope. Older chats are part of Hopewick Plus.</p>';
   body.appendChild(privacy);
   const org = document.createElement('p');
   org.className = 'hosted-privacy';
@@ -13891,6 +13887,10 @@ function paintAccount() {
   if (!body) return;
   const active = document.activeElement;
   if (active && body.contains(active) && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+  if (signInBeforeProfile()) {
+    body.replaceChildren();
+    return;
+  }
   body.replaceChildren();
   if (!billingState.reachable || billingState.signedIn) appendPlusOffer(body);
 
@@ -13911,62 +13911,7 @@ function paintAccount() {
   }
 
   if (!billingState.signedIn) {
-    const form = document.createElement('form');
-    form.className = 'account-form';
-    form.id = 'accountSignInForm';
-    form.noValidate = true;
-    form.innerHTML = '<h3 class="account-signin-title">Sign in</h3><p class="lede">Email and password. You stay signed in on this device until you sign out.</p><label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="username" required maxlength="120" placeholder="you@example.com"></label><label for="accountPassword">Password<input id="accountPassword" type="password" autocomplete="current-password" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSignInBtn">Sign in</button>';
-    body.appendChild(form);
-    const help = document.createElement('p');
-    help.className = 'help';
-    help.textContent = 'New here, or no password yet? We’ll email a one-time link. Create a password when you’re in, and you stay signed in on this device until you sign out.';
-    body.appendChild(help);
-    const create = document.createElement('div');
-    create.className = 'account-create';
-    create.id = 'accountCreate';
-    const createToggle = document.createElement('button');
-    createToggle.type = 'button';
-    createToggle.className = 'account-create-toggle';
-    createToggle.id = 'accountCreateToggle';
-    createToggle.setAttribute('aria-expanded', 'false');
-    createToggle.setAttribute('aria-controls', 'accountCreatePanel');
-    createToggle.innerHTML = '<span class="account-create-mark" aria-hidden="true"></span> Create a password';
-    const createPanel = document.createElement('div');
-    createPanel.id = 'accountCreatePanel';
-    createPanel.hidden = true;
-    createPanel.innerHTML = '<div class="account-form"><p class="help">Choose a password, then use Email me a sign-in link. Opening that link saves it. The link lasts 30 minutes.</p><label for="accountNewPassword">New password<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountConfirmPassword">Confirm password<input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label></div>';
-    createToggle.addEventListener('click', () => setCreatePasswordOpen(createToggle.getAttribute('aria-expanded') !== 'true'));
-    create.appendChild(createToggle);
-    create.appendChild(createPanel);
-    body.appendChild(create);
-    const actions = document.createElement('div');
-    actions.className = 'account-actions';
-    const magic = document.createElement('button');
-    magic.type = 'button';
-    magic.className = 'btn';
-    magic.id = 'accountMagicBtn';
-    magic.textContent = 'Email me a sign-in link';
-    const forgot = document.createElement('button');
-    forgot.type = 'button';
-    forgot.className = 'linkish';
-    forgot.id = 'accountForgotBtn';
-    forgot.textContent = 'Forgot password?';
-    actions.appendChild(magic);
-    actions.appendChild(forgot);
-    body.appendChild(actions);
-    const status = document.createElement('p');
-    status.className = 'account-status';
-    status.id = 'accountStatus';
-    status.setAttribute('role', 'status');
-    body.appendChild(status);
-    const dev = document.createElement('div');
-    dev.className = 'account-dev';
-    dev.id = 'accountDevLink';
-    dev.hidden = true;
-    body.appendChild(dev);
-    form.addEventListener('submit', onPasswordSignIn);
-    magic.addEventListener('click', () => requestMagicLink({ includePassword: true }));
-    forgot.addEventListener('click', () => requestMagicLink({ includePassword: false }));
+    mountSignInForm(body);
     appendPlusOffer(body);
     return;
   }
@@ -13980,8 +13925,8 @@ function paintAccount() {
   status.id = 'accountStatus';
   status.textContent = statusLabel(billingState.subscriptionStatus) + (subscriptionPlus()
     ? (billingState.subscriptionStatus === 'trialing'
-      ? '. Your 3-day trial is active. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.'
-      : '. Any day of the readings is open. Your chat history stays on this device. Cloud sync is not enabled.')
+      ? '. Your 3-day trial is active. Any day of the readings is open. Your chats stay on this device and on your account.'
+      : '. Any day of the readings is open. Your chats stay on this device and on your account.')
     : '. 3 days free, then AU$20/month. Cancel anytime.');
   body.appendChild(status);
   const allowance = document.createElement('p');
@@ -14054,6 +13999,64 @@ function paintAccount() {
     body.appendChild(dev);
   }
 }
+function mountSignInForm(body) {
+  const form = document.createElement('form');
+  form.className = 'account-form';
+  form.id = 'accountSignInForm';
+  form.noValidate = true;
+  form.innerHTML = '<h3 class="account-signin-title">Sign in</h3><p class="lede">Email and password. You stay signed in on this device until you sign out.</p><label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="username" required maxlength="120" placeholder="you@example.com"></label><label for="accountPassword">Password<input id="accountPassword" type="password" autocomplete="current-password" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSignInBtn">Sign in</button>';
+  body.appendChild(form);
+  const help = document.createElement('p');
+  help.className = 'help';
+  help.textContent = 'New here, or no password yet? We’ll email a one-time link. Create a password when you’re in, and you stay signed in on this device until you sign out.';
+  body.appendChild(help);
+  const create = document.createElement('div');
+  create.className = 'account-create';
+  create.id = 'accountCreate';
+  const createToggle = document.createElement('button');
+  createToggle.type = 'button';
+  createToggle.className = 'account-create-toggle';
+  createToggle.id = 'accountCreateToggle';
+  createToggle.setAttribute('aria-expanded', 'false');
+  createToggle.setAttribute('aria-controls', 'accountCreatePanel');
+  createToggle.innerHTML = '<span class="account-create-mark" aria-hidden="true"></span> Create a password';
+  const createPanel = document.createElement('div');
+  createPanel.id = 'accountCreatePanel';
+  createPanel.hidden = true;
+  createPanel.innerHTML = '<div class="account-form"><p class="help">Choose a password, then use Email me a sign-in link. Opening that link saves it. The link lasts 30 minutes.</p><label for="accountNewPassword">New password<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountConfirmPassword">Confirm password<input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label></div>';
+  createToggle.addEventListener('click', () => setCreatePasswordOpen(createToggle.getAttribute('aria-expanded') !== 'true'));
+  create.appendChild(createToggle);
+  create.appendChild(createPanel);
+  body.appendChild(create);
+  const actions = document.createElement('div');
+  actions.className = 'account-actions';
+  const magic = document.createElement('button');
+  magic.type = 'button';
+  magic.className = 'btn';
+  magic.id = 'accountMagicBtn';
+  magic.textContent = 'Email me a sign-in link';
+  const forgot = document.createElement('button');
+  forgot.type = 'button';
+  forgot.className = 'linkish';
+  forgot.id = 'accountForgotBtn';
+  forgot.textContent = 'Forgot password?';
+  actions.appendChild(magic);
+  actions.appendChild(forgot);
+  body.appendChild(actions);
+  const status = document.createElement('p');
+  status.className = 'account-status';
+  status.id = 'accountStatus';
+  status.setAttribute('role', 'status');
+  body.appendChild(status);
+  const dev = document.createElement('div');
+  dev.className = 'account-dev';
+  dev.id = 'accountDevLink';
+  dev.hidden = true;
+  body.appendChild(dev);
+  form.addEventListener('submit', onPasswordSignIn);
+  magic.addEventListener('click', () => requestMagicLink({ includePassword: true }));
+  forgot.addEventListener('click', () => requestMagicLink({ includePassword: false }));
+}
 function accountStatus(message, kind) {
   const status = $('#accountStatus');
   if (!status) return;
@@ -14099,11 +14102,6 @@ async function onPasswordSignIn(e) {
     toast('You’re signed in. You stay signed in on this device until you sign out.', false, 3500);
   } catch (err) {
     accountStatus(err.message || 'Could not sign in.', 'bad');
-    if (err.code === 'password_missing') {
-      setCreatePasswordOpen(true);
-      const fresh = $('#accountNewPassword');
-      if (fresh) fresh.focus();
-    }
   }
 }
 async function requestMagicLink(opts) {
@@ -14200,6 +14198,8 @@ async function startPortal(returnTo) {
 }
 async function signOutBilling() {
   try { await billingFetch('/api/auth/logout', { method: 'POST' }); } catch (_) { /* still clear local state */ }
+  sessionGate.clear();
+  clearPlusLibrary();
   billingState.signedIn = false;
   billingState.plus = false;
   billingState.email = '';
@@ -14232,6 +14232,58 @@ async function devSetStatus(status) {
 const accountCloseBtn = $('#accountCloseBtn');
 if (accountCloseBtn) accountCloseBtn.addEventListener('click', closeAccountDlg);
 
+let firstRunRouted = false;
+function hasRealProfile() {
+  return !!(profilesState && Array.isArray(profilesState.list) && profilesState.list.length);
+}
+function signInBeforeProfile() {
+  return !isDemo && !profile && !hasRealProfile() && billingState.loaded && billingState.reachable && !billingState.signedIn;
+}
+function closeSignInGate() {
+  const body = $('#signInBody');
+  if (body) body.replaceChildren();
+  if (el.signInDlg && el.signInDlg.open) el.signInDlg.close();
+}
+function showSignInGate() {
+  const body = $('#signInBody');
+  if (!body || !el.signInDlg) return;
+  if (!body.childElementCount) mountSignInForm(body);
+  if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+  if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
+  const wasOpen = el.signInDlg.open;
+  if (!wasOpen) el.signInDlg.showModal();
+  const email = $('#accountEmail');
+  if (!wasOpen && email) email.focus();
+}
+function routeFirstRun() {
+  if (isDemo || profile) return;
+  if (!billingState.loaded) return;
+  if (signInBeforeProfile()) {
+    firstRunRouted = false;
+    showSignInGate();
+    return;
+  }
+  if (firstRunRouted) return;
+  firstRunRouted = true;
+  closeSignInGate();
+  if (billingState.signedIn && hasRealProfile()) {
+    const last = findProfile(profilesState.lastId) || profilesState.list[0];
+    if (last && !last.pin) {
+      enterProfile(last.id);
+      return;
+    }
+    showPicker();
+    return;
+  }
+  if (!onboardingSeen()) showOnboarding();
+  else showPicker();
+}
+if (el.signInDlg) {
+  el.signInDlg.addEventListener('cancel', (e) => {
+    e.preventDefault();
+  });
+}
+
 applyBrand();
 migrateStorage();
 renderHelpList();
@@ -14245,24 +14297,26 @@ renderHelpList();
 })();
 if (new URLSearchParams(location.search).get('demo') === '1') {
   enterDemo();
-} else if (!onboardingSeen()) {
-  showOnboarding();
-} else {
-  showPicker();
 }
 refreshBilling().then(() => {
   const q = new URLSearchParams(location.search);
+  if (!isDemo) routeFirstRun();
   if (q.get('checkout') === 'success') toast('Thanks. If Plus isn’t showing yet, it will as soon as Stripe confirms the payment.', false, 5500);
   if (q.get('checkout') === 'cancel') toast('No worries — nothing was charged.', false, 4000);
   if (q.get('portal') === 'return') toast('You’re back from billing.', false, 3000);
   if (q.get('signedin') === '1' && billingState.signedIn) toast('You’re signed in.', false, 3000);
-  const openAccount = q.get('account') === '1' || q.get('signedin') === '1' || q.get('checkout') || q.get('portal') === 'return';
-  if (openAccount) {
+  const settingUp = !hasRealProfile() && (
+    (el.signInDlg && el.signInDlg.open) ||
+    (el.onboardingDlg && el.onboardingDlg.open) ||
+    (el.pickerDlg && el.pickerDlg.open)
+  );
+  const openAccount = q.get('account') === '1' || q.get('checkout') || q.get('portal') === 'return';
+  if (openAccount && !settingUp) {
     if (!onboardingSeen()) markOnboardingSeen({ via: 'account' });
     if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
     openAccountDlg();
   }
-  if (q.get('myaccount') === '1') {
+  if (q.get('myaccount') === '1' && !settingUp) {
     if (!onboardingSeen()) markOnboardingSeen({ via: 'account' });
     if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
     openMyAccount(q.get('section') || 'menu');

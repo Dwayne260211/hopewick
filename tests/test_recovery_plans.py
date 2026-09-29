@@ -11,8 +11,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 
@@ -101,8 +104,8 @@ def test_plans_free_gate_and_plus_builders():
             _enter_demo(page, base)
 
             nav = " ".join(page.inner_text("#bottomNav").split())
-            assert "Home" in nav and "Chat" in nav and "Journal" in nav and "More" in nav
-            assert page.locator("#bottomNav .bottom-nav-btn").count() == 5
+            assert "Home" in nav and "Chat" in nav and "Chats" in nav and "Journal" in nav and "More" in nav
+            assert page.locator("#bottomNav .bottom-nav-btn").count() == 6
             assert page.locator('#bottomNav [data-tab="plans"]').count() == 0
             assert page.locator('#needNow [data-need="plans"]').count() == 0
             assert page.is_visible("#helpBtn")
@@ -127,14 +130,8 @@ def test_plans_free_gate_and_plus_builders():
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
 
-            page.evaluate(
-                """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  renderPlans();
-                  syncPlusFeaturePills();
-                }"""
-            )
+            grant_server_session(page, plus=True, founder=False)
+            page.evaluate("() => { renderPlans(); syncPlusFeaturePills(); }")
             if not page.evaluate("() => document.getElementById('plansDlg').open"):
                 _open_plans(page)
                 page.evaluate("() => { renderPlans(); syncPlusFeaturePills(); }")

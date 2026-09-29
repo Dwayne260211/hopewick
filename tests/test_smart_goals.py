@@ -7,8 +7,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 
@@ -212,14 +215,8 @@ def test_smart_goals_journal_nav_and_guards():
             fresh.wait_for_function("() => document.getElementById('goalsDlg')?.open === true")
             assert fresh.locator("#goalsEditor").is_hidden()
             assert fresh.locator("#goalsPlusBtn").is_visible()
-            fresh.evaluate(
-                """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  billingState.subscriptionStatus = 'trialing';
-                  renderGoals();
-                }"""
-            )
+            grant_server_session(fresh, plus=True, founder=False, status='trialing')
+            fresh.evaluate("() => renderGoals()")
             fresh.wait_for_selector("#goal0specific")
             fresh.fill("#goal0specific", "Text my brother once")
             fresh.fill("#goal0measurable", "One message sent")
@@ -247,13 +244,7 @@ def test_smart_goals_journal_nav_and_guards():
             fresh.locator("#profileList .profile-card", has_text="Sam").click()
             fresh.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
             _dismiss_disclaimer(fresh)
-            fresh.evaluate(
-                """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  billingState.subscriptionStatus = 'trialing';
-                }"""
-            )
+            grant_server_session(fresh, plus=True, founder=False, status='trialing')
             fresh.click("#appTabMore")
             fresh.wait_for_selector("#app.sidebar-open")
             fresh.click("#sideGoalsBtn")
@@ -293,13 +284,7 @@ def test_smart_goals_journal_nav_and_guards():
 
             # Second profile stays Plus-only. This visit is not a paid account.
             fresh.keyboard.press("Escape")
-            fresh.evaluate(
-                """() => {
-                  billingState.signedIn = false;
-                  billingState.plus = false;
-                  billingState.subscriptionStatus = 'none';
-                }"""
-            )
+            grant_server_session(fresh, plus=False, founder=False, signedIn=False)
             fresh.click("#switchBtn")
             fresh.wait_for_selector("#pickerDlg[open] .profile-card")
             assert fresh.locator("#addPersonBtn").is_hidden()

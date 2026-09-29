@@ -41,8 +41,12 @@ def test_today_source():
     assert "Word for the day" in text
     assert "Just for today" in text
     assert "Optional fellowship-style reflection, not clinical advice." in text
-    assert 'src="data/word-for-the-day.js"' in text
-    assert 'src="data/just-for-today.js"' in text
+    assert 'src="data/word-for-the-day.js"' not in text
+    assert 'src="data/just-for-today.js"' not in text
+    assert "function ensureTodayReading" in text
+    server = (ROOT / "server" / "index.js").read_text(encoding="utf-8")
+    assert "app/data/word-for-the-day.js" in server
+    assert "app/data/just-for-today.js" in server
     assert "id=\"todayCard\"" in text or "card.id = 'todayCard'" in text
     assert "Read full reflections" in text
     info = re.search(r'<section class="info-view".*?</section>', text, re.S).group(0)
@@ -96,6 +100,14 @@ def test_today_card_on_home():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
+            # Init scripts are strict, so a file-level `var` would not become a page global.
+            page.add_init_script(
+                "window.WORD_FOR_THE_DAY = "
+                + json.dumps(_js_array(WORD_JS, "WORD_FOR_THE_DAY"))
+                + "; window.JUST_FOR_TODAY = "
+                + json.dumps(_js_array(JFT_JS, "JUST_FOR_TODAY"))
+                + ";"
+            )
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")

@@ -99,9 +99,9 @@ def test_companion_gates_premium_not_crisis():
     assert "gut health and neuroplasticity" in app.lower()
     assert "Start talking to Hope" in app
     assert "What brings you here" in app
-    assert "Keep your conversation history on this device" in app
-    assert "Cloud sync is not enabled" in app
-    assert "doesn’t hold a dashboard of what you told Hope" in app
+    assert "saved to your account" in app
+    assert "do not get a dashboard of what you told Hope" in app
+    assert 'id="appTabChats"' in app
     assert "Recovery myself" in app
     assert "Only when asked" in app
     enter = app.split("function enterProfile", 1)[1].split("function ", 1)[0]

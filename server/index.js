@@ -12,12 +12,15 @@
  * Plus Checkout includes a 3-day trial, then the existing monthly price.
  * Daily caps: Free is 5 messages. Hopewick Plus, a 3-day trial, and
  * complimentary founder emails have no daily message cap. Counts use the
- * Australia/Brisbane calendar day. Crisis and Get help replies do not
- * spend a message and are not refused for the free cap.
- * Conversations are not stored — only email, an optional name and phone,
- * a scrypt password hash when one is set, subscription status, and that
- * day's message count. Card numbers, CVV, and full payment details are
- * never stored. Sign-in email cannot be changed from My Account.
+ * Australia/Brisbane calendar day. A crisis reply that calls the model
+ * spends a message. Once the free cap is reached, crisis gets the static
+ * numbers (000 and 1800 250 015) and the model is not called.
+ * Saved chats for a signed-in account live in chats.json (per profile),
+ * beside the account file. The model call itself does not write that file.
+ * The account file holds email, an optional name and phone, a scrypt
+ * password hash when one is set, subscription status, and that day's
+ * message count. Card numbers, CVV, and full payment details are never
+ * stored. Sign-in email cannot be changed from My Account.
  * The session cookie is httpOnly and lasts until sign-out (it slides
  * forward on each return visit). The one-time email link still expires
  * in 30 minutes.
@@ -34,6 +37,8 @@ import { fileURLToPath } from 'node:url';
 import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail } from './store.js';
 import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
+import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
+import { createChatStore, validProfileId } from './chats.js';
 import {
   hopeConfigured,
   freeDailyCap,
@@ -531,6 +536,7 @@ function blockedStatic(rel) {
   const segments = norm.split('/');
   if (segments.some((seg) => seg.startsWith('.'))) return true;
   if (segments[0] === 'server') return true;
+  if (norm === 'app/data/word-for-the-day.js' || norm === 'app/data/just-for-today.js') return true;
   if (norm === 'package.json' || norm === 'package-lock.json') return true;
   return false;
 }
@@ -571,7 +577,7 @@ function serveStatic(root, req, res, urlPath) {
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 
-async function handleApi(store, req, res, url) {
+async function handleApi(store, chats, req, res, url) {
   const route = url.pathname;
 
   if (req.method === 'GET' && route === '/api/health') {
@@ -592,6 +598,63 @@ async function handleApi(store, req, res, url) {
       freeDailyMessages: freeDailyCap(),
       plusDailyMessages: null,
     });
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/readings/today') {
+    json(res, 200, todayReadingPayload());
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/plus/library') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in to open Hopewick Plus.', code: 'auth' });
+      return;
+    }
+    if (publicUser(user).plus !== true) {
+      json(res, 403, { error: 'Hopewick Plus opens this library.', code: 'plus' });
+      return;
+    }
+    json(res, 200, plusLibraryPayload());
+    return;
+  }
+
+
+  if (req.method === 'GET' && route === '/api/chats') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in to open saved chats.', code: 'auth' });
+      return;
+    }
+    json(res, 200, { profiles: chats.list(user.id) });
+    return;
+  }
+
+  if (req.method === 'PUT' && route === '/api/chats') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in to save chats.', code: 'auth' });
+      return;
+    }
+    const raw = await readBody(req, 2_000_000);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send chats as JSON.' });
+      return;
+    }
+    const profileId = String(body.profileId || '').trim();
+    if (!validProfileId(profileId)) {
+      json(res, 400, { error: 'Choose a profile before saving chats.' });
+      return;
+    }
+    const profile = chats.merge(user.id, profileId, {
+      name: body.name,
+      conversations: body.conversations,
+      activeId: body.activeId,
+      removedIds: body.removedIds,
+    });
+    json(res, 200, { profile });
     return;
   }
 
@@ -654,14 +717,8 @@ async function handleApi(store, req, res, url) {
     }
     const user = store.findByEmail(email);
     if (!user || !user.passwordHash) {
-      if (!user) notePasswordFailure(email);
-      if (user && !user.passwordHash) {
-        json(res, 401, {
-          error: 'There is no password on this account yet. Email yourself a sign-in link, then create one.',
-          code: 'password_missing',
-        });
-        return;
-      }
+      // Same response as a wrong password so login cannot confirm that an email exists.
+      notePasswordFailure(email);
       json(res, 401, { error: 'That email or password is not right.', code: 'password' });
       return;
     }
@@ -1245,6 +1302,11 @@ async function handleHopeChat(store, req, res) {
     return;
   }
   const admission = admitHopeCall(user, { purpose, crisis });
+  if (admission.staticOnly) {
+    if (stream) writeSse(res, CRISIS_FALLBACK);
+    else json(res, 200, completionJson(CRISIS_FALLBACK));
+    return;
+  }
   if (!admission.ok) {
     const message = admission.code === 'daily_cap'
       ? capMessage(user, admission.limit)
@@ -1256,12 +1318,6 @@ async function handleHopeChat(store, req, res) {
       remaining: admission.limit == null ? null : Math.max(0, admission.limit - admission.usage.count),
       resetLabel: admission.code === 'daily_cap' ? HOPE_RESET_LABEL : null,
     });
-    return;
-  }
-
-  if (crisis && admission.limit != null && admission.usage.count >= admission.limit) {
-    if (stream) writeSse(res, CRISIS_FALLBACK);
-    else json(res, 200, completionJson(CRISIS_FALLBACK));
     return;
   }
 
@@ -1324,8 +1380,9 @@ async function handleHopeChat(store, req, res) {
   }
 }
 
-export function createApp({ store, root = REPO_ROOT } = {}) {
+export function createApp({ store, chats, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
+  const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   return async function onRequest(req, res) {
     try {
       if (maybeCanonicalRedirect(req, res)) return;
@@ -1336,14 +1393,14 @@ export function createApp({ store, root = REPO_ROOT } = {}) {
           'Access-Control-Allow-Origin': requestOrigin(req),
           'Access-Control-Allow-Credentials': 'true',
           'Access-Control-Allow-Headers': 'Content-Type, Accept',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
           'Access-Control-Max-Age': '600',
         });
         res.end();
         return;
       }
       if (url.pathname.startsWith('/api/')) {
-        await handleApi(store, req, res, url);
+        await handleApi(store, chatStore, req, res, url);
         return;
       }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -1361,10 +1418,13 @@ export function startServer({
   port = Number(process.env.PORT || 8787),
   host = '127.0.0.1',
   storePath = process.env.BILLING_STORE || path.join(REPO_ROOT, 'server', 'data', 'users.json'),
+  chatsPath,
   root = REPO_ROOT,
 } = {}) {
   const store = createStore(storePath);
-  const server = http.createServer(createApp({ store, root }));
+  const chatFile = chatsPath || process.env.CHATS_STORE || path.join(path.dirname(storePath), 'chats.json');
+  const chats = createChatStore(chatFile);
+  const server = http.createServer(createApp({ store, chats, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));
   });

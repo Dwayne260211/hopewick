@@ -8,8 +8,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 LAND = ROOT / "index.html"
 DATA = ROOT / "app" / "data" / "going-deeper.js"
@@ -39,10 +42,7 @@ BODY = {
 
 
 def _tracks():
-    text = DATA.read_text(encoding="utf-8")
-    m = re.search(r"var GOING_DEEPER_TRACKS = (\[.*\]);\s*$", text, re.S)
-    assert m, "GOING_DEEPER_TRACKS missing"
-    return json.loads(m.group(1))
+    return json.loads((ROOT / "server" / "library" / "going-deeper.json").read_text(encoding="utf-8"))
 
 
 def test_static_tracks_copy_and_gate():
@@ -71,6 +71,13 @@ def test_static_tracks_copy_and_gate():
     for banned in BANNED:
         assert banned not in blob
         assert banned not in data.lower()
+    for marker in BODY.values():
+        assert marker not in data
+        assert marker not in text
+    client = json.loads(re.search(r"var GOING_DEEPER_TRACKS = (\[.*\]);\s*$", data, re.S).group(1))
+    assert [t["id"] for t in client] == list(TRACKS)
+    assert "One true sentence" == next(t for t in client if t["id"] == "values")["days"][0]["title"]
+    assert "reading" not in json.dumps(client)
     for track in tracks:
         assert track["title"] and track["blurb"]
         assert len(track["days"]) == 7
@@ -118,15 +125,8 @@ def _assert_no_reading_bodies(page):
 
 
 def _grant_plus(page):
-    page.evaluate(
-        """() => {
-          billingState.signedIn = true;
-          billingState.plus = true;
-          billingState.founder = false;
-          renderGoingDeeper();
-          syncDeeperPlusPill();
-        }"""
-    )
+    grant_server_session(page, plus=True, founder=False)
+    page.evaluate("() => { renderGoingDeeper(); syncDeeperPlusPill(); }")
 
 
 def test_phone_navigation_faith_and_sample_day():

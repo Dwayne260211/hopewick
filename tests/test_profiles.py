@@ -8,8 +8,11 @@ import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 FACTORY = {
@@ -178,8 +181,11 @@ def test_new_user_picker_and_demo_privacy():
             still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
             assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
             page.click("#exitDemoBtn")
-            page.wait_for_selector("#pickerDlg[open]")
-            assert _names(page) == []
+            page.wait_for_selector("#pickerDlg[open] .profile-card")
+            assert _names(page) == ["Dwayne", "Abbey"]
+            still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
+            assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
+            page.evaluate("() => saveProfiles()")
             still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
             assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
             demo_seed.close()
@@ -251,14 +257,8 @@ def test_add_extra_profile_requires_plus():
             page.wait_for_function("() => !document.getElementById('pickerDlg').open")
             assert page.locator("#switchName").text_content().strip() == "Sam"
 
-            page.evaluate(
-                """() => {
-                  billingState.signedIn = true;
-                  billingState.plus = true;
-                  billingState.subscriptionStatus = 'active';
-                  syncProfileAddUi();
-                }"""
-            )
+            grant_server_session(page, plus=True, founder=False, status='active')
+            page.evaluate("() => syncProfileAddUi()")
             page.click("#switchBtn")
             page.wait_for_selector("#pickerDlg[open] #addPersonBtn:not([hidden])")
             assert page.locator("#addPersonPlusNote").is_hidden()
@@ -273,14 +273,8 @@ def test_add_extra_profile_requires_plus():
                 page.click("#discOkBtn")
                 page.wait_for_function("() => document.getElementById('disclaimerDlg').open !== true")
 
-            page.evaluate(
-                """() => {
-                  billingState.plus = false;
-                  billingState.signedIn = true;
-                  billingState.subscriptionStatus = 'none';
-                  syncProfileAddUi();
-                }"""
-            )
+            grant_server_session(page, plus=False, founder=False)
+            page.evaluate("() => syncProfileAddUi()")
             page.click("#switchBtn")
             page.wait_for_selector("#pickerDlg[open] .profile-card")
             assert page.locator("#profileList .pname").all_text_contents() == ["Sam", "Riley"]
