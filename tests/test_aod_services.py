@@ -26,8 +26,8 @@ REQUIRED_URLS = [
 def test_static_aod_services():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.24'" in text
-    assert 'content="hopewick-v5.24"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.25'" in text
+    assert 'content="hopewick-v5.25"' in land
     assert 'id="aodDlg"' in text
     assert "const AOD_ORGS" in text
     assert "function openAodServices" in text

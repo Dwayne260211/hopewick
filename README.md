@@ -67,7 +67,7 @@ The **Get help now** button is always at the top of the screen. First-run onboar
 
 ## Hopewick Plus (AU$20/month)
 
-**Hopewick Plus — 3 days free, then AU$20/month** unlocks the full Hopewick experience: SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Education libraries stay with Plus: nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Cancel anytime. One subscription per person.
+**Hopewick Plus — 3 days free, then AU$20/month** unlocks the full Hopewick experience: SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper study tracks (Christian, Islamic, Hindu, Buddhist, and a values path), 12 Steps practice, the full year of readings, and saved chat history. Education libraries stay with Plus: nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Cancel anytime. One subscription per person.
 
 Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and Hope chat. **Daily message limits:** Free is 5 messages/day. Hopewick Plus, including a 3-day trial and complimentary founder access, has no daily message limit. The account server enforces the free cap on hosted Hope (`POST /api/hope/chat`). The browser never sees the model key. Organisation plans are coming soon (the pilot sheet is still the conversation for services). New Plus Checkout sessions send `subscription_data[trial_period_days]=3` with the existing monthly price. See [SETUP.md](SETUP.md).
 
