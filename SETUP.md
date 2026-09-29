@@ -4,7 +4,7 @@ Individual subscriptions are a **3-day free trial, then AU$20 per month** (AUD).
 
 Chats, memories, and readings stay in the browser. The account file stores **email and subscription status only**.
 
-Crisis lines, domestic and family violence support, Get help, Hope chat at the free daily cap, the public demo, and **today’s** Word for the day and Just for today stay free. SMART goals, the journal, the resume builder, and education libraries (nutrition, gut health, and neuroplasticity) need Hopewick Plus.
+Crisis lines, domestic and family violence support, Get help, Hope chat at the free daily cap, the public demo, and **today’s** Word for the day and Just for today stay free. SMART goals, the journal, the resume builder, and education libraries (nutrition, gut health, neuroplasticity, and ice baths and recovery spas) need Hopewick Plus.
 
 Organisation and clinic seat plans are **not** for sale here. They remain “coming soon”. The existing pilot sheet (`pilot-pricing.html`) is unchanged as a conversation starter for services.
 
@@ -21,7 +21,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 | SMART goals | Tease only | Full weekly editor, on this device |
 | Journal | Tab with an upgrade | Write, edit, deepen |
 | Resume builder | Tease only | Builder and PDF, on this device |
-| Education libraries | Names and an upgrade | Nutrition, gut health, and neuroplasticity. Free sees the names only |
+| Education libraries | Names and an upgrade | Nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Free sees the names only |
 | Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.

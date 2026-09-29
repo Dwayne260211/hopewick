@@ -1601,6 +1601,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17c2.2-5 4-5.2 6.2-1.6S14.2 19 16.5 14 20 12 20 9"/><circle cx="4" cy="17" r="1.2"/><circle cx="20" cy="9" r="1.2"/></svg>
         Brain habits <span class="plus-pill" id="brainPlusPill">Plus</span>
       </button>
+      <button class="btn btn-ghost" type="button" data-open="cold" id="sideColdBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.93 7.5l14.14 9M19.07 7.5L4.93 16.5"/><path d="M7.5 4.93l4.5 4.5 4.5-4.5M7.5 19.07l4.5-4.5 4.5 4.5"/></svg>
+        Ice baths &amp; spas <span class="plus-pill" id="coldPlusPill">Plus</span>
+      </button>
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         Memories <span id="memCount" class="mood-pill" aria-label="memories stored">0</span>
@@ -2137,7 +2141,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
-        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
+        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
@@ -3024,6 +3028,31 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </div>
 </dialog>
 
+<!-- ============================ Ice baths & recovery spas (Hopewick Plus education) ============================ -->
+<dialog id="coldDlg" aria-labelledby="coldTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="coldTitle">🧊 Ice baths &amp; recovery spas</h2>
+    <button class="icon-btn" value="close" aria-label="Close ice baths and recovery spas">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <div class="crisis-card" id="coldSafety" role="note" style="margin-top:12px">
+      <h3>General information only — not medical advice</h3>
+      <p>Hopewick does not prescribe cold, a plunge, or a recovery spa. These notes are not a how-to, not a temperature, and not a time. They do not cure addiction, and they are not a substitute for treatment or for crisis support.</p>
+      <p>Cold is not for everyone. Skip it with a heart or blood-pressure problem, in pregnancy, with an unmanaged medical condition, or while intoxicated. Talk to a GP before you try cold water or a recovery spa.</p>
+      <p>Stop if you feel dizzy or have chest pain, and call <a href="tel:000">000</a>. In immediate danger call <a href="tel:000">000</a>.</p>
+    </div>
+    <p class="nut-lead" id="coldIntro">Some people in recovery never consider cold or a recovery spa. If the idea comes up, the point is a new habit and a new path — the same idea as Brain habits — not a cure. This is general information, not medical advice.</p>
+    <div id="coldGate" class="nut-gate"></div>
+    <div id="coldLibrary" hidden>
+      <p class="nut-kicker">Easy-read notes</p>
+      <p class="help" style="margin:0 0 8px">Short cards. Nothing here is a protocol, a venue Hopewick recommends, or a result this app promises.</p>
+      <div class="nut-items" id="coldCards"></div>
+    </div>
+  </div>
+</dialog>
+
 
 <!-- ============================ Circuit breakers ============================ -->
 <dialog id="circuitBreakerDlg" aria-labelledby="breakerTitle">
@@ -3137,8 +3166,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.resume        per-person resume draft (Hopewick Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-/* v5.21: Plus Plans hub — relapse / lapse prevention and exit plans, saved on this device. */
-const EDEN_BUILD = 'hopewick-v5.21';
+/* v5.22: Plus education — ice baths and recovery spas, a brain and recovery angle, not medical advice. */
+const EDEN_BUILD = 'hopewick-v5.22';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -3484,7 +3513,7 @@ const el = {
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), plansDlg: $('#plansDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
-  nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), gutDlg: $('#gutDlg'), brainDlg: $('#brainDlg'), skillsDlg: $('#skillsDlg'),
+  nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), gutDlg: $('#gutDlg'), brainDlg: $('#brainDlg'), coldDlg: $('#coldDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
   toasts: $('#toasts'),
 };
@@ -4822,11 +4851,11 @@ function inAppToolsPrompt() {
   return [
     'IN-APP TOOLS',
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
-    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, bible, resume, church, selfcare, steps, plus.',
+    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional wellness, a brain and recovery angle). Not medical advice and not a how-to. Do not give a temperature, a time, or a venue. Do not say cold is a cure for addiction or a treatment for it. Suggest a GP. Not for heart or blood-pressure problems, pregnancy, unmanaged conditions, or intoxication. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
-    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply.',
+    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply.',
   ].join('\n');
 }
 
@@ -4844,6 +4873,7 @@ function counsellorPrompt(convo) {
     '- If they ask about food, hydration, vitamins, or supplements (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, or a multivitamin), or about sleep, mood support, liver or antioxidant interest, heart and brain oils, or energy in that nutrition sense, name Nutrition and include nutrition on the TOOLS line. The screen pairs a benefit people ask about with a nutrient. Describe that pairing as a question for a GP or pharmacist, not as an effect you promise. Do not prescribe a dose. Do not say these products treat, cure, or prevent addiction or withdrawal. Prefer food and water. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
     '- If they ask about gut health, the gut and mood, probiotics, fermented foods, fibre, serotonin, or dopamine in that wellness sense, name Gut health and include gut on the TOOLS line. Say the link is real and still being studied. Do not say a food or probiotic treats depression, anxiety, or addiction. Do not give a dose or a brand. Suggest a GP or dietitian, especially with medicine or a gut condition.',
     '- If they ask how habits form, why early recovery feels hard, neuroplasticity, or new pathways in the brain, name Brain habits and include brain on the TOOLS line. Explain it as practice: small repeats, rest, and support. Do not promise that the brain will be rewired, and do not sell a program. You may mention SMART goals, the journal, or chat as places to practise one small step — lightly, without pressure.',
+    '- If they ask about ice baths, a cold plunge, cold-water immersion, a recovery spa, or contrast therapy, name Ice baths & recovery spas and include cold on the TOOLS line. Say it is optional wellness education, not a prescription and not a cure for addiction. Do not give a temperature, a time, or a how-to. Do not name a venue. Say it is not for everyone — heart or blood pressure, pregnancy, an unmanaged medical condition, or intoxication — and to talk to a GP. Tell them to stop and get help if they feel dizzy or have chest pain. You may mention Brain habits as the habit-and-path idea, lightly. Do not use an ice bath as a craving skill. TIPP stays a cool drink or a cool cloth, never an ice bath.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -8330,7 +8360,7 @@ function openPlans() {
 }
 
 /* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
-const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'cold', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
 const HOPE_TOOLS = {
   help: { label: 'Open Get help', open: () => openHelp() },
   dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
@@ -8346,6 +8376,7 @@ const HOPE_TOOLS = {
   nutrition: { label: 'Open nutrition', open: () => openNutrition() },
   gut: { label: 'Open gut health', open: () => openGut() },
   brain: { label: 'Open brain habits', open: () => openBrain() },
+  cold: { label: 'Open ice baths & spas', open: () => openCold() },
   bible: { label: 'Open Bible & SOAP', open: () => setAppTab('bible') },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
   church: { label: 'Find a church', open: () => openChurch() },
@@ -8359,6 +8390,7 @@ const GOALS_LANG_RE = /\b((?:my |a |the |two |weekly |this week'?s )?smart goals
 const NUTRITION_LANG_RE = /\b(nutritions?|supplements?|vitamins?|fish oils?|omega-?3s?|n-?acetyl\s?cysteine|\bnac\b|magnesium|multivitamins?|b-?complex|thiamine|hydrat(?:e|ion|ing)|vitamin d|healthy eating|what (?:should|can) i eat)\b/i;
 const GUT_LANG_RE = /\b(gut health|gut[- ]brain|microbiomes?|probiotics?|fermented foods?|serotonin|dopamine|sauerkraut|kefir|kimchi)\b/i;
 const BRAIN_LANG_RE = /\b(neuroplasticity|new pathways?|pathways in (?:the |my )?brain|brain can change|how (?:the |my )?brain (?:changes|learns|learnt)|new habits?)\b/i;
+const COLD_LANG_RE = /\b(ice[- ]?baths?|cold[- ]?plung(?:e|es|ing)|cold[- ]water immersion|recovery spas?|contrast therap(?:y|ies)|contrast baths?)\b/i;
 const TODAY_LANG_RE = /\b(word for (the |today)|just for today|today'?s (reading|reflection|word)|daily reading)\b/i;
 const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional|going deeper)\b/i;
 const RESUME_LANG_RE = /\b(resume|r[eé]sum[eé]|curriculum vitae|\bcv\b|job application)\b/i;
@@ -8386,6 +8418,7 @@ function textMatchesHopeTool(id, text) {
   if (id === 'nutrition') return NUTRITION_LANG_RE.test(t);
   if (id === 'gut') return GUT_LANG_RE.test(t);
   if (id === 'brain') return BRAIN_LANG_RE.test(t);
+  if (id === 'cold') return COLD_LANG_RE.test(t);
   if (id === 'bible') return BIBLE_LANG_RE.test(t);
   if (id === 'resume') return RESUME_LANG_RE.test(t);
   if (id === 'church') return CHURCH_LANG_RE.test(t);
@@ -8956,7 +8989,7 @@ function renderNutritionGate() {
   gate.replaceChildren();
   if (open) return;
   const lead = document.createElement('p');
-  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library. Gut health and neuroplasticity stay Plus-only, with the same kind of tease.';
+  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library. Gut health and neuroplasticity stay Plus-only, with the same kind of tease. Ice baths and recovery spas stay Plus-only in the same way.';
   gate.appendChild(lead);
   const benefitLabel = document.createElement('p');
   benefitLabel.className = 'nut-filter-label';
@@ -9269,12 +9302,66 @@ const BRAIN_CARDS = [
     ],
   },
 ];
+const COLD_CARDS = [
+  {
+    id: 'why',
+    title: 'Why this rarely comes up',
+    body: [
+      'A lot of people in recovery never consider an ice bath or a recovery spa. The day is already full: sleep, food, a meeting, a safe person, the next hour. Cold water is not on that list, and it does not have to be.',
+      'This page is here so the idea is plain, and so it is not sold as a secret fix. If it is not for you, you can leave it.',
+    ],
+  },
+  {
+    id: 'path',
+    title: 'A new path, not a cure',
+    body: [
+      'If you and a GP ever look at cold, or at time in a recovery spa, the useful frame is the same one as Brain habits. A small new practice can become a path the brain walks a little more easily when you repeat it. That is how a habit forms.',
+      'It is not a cure for addiction. It does not treat addiction. It does not rewire you, and it does not replace a counsellor, a meeting, or medicine a doctor has prescribed. Open Brain habits if you want that idea in plainer words.',
+    ],
+  },
+  {
+    id: 'research',
+    title: 'What research has explored',
+    body: [
+      'As of 2026, research on cold water is mixed. It is mostly about healthy people and about sport. It is not a body of trials about addiction. Hopewick does not turn any of it into a how-to. There is no temperature and no time on this page.',
+      'A 2017 review in Experimental Physiology (Tipton and colleagues) looked across cold-water immersion. It said the evidence for benefits is uneven, and that the risks — including to the heart — are better described than the claimed upsides. Some claims were still anecdotal.',
+      'A small 2023 study in the journal Biology (Yankouskaya and colleagues) asked healthy adults who were new to cold-water swimming how they felt afterwards. On average, the group reported feeling more alert and more active, and less distressed. Scans in that same study were linked with more connection between some brain areas involved in attention and emotion. It was not a study of people in addiction treatment. One study is not proof, and those scans do not show that cold builds a recovery habit.',
+      'A 2010 review in the British Journal of Sports Medicine (Bleakley and Davison) looked at the body’s stress response. Short spells in cold water can raise heart rate and blood pressure. The reason for using cold to recover from sport was still unclear.',
+    ],
+  },
+  {
+    id: 'spa',
+    title: 'Recovery spas and contrast therapy',
+    body: [
+      'A recovery spa, and contrast therapy (time in warmer water and colder water), is an optional wellness practice. It is something you might discuss with a clinician. Hopewick does not endorse a venue, a brand, or a booking.',
+      'A 2013 review in PLoS ONE (Bieuzen, Bleakley, and Costello) looked at contrast water therapy after hard exercise. The trials were about muscle soreness in sport. They had a high risk of bias, and the review did not find a clear winner among recovery options used in sport. They were not studies of addiction.',
+    ],
+  },
+  {
+    id: 'who',
+    title: 'Not for everyone',
+    body: [
+      'Cold is not a dare. Skip it if you have a heart problem or blood-pressure trouble, if you are pregnant, if a medical condition is unmanaged, or if you are intoxicated. Talk to a GP before you try cold water or a recovery spa.',
+      'Stop straight away if you feel dizzy, sick, short of breath, or any chest pain, and call 000. Do not do this alone in open water.',
+    ],
+  },
+  {
+    id: 'care',
+    title: 'Not a substitute for treatment',
+    body: [
+      'A spa visit does not stand in for treatment, a counsellor, a GP, or the people you trust. If you are in danger, or thinking feels unsafe, use Get help and call 000.',
+      'A lapse is not a failure. Cold is not a step you owe anyone.',
+    ],
+  },
+];
 function syncEducationPlusPills() {
   const plus = subscriptionPlus();
   const gut = $('#gutPlusPill');
   const brain = $('#brainPlusPill');
+  const cold = $('#coldPlusPill');
   if (gut) gut.hidden = plus;
   if (brain) brain.hidden = plus;
+  if (cold) cold.hidden = plus;
 }
 function renderEducationGate(gate, cards, copy) {
   if (!gate) return;
@@ -9396,6 +9483,32 @@ function openBrain() {
   closeSidebar();
   renderBrain();
   if (!el.brainDlg.open) el.brainDlg.showModal();
+}
+function renderCold() {
+  const plus = subscriptionPlus();
+  const lib = $('#coldLibrary');
+  if (lib) lib.hidden = !plus;
+  renderEducationGate($('#coldGate'), COLD_CARDS, {
+    lead: 'Hopewick Plus opens the short notes on ice baths and recovery spas. Free keeps the topic names below — not the full notes.',
+    teaseLabel: 'Notes in Plus',
+    teaseAria: 'Ice bath and recovery spa notes included with Hopewick Plus',
+    plusBtnId: 'coldPlusBtn',
+    dlg: el.coldDlg,
+    freeHelp: 'With or without Plus: this is not a dare, and it is not medical advice. In a crisis, use Get help and call 000.',
+  });
+  const closeCold = () => { if (el.coldDlg && el.coldDlg.open) el.coldDlg.close(); };
+  renderEducationCards($('#coldCards'), COLD_CARDS, {
+    path: [
+      { label: 'Open brain habits', run: () => { closeCold(); openBrain(); } },
+    ],
+  });
+  syncEducationPlusPills();
+}
+function openCold() {
+  if (!profile) return;
+  closeSidebar();
+  renderCold();
+  if (!el.coldDlg.open) el.coldDlg.showModal();
 }
 
 function openNearby() {
@@ -10420,7 +10533,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -10451,6 +10564,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'nutrition') openNutrition();
   else if (o === 'gut') openGut();
   else if (o === 'brain') openBrain();
+  else if (o === 'cold') openCold();
   else if (o === 'skills') openSkills();
   else if (o === 'breakers') openBreakers();
   else if (o === 'selfcare') openSelfCare();
@@ -10488,7 +10602,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -11710,6 +11824,7 @@ async function refreshBilling() {
       if (el.nutritionDlg && el.nutritionDlg.open) renderNutrition();
       if (el.gutDlg && el.gutDlg.open) renderGut();
       if (el.brainDlg && el.brainDlg.open) renderBrain();
+      if (el.coldDlg && el.coldDlg.open) renderCold();
       if (appTab === 'journal') {
         syncJournalGate();
         if (subscriptionPlus()) renderJournalList();
@@ -11812,6 +11927,7 @@ function appendPlusOffer(body) {
     'Resume builder, kept on this device',
     'Nutrition notes — food, water, and supplements people ask about',
     'Gut health and neuroplasticity notes — plain language, Plus only',
+    'Ice baths and recovery spa notes — plain language, Plus only',
     'Clean time tracker, SOAP reflections, and 12 Steps practice',
     'Going Deeper faith content',
     'The full year of readings',
