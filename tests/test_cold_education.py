@@ -12,20 +12,25 @@ ROOT = Path(__file__).resolve().parents[1]
 APP = ROOT / "app" / "index.html"
 
 COLD_TITLES = (
-    "Why this rarely comes up",
-    "A new path, not a cure",
-    "What research has explored",
-    "Recovery spas and contrast therapy",
-    "Not for everyone",
-    "Not a substitute for treatment",
+    "Practise staying",
+    "The win is following through",
+    "What some people notice afterwards",
+    "What cold does to the body",
+    "A recovery spa, if you choose one",
 )
 COLD_BODY = (
+    "practise staying instead of escaping",
+    "The win is not how long you stay in the water",
+    "facing the first urge to get out",
+    "getting in when your mind says not to",
+    "alert, refreshed, grounded, or mentally reset",
+    "Individual experiences vary",
     "Tipton and colleagues",
     "Yankouskaya and colleagues",
     "Bleakley and Davison",
+    "physiological responses to cold-water immersion",
+    "not trials of recovery from substance dependence",
     "does not endorse a venue",
-    "It is not a cure for addiction",
-    "Open Brain habits if you want that idea",
 )
 
 
@@ -49,11 +54,12 @@ def test_static_cold_education_copy_and_gate():
     assert "Do not add cold on a crisis reply." in text
     assert "Do not add gut or brain on a crisis reply." in text
     assert "not medical advice" in text
-    assert "Talk to a GP before you try cold water or a recovery spa." in text
-    assert "not a substitute for treatment" in text
-    assert "blood-pressure problem" in text
-    assert "while intoxicated" in text
+    assert "speak with your GP or treating clinician" in text
+    assert "does not replace professional treatment" in text
+    assert "uncontrolled blood pressure" in text
+    assert "while intoxicated or impaired" in text
     assert "chest pain" in text
+    assert "Before you get in" in text
     for title in COLD_TITLES:
         assert title in cards
     for marker in COLD_BODY:
@@ -63,9 +69,9 @@ def test_static_cold_education_copy_and_gate():
     assert "small 2023 study in the journal Biology" in cards
     assert "2010 review in the British Journal of Sports Medicine" in cards
     assert "2013 review in PLoS ONE" in cards
-    assert "Brain habits" in cards
+    assert "Brain habits" not in cards
     assert "high risk of bias" in cards
-    assert "into a how-to" in cards
+    assert "not a cure" not in cards.lower()
     assert "°" not in cards
     assert "minutes" not in cards.lower()
     assert "degrees" not in cards.lower()
@@ -77,16 +83,27 @@ def test_static_cold_education_copy_and_gate():
     assert "treats addiction" not in low
     assert "api key" not in low
     cold_html = text.split('<dialog id="coldDlg"', 1)[1].split("</dialog>", 1)[0]
-    assert "not a how-to" in cold_html
     html_low = cold_html.lower()
-    assert "not medical advice" in html_low
-    assert "talk to a gp" in html_low
+    assert "you spent years training yourself to escape discomfort" in html_low
+    assert "before you get in" in html_low
+    assert "cardiovascular and respiratory systems" in html_low
+    assert html_low.count("cardiovascular and respiratory systems") == 1
+    assert html_low.count("cure addiction") == 1
+    assert "not a cure" not in html_low
+    assert "implanted cardiac device" in html_low
+    assert html_low.count("implanted cardiac device") == 1
+    assert "speak with your gp or treating clinician" in html_low
     assert "chest pain" in html_low
-    assert "pregnant" in html_low or "pregnancy" in html_low
+    assert "pregnancy" in html_low
+    assert "not a treatment for substance dependence" in html_low
+    assert "alongside meetings, counselling, medical care" in html_low
     assert "api key" not in html_low
+    assert "rarely come up" not in html_low
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
     assert 'content="hopewick-v5.25"' in landing
     assert ">Ice baths &amp; recovery spas</h3>" in landing
+    assert "meeting discomfort on purpose" in landing
+    assert "rarely come up" not in landing
     assert "Ice baths and recovery spa notes — plain language, Plus only" in landing
     assert "Gut health and neuroplasticity notes — plain language, Plus only" in landing
 
@@ -134,10 +151,11 @@ def test_cold_education_plus_gate_phone():
             _open_side(page, "cold")
             page.wait_for_function("() => document.getElementById('coldDlg')?.open === true")
             free = page.inner_text("#coldDlg")
-            assert "General information only — not medical advice" in free
-            assert "Talk to a GP" in free
+            assert "Before you get in" in free
+            assert "You spent years training yourself to escape discomfort" in free
+            assert "speak with your GP or treating clinician" in free
             assert "chest pain" in free
-            assert "not a substitute for treatment" in free.lower()
+            assert "not a treatment for substance dependence" in free.lower()
             assert "not the full notes" in free
             assert "Start 3-day free trial" in free
             for title in COLD_TITLES:
@@ -176,14 +194,12 @@ def test_cold_education_plus_gate_phone():
             for marker in COLD_BODY:
                 assert marker in plus
             assert "As of 2026" in plus
-            assert "Talk to a GP" in plus
+            assert "speak with your GP" in plus
+            assert "The win is not how long you stay in the water" in plus
+            assert "practise staying instead of escaping" in plus
             assert page.locator("#coldGate").is_hidden()
+            assert page.locator('#coldDlg button:has-text("Open brain habits")').count() == 0
             assert "°" not in plus
-            page.click('#coldDlg button:has-text("Open brain habits")')
-            page.wait_for_function("() => document.getElementById('brainDlg')?.open === true")
-            assert "Brain habits" in page.inner_text("#brainDlg")
-            page.keyboard.press("Escape")
-            page.wait_for_function("() => document.getElementById('brainDlg')?.open !== true")
 
             page.click("#appTabChat")
             page.wait_for_selector("#input", state="visible")
