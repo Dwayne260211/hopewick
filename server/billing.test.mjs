@@ -451,6 +451,8 @@ test('free Hope defaults to 5 a day and a trial has no daily cap', async () => {
     assert.equal(usage.plus, false);
     assert.equal(usage.limit, 5);
     assert.equal(usage.remaining, 5);
+    assert.equal(usage.resetLabel, 'midnight, Brisbane time');
+    assert.equal(usage.trialEligible, true);
 
     const trial = await signIn(app.base, 'trial@example.com');
     const set = await fetch(`${app.base}/api/billing/dev-set`, {
@@ -471,6 +473,8 @@ test('free Hope defaults to 5 a day and a trial has no daily cap', async () => {
     assert.equal(trialUsage.plus, true);
     assert.equal(trialUsage.limit, null);
     assert.equal(trialUsage.remaining, null);
+    assert.equal(trialUsage.resetLabel, null);
+    assert.equal(trialUsage.trialEligible, false);
     assert.equal(trialUsage.used, 3);
   } finally {
     await app.close();
@@ -528,8 +532,15 @@ test('hosted Hope requires sign-in, hides the key, and enforces the free cap', a
     });
     assert.equal(blocked.status, 429);
     const blockedBody = await blocked.json();
-    assert.match(blockedBody.error.message, /today’s 1 free messages/);
+    assert.equal(blockedBody.error.code, 'daily_cap');
+    assert.match(blockedBody.error.message, /You’ve used your 1 free Hope message for today/);
+    assert.match(blockedBody.error.message, /midnight, Brisbane time/);
     assert.match(blockedBody.error.message, /no daily message limit/);
+    assert.match(blockedBody.error.message, /Get help stay free/);
+    assert.equal(blockedBody.limit, 1);
+    assert.equal(blockedBody.used, 1);
+    assert.equal(blockedBody.remaining, 0);
+    assert.equal(blockedBody.resetLabel, 'midnight, Brisbane time');
     assert.equal(app.openaiCalls.length, 1);
 
     const crisis = await fetch(`${app.base}/api/hope/chat`, {
@@ -569,6 +580,8 @@ test('hosted Hope requires sign-in, hides the key, and enforces the free cap', a
     assert.equal(plusUsage.plus, true);
     assert.equal(plusUsage.limit, null);
     assert.equal(plusUsage.remaining, null);
+    assert.equal(plusUsage.resetLabel, null);
+    assert.equal(plusUsage.trialEligible, false);
     assert.equal(plusUsage.used, 3);
   } finally {
     await app.close();

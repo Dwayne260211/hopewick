@@ -42,6 +42,7 @@ import {
   commitSpend,
   rollbackSpend,
   capMessage,
+  HOPE_RESET_LABEL,
 } from './hope-chat.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -679,6 +680,8 @@ async function handleHopeChat(store, req, res) {
       error: { message, code: admission.code },
       limit: admission.limit,
       used: admission.usage.count,
+      remaining: admission.limit == null ? null : Math.max(0, admission.limit - admission.usage.count),
+      resetLabel: admission.code === 'daily_cap' ? HOPE_RESET_LABEL : null,
     });
     return;
   }

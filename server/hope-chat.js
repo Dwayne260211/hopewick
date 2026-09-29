@@ -6,6 +6,8 @@
 import { publicUser } from './store.js';
 
 export const FREE_DAILY_DEFAULT = 5;
+/** Free count rolls over at midnight in Australia/Brisbane (no daylight saving). */
+export const HOPE_RESET_LABEL = 'midnight, Brisbane time';
 const MAX_MESSAGES = 40;
 const MAX_CONTENT = 12000;
 const MAX_TOKENS = 600;
@@ -67,6 +69,9 @@ export function usageSnapshot(user, now = new Date()) {
     used: usage.count,
     limit,
     remaining: limit == null ? null : Math.max(0, limit - usage.count),
+    resetLabel: limit == null ? null : HOPE_RESET_LABEL,
+    // First subscription only, matching Checkout trial_period_days.
+    trialEligible: limit != null && !user.stripeSubscriptionId,
     plus: view.plus,
     complimentary: view.complimentary,
     hopeConfigured: hopeConfigured(),
@@ -187,5 +192,6 @@ export function capMessage(user, limit) {
   if (hasUnlimitedHope(user)) {
     return 'Hopewick Plus has no daily message limit. Today’s Readings, crisis support, and Get help stay available.';
   }
-  return `You’ve used today’s ${n} free messages with Hope. Hopewick Plus has no daily message limit. The count resets overnight (Brisbane time). Today’s Readings, crisis support, and Get help stay available.`;
+  const noun = n === 1 ? 'message' : 'messages';
+  return `You’ve used your ${n} free Hope ${noun} for today. They reset at ${HOPE_RESET_LABEL}. Hopewick Plus has no daily message limit. Today’s Readings, crisis support, domestic and family violence resources, and Get help stay free.`;
 }
