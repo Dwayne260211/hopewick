@@ -550,6 +550,28 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   padding: 10px 12px; border-radius: 12px; background: var(--surface-2);
   border: 1px solid var(--border);
 }
+.home-week-card,
+.home-midweek {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+.home-week-card h2,
+.home-midweek h2 { font-size: 1rem; margin: 0 0 6px; font-weight: 600; }
+.home-week-card p,
+.home-midweek p { margin: 0 0 8px; line-height: 1.45; }
+.home-week-card p:last-child { margin-bottom: 0; }
+.home-midweek .midweek-goal { margin-top: 10px; }
+.home-midweek .midweek-goal p { margin: 0 0 8px; }
+.home-midweek .midweek-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+.home-midweek .midweek-choices button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
 .resume-inner { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px; }
 .resume-note {
   margin: 0;
@@ -2164,7 +2186,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
             <div class="account-session-actions">
               <button class="btn" type="button" id="myAccountSignOut">Sign out</button>
               <button class="btn btn-danger" type="button" id="myAccountDelete">Delete account</button>
-              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in and the saved chats for this account on our server. This browser may still keep a copy until you clear it in Settings.</p>
+              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in and the saved chats for this account on our server. Check-ins and weekly goals for this account are removed from the server too. This browser may still keep a copy until you clear it in Settings.</p>
             </div>
           </div>
         </div>
@@ -2351,12 +2373,12 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
-        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats are also saved to your account so they come back. Hopewick staff do not get a live feed of the conversation.</li>
+        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account so they come back. Hopewick staff do not get a live feed of the conversation.</li>
         <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, today’s message count, and this profile’s saved chats. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -2490,8 +2512,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 <dialog id="deleteAccountDlg" aria-labelledby="deleteAccountTitle">
   <form class="dlg-body account-form" id="deleteAccountForm">
     <h2 id="deleteAccountTitle">Delete account</h2>
-    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. Saved chats for this account on the server are erased. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
-    <p>This browser may still keep a copy of those chats, along with your journal and profiles, until you clear them in Settings. Stripe may keep invoices for receipts. Hopewick never stores your card number.</p>
+    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. Saved chats for this account on the server are erased. Check-ins and weekly goals saved for this account on the server are erased too. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
+    <p>This browser may still keep a copy of those chats, along with your journal, check-ins, weekly goals, and profiles, until you clear them in Settings. Stripe may keep invoices for receipts. Hopewick never stores your card number.</p>
     <label for="deleteAccountConfirm">Type DELETE to confirm
       <input id="deleteAccountConfirm" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" aria-describedby="deleteAccountHint">
     </label>
@@ -2654,7 +2676,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 
     <fieldset>
       <legend>Your data</legend>
-      <p class="help" style="margin:6px 0 10px">Kept on this device. Signed in, this profile’s chats are also saved to your account. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
+      <p class="help" style="margin:6px 0 10px">Kept on this device. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account. Export/import applies to <strong id="dataWho">this person</strong> only and never includes the API key or PIN.</p>
       <div class="row">
         <button class="btn btn-sm" type="button" id="exportBtn">Export JSON</button>
         <button class="btn btn-sm" type="button" id="importBtn">Import JSON</button>
@@ -3408,10 +3430,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.settings      per-person persona / mode / faith / voice / recovery settings
      eden.p.<id>.convos        per-person conversations
      eden.p.<id>.memories      per-person memories
-     eden.p.<id>.moods         per-person daily check-in / mood history
-     eden.p.<id>.gratitude     per-person morning gratitude entries
+     eden.p.<id>.moods         per-person daily check-in / mood history (device, and the account when signed in)
+     eden.p.<id>.gratitude     per-person morning gratitude entries (device, and the account when signed in)
      eden.p.<id>.journal       per-person journal entries
-     eden.p.<id>.goals         per-person weekly SMART goals (Hopewick Plus; not a meeting finder)
+     eden.p.<id>.goals         per-person weekly SMART goals (free; not a meeting finder; device, and the account when signed in)
      eden.p.<id>.plans         per-person relapse / lapse plan and exit plans (Hopewick Plus; this device only)
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
@@ -3729,7 +3751,7 @@ let pendingStartChat = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
-let goalsState = { weeks: {} }; // weeks[sundayIso] = { goals: [goal, goal] } — Sunday–Saturday, free
+let goalsState = { weeks: {}, held: {}, clearedAt: 0 }; // weeks[sundayIso] = { goals, updated, midweek } — Sunday–Saturday, free
 let plansState = { relapse: { warnings: '', firstTen: [], firstTenNote: '', people: [{ name: '', reach: '' }], helps: '', avoid: '', ifSlip: '', updated: 0 }, exits: {}, custom: [] };
 let plansView = 'hub';     // hub | relapse | exit | now
 let relapseStep = 0;
@@ -4035,18 +4057,248 @@ async function pullAccountChats(force) {
   return chatPulling;
 }
 function saveMemories() { if (isDemo) return; save(pk(profile.id, 'memories'), memories); }
-function saveMoods() { if (isDemo) return; save(pk(profile.id, 'moods'), moods); }
-function saveGratitude() { if (isDemo) return; save(pk(profile.id, 'gratitude'), gratitude); }
+function checkinOwnedHere(entry) {
+  if (!entry) return false;
+  if (isDemo || !billingState.signedIn || !billingState.id) return true;
+  return !entry.accountId || entry.accountId === billingState.id;
+}
+function tagCheckinEntry(entry) {
+  if (entry && !isDemo && billingState.signedIn && billingState.id) entry.accountId = billingState.id;
+  return entry;
+}
+function saveMoods() {
+  if (isDemo || !profile) return;
+  save(pk(profile.id, 'moods'), moods);
+  scheduleCheckinSync();
+}
+function saveGratitude() {
+  if (isDemo || !profile) return;
+  save(pk(profile.id, 'gratitude'), gratitude);
+  scheduleCheckinSync();
+}
 function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), journal); }
+function goalsSavedLine() {
+  if (isDemo) return 'This demo visit only — not saved on this device.';
+  if (billingState.signedIn) return 'Saved on this device and your account.';
+  return 'Saved on this device.';
+}
 function saveGoals() {
   if (isDemo || !profile) return;
+  adoptGoalsAccount();
   const keys = Object.keys(goalsState.weeks || {}).sort();
   if (keys.length > 60) {
     keys.slice(0, keys.length - 60).forEach(k => { delete goalsState.weeks[k]; });
   }
   save(pk(profile.id, 'goals'), goalsState);
   const note = $('#goalsSaved');
-  if (note && el.goalsDlg && el.goalsDlg.open) note.textContent = 'Saved on this device.';
+  if (note && el.goalsDlg && el.goalsDlg.open) note.textContent = goalsSavedLine();
+  scheduleCheckinSync();
+}
+let checkinSyncTimer = null;
+let checkinPullKey = '';
+let checkinPulling = null;
+let checkinHoldPull = false;
+let checkinPushing = false;
+let checkinDirty = false;
+function writeCheckinsLocal() {
+  if (isDemo || !profile) return;
+  save(pk(profile.id, 'moods'), moods);
+  save(pk(profile.id, 'gratitude'), gratitude);
+  save(pk(profile.id, 'goals'), goalsState);
+}
+function scheduleCheckinSync() {
+  if (isDemo || !profile || !billingState.signedIn) return;
+  clearTimeout(checkinSyncTimer);
+  checkinSyncTimer = setTimeout(() => { pushAccountCheckins().catch(() => {}); }, 450);
+}
+function checkinTime(row) {
+  return Number(row && (row.updated || row.ts)) || 0;
+}
+function laterCheckin(a, b) {
+  const au = checkinTime(a);
+  const bu = checkinTime(b);
+  if (au !== bu) return bu > au ? b : a;
+  return a;
+}
+function mergeOwnedDays(local, remote, kind) {
+  const id = billingState.signedIn ? billingState.id : '';
+  const others = (local || []).filter(row => id && row && row.accountId && row.accountId !== id);
+  const map = new Map();
+  const take = (list, fromServer) => {
+    for (const raw of (Array.isArray(list) ? list : [])) {
+      if (!raw || !raw.date) continue;
+      if (!fromServer && id && raw.accountId && raw.accountId !== id) continue;
+      const row = Object.assign({}, raw);
+      if (fromServer && id) row.accountId = id;
+      else if (!row.accountId && id) row.accountId = id;
+      const prev = map.get(row.date);
+      const winner = prev ? laterCheckin(prev, row) : row;
+      const alive = kind === 'mood'
+        ? !!(winner.mood || winner.craving)
+        : !!(winner.items && winner.items.length);
+      if (!alive) map.delete(row.date);
+      else map.set(row.date, winner);
+    }
+  };
+  take(local, false);
+  take(remote, true);
+  const clearedAt = Number(goalsState && goalsState.clearedAt) || 0;
+  const mine = [...map.values()].filter(row => !clearedAt || checkinTime(row) >= clearedAt);
+  mine.sort((a, b) => a.date < b.date ? -1 : 1);
+  return others.concat(mine.slice(-400));
+}
+function mergeOwnedGoals(localState, remoteGoals) {
+  const id = billingState.signedIn ? billingState.id : '';
+  const base = normalizeGoals(localState || {});
+  const remoteWeeks = remoteGoals && remoteGoals.weeks && typeof remoteGoals.weeks === 'object' ? remoteGoals.weeks : {};
+  const clearedAt = Math.max(Number(base.clearedAt) || 0, Number(remoteGoals && remoteGoals.clearedAt) || 0);
+  const weeks = {};
+  const keys = new Set([...Object.keys(base.weeks || {}), ...Object.keys(remoteWeeks)]);
+  for (const key of keys) {
+    const local = base.weeks[key];
+    if (local && id && local.accountId && local.accountId !== id) {
+      weeks[key] = local;
+      continue;
+    }
+    const remoteRaw = remoteWeeks[key];
+    const remote = remoteRaw ? normalizeGoals({ weeks: { [key]: remoteRaw } }).weeks[key] : null;
+    if (remote && id) remote.accountId = id;
+    let chosen = null;
+    if (local && remote) {
+      chosen = (Number(remote.updated) || 0) >= (Number(local.updated) || 0) ? remote : local;
+      const midL = local.midweek;
+      const midR = remote.midweek;
+      let mid = null;
+      if (midL && midR) mid = (Number(midR.updated) || 0) >= (Number(midL.updated) || 0) ? midR : midL;
+      else mid = midL || midR || null;
+      chosen = Object.assign({}, chosen, { accountId: id || chosen.accountId });
+      if (mid && (mid.answers[0] || mid.answers[1] || mid.updated)) chosen.midweek = mid;
+      else delete chosen.midweek;
+    } else {
+      chosen = local || remote;
+      if (chosen && id && !chosen.accountId) chosen.accountId = id;
+    }
+    if (!chosen) continue;
+    if (clearedAt && (Number(chosen.updated) || 0) < clearedAt) continue;
+    weeks[key] = chosen;
+  }
+  return { weeks, held: base.held || {}, clearedAt };
+}
+function moodsForAccount() {
+  return moods.filter(checkinOwnedHere).map(row => ({
+    date: row.date,
+    mood: row.mood || null,
+    craving: row.craving || null,
+    updated: checkinTime(row),
+  }));
+}
+function gratitudeForAccount() {
+  return gratitude.filter(checkinOwnedHere).map(row => ({
+    date: row.date,
+    items: Array.isArray(row.items) ? row.items : [],
+    ts: checkinTime(row),
+    updated: checkinTime(row),
+  }));
+}
+function goalsForAccount() {
+  adoptGoalsAccount();
+  const weeks = {};
+  for (const [key, week] of Object.entries(goalsState.weeks || {})) {
+    if (!checkinWeekOwned(week)) continue;
+    weeks[key] = {
+      goals: week.goals,
+      updated: Number(week.updated) || 0,
+      midweek: week.midweek || { answers: ['', ''], updated: 0 },
+    };
+  }
+  return { weeks };
+}
+function applyServerCheckins(row) {
+  if (!row || !profile || !billingState.signedIn) return;
+  const id = billingState.id;
+  const remoteMoods = (row.moods || []).map(item => Object.assign({}, item, { accountId: id }));
+  const remoteGrat = (row.gratitude || []).map(item => Object.assign({}, item, { accountId: id }));
+  moods = mergeOwnedDays(moods.filter(item => item.accountId && item.accountId !== id), remoteMoods, 'mood');
+  gratitude = mergeOwnedDays(gratitude.filter(item => item.accountId && item.accountId !== id), remoteGrat, 'grat');
+  const mergedGoals = mergeOwnedGoals({ weeks: {}, held: goalsState.held || {}, clearedAt: row.clearedAt || goalsState.clearedAt || 0 }, row.goals || {});
+  const kept = {};
+  for (const [key, week] of Object.entries(goalsState.weeks || {})) {
+    if (week && week.accountId && week.accountId !== id) kept[key] = week;
+  }
+  goalsState = {
+    weeks: Object.assign(kept, mergedGoals.weeks),
+    held: goalsState.held || {},
+    clearedAt: Math.max(Number(goalsState.clearedAt) || 0, Number(row.clearedAt) || 0),
+  };
+  adoptGoalsAccount();
+  writeCheckinsLocal();
+}
+async function pushAccountCheckins() {
+  if (isDemo || !profile || !billingState.signedIn) return null;
+  if (checkinPushing) { checkinDirty = true; return null; }
+  const profileId = chatProfileId();
+  if (!profileId) return null;
+  checkinPushing = true;
+  checkinDirty = false;
+  try {
+    const data = await billingFetch('/api/checkins', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        profileId,
+        name: profile.name || '',
+        moods: moodsForAccount(),
+        gratitude: gratitudeForAccount(),
+        goals: goalsForAccount(),
+        clearedAt: Number(goalsState.clearedAt) || 0,
+      }),
+    });
+    if (!checkinDirty && data && data.profile) {
+      applyServerCheckins(data.profile);
+      if (!(el.goalsDlg && el.goalsDlg.open) && appTab === 'home') renderHome();
+    }
+    if (data && data.profile && profile && data.profile.id && profile.chatKey !== data.profile.id) {
+      profile.chatKey = data.profile.id;
+      saveProfiles();
+    }
+    checkinHoldPull = false;
+    return data;
+  } finally {
+    checkinPushing = false;
+    if (checkinDirty) {
+      checkinDirty = false;
+      scheduleCheckinSync();
+    }
+  }
+}
+async function pullAccountCheckins(force) {
+  if (isDemo || !profile || !billingState.signedIn || checkinHoldPull) return;
+  const key = (billingState.id || '') + ':' + chatProfileId();
+  if (!force && checkinPullKey === key) return;
+  if (checkinPulling) return checkinPulling;
+  checkinPulling = (async () => {
+    if (chatPulling) { try { await chatPulling; } catch (_) { /* chats pull can fail on its own */ } }
+    if (!profile || !billingState.signedIn || checkinHoldPull) return;
+    const data = await billingFetch('/api/checkins');
+    if (!profile || !billingState.signedIn || checkinHoldPull) return;
+    adoptGoalsAccount();
+    const bucket = chooseChatBucket(data && data.profiles);
+    if (bucket) {
+      if (profile.chatKey !== bucket.id) {
+        profile.chatKey = bucket.id;
+        saveProfiles();
+      }
+      moods = mergeOwnedDays(moods, bucket.moods, 'mood');
+      gratitude = mergeOwnedDays(gratitude, bucket.gratitude, 'grat');
+      goalsState = mergeOwnedGoals(goalsState, Object.assign({}, bucket.goals || {}, { clearedAt: bucket.clearedAt || 0 }));
+      writeCheckinsLocal();
+    }
+    await pushAccountCheckins();
+    checkinPullKey = (billingState.id || '') + ':' + chatProfileId();
+    if (appTab === 'home') renderHome();
+    if (el.goalsDlg && el.goalsDlg.open) renderGoals();
+  })().finally(() => { checkinPulling = null; });
+  return checkinPulling;
 }
 function saveSteps() { if (isDemo) return; save(pk(profile.id, 'steps'), stepsProgress); }
 function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), bibleProgress); }
@@ -4941,7 +5193,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Kept on this device. Signed in, this profile’s chats are also saved to your account. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Kept on this device. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -5440,6 +5692,11 @@ function renderHome() {
     box.appendChild(note);
   }
 
+  const weekOverview = weeklyOverviewEl();
+  if (weekOverview) box.appendChild(weekOverview);
+  const halfway = halfwayGoalEl();
+  if (halfway) box.appendChild(halfway);
+
   if (counsellor) {
     const skillsRow = document.createElement('div');
     skillsRow.className = 'starters skills-chips';
@@ -5469,7 +5726,7 @@ function renderHome() {
 /* ---------------------------------------------------------------------------
    Welcome screen, daily check-in & mood history
    --------------------------------------------------------------------------- */
-function todaysCheckin() { return moods.find(m => m.date === localDate()) || null; }
+function todaysCheckin() { return moods.find(m => m.date === localDate() && checkinOwnedHere(m)) || null; }
 
 function renderWelcome() {
   const counsellor = isCounsellor();
@@ -5578,7 +5835,7 @@ function moodWeekEl() {
   for (let i = 6; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
     const dateKey = localDate(d);
-    const entry = moods.find(m => m.date === dateKey);
+    const entry = moods.find(m => m.date === dateKey && checkinOwnedHere(m));
     const has = !!(entry && (entry.mood || entry.craving));
     const day = document.createElement('button');
     day.type = 'button';
@@ -5610,10 +5867,19 @@ function moodWeekEl() {
 
 function recordCheckin(patch) {
   const date = localDate();
-  let entry = moods.find(m => m.date === date);
-  if (!entry) { entry = { date, mood: null, craving: null }; moods.push(entry); }
+  let entry = moods.find(m => m.date === date && checkinOwnedHere(m));
+  if (!entry) { entry = { date, mood: null, craving: null, updated: 0 }; moods.push(entry); }
   Object.assign(entry, patch);
-  moods = moods.slice(-400);
+  entry.updated = Date.now();
+  tagCheckinEntry(entry);
+  const id = billingState.signedIn ? billingState.id : '';
+  const mine = [];
+  const rest = [];
+  for (const row of moods) {
+    if (!id || !row.accountId || row.accountId === id) mine.push(row);
+    else rest.push(row);
+  }
+  moods = rest.concat(mine.slice(-400));
   saveMoods();
 }
 function refreshAfterCheckin() {
@@ -5733,7 +5999,7 @@ function commonContext(convo) {
   }
   if (convo && convo.mood) lines.push(`At the start of this conversation ${userName()} checked in feeling: ${convo.mood.l} ${convo.mood.e}. Acknowledge this gently and naturally early on.`);
   if (convo && convo.craving) lines.push(`They rated their cravings today as: ${convo.craving}.`);
-  const todaysGrat = gratitude.find(g => g.date === localDate());
+  const todaysGrat = todaysGratitude();
   if (todaysGrat && todaysGrat.items && todaysGrat.items.length) {
     lines.push(`This morning ${userName()} named gratitude for: ${todaysGrat.items.join('; ')}. Acknowledge briefly if natural.`);
   }
@@ -5747,7 +6013,7 @@ function inAppToolsPrompt() {
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
     'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, deeper, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (Hopewick Plus): rebuilding meals, fluids, protein, fruit, vegetables and fibre, plus plain-language notes on higher-protein eating, vitamins, magnesium, omega-3, NAC, ashwagandha, ketogenic and carnivore diets, and methylene blue. Separate established nutrition, limited research, and personal stories. Do not give doses. Do not say these treat or cure addiction or withdrawal. Do not tell them to stop prescribed medicine. Methylene blue is not an ordinary supplement: no dose, and a doctor or pharmacist matters, especially with antidepressants. Alcohol and benzodiazepine withdrawal can need medical care. Paracetamol overdose is 000 or 13 11 26, never a shop supplement. Everyday food and water do not need a medical warning. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (psychological flexibility, defusion, willingness, values, habit learning, cravings and urge surfing, environment, connection, and recovery capital). Educational, not treatment. Do not promise rewiring, positive thinking as a cure, or that thoughts create reality. A thought is not an instruction. Rat Park is animal research, not a full explanation of human addiction. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device and on the account when signed in. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (Hopewick Plus): rebuilding meals, fluids, protein, fruit, vegetables and fibre, plus plain-language notes on higher-protein eating, vitamins, magnesium, omega-3, NAC, ashwagandha, ketogenic and carnivore diets, and methylene blue. Separate established nutrition, limited research, and personal stories. Do not give doses. Do not say these treat or cure addiction or withdrawal. Do not tell them to stop prescribed medicine. Methylene blue is not an ordinary supplement: no dose, and a doctor or pharmacist matters, especially with antidepressants. Alcohol and benzodiazepine withdrawal can need medical care. Paracetamol overdose is 000 or 13 11 26, never a shop supplement. Everyday food and water do not need a medical warning. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (psychological flexibility, defusion, willingness, values, habit learning, cravings and urge surfing, environment, connection, and recovery capital). Educational, not treatment. Do not promise rewiring, positive thinking as a cure, or that thoughts create reality. A thought is not an instruction. Rat Park is animal research, not a full explanation of human addiction. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
     'deeper = Going Deeper study tracks (Hopewick Plus): optional reflections in the person’s own tradition, or a values path if they prefer no faith content. Not clinical care and not a sermon. If they chose no faith content, name the values path unless they ask for a tradition.',
     'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply. Do not add deeper on a crisis reply.',
@@ -5776,7 +6042,7 @@ function counsellorPrompt(convo) {
     '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
     '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure. When they want to write or review a relapse or lapse prevention plan, or an exit for a high-risk moment (payday, old mates, a party, alone at night, a bottle shop), name Plans and include plans on the TOOLS line. That screen is Hopewick Plus and stays on their device. It is self-help, not counselling. Do not tell them the app has wiped their clean time — it has not.',
     '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
-    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. When they want to write, edit, or check two goals for this week, name SMART goals and include goals on the TOOLS line. That screen is free and stays on their device. It is not a SMART Recovery meeting — a meeting request uses meetings. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
+    '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. When they want to write, edit, or check two goals for this week, name SMART goals and include goals on the TOOLS line. That screen is free. It stays on their device, and on the account when they are signed in. It is not a SMART Recovery meeting — a meeting request uses meetings. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
     '',
     'INTERACTIVE CRAVING / URGE SKILLS (DBT + CBT-informed)',
     '- When the person describes a craving or urge, offer to do ONE short exercise together (ask permission). Guide step-by-step: give one small step, wait for their reply, then continue. Do not dump a long worksheet. You may also name Circuit breakers or Self-care and include breakers or selfcare on the TOOLS line.',
@@ -6297,7 +6563,7 @@ $('#cleanEditSettings').addEventListener('click', () => { el.cleanTimeDlg.close(
 /* ---------------------------------------------------------------------------
    Morning gratitude
    --------------------------------------------------------------------------- */
-function todaysGratitude() { return gratitude.find(g => g.date === localDate()) || null; }
+function todaysGratitude() { return gratitude.find(g => g.date === localDate() && checkinOwnedHere(g)) || null; }
 
 function gratitudeCardEl() {
   const card = document.createElement('div');
@@ -6328,10 +6594,20 @@ function gratitudeCardEl() {
 }
 function saveTodaysGratitude(items) {
   const date = localDate();
-  let entry = gratitude.find(g => g.date === date);
-  if (!entry) { entry = { date, items: [], ts: Date.now() }; gratitude.push(entry); }
-  entry.items = items; entry.ts = Date.now();
-  gratitude = gratitude.slice(-400);
+  let entry = gratitude.find(g => g.date === date && checkinOwnedHere(g));
+  if (!entry) { entry = { date, items: [], ts: Date.now(), updated: 0 }; gratitude.push(entry); }
+  entry.items = items;
+  entry.ts = Date.now();
+  entry.updated = entry.ts;
+  tagCheckinEntry(entry);
+  const id = billingState.signedIn ? billingState.id : '';
+  const mine = [];
+  const rest = [];
+  for (const row of gratitude) {
+    if (!id || !row.accountId || row.accountId === id) mine.push(row);
+    else rest.push(row);
+  }
+  gratitude = rest.concat(mine.slice(-400));
   saveGratitude();
 }
 
@@ -7973,7 +8249,7 @@ function openSelfCare() {
 }
 
 /* ---------------------------------------------------------------------------
-   Weekly SMART goals — two per Sunday–Saturday week, Hopewick Plus, on this device.
+   Weekly SMART goals — two per Sunday–Saturday week, free. On this device, and on the account when signed in.
    Not the SMART Recovery meeting finder. Free sees the entry; the editor needs Plus.
    --------------------------------------------------------------------------- */
 const GOAL_FIELDS = [
@@ -7993,15 +8269,38 @@ function normalizeOneGoal(raw) {
   g.done = !!src.done;
   return g;
 }
+function normalizeMidweek(raw) {
+  const allowed = { still: 1, change: 1, letgo: 1 };
+  const src = raw && typeof raw === 'object' ? raw : {};
+  const list = Array.isArray(src.answers) ? src.answers : [];
+  return {
+    answers: [0, 1].map(i => allowed[list[i]] ? list[i] : ''),
+    updated: Number(src.updated) || 0,
+  };
+}
 function normalizeGoals(raw) {
   const weeks = {};
   const src = raw && typeof raw === 'object' && raw.weeks && typeof raw.weeks === 'object' ? raw.weeks : {};
   for (const [key, week] of Object.entries(src)) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) continue;
     const list = week && Array.isArray(week.goals) ? week.goals : [];
-    weeks[key] = { goals: [0, 1].map(i => normalizeOneGoal(list[i])) };
+    const next = {
+      goals: [0, 1].map(i => normalizeOneGoal(list[i])),
+      updated: Number(week && week.updated) || 0,
+      midweek: normalizeMidweek(week && week.midweek),
+    };
+    if (week && week.accountId) next.accountId = String(week.accountId);
+    weeks[key] = next;
   }
-  return { weeks };
+  const held = {};
+  const heldSrc = raw && raw.held && typeof raw.held === 'object' ? raw.held : {};
+  for (const [accountId, blob] of Object.entries(heldSrc)) {
+    if (!accountId || String(accountId).length > 80) continue;
+    const inner = blob && blob.weeks ? blob.weeks : {};
+    const parsed = normalizeGoals({ weeks: inner });
+    if (Object.keys(parsed.weeks).length) held[accountId] = { weeks: parsed.weeks };
+  }
+  return { weeks, held, clearedAt: Number(raw && raw.clearedAt) || 0 };
 }
 /** Sunday of the device-local week (Sunday–Saturday). */
 function weekStartSunday(d = new Date()) {
@@ -8018,17 +8317,190 @@ function formatWeekRange(sundayIso) {
 function goalHasText(goal) {
   return GOAL_FIELDS.some(f => String(goal && goal[f.key] || '').trim());
 }
-function ensureCurrentWeek() {
+function joinPlain(list) {
+  if (!list.length) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list[0] + ' and ' + list[1];
+  return list.slice(0, -1).join(', ') + ', and ' + list[list.length - 1];
+}
+function addIsoDays(iso, days) {
+  const parts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  if (!parts) return '';
+  const date = new Date(Date.UTC(+parts[1], +parts[2] - 1, +parts[3]));
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+/** Wednesday–Saturday in Australia/Brisbane. Keep in step with server/checkins.js halfwayWindow. */
+function halfwayWindow(d = new Date()) {
+  const iso = brisbaneDateISO(d);
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Australia/Brisbane',
+    weekday: 'short',
+  }).formatToParts(d);
+  const name = (parts.find(part => part.type === 'weekday') || {}).value || '';
+  const weekday = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[name.slice(0, 3)];
+  const sunday = addIsoDays(iso, -(weekday || 0));
+  return { iso, weekday: weekday || 0, sunday, show: weekday >= 3 && weekday <= 6 };
+}
+function datesOfWeek(sundayIso) {
+  const dates = [];
+  for (let i = 0; i < 7; i++) dates.push(addIsoDays(sundayIso, i));
+  return dates;
+}
+function weeklyOverviewEl() {
+  const sunday = weekStartSunday();
+  const dates = new Set(datesOfWeek(sunday));
+  const moodEntries = moods.filter(row => dates.has(row.date) && checkinOwnedHere(row) && (row.mood || row.craving))
+    .sort((a, b) => a.date < b.date ? -1 : 1);
+  const gratEntries = gratitude.filter(row => dates.has(row.date) && checkinOwnedHere(row) && row.items && row.items.length);
+  if (!moodEntries.length && !gratEntries.length) return null;
+  const sentences = [];
+  if (moodEntries.length === 1) sentences.push('You checked in on one day this week.');
+  else if (moodEntries.length > 1) sentences.push('You checked in on ' + moodEntries.length + ' days this week.');
+  else sentences.push('No check-in this week.');
+  const moodLabels = [];
+  const cravings = [];
+  for (const row of moodEntries) {
+    if (row.mood && row.mood.l && !moodLabels.includes(row.mood.l)) moodLabels.push(row.mood.l);
+    if (row.craving && !cravings.includes(row.craving)) cravings.push(row.craving);
+  }
+  if (moodLabels.length === 1) sentences.push('Mood: ' + moodLabels[0] + '.');
+  else if (moodLabels.length > 1) sentences.push('Moods: ' + joinPlain(moodLabels) + '.');
+  if (cravings.length === 1) sentences.push('Cravings: ' + cravings[0] + '.');
+  else if (cravings.length > 1) sentences.push('Cravings: ' + joinPlain(cravings) + '.');
+  if (gratEntries.length === 1) sentences.push('Gratitude was saved on one day.');
+  else if (gratEntries.length > 1) sentences.push('Gratitude was saved on ' + gratEntries.length + ' days.');
+  else sentences.push('Gratitude was not saved.');
+  const card = document.createElement('section');
+  card.className = 'home-week-card';
+  card.setAttribute('aria-label', 'This week');
+  const title = document.createElement('h2');
+  title.textContent = 'This week';
+  const range = document.createElement('p');
+  range.className = 'help';
+  range.textContent = formatWeekRange(sunday);
+  const body = document.createElement('p');
+  body.textContent = sentences.join(' ');
+  card.append(title, range, body);
+  return card;
+}
+function goalShortText(goal) {
+  const specific = String(goal && goal.specific || '').trim();
+  if (specific) return specific;
+  for (const field of GOAL_FIELDS) {
+    const value = String(goal && goal[field.key] || '').trim();
+    if (value) return value;
+  }
+  return '';
+}
+const MIDWEEK_CHOICES = [
+  { id: 'still', label: 'Still on it' },
+  { id: 'change', label: 'Change it' },
+  { id: 'letgo', label: 'Let it go' },
+];
+function setMidweekAnswer(index, value) {
+  const { week } = ensureCurrentWeek();
+  if (!week.midweek) week.midweek = normalizeMidweek(null);
+  week.midweek.answers[index] = value;
+  week.midweek.updated = Date.now();
+  markWeekSaved(week);
+  saveGoals();
+  if (appTab === 'home') renderHome();
+  toast(value === 'change' ? 'Noted. You can edit the words in SMART goals when you want.' : 'Saved.');
+}
+function halfwayGoalEl() {
+  const windowInfo = halfwayWindow();
+  if (!windowInfo.show) return null;
+  adoptGoalsAccount();
   const key = weekStartSunday();
-  if (!goalsState.weeks[key]) goalsState.weeks[key] = { goals: [emptyGoal(), emptyGoal()] };
-  goalsState.weeks[key].goals = [0, 1].map(i => normalizeOneGoal(goalsState.weeks[key].goals[i]));
-  return { key, week: goalsState.weeks[key] };
+  const week = goalsState.weeks && goalsState.weeks[key];
+  if (!week || !checkinWeekOwned(week) || !Array.isArray(week.goals)) return null;
+  if (!goalHasText(week.goals[0]) || !goalHasText(week.goals[1])) return null;
+  const answers = (week.midweek && week.midweek.answers) || ['', ''];
+  if (answers[0] && answers[1]) return null;
+  const card = document.createElement('section');
+  card.className = 'home-midweek';
+  card.setAttribute('aria-label', 'Halfway through the week');
+  const title = document.createElement('h2');
+  title.textContent = 'Halfway through the week';
+  const intro = document.createElement('p');
+  intro.textContent = 'How are this week’s two goals going?';
+  card.append(title, intro);
+  week.goals.forEach((goal, index) => {
+    const block = document.createElement('div');
+    block.className = 'midweek-goal';
+    const line = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = 'Goal ' + (index + 1) + '. ';
+    line.appendChild(strong);
+    line.appendChild(document.createTextNode(goalShortText(goal)));
+    const choices = document.createElement('div');
+    choices.className = 'midweek-choices';
+    choices.setAttribute('role', 'group');
+    choices.setAttribute('aria-label', 'Goal ' + (index + 1));
+    for (const choice of MIDWEEK_CHOICES) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'btn btn-sm';
+      button.textContent = choice.label;
+      button.setAttribute('aria-pressed', String(answers[index] === choice.id));
+      button.addEventListener('click', () => setMidweekAnswer(index, choice.id));
+      choices.appendChild(button);
+    }
+    block.append(line, choices);
+    card.appendChild(block);
+  });
+  return card;
+}
+function checkinWeekOwned(week) {
+  if (!week) return false;
+  if (isDemo || !billingState.signedIn || !billingState.id) return true;
+  return !week.accountId || week.accountId === billingState.id;
+}
+function adoptGoalsAccount() {
+  if (!goalsState || typeof goalsState !== 'object') goalsState = { weeks: {}, held: {}, clearedAt: 0 };
+  if (!goalsState.weeks || typeof goalsState.weeks !== 'object') goalsState.weeks = {};
+  if (!goalsState.held || typeof goalsState.held !== 'object') goalsState.held = {};
+  const id = !isDemo && billingState.signedIn ? billingState.id : '';
+  if (!id) return;
+  const mineHeld = goalsState.held[id] && goalsState.held[id].weeks;
+  if (mineHeld) {
+    for (const [key, week] of Object.entries(mineHeld)) {
+      if (!goalsState.weeks[key]) goalsState.weeks[key] = week;
+    }
+    delete goalsState.held[id];
+  }
+  for (const [key, week] of Object.entries(goalsState.weeks)) {
+    if (week && week.accountId && week.accountId !== id) {
+      if (!goalsState.held[week.accountId]) goalsState.held[week.accountId] = { weeks: {} };
+      goalsState.held[week.accountId].weeks[key] = week;
+      delete goalsState.weeks[key];
+    }
+  }
+}
+function markWeekSaved(week) {
+  if (!week) return;
+  week.updated = Date.now();
+  if (!isDemo && billingState.signedIn && billingState.id) week.accountId = billingState.id;
+}
+function ensureCurrentWeek() {
+  adoptGoalsAccount();
+  const key = weekStartSunday();
+  if (!goalsState.weeks[key]) {
+    goalsState.weeks[key] = { goals: [emptyGoal(), emptyGoal()], updated: 0, midweek: normalizeMidweek(null) };
+  }
+  const week = goalsState.weeks[key];
+  week.goals = [0, 1].map(i => normalizeOneGoal(week.goals && week.goals[i]));
+  week.updated = Number(week.updated) || 0;
+  week.midweek = normalizeMidweek(week.midweek);
+  if (!isDemo && billingState.signedIn && billingState.id && !week.accountId) week.accountId = billingState.id;
+  return { key, week };
 }
 function goalsNote(text) {
   const note = $('#goalsSaved');
   if (!note) return;
   if (isDemo) note.textContent = text || 'This demo visit only — not saved on this device.';
-  else note.textContent = text || 'Saved on this device.';
+  else note.textContent = text || goalsSavedLine();
 }
 function readGoalCard(index) {
   const card = document.getElementById('goalCard' + index);
@@ -8066,8 +8538,9 @@ function commitGoal(index, goal) {
   if (!subscriptionPlus()) return;
   const { week } = ensureCurrentWeek();
   week.goals[index] = normalizeOneGoal(goal);
+  markWeekSaved(week);
   saveGoals();
-  goalsNote(isDemo ? '' : 'Saved on this device.');
+  goalsNote(isDemo ? '' : goalsSavedLine());
 }
 function renderGoals() {
   syncGoalsGate();
@@ -8125,8 +8598,9 @@ function renderGoals() {
           const { week: live } = ensureCurrentWeek();
           live.goals[index][f.key] = input.value.slice(0, 240);
           live.goals[index].done = cb.checked;
+          markWeekSaved(live);
           saveGoals();
-          goalsNote(isDemo ? '' : 'Saved on this device.');
+          goalsNote(isDemo ? '' : goalsSavedLine());
         });
         field.appendChild(fl);
         field.appendChild(input);
@@ -8202,8 +8676,9 @@ function renderGoals() {
       }
       card.classList.toggle('done', cb.checked);
       lab.textContent = 'Goal ' + (index + 1) + (cb.checked ? ' · done' : '');
+      markWeekSaved(live);
       saveGoals();
-      goalsNote(isDemo ? '' : 'Saved on this device.');
+      goalsNote(isDemo ? '' : goalsSavedLine());
     });
     list.appendChild(card);
   });
@@ -8211,7 +8686,7 @@ function renderGoals() {
   if (note && !note.textContent) {
     note.textContent = isDemo
       ? 'This demo visit only — not saved on this device.'
-      : 'Stays on this device.';
+      : (billingState.signedIn ? 'Saved on this device and your account.' : 'Stays on this device.');
   }
 }
 function openGoals() {
@@ -10769,8 +11244,10 @@ function personaSettings() {
 $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
-    settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, goals: goalsState, plans: plansState, steps: stepsProgress, bible: bibleProgress, deeper: deeperProgress, breakers: breakersState, selfcare: selfCareState, nutrition: { experiments: nutritionExperiments }, resume: resumeState,
+    settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories,
+    moods: moods.filter(checkinOwnedHere).map(row => ({ date: row.date, mood: row.mood || null, craving: row.craving || null, updated: row.updated || 0 })),
+    gratitude: gratitude.filter(checkinOwnedHere).map(row => ({ date: row.date, items: row.items || [], ts: row.ts || row.updated || 0, updated: row.updated || row.ts || 0 })),
+    journal, goals: goalsForAccount(), plans: plansState, steps: stepsProgress, bible: bibleProgress, deeper: deeperProgress, breakers: breakersState, selfcare: selfCareState, nutrition: { experiments: nutritionExperiments }, resume: resumeState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -10840,9 +11317,12 @@ $('#importFile').addEventListener('change', async (e) => {
 $('#clearMineBtn').addEventListener('click', () => {
   if (!confirm(`Clear all of ${profile.name}'s chats, memories, check-ins, resume and settings? Other people's data is not affected. This cannot be undone.`)) return;
   chatHoldPull = true;
+  checkinHoldPull = true;
   convos.forEach(c => { if (c && c.id) removedChatIds.push(c.id); });
   PK.forEach(w => localStorage.removeItem(pk(profile.id, w)));
   loadProfileData(profile.id);
+  goalsState.clearedAt = Date.now();
+  if (!isDemo && billingState.signedIn) saveGoals();
   el.settingsDlg.close();
   applyTheme();
   activeId = null;
@@ -10982,7 +11462,11 @@ function enterProfile(pid) {
   maybeShowDisclaimer();
   if (startChat) focusInput();
   chatPullKey = '';
-  if (billingState.signedIn) pullAccountChats(true).catch(() => {});
+  checkinPullKey = '';
+  if (billingState.signedIn) {
+    pullAccountChats(true).catch(() => {});
+    pullAccountCheckins(true).catch(() => {});
+  }
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -11818,7 +12302,7 @@ function exitDemo() {
   hideAccessBanner();
   profile = null;
   convos = []; memories = []; moods = []; gratitude = []; journal = [];
-  goalsState = { weeks: {} };
+  goalsState = { weeks: {}, held: {}, clearedAt: 0 };
   plansState = normalizePlans({});
   plansView = 'hub';
   relapseStep = 0;
@@ -12909,8 +13393,13 @@ async function refreshBilling() {
   paintAccount();
   if (appTab === 'account') paintMyAccountIdentity();
   if (sessionGate.plus() !== plusBefore) chatPullKey = '';
-  if (profile && billingState.signedIn) pullAccountChats(false).catch(() => {});
-  else if (!billingState.signedIn) chatPullKey = '';
+  if (profile && billingState.signedIn) {
+    pullAccountChats(false).catch(() => {});
+    pullAccountCheckins(false).catch(() => {});
+  } else if (!billingState.signedIn) {
+    chatPullKey = '';
+    checkinPullKey = '';
+  }
   try {
     if (profile || isDemo) {
       renderHistory();
@@ -13116,7 +13605,7 @@ function appendPlusOffer(body) {
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
-  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Hopewick staff do not get a dashboard of what you told Hope. Older chats are part of Hopewick Plus.</p>';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. Older chats are part of Hopewick Plus.</p>';
   body.appendChild(privacy);
   const org = document.createElement('p');
   org.className = 'hosted-privacy';
@@ -13787,7 +14276,7 @@ async function submitDeleteAccount(e) {
     await refreshBilling();
     setAppTab('home');
     const extra = result && result.subscriptionCanceled ? ' Hopewick Plus was cancelled.' : '';
-    toast('Account deleted.' + extra + ' Saved chats on the server are gone. This browser may still have a copy until you clear it in Settings.', false, 6000);
+    toast('Account deleted.' + extra + ' Saved chats on the server are gone. Check-ins and weekly goals on the server are gone too. This browser may still have a copy until you clear it in Settings.', false, 6000);
   } catch (err) {
     if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not delete the account.'; }
   }

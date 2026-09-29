@@ -17,6 +17,8 @@
  * numbers (000 and 1800 250 015) and the model is not called.
  * Saved chats for a signed-in account live in chats.json (per profile),
  * beside the account file. The model call itself does not write that file.
+ * Check-ins and weekly SMART goals live in checkins.json beside that file,
+ * per account and profile. They are free. Deleting an account erases them.
  * The account file holds email, an optional name and phone, a scrypt
  * password hash when one is set, subscription status, and that day's
  * message count. Card numbers, CVV, and full payment details are never
@@ -39,6 +41,7 @@ import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
 import { createChatStore, validProfileId } from './chats.js';
+import { createCheckinStore } from './checkins.js';
 import {
   hopeConfigured,
   freeDailyCap,
@@ -756,7 +759,7 @@ function serveStatic(root, req, res, urlPath) {
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 
-async function handleApi(store, chats, req, res, url) {
+async function handleApi(store, chats, checkins, req, res, url) {
   const route = url.pathname;
 
   if (req.method === 'GET' && route === '/api/health') {
@@ -833,6 +836,52 @@ async function handleApi(store, chats, req, res, url) {
       activeId: body.activeId,
       removedIds: body.removedIds,
     }, { plus: publicUser(user).plus === true });
+    json(res, 200, { profile });
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/checkins') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in to open saved check-ins.', code: 'auth' });
+      return;
+    }
+    json(res, 200, { profiles: checkins.list(user.id) });
+    return;
+  }
+
+  if (req.method === 'PUT' && route === '/api/checkins') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in to save check-ins.', code: 'auth' });
+      return;
+    }
+    const raw = await readBody(req, 1_000_000);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send check-ins as JSON.' });
+      return;
+    }
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      json(res, 400, { error: 'Send check-ins as JSON.' });
+      return;
+    }
+    if (hasRawCardFields(body)) {
+      json(res, 400, { error: 'Card details are not stored here.' });
+      return;
+    }
+    const profileId = String(body.profileId || '').trim();
+    if (!validProfileId(profileId)) {
+      json(res, 400, { error: 'Choose a profile before saving check-ins.' });
+      return;
+    }
+    const profile = checkins.merge(user.id, profileId, {
+      name: body.name,
+      moods: body.moods,
+      gratitude: body.gratitude,
+      goals: body.goals,
+      clearedAt: body.clearedAt,
+    });
     json(res, 200, { profile });
     return;
   }
@@ -1175,14 +1224,14 @@ async function handleApi(store, chats, req, res, url) {
   }
 
   if (url.pathname.startsWith('/api/account')) {
-    await handleAccountApi(store, chats, req, res, route);
+    await handleAccountApi(store, chats, checkins, req, res, route);
     return;
   }
 
   json(res, 404, { error: 'Not found.' });
 }
 
-async function handleAccountApi(store, chats, req, res, route) {
+async function handleAccountApi(store, chats, checkins, req, res, route) {
   if (req.method === 'GET' && route === '/api/account') {
     const user = requireSession(req, res, store);
     if (!user) return;
@@ -1383,7 +1432,10 @@ async function handleAccountApi(store, chats, req, res, route) {
       }
     }
     const removed = store.remove(user.id);
-    if (removed) chats.forget(user.id);
+    if (removed) {
+      chats.forget(user.id);
+      checkins.forget(user.id);
+    }
     deleteAttempts.delete(user.id);
     passwordChangeFailures.delete(user.id);
     json(res, 200, {
@@ -1394,9 +1446,10 @@ async function handleAccountApi(store, chats, req, res, route) {
         'Your Hopewick sign-in on this server (email, name, phone, and password)',
         'Your subscription status and today’s Hope message count on this server',
         'Saved chats on this server for this account',
+        'Check-ins and weekly goals on this server for this account',
       ],
       kept: [
-        'Journal, profiles, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
+        'Journal, profiles, check-ins, weekly goals, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
         'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
       ],
     }, { 'Set-Cookie': clearCookie(req) });
@@ -1572,9 +1625,10 @@ async function handleHopeChat(store, req, res) {
   }
 }
 
-export function createApp({ store, chats, root = REPO_ROOT } = {}) {
+export function createApp({ store, chats, checkins, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
+  const checkinStore = checkins || createCheckinStore(path.join(REPO_ROOT, 'server', 'data', 'checkins.json'));
   return async function onRequest(req, res) {
     installSecurityHeaders(req, res);
     try {
@@ -1593,7 +1647,7 @@ export function createApp({ store, chats, root = REPO_ROOT } = {}) {
           json(res, 403, { error: 'That request was blocked.' });
           return;
         }
-        await handleApi(store, chatStore, req, res, url);
+        await handleApi(store, chatStore, checkinStore, req, res, url);
         return;
       }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -1612,12 +1666,15 @@ export function startServer({
   host = '127.0.0.1',
   storePath = process.env.BILLING_STORE || path.join(REPO_ROOT, 'server', 'data', 'users.json'),
   chatsPath,
+  checkinsPath,
   root = REPO_ROOT,
 } = {}) {
   const store = createStore(storePath);
   const chatFile = chatsPath || process.env.CHATS_STORE || path.join(path.dirname(storePath), 'chats.json');
+  const checkinFile = checkinsPath || process.env.CHECKINS_STORE || path.join(path.dirname(storePath), 'checkins.json');
   const chats = createChatStore(chatFile);
-  const server = http.createServer(createApp({ store, chats, root }));
+  const checkins = createCheckinStore(checkinFile);
+  const server = http.createServer(createApp({ store, chats, checkins, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));
   });
