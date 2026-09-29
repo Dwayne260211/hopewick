@@ -6,7 +6,7 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 
-import { startServer } from './index.js';
+import { startServer, REPO_ROOT } from './index.js';
 
 const realFetch = globalThis.fetch;
 
@@ -741,6 +741,41 @@ test('developer toggle can mark Plus for local UI checks', async () => {
       body: JSON.stringify({ status: 'canceled' }),
     });
     assert.equal((await off.json()).plus, false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('root favicon and apple touch icon return 200 without hiding app icons', async () => {
+  const app = await listen({}, []);
+  try {
+    const fav = await fetch(`${app.base}/favicon.ico`);
+    assert.equal(fav.status, 200);
+    assert.match(fav.headers.get('content-type') || '', /image\/x-icon/);
+    const favBody = Buffer.from(await fav.arrayBuffer());
+    assert.equal(favBody.readUInt16LE(0), 0);
+    assert.equal(favBody.readUInt16LE(2), 1);
+    assert.ok(favBody.readUInt16LE(4) >= 1);
+
+    const apple = await fetch(`${app.base}/apple-touch-icon.png`);
+    assert.equal(apple.status, 200);
+    assert.match(apple.headers.get('content-type') || '', /image\/png/);
+    const appleBody = Buffer.from(await apple.arrayBuffer());
+    assert.equal(appleBody.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+    const icon180 = fs.readFileSync(path.join(REPO_ROOT, 'app', 'icon-180.png'));
+    assert.deepEqual(appleBody, icon180);
+
+    for (const route of ['/app/manifest.webmanifest', '/app/icon-180.png', '/app/icon-192.png', '/app/icon-512.png']) {
+      const res = await fetch(`${app.base}${route}`);
+      assert.equal(res.status, 200, route);
+    }
+
+    const landing = await fetch(`${app.base}/`);
+    assert.equal(landing.status, 200);
+    const html = await landing.text();
+    assert.match(html, /<link rel="icon" href="\/favicon\.ico"/);
+    assert.match(html, /<link rel="manifest" href="app\/manifest\.webmanifest">/);
+    assert.match(html, /<link rel="apple-touch-icon" href="app\/icon-180\.png">/);
   } finally {
     await app.close();
   }
