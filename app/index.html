@@ -3130,15 +3130,13 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   <div class="dlg-body">
     <div class="crisis-card" id="gutSafety" role="note" style="margin-top:12px">
       <h3>General information only — not medical advice</h3>
-      <p>Hopewick does not diagnose you, prescribe a food or a probiotic, or treat a gut condition. Nothing here is a meal plan for you, and it is not crisis support.</p>
-      <p>Talk to a GP or dietitian before you start a probiotic or change how you eat — especially if you take medicine, are pregnant, or already have a gut condition.</p>
-      <p>In immediate danger call <a href="tel:000">000</a>. If you cannot keep fluids down, or you have severe pain, blood in the stool, or confusion, seek care.</p>
+      <p>These notes are general education, not medical advice, not a diagnosis, and not a meal plan written for you. A food or a probiotic is not a treatment for depression, anxiety, or addiction. Talk to a GP or dietitian before you start a probiotic or make a large change to how you eat — especially if you take medicine, are pregnant, or already have a gut condition. In immediate danger call <a href="tel:000">000</a>. Severe pain, blood in the stool, being unable to keep fluids down, or confusion needs care now. This page is not crisis support.</p>
     </div>
-    <p class="nut-lead" id="gutIntro">Food, sleep, and stress all sit near the gut. These notes are general wellness education in plain words. They are not a diagnosis and not a prescription.</p>
+    <p class="nut-lead" id="gutIntro">The gut and the brain stay in two-way conversation: nerves, hormones, immune signals, and the microbes that live along the digestive tract. Food, sleep, stress, alcohol, and some other drugs all change that conversation. These notes cover what is established, what is still early, and the ordinary habits worth doing either way.</p>
     <div id="gutGate" class="nut-gate"></div>
     <div id="gutLibrary" hidden>
-      <p class="nut-kicker">Easy-read notes</p>
-      <p class="help" style="margin:0 0 8px">Short cards. Each one is general information people ask about. It is not a result Hopewick promises, and it is not a dose.</p>
+      <p class="nut-kicker">The notes</p>
+      <p class="help" style="margin:0 0 8px">Six notes: the gut–brain axis, serotonin and dopamine, fermented foods and probiotics, fibre, recovery habits, and when to involve a clinician.</p>
       <div class="nut-items" id="gutCards"></div>
     </div>
   </div>
@@ -10072,52 +10070,50 @@ const GUT_CARDS = [
     id: 'gut-mood',
     title: 'The gut and mood',
     body: [
-      'Your gut and your brain send messages to each other all day. Nerves, hormones, and the tiny living community in your gut (microbes) all take part.',
-      'A lot of the body’s mood-related chemistry is influenced by the gut. That is one reason food, stress, and sleep can sit next to how you feel.',
-      'This link is real. It is not a switch. A meal cannot diagnose you, and it cannot treat depression, anxiety, or addiction.',
+      'The gut–brain axis is two-way traffic between the digestive tract and the brain. The vagus nerve carries a large share of the nerve signals. Hormones, immune messengers, and metabolites from the microbiome travel as well. Those microbes — bacteria and others, mostly in the large intestine — take part by making compounds that can influence the signals.',
+      'Food, short sleep, ongoing stress, and alcohol change both ends of that traffic. A hard week can show up as bloating, a shifted appetite, constipation, or a flatter mood. The connection is established, and the details are still being mapped. It is not a switch. One meal does not explain depression, anxiety, or addiction, and it does not treat them.',
     ],
   },
   {
     id: 'serotonin',
     title: 'Serotonin and dopamine, carefully',
     body: [
-      'You may hear that most serotonin is made in the gut, and that dopamine is the reward chemical. Those names are linked with mood, motivation, and the gut.',
-      'Most gut serotonin stays in the gut. It is not a tank of mood medicine you can top up with a food or a capsule. Hopewick cannot tell you your levels.',
-      'If mood is heavy, or you take medicine for mood, talk with your GP. Do not start or stop a medicine because of something you read here.',
+      'Most of the body’s serotonin is made in the gut, by enterochromaffin cells in the lining. Gut microbes can change how much those cells release. That serotonin does local work: gut movement, secretion, and signals to nearby nerves. It does not cross the blood–brain barrier in any amount that would lift mood. Serotonin involved in mood is made separately, inside the brain, from tryptophan that has crossed that barrier.',
+      'Dopamine is a different messenger. In the brain it is part of motivation, movement, and learning from reward. The gut has its own dopamine signalling, largely to do with motility. A fermented food or a capsule does not refill either system. Addiction is not a shortage of dopamine you can top up. Repeated use changes how the brain learns from reward. Food does not reverse that.',
+      'If mood is heavy, or you already take medicine for it, that belongs with your GP. Do not start or stop a medicine because of something you read about the gut.',
     ],
   },
   {
     id: 'probiotics',
     title: 'Probiotics and fermented foods',
     body: [
-      'Probiotics are live microbes in some foods and in some shop products. Fermented foods people often eat include yoghurt, kefir, sauerkraut, kimchi, and miso.',
-      'They are ordinary foods for many people, not a medicine and not a treatment for addiction. A shop probiotic is a conversation with a GP or pharmacist — especially if your immune system is low, you are pregnant, or you already take medicine. Hopewick does not name a brand or a dose.',
-      'Some kombucha contains a little alcohol. If alcohol is part of your recovery, check the label or skip it.',
+      'A probiotic is a specific live microbe, supplied in an amount that has been shown to confer a benefit. That is a tighter definition than the word on a pot. Fermented foods people actually eat — yoghurt, kefir, sauerkraut, kimchi, and miso, plus some cheeses — can contain live cultures when they have not been pasteurised or cooked after fermenting. They are foods. A pharmacy capsule is a named strain with a count on the label. The two are not the same thing, and neither is a treatment for addiction.',
+      'Where the evidence is stronger, the use is narrow. Some strains reduce the chance of diarrhoea after antibiotics. Research on mood, sometimes marketed as psychobiotics, is early: small trials and mixed results, not a foundation for recovery. If your immune system is suppressed, you are pregnant, you are very unwell, or you take regular medicine, ask a GP or pharmacist before a shop probiotic. No brand and no dose belong here.',
+      'Some kombucha contains a little alcohol, and the level can rise if the bottle sits warm. If alcohol is part of your recovery, read the label, and skip it when you are unsure.',
     ],
   },
   {
     id: 'fibre',
     title: 'Fibre, the everyday helper',
     body: [
-      'Fibre is plant roughage that feeds the microbes in the gut. You find it in fruit, vegetables, oats, beans, lentils, wholegrain bread, nuts, and seeds.',
-      'Add it slowly, and drink water, so your stomach is not surprised. If you have a bowel condition, a GP or dietitian can help you choose a pace. More is not always better on day one.',
+      'Dietary fibre is the part of plant food your own enzymes do not fully break down. Microbes in the colon ferment much of it and produce short-chain fatty acids: acetate, propionate, and butyrate. Butyrate is fuel for the cells lining the colon. The others take part in immune and metabolic signalling. That is the practical meaning of feeding the microbiome.',
+      'You get fibre from fruit, vegetables, oats, beans, lentils, wholegrain bread, nuts, and seeds. Increase it gradually and drink water with it. A sudden jump is a common reason for gas and cramping. If you have inflammatory bowel disease, a narrowing in the bowel, or you have already been told to limit fibre, set the pace with a dietitian. More on the first day is not an improvement.',
     ],
   },
   {
     id: 'habits',
     title: 'Stress, sleep, alcohol, and recovery',
     body: [
-      'Stress, short sleep, alcohol, and some other drugs can upset the gut. You might notice bloating, a changed appetite, constipation, or the runs.',
-      'In recovery, the habits that help most are ordinary: regular simple meals, water through the day, sleep, and less alcohol. Opioids can slow the gut. Mention constipation to a doctor. It is not a reason to buy a cleanse.',
-      'Skip gut detox kits, reset powders, and anything sold as a fast fix for mood or addiction.',
+      'The gut notices the same pressures recovery is already trying to steady. Ongoing stress changes motility, and it can shift which microbes are abundant, though human studies are less tidy than the animal work. Short sleep pushes in a similar direction. Alcohol irritates the lining and changes the mix of microbes. Opioids slow the gut. Constipation on them is common — mention it to a doctor, rather than buying a cleanse. Other drugs can flatten appetite or speed transit. Bloating, a changed appetite, constipation, or diarrhoea are the usual signs.',
+      'What helps is ordinary and repeatable: regular simple meals, water through the day, enough sleep, and less alcohol. Skip gut detox kits, reset powders, and anything sold as a fast fix for mood or addiction.',
     ],
   },
   {
     id: 'gp',
     title: 'When to talk to a GP or dietitian',
     body: [
-      'Talk to a GP or a dietitian if pain goes on, you see blood, weight is dropping quickly, you cannot keep food down, you have a diagnosed gut condition, or you take regular medicine.',
-      'This page is general information for wellness. It is not medical advice, not a personal meal plan, and not a substitute for care.',
+      'See a GP promptly if pain continues, you see blood in the stool or in vomit, stools turn black, weight drops quickly without a clear reason, swallowing becomes difficult, or you cannot keep food or fluids down.',
+      'Talk it through before you overhaul how you eat if you already have a gut condition — coeliac disease, inflammatory bowel disease, liver disease, or IBS that is changing — or if you take regular medicine, including antibiotics, metformin, opioids, and many medicines used for mood. Once anything urgent is ruled out, an Accredited Practising Dietitian is the right person for the food.',
     ],
   },
 ];

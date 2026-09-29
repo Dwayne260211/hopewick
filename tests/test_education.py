@@ -28,7 +28,7 @@ BRAIN_TITLES = (
     "A humble note",
 )
 GUT_BODY = (
-    "not a tank of mood medicine",
+    "does not cross the blood–brain barrier",
     "Some kombucha contains a little alcohol",
     "Skip gut detox kits",
 )
@@ -79,8 +79,17 @@ def test_static_education_copy_and_gate():
     for marker in GUT_BODY + BRAIN_BODY:
         assert marker in cards
     assert "Neuroplasticity is a long word" in cards
-    assert "linked with mood, motivation, and the gut" in cards
+    assert "motivation, movement, and learning from reward" in cards
     assert "yoghurt, kefir, sauerkraut, kimchi, and miso" in cards
+    gut_only = cards.split("const BRAIN_CARDS", 1)[0]
+    for banned in (
+        "tiny living community",
+        "sit next to how you feel",
+        "tank of mood medicine",
+        "Hopewick cannot",
+        "HopeWick cannot",
+    ):
+        assert banned not in gut_only
     assert "Open SMART goals" in text
     assert not re.search(r"\b\d+\s*mg\b", cards, re.I)
     assert "clinically proven" not in cards.lower()
