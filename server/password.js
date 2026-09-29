@@ -9,6 +9,12 @@ const SCRYPT_N = 16384;
 const SCRYPT_R = 8;
 const SCRYPT_P = 1;
 const SCRYPT_KEYLEN = 32;
+/** Reject tampered hashes that would spend huge CPU or memory. Real hashes use the constants above. */
+const SCRYPT_MAX_N = 131072;
+const SCRYPT_MAX_R = 16;
+const SCRYPT_MAX_P = 4;
+const SCRYPT_MAX_KEYLEN = 64;
+const SCRYPT_MAXMEM = 256 * 1024 * 1024;
 
 export const PASSWORD_MIN = 8;
 export const PASSWORD_MAX = 200;
@@ -30,6 +36,7 @@ export function hashPassword(password) {
       cost: SCRYPT_N,
       blockSize: SCRYPT_R,
       parallelization: SCRYPT_P,
+      maxmem: SCRYPT_MAXMEM,
     }, (err, key) => {
       if (err) reject(err);
       else resolve(`scrypt$${SCRYPT_N}$${SCRYPT_R}$${SCRYPT_P}$${salt.toString('hex')}$${key.toString('hex')}`);
@@ -51,7 +58,11 @@ export function verifyPassword(password, stored) {
   } catch {
     return Promise.resolve(false);
   }
-  if (!Number.isFinite(n) || !Number.isFinite(r) || !Number.isFinite(p) || n < 2 || salt.length === 0 || expected.length === 0) {
+  if (!Number.isInteger(n) || !Number.isInteger(r) || !Number.isInteger(p)) return Promise.resolve(false);
+  if (n < 2 || n > SCRYPT_MAX_N || r < 1 || r > SCRYPT_MAX_R || p < 1 || p > SCRYPT_MAX_P) {
+    return Promise.resolve(false);
+  }
+  if (salt.length < 8 || salt.length > 64 || expected.length === 0 || expected.length > SCRYPT_MAX_KEYLEN) {
     return Promise.resolve(false);
   }
   return new Promise((resolve) => {
@@ -59,6 +70,7 @@ export function verifyPassword(password, stored) {
       cost: n,
       blockSize: r,
       parallelization: p,
+      maxmem: SCRYPT_MAXMEM,
     }, (err, key) => {
       if (err || !key || key.length !== expected.length) {
         resolve(false);

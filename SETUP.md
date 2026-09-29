@@ -293,4 +293,4 @@ TODO: a service worker is not included. Do not add one until caching of `app/ind
 
 ## Security
 
-Magic links expire after 30 minutes and work once. Sessions are random tokens stored as SHA-256 hashes, in an `HttpOnly` cookie, for 30 days. Webhooks require a valid `Stripe-Signature`. Do not put secret keys in HTML or in git.
+Magic links expire after 30 minutes and work once. Sessions are random tokens stored as SHA-256 hashes, in an `HttpOnly` cookie (`SameSite=Lax`, `Secure` on https). The cookie lasts 400 days and is refreshed on each return visit, until sign-out. Webhooks require a valid `Stripe-Signature`. Do not put secret keys in HTML or in git.

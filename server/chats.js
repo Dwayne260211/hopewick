@@ -114,7 +114,7 @@ export function createChatStore(filePath) {
   function persist() {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     const tmp = `${filePath}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, JSON.stringify(data));
+    fs.writeFileSync(tmp, JSON.stringify(data), { mode: 0o600 });
     fs.renameSync(tmp, filePath);
   }
 
