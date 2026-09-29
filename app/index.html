@@ -1269,7 +1269,39 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .plus-feature-gate .btn-primary { margin-top: 4px; }
 #journalWorkspace[hidden],
 #goalsEditor[hidden],
-#resumeBuilder[hidden] { display: none !important; }
+#resumeBuilder[hidden],
+#plansWorkspace[hidden] { display: none !important; }
+.plans-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+button.plans-card {
+  display: block; width: 100%; text-align: left;
+  border: 1px solid var(--border); background: var(--surface-2);
+  border-radius: 14px; padding: 12px 14px;
+}
+button.plans-card:hover { border-color: var(--accent); background: var(--surface); }
+button.plans-card strong { display: block; font-size: 1.02rem; }
+button.plans-card .sub { display: block; color: var(--muted); font-size: .88rem; margin-top: 4px; font-weight: 400; line-height: 1.4; }
+.plan-progress { font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 12px 0 4px; }
+.plan-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.plan-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.plan-person { display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; margin-top: 8px; align-items: center; }
+.plan-person input, .plans-add input {
+  width: 100%; border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 9px 11px;
+}
+.plan-summary section { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); }
+.plan-summary h3 { margin: 0 0 4px; font-size: 1rem; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.plan-summary p { margin: 0; white-space: pre-wrap; }
+.my-exit {
+  border: 1px solid var(--border); border-left: 4px solid var(--accent);
+  background: var(--surface-2); border-radius: 14px; padding: 12px 14px; margin-top: 10px;
+}
+.my-exit h3 { margin: 0 0 6px; font-size: 1.08rem; }
+.my-exit ul { margin: 0; padding-left: 1.15em; }
+.my-exit li { margin: 3px 0; }
+.my-exits-now .my-exit h3 { font-size: 1.15rem; }
+.my-exits-now .my-exit li { font-size: 1.02rem; }
+@media (max-width: 520px) {
+  .plan-person { grid-template-columns: 1fr; }
+}
 h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 @media (max-width: 420px) {
   .plus-feature-gate .btn-primary { width: 100%; }
@@ -1541,6 +1573,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
         SMART goals <span class="plus-pill" id="goalsPlusPill">Plus</span>
       </button>
+      <button class="btn btn-ghost" type="button" data-open="plans" id="sidePlansBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Plans <span class="plus-pill" id="plansPlusPill">Plus</span>
+      </button>
       <button class="btn btn-ghost" type="button" data-open="resume" id="sideResumeBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
         Resume <span class="plus-pill" id="resumeSidePlusPill">Plus</span>
@@ -1564,6 +1600,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <button class="btn btn-ghost" type="button" data-open="brain" id="sideBrainBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17c2.2-5 4-5.2 6.2-1.6S14.2 19 16.5 14 20 12 20 9"/><circle cx="4" cy="17" r="1.2"/><circle cx="20" cy="9" r="1.2"/></svg>
         Brain habits <span class="plus-pill" id="brainPlusPill">Plus</span>
+      </button>
+      <button class="btn btn-ghost" type="button" data-open="cold" id="sideColdBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.93 7.5l14.14 9M19.07 7.5L4.93 16.5"/><path d="M7.5 4.93l4.5 4.5 4.5-4.5M7.5 19.07l4.5-4.5 4.5 4.5"/></svg>
+        Ice baths &amp; spas <span class="plus-pill" id="coldPlusPill">Plus</span>
       </button>
       <button class="btn btn-ghost" type="button" data-open="memories">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
@@ -1663,7 +1703,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p><strong>Hopewick Plus — 3 days free, then AU$20/month.</strong> SMART goals, the journal, the resume builder, nutrition notes, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p><strong>Hopewick Plus — 3 days free, then AU$20/month.</strong> SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Hopewick Plus</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
@@ -2095,13 +2135,13 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     </ul>
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Hopewick Plus</button>
-      <p class="help" style="margin:8px 0 0">Hopewick Plus — 3 days free, then AU$20/month. SMART goals, the journal, the resume builder, nutrition notes, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 5 messages a day. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p class="help" style="margin:8px 0 0">Hopewick Plus — 3 days free, then AU$20/month. SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 5 messages a day. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
-        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
+        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
@@ -2988,6 +3028,31 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </div>
 </dialog>
 
+<!-- ============================ Ice baths & recovery spas (Hopewick Plus education) ============================ -->
+<dialog id="coldDlg" aria-labelledby="coldTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="coldTitle">🧊 Ice baths &amp; recovery spas</h2>
+    <button class="icon-btn" value="close" aria-label="Close ice baths and recovery spas">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <div class="crisis-card" id="coldSafety" role="note" style="margin-top:12px">
+      <h3>General information only — not medical advice</h3>
+      <p>Hopewick does not prescribe cold, a plunge, or a recovery spa. These notes are not a how-to, not a temperature, and not a time. They do not cure addiction, and they are not a substitute for treatment or for crisis support.</p>
+      <p>Cold is not for everyone. Skip it with a heart or blood-pressure problem, in pregnancy, with an unmanaged medical condition, or while intoxicated. Talk to a GP before you try cold water or a recovery spa.</p>
+      <p>Stop if you feel dizzy or have chest pain, and call <a href="tel:000">000</a>. In immediate danger call <a href="tel:000">000</a>.</p>
+    </div>
+    <p class="nut-lead" id="coldIntro">Some people in recovery never consider cold or a recovery spa. If the idea comes up, the point is a new habit and a new path — the same idea as Brain habits — not a cure. This is general information, not medical advice.</p>
+    <div id="coldGate" class="nut-gate"></div>
+    <div id="coldLibrary" hidden>
+      <p class="nut-kicker">Easy-read notes</p>
+      <p class="help" style="margin:0 0 8px">Short cards. Nothing here is a protocol, a venue Hopewick recommends, or a result this app promises.</p>
+      <div class="nut-items" id="coldCards"></div>
+    </div>
+  </div>
+</dialog>
+
 
 <!-- ============================ Circuit breakers ============================ -->
 <dialog id="circuitBreakerDlg" aria-labelledby="breakerTitle">
@@ -3048,6 +3113,31 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </div>
 </dialog>
 
+<!-- ============================ Plans hub (Hopewick Plus) ============================ -->
+<dialog id="plansDlg" aria-labelledby="plansHubTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="plansHubTitle" tabindex="-1">🌿 Plans <span class="plus-pill" id="plansTitlePill">Plus</span></h2>
+    <button class="icon-btn" value="close" aria-label="Close plans">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <div class="crisis-card" id="plansDisclaimer" role="note" style="margin-top:12px">
+      <h3>Self-help only — not a counsellor or a crisis service</h3>
+      <p>These plans are yours to write and edit. Hopewick is not a counsellor, and this screen is not a crisis service. A lapse is not a failure.</p>
+      <p>If you are in danger, use <strong>Get help now</strong> or call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>. AOD support: <a href="tel:1800250015">1800 250 015</a>.</p>
+    </div>
+    <p class="nut-lead" id="plansIntro">A calm place to write a relapse / lapse prevention plan, and exits for high-risk moments. Private on this device.</p>
+    <div id="plansGate" class="nut-gate plus-feature-gate"></div>
+    <div id="plansWorkspace" hidden>
+      <p class="help plans-note" id="plansSaved" aria-live="polite"></p>
+      <div id="plansHub"></div>
+      <div id="plansRelapse" hidden></div>
+      <div id="plansExit" hidden></div>
+    </div>
+  </div>
+</dialog>
+
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
 <script src="data/word-for-the-day.js"></script>
@@ -3068,6 +3158,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.gratitude     per-person morning gratitude entries
      eden.p.<id>.journal       per-person journal entries
      eden.p.<id>.goals         per-person weekly SMART goals (Hopewick Plus; not a meeting finder)
+     eden.p.<id>.plans         per-person relapse / lapse plan and exit plans (Hopewick Plus; this device only)
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
      eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
@@ -3075,8 +3166,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.resume        per-person resume draft (Hopewick Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-/* v5.21: root /favicon.ico and /apple-touch-icon.png so those requests are not 404s. */
-const EDEN_BUILD = 'hopewick-v5.21';
+/* v5.22: Plus education — ice baths and recovery spas, a brain and recovery angle, not medical advice. */
+const EDEN_BUILD = 'hopewick-v5.22';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -3086,7 +3177,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'steps', 'bible', 'breakers', 'selfcare', 'resume', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'breakers', 'selfcare', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -3381,6 +3472,10 @@ let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
 let gratitude = [];        // [{date, items:[...], ts}]
 let journal = [];          // [{id, title, body, refined?, emotions?, created, updated}]
 let goalsState = { weeks: {} }; // weeks[sundayIso] = { goals: [goal, goal] } — Sunday–Saturday, free
+let plansState = { relapse: { warnings: '', firstTen: [], firstTenNote: '', people: [{ name: '', reach: '' }], helps: '', avoid: '', ifSlip: '', updated: 0 }, exits: {}, custom: [] };
+let plansView = 'hub';     // hub | relapse | exit | now
+let relapseStep = 0;
+let exitFocus = null;      // { kind: 'lib'|'custom', id } | null
 let goalsEditing = [true, true];
 let stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
 let bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
@@ -3417,8 +3512,8 @@ const el = {
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
-  cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
-  nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), gutDlg: $('#gutDlg'), brainDlg: $('#brainDlg'), skillsDlg: $('#skillsDlg'),
+  cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), plansDlg: $('#plansDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
+  nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), gutDlg: $('#gutDlg'), brainDlg: $('#brainDlg'), coldDlg: $('#coldDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
   toasts: $('#toasts'),
 };
@@ -3504,6 +3599,10 @@ function loadProfileData(pid) {
   gratitude = load(pk(pid, 'gratitude'), []);
   journal = load(pk(pid, 'journal'), []);
   goalsState = normalizeGoals(load(pk(pid, 'goals'), {}));
+  plansState = normalizePlans(load(pk(pid, 'plans'), {}));
+  plansView = 'hub';
+  relapseStep = 0;
+  exitFocus = null;
   stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, load(pk(pid, 'steps'), {}));
   bibleProgress = normalizeBible(load(pk(pid, 'bible'), {}));
   breakersState = normalizeBreakers(load(pk(pid, 'breakers'), {}));
@@ -3553,6 +3652,13 @@ function saveResume() {
   save(pk(profile.id, 'resume'), resumeState);
   const note = $('#resumeSaved');
   if (note && appTab === 'resume') note.textContent = 'Draft saved on this device.';
+}
+function savePlans() {
+  if (isDemo || !profile) return;
+  plansState = normalizePlans(plansState);
+  save(pk(profile.id, 'plans'), plansState);
+  const note = $('#plansSaved');
+  if (note && el.plansDlg && el.plansDlg.open) note.textContent = plansStatusText();
 }
 
 /** Light PIN hash (FNV-1a, iterated). This is a privacy lock, not security. */
@@ -4325,7 +4431,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4745,11 +4851,11 @@ function inAppToolsPrompt() {
   return [
     'IN-APP TOOLS',
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
-    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, nutrition, gut, brain, bible, resume, church, selfcare, steps, plus.',
+    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional wellness, a brain and recovery angle). Not medical advice and not a how-to. Do not give a temperature, a time, or a venue. Do not say cold is a cure for addiction or a treatment for it. Suggest a GP. Not for heart or blood-pressure problems, pregnancy, unmanaged conditions, or intoxication. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
-    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add goals on a crisis reply.',
+    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply.',
   ].join('\n');
 }
 
@@ -4767,11 +4873,12 @@ function counsellorPrompt(convo) {
     '- If they ask about food, hydration, vitamins, or supplements (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, or a multivitamin), or about sleep, mood support, liver or antioxidant interest, heart and brain oils, or energy in that nutrition sense, name Nutrition and include nutrition on the TOOLS line. The screen pairs a benefit people ask about with a nutrient. Describe that pairing as a question for a GP or pharmacist, not as an effect you promise. Do not prescribe a dose. Do not say these products treat, cure, or prevent addiction or withdrawal. Prefer food and water. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
     '- If they ask about gut health, the gut and mood, probiotics, fermented foods, fibre, serotonin, or dopamine in that wellness sense, name Gut health and include gut on the TOOLS line. Say the link is real and still being studied. Do not say a food or probiotic treats depression, anxiety, or addiction. Do not give a dose or a brand. Suggest a GP or dietitian, especially with medicine or a gut condition.',
     '- If they ask how habits form, why early recovery feels hard, neuroplasticity, or new pathways in the brain, name Brain habits and include brain on the TOOLS line. Explain it as practice: small repeats, rest, and support. Do not promise that the brain will be rewired, and do not sell a program. You may mention SMART goals, the journal, or chat as places to practise one small step — lightly, without pressure.',
+    '- If they ask about ice baths, a cold plunge, cold-water immersion, a recovery spa, or contrast therapy, name Ice baths & recovery spas and include cold on the TOOLS line. Say it is optional wellness education, not a prescription and not a cure for addiction. Do not give a temperature, a time, or a how-to. Do not name a venue. Say it is not for everyone — heart or blood pressure, pregnancy, an unmanaged medical condition, or intoxication — and to talk to a GP. Tell them to stop and get help if they feel dizzy or have chest pain. You may mention Brain habits as the habit-and-path idea, lightly. Do not use an ice bath as a craving skill. TIPP stays a cool drink or a cool cloth, never an ice bath.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
     '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
-    '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure.',
+    '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure. When they want to write or review a relapse or lapse prevention plan, or an exit for a high-risk moment (payday, old mates, a party, alone at night, a bottle shop), name Plans and include plans on the TOOLS line. That screen is Hopewick Plus and stays on their device. It is self-help, not counselling. Do not tell them the app has wiped their clean time — it has not.',
     '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
     '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. When they want to write, edit, or check two goals for this week, name SMART goals and include goals on the TOOLS line. That screen is free and stays on their device. It is not a SMART Recovery meeting — a meeting request uses meetings. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
     '',
@@ -5345,7 +5452,7 @@ function renderPlusFeatureGate(host, spec) {
 }
 function syncPlusFeaturePills() {
   const plus = subscriptionPlus();
-  ['nutritionPlusPill', 'journalPlusPill', 'journalSidePlusPill', 'goalsPlusPill', 'goalsTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
+  ['nutritionPlusPill', 'journalPlusPill', 'journalSidePlusPill', 'goalsPlusPill', 'goalsTitlePill', 'plansPlusPill', 'plansTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
     const pill = document.getElementById(id);
     if (pill) pill.hidden = plus;
   });
@@ -7247,8 +7354,1013 @@ function openGoals() {
   if (!el.goalsDlg.open) el.goalsDlg.showModal();
 }
 
+/* ---------------------------------------------------------------------------
+   Plans hub — relapse / lapse prevention + exit plans (Hopewick Plus)
+   Private on this device. Self-help only. A lapse is not a failure.
+   --------------------------------------------------------------------------- */
+const PLAN_FIRST_TEN = [
+  { id: 'halt', label: 'HALT check', hint: 'Hungry, angry, lonely, or tired — tend one of those.' },
+  { id: 'surf', label: 'Urge surfing', hint: 'The urge is a wave. It rises, peaks, and passes.' },
+  { id: 'leave', label: 'Leave the situation', hint: 'Step outside, change rooms, or go somewhere safer.' },
+  { id: 'breathe', label: 'Slow breathing', hint: 'In for four, out for six, three times.' },
+  { id: 'water', label: 'Water or something to eat', hint: 'A glass of water or a small snack.' },
+  { id: 'ground', label: 'Feet on the floor', hint: 'Name five things you can see.' },
+];
+const PLAN_SLIP_LINES = [
+  'I will tell someone safe today.',
+  'I will eat, drink water, and rest before any big decision.',
+  'I will come back to this plan, not start from zero in my head.',
+  'I will re-engage support — a meeting, a counsellor, or Get help.',
+  'I will not keep using to punish the slip.',
+];
+const PLAN_EXIT_LIBRARY = [
+  { id: 'payday', title: 'Payday', prompt: 'Money has just landed and the old plan shows up.' },
+  { id: 'mates', title: 'Old using mates', prompt: 'Someone from the old crowd messages or turns up.' },
+  { id: 'party', title: 'A party', prompt: 'A gathering where alcohol or other drugs are likely.' },
+  { id: 'argument', title: 'An argument', prompt: 'A fight leaves you hot, hurt, or wanting to get out.' },
+  { id: 'alone', title: 'Alone at night', prompt: 'The house is quiet and the urge gets loud.' },
+  { id: 'bottleshop', title: 'Walking past a bottle shop', prompt: 'The route goes past a shop, a dealer, or a familiar corner.' },
+  { id: 'offer', title: 'Someone offers', prompt: 'A drink, a pill, or something else is put in front of you.' },
+  { id: 'bored', title: 'A long empty weekend', prompt: 'Nothing is planned and the day feels flat.' },
+  { id: 'appointment', title: 'After a hard appointment', prompt: 'Court, Centrelink, a medical visit, or a tough meeting.' },
+  { id: 'celebration', title: 'Good news', prompt: 'Something went well, and the old way of marking it shows up.' },
+];
+const PLAN_EXIT_ACTIONS = [
+  { id: 'leave', label: 'Leave' },
+  { id: 'code', label: 'Code-word call someone' },
+  { id: 'delay', label: 'Delay 10 minutes' },
+  { id: 'route', label: 'Change route' },
+  { id: 'money', label: 'Limit money or keys' },
+  { id: 'timebox', label: 'Time-box it' },
+  { id: 'public', label: 'Go somewhere public' },
+  { id: 'text', label: 'Text a safe person' },
+];
+const PLAN_RELAPSE_TITLES = [
+  'Early warning signs',
+  'First 10 minutes',
+  'People I can call',
+  'What helps, what to avoid',
+  'If a slip happens',
+  'Your plan',
+];
+
+function emptyRelapsePlan() {
+  return {
+    warnings: '',
+    firstTen: [],
+    firstTenNote: '',
+    people: [{ name: '', reach: '' }],
+    helps: '',
+    avoid: '',
+    ifSlip: '',
+    updated: 0,
+  };
+}
+function blankExitRow() {
+  return { actions: [], note: '', who: '', codeWord: '' };
+}
+function normalizeExitRow(row) {
+  const src = row && typeof row === 'object' ? row : {};
+  const actions = Array.isArray(src.actions)
+    ? src.actions.filter(id => PLAN_EXIT_ACTIONS.some(a => a.id === id)).slice(0, 12)
+    : [];
+  return {
+    actions,
+    note: String(src.note || '').slice(0, 400),
+    who: String(src.who || '').slice(0, 80),
+    codeWord: String(src.codeWord || '').slice(0, 40),
+  };
+}
+function exitRowFilled(row) {
+  if (!row) return false;
+  return !!(row.actions && row.actions.length) || !!String(row.note || '').trim() || !!String(row.who || '').trim() || !!String(row.codeWord || '').trim();
+}
+function normalizePlans(raw) {
+  const src = raw && typeof raw === 'object' ? raw : {};
+  const relapseSrc = src.relapse && typeof src.relapse === 'object' ? src.relapse : {};
+  const relapse = emptyRelapsePlan();
+  relapse.warnings = String(relapseSrc.warnings || '').slice(0, 2000);
+  relapse.firstTen = Array.isArray(relapseSrc.firstTen)
+    ? relapseSrc.firstTen.filter(id => PLAN_FIRST_TEN.some(a => a.id === id)).slice(0, 12)
+    : [];
+  relapse.firstTenNote = String(relapseSrc.firstTenNote || '').slice(0, 800);
+  const people = Array.isArray(relapseSrc.people) ? relapseSrc.people : [];
+  relapse.people = people.slice(0, 6).map(p => ({
+    name: String(p && p.name || '').trim().slice(0, 80),
+    reach: String(p && p.reach || '').trim().slice(0, 120),
+  })).filter(p => p.name || p.reach);
+  if (!relapse.people.length) relapse.people = [{ name: '', reach: '' }];
+  relapse.helps = String(relapseSrc.helps || '').slice(0, 1200);
+  relapse.avoid = String(relapseSrc.avoid || '').slice(0, 1200);
+  relapse.ifSlip = String(relapseSrc.ifSlip || '').slice(0, 1200);
+  relapse.updated = Number(relapseSrc.updated) || 0;
+  const exits = {};
+  const exitSrc = src.exits && typeof src.exits === 'object' ? src.exits : {};
+  PLAN_EXIT_LIBRARY.forEach(card => {
+    const row = normalizeExitRow(exitSrc[card.id]);
+    if (exitRowFilled(row)) exits[card.id] = row;
+  });
+  const custom = Array.isArray(src.custom) ? src.custom.slice(0, 8).map(item => {
+    const row = normalizeExitRow(item);
+    return Object.assign(row, {
+      id: String(item && item.id || uid()).replace(/[^\w-]/g, '').slice(0, 40) || uid(),
+      title: String(item && item.title || '').trim().slice(0, 80),
+    });
+  }).filter(item => item.title) : [];
+  return { relapse, exits, custom };
+}
+function plansStatusText() {
+  if (isDemo) return 'This demo visit only — not saved on this device.';
+  return 'Saved on this device. Included when you export a backup from Settings.';
+}
+function relapseHasContent(plan) {
+  const r = plan || plansState.relapse;
+  if (!r) return false;
+  if (String(r.warnings || '').trim() || String(r.firstTenNote || '').trim()) return true;
+  if (r.firstTen && r.firstTen.length) return true;
+  if (String(r.helps || '').trim() || String(r.avoid || '').trim() || String(r.ifSlip || '').trim()) return true;
+  return (r.people || []).some(p => String(p.name || '').trim() || String(p.reach || '').trim());
+}
+function exitCatalog() {
+  const lib = PLAN_EXIT_LIBRARY.map(card => ({
+    kind: 'lib',
+    id: card.id,
+    title: card.title,
+    prompt: card.prompt,
+    row: plansState.exits[card.id] || blankExitRow(),
+  }));
+  const custom = (plansState.custom || []).map(item => ({
+    kind: 'custom',
+    id: item.id,
+    title: item.title,
+    prompt: 'Your own scenario.',
+    row: item,
+  }));
+  return lib.concat(custom);
+}
+function filledExits() {
+  return exitCatalog().filter(item => exitRowFilled(item.row));
+}
+function exitActionLabel(id) {
+  const found = PLAN_EXIT_ACTIONS.find(a => a.id === id);
+  return found ? found.label : '';
+}
+function planTelHref(reach) {
+  const raw = String(reach || '').trim();
+  const digits = raw.replace(/[^\d]/g, '');
+  if (digits.length < 6) return '';
+  return 'tel:' + raw.replace(/[^\d+]/g, '');
+}
+function planField(labelText, control) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+  const label = document.createElement('label');
+  label.textContent = labelText;
+  if (control.id) label.htmlFor = control.id;
+  wrap.appendChild(label);
+  wrap.appendChild(control);
+  return wrap;
+}
+function planTextarea(id, value, max, placeholder) {
+  const area = document.createElement('textarea');
+  area.id = id;
+  area.maxLength = max;
+  area.rows = 4;
+  area.value = value || '';
+  if (placeholder) area.placeholder = placeholder;
+  return area;
+}
+function planBackToHub() {
+  commitPlanFields();
+  savePlans();
+  plansView = 'hub';
+  exitFocus = null;
+  editingExit = null;
+  renderPlans();
+  focusPlanHeading();
+}
+function focusPlanHeading() {
+  const node = document.getElementById('plansViewTitle');
+  if (node) node.focus();
+}
+let editingExit = null;
+
+function syncPlansGate() {
+  const plus = subscriptionPlus();
+  const workspace = $('#plansWorkspace');
+  if (workspace) workspace.hidden = !plus;
+  const intro = $('#plansIntro');
+  if (intro) intro.hidden = plus && plansView !== 'hub';
+  renderPlusFeatureGate($('#plansGate'), {
+    lead: 'Relapse and exit plans are part of Hopewick Plus. Free can see what the hub holds. Writing and saving a plan needs Plus.',
+    items: [
+      'Early warning signs and the first 10 minutes',
+      'People you can call',
+      'What helps, and what to avoid',
+      'If a slip happens — kindness, then the next step',
+      'Exit cards for payday, old mates, a party, and more',
+      'My exits — a short list for a risky moment',
+    ],
+    listLabel: 'Plans with Hopewick Plus',
+    buttonId: 'plansPlusBtn',
+    help: '3 days free, then AU$20/month. Cancel anytime. Today’s Readings, Get help, and domestic and family violence support stay free. A lapse is not a failure.',
+  });
+  syncPlusFeaturePills();
+}
+function renderPlans() {
+  syncPlansGate();
+  const note = $('#plansSaved');
+  if (note) note.textContent = plansStatusText();
+  const hub = $('#plansHub');
+  const relapse = $('#plansRelapse');
+  const exit = $('#plansExit');
+  if (!subscriptionPlus()) {
+    [hub, relapse, exit].forEach(node => { if (node) node.replaceChildren(); });
+    return;
+  }
+  if (hub) hub.hidden = plansView !== 'hub';
+  if (relapse) relapse.hidden = plansView !== 'relapse';
+  if (exit) {
+    exit.hidden = plansView !== 'exit' && plansView !== 'now';
+    exit.classList.toggle('my-exits-now', plansView === 'now');
+  }
+  if (plansView === 'hub') renderPlansHub();
+  else if (plansView === 'relapse') renderRelapse();
+  else if (plansView === 'now') renderMyExits();
+  else renderExitScreen();
+}
+function renderPlansHub() {
+  const hub = $('#plansHub');
+  if (!hub) return;
+  hub.replaceChildren();
+  const lead = document.createElement('p');
+  lead.className = 'help';
+  lead.style.marginTop = '8px';
+  lead.textContent = 'Write these while things are calm. Open them when a moment gets risky. A lapse is not a failure.';
+  hub.appendChild(lead);
+  const grid = document.createElement('div');
+  grid.className = 'plans-cards';
+  grid.appendChild(plansHubCard(
+    'Relapse / lapse prevention plan',
+    relapseHasContent() ? 'Saved. Open your one-page plan.' : 'Early signs, the first 10 minutes, people to call, and what to do if you slip.',
+    () => {
+      plansView = 'relapse';
+      relapseStep = relapseHasContent() ? 5 : 0;
+      renderPlans();
+      focusPlanHeading();
+    }
+  ));
+  const count = filledExits().length;
+  grid.appendChild(plansHubCard(
+    'Exit plan',
+    count ? (count === 1 ? '1 scenario has an exit.' : count + ' scenarios have an exit.') : 'High-risk moments — payday, old mates, a party, alone at night — and a way out of each.',
+    () => {
+      plansView = 'exit';
+      exitFocus = null;
+      editingExit = null;
+      renderPlans();
+      focusPlanHeading();
+    }
+  ));
+  grid.appendChild(plansHubCard(
+    'My exits',
+    count ? 'Open this quickly if a risky moment is happening now.' : 'Add an exit to a scenario and it will show up here.',
+    () => {
+      plansView = 'now';
+      renderPlans();
+      focusPlanHeading();
+    }
+  ));
+  hub.appendChild(grid);
+}
+function plansHubCard(title, sub, onClick) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'plans-card';
+  const strong = document.createElement('strong');
+  strong.textContent = title;
+  const span = document.createElement('span');
+  span.className = 'sub';
+  span.textContent = sub;
+  btn.appendChild(strong);
+  btn.appendChild(span);
+  btn.addEventListener('click', onClick);
+  return btn;
+}
+function planViewHead(title, blurb) {
+  const head = document.createElement('div');
+  const back = document.createElement('button');
+  back.type = 'button';
+  back.className = 'btn btn-ghost btn-sm';
+  back.textContent = 'All plans';
+  back.addEventListener('click', planBackToHub);
+  head.appendChild(back);
+  const h = document.createElement('h3');
+  h.id = 'plansViewTitle';
+  h.tabIndex = -1;
+  h.textContent = title;
+  h.style.margin = '10px 0 4px';
+  head.appendChild(h);
+  if (blurb) {
+    const p = document.createElement('p');
+    p.className = 'help';
+    p.style.margin = '0';
+    p.textContent = blurb;
+    head.appendChild(p);
+  }
+  return head;
+}
+function commitRelapseStep() {
+  const r = plansState.relapse;
+  if (!r) return;
+  if (relapseStep === 0 && $('#planWarnings')) r.warnings = $('#planWarnings').value.slice(0, 2000);
+  if (relapseStep === 1 && $('#planFirstNote')) r.firstTenNote = $('#planFirstNote').value.slice(0, 800);
+  if (relapseStep === 2 && $('#plansPeople')) {
+    const rows = $$('#plansPeople .plan-person');
+    r.people = rows.map(row => ({
+      name: (($('[data-person-name]', row) || {}).value || '').trim().slice(0, 80),
+      reach: (($('[data-person-reach]', row) || {}).value || '').trim().slice(0, 120),
+    }));
+    if (!r.people.length) r.people = [{ name: '', reach: '' }];
+  }
+  if (relapseStep === 3) {
+    if ($('#planHelps')) r.helps = $('#planHelps').value.slice(0, 1200);
+    if ($('#planAvoid')) r.avoid = $('#planAvoid').value.slice(0, 1200);
+  }
+  if (relapseStep === 4 && $('#planIfSlip')) r.ifSlip = $('#planIfSlip').value.slice(0, 1200);
+  r.updated = Date.now();
+}
+function commitExitEditor() {
+  if (!exitFocus || !editingExit) return;
+  if ($('#planExitNote')) editingExit.note = $('#planExitNote').value.slice(0, 400);
+  if ($('#planExitWho')) editingExit.who = $('#planExitWho').value.slice(0, 80);
+  if ($('#planExitCode')) editingExit.codeWord = $('#planExitCode').value.slice(0, 40);
+  const row = normalizeExitRow(editingExit);
+  if (exitFocus.kind === 'lib') {
+    if (exitRowFilled(row)) plansState.exits[exitFocus.id] = row;
+    else delete plansState.exits[exitFocus.id];
+  } else {
+    const item = plansState.custom.find(c => c.id === exitFocus.id);
+    if (item) {
+      item.actions = row.actions;
+      item.note = row.note;
+      item.who = row.who;
+      item.codeWord = row.codeWord;
+    }
+  }
+  editingExit.actions = row.actions.slice();
+  editingExit.note = row.note;
+  editingExit.who = row.who;
+  editingExit.codeWord = row.codeWord;
+}
+function commitPlanFields() {
+  if (!subscriptionPlus()) return;
+  if (plansView === 'relapse') commitRelapseStep();
+  if ((plansView === 'exit') && exitFocus) commitExitEditor();
+}
+function goRelapse(step) {
+  commitRelapseStep();
+  relapseStep = step;
+  savePlans();
+  renderPlans();
+  focusPlanHeading();
+}
+function renderRelapse() {
+  const host = $('#plansRelapse');
+  if (!host) return;
+  host.replaceChildren();
+  const stepTitle = PLAN_RELAPSE_TITLES[relapseStep] || 'Your plan';
+  host.appendChild(planViewHead(
+    relapseStep === 5 ? 'Relapse / lapse prevention plan' : stepTitle,
+    relapseStep === 5 ? 'One page. You can edit any part.' : 'Step ' + (relapseStep + 1) + ' of 6'
+  ));
+  if (relapseStep === 5) renderRelapseSummary(host);
+  else renderRelapseStep(host);
+}
+function renderRelapseStep(host) {
+  const r = plansState.relapse;
+  if (relapseStep === 0) {
+    host.appendChild(planField('My early warning signs / triggers', planTextarea(
+      'planWarnings',
+      r.warnings,
+      2000,
+      'e.g. skipping meals, a fight, payday, the bottle shop on the way home, “just one” thoughts'
+    )));
+    const help = document.createElement('p');
+    help.className = 'help';
+    help.textContent = 'Body, mood, places, people, or thoughts that show up early. One line each is enough.';
+    host.appendChild(help);
+  } else if (relapseStep === 1) {
+    const help = document.createElement('p');
+    help.className = 'help';
+    help.textContent = 'What will you actually do in the first 10 minutes? Small and concrete beats a perfect speech.';
+    host.appendChild(help);
+    const chips = document.createElement('div');
+    chips.className = 'plan-chips';
+    chips.setAttribute('role', 'group');
+    chips.setAttribute('aria-label', 'First 10 minutes actions');
+    PLAN_FIRST_TEN.forEach(item => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.setAttribute('aria-pressed', r.firstTen.includes(item.id) ? 'true' : 'false');
+      b.title = item.hint;
+      b.textContent = item.label;
+      b.addEventListener('click', () => {
+        const live = plansState.relapse;
+        if (live.firstTen.includes(item.id)) live.firstTen = live.firstTen.filter(id => id !== item.id);
+        else live.firstTen = live.firstTen.concat(item.id);
+        b.setAttribute('aria-pressed', live.firstTen.includes(item.id) ? 'true' : 'false');
+        live.updated = Date.now();
+        savePlans();
+      });
+      chips.appendChild(b);
+    });
+    host.appendChild(chips);
+    host.appendChild(planField('Anything else for those 10 minutes', planTextarea('planFirstNote', r.firstTenNote, 800, 'e.g. put the keys in the drawer, walk to the end of the street')));
+  } else if (relapseStep === 2) {
+    const help = document.createElement('p');
+    help.className = 'help';
+    help.textContent = 'Name and how to reach them. A phone number can be tapped later from your summary.';
+    host.appendChild(help);
+    const list = document.createElement('div');
+    list.id = 'plansPeople';
+    (r.people.length ? r.people : [{ name: '', reach: '' }]).forEach((person, index) => {
+      list.appendChild(personRow(person, index));
+    });
+    host.appendChild(list);
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'btn btn-sm';
+    add.id = 'planAddPerson';
+    add.style.marginTop = '8px';
+    add.textContent = 'Add another person';
+    add.addEventListener('click', () => {
+      commitRelapseStep();
+      if (plansState.relapse.people.filter(p => p.name || p.reach).length >= 6 && plansState.relapse.people.length >= 6) {
+        toast('Six people is enough for this plan.');
+        return;
+      }
+      if (plansState.relapse.people.length >= 6) {
+        toast('Six people is enough for this plan.');
+        return;
+      }
+      plansState.relapse.people.push({ name: '', reach: '' });
+      renderPlans();
+      const inputs = $$('#plansPeople [data-person-name]');
+      const last = inputs[inputs.length - 1];
+      if (last) last.focus();
+    });
+    host.appendChild(add);
+  } else if (relapseStep === 3) {
+    host.appendChild(planField('What helps', planTextarea('planHelps', r.helps, 1200, 'e.g. a walk, a meeting, food, my dog, a shower')));
+    host.appendChild(planField('What to avoid', planTextarea('planAvoid', r.avoid, 1200, 'e.g. that street, cash in my pocket, replying to that chat')));
+  } else if (relapseStep === 4) {
+    const help = document.createElement('p');
+    help.className = 'help';
+    help.textContent = 'A lapse is not a failure. Kindness first, then one next step. This plan does not reset your clean time, and it does not wipe the days you have already kept.';
+    host.appendChild(help);
+    const chips = document.createElement('div');
+    chips.className = 'plan-chips';
+    chips.setAttribute('role', 'group');
+    chips.setAttribute('aria-label', 'If a slip happens');
+    const area = planTextarea('planIfSlip', r.ifSlip, 1200, 'What you will do next, in your own words.');
+    PLAN_SLIP_LINES.forEach(line => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      const has = area.value.includes(line);
+      b.setAttribute('aria-pressed', has ? 'true' : 'false');
+      b.textContent = line.replace(/\.$/, '');
+      b.addEventListener('click', () => {
+        const parts = area.value.split('\n').map(s => s.trim()).filter(Boolean);
+        const idx = parts.indexOf(line);
+        if (idx >= 0) parts.splice(idx, 1);
+        else parts.push(line);
+        area.value = parts.join('\n');
+        plansState.relapse.ifSlip = area.value.slice(0, 1200);
+        b.setAttribute('aria-pressed', parts.indexOf(line) >= 0 ? 'true' : 'false');
+        plansState.relapse.updated = Date.now();
+        savePlans();
+      });
+      chips.appendChild(b);
+    });
+    host.appendChild(chips);
+    host.appendChild(planField('If a slip happens', area));
+  }
+  const actions = document.createElement('div');
+  actions.className = 'plan-actions';
+  if (relapseStep > 0) {
+    const back = document.createElement('button');
+    back.type = 'button';
+    back.className = 'btn';
+    back.textContent = 'Back';
+    back.addEventListener('click', () => goRelapse(relapseStep - 1));
+    actions.appendChild(back);
+  }
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'btn btn-primary';
+  next.id = 'planNext';
+  next.textContent = relapseStep === 4 ? 'Save and see my plan' : 'Save and continue';
+  next.addEventListener('click', () => goRelapse(relapseStep + 1));
+  actions.appendChild(next);
+  host.appendChild(actions);
+}
+function personRow(person, index) {
+  const row = document.createElement('div');
+  row.className = 'plan-person';
+  const name = document.createElement('input');
+  name.type = 'text';
+  name.maxLength = 80;
+  name.autocomplete = 'off';
+  name.placeholder = 'Name';
+  name.setAttribute('aria-label', 'Person ' + (index + 1) + ' name');
+  name.dataset.personName = '1';
+  name.value = person.name || '';
+  const reach = document.createElement('input');
+  reach.type = 'text';
+  reach.maxLength = 120;
+  reach.autocomplete = 'off';
+  reach.placeholder = 'Phone, text, or where you see them';
+  reach.setAttribute('aria-label', 'How to reach person ' + (index + 1));
+  reach.dataset.personReach = '1';
+  reach.value = person.reach || '';
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.className = 'btn btn-ghost btn-sm';
+  remove.textContent = 'Remove';
+  remove.setAttribute('aria-label', 'Remove person ' + (index + 1));
+  remove.addEventListener('click', () => {
+    commitRelapseStep();
+    plansState.relapse.people.splice(index, 1);
+    if (!plansState.relapse.people.length) plansState.relapse.people = [{ name: '', reach: '' }];
+    renderPlans();
+  });
+  row.appendChild(name);
+  row.appendChild(reach);
+  row.appendChild(remove);
+  return row;
+}
+function renderRelapseSummary(host) {
+  const r = plansState.relapse;
+  const wrap = document.createElement('div');
+  wrap.className = 'plan-summary';
+  wrap.id = 'planSummary';
+  wrap.appendChild(summarySection('Early warning signs', r.warnings, 0));
+  const firstLabels = (r.firstTen || []).map(id => {
+    const item = PLAN_FIRST_TEN.find(a => a.id === id);
+    return item ? item.label : '';
+  }).filter(Boolean);
+  let firstText = firstLabels.join('\n');
+  if (String(r.firstTenNote || '').trim()) firstText = (firstText ? firstText + '\n' : '') + String(r.firstTenNote).trim();
+  wrap.appendChild(summarySection('First 10 minutes', firstText, 1));
+  const people = (r.people || []).filter(p => p.name || p.reach);
+  const peopleSec = document.createElement('section');
+  const ph = document.createElement('h3');
+  ph.appendChild(document.createTextNode('People I can call'));
+  const editPeople = document.createElement('button');
+  editPeople.type = 'button';
+  editPeople.className = 'btn btn-ghost btn-sm';
+  editPeople.textContent = 'Edit';
+  editPeople.addEventListener('click', () => goRelapse(2));
+  ph.appendChild(editPeople);
+  peopleSec.appendChild(ph);
+  if (!people.length) {
+    const empty = document.createElement('p');
+    empty.className = 'help';
+    empty.textContent = 'Nothing here yet.';
+    peopleSec.appendChild(empty);
+  } else {
+    const ul = document.createElement('ul');
+    ul.style.margin = '0';
+    ul.style.paddingLeft = '1.15em';
+    people.forEach(p => {
+      const li = document.createElement('li');
+      if (p.name) li.appendChild(document.createTextNode(p.name));
+      if (p.reach) {
+        if (p.name) li.appendChild(document.createTextNode(' — '));
+        const href = planTelHref(p.reach);
+        if (href) {
+          const a = document.createElement('a');
+          a.href = href;
+          a.textContent = p.reach;
+          li.appendChild(a);
+        } else li.appendChild(document.createTextNode(p.reach));
+      }
+      ul.appendChild(li);
+    });
+    peopleSec.appendChild(ul);
+  }
+  wrap.appendChild(peopleSec);
+  wrap.appendChild(summarySection('What helps', r.helps, 3));
+  wrap.appendChild(summarySection('What to avoid', r.avoid, 3));
+  wrap.appendChild(summarySection('If a slip happens', r.ifSlip, 4));
+  const foot = document.createElement('p');
+  foot.className = 'help';
+  foot.style.marginTop = '12px';
+  foot.textContent = 'Your clean time tracker is separate. Saving or reading this plan does not reset it. A lapse is not a failure.';
+  wrap.appendChild(foot);
+  host.appendChild(wrap);
+  const actions = document.createElement('div');
+  actions.className = 'plan-actions';
+  const copyBtn = document.createElement('button');
+  copyBtn.type = 'button';
+  copyBtn.className = 'btn btn-primary btn-sm';
+  copyBtn.id = 'planCopy';
+  copyBtn.textContent = 'Copy summary';
+  copyBtn.addEventListener('click', () => copyPlanText(relapseSummaryPlain(), 'Summary copied'));
+  const downloadBtn = document.createElement('button');
+  downloadBtn.type = 'button';
+  downloadBtn.className = 'btn btn-sm';
+  downloadBtn.id = 'planDownload';
+  downloadBtn.textContent = 'Download summary';
+  downloadBtn.addEventListener('click', () => downloadPlanText('hopewick-relapse-plan.txt', relapseSummaryPlain()));
+  const editStart = document.createElement('button');
+  editStart.type = 'button';
+  editStart.className = 'btn btn-sm';
+  editStart.textContent = 'Edit from the start';
+  editStart.addEventListener('click', () => goRelapse(0));
+  const del = document.createElement('button');
+  del.type = 'button';
+  del.className = 'btn btn-danger btn-sm';
+  del.id = 'planDelete';
+  del.textContent = 'Delete this plan';
+  del.addEventListener('click', () => {
+    if (!confirm('Delete this relapse / lapse prevention plan from this device?')) return;
+    plansState.relapse = emptyRelapsePlan();
+    relapseStep = 0;
+    savePlans();
+    renderPlans();
+    toast('Plan deleted');
+  });
+  actions.appendChild(copyBtn);
+  actions.appendChild(downloadBtn);
+  actions.appendChild(editStart);
+  actions.appendChild(del);
+  host.appendChild(actions);
+}
+function summarySection(title, text, step) {
+  const sec = document.createElement('section');
+  const h = document.createElement('h3');
+  h.appendChild(document.createTextNode(title));
+  const edit = document.createElement('button');
+  edit.type = 'button';
+  edit.className = 'btn btn-ghost btn-sm';
+  edit.textContent = 'Edit';
+  edit.addEventListener('click', () => goRelapse(step));
+  h.appendChild(edit);
+  sec.appendChild(h);
+  const p = document.createElement('p');
+  const value = String(text || '').trim();
+  if (value) p.textContent = value;
+  else { p.className = 'help'; p.textContent = 'Nothing here yet.'; }
+  sec.appendChild(p);
+  return sec;
+}
+function relapseSummaryPlain() {
+  const r = plansState.relapse || emptyRelapsePlan();
+  const first = (r.firstTen || []).map(id => {
+    const item = PLAN_FIRST_TEN.find(a => a.id === id);
+    return item ? '- ' + item.label : '';
+  }).filter(Boolean);
+  const people = (r.people || []).filter(p => p.name || p.reach).map(p => '- ' + [p.name, p.reach].filter(Boolean).join(' — '));
+  const blocks = [
+    'Relapse / lapse prevention plan',
+    'Hopewick — self-help only, not a counsellor or a crisis service. A lapse is not a failure.',
+    'In danger call 000. Lifeline 13 11 14.',
+    '',
+    'Early warning signs',
+    String(r.warnings || '').trim() || 'Nothing here yet.',
+    '',
+    'First 10 minutes',
+    first.length ? first.join('\n') : 'Nothing here yet.',
+  ];
+  if (String(r.firstTenNote || '').trim()) blocks.push(String(r.firstTenNote).trim());
+  blocks.push('', 'People I can call', people.length ? people.join('\n') : 'Nothing here yet.');
+  blocks.push('', 'What helps', String(r.helps || '').trim() || 'Nothing here yet.');
+  blocks.push('', 'What to avoid', String(r.avoid || '').trim() || 'Nothing here yet.');
+  blocks.push('', 'If a slip happens', String(r.ifSlip || '').trim() || 'Nothing here yet.');
+  blocks.push('', 'Your clean time tracker is separate. This plan does not reset it.');
+  return blocks.join('\n');
+}
+function copyPlanText(text, okMsg) {
+  const done = () => toast(okMsg);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else fallbackCopy(text, done);
+}
+function fallbackCopy(text, done) {
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.setAttribute('readonly', '');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  try { document.execCommand('copy'); done(); }
+  catch (e) { toast('Could not copy. Use Download instead.', true); }
+  area.remove();
+}
+function downloadPlanText(filename, text) {
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast('Download started');
+}
+function renderExitScreen() {
+  const host = $('#plansExit');
+  if (!host) return;
+  host.replaceChildren();
+  if (exitFocus) renderExitEditor(host);
+  else renderExitLibrary(host);
+}
+function renderExitLibrary(host) {
+  host.appendChild(planViewHead('Exit plan', 'Pick a high-risk moment and choose a concrete way out. Add your own if it is missing.'));
+  const list = document.createElement('div');
+  list.className = 'plans-cards';
+  list.id = 'plansExitList';
+  exitCatalog().forEach(item => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'plans-card';
+    btn.dataset.scenario = item.id;
+    const strong = document.createElement('strong');
+    strong.textContent = item.title;
+    const sub = document.createElement('span');
+    sub.className = 'sub';
+    const labels = (item.row.actions || []).map(exitActionLabel).filter(Boolean);
+    sub.textContent = labels.length ? labels.join(' · ') : (String(item.row.note || '').trim() ? 'Note saved' : item.prompt);
+    btn.appendChild(strong);
+    btn.appendChild(sub);
+    btn.addEventListener('click', () => openExitEditor(item.kind, item.id));
+    list.appendChild(btn);
+  });
+  host.appendChild(list);
+  const label = document.createElement('label');
+  label.className = 'plans-add';
+  label.style.display = 'block';
+  label.style.marginTop = '14px';
+  label.textContent = 'Add your own scenario';
+  const row = document.createElement('div');
+  row.className = 'key-wrap';
+  row.style.marginTop = '6px';
+  const input = document.createElement('input');
+  input.id = 'planCustomTitle';
+  input.type = 'text';
+  input.maxLength = 80;
+  input.placeholder = 'e.g. family barbecue, after footy';
+  input.setAttribute('aria-label', 'Your own scenario');
+  const add = document.createElement('button');
+  add.type = 'button';
+  add.className = 'btn btn-sm';
+  add.id = 'planCustomAdd';
+  add.textContent = 'Add';
+  const addIt = () => {
+    const title = input.value.trim().slice(0, 80);
+    if (!title) { toast('Name the situation first.'); input.focus(); return; }
+    if (plansState.custom.length >= 8) { toast('You can keep up to 8 of your own scenarios.'); return; }
+    const item = Object.assign(blankExitRow(), { id: uid(), title });
+    plansState.custom.push(item);
+    input.value = '';
+    savePlans();
+    openExitEditor('custom', item.id);
+  };
+  add.addEventListener('click', addIt);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addIt(); } });
+  row.appendChild(input);
+  row.appendChild(add);
+  label.appendChild(row);
+  host.appendChild(label);
+}
+function openExitEditor(kind, id) {
+  exitFocus = { kind, id };
+  if (kind === 'lib') {
+    editingExit = Object.assign(blankExitRow(), normalizeExitRow(plansState.exits[id] || {}));
+    editingExit.actions = editingExit.actions.slice();
+  } else {
+    const item = plansState.custom.find(c => c.id === id);
+    if (!item) { exitFocus = null; editingExit = null; renderPlans(); return; }
+    editingExit = Object.assign(blankExitRow(), normalizeExitRow(item), { title: item.title });
+    editingExit.actions = editingExit.actions.slice();
+  }
+  plansView = 'exit';
+  renderPlans();
+  focusPlanHeading();
+}
+function renderExitEditor(host) {
+  const card = exitFocus.kind === 'lib'
+    ? PLAN_EXIT_LIBRARY.find(c => c.id === exitFocus.id)
+    : plansState.custom.find(c => c.id === exitFocus.id);
+  const title = card ? card.title : 'Scenario';
+  const prompt = card && card.prompt ? card.prompt : 'Your own scenario.';
+  host.appendChild(planViewHead(title, prompt));
+  const back = document.createElement('button');
+  back.type = 'button';
+  back.className = 'btn btn-ghost btn-sm';
+  back.textContent = 'All scenarios';
+  back.addEventListener('click', () => {
+    commitExitEditor();
+    savePlans();
+    exitFocus = null;
+    editingExit = null;
+    renderPlans();
+    focusPlanHeading();
+  });
+  host.appendChild(back);
+  const help = document.createElement('p');
+  help.className = 'help';
+  help.textContent = 'Choose one or more exits you could actually do. A code word is something a safe person already understands as “call me” or “come and get me”.';
+  host.appendChild(help);
+  const chips = document.createElement('div');
+  chips.className = 'plan-chips';
+  chips.id = 'planExitActions';
+  chips.setAttribute('role', 'group');
+  chips.setAttribute('aria-label', 'Exits for this scenario');
+  PLAN_EXIT_ACTIONS.forEach(action => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.dataset.exitAction = action.id;
+    const on = editingExit.actions.includes(action.id);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.textContent = action.label;
+    b.addEventListener('click', () => {
+      if (editingExit.actions.includes(action.id)) editingExit.actions = editingExit.actions.filter(id => id !== action.id);
+      else editingExit.actions = editingExit.actions.concat(action.id);
+      b.setAttribute('aria-pressed', editingExit.actions.includes(action.id) ? 'true' : 'false');
+      commitExitEditor();
+      savePlans();
+    });
+    chips.appendChild(b);
+  });
+  host.appendChild(chips);
+  const who = document.createElement('input');
+  who.id = 'planExitWho';
+  who.type = 'text';
+  who.maxLength = 80;
+  who.value = editingExit.who || '';
+  who.autocomplete = 'off';
+  who.placeholder = 'Name';
+  host.appendChild(planField('Who you will contact', who));
+  const code = document.createElement('input');
+  code.id = 'planExitCode';
+  code.type = 'text';
+  code.maxLength = 40;
+  code.value = editingExit.codeWord || '';
+  code.autocomplete = 'off';
+  code.placeholder = 'e.g. blue sky';
+  host.appendChild(planField('Code word (optional)', code));
+  host.appendChild(planField('Note for this moment', planTextarea('planExitNote', editingExit.note, 400, 'e.g. leave the card at home, text Sam, walk the long way')));
+  const actions = document.createElement('div');
+  actions.className = 'plan-actions';
+  const saveBtn = document.createElement('button');
+  saveBtn.type = 'button';
+  saveBtn.className = 'btn btn-primary';
+  saveBtn.id = 'planExitSave';
+  saveBtn.textContent = 'Save and back to scenarios';
+  saveBtn.addEventListener('click', () => {
+    commitExitEditor();
+    savePlans();
+    exitFocus = null;
+    editingExit = null;
+    renderPlans();
+    toast(isDemo ? 'Kept for this demo visit' : 'Exit saved');
+    focusPlanHeading();
+  });
+  const clear = document.createElement('button');
+  clear.type = 'button';
+  clear.className = 'btn btn-danger btn-sm';
+  clear.id = 'planExitClear';
+  clear.textContent = exitFocus.kind === 'custom' ? 'Delete this scenario' : 'Clear these exits';
+  clear.addEventListener('click', () => {
+    if (exitFocus.kind === 'custom') {
+      if (!confirm('Delete this scenario from this device?')) return;
+      plansState.custom = plansState.custom.filter(c => c.id !== exitFocus.id);
+      toast('Scenario deleted');
+    } else {
+      delete plansState.exits[exitFocus.id];
+      toast('Exits cleared');
+    }
+    exitFocus = null;
+    editingExit = null;
+    savePlans();
+    renderPlans();
+  });
+  actions.appendChild(saveBtn);
+  actions.appendChild(clear);
+  host.appendChild(actions);
+}
+function myExitsPlain() {
+  const items = filledExits();
+  const lines = [
+    'My exits',
+    'Hopewick — self-help only, not a counsellor or a crisis service. A lapse is not a failure.',
+    'In danger call 000. Lifeline 13 11 14.',
+    '',
+  ];
+  if (!items.length) lines.push('Nothing here yet.');
+  items.forEach(item => {
+    lines.push(item.title);
+    (item.row.actions || []).forEach(id => {
+      const label = exitActionLabel(id);
+      if (label) lines.push('- ' + label);
+    });
+    if (item.row.who) lines.push('- Contact: ' + item.row.who);
+    if (item.row.codeWord) lines.push('- Code word: ' + item.row.codeWord);
+    if (String(item.row.note || '').trim()) lines.push('- ' + String(item.row.note).trim());
+    lines.push('');
+  });
+  return lines.join('\n').trim();
+}
+function renderMyExits() {
+  const host = $('#plansExit');
+  if (!host) return;
+  host.replaceChildren();
+  host.classList.add('my-exits-now');
+  host.appendChild(planViewHead('My exits', 'Short on purpose. You do not have to decide the whole night.'));
+  const helpRow = document.createElement('div');
+  helpRow.className = 'plan-actions';
+  const helpBtn = document.createElement('button');
+  helpBtn.type = 'button';
+  helpBtn.className = 'btn btn-primary btn-sm';
+  helpBtn.textContent = 'Get help now';
+  helpBtn.addEventListener('click', () => openHelp());
+  const copyBtn = document.createElement('button');
+  copyBtn.type = 'button';
+  copyBtn.className = 'btn btn-sm';
+  copyBtn.id = 'planExitsCopy';
+  copyBtn.textContent = 'Copy my exits';
+  copyBtn.addEventListener('click', () => copyPlanText(myExitsPlain(), 'Exits copied'));
+  const downloadBtn = document.createElement('button');
+  downloadBtn.type = 'button';
+  downloadBtn.className = 'btn btn-sm';
+  downloadBtn.id = 'planExitsDownload';
+  downloadBtn.textContent = 'Download my exits';
+  downloadBtn.addEventListener('click', () => downloadPlanText('hopewick-my-exits.txt', myExitsPlain()));
+  helpRow.appendChild(helpBtn);
+  helpRow.appendChild(copyBtn);
+  helpRow.appendChild(downloadBtn);
+  host.appendChild(helpRow);
+  const items = filledExits();
+  if (!items.length) {
+    const empty = document.createElement('p');
+    empty.className = 'empty-hint';
+    empty.textContent = 'Nothing here yet. Add an exit to a scenario and it will show up in this list.';
+    host.appendChild(empty);
+    return;
+  }
+  items.forEach(item => {
+    const card = document.createElement('article');
+    card.className = 'my-exit';
+    card.dataset.myExit = item.id;
+    const h = document.createElement('h3');
+    h.textContent = item.title;
+    card.appendChild(h);
+    const ul = document.createElement('ul');
+    (item.row.actions || []).forEach(id => {
+      const label = exitActionLabel(id);
+      if (!label) return;
+      const li = document.createElement('li');
+      li.textContent = label;
+      ul.appendChild(li);
+    });
+    if (item.row.who || item.row.codeWord) {
+      const li = document.createElement('li');
+      const bits = [];
+      if (item.row.who) bits.push(item.row.who);
+      if (item.row.codeWord) bits.push('code word “' + item.row.codeWord + '”');
+      li.textContent = bits.join(' · ');
+      ul.appendChild(li);
+    }
+    if (String(item.row.note || '').trim()) {
+      const li = document.createElement('li');
+      li.textContent = String(item.row.note).trim();
+      ul.appendChild(li);
+    }
+    card.appendChild(ul);
+    host.appendChild(card);
+  });
+}
+function openPlans() {
+  if (!profile) return;
+  closeSidebar();
+  plansView = 'hub';
+  exitFocus = null;
+  editingExit = null;
+  renderPlans();
+  if (el.plansDlg && !el.plansDlg.open) el.plansDlg.showModal();
+  const title = $('#plansHubTitle');
+  if (title) title.focus();
+}
+
 /* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
-const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'nutrition', 'gut', 'brain', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'cold', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
 const HOPE_TOOLS = {
   help: { label: 'Open Get help', open: () => openHelp() },
   dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
@@ -7260,9 +8372,11 @@ const HOPE_TOOLS = {
   today: { label: 'Open today’s readings', open: () => openTodayReading() },
   journal: { label: 'Open journal', open: () => openJournal() },
   goals: { label: 'Open SMART goals', open: () => openGoals() },
+  plans: { label: 'Open Plans', open: () => openPlans() },
   nutrition: { label: 'Open nutrition', open: () => openNutrition() },
   gut: { label: 'Open gut health', open: () => openGut() },
   brain: { label: 'Open brain habits', open: () => openBrain() },
+  cold: { label: 'Open ice baths & spas', open: () => openCold() },
   bible: { label: 'Open Bible & SOAP', open: () => setAppTab('bible') },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
   church: { label: 'Find a church', open: () => openChurch() },
@@ -7271,10 +8385,12 @@ const HOPE_TOOLS = {
   plus: { label: 'See Hopewick Plus', open: () => openAccountDlg() },
 };
 const JOURNAL_LANG_RE = /\b(journals?|journaling|diary|write (it |this |that )?(down|out))\b/i;
+const PLANS_LANG_RE = /\b((?:relapse|lapse)(?:\s+or\s+lapse|\s*\/\s*lapse)?(?:\s+prevention)?\s+plans?|(?:relapse|lapse)\s+prevention|exit plans?|my exits)\b/i;
 const GOALS_LANG_RE = /\b((?:my |a |the |two |weekly |this week'?s )?smart goals?|goals? for (?:this |the )?week|weekly goals?)\b/i;
 const NUTRITION_LANG_RE = /\b(nutritions?|supplements?|vitamins?|fish oils?|omega-?3s?|n-?acetyl\s?cysteine|\bnac\b|magnesium|multivitamins?|b-?complex|thiamine|hydrat(?:e|ion|ing)|vitamin d|healthy eating|what (?:should|can) i eat)\b/i;
 const GUT_LANG_RE = /\b(gut health|gut[- ]brain|microbiomes?|probiotics?|fermented foods?|serotonin|dopamine|sauerkraut|kefir|kimchi)\b/i;
 const BRAIN_LANG_RE = /\b(neuroplasticity|new pathways?|pathways in (?:the |my )?brain|brain can change|how (?:the |my )?brain (?:changes|learns|learnt)|new habits?)\b/i;
+const COLD_LANG_RE = /\b(ice[- ]?baths?|cold[- ]?plung(?:e|es|ing)|cold[- ]water immersion|recovery spas?|contrast therap(?:y|ies)|contrast baths?)\b/i;
 const TODAY_LANG_RE = /\b(word for (the |today)|just for today|today'?s (reading|reflection|word)|daily reading)\b/i;
 const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional|going deeper)\b/i;
 const RESUME_LANG_RE = /\b(resume|r[eé]sum[eé]|curriculum vitae|\bcv\b|job application)\b/i;
@@ -7298,9 +8414,11 @@ function textMatchesHopeTool(id, text) {
   if (id === 'today') return TODAY_LANG_RE.test(t);
   if (id === 'journal') return JOURNAL_LANG_RE.test(t);
   if (id === 'goals') return GOALS_LANG_RE.test(t);
+  if (id === 'plans') return PLANS_LANG_RE.test(t);
   if (id === 'nutrition') return NUTRITION_LANG_RE.test(t);
   if (id === 'gut') return GUT_LANG_RE.test(t);
   if (id === 'brain') return BRAIN_LANG_RE.test(t);
+  if (id === 'cold') return COLD_LANG_RE.test(t);
   if (id === 'bible') return BIBLE_LANG_RE.test(t);
   if (id === 'resume') return RESUME_LANG_RE.test(t);
   if (id === 'church') return CHURCH_LANG_RE.test(t);
@@ -7871,7 +8989,7 @@ function renderNutritionGate() {
   gate.replaceChildren();
   if (open) return;
   const lead = document.createElement('p');
-  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library. Gut health and neuroplasticity stay Plus-only, with the same kind of tease.';
+  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library. Gut health and neuroplasticity stay Plus-only, with the same kind of tease. Ice baths and recovery spas stay Plus-only in the same way.';
   gate.appendChild(lead);
   const benefitLabel = document.createElement('p');
   benefitLabel.className = 'nut-filter-label';
@@ -8184,12 +9302,66 @@ const BRAIN_CARDS = [
     ],
   },
 ];
+const COLD_CARDS = [
+  {
+    id: 'why',
+    title: 'Why this rarely comes up',
+    body: [
+      'A lot of people in recovery never consider an ice bath or a recovery spa. The day is already full: sleep, food, a meeting, a safe person, the next hour. Cold water is not on that list, and it does not have to be.',
+      'This page is here so the idea is plain, and so it is not sold as a secret fix. If it is not for you, you can leave it.',
+    ],
+  },
+  {
+    id: 'path',
+    title: 'A new path, not a cure',
+    body: [
+      'If you and a GP ever look at cold, or at time in a recovery spa, the useful frame is the same one as Brain habits. A small new practice can become a path the brain walks a little more easily when you repeat it. That is how a habit forms.',
+      'It is not a cure for addiction. It does not treat addiction. It does not rewire you, and it does not replace a counsellor, a meeting, or medicine a doctor has prescribed. Open Brain habits if you want that idea in plainer words.',
+    ],
+  },
+  {
+    id: 'research',
+    title: 'What research has explored',
+    body: [
+      'As of 2026, research on cold water is mixed. It is mostly about healthy people and about sport. It is not a body of trials about addiction. Hopewick does not turn any of it into a how-to. There is no temperature and no time on this page.',
+      'A 2017 review in Experimental Physiology (Tipton and colleagues) looked across cold-water immersion. It said the evidence for benefits is uneven, and that the risks — including to the heart — are better described than the claimed upsides. Some claims were still anecdotal.',
+      'A small 2023 study in the journal Biology (Yankouskaya and colleagues) asked healthy adults who were new to cold-water swimming how they felt afterwards. On average, the group reported feeling more alert and more active, and less distressed. Scans in that same study were linked with more connection between some brain areas involved in attention and emotion. It was not a study of people in addiction treatment. One study is not proof, and those scans do not show that cold builds a recovery habit.',
+      'A 2010 review in the British Journal of Sports Medicine (Bleakley and Davison) looked at the body’s stress response. Short spells in cold water can raise heart rate and blood pressure. The reason for using cold to recover from sport was still unclear.',
+    ],
+  },
+  {
+    id: 'spa',
+    title: 'Recovery spas and contrast therapy',
+    body: [
+      'A recovery spa, and contrast therapy (time in warmer water and colder water), is an optional wellness practice. It is something you might discuss with a clinician. Hopewick does not endorse a venue, a brand, or a booking.',
+      'A 2013 review in PLoS ONE (Bieuzen, Bleakley, and Costello) looked at contrast water therapy after hard exercise. The trials were about muscle soreness in sport. They had a high risk of bias, and the review did not find a clear winner among recovery options used in sport. They were not studies of addiction.',
+    ],
+  },
+  {
+    id: 'who',
+    title: 'Not for everyone',
+    body: [
+      'Cold is not a dare. Skip it if you have a heart problem or blood-pressure trouble, if you are pregnant, if a medical condition is unmanaged, or if you are intoxicated. Talk to a GP before you try cold water or a recovery spa.',
+      'Stop straight away if you feel dizzy, sick, short of breath, or any chest pain, and call 000. Do not do this alone in open water.',
+    ],
+  },
+  {
+    id: 'care',
+    title: 'Not a substitute for treatment',
+    body: [
+      'A spa visit does not stand in for treatment, a counsellor, a GP, or the people you trust. If you are in danger, or thinking feels unsafe, use Get help and call 000.',
+      'A lapse is not a failure. Cold is not a step you owe anyone.',
+    ],
+  },
+];
 function syncEducationPlusPills() {
   const plus = subscriptionPlus();
   const gut = $('#gutPlusPill');
   const brain = $('#brainPlusPill');
+  const cold = $('#coldPlusPill');
   if (gut) gut.hidden = plus;
   if (brain) brain.hidden = plus;
+  if (cold) cold.hidden = plus;
 }
 function renderEducationGate(gate, cards, copy) {
   if (!gate) return;
@@ -8311,6 +9483,32 @@ function openBrain() {
   closeSidebar();
   renderBrain();
   if (!el.brainDlg.open) el.brainDlg.showModal();
+}
+function renderCold() {
+  const plus = subscriptionPlus();
+  const lib = $('#coldLibrary');
+  if (lib) lib.hidden = !plus;
+  renderEducationGate($('#coldGate'), COLD_CARDS, {
+    lead: 'Hopewick Plus opens the short notes on ice baths and recovery spas. Free keeps the topic names below — not the full notes.',
+    teaseLabel: 'Notes in Plus',
+    teaseAria: 'Ice bath and recovery spa notes included with Hopewick Plus',
+    plusBtnId: 'coldPlusBtn',
+    dlg: el.coldDlg,
+    freeHelp: 'With or without Plus: this is not a dare, and it is not medical advice. In a crisis, use Get help and call 000.',
+  });
+  const closeCold = () => { if (el.coldDlg && el.coldDlg.open) el.coldDlg.close(); };
+  renderEducationCards($('#coldCards'), COLD_CARDS, {
+    path: [
+      { label: 'Open brain habits', run: () => { closeCold(); openBrain(); } },
+    ],
+  });
+  syncEducationPlusPills();
+}
+function openCold() {
+  if (!profile) return;
+  closeSidebar();
+  renderCold();
+  if (!el.coldDlg.open) el.coldDlg.showModal();
 }
 
 function openNearby() {
@@ -8674,7 +9872,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, goals: goalsState, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
+    gratitude, journal, goals: goalsState, plans: plansState, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -8709,6 +9907,11 @@ $('#importFile').addEventListener('change', async (e) => {
     gratitude = Array.isArray(data.gratitude) ? data.gratitude.filter(g => g && g.date) : [];
     journal = Array.isArray(data.journal) ? data.journal.filter(j => j && j.id) : [];
     goalsState = normalizeGoals(data.goals || {});
+    plansState = normalizePlans(data.plans || {});
+    plansView = 'hub';
+    relapseStep = 0;
+    exitFocus = null;
+    editingExit = null;
     stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, data.steps || {});
     bibleProgress = normalizeBible(data.bible || {});
     breakersState = normalizeBreakers(data.breakers || {});
@@ -8720,7 +9923,7 @@ $('#importFile').addEventListener('change', async (e) => {
     }
     activeId = null;
     settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); savePlans(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
@@ -9330,7 +10533,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -9353,6 +10556,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'memories') openMemories();
   else if (o === 'journal') openJournal();
   else if (o === 'goals') openGoals();
+  else if (o === 'plans') openPlans();
   else if (o === 'info' || o === 'news') { closeSidebar(); setAppTab('info'); }
   else if (o === 'steps') openSteps();
   else if (o === 'bible' || o === 'soap') setAppTab('bible');
@@ -9360,6 +10564,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'nutrition') openNutrition();
   else if (o === 'gut') openGut();
   else if (o === 'brain') openBrain();
+  else if (o === 'cold') openCold();
   else if (o === 'skills') openSkills();
   else if (o === 'breakers') openBreakers();
   else if (o === 'selfcare') openSelfCare();
@@ -9397,7 +10602,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -9405,6 +10610,7 @@ $('#selfCareAddBtn').addEventListener('click', addSelfCareItem);
 $('#selfCareCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addSelfCareItem(); } });
 $('#selfCareResetDefaults').addEventListener('click', resetSelfCareDefaults);
 $$('#breakerLinks [data-open=nearby]').forEach(b => b.addEventListener('click', () => { el.circuitBreakerDlg.close(); openNearby(); }));
+if (el.plansDlg) el.plansDlg.addEventListener('close', () => { commitPlanFields(); savePlans(); });
 $$('[data-bible-tab]').forEach(btn => btn.addEventListener('click', () => setBibleTab(btn.getAttribute('data-bible-tab'))));
 $('#bibleStartSoap')?.addEventListener('click', () => startTodaysSoap());
 $('#bibleOpenReader')?.addEventListener('click', () => {
@@ -9632,7 +10838,7 @@ function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -9644,6 +10850,11 @@ function enterDemo() {
   convos = []; memories = sample.memories; moods = sample.moods;
   journal = sample.journal; gratitude = sample.gratitude;
   goalsState = normalizeGoals({});
+  plansState = normalizePlans({});
+  plansView = 'hub';
+  relapseStep = 0;
+  exitFocus = null;
+  editingExit = null;
   stepsProgress = sample.steps; bibleProgress = sample.bible;
   breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
   resumeState = HopewickResume.emptyResume();
@@ -9665,6 +10876,11 @@ function exitDemo() {
   profile = null;
   convos = []; memories = []; moods = []; gratitude = []; journal = [];
   goalsState = { weeks: {} };
+  plansState = normalizePlans({});
+  plansView = 'hub';
+  relapseStep = 0;
+  exitFocus = null;
+  editingExit = null;
   stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
   bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
   breakersState = { custom: [], tried: { date: '', ids: [] } };
@@ -10608,12 +11824,14 @@ async function refreshBilling() {
       if (el.nutritionDlg && el.nutritionDlg.open) renderNutrition();
       if (el.gutDlg && el.gutDlg.open) renderGut();
       if (el.brainDlg && el.brainDlg.open) renderBrain();
+      if (el.coldDlg && el.coldDlg.open) renderCold();
       if (appTab === 'journal') {
         syncJournalGate();
         if (subscriptionPlus()) renderJournalList();
       }
       if (appTab === 'resume') showResume(false);
       if (el.goalsDlg && el.goalsDlg.open) renderGoals();
+      if (el.plansDlg && el.plansDlg.open) renderPlans();
       syncPlusFeaturePills();
       syncKeyBanner();
     }
@@ -10705,9 +11923,11 @@ function appendPlusOffer(body) {
     'No daily message limit with Hope',
     'SMART goals for the week',
     'Journal — write, edit, and deepen a reflection',
+    'Relapse and exit plans — private on this device',
     'Resume builder, kept on this device',
     'Nutrition notes — food, water, and supplements people ask about',
     'Gut health and neuroplasticity notes — plain language, Plus only',
+    'Ice baths and recovery spa notes — plain language, Plus only',
     'Clean time tracker, SOAP reflections, and 12 Steps practice',
     'Going Deeper faith content',
     'The full year of readings',
