@@ -41,12 +41,13 @@ REQUIRED_URLS = [
 
 def test_static_header_and_info():
     text = APP.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.26'" in text
+    assert "EDEN_BUILD = 'hopewick-v5.27'" in text
     topbar = re.search(r'<header class="topbar">.*?</header>', text, re.S).group(0)
     actions = re.search(r'<div class="topbar-actions">.*?</div>', topbar, re.S).group(0)
-    # Menu + Get help + profile + hands-free. Preferences are not in the header.
-    assert topbar.count("<button") == 4
-    assert actions.count("<button") == 3
+    # Menu + Get help + profile + My Account + hands-free. Preferences are not in the header.
+    assert topbar.count("<button") == 5
+    assert actions.count("<button") == 4
+    assert 'id="myAccountBtn"' in actions
     assert "Get help" in topbar
     assert 'id="helpBtn"' in topbar
     assert 'data-open="settings"' not in topbar
@@ -105,7 +106,7 @@ def test_launch_prefs_and_info_ui():
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             assert page.is_visible("#helpBtn")
-            assert page.locator(".topbar-actions > button").count() == 3
+            assert page.locator(".topbar-actions > button").count() == 4
             assert page.locator('.topbar [data-open="settings"]').count() == 0
             assert page.locator(".topbar #themeBtn").count() == 0
             page.screenshot(path=str(shot_dir / "v513-launch-prefs-mobile.png"))
@@ -223,7 +224,7 @@ def test_launch_prefs_and_info_ui():
             # Preferences from the sidebar returns to the launch step, not a header icon.
             page.click('[data-open="prefs"]')
             page.wait_for_selector("#launchPrefs:not([hidden])")
-            assert page.locator(".topbar-actions > button").count() == 3
+            assert page.locator(".topbar-actions > button").count() == 4
             page.click("#launchPrefsContinue")
             page.wait_for_selector("#launchPrefs", state="hidden")
             page.click("#appTabHome")

@@ -470,6 +470,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .dv-view,
 .resume-view,
 .journal-view,
+.my-account-view,
 .launch-prefs {
   flex: 1;
   overflow-y: auto;
@@ -491,6 +492,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .dv-view[hidden],
 .resume-view[hidden],
 .journal-view[hidden],
+.my-account-view[hidden],
 .launch-prefs[hidden],
 .messages[hidden],
 .composer-wrap[hidden] { display: none !important; }
@@ -801,43 +803,57 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .app.tab-dv .composer-wrap,
 .app.tab-resume .composer-wrap,
 .app.tab-journal .composer-wrap,
+.app.tab-account .composer-wrap,
 .app.showing-launch-prefs .composer-wrap { display: none !important; }
 .app.tab-home .messages,
 .app.tab-info .messages,
 .app.tab-dv .messages,
 .app.tab-resume .messages,
 .app.tab-journal .messages,
+.app.tab-account .messages,
 .app.showing-launch-prefs .messages { display: none !important; }
 .app.tab-chat .home-view,
 .app.tab-info .home-view,
 .app.tab-dv .home-view,
 .app.tab-resume .home-view,
 .app.tab-journal .home-view,
+.app.tab-account .home-view,
 .app.showing-launch-prefs .home-view { display: none !important; }
 .app.tab-home .info-view,
 .app.tab-chat .info-view,
 .app.tab-dv .info-view,
 .app.tab-resume .info-view,
 .app.tab-journal .info-view,
+.app.tab-account .info-view,
 .app.showing-launch-prefs .info-view { display: none !important; }
 .app.tab-home .dv-view,
 .app.tab-chat .dv-view,
 .app.tab-info .dv-view,
 .app.tab-resume .dv-view,
 .app.tab-journal .dv-view,
+.app.tab-account .dv-view,
 .app.showing-launch-prefs .dv-view { display: none !important; }
 .app.tab-home .resume-view,
 .app.tab-chat .resume-view,
 .app.tab-info .resume-view,
 .app.tab-dv .resume-view,
 .app.tab-journal .resume-view,
+.app.tab-account .resume-view,
 .app.showing-launch-prefs .resume-view { display: none !important; }
 .app.tab-home .journal-view,
 .app.tab-chat .journal-view,
 .app.tab-info .journal-view,
 .app.tab-dv .journal-view,
 .app.tab-resume .journal-view,
+.app.tab-account .journal-view,
 .app.showing-launch-prefs .journal-view { display: none !important; }
+.app.tab-home .my-account-view,
+.app.tab-chat .my-account-view,
+.app.tab-info .my-account-view,
+.app.tab-dv .my-account-view,
+.app.tab-resume .my-account-view,
+.app.tab-journal .my-account-view,
+.app.showing-launch-prefs .my-account-view { display: none !important; }
 .sidebar-foot .btn[aria-current="page"] {
   background: var(--accent-soft);
   color: var(--accent-strong);
@@ -848,7 +864,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .toasts { bottom: calc(72px + env(safe-area-inset-bottom)); }
 
 @media (max-width: 860px) {
-  .home-view, .info-view, .dv-view, .resume-view, .journal-view { padding: 8px 10px 8px; }
+  .home-view, .info-view, .dv-view, .resume-view, .journal-view, .my-account-view { padding: 8px 10px 8px; }
   .bottom-nav { gap: 2px; padding-left: 4px; padding-right: 4px; }
   .bottom-nav-btn { font-size: .58rem; padding: 5px 2px; }
   .bottom-nav-btn svg { width: 20px; height: 20px; }
@@ -1011,6 +1027,47 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .account-status.bad { color: #b42318; }
 .account-status.ok { color: var(--accent-strong); }
 .account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.my-account-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 18px; }
+.my-account-view h1 { font-size: clamp(1.35rem, 3.2vw, 1.7rem); margin: 4px 0 0; }
+.my-account-view h2 { font-size: 1.15rem; margin: 0; }
+.my-account-who { margin: 0; }
+.my-account-who strong { font-size: 1.05rem; }
+.my-account-email { color: var(--muted); word-break: break-word; }
+.account-menu { display: grid; gap: 10px; }
+.account-menu-card {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
+  width: 100%; text-align: left; padding: 14px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow); color: inherit;
+}
+.account-menu-card:hover { background: var(--surface-2); }
+.account-menu-icon {
+  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent-strong);
+}
+.account-menu-copy { display: grid; gap: 2px; min-width: 0; }
+.account-menu-copy .title { font-weight: 700; }
+.account-menu-copy .desc { color: var(--muted); font-size: .88rem; line-height: 1.35; }
+.account-menu-chevron { color: var(--muted); font-size: 1.4rem; line-height: 1; }
+.account-session-actions {
+  margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.account-session-actions .btn { justify-content: center; width: 100%; }
+.account-session-note { margin: 0; color: var(--muted); font-size: .85rem; }
+.account-detail { display: grid; gap: 8px; }
+.account-fact { margin: 0; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+.account-fact .lbl { display: block; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.account-fact .val { display: block; margin-top: 2px; font-weight: 650; }
+.account-empty { margin: 0; padding: 16px; border: 1px dashed var(--border); border-radius: 14px; background: var(--surface-2); color: var(--muted); }
+.account-invoice { display: grid; gap: 4px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+.account-invoice .row { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.account-check { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+.account-check input { margin-top: 4px; }
+#myAccountBack, #myAccountMenuBack { align-self: flex-start; }
+@media (min-width: 720px) {
+  .account-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+}
 .account-dev { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); border: 1px dashed var(--border); font-size: .85rem; }
 .account-dev a { font-weight: 700; word-break: break-all; }
 .today-plus-note { margin: 0 0 14px; font-size: .9rem; color: var(--muted); text-align: center; }
@@ -1759,6 +1816,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         Get help now
       </button>
       <div class="side-section-label">Settings</div>
+      <button class="btn btn-ghost" type="button" id="sideMyAccountBtn" data-open="myaccount">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 19.2a7 7 0 0 1 14 0"/></svg>
+        My Account
+      </button>
       <button class="btn btn-ghost" type="button" data-open="prefs">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
         Preferences
@@ -1805,6 +1866,9 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         </button>
         <button class="switch-btn" id="switchBtn" type="button" title="Switch profile">
           <span class="avatar" id="switchAvatar" aria-hidden="true">?</span><span class="sname" id="switchName"></span>
+        </button>
+        <button class="icon-btn" id="myAccountBtn" type="button" aria-pressed="false" aria-label="My Account" title="My Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 19.2a7 7 0 0 1 14 0"/></svg>
         </button>
         <button class="icon-btn" id="convoModeBtn" type="button" aria-pressed="false" aria-label="Hands-free conversation mode" title="Hands-free conversation mode">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
@@ -2106,6 +2170,64 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       </div>
     </section>
 
+    <section class="my-account-view" id="myAccountView" hidden aria-label="My Account">
+      <div class="my-account-inner">
+        <div id="myAccountMenu">
+          <button class="btn btn-sm" type="button" id="myAccountMenuBack">Back</button>
+          <h1 id="myAccountTitle" tabindex="-1">My Account</h1>
+          <p id="myAccountOffline" class="account-status" hidden>Sign-in needs the Hopewick account service on this same site. Today’s Readings and Get help work without it.</p>
+          <div id="myAccountSignedOut" hidden>
+            <p class="lede">Sign in to see your name, plan, and billing.</p>
+            <button class="btn btn-primary" type="button" id="myAccountSignIn">Sign in</button>
+          </div>
+          <div id="myAccountSignedIn">
+            <p class="my-account-who"><strong id="myAccountName">Name not added yet</strong><br><span class="my-account-email" id="myAccountEmail"></span></p>
+            <nav class="account-menu" aria-label="Account sections">
+              <button class="account-menu-card" type="button" data-account-section="details" aria-describedby="accountMenuDetailsDesc">
+                <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5 19.2a7 7 0 0 1 14 0"/></svg></span>
+                <span class="account-menu-copy"><span class="title">Personal Details</span><span class="desc" id="accountMenuDetailsDesc">View and edit your name, email, and phone</span></span>
+                <span class="account-menu-chevron" aria-hidden="true">›</span>
+              </button>
+              <button class="account-menu-card" type="button" data-account-section="password" aria-describedby="accountMenuPasswordDesc">
+                <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+                <span class="account-menu-copy"><span class="title">Password &amp; Security</span><span class="desc" id="accountMenuPasswordDesc">Change your password, or create one if you use email links</span></span>
+                <span class="account-menu-chevron" aria-hidden="true">›</span>
+              </button>
+              <button class="account-menu-card" type="button" data-account-section="subscription" aria-describedby="accountMenuSubDesc">
+                <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8h14M5 16h14"/></svg></span>
+                <span class="account-menu-copy"><span class="title">Subscription</span><span class="desc" id="accountMenuSubDesc">Plan, price, status, and billing date</span></span>
+                <span class="account-menu-chevron" aria-hidden="true">›</span>
+              </button>
+              <button class="account-menu-card" type="button" data-account-section="payment" aria-describedby="accountMenuPayDesc">
+                <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+                <span class="account-menu-copy"><span class="title">Payment Method</span><span class="desc" id="accountMenuPayDesc">Add or change the card Stripe has on file</span></span>
+                <span class="account-menu-chevron" aria-hidden="true">›</span>
+              </button>
+              <button class="account-menu-card" type="button" data-account-section="billing" aria-describedby="accountMenuBillDesc">
+                <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+                <span class="account-menu-copy"><span class="title">Billing History</span><span class="desc" id="accountMenuBillDesc">Past payments and receipts</span></span>
+                <span class="account-menu-chevron" aria-hidden="true">›</span>
+              </button>
+              <button class="account-menu-card" type="button" data-account-section="notifications" aria-describedby="accountMenuNoteDesc">
+                <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+                <span class="account-menu-copy"><span class="title">Notifications</span><span class="desc" id="accountMenuNoteDesc">Coming soon — nothing is sent yet</span></span>
+                <span class="account-menu-chevron" aria-hidden="true">›</span>
+              </button>
+            </nav>
+            <div class="account-session-actions">
+              <button class="btn" type="button" id="myAccountSignOut">Sign out</button>
+              <button class="btn btn-danger" type="button" id="myAccountDelete">Delete account</button>
+              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in on our server. Chats in this browser stay until you clear them in Settings.</p>
+            </div>
+          </div>
+        </div>
+        <div id="myAccountSection" hidden>
+          <button class="btn btn-sm" type="button" id="myAccountBack">Back</button>
+          <div id="myAccountSectionBody"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="messages" id="messages" aria-label="Conversation">
       <div class="messages-inner" id="messagesInner" role="log" aria-live="polite" aria-relevant="additions"></div>
     </section>
@@ -2272,7 +2394,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, a protected password, subscription status, and today’s message count — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, and today’s message count — not your chats, and never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -2384,6 +2506,40 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   <div class="dlg-foot">
     <button class="btn" type="button" id="accountCloseBtn">Close</button>
   </div>
+</dialog>
+
+<dialog id="cancelSubDlg" aria-labelledby="cancelSubTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="cancelSubTitle">Cancel Hopewick Plus?</h2>
+    <button class="icon-btn" value="close" type="button" id="cancelSubClose" aria-label="Close cancellation">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <p>Plus stays on until the end of the current period, including a trial. You won’t be charged again after that. You can keep using Plus until then.</p>
+    <p class="account-status" id="cancelSubStatus" role="status" aria-live="polite"></p>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" type="button" id="cancelSubKeep">Keep Plus</button>
+    <button class="btn btn-danger" type="button" id="cancelSubConfirm">Cancel at period end</button>
+  </div>
+</dialog>
+
+<dialog id="deleteAccountDlg" aria-labelledby="deleteAccountTitle">
+  <form class="dlg-body account-form" id="deleteAccountForm">
+    <h2 id="deleteAccountTitle">Delete account</h2>
+    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
+    <p>Chats, journal, and profiles in this browser are not deleted. Clear them in Settings if you want them gone from this device. Stripe may keep invoices for receipts. Hopewick never stores your card number.</p>
+    <label for="deleteAccountConfirm">Type DELETE to confirm
+      <input id="deleteAccountConfirm" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" aria-describedby="deleteAccountHint">
+    </label>
+    <p class="help" id="deleteAccountHint">The delete button turns on only when DELETE is typed in capitals.</p>
+    <p class="account-status" id="deleteAccountStatus" role="status" aria-live="polite"></p>
+    <div class="dlg-foot" style="padding-left:0;padding-right:0">
+      <button class="btn" type="button" id="deleteAccountCancel">Keep my account</button>
+      <button class="btn btn-danger" type="submit" id="deleteAccountSubmit" disabled>Delete my account</button>
+    </div>
+  </form>
 </dialog>
 
 <!-- ============================ Settings dialog ============================ -->
@@ -3315,7 +3471,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
    ============================================================================= */
 /* v5.25: Multi-faith Going Deeper study tracks. */
 /* v5.26: Lasting sign-in, and email plus password. */
-const EDEN_BUILD = 'hopewick-v5.26';
+/* v5.27: My Account page. */
+const EDEN_BUILD = 'hopewick-v5.27';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -3658,13 +3815,13 @@ const el = {
   history: $('#historyList'), newChat: $('#newChatBtn'), brandName: $('#brandName'), brandSub: $('#brandSub'), memCount: $('#memCount'),
   headerName: $('#headerName'), modeBadge: $('#modeBadge'), status: $('#statusText'), moodPill: $('#moodPill'),
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
-  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), journalView: $('#journalView'), launchPrefs: $('#launchPrefs'),
+  infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), journalView: $('#journalView'), myAccountView: $('#myAccountView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
   bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabDv: $('#appTabDv'), tabJournal: $('#appTabJournal'), tabMore: $('#appTabMore'),
   sideDvBtn: $('#sideDvBtn'), sideResumeBtn: $('#sideResumeBtn'), sideJournalBtn: $('#sideJournalBtn'), sideInfoBtn: $('#sideInfoBtn'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
-  switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
+  switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'), myAccountBtn: $('#myAccountBtn'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
   cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), plansDlg: $('#plansDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'), deeperDlg: $('#deeperDlg'),
@@ -4257,6 +4414,7 @@ function showLaunchPrefs() {
   if (el.dvView) el.dvView.hidden = true;
   if (el.resumeView) el.resumeView.hidden = true;
   if (el.journalView) el.journalView.hidden = true;
+  if (el.myAccountView) el.myAccountView.hidden = true;
   if (el.messages) el.messages.hidden = true;
   if (el.composerWrap) el.composerWrap.hidden = true;
   [el.tabHome, el.tabChat, el.tabDv, el.tabJournal, el.tabMore].forEach(b => {
@@ -4323,7 +4481,7 @@ function setAppTab(tab, opts = {}) {
     return;
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
-  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : tab === 'journal' ? 'journal' : 'home';
+  const next = tab === 'chat' ? 'chat' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : tab === 'journal' ? 'journal' : tab === 'account' ? 'account' : 'home';
   const changed = appTab !== next;
   appTab = next;
   el.app.classList.toggle('tab-home', next === 'home');
@@ -4332,13 +4490,16 @@ function setAppTab(tab, opts = {}) {
   el.app.classList.toggle('tab-dv', next === 'dv');
   el.app.classList.toggle('tab-resume', next === 'resume');
   el.app.classList.toggle('tab-journal', next === 'journal');
+  el.app.classList.toggle('tab-account', next === 'account');
   if (el.homeView) el.homeView.hidden = next !== 'home';
   if (el.infoView) el.infoView.hidden = next !== 'info';
   if (el.dvView) el.dvView.hidden = next !== 'dv';
   if (el.resumeView) el.resumeView.hidden = next !== 'resume';
   if (el.journalView) el.journalView.hidden = next !== 'journal';
+  if (el.myAccountView) el.myAccountView.hidden = next !== 'account';
   if (el.messages) el.messages.hidden = next !== 'chat';
   if (el.composerWrap) el.composerWrap.hidden = next !== 'chat';
+  if (el.myAccountBtn) el.myAccountBtn.setAttribute('aria-pressed', next === 'account' ? 'true' : 'false');
   const mark = (btn, on) => {
     if (!btn) return;
     btn.setAttribute('aria-current', on ? 'page' : 'false');
@@ -4371,6 +4532,12 @@ function setAppTab(tab, opts = {}) {
       if (!opts.skipFocus) setTimeout(() => { const body = $('#jBody'); if (body) body.focus(); }, 60);
     } else if (!opts.skipFocus) {
       const title = $('#journalTitle');
+      if (title) setTimeout(() => title.focus(), 60);
+    }
+  } else if (next === 'account') {
+    renderMyAccount();
+    if (!opts.skipFocus) {
+      const title = myAccountSection === 'menu' ? $('#myAccountTitle') : $('#myAccountSectionTitle');
       if (title) setTimeout(() => title.focus(), 60);
     }
   } else if (next !== 'info' && (changed || opts.forceRender)) {
@@ -11495,6 +11662,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'dv') { closeSidebar(); setAppTab('dv'); }
   else if (o === 'resume') { closeSidebar(); setAppTab('resume'); }
   else if (o === 'help') openHelp();
+  else if (o === 'myaccount') openMyAccount();
 }));
 
 function openSidebar(opts = {}) {
@@ -12641,6 +12809,15 @@ const billingState = {
   hopeHosted: false,
   hopeUsage: null,
   hasPassword: false,
+  name: '',
+  phone: '',
+  cancelAtPeriodEnd: false,
+  plan: 'Free',
+  priceLabel: '',
+  billingStatus: 'none',
+  canManageBilling: false,
+  canCancel: false,
+  canUpgrade: true,
 };
 const FREE_HISTORY_KEEP = 1;
 
@@ -12749,6 +12926,9 @@ async function refreshBilling() {
     billingState.complimentary = !!user.complimentary;
     billingState.founder = !!user.founder;
     billingState.hasPassword = !!user.hasPassword;
+    billingState.name = user.name || '';
+    billingState.phone = user.phone || '';
+    billingState.cancelAtPeriodEnd = !!user.cancelAtPeriodEnd;
     billingState.hopeHosted = !!config.hopeHosted;
   } catch (_) {
     billingState.reachable = false;
@@ -12758,6 +12938,9 @@ async function refreshBilling() {
     billingState.complimentary = false;
     billingState.founder = false;
     billingState.hasPassword = false;
+    billingState.name = '';
+    billingState.phone = '';
+    billingState.cancelAtPeriodEnd = false;
     billingState.hopeHosted = false;
     billingState.hopeUsage = null;
   }
@@ -12778,6 +12961,7 @@ async function refreshBilling() {
   if (typeof syncProfileAddUi === 'function') syncProfileAddUi();
   await refreshHopeUsage();
   paintAccount();
+  if (appTab === 'account') paintMyAccountIdentity();
   try {
     if (profile || isDemo) {
       renderHistory();
@@ -12991,6 +13175,717 @@ function appendPlusOffer(body) {
   org.textContent = 'Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.';
   body.appendChild(org);
 }
+let myAccountSection = 'menu';
+let myAccountReturnTab = 'home';
+let accountRenderToken = 0;
+
+function openMyAccount(section) {
+  if (appTab !== 'account') {
+    myAccountReturnTab = (appTab && appTab !== 'more' && appTab !== 'account') ? appTab : 'home';
+  }
+  const allowed = ['menu', 'details', 'password', 'subscription', 'payment', 'billing', 'notifications'];
+  myAccountSection = allowed.includes(section) ? section : 'menu';
+  closeSidebar();
+  if (el.accountDlg && el.accountDlg.open) closeAccountDlg();
+  setAppTab('account');
+}
+function closeMyAccount() {
+  const back = myAccountReturnTab && myAccountReturnTab !== 'account' ? myAccountReturnTab : 'home';
+  myAccountSection = 'menu';
+  setAppTab(back);
+}
+function myAccountGoBack() {
+  if (myAccountSection !== 'menu') {
+    myAccountSection = 'menu';
+    renderMyAccount();
+    const title = $('#myAccountTitle');
+    if (title) title.focus();
+    return;
+  }
+  closeMyAccount();
+}
+function paintMyAccountIdentity() {
+  const signedInWrap = $('#myAccountSignedIn');
+  const signedOut = $('#myAccountSignedOut');
+  const offline = $('#myAccountOffline');
+  const on = !!(billingState.reachable && billingState.signedIn);
+  if (signedInWrap) signedInWrap.hidden = !on;
+  if (signedOut) signedOut.hidden = !billingState.reachable || !!billingState.signedIn;
+  if (offline) offline.hidden = !!billingState.reachable;
+  const nameEl = $('#myAccountName');
+  const emailEl = $('#myAccountEmail');
+  if (nameEl) nameEl.textContent = billingState.name || 'Name not added yet';
+  if (emailEl) emailEl.textContent = billingState.email || '';
+}
+function renderMyAccount() {
+  paintMyAccountIdentity();
+  const menu = $('#myAccountMenu');
+  const section = $('#myAccountSection');
+  const showMenu = myAccountSection === 'menu';
+  if (menu) menu.hidden = !showMenu;
+  if (section) section.hidden = showMenu;
+  if (!showMenu) renderMyAccountSection(myAccountSection);
+}
+function accountField(id, labelText, input) {
+  const label = document.createElement('label');
+  label.htmlFor = id;
+  label.appendChild(document.createTextNode(labelText));
+  input.id = id;
+  label.appendChild(input);
+  return label;
+}
+function accountStatusLine(text, kind) {
+  const p = document.createElement('p');
+  p.className = 'account-status' + (kind ? ' ' + kind : '');
+  p.setAttribute('role', 'status');
+  p.textContent = text || '';
+  return p;
+}
+function billingStatusWord(status) {
+  if (status === 'founder') return 'Founder access';
+  if (status === 'trialing') return 'Trial';
+  if (status === 'active') return 'Active';
+  if (status === 'canceled') return 'Cancelled';
+  if (status === 'past_due' || status === 'unpaid') return 'Past due';
+  if (status === 'paused') return 'Paused';
+  if (status === 'incomplete' || status === 'incomplete_expired') return 'Incomplete';
+  return 'None';
+}
+function formatAccountDate(iso) {
+  if (!iso) return 'None';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return 'None';
+  try {
+    return new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeZone: 'Australia/Brisbane' }).format(d);
+  } catch (_) {
+    return d.toLocaleDateString('en-AU');
+  }
+}
+function formatAccountMoney(cents, currency) {
+  const value = (Number(cents) || 0) / 100;
+  try {
+    return new Intl.NumberFormat('en-AU', { style: 'currency', currency: String(currency || 'aud').toUpperCase() }).format(value);
+  } catch (_) {
+    return 'AU$' + value.toFixed(2);
+  }
+}
+function cardBrandLabel(brand) {
+  const name = String(brand || 'card').toLowerCase();
+  if (name === 'visa') return 'Visa';
+  if (name === 'mastercard') return 'Mastercard';
+  if (name === 'amex') return 'American Express';
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
+function cleanNameInput(value) {
+  const name = String(value || '').trim().replace(/\s+/g, ' ');
+  if (name.length > 80) return { error: 'Name must be 80 characters or fewer.' };
+  if (/[\u0000-\u001f<>]/.test(name)) return { error: 'Name can’t include those characters.' };
+  return { value: name };
+}
+function cleanPhoneInput(value) {
+  const phone = String(value || '').trim();
+  if (!phone) return { value: '' };
+  if (phone.length > 30) return { error: 'That phone number is too long.' };
+  if (!/^[0-9+().\-\s]+$/.test(phone)) return { error: 'Use digits, spaces, and + ( ) - only.' };
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length < 8 || digits.length > 15) return { error: 'Enter a phone number with 8 to 15 digits.' };
+  return { value: phone };
+}
+function applyAccountSummary(summary) {
+  billingState.name = summary.name || '';
+  billingState.phone = summary.phone || '';
+  billingState.email = summary.email || billingState.email;
+  billingState.hasPassword = !!summary.hasPassword;
+  billingState.cancelAtPeriodEnd = !!summary.cancelAtPeriodEnd;
+  billingState.plan = summary.plan || 'Free';
+  billingState.priceLabel = summary.priceLabel || '';
+  billingState.billingStatus = summary.billingStatus || 'none';
+  billingState.canManageBilling = !!summary.canManageBilling;
+  billingState.canCancel = !!summary.canCancel;
+  billingState.canUpgrade = !!summary.canUpgrade;
+  billingState.currentPeriodEnd = summary.nextBillingDate || null;
+  billingState.plus = !!summary.plus;
+  billingState.complimentary = !!summary.complimentary;
+  billingState.founder = !!summary.founder;
+  billingState.subscriptionStatus = summary.subscriptionStatus || billingState.subscriptionStatus;
+  paintMyAccountIdentity();
+}
+function accountFact(label, value) {
+  const p = document.createElement('p');
+  p.className = 'account-fact';
+  const lbl = document.createElement('span');
+  lbl.className = 'lbl';
+  lbl.textContent = label;
+  const val = document.createElement('span');
+  val.className = 'val';
+  val.textContent = value;
+  p.appendChild(lbl);
+  p.appendChild(val);
+  return p;
+}
+function renderMyAccountSection(name) {
+  const body = $('#myAccountSectionBody');
+  if (!body) return;
+  const token = ++accountRenderToken;
+  body.replaceChildren();
+  const title = document.createElement('h2');
+  title.id = 'myAccountSectionTitle';
+  title.tabIndex = -1;
+  const titles = {
+    details: 'Personal Details',
+    password: 'Password & Security',
+    subscription: 'Subscription',
+    payment: 'Payment Method',
+    billing: 'Billing History',
+    notifications: 'Notifications',
+  };
+  title.textContent = titles[name] || 'My Account';
+  body.appendChild(title);
+  if (!billingState.signedIn) {
+    body.appendChild(accountStatusLine('Sign in to open this section.'));
+    return;
+  }
+  if (name === 'details') renderAccountDetails(body);
+  else if (name === 'password') renderAccountPassword(body);
+  else if (name === 'subscription') renderAccountSubscription(body, token);
+  else if (name === 'payment') renderAccountPayment(body, token);
+  else if (name === 'billing') renderAccountBilling(body, token);
+  else if (name === 'notifications') renderAccountNotifications(body);
+}
+function renderAccountDetails(body) {
+  const intro = document.createElement('p');
+  intro.className = 'lede';
+  intro.textContent = 'Your name and phone are saved with your Hopewick sign-in. Your email is the address you sign in with.';
+  body.appendChild(intro);
+  const form = document.createElement('form');
+  form.className = 'account-form';
+  form.noValidate = true;
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.maxLength = 80;
+  nameInput.autocomplete = 'name';
+  nameInput.value = billingState.name || '';
+  nameInput.required = false;
+  const emailInput = document.createElement('input');
+  emailInput.type = 'email';
+  emailInput.readOnly = true;
+  emailInput.setAttribute('aria-readonly', 'true');
+  emailInput.autocomplete = 'email';
+  emailInput.value = billingState.email || '';
+  const phoneInput = document.createElement('input');
+  phoneInput.type = 'tel';
+  phoneInput.maxLength = 30;
+  phoneInput.autocomplete = 'tel';
+  phoneInput.inputMode = 'tel';
+  phoneInput.value = billingState.phone || '';
+  form.appendChild(accountField('accountDetailName', 'Name', nameInput));
+  form.appendChild(accountField('accountDetailEmail', 'Email', emailInput));
+  const emailHelp = document.createElement('p');
+  emailHelp.className = 'help';
+  emailHelp.id = 'accountEmailChangeNote';
+  emailHelp.textContent = 'Changing your sign-in email isn’t available. It stays the address you use to sign in. If you need a different email, contact Hopewick or start a new account.';
+  emailInput.setAttribute('aria-describedby', 'accountEmailChangeNote');
+  form.appendChild(emailHelp);
+  form.appendChild(accountField('accountDetailPhone', 'Phone (optional)', phoneInput));
+  const save = document.createElement('button');
+  save.type = 'submit';
+  save.className = 'btn btn-primary';
+  save.textContent = 'Save details';
+  form.appendChild(save);
+  const status = accountStatusLine('');
+  form.appendChild(status);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = cleanNameInput(nameInput.value);
+    if (name.error) { status.className = 'account-status bad'; status.textContent = name.error; nameInput.focus(); return; }
+    const phone = cleanPhoneInput(phoneInput.value);
+    if (phone.error) { status.className = 'account-status bad'; status.textContent = phone.error; phoneInput.focus(); return; }
+    status.className = 'account-status';
+    status.textContent = 'Saving…';
+    try {
+      const saved = await billingFetch('/api/account/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.value, phone: phone.value }),
+      });
+      applyAccountSummary(saved);
+      status.className = 'account-status ok';
+      status.textContent = saved.emailNote || 'Saved. Your sign-in email was not changed.';
+    } catch (err) {
+      status.className = 'account-status bad';
+      status.textContent = err.message || 'Could not save those details.';
+    }
+  });
+  body.appendChild(form);
+}
+function renderAccountPassword(body) {
+  const creating = !billingState.hasPassword;
+  const intro = document.createElement('p');
+  intro.className = 'lede';
+  intro.textContent = creating
+    ? 'You signed in with an email link, so there isn’t a password yet. Create one here — the same step as on Hopewick Plus. It needs at least 8 characters. Hopewick stores a protected hash, never the password itself.'
+    : 'Enter your current password, then a new one. The current password is never shown. It needs at least 8 characters.';
+  body.appendChild(intro);
+  const form = document.createElement('form');
+  form.className = 'account-form';
+  form.noValidate = true;
+  let currentInput = null;
+  if (!creating) {
+    currentInput = document.createElement('input');
+    currentInput.type = 'password';
+    currentInput.autocomplete = 'current-password';
+    currentInput.maxLength = 200;
+    form.appendChild(accountField('accountChangeCurrent', 'Current password', currentInput));
+  }
+  const nextInput = document.createElement('input');
+  nextInput.type = 'password';
+  nextInput.autocomplete = 'new-password';
+  nextInput.minLength = 8;
+  nextInput.maxLength = 200;
+  const confirmInput = document.createElement('input');
+  confirmInput.type = 'password';
+  confirmInput.autocomplete = 'new-password';
+  confirmInput.minLength = 8;
+  confirmInput.maxLength = 200;
+  form.appendChild(accountField(creating ? 'accountCreatePassword' : 'accountChangePassword', creating ? 'New password' : 'New password', nextInput));
+  form.appendChild(accountField(creating ? 'accountCreatePasswordConfirm' : 'accountChangePasswordConfirm', 'Confirm password', confirmInput));
+  const save = document.createElement('button');
+  save.type = 'submit';
+  save.className = 'btn btn-primary';
+  save.id = creating ? 'accountCreatePasswordBtn' : 'accountChangePasswordBtn';
+  save.textContent = creating ? 'Create password' : 'Change password';
+  form.appendChild(save);
+  const status = accountStatusLine('');
+  form.appendChild(status);
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const next = nextInput.value || '';
+    const confirm = confirmInput.value || '';
+    const current = currentInput ? currentInput.value : '';
+    if (!creating && !current) { status.className = 'account-status bad'; status.textContent = 'Enter your current password.'; if (currentInput) currentInput.focus(); return; }
+    if (next.length < 8) { status.className = 'account-status bad'; status.textContent = 'Choose a password of at least 8 characters.'; nextInput.focus(); return; }
+    if (next.length > 200) { status.className = 'account-status bad'; status.textContent = 'That password is too long. Keep it under 200 characters.'; nextInput.focus(); return; }
+    if (next !== confirm) { status.className = 'account-status bad'; status.textContent = 'Those passwords don’t match yet.'; confirmInput.focus(); return; }
+    status.className = 'account-status';
+    status.textContent = 'Saving your password…';
+    const payload = { password: next };
+    if (!creating) {
+      payload.currentPassword = current;
+      payload.confirmPassword = confirm;
+    }
+    try {
+      await billingFetch('/api/auth/password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      nextInput.value = '';
+      confirmInput.value = '';
+      if (currentInput) currentInput.value = '';
+      billingState.hasPassword = true;
+      status.className = 'account-status ok';
+      status.textContent = creating
+        ? 'Password saved. You can use it next time you sign in.'
+        : 'Password changed. Use the new one next time you sign in.';
+      await refreshBilling();
+    } catch (err) {
+      status.className = 'account-status bad';
+      status.textContent = err.message || 'Could not save that password.';
+    }
+  });
+  body.appendChild(form);
+}
+async function renderAccountSubscription(body, token) {
+  const status = accountStatusLine('Loading your plan…');
+  body.appendChild(status);
+  let summary;
+  try {
+    summary = await billingFetch('/api/account');
+  } catch (err) {
+    if (token !== accountRenderToken) return;
+    status.className = 'account-status bad';
+    status.textContent = err.message || 'Could not load your plan.';
+    return;
+  }
+  if (token !== accountRenderToken) return;
+  applyAccountSummary(summary);
+  status.remove();
+  const facts = document.createElement('div');
+  facts.className = 'account-facts';
+  const word = billingStatusWord(summary.billingStatus);
+  let nextLabel = 'Next billing date';
+  let nextValue = formatAccountDate(summary.nextBillingDate);
+  if (summary.billingStatus === 'founder') {
+    nextLabel = 'Next billing date';
+    nextValue = 'None';
+  } else if (summary.billingStatus === 'trialing') {
+    nextLabel = 'Trial ends';
+  } else if (summary.cancelAtPeriodEnd) {
+    nextLabel = 'Access ends';
+  } else if (!summary.nextBillingDate || summary.billingStatus === 'none' || summary.billingStatus === 'canceled') {
+    nextValue = 'None';
+  }
+  facts.appendChild(accountFact('Plan', summary.plan || 'Free'));
+  facts.appendChild(accountFact('Price', summary.priceLabel || 'AU$20/month'));
+  facts.appendChild(accountFact('Status', word));
+  facts.appendChild(accountFact(nextLabel, nextValue));
+  body.appendChild(facts);
+  if (summary.billingStatus === 'founder') {
+    const note = document.createElement('p');
+    note.className = 'help';
+    note.textContent = 'Founder access includes Hopewick Plus. There is no charge and nothing to cancel.';
+    body.appendChild(note);
+  }
+  if (summary.cancelAtPeriodEnd && summary.billingStatus !== 'founder') {
+    const note = document.createElement('p');
+    note.className = 'help';
+    note.textContent = 'Cancellation is already set. Plus stays on until the date above, then it ends. You won’t be charged again.';
+    body.appendChild(note);
+  }
+  const actions = document.createElement('div');
+  actions.className = 'account-actions';
+  if (summary.canUpgrade) {
+    const upgrade = document.createElement('button');
+    upgrade.type = 'button';
+    upgrade.className = 'btn btn-primary';
+    upgrade.textContent = 'Start 3-day free trial';
+    upgrade.addEventListener('click', () => startCheckout());
+    if (!billingState.checkoutReady) upgrade.disabled = true;
+    actions.appendChild(upgrade);
+  }
+  if (summary.canManageBilling) {
+    const manage = document.createElement('button');
+    manage.type = 'button';
+    manage.className = 'btn';
+    manage.textContent = 'Manage';
+    manage.addEventListener('click', () => startPortal('account'));
+    actions.appendChild(manage);
+  }
+  if (summary.canCancel) {
+    const cancel = document.createElement('button');
+    cancel.type = 'button';
+    cancel.className = 'btn btn-danger';
+    cancel.textContent = 'Cancel';
+    cancel.addEventListener('click', () => openCancelSubscription());
+    actions.appendChild(cancel);
+  }
+  if (actions.childElementCount) body.appendChild(actions);
+  if (summary.canUpgrade && !billingState.checkoutReady) {
+    const pay = document.createElement('p');
+    pay.className = 'help';
+    pay.textContent = 'Payments aren’t configured on this server yet.';
+    body.appendChild(pay);
+  }
+}
+async function renderAccountPayment(body, token) {
+  const intro = document.createElement('p');
+  intro.className = 'lede';
+  intro.textContent = 'Card details are entered on Stripe’s secure page. Hopewick never sees or stores your full card number or security code. Only the brand, last four digits, and expiry are shown here.';
+  body.appendChild(intro);
+  const status = accountStatusLine('Loading card…');
+  body.appendChild(status);
+  let data = { card: null, configured: billingState.checkoutReady };
+  let summary = null;
+  try {
+    const pair = await Promise.all([
+      billingFetch('/api/account/payment-method'),
+      billingFetch('/api/account'),
+    ]);
+    data = pair[0];
+    summary = pair[1];
+  } catch (err) {
+    if (token !== accountRenderToken) return;
+    status.className = 'account-status bad';
+    status.textContent = err.message || 'Could not load the card on file.';
+    return;
+  }
+  if (token !== accountRenderToken) return;
+  if (summary) applyAccountSummary(summary);
+  status.remove();
+  if (summary && summary.complimentary) {
+    const note = document.createElement('p');
+    note.className = 'account-empty';
+    note.textContent = 'Founder access doesn’t use a card. No payment method is needed.';
+    body.appendChild(note);
+    return;
+  }
+  if (!data.configured && !billingState.checkoutReady) {
+    const empty = document.createElement('p');
+    empty.className = 'account-empty';
+    empty.textContent = 'Payments aren’t configured on this server yet, so a card can’t be added.';
+    body.appendChild(empty);
+    return;
+  }
+  if (data.card) {
+    const facts = document.createElement('div');
+    facts.className = 'account-facts';
+    const exp = (data.card.expMonth && data.card.expYear)
+      ? String(data.card.expMonth).padStart(2, '0') + '/' + data.card.expYear
+      : 'Not shown';
+    facts.appendChild(accountFact('Card', cardBrandLabel(data.card.brand) + ' •••• ' + data.card.last4));
+    facts.appendChild(accountFact('Expiry', exp));
+    body.appendChild(facts);
+  } else {
+    const empty = document.createElement('p');
+    empty.className = 'account-empty';
+    empty.textContent = 'No card on file yet. Add one on Stripe, or start Hopewick Plus and the trial checkout will ask for a card.';
+    body.appendChild(empty);
+  }
+  const actions = document.createElement('div');
+  actions.className = 'account-actions';
+  if (billingState.canManageBilling) {
+    const change = document.createElement('button');
+    change.type = 'button';
+    change.className = 'btn btn-primary';
+    change.textContent = data.card ? 'Change card' : 'Add or change card';
+    change.addEventListener('click', () => startPortal('account'));
+    actions.appendChild(change);
+  } else if (billingState.checkoutReady || data.configured) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'btn btn-primary';
+    add.textContent = 'Add a card';
+    add.addEventListener('click', () => startCardSetup());
+    actions.appendChild(add);
+  }
+  if (!billingState.plus) {
+    const upgrade = document.createElement('button');
+    upgrade.type = 'button';
+    upgrade.className = 'btn';
+    upgrade.textContent = 'Start 3-day free trial';
+    upgrade.addEventListener('click', () => startCheckout());
+    if (!billingState.checkoutReady) upgrade.disabled = true;
+    actions.appendChild(upgrade);
+  }
+  if (actions.childElementCount) body.appendChild(actions);
+}
+async function startCardSetup() {
+  try {
+    const data = await billingFetch('/api/account/setup-card', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    if (data.url) location.href = data.url;
+  } catch (err) {
+    toast(err.message || 'The card page could not open.', true, 5000);
+  }
+}
+async function renderAccountBilling(body, token) {
+  const status = accountStatusLine('Loading payments…');
+  body.appendChild(status);
+  let data = { invoices: [] };
+  try {
+    data = await billingFetch('/api/account/invoices');
+  } catch (err) {
+    if (token !== accountRenderToken) return;
+    status.className = 'account-status bad';
+    status.textContent = err.message || 'Could not load billing history.';
+    return;
+  }
+  if (token !== accountRenderToken) return;
+  status.remove();
+  const invoices = Array.isArray(data.invoices) ? data.invoices : [];
+  if (!invoices.length) {
+    const empty = document.createElement('p');
+    empty.className = 'account-empty';
+    empty.textContent = billingState.complimentary
+      ? 'Founder access has no charges, so there’s no billing history.'
+      : 'No payments yet. When a Hopewick Plus payment goes through, the date, amount, and receipt will show up here.';
+    body.appendChild(empty);
+    return;
+  }
+  const list = document.createElement('div');
+  list.className = 'account-detail';
+  list.setAttribute('role', 'list');
+  invoices.forEach((invoice) => {
+    const item = document.createElement('article');
+    item.className = 'account-invoice';
+    item.setAttribute('role', 'listitem');
+    const row = document.createElement('div');
+    row.className = 'row';
+    const when = document.createElement('strong');
+    when.textContent = formatAccountDate(invoice.created);
+    const amount = document.createElement('span');
+    amount.textContent = formatAccountMoney(invoice.amount, invoice.currency);
+    row.appendChild(when);
+    row.appendChild(amount);
+    item.appendChild(row);
+    const meta = document.createElement('p');
+    meta.className = 'help';
+    meta.style.margin = '0';
+    const state = String(invoice.status || 'unknown');
+    meta.textContent = state.charAt(0).toUpperCase() + state.slice(1) + (invoice.number ? ' · ' + invoice.number : '');
+    item.appendChild(meta);
+    if (invoice.hostedUrl || invoice.pdfUrl) {
+      const links = document.createElement('div');
+      links.className = 'account-actions';
+      if (invoice.hostedUrl) {
+        const a = document.createElement('a');
+        a.className = 'btn btn-sm';
+        a.href = invoice.hostedUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = 'View invoice';
+        links.appendChild(a);
+      }
+      if (invoice.pdfUrl) {
+        const a = document.createElement('a');
+        a.className = 'btn btn-sm';
+        a.href = invoice.pdfUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = 'Receipt PDF';
+        links.appendChild(a);
+      }
+      item.appendChild(links);
+    }
+    list.appendChild(item);
+  });
+  body.appendChild(list);
+}
+function renderAccountNotifications(body) {
+  const intro = document.createElement('p');
+  intro.className = 'lede';
+  intro.textContent = 'Coming soon. These switches don’t send anything yet, and nothing is saved.';
+  body.appendChild(intro);
+  const product = document.createElement('label');
+  product.className = 'account-check';
+  const productBox = document.createElement('input');
+  productBox.type = 'checkbox';
+  productBox.disabled = true;
+  productBox.setAttribute('aria-disabled', 'true');
+  product.appendChild(productBox);
+  const productText = document.createElement('span');
+  productText.textContent = 'Product updates by email — coming soon';
+  product.appendChild(productText);
+  const billing = document.createElement('label');
+  billing.className = 'account-check';
+  const billingBox = document.createElement('input');
+  billingBox.type = 'checkbox';
+  billingBox.disabled = true;
+  billingBox.setAttribute('aria-disabled', 'true');
+  billing.appendChild(billingBox);
+  const billingText = document.createElement('span');
+  billingText.textContent = 'Billing reminders — coming soon';
+  billing.appendChild(billingText);
+  body.appendChild(product);
+  body.appendChild(billing);
+}
+function openCancelSubscription() {
+  const status = $('#cancelSubStatus');
+  if (status) { status.className = 'account-status'; status.textContent = ''; }
+  const dlg = $('#cancelSubDlg');
+  if (dlg && !dlg.open) dlg.showModal();
+  const keep = $('#cancelSubKeep');
+  if (keep) keep.focus();
+}
+function closeCancelSubscription() {
+  const dlg = $('#cancelSubDlg');
+  if (dlg && dlg.open) dlg.close();
+}
+async function confirmCancelSubscription() {
+  const status = $('#cancelSubStatus');
+  if (status) { status.className = 'account-status'; status.textContent = 'Cancelling at the end of this period…'; }
+  try {
+    await billingFetch('/api/account/cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: true }),
+    });
+    closeCancelSubscription();
+    toast('Plus stays on until the end of this period. You won’t be charged again.', false, 4500);
+    myAccountSection = 'subscription';
+    renderMyAccount();
+    await refreshBilling();
+  } catch (err) {
+    if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not cancel.'; }
+  }
+}
+function openDeleteAccount() {
+  const input = $('#deleteAccountConfirm');
+  const status = $('#deleteAccountStatus');
+  const submit = $('#deleteAccountSubmit');
+  if (input) input.value = '';
+  if (status) { status.className = 'account-status'; status.textContent = ''; }
+  if (submit) submit.disabled = true;
+  const dlg = $('#deleteAccountDlg');
+  if (dlg && !dlg.open) dlg.showModal();
+  if (input) input.focus();
+}
+function closeDeleteAccount() {
+  const dlg = $('#deleteAccountDlg');
+  if (dlg && dlg.open) dlg.close();
+}
+async function submitDeleteAccount(e) {
+  if (e) e.preventDefault();
+  const input = $('#deleteAccountConfirm');
+  const status = $('#deleteAccountStatus');
+  const typed = (input && input.value) || '';
+  if (typed !== 'DELETE') {
+    if (status) { status.className = 'account-status bad'; status.textContent = 'Type DELETE in capitals to confirm.'; }
+    if (input) input.focus();
+    return;
+  }
+  if (status) { status.className = 'account-status'; status.textContent = 'Deleting your account…'; }
+  try {
+    const result = await billingFetch('/api/account/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE' }),
+    });
+    closeDeleteAccount();
+    myAccountSection = 'menu';
+    await refreshBilling();
+    setAppTab('home');
+    const extra = result && result.subscriptionCanceled ? ' Hopewick Plus was cancelled.' : '';
+    toast('Account deleted.' + extra + ' Chats in this browser are still here until you clear them in Settings.', false, 6000);
+  } catch (err) {
+    if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not delete the account.'; }
+  }
+}
+const myAccountBtnEl = $('#myAccountBtn');
+if (myAccountBtnEl) myAccountBtnEl.addEventListener('click', () => openMyAccount());
+const myAccountMenuBack = $('#myAccountMenuBack');
+if (myAccountMenuBack) myAccountMenuBack.addEventListener('click', () => closeMyAccount());
+const myAccountBackBtn = $('#myAccountBack');
+if (myAccountBackBtn) myAccountBackBtn.addEventListener('click', () => myAccountGoBack());
+const myAccountSignIn = $('#myAccountSignIn');
+if (myAccountSignIn) myAccountSignIn.addEventListener('click', () => openAccountDlg());
+const myAccountSignOut = $('#myAccountSignOut');
+if (myAccountSignOut) myAccountSignOut.addEventListener('click', async () => {
+  await signOutBilling();
+  myAccountSection = 'menu';
+  renderMyAccount();
+});
+const myAccountDelete = $('#myAccountDelete');
+if (myAccountDelete) myAccountDelete.addEventListener('click', () => openDeleteAccount());
+$$('[data-account-section]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    myAccountSection = btn.getAttribute('data-account-section') || 'menu';
+    renderMyAccount();
+    const title = $('#myAccountSectionTitle');
+    if (title) title.focus();
+  });
+});
+const deleteConfirmInput = $('#deleteAccountConfirm');
+if (deleteConfirmInput) {
+  deleteConfirmInput.addEventListener('input', () => {
+    const submit = $('#deleteAccountSubmit');
+    if (submit) submit.disabled = deleteConfirmInput.value !== 'DELETE';
+  });
+}
+const deleteForm = $('#deleteAccountForm');
+if (deleteForm) deleteForm.addEventListener('submit', submitDeleteAccount);
+const deleteCancel = $('#deleteAccountCancel');
+if (deleteCancel) deleteCancel.addEventListener('click', () => closeDeleteAccount());
+const cancelSubKeep = $('#cancelSubKeep');
+if (cancelSubKeep) cancelSubKeep.addEventListener('click', () => closeCancelSubscription());
+const cancelSubClose = $('#cancelSubClose');
+if (cancelSubClose) cancelSubClose.addEventListener('click', () => closeCancelSubscription());
+const cancelSubConfirm = $('#cancelSubConfirm');
+if (cancelSubConfirm) cancelSubConfirm.addEventListener('click', () => confirmCancelSubscription());
+
 function paintAccount() {
   const body = $('#accountBody');
   if (!body) return;
@@ -13110,7 +14005,7 @@ function paintAccount() {
   setForm.id = 'accountSetPasswordForm';
   setForm.noValidate = true;
   setForm.innerHTML = billingState.hasPassword
-    ? '<p class="lede">You’re signed in on this device until you sign out. You can update your password here.</p><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn" type="submit" id="accountSetPasswordBtn">Update password</button>'
+    ? '<p class="lede">You’re signed in on this device until you sign out. To change your password, enter the current one first. It is never shown.</p><label for="accountCurrentPassword">Current password<input id="accountCurrentPassword" type="password" autocomplete="current-password" maxlength="200"></label><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn" type="submit" id="accountSetPasswordBtn">Update password</button><p class="help">Name, phone, card, and receipts are in My Account.</p>'
     : '<p class="lede">Create a password so you can come back without a new email. You stay signed in on this device until you sign out.</p><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSetPasswordBtn">Create password</button>';
   body.appendChild(setForm);
   setForm.addEventListener('submit', onSetPassword);
@@ -13124,6 +14019,12 @@ function paintAccount() {
     portal.addEventListener('click', () => startPortal());
     actions.appendChild(portal);
   }
+  const mine = document.createElement('button');
+  mine.type = 'button';
+  mine.className = 'btn';
+  mine.textContent = 'My Account';
+  mine.addEventListener('click', () => { closeAccountDlg(); openMyAccount(); });
+  actions.appendChild(mine);
   const out = document.createElement('button');
   out.type = 'button';
   out.className = 'btn';
@@ -13247,14 +14148,21 @@ async function onSetPassword(e) {
   e.preventDefault();
   const a = ($('#accountSetPassword') && $('#accountSetPassword').value) || '';
   const b = ($('#accountSetPasswordConfirm') && $('#accountSetPasswordConfirm').value) || '';
+  const current = ($('#accountCurrentPassword') && $('#accountCurrentPassword').value) || '';
+  if (billingState.hasPassword && !current) { accountStatus('Enter your current password.', 'bad'); return; }
   if (a.length < 8) { accountStatus('Choose a password of at least 8 characters.', 'bad'); return; }
   if (a !== b) { accountStatus('Those passwords don’t match yet.', 'bad'); return; }
   accountStatus('Saving your password…');
+  const payload = { password: a };
+  if (billingState.hasPassword) {
+    payload.currentPassword = current;
+    payload.confirmPassword = b;
+  }
   try {
     await billingFetch('/api/auth/password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: a }),
+      body: JSON.stringify(payload),
     });
     await refreshBilling();
     toast('Password saved. You can use it next time, and you stay signed in here until you sign out.', false, 4000);
@@ -13274,11 +14182,16 @@ async function startCheckout() {
     toast(err.message || 'Checkout could not start.', true, 5000);
   }
 }
-async function startPortal() {
+async function startPortal(returnTo) {
   const status = $('#accountStatus');
   if (status) status.textContent = 'Opening billing…';
   try {
-    const data = await billingFetch('/api/billing/portal', { method: 'POST' });
+    const opts = { method: 'POST' };
+    if (returnTo) {
+      opts.headers = { 'Content-Type': 'application/json' };
+      opts.body = JSON.stringify({ returnTo: returnTo });
+    }
+    const data = await billingFetch('/api/billing/portal', opts);
     if (data.url) location.href = data.url;
   } catch (err) {
     if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Billing portal could not open.'; }
@@ -13294,6 +14207,9 @@ async function signOutBilling() {
   billingState.complimentary = false;
   billingState.founder = false;
   billingState.hasPassword = false;
+  billingState.name = '';
+  billingState.phone = '';
+  billingState.cancelAtPeriodEnd = false;
   founderDeveloperOn = false;
   syncDeveloperChrome();
   libraryPick = null;
@@ -13346,6 +14262,13 @@ refreshBilling().then(() => {
     if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
     openAccountDlg();
   }
+  if (q.get('myaccount') === '1') {
+    if (!onboardingSeen()) markOnboardingSeen({ via: 'account' });
+    if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+    openMyAccount(q.get('section') || 'menu');
+  }
+  if (q.get('card') === 'saved') toast('If Stripe saved the card, it will show under Payment Method.', false, 4500);
+  if (q.get('card') === 'cancel') toast('No card was added.', false, 3000);
   if (q.get('checkout') === 'success') {
     let tries = 0;
     const poll = async () => {

@@ -2,7 +2,7 @@
 
 Individual subscriptions are a **3-day free trial, then AU$20 per month** (AUD). The marketing site and companion stay static HTML. Sign-in, Stripe Checkout, the Customer Portal, and the webhook run in a small Node server (`server/index.js`) with no extra npm packages.
 
-Chats, memories, and readings stay in the browser. The account file stores **email, a scrypt password hash when one is set, and subscription status**. Passwords are never stored in plaintext.
+Chats, memories, and readings stay in the browser. The account file stores **email, an optional name and phone, a scrypt password hash when one is set, and subscription status**. Passwords are never stored in plaintext. Card numbers are never stored. Older account files keep working: name, phone, and “cancel at period end” are added only when those actions happen. There is no separate database migration to run.
 
 Crisis lines, domestic and family violence support, Get help, Hope chat at the free daily cap, the public demo, and **today’s** Word for the day and Just for today stay free. SMART goals, the journal, the resume builder, and education libraries (nutrition, gut health, neuroplasticity, and ice baths and recovery spas) need Hopewick Plus.
 
@@ -59,7 +59,7 @@ Settings → Developer (API key, model endpoint, own provider, and invite redeem
 In the Stripe Dashboard (test mode):
 
 1. The test-mode product price is already created: **`price_1UKDd4PoYudRr3bcBe7IIdTH`** (AU$20.00 / month, AUD). Put that in `STRIPE_PRICE_ID` while you are in test mode. For real charges, create the same monthly AUD 20 price in **live** mode and use that live `price_...` id instead.
-2. Turn on the [Customer Portal](https://dashboard.stripe.com/test/settings/billing/portal) (cancel, update payment method) in the same mode as the keys (test or live).
+2. Turn on the [Customer Portal](https://dashboard.stripe.com/test/settings/billing/portal) in the same mode as the keys (test or live). Enable **update payment method** and **cancel subscriptions**. My Account → Manage and Change card open this portal. In-app Cancel uses the API (`cancel_at_period_end`) and does not depend on a new webhook.
 3. Add a webhook endpoint. Production URL: **`https://hopewick.com.au/api/billing/webhook`**. Events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. Copy the endpoint’s `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 
 The server marks Plus **active** for Stripe statuses `active` and `trialing`. `canceled`, `past_due`, `unpaid`, `incomplete`, and `paused` do not unlock paid features. Cancellation comes from `customer.subscription.deleted` (and from `updated` when Stripe reports a non-Plus status).
@@ -93,6 +93,20 @@ Use this server, not `python3 -m http.server`, when you want sign-in or Stripe. 
 The Hopewick Plus screen leads with **Sign in**: email, password, and **Sign in**. After a magic link or a password sign-in, the browser keeps an httpOnly `hopewick_session` cookie (SameSite=Lax, Secure on https). It lasts 400 days and is refreshed each time you open Hopewick, so you stay signed in on that device until you choose **Sign out**.
 
 A one-time email link is still there (**Email me a sign-in link**, or **Forgot password?**). The link expires in 30 minutes and can be used once. First-time and magic-link-only accounts can **Create a password** after they are signed in. They can also choose a password before the link is sent; opening that link saves it. Passwords are hashed with Node’s scrypt. The account file never stores the password you typed.
+
+### My Account
+
+The person icon in the top bar, and **More → My Account**, open My Account. It does not add a sixth tab.
+
+- **Personal Details** saves a name and optional phone. The sign-in email cannot be changed.
+- **Password & Security** asks for the current password before a change. Someone who only has an email link is sent through **Create a password** (at least 8 characters).
+- **Subscription** shows plan, AU$20/month, status, and the next date. **Manage** opens the Stripe Customer Portal. **Cancel** asks first, then cancels at period end. Free accounts use the existing 3-day trial checkout. The founder address shows **Founder access** and is not sent to Checkout.
+- **Payment Method** shows brand, last four, and expiry from Stripe. Adding or changing a card happens on Stripe (Customer Portal, or Checkout in setup mode when there is no Stripe customer yet). Hopewick does not store the card number or CVV.
+- **Billing History** lists Stripe invoices, with the hosted invoice and PDF when Stripe provides them.
+- **Notifications** is labelled coming soon and does not save anything.
+- **Delete account** asks you to type DELETE, cancels a live Stripe subscription immediately, deletes that person’s row in the account file, and signs them out. Chats in the browser stay until they are cleared in Settings. Stripe keeps invoices it already has.
+
+No new environment variables. Use the existing `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_PUBLISHABLE_KEY`, and `STRIPE_WEBHOOK_SECRET`. Webhook events stay `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. A setup-mode Checkout (add a card before subscribing) does not turn Plus on.
 
 With `HOPEWICK_DEV=1` (the local default):
 

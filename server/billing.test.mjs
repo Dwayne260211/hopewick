@@ -72,11 +72,62 @@ async function listen(env, stripeCalls) {
       if (target.endsWith('/customers') && (!opts || opts.method === 'POST')) {
         return jsonResponse({ id: 'cus_test_123' });
       }
+      if (target.includes('/customers/') && opts && opts.method === 'POST') {
+        return jsonResponse({ id: 'cus_test_123' });
+      }
       if (target.includes('/checkout/sessions')) {
         return jsonResponse({ id: 'cs_test_123', url: 'https://checkout.stripe.test/c/cs_test_123' });
       }
       if (target.includes('/billing_portal/sessions')) {
         return jsonResponse({ id: 'bps_test', url: 'https://billing.stripe.test/p/bps_test' });
+      }
+      if (target.includes('/payment_methods')) {
+        return jsonResponse({
+          object: 'list',
+          data: [{
+            id: 'pm_test',
+            card: {
+              brand: 'visa',
+              last4: '4242',
+              exp_month: 12,
+              exp_year: 2030,
+              number: '4242424242424242',
+              cvc: '999',
+            },
+          }],
+        });
+      }
+      if (target.includes('/invoices')) {
+        return jsonResponse({
+          object: 'list',
+          data: [{
+            id: 'in_test',
+            number: 'HW-0001',
+            created: 1893456000,
+            amount_paid: 2000,
+            total: 2000,
+            currency: 'aud',
+            status: 'paid',
+            hosted_invoice_url: 'https://invoice.stripe.com/i/test_invoice',
+            invoice_pdf: 'https://pay.stripe.com/invoice/test_invoice/pdf',
+            customer_email: 'hidden@example.com',
+            number_full: '4242424242424242',
+          }],
+        });
+      }
+      if (target.includes('/subscriptions/') && opts && opts.method === 'DELETE') {
+        return jsonResponse({ id: 'sub_live', status: 'canceled' });
+      }
+      if (target.includes('/subscriptions/') && opts && opts.method === 'POST') {
+        const body = opts.body ? String(opts.body) : '';
+        return jsonResponse({
+          id: 'sub_live',
+          customer: 'cus_from_webhook',
+          status: 'active',
+          cancel_at_period_end: body.includes('cancel_at_period_end'),
+          current_period_end: 1893456000,
+          metadata: {},
+        });
       }
       if (target.includes('/subscriptions/')) {
         return jsonResponse({
@@ -1045,6 +1096,319 @@ test('optional password on the first sign-in link is saved, and magic link still
     await fetch(`${app.base}/api/auth/logout`, { method: 'POST', headers: { cookie: plainSession } });
     const after = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: plainSession } })).json();
     assert.equal(after.signedIn, false);
+  } finally {
+    await app.close();
+  }
+});
+
+async function activateSubscription(base, session, userId, customer = 'cus_from_webhook') {
+  const payload = JSON.stringify({
+    id: 'evt_account_sub',
+    type: 'customer.subscription.updated',
+    data: {
+      object: {
+        id: 'sub_live',
+        customer,
+        status: 'active',
+        current_period_end: 1893456000,
+        cancel_at_period_end: false,
+        metadata: { userId },
+      },
+    },
+  });
+  const response = await fetch(`${base}/api/billing/webhook`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Stripe-Signature': stripeSignature(payload, 'whsec_test_secret'),
+    },
+    body: payload,
+  });
+  assert.equal(response.status, 200);
+}
+
+test('account data stays on the signed-in user, and delete requires DELETE', async () => {
+  const stripeCalls = [];
+  const app = await listen({
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+  }, stripeCalls);
+  try {
+    const anon = await fetch(`${app.base}/api/account`);
+    assert.equal(anon.status, 401);
+
+    const sessionA = await signIn(app.base, 'alex@example.com');
+    const sessionB = await signIn(app.base, 'sam@example.com');
+    const meB = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: sessionB } })).json();
+
+    const savedA = await fetch(`${app.base}/api/account/profile`, {
+      method: 'POST',
+      headers: { cookie: sessionA, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Alex Hope', phone: '0400 111 222', email: 'sam@example.com', userId: meB.id }),
+    });
+    const bodyA = await savedA.json();
+    assert.equal(savedA.status, 200);
+    assert.equal(bodyA.email, 'alex@example.com');
+    assert.equal(bodyA.name, 'Alex Hope');
+    assert.equal(bodyA.phone, '0400 111 222');
+    assert.equal(bodyA.emailChangeSupported, false);
+
+    const savedB = await fetch(`${app.base}/api/account/profile`, {
+      method: 'POST',
+      headers: { cookie: sessionB, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Sam River', phone: '' }),
+    });
+    assert.equal(savedB.status, 200);
+
+    const readA = await (await fetch(`${app.base}/api/account?userId=${meB.id}&email=sam@example.com`, { headers: { cookie: sessionA } })).json();
+    assert.equal(readA.email, 'alex@example.com');
+    assert.equal(readA.name, 'Alex Hope');
+    const readB = await (await fetch(`${app.base}/api/account`, { headers: { cookie: sessionB } })).json();
+    assert.equal(readB.email, 'sam@example.com');
+    assert.equal(readB.name, 'Sam River');
+
+    const badPhone = await fetch(`${app.base}/api/account/profile`, {
+      method: 'POST',
+      headers: { cookie: sessionA, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Alex Hope', phone: '12' }),
+    });
+    assert.equal(badPhone.status, 400);
+
+    const cardField = await fetch(`${app.base}/api/account/profile`, {
+      method: 'POST',
+      headers: { cookie: sessionA, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Alex Hope', phone: '0400 111 222', cvc: '999', cardNumber: '4242424242424242' }),
+    });
+    assert.equal(cardField.status, 400);
+
+    await activateSubscription(app.base, sessionB, meB.id, 'cus_sam');
+    const invoicesA = await (await fetch(`${app.base}/api/account/invoices?customer=cus_sam`, { headers: { cookie: sessionA } })).json();
+    assert.deepEqual(invoicesA.invoices, []);
+    const cardA = await (await fetch(`${app.base}/api/account/payment-method`, { headers: { cookie: sessionA } })).json();
+    assert.equal(cardA.card, null);
+
+    const cardB = await (await fetch(`${app.base}/api/account/payment-method`, { headers: { cookie: sessionB } })).json();
+    assert.equal(cardB.card.brand, 'visa');
+    assert.equal(cardB.card.last4, '4242');
+    assert.equal(cardB.card.expMonth, 12);
+    assert.equal(cardB.card.expYear, 2030);
+    assert.equal(JSON.stringify(cardB).includes('4242424242424242'), false);
+    assert.equal(JSON.stringify(cardB).includes('999'), false);
+    assert.equal(Object.hasOwn(cardB.card, 'cvc'), false);
+    assert.equal(Object.hasOwn(cardB.card, 'number'), false);
+
+    const invoicesB = await (await fetch(`${app.base}/api/account/invoices`, { headers: { cookie: sessionB } })).json();
+    assert.equal(invoicesB.invoices.length, 1);
+    assert.equal(invoicesB.invoices[0].status, 'paid');
+    assert.equal(invoicesB.invoices[0].amount, 2000);
+    assert.equal(invoicesB.invoices[0].hostedUrl, 'https://invoice.stripe.com/i/test_invoice');
+    assert.equal(invoicesB.invoices[0].pdfUrl, 'https://pay.stripe.com/invoice/test_invoice/pdf');
+    assert.equal(JSON.stringify(invoicesB).includes('4242424242424242'), false);
+    assert.equal(JSON.stringify(invoicesB).includes('hidden@example.com'), false);
+
+    const disk = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(disk.includes('4242424242424242'), false);
+    assert.equal(disk.includes('"cvc"'), false);
+    assert.equal(disk.includes('Alex Hope'), true);
+    assert.equal(disk.includes('Sam River'), true);
+
+    const unconfirmed = await fetch(`${app.base}/api/account/delete`, {
+      method: 'POST',
+      headers: { cookie: sessionA, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'delete', userId: meB.id }),
+    });
+    assert.equal(unconfirmed.status, 400);
+    assert.equal((await unconfirmed.json()).code, 'confirm');
+    const stillA = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: sessionA } })).json();
+    assert.equal(stillA.signedIn, true);
+    assert.equal(stillA.email, 'alex@example.com');
+
+    stripeCalls.length = 0;
+    const removed = await fetch(`${app.base}/api/account/delete`, {
+      method: 'POST',
+      headers: { cookie: sessionA, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE', userId: meB.id, email: 'sam@example.com' }),
+    });
+    const removedBody = await removed.json();
+    assert.equal(removed.status, 200);
+    assert.equal(removedBody.ok, true);
+    assert.match(removed.headers.get('set-cookie') || '', /Max-Age=0/);
+    const gone = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: sessionA } })).json();
+    assert.equal(gone.signedIn, false);
+    const stillB = await (await fetch(`${app.base}/api/account`, { headers: { cookie: sessionB } })).json();
+    assert.equal(stillB.email, 'sam@example.com');
+    assert.equal(stillB.name, 'Sam River');
+    const afterDisk = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(afterDisk.includes('alex@example.com'), false);
+    assert.equal(afterDisk.includes('sam@example.com'), true);
+    assert.equal(afterDisk.includes('4242424242424242'), false);
+    assert.equal(stripeCalls.some((call) => call.method === 'DELETE'), false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('password change requires the current password and never stores it', async () => {
+  const app = await listen({}, []);
+  const current = 'harbour-light-42';
+  const next = 'river-light-99';
+  try {
+    const session = await signIn(app.base, 'pat@example.com');
+    const created = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: current }),
+    });
+    assert.equal(created.status, 200);
+
+    const missing = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: next, confirmPassword: next }),
+    });
+    assert.equal(missing.status, 400);
+    assert.equal((await missing.json()).code, 'current_password');
+
+    const wrong = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword: 'not-it', password: next, confirmPassword: next }),
+    });
+    assert.equal(wrong.status, 401);
+
+    const mismatch = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword: current, password: next, confirmPassword: 'other-password' }),
+    });
+    assert.equal(mismatch.status, 400);
+
+    const changed = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword: current, password: next, confirmPassword: next }),
+    });
+    assert.equal(changed.status, 200);
+    const disk = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(disk.includes(current), false);
+    assert.equal(disk.includes(next), false);
+    assert.match(disk, /scrypt\$/);
+
+    await fetch(`${app.base}/api/auth/logout`, { method: 'POST', headers: { cookie: session } });
+    const oldLogin = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'pat@example.com', password: current }),
+    });
+    assert.equal(oldLogin.status, 401);
+    const newLogin = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'pat@example.com', password: next }),
+    });
+    assert.equal(newLogin.status, 200);
+
+    const linkOnly = await signIn(app.base, 'only-link@example.com');
+    const summary = await (await fetch(`${app.base}/api/account`, { headers: { cookie: linkOnly } })).json();
+    assert.equal(summary.hasPassword, false);
+    const create = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: linkOnly, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: next }),
+    });
+    assert.equal(create.status, 200);
+    assert.equal((await create.json()).hasPassword, true);
+  } finally {
+    await app.close();
+  }
+});
+
+test('cancel waits until period end, delete cancels a live subscription, and cards are not stored', async () => {
+  const stripeCalls = [];
+  const app = await listen({
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+  }, stripeCalls);
+  try {
+    const founder = await signIn(app.base, 'dwaynesimons1990@gmail.com');
+    const founderAccount = await (await fetch(`${app.base}/api/account`, { headers: { cookie: founder } })).json();
+    assert.equal(founderAccount.plan, 'Founder access');
+    assert.equal(founderAccount.billingStatus, 'founder');
+    assert.equal(founderAccount.plus, true);
+    assert.equal(founderAccount.canUpgrade, false);
+    assert.equal(founderAccount.canCancel, false);
+    assert.equal(founderAccount.priceLabel, 'Included — no charge');
+    const founderCard = await fetch(`${app.base}/api/account/setup-card`, {
+      method: 'POST',
+      headers: { cookie: founder, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    assert.equal(founderCard.status, 409);
+
+    const session = await signIn(app.base, 'bill@example.com');
+    const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    const noCancel = await fetch(`${app.base}/api/account/cancel`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: true }),
+    });
+    assert.equal(noCancel.status, 409);
+
+    await activateSubscription(app.base, session, me.id);
+    const unconfirmed = await fetch(`${app.base}/api/account/cancel`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: false }),
+    });
+    assert.equal(unconfirmed.status, 400);
+
+    stripeCalls.length = 0;
+    const canceled = await fetch(`${app.base}/api/account/cancel`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: true, userId: 'someone-else' }),
+    });
+    const canceledBody = await canceled.json();
+    assert.equal(canceled.status, 200);
+    assert.equal(canceledBody.cancelAtPeriodEnd, true);
+    assert.equal(canceledBody.billingStatus, 'active');
+    assert.equal(canceledBody.canCancel, false);
+    const cancelCall = stripeCalls.find((call) => call.method === 'POST' && call.url.includes('/subscriptions/sub_live'));
+    assert.ok(cancelCall);
+    assert.match(cancelCall.body, /cancel_at_period_end=true/);
+
+    const setup = await fetch(`${app.base}/api/account/setup-card`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cardNumber: '4242424242424242', cvc: '123' }),
+    });
+    assert.equal(setup.status, 400);
+    assert.equal(fs.readFileSync(app.storePath, 'utf8').includes('4242424242424242'), false);
+
+    const portal = await fetch(`${app.base}/api/billing/portal`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ returnTo: 'account' }),
+    });
+    assert.equal(portal.status, 200);
+    const portalCall = stripeCalls.find((call) => call.url.includes('/billing_portal/sessions'));
+    assert.match(portalCall.body, /myaccount%3D1|myaccount=1/);
+
+    stripeCalls.length = 0;
+    const removed = await fetch(`${app.base}/api/account/delete`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE' }),
+    });
+    assert.equal(removed.status, 200);
+    assert.equal((await removed.json()).subscriptionCanceled, true);
+    const deleteCall = stripeCalls.find((call) => call.method === 'DELETE' && call.url.includes('/subscriptions/sub_live'));
+    assert.ok(deleteCall);
+    const gone = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(gone.signedIn, false);
+    const founderStill = await (await fetch(`${app.base}/api/account`, { headers: { cookie: founder } })).json();
+    assert.equal(founderStill.email, 'dwaynesimons1990@gmail.com');
+    assert.equal(founderStill.plan, 'Founder access');
   } finally {
     await app.close();
   }

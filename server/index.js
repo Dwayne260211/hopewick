@@ -14,8 +14,10 @@
  * complimentary founder emails have no daily message cap. Counts use the
  * Australia/Brisbane calendar day. Crisis and Get help replies do not
  * spend a message and are not refused for the free cap.
- * Conversations are not stored — only email, a scrypt password hash when
- * one is set, subscription status, and that day's message count.
+ * Conversations are not stored — only email, an optional name and phone,
+ * a scrypt password hash when one is set, subscription status, and that
+ * day's message count. Card numbers, CVV, and full payment details are
+ * never stored. Sign-in email cannot be changed from My Account.
  * The session cookie is httpOnly and lasts until sign-out (it slides
  * forward on each return visit). The one-time email link still expires
  * in 30 minutes.
@@ -81,6 +83,10 @@ const MIME = {
 
 const magicAttempts = new Map();
 const passwordFailures = new Map();
+const passwordChangeFailures = new Map();
+const deleteAttempts = new Map();
+const SENSITIVE_WINDOW_MS = 60 * 60 * 1000;
+const SENSITIVE_LIMIT = 8;
 
 export function devMode() {
   if (process.env.HOPEWICK_DEV === '0') return false;
@@ -263,6 +269,150 @@ function notePasswordFailure(email) {
   passwordFailures.set(email, prev);
 }
 
+function recentHits(map, key) {
+  const now = Date.now();
+  const prev = (map.get(key) || []).filter((t) => now - t < SENSITIVE_WINDOW_MS);
+  map.set(key, prev);
+  return prev;
+}
+
+function tooManyHits(map, key) {
+  return recentHits(map, key).length >= SENSITIVE_LIMIT;
+}
+
+function noteHit(map, key) {
+  const prev = recentHits(map, key);
+  prev.push(Date.now());
+  map.set(key, prev);
+}
+
+const RAW_CARD_KEYS = new Set(['card', 'cardnumber', 'card_number', 'pan', 'cvc', 'cvv', 'securitycode', 'expiry']);
+
+function hasRawCardFields(body) {
+  if (!body || typeof body !== 'object') return false;
+  return Object.keys(body).some((key) => RAW_CARD_KEYS.has(String(key).toLowerCase().replace(/[^a-z_]/g, '')));
+}
+
+function cleanAccountName(value) {
+  if (typeof value !== 'string') return { ok: false, error: 'Enter your name as text.' };
+  const name = value.trim().replace(/\s+/g, ' ');
+  if (name.length > 80) return { ok: false, error: 'Name must be 80 characters or fewer.' };
+  if (/[\u0000-\u001f<>]/.test(name)) return { ok: false, error: 'Name can’t include those characters.' };
+  return { ok: true, value: name };
+}
+
+function cleanAccountPhone(value) {
+  if (typeof value !== 'string') return { ok: false, error: 'Enter a phone number as text.' };
+  const phone = value.trim();
+  if (!phone) return { ok: true, value: '' };
+  if (phone.length > 30) return { ok: false, error: 'That phone number is too long.' };
+  if (!/^[0-9+().\-\s]+$/.test(phone)) return { ok: false, error: 'Use digits, spaces, and + ( ) - only.' };
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length < 8 || digits.length > 15) return { ok: false, error: 'Enter a phone number with 8 to 15 digits.' };
+  return { ok: true, value: phone };
+}
+
+function accountSummary(user) {
+  const pub = publicUser(user);
+  const stored = user.subscriptionStatus || 'none';
+  const founderAccess = Boolean(pub.complimentary);
+  const paidLike = ['active', 'trialing', 'past_due', 'canceled', 'unpaid', 'paused', 'incomplete', 'incomplete_expired'].includes(stored);
+  let plan = 'Free';
+  let priceLabel = 'AU$20/month when you start Plus';
+  let billingStatus = stored;
+  if (founderAccess) {
+    plan = 'Founder access';
+    priceLabel = 'Included — no charge';
+    billingStatus = 'founder';
+  } else if (paidLike && stored !== 'none') {
+    plan = 'Hopewick Plus';
+    priceLabel = 'AU$20/month';
+  }
+  const cancelable = !founderAccess
+    && ['active', 'trialing', 'past_due', 'unpaid'].includes(stored)
+    && Boolean(user.stripeSubscriptionId)
+    && !user.cancelAtPeriodEnd;
+  return Object.assign({}, pub, {
+    plan,
+    priceLabel,
+    billingStatus,
+    nextBillingDate: founderAccess ? null : (user.currentPeriodEnd || null),
+    canManageBilling: Boolean(user.stripeCustomerId),
+    canCancel: cancelable,
+    canUpgrade: !pub.plus,
+    emailChangeSupported: false,
+  });
+}
+
+function stripeHostedUrl(value) {
+  if (typeof value !== 'string' || !value.startsWith('https://')) return '';
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    if (host === 'stripe.com' || host.endsWith('.stripe.com')) return value;
+  } catch { /* ignore unexpected invoice links */ }
+  return '';
+}
+
+function cardSummary(paymentMethod) {
+  const card = paymentMethod && paymentMethod.card;
+  if (!card) return null;
+  const last4 = String(card.last4 || '');
+  if (!/^\d{4}$/.test(last4)) return null;
+  const brand = String(card.brand || 'card').slice(0, 20);
+  const expMonth = Number(card.exp_month);
+  const expYear = Number(card.exp_year);
+  return {
+    brand,
+    last4,
+    expMonth: Number.isInteger(expMonth) ? expMonth : null,
+    expYear: Number.isInteger(expYear) ? expYear : null,
+  };
+}
+
+function invoiceSummary(invoice) {
+  const amount = typeof invoice.amount_paid === 'number' && invoice.status === 'paid'
+    ? invoice.amount_paid
+    : (typeof invoice.total === 'number' ? invoice.total : 0);
+  return {
+    id: String(invoice.id || ''),
+    number: invoice.number ? String(invoice.number) : '',
+    created: invoice.created ? new Date(invoice.created * 1000).toISOString() : null,
+    amount,
+    currency: String(invoice.currency || 'aud').toLowerCase().slice(0, 8),
+    status: String(invoice.status || 'unknown').slice(0, 32),
+    hostedUrl: stripeHostedUrl(invoice.hosted_invoice_url),
+    pdfUrl: stripeHostedUrl(invoice.invoice_pdf),
+  };
+}
+
+async function readJson(req) {
+  const raw = await readBody(req);
+  if (!raw.length) return {};
+  try {
+    const body = JSON.parse(raw.toString('utf8'));
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      const err = new Error('Send JSON.');
+      err.status = 400;
+      throw err;
+    }
+    return body;
+  } catch (err) {
+    if (err.status) throw err;
+    const invalid = new Error('Send JSON.');
+    invalid.status = 400;
+    throw invalid;
+  }
+}
+
+function requireSession(req, res, store) {
+  const user = currentUser(req, store);
+  if (!user) {
+    json(res, 401, { error: 'Sign in to open your account.' });
+    return null;
+  }
+  return user;
+}
+
 async function sendMagicEmail(email, link, savingPassword = false) {
   const key = process.env.RESEND_API_KEY;
   const from = process.env.MAGIC_LINK_FROM;
@@ -308,6 +458,12 @@ function applySubscription(user, sub) {
   user.currentPeriodEnd = sub.current_period_end
     ? new Date(sub.current_period_end * 1000).toISOString()
     : null;
+  if (Object.prototype.hasOwnProperty.call(sub, 'cancel_at_period_end')) {
+    user.cancelAtPeriodEnd = Boolean(sub.cancel_at_period_end);
+  }
+  if (user.subscriptionStatus === 'canceled' || user.subscriptionStatus === 'incomplete_expired' || user.subscriptionStatus === 'none') {
+    user.cancelAtPeriodEnd = false;
+  }
   return user;
 }
 
@@ -337,6 +493,10 @@ async function handleWebhook(store, raw) {
     const user = findUserForStripeObject(store, object);
     if (!user) return { received: true, matched: false };
     if (object.customer) user.stripeCustomerId = String(object.customer);
+    if (object.mode === 'setup') {
+      store.save(user);
+      return { received: true, matched: true, setup: true };
+    }
     if (object.subscription) {
       const sub = await stripeRequest('GET', `/subscriptions/${object.subscription}`);
       applySubscription(user, sub);
@@ -353,6 +513,7 @@ async function handleWebhook(store, raw) {
     if (type === 'customer.subscription.deleted') {
       user.stripeSubscriptionId = object.id || user.stripeSubscriptionId;
       user.subscriptionStatus = 'canceled';
+      user.cancelAtPeriodEnd = false;
       if (object.customer) user.stripeCustomerId = String(object.customer);
     } else {
       applySubscription(user, object);
@@ -533,7 +694,34 @@ async function handleApi(store, req, res, url) {
       json(res, 400, { error: problem });
       return;
     }
+    if (hasRawCardFields(body)) {
+      json(res, 400, { error: 'Card details are not stored here.' });
+      return;
+    }
+    if (user.passwordHash) {
+      if (tooManyHits(passwordChangeFailures, user.id)) {
+        json(res, 429, { error: 'Too many password attempts. Try again in a little while, or use the email sign-in link.' });
+        return;
+      }
+      const current = typeof body.currentPassword === 'string' ? body.currentPassword : '';
+      const confirm = typeof body.confirmPassword === 'string' ? body.confirmPassword : '';
+      if (!current) {
+        json(res, 400, { error: 'Enter your current password.', code: 'current_password' });
+        return;
+      }
+      if (confirm !== password) {
+        json(res, 400, { error: 'Those passwords don’t match yet.' });
+        return;
+      }
+      const matches = await verifyPassword(current, user.passwordHash);
+      if (!matches) {
+        noteHit(passwordChangeFailures, user.id);
+        json(res, 401, { error: 'That current password isn’t right.', code: 'current_password' });
+        return;
+      }
+    }
     user.passwordHash = await hashPassword(password);
+    passwordChangeFailures.delete(user.id);
     user.pendingPassword = null;
     const cookie = touchSession(user, req, store);
     json(res, 200, { ok: true, hasPassword: true }, cookie ? { 'Set-Cookie': cookie } : undefined);
@@ -689,9 +877,22 @@ async function handleApi(store, req, res, url) {
       json(res, 400, { error: 'Subscribe first, then you can manage billing here.' });
       return;
     }
+    let returnTo = '';
+    const raw = await readBody(req);
+    if (raw.length) {
+      let body = {};
+      try { body = JSON.parse(raw.toString('utf8')); } catch {
+        json(res, 400, { error: 'Send JSON.' });
+        return;
+      }
+      if (body && body.returnTo === 'account') returnTo = 'account';
+    }
+    const returnUrl = returnTo === 'account'
+      ? `${publicBase(req)}/app/?myaccount=1&section=payment`
+      : `${publicBase(req)}/app/?portal=return`;
     const portal = await stripeRequest('POST', '/billing_portal/sessions', {
       customer: user.stripeCustomerId,
-      return_url: `${publicBase(req)}/app/?portal=return`,
+      return_url: returnUrl,
     });
     json(res, 200, { url: portal.url });
     return;
@@ -732,11 +933,239 @@ async function handleApi(store, req, res, url) {
     user.subscriptionStatus = status;
     if (PLUS_OK.has(status) && !user.stripeSubscriptionId) user.stripeSubscriptionId = 'sub_dev';
     if (status === 'none' || status === 'canceled') {
+      user.cancelAtPeriodEnd = false;
       /* keep customer id so the portal can still be tested after a real checkout */
     }
     user.currentPeriodEnd = PLUS_OK.has(status) ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : user.currentPeriodEnd;
     store.save(user);
     json(res, 200, publicUser(user));
+    return;
+  }
+
+  if (url.pathname.startsWith('/api/account')) {
+    await handleAccountApi(store, req, res, route);
+    return;
+  }
+
+  json(res, 404, { error: 'Not found.' });
+}
+
+async function handleAccountApi(store, req, res, route) {
+  if (req.method === 'GET' && route === '/api/account') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    json(res, 200, accountSummary(user));
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/account/profile') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    const body = await readJson(req);
+    if (hasRawCardFields(body)) {
+      json(res, 400, { error: 'Card details are not stored here. Add a card on Stripe’s secure page.' });
+      return;
+    }
+    if (!Object.prototype.hasOwnProperty.call(body, 'name') || !Object.prototype.hasOwnProperty.call(body, 'phone')) {
+      json(res, 400, { error: 'Send your name and phone.' });
+      return;
+    }
+    const name = cleanAccountName(body.name);
+    if (!name.ok) {
+      json(res, 400, { error: name.error, field: 'name' });
+      return;
+    }
+    const phone = cleanAccountPhone(body.phone);
+    if (!phone.ok) {
+      json(res, 400, { error: phone.error, field: 'phone' });
+      return;
+    }
+    user.name = name.value;
+    user.phone = phone.value;
+    store.save(user);
+    if (user.stripeCustomerId && process.env.STRIPE_SECRET_KEY && (user.name || user.phone)) {
+      try {
+        const params = {};
+        if (user.name) params.name = user.name;
+        if (user.phone) params.phone = user.phone;
+        await stripeRequest('POST', `/customers/${user.stripeCustomerId}`, params);
+      } catch (err) {
+        console.error('Stripe customer profile update failed:', err && err.status ? err.status : 'error');
+      }
+    }
+    const summary = accountSummary(user);
+    json(res, 200, Object.assign({}, summary, {
+      ok: true,
+      emailNote: 'Your sign-in email stays as it is. Changing it isn’t available.',
+    }));
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/account/payment-method') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    if (!process.env.STRIPE_SECRET_KEY) {
+      json(res, 200, { card: null, configured: false });
+      return;
+    }
+    if (!user.stripeCustomerId) {
+      json(res, 200, { card: null, configured: true });
+      return;
+    }
+    const list = await stripeRequest('GET', '/payment_methods', {
+      customer: user.stripeCustomerId,
+      type: 'card',
+      limit: '5',
+    });
+    const methods = Array.isArray(list.data) ? list.data : [];
+    const card = methods.map(cardSummary).find(Boolean) || null;
+    json(res, 200, { card, configured: true });
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/account/setup-card') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    const body = await readJson(req);
+    if (hasRawCardFields(body)) {
+      json(res, 400, { error: 'Card details are not stored here. You’ll enter them on Stripe’s secure page.' });
+      return;
+    }
+    if (!process.env.STRIPE_SECRET_KEY) {
+      json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY.' });
+      return;
+    }
+    if (isFounderPlusEmail(user.email) && !isPlusStatus(user.subscriptionStatus)) {
+      json(res, 409, { error: 'Founder access doesn’t need a card.' });
+      return;
+    }
+    if (!user.stripeCustomerId) {
+      const customer = await stripeRequest('POST', '/customers', {
+        email: user.email,
+        name: user.name || undefined,
+        phone: user.phone || undefined,
+        'metadata[userId]': user.id,
+      });
+      user.stripeCustomerId = customer.id;
+      store.save(user);
+    }
+    const base = publicBase(req);
+    const session = await stripeRequest('POST', '/checkout/sessions', {
+      mode: 'setup',
+      customer: user.stripeCustomerId,
+      client_reference_id: user.id,
+      success_url: `${base}/app/?myaccount=1&section=payment&card=saved`,
+      cancel_url: `${base}/app/?myaccount=1&section=payment&card=cancel`,
+      'metadata[userId]': user.id,
+      'payment_method_types[0]': 'card',
+    });
+    json(res, 200, { url: session.url });
+    return;
+  }
+
+  if (req.method === 'GET' && route === '/api/account/invoices') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    if (!process.env.STRIPE_SECRET_KEY || !user.stripeCustomerId) {
+      json(res, 200, { invoices: [], configured: Boolean(process.env.STRIPE_SECRET_KEY) });
+      return;
+    }
+    const list = await stripeRequest('GET', '/invoices', {
+      customer: user.stripeCustomerId,
+      limit: '24',
+    });
+    const invoices = (Array.isArray(list.data) ? list.data : []).map(invoiceSummary);
+    json(res, 200, { invoices, configured: true });
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/account/cancel') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    const body = await readJson(req);
+    if (body.confirm !== true) {
+      json(res, 400, { error: 'Confirm cancellation first.', code: 'confirm' });
+      return;
+    }
+    if (isFounderPlusEmail(user.email) && !isPlusStatus(user.subscriptionStatus) && !user.stripeSubscriptionId) {
+      json(res, 409, { error: 'Founder access doesn’t have a paid subscription to cancel.' });
+      return;
+    }
+    const stored = user.subscriptionStatus || 'none';
+    const cancelable = ['active', 'trialing', 'past_due', 'unpaid'].includes(stored) && user.stripeSubscriptionId && !user.cancelAtPeriodEnd;
+    if (!cancelable) {
+      json(res, 409, { error: 'There isn’t an active subscription to cancel.' });
+      return;
+    }
+    if (String(user.stripeSubscriptionId).startsWith('sub_dev') || !process.env.STRIPE_SECRET_KEY) {
+      user.cancelAtPeriodEnd = true;
+      store.save(user);
+      json(res, 200, Object.assign({ ok: true, local: true }, accountSummary(user)));
+      return;
+    }
+    const sub = await stripeRequest('POST', `/subscriptions/${user.stripeSubscriptionId}`, {
+      cancel_at_period_end: 'true',
+    });
+    applySubscription(user, sub);
+    user.cancelAtPeriodEnd = true;
+    store.save(user);
+    json(res, 200, Object.assign({ ok: true }, accountSummary(user)));
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/account/delete') {
+    const user = requireSession(req, res, store);
+    if (!user) return;
+    if (tooManyHits(deleteAttempts, user.id)) {
+      json(res, 429, { error: 'Too many delete attempts. Try again in a little while.' });
+      return;
+    }
+    noteHit(deleteAttempts, user.id);
+    const body = await readJson(req);
+    if (hasRawCardFields(body)) {
+      json(res, 400, { error: 'Card details are not stored here.' });
+      return;
+    }
+    if (body.confirm !== 'DELETE') {
+      json(res, 400, { error: 'Type DELETE to confirm account deletion.', code: 'confirm' });
+      return;
+    }
+    const status = user.subscriptionStatus || 'none';
+    const live = ['active', 'trialing', 'past_due', 'unpaid', 'paused', 'incomplete'].includes(status);
+    let subscriptionCanceled = false;
+    if (live && user.stripeSubscriptionId) {
+      if (String(user.stripeSubscriptionId).startsWith('sub_dev') || !process.env.STRIPE_SECRET_KEY) {
+        subscriptionCanceled = true;
+      } else {
+        try {
+          await stripeRequest('DELETE', `/subscriptions/${user.stripeSubscriptionId}`);
+          subscriptionCanceled = true;
+        } catch (err) {
+          const missing = /no such subscription/i.test(String(err && err.message || ''));
+          if (!missing) {
+            json(res, 502, { error: 'The subscription could not be cancelled, so the account was not deleted. Try again, or cancel it from Manage billing first.' });
+            return;
+          }
+          subscriptionCanceled = true;
+        }
+      }
+    }
+    const removed = store.remove(user.id);
+    deleteAttempts.delete(user.id);
+    passwordChangeFailures.delete(user.id);
+    json(res, 200, {
+      ok: true,
+      removed,
+      subscriptionCanceled,
+      deleted: [
+        'Your Hopewick sign-in on this server (email, name, phone, and password)',
+        'Your subscription status and today’s Hope message count on this server',
+      ],
+      kept: [
+        'Chats, journal, profiles, and other notes in this browser — clear them in Settings if you want them gone from this device',
+        'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
+      ],
+    }, { 'Set-Cookie': clearCookie(req) });
     return;
   }
 

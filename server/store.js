@@ -1,7 +1,8 @@
 /**
  * Tiny JSON file store for Hopewick accounts.
- * Holds email, a scrypt password hash when one is set, magic-link and
- * session hashes, and Stripe subscription status.
+ * Holds email, an optional name and phone, a scrypt password hash when one
+ * is set, magic-link and session hashes, and Stripe subscription status.
+ * Card numbers are never stored here.
  * Conversations are not stored here — they stay in the browser.
  * Passwords are never stored in plaintext.
  */
@@ -80,13 +81,22 @@ export function createStore(filePath) {
         createdAt: new Date().toISOString(),
         magic: null,
         session: null,
+        name: '',
+        phone: '',
         passwordHash: null,
         pendingPassword: null,
         stripeCustomerId: null,
         stripeSubscriptionId: null,
         subscriptionStatus: 'none',
         currentPeriodEnd: null,
+        cancelAtPeriodEnd: false,
       });
+    },
+    remove(id) {
+      const before = data.users.length;
+      data.users = data.users.filter((u) => u.id !== id);
+      if (data.users.length !== before) persist();
+      return data.users.length !== before;
     },
     save,
   };
@@ -125,12 +135,16 @@ export function publicUser(user) {
       signedIn: false,
       id: null,
       email: null,
+      name: '',
+      phone: '',
       subscriptionStatus: 'none',
       currentPeriodEnd: null,
+      cancelAtPeriodEnd: false,
       plus: false,
       complimentary: false,
       founder: false,
       hasPassword: false,
+      emailChangeSupported: false,
     };
   }
   const storedStatus = user.subscriptionStatus || 'none';
@@ -141,11 +155,15 @@ export function publicUser(user) {
     signedIn: true,
     id: user.id,
     email: user.email,
+    name: typeof user.name === 'string' ? user.name : '',
+    phone: typeof user.phone === 'string' ? user.phone : '',
     subscriptionStatus: complimentary ? 'active' : storedStatus,
     currentPeriodEnd: user.currentPeriodEnd || null,
+    cancelAtPeriodEnd: Boolean(user.cancelAtPeriodEnd) && paid,
     plus: paid || complimentary,
     complimentary,
     founder,
     hasPassword: Boolean(user.passwordHash),
+    emailChangeSupported: false,
   };
 }
