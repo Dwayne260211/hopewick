@@ -6980,7 +6980,8 @@ function startStepChat(step) {
   const opener = `I'm here to walk Step ${step.n} with you — ${step.title}.\n\n${step.principle}\n\nThere's no rush and nothing you must share with me.${reading}\n\n${step.prompts[0]}\n\nWhenever you're ready.`;
   c.messages.push({ role: 'assistant', content: opener, ts: Date.now() });
   persistConvos();
-  renderAll();
+  // The steps dialog usually sits over Home. Closing it must land on this chat, not Home.
+  setAppTab('chat');
   focusInput();
   toast(`Working Step ${step.n} with ${companionName()}`);
 }
