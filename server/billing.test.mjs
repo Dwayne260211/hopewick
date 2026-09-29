@@ -6,7 +6,8 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 
-import { startServer, REPO_ROOT } from './index.js';
+import { startServer, REPO_ROOT, SESSION_MS } from './index.js';
+import { createStore, hashToken } from './store.js';
 
 const realFetch = globalThis.fetch;
 
@@ -149,6 +150,7 @@ test('magic link signs in and checkout requires that session', async () => {
     assert.equal(user.signedIn, true);
     assert.equal(user.email, 'alex@example.com');
     assert.equal(user.plus, false);
+    assert.equal(user.hasPassword, false);
 
     const checkout = await fetch(`${app.base}/api/billing/checkout`, {
       method: 'POST',
@@ -789,6 +791,260 @@ test('root favicon and apple touch icon return 200 without hiding app icons', as
     assert.match(html, /<link rel="icon" href="\/favicon\.ico"/);
     assert.match(html, /<link rel="manifest" href="app\/manifest\.webmanifest">/);
     assert.match(html, /<link rel="apple-touch-icon" href="app\/icon-180\.png">/);
+  } finally {
+    await app.close();
+  }
+});
+
+test('an expired session does not sign anyone in', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hopewick-session-'));
+  try {
+    const store = createStore(path.join(dir, 'users.json'));
+    const user = store.createUser('old@example.com');
+    user.session = { hash: hashToken('stale-token'), expiresAt: Date.now() - 1000 };
+    store.save(user);
+    assert.equal(store.findBySession('stale-token'), null);
+    user.session = { hash: hashToken('fresh-token'), expiresAt: Date.now() + SESSION_MS };
+    store.save(user);
+    assert.equal(store.findBySession('fresh-token').email, 'old@example.com');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('session cookie lasts until sign-out and refreshes on return', async () => {
+  const app = await listen({}, []);
+  try {
+    const sent = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'stay@example.com' }),
+    });
+    const data = await sent.json();
+    assert.equal(sent.status, 200);
+    const verified = await fetch(data.devLink, { redirect: 'manual' });
+    const setCookie = verified.headers.get('set-cookie') || '';
+    assert.equal(verified.status, 302);
+    const maxAge = Math.floor(SESSION_MS / 1000);
+    assert.ok(maxAge >= 180 * 24 * 60 * 60);
+    assert.match(setCookie, /hopewick_session=/);
+    assert.match(setCookie, /HttpOnly/);
+    assert.match(setCookie, /SameSite=Lax/);
+    assert.match(setCookie, new RegExp(`Max-Age=${maxAge}\\b`));
+    const session = setCookie.split(';')[0];
+
+    const before = JSON.parse(fs.readFileSync(app.storePath, 'utf8')).users[0].session.expiresAt;
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    const meRes = await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } });
+    const refreshed = meRes.headers.get('set-cookie') || '';
+    assert.match(refreshed, new RegExp(`Max-Age=${maxAge}\\b`));
+    assert.match(refreshed, /HttpOnly/);
+    assert.equal(refreshed.split(';')[0], session);
+    const me = await meRes.json();
+    assert.equal(me.signedIn, true);
+    assert.equal(me.hasPassword, false);
+    assert.equal(me.passwordHash, undefined);
+    assert.equal(me.session, undefined);
+    const after = JSON.parse(fs.readFileSync(app.storePath, 'utf8')).users[0].session.expiresAt;
+    assert.ok(after > before);
+    assert.ok(after - Date.now() > SESSION_MS - 60_000);
+
+    const out = await fetch(`${app.base}/api/auth/logout`, {
+      method: 'POST',
+      headers: { cookie: session },
+    });
+    assert.equal(out.status, 200);
+    const cleared = out.headers.get('set-cookie') || '';
+    assert.match(cleared, /Max-Age=0/);
+    assert.match(cleared, /HttpOnly/);
+    const gone = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(gone.signedIn, false);
+    const disk = JSON.parse(fs.readFileSync(app.storePath, 'utf8'));
+    assert.equal(disk.users[0].session, null);
+  } finally {
+    await app.close();
+  }
+});
+
+test('set password, password login, magic link still works, and sign-out clears it', async () => {
+  const app = await listen({}, []);
+  const secret = 'harbour-light-42';
+  try {
+    const session = await signIn(app.base, 'pat@example.com');
+    const before = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(before.hasPassword, false);
+
+    const anon = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: secret }),
+    });
+    assert.equal(anon.status, 401);
+
+    const weak = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'short' }),
+    });
+    assert.equal(weak.status, 400);
+
+    const set = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: secret }),
+    });
+    assert.equal(set.status, 200);
+    assert.equal((await set.json()).hasPassword, true);
+    const disk = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(disk.includes(secret), false);
+    assert.match(disk, /scrypt\$/);
+
+    const still = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(still.signedIn, true);
+    assert.equal(still.hasPassword, true);
+
+    const out = await fetch(`${app.base}/api/auth/logout`, {
+      method: 'POST',
+      headers: { cookie: session },
+    });
+    assert.match(out.headers.get('set-cookie') || '', /Max-Age=0/);
+    const afterOut = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(afterOut.signedIn, false);
+
+    const bad = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'pat@example.com', password: 'not-the-password' }),
+    });
+    assert.equal(bad.status, 401);
+
+    const login = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'pat@example.com', password: secret }),
+    });
+    assert.equal(login.status, 200);
+    const loginCookie = login.headers.get('set-cookie') || '';
+    assert.match(loginCookie, /HttpOnly/);
+    assert.match(loginCookie, /SameSite=Lax/);
+    assert.match(loginCookie, new RegExp(`Max-Age=${Math.floor(SESSION_MS / 1000)}\\b`));
+    const next = loginCookie.split(';')[0];
+    const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: next } })).json();
+    assert.equal(me.signedIn, true);
+    assert.equal(me.email, 'pat@example.com');
+    assert.equal(me.hasPassword, true);
+    assert.equal(JSON.stringify(me).includes(secret), false);
+
+    const again = await signIn(app.base, 'pat@example.com');
+    const viaLink = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: again } })).json();
+    assert.equal(viaLink.signedIn, true);
+    assert.equal(viaLink.hasPassword, true);
+    const replaced = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: next } })).json();
+    assert.equal(replaced.signedIn, false);
+    assert.equal(fs.readFileSync(app.storePath, 'utf8').includes(secret), false);
+
+    const out2 = await fetch(`${app.base}/api/auth/logout`, {
+      method: 'POST',
+      headers: { cookie: again },
+    });
+    assert.equal(out2.status, 200);
+    const cleared = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: again } })).json();
+    assert.equal(cleared.signedIn, false);
+
+    const back = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'Pat@Example.com', password: secret }),
+    });
+    assert.equal(back.status, 200);
+    assert.equal((await back.json()).signedIn, true);
+  } finally {
+    await app.close();
+  }
+});
+
+test('optional password on the first sign-in link is saved, and magic link still works', async () => {
+  const app = await listen({}, []);
+  const secret = 'first-light-88';
+  try {
+    const unknown = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'new@example.com', password: secret }),
+    });
+    assert.equal(unknown.status, 401);
+    assert.equal(fs.existsSync(app.storePath) && fs.readFileSync(app.storePath, 'utf8').includes('new@example.com'), false);
+
+    const weak = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'new@example.com', password: 'short' }),
+    });
+    assert.equal(weak.status, 400);
+
+    const sent = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'new@example.com', password: secret }),
+    });
+    const data = await sent.json();
+    assert.equal(sent.status, 200);
+    assert.match(data.message, /password you chose/);
+    const pendingDisk = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(pendingDisk.includes(secret), false);
+    assert.match(pendingDisk, /scrypt\$/);
+
+    const verified = await fetch(data.devLink, { redirect: 'manual' });
+    assert.equal(verified.status, 302);
+    const session = (verified.headers.get('set-cookie') || '').split(';')[0];
+    const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(me.signedIn, true);
+    assert.equal(me.hasPassword, true);
+    assert.equal(fs.readFileSync(app.storePath, 'utf8').includes('pendingPassword": {'), false);
+
+    await fetch(`${app.base}/api/auth/logout`, { method: 'POST', headers: { cookie: session } });
+    const replay = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(replay.signedIn, false);
+
+    const login = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'new@example.com', password: secret }),
+    });
+    assert.equal(login.status, 200);
+    const loggedIn = (login.headers.get('set-cookie') || '').split(';')[0];
+    assert.match(login.headers.get('set-cookie') || '', /HttpOnly/);
+
+    const linkOnly = await signIn(app.base, 'only-link@example.com');
+    const missing = await fetch(`${app.base}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'only-link@example.com', password: secret }),
+    });
+    assert.equal(missing.status, 401);
+    assert.equal((await missing.json()).code, 'password_missing');
+    const still = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: linkOnly } })).json();
+    assert.equal(still.signedIn, true);
+    assert.equal(still.hasPassword, false);
+
+    const plain = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'new@example.com' }),
+    });
+    const plainData = await plain.json();
+    assert.equal(plain.status, 200);
+    const plainVerify = await fetch(plainData.devLink, { redirect: 'manual' });
+    const plainSession = (plainVerify.headers.get('set-cookie') || '').split(';')[0];
+    const kept = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: plainSession } })).json();
+    assert.equal(kept.signedIn, true);
+    assert.equal(kept.hasPassword, true);
+    const previous = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: loggedIn } })).json();
+    assert.equal(previous.signedIn, false);
+
+    await fetch(`${app.base}/api/auth/logout`, { method: 'POST', headers: { cookie: plainSession } });
+    const after = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: plainSession } })).json();
+    assert.equal(after.signedIn, false);
   } finally {
     await app.close();
   }

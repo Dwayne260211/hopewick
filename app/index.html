@@ -993,6 +993,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   background: var(--surface); color: inherit;
 }
 .account-form input:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
+.account-signin-title { margin: 0; font-size: 1.05rem; text-align: left; }
+.account-create { margin-top: 4px; text-align: left; }
+.account-create summary { cursor: pointer; font-weight: 700; color: var(--accent-strong); }
+.account-create[open] summary { margin-bottom: 8px; }
 .account-status { min-height: 1.2em; font-size: .88rem; color: var(--muted); margin: 8px 0 0; }
 .account-status.bad { color: #b42318; }
 .account-status.ok { color: var(--accent-strong); }
@@ -2241,7 +2245,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Email sign-in. We store your email, subscription status, and today’s message count — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, a protected password, subscription status, and today’s message count — not your chats. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -3299,7 +3303,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
 /* v5.25: Multi-faith Going Deeper study tracks. */
-const EDEN_BUILD = 'hopewick-v5.25';
+/* v5.26: Lasting sign-in, and email plus password. */
+const EDEN_BUILD = 'hopewick-v5.26';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -12242,6 +12247,7 @@ const billingState = {
   founder: false,
   hopeHosted: false,
   hopeUsage: null,
+  hasPassword: false,
 };
 const FREE_HISTORY_KEEP = 1;
 
@@ -12327,6 +12333,7 @@ async function billingFetch(path, options) {
   if (!response.ok) {
     const err = new Error(data.error || ('Request failed (' + response.status + ')'));
     err.status = response.status;
+    err.code = data.code || '';
     throw err;
   }
   return data;
@@ -12348,6 +12355,7 @@ async function refreshBilling() {
     billingState.devMagic = !!config.devMagic;
     billingState.complimentary = !!user.complimentary;
     billingState.founder = !!user.founder;
+    billingState.hasPassword = !!user.hasPassword;
     billingState.hopeHosted = !!config.hopeHosted;
   } catch (_) {
     billingState.reachable = false;
@@ -12356,6 +12364,7 @@ async function refreshBilling() {
     billingState.plus = false;
     billingState.complimentary = false;
     billingState.founder = false;
+    billingState.hasPassword = false;
     billingState.hopeHosted = false;
     billingState.hopeUsage = null;
   }
@@ -12509,7 +12518,7 @@ function appendPlusOffer(body) {
         const email = $('#accountEmail');
         if (email) email.focus();
         const status = $('#accountStatus');
-        if (status) status.textContent = 'Enter your email and we’ll send a sign-in link. Then you can start a 3-day free trial.';
+        if (status) status.textContent = 'Sign in below with your email and password, or email yourself a link. Then you can start a 3-day free trial.';
       });
     } else {
       sub.addEventListener('click', () => startCheckout());
@@ -12524,7 +12533,7 @@ function appendPlusOffer(body) {
     } else if (billingState.reachable && !billingState.signedIn) {
       const hint = document.createElement('p');
       hint.className = 'help';
-      hint.textContent = 'Sign in below, then start a 3-day free trial.';
+      hint.textContent = 'Sign in below with your email and password, then start a 3-day free trial.';
       body.appendChild(hint);
     }
   }
@@ -12593,9 +12602,9 @@ function paintAccount() {
   const body = $('#accountBody');
   if (!body) return;
   const active = document.activeElement;
-  if (active && body.contains(active) && (active.id === 'accountEmail')) return;
+  if (active && body.contains(active) && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
   body.replaceChildren();
-  appendPlusOffer(body);
+  if (!billingState.reachable || billingState.signedIn) appendPlusOffer(body);
 
   if (!billingState.reachable) {
     const p = document.createElement('p');
@@ -12616,10 +12625,34 @@ function paintAccount() {
   if (!billingState.signedIn) {
     const form = document.createElement('form');
     form.className = 'account-form';
-    form.id = 'accountMagicForm';
+    form.id = 'accountSignInForm';
     form.noValidate = true;
-    form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label><button class="btn" type="submit" id="accountMagicBtn">Email me a sign-in link</button>';
+    form.innerHTML = '<h3 class="account-signin-title">Sign in</h3><p class="lede">Email and password. You stay signed in on this device until you sign out.</p><label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="username" required maxlength="120" placeholder="you@example.com"></label><label for="accountPassword">Password<input id="accountPassword" type="password" autocomplete="current-password" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSignInBtn">Sign in</button>';
     body.appendChild(form);
+    const help = document.createElement('p');
+    help.className = 'help';
+    help.textContent = 'New here, or no password yet? We’ll email a one-time link. Create a password when you’re in, and you stay signed in on this device until you sign out.';
+    body.appendChild(help);
+    const create = document.createElement('details');
+    create.className = 'account-create';
+    create.id = 'accountCreate';
+    create.innerHTML = '<summary>Create a password</summary><div class="account-form"><p class="help">Choose a password, then use Email me a sign-in link. Opening that link saves it. The link lasts 30 minutes.</p><label for="accountNewPassword">New password<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountConfirmPassword">Confirm password<input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label></div>';
+    body.appendChild(create);
+    const actions = document.createElement('div');
+    actions.className = 'account-actions';
+    const magic = document.createElement('button');
+    magic.type = 'button';
+    magic.className = 'btn';
+    magic.id = 'accountMagicBtn';
+    magic.textContent = 'Email me a sign-in link';
+    const forgot = document.createElement('button');
+    forgot.type = 'button';
+    forgot.className = 'linkish';
+    forgot.id = 'accountForgotBtn';
+    forgot.textContent = 'Forgot password?';
+    actions.appendChild(magic);
+    actions.appendChild(forgot);
+    body.appendChild(actions);
     const status = document.createElement('p');
     status.className = 'account-status';
     status.id = 'accountStatus';
@@ -12630,7 +12663,10 @@ function paintAccount() {
     dev.id = 'accountDevLink';
     dev.hidden = true;
     body.appendChild(dev);
-    form.addEventListener('submit', onMagicLinkSubmit);
+    form.addEventListener('submit', onPasswordSignIn);
+    magic.addEventListener('click', () => requestMagicLink({ includePassword: true }));
+    forgot.addEventListener('click', () => requestMagicLink({ includePassword: false }));
+    appendPlusOffer(body);
     return;
   }
 
@@ -12663,6 +12699,15 @@ function paintAccount() {
     ? 'Hope on this account has no daily message limit.'
     : `Hope on this account is 5 messages a day. Hopewick Plus has no daily message limit.${resetBit}`);
   body.appendChild(allowance);
+  const setForm = document.createElement('form');
+  setForm.className = 'account-form';
+  setForm.id = 'accountSetPasswordForm';
+  setForm.noValidate = true;
+  setForm.innerHTML = billingState.hasPassword
+    ? '<p class="lede">You’re signed in on this device until you sign out. You can update your password here.</p><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn" type="submit" id="accountSetPasswordBtn">Update password</button>'
+    : '<p class="lede">Create a password so you can come back without a new email. You stay signed in on this device until you sign out.</p><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSetPasswordBtn">Create password</button>';
+  body.appendChild(setForm);
+  setForm.addEventListener('submit', onSetPassword);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
   if (!billingState.complimentary && (subscriptionPlus() || billingState.subscriptionStatus === 'past_due' || billingState.subscriptionStatus === 'canceled')) {
@@ -12702,34 +12747,106 @@ function paintAccount() {
     body.appendChild(dev);
   }
 }
-async function onMagicLinkSubmit(e) {
+function accountStatus(message, kind) {
+  const status = $('#accountStatus');
+  if (!status) return;
+  status.className = 'account-status' + (kind ? ' ' + kind : '');
+  status.textContent = message;
+}
+function createPasswordChoice() {
+  const details = $('#accountCreate');
+  if (!details || !details.open) return { include: false };
+  const a = ($('#accountNewPassword') && $('#accountNewPassword').value) || '';
+  const b = ($('#accountConfirmPassword') && $('#accountConfirmPassword').value) || '';
+  if (!a && !b) return { include: false };
+  if (a.length < 8) return { error: 'Choose a password of at least 8 characters.' };
+  if (a !== b) return { error: 'Those passwords don’t match yet.' };
+  return { include: true, password: a };
+}
+async function onPasswordSignIn(e) {
   e.preventDefault();
   const input = $('#accountEmail');
-  const status = $('#accountStatus');
+  const passwordInput = $('#accountPassword');
+  const email = (input && input.value || '').trim();
+  const password = (passwordInput && passwordInput.value) || '';
+  if (!email) { if (input) input.reportValidity(); return; }
+  if (!password) {
+    accountStatus('Enter your password. If you don’t have one yet, use Email me a sign-in link.', 'bad');
+    return;
+  }
+  accountStatus('Signing you in…');
+  try {
+    await billingFetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password }),
+    });
+    if (passwordInput) passwordInput.value = '';
+    await refreshBilling();
+    toast('You’re signed in. You stay signed in on this device until you sign out.', false, 3500);
+  } catch (err) {
+    accountStatus(err.message || 'Could not sign in.', 'bad');
+    if (err.code === 'password_missing') {
+      const details = $('#accountCreate');
+      if (details) details.open = true;
+    }
+  }
+}
+async function requestMagicLink(opts) {
+  const input = $('#accountEmail');
   const email = (input && input.value || '').trim();
   if (!email) { if (input) input.reportValidity(); return; }
-  if (status) { status.className = 'account-status'; status.textContent = 'Sending a sign-in link…'; }
+  const choice = (opts && opts.includePassword) ? createPasswordChoice() : { include: false };
+  if (choice.error) { accountStatus(choice.error, 'bad'); return; }
+  accountStatus('Sending a sign-in link…');
+  const payload = { email: email, next: '/app/?signedin=1' };
+  if (choice.include) payload.password = choice.password;
   try {
     const data = await billingFetch('/api/auth/magic-link', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, next: '/app/?signedin=1' }),
+      body: JSON.stringify(payload),
     });
-    if (status) { status.className = 'account-status ok'; status.textContent = data.message || 'Check your email.'; }
+    accountStatus(data.message || 'Check your email.', 'ok');
     const dev = $('#accountDevLink');
     if (dev && data.devLink) {
       dev.hidden = false;
       dev.replaceChildren();
       const p = document.createElement('p');
-      p.textContent = 'Developer mode: this link is not emailed. It expires in 30 minutes.';
+      p.textContent = choice.include
+        ? 'Developer mode: this link is not emailed. Opening it saves the password you chose. It expires in 30 minutes.'
+        : 'Developer mode: this link is not emailed. It expires in 30 minutes.';
       const a = document.createElement('a');
       a.href = data.devLink;
       a.textContent = 'Sign in now';
       dev.appendChild(p);
       dev.appendChild(a);
     }
+    const fresh = $('#accountNewPassword');
+    const confirm = $('#accountConfirmPassword');
+    if (fresh) fresh.value = '';
+    if (confirm) confirm.value = '';
   } catch (err) {
-    if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not send the link.'; }
+    accountStatus(err.message || 'Could not send the link.', 'bad');
+  }
+}
+async function onSetPassword(e) {
+  e.preventDefault();
+  const a = ($('#accountSetPassword') && $('#accountSetPassword').value) || '';
+  const b = ($('#accountSetPasswordConfirm') && $('#accountSetPasswordConfirm').value) || '';
+  if (a.length < 8) { accountStatus('Choose a password of at least 8 characters.', 'bad'); return; }
+  if (a !== b) { accountStatus('Those passwords don’t match yet.', 'bad'); return; }
+  accountStatus('Saving your password…');
+  try {
+    await billingFetch('/api/auth/password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: a }),
+    });
+    await refreshBilling();
+    toast('Password saved. You can use it next time, and you stay signed in here until you sign out.', false, 4000);
+  } catch (err) {
+    accountStatus(err.message || 'Could not save that password.', 'bad');
   }
 }
 async function startCheckout() {
@@ -12763,6 +12880,7 @@ async function signOutBilling() {
   billingState.subscriptionStatus = 'none';
   billingState.complimentary = false;
   billingState.founder = false;
+  billingState.hasPassword = false;
   founderDeveloperOn = false;
   syncDeveloperChrome();
   libraryPick = null;

@@ -1,7 +1,9 @@
 /**
  * Tiny JSON file store for Hopewick accounts.
- * Holds email, magic-link and session hashes, and Stripe subscription status.
+ * Holds email, a scrypt password hash when one is set, magic-link and
+ * session hashes, and Stripe subscription status.
  * Conversations are not stored here — they stay in the browser.
+ * Passwords are never stored in plaintext.
  */
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -78,6 +80,8 @@ export function createStore(filePath) {
         createdAt: new Date().toISOString(),
         magic: null,
         session: null,
+        passwordHash: null,
+        pendingPassword: null,
         stripeCustomerId: null,
         stripeSubscriptionId: null,
         subscriptionStatus: 'none',
@@ -126,6 +130,7 @@ export function publicUser(user) {
       plus: false,
       complimentary: false,
       founder: false,
+      hasPassword: false,
     };
   }
   const storedStatus = user.subscriptionStatus || 'none';
@@ -141,5 +146,6 @@ export function publicUser(user) {
     plus: paid || complimentary,
     complimentary,
     founder,
+    hasPassword: Boolean(user.passwordHash),
   };
 }

@@ -49,8 +49,8 @@ def test_static_tracks_copy_and_gate():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
     data = DATA.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.25'" in text
-    assert 'content="hopewick-v5.25"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.26'" in text
+    assert 'content="hopewick-v5.26"' in land
     assert 'src="data/going-deeper.js"' in text
     assert 'id="deeperDlg"' in text
     assert "card.id = 'homeGoingDeeper'" in text

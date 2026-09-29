@@ -2,7 +2,7 @@
  * Hopewick account + billing server.
  *
  * The marketing site and companion stay static HTML. This process serves those
- * files and a small /api for email magic-link sign-in, Stripe Checkout,
+ * files and a small /api for email magic-link and password sign-in, Stripe Checkout,
  * the Customer Portal, and subscription webhooks.
  *
  * Hosted Hope chat is POST /api/hope/chat. The OpenAI key stays in
@@ -14,8 +14,11 @@
  * complimentary founder emails have no daily message cap. Counts use the
  * Australia/Brisbane calendar day. Crisis and Get help replies do not
  * spend a message and are not refused for the free cap.
- * Conversations are not stored — only email, subscription status, and
- * that day's message count.
+ * Conversations are not stored — only email, a scrypt password hash when
+ * one is set, subscription status, and that day's message count.
+ * The session cookie is httpOnly and lasts until sign-out (it slides
+ * forward on each return visit). The one-time email link still expires
+ * in 30 minutes.
  *
  * Invite-code live AI can still use the Azure Functions API from
  * Developer settings in the companion. It is not the default path.
@@ -27,6 +30,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail } from './store.js';
+import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import {
   hopeConfigured,
@@ -49,7 +53,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(__dirname, '..');
 
 const SESSION_COOKIE = 'hopewick_session';
-const SESSION_MS = 30 * 24 * 60 * 60 * 1000;
+/**
+ * Lasting sign-in on this browser. 400 days is the long cookie browsers
+ * will keep. Each signed-in return visit slides the expiry forward, so
+ * people stay signed in until they choose Sign out.
+ */
+export const SESSION_MS = 400 * 24 * 60 * 60 * 1000;
 const MAGIC_MS = 30 * 60 * 1000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PLUS_OK = new Set(['active', 'trialing']);
@@ -71,6 +80,7 @@ const MIME = {
 };
 
 const magicAttempts = new Map();
+const passwordFailures = new Map();
 
 export function devMode() {
   if (process.env.HOPEWICK_DEV === '0') return false;
@@ -181,6 +191,10 @@ function cookies(req) {
   return out;
 }
 
+function sessionMaxAgeSec() {
+  return Math.floor(SESSION_MS / 1000);
+}
+
 function sessionCookie(token, req, maxAgeSec) {
   const secure = cookieSecure(req);
   const bits = [
@@ -190,6 +204,8 @@ function sessionCookie(token, req, maxAgeSec) {
     'SameSite=Lax',
     `Max-Age=${maxAgeSec}`,
   ];
+  if (maxAgeSec > 0) bits.push(`Expires=${new Date(Date.now() + maxAgeSec * 1000).toUTCString()}`);
+  else bits.push('Expires=Thu, 01 Jan 1970 00:00:00 GMT');
   if (secure) bits.push('Secure');
   return bits.join('; ');
 }
@@ -200,6 +216,22 @@ function clearCookie(req) {
 
 function currentUser(req, store) {
   return store.findBySession(cookies(req)[SESSION_COOKIE]);
+}
+
+function startSession(user, req, store) {
+  const session = crypto.randomBytes(32).toString('hex');
+  user.session = { hash: hashToken(session), expiresAt: Date.now() + SESSION_MS };
+  store.save(user);
+  return sessionCookie(session, req, sessionMaxAgeSec());
+}
+
+/** Slide the same httpOnly cookie forward so a return visit does not force a new email. */
+function touchSession(user, req, store) {
+  const token = cookies(req)[SESSION_COOKIE];
+  if (!user || !user.session || !token) return null;
+  user.session.expiresAt = Date.now() + SESSION_MS;
+  store.save(user);
+  return sessionCookie(token, req, sessionMaxAgeSec());
 }
 
 function safeNext(value) {
@@ -217,7 +249,21 @@ function allowRate(email) {
   return true;
 }
 
-async function sendMagicEmail(email, link) {
+function passwordBlocked(email) {
+  const now = Date.now();
+  const prev = (passwordFailures.get(email) || []).filter((t) => now - t < 60 * 60 * 1000);
+  passwordFailures.set(email, prev);
+  return prev.length >= 8;
+}
+
+function notePasswordFailure(email) {
+  const now = Date.now();
+  const prev = (passwordFailures.get(email) || []).filter((t) => now - t < 60 * 60 * 1000);
+  prev.push(now);
+  passwordFailures.set(email, prev);
+}
+
+async function sendMagicEmail(email, link, savingPassword = false) {
   const key = process.env.RESEND_API_KEY;
   const from = process.env.MAGIC_LINK_FROM;
   if (!key || !from) return false;
@@ -236,7 +282,11 @@ async function sendMagicEmail(email, link) {
         '',
         link,
         '',
-        'If you did not ask for this, you can ignore this email.',
+        savingPassword
+          ? 'Opening this link also saves the password you just chose. You can then sign in with that password, and you stay signed in on this device until you sign out.'
+          : 'After you open it you stay signed in on this device until you sign out.',
+        '',
+        'If you did not ask for this, you can ignore this email. Your password will not change.',
         'Hopewick is an AI recovery companion, not a crisis service. In an emergency call 000.',
       ].join('\n'),
     }),
@@ -400,7 +450,13 @@ async function handleApi(store, req, res, url) {
   }
 
   if (req.method === 'GET' && route === '/api/auth/me') {
-    json(res, 200, publicUser(currentUser(req, store)));
+    const user = currentUser(req, store);
+    const headers = {};
+    if (user) {
+      const cookie = touchSession(user, req, store);
+      if (cookie) headers['Set-Cookie'] = cookie;
+    }
+    json(res, 200, publicUser(user), headers);
     return;
   }
 
@@ -414,6 +470,76 @@ async function handleApi(store, req, res, url) {
     return;
   }
 
+  if (req.method === 'POST' && route === '/api/auth/login') {
+    const raw = await readBody(req);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send the email and password as JSON.' });
+      return;
+    }
+    const email = String(body.email || '').trim().toLowerCase();
+    const password = typeof body.password === 'string' ? body.password : '';
+    if (!EMAIL_RE.test(email) || email.length > 120) {
+      json(res, 400, { error: 'Enter a valid email address.' });
+      return;
+    }
+    if (!password) {
+      json(res, 400, { error: 'Enter your email and password. If you do not have a password yet, email yourself a sign-in link.' });
+      return;
+    }
+    if (passwordBlocked(email)) {
+      json(res, 429, { error: 'Too many sign-in attempts. Try again in a little while, or email yourself a sign-in link.' });
+      return;
+    }
+    const user = store.findByEmail(email);
+    if (!user || !user.passwordHash) {
+      if (!user) notePasswordFailure(email);
+      if (user && !user.passwordHash) {
+        json(res, 401, {
+          error: 'There is no password on this account yet. Email yourself a sign-in link, then create one.',
+          code: 'password_missing',
+        });
+        return;
+      }
+      json(res, 401, { error: 'That email or password is not right.', code: 'password' });
+      return;
+    }
+    const ok = await verifyPassword(password, user.passwordHash);
+    if (!ok) {
+      notePasswordFailure(email);
+      json(res, 401, { error: 'That email or password is not right.', code: 'password' });
+      return;
+    }
+    const cookie = startSession(user, req, store);
+    json(res, 200, publicUser(user), { 'Set-Cookie': cookie });
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/auth/password') {
+    const user = currentUser(req, store);
+    if (!user) {
+      json(res, 401, { error: 'Sign in before you create a password.' });
+      return;
+    }
+    const raw = await readBody(req);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send the password as JSON.' });
+      return;
+    }
+    const password = typeof body.password === 'string' ? body.password : '';
+    const problem = passwordError(password);
+    if (problem) {
+      json(res, 400, { error: problem });
+      return;
+    }
+    user.passwordHash = await hashPassword(password);
+    user.pendingPassword = null;
+    const cookie = touchSession(user, req, store);
+    json(res, 200, { ok: true, hasPassword: true }, cookie ? { 'Set-Cookie': cookie } : undefined);
+    return;
+  }
+
   if (req.method === 'POST' && route === '/api/auth/magic-link') {
     const raw = await readBody(req);
     let body = {};
@@ -422,9 +548,17 @@ async function handleApi(store, req, res, url) {
       return;
     }
     const email = String(body.email || '').trim().toLowerCase();
+    const chosen = typeof body.password === 'string' ? body.password : '';
     if (!EMAIL_RE.test(email) || email.length > 120) {
       json(res, 400, { error: 'Enter a valid email address.' });
       return;
+    }
+    if (chosen) {
+      const problem = passwordError(chosen);
+      if (problem) {
+        json(res, 400, { error: problem });
+        return;
+      }
     }
     if (!allowRate(email)) {
       json(res, 429, { error: 'Too many sign-in links for that email. Try again in a little while.' });
@@ -433,12 +567,17 @@ async function handleApi(store, req, res, url) {
     const user = store.findByEmail(email) || store.createUser(email);
     const token = crypto.randomBytes(32).toString('hex');
     user.magic = { hash: hashToken(token), expiresAt: Date.now() + MAGIC_MS };
+    if (chosen) {
+      user.pendingPassword = { hash: await hashPassword(chosen), magicHash: hashToken(token) };
+    } else {
+      user.pendingPassword = null;
+    }
     store.save(user);
     const next = safeNext(body.next) || '/app/?signedin=1';
     const link = `${publicBase(req)}/api/auth/verify?token=${encodeURIComponent(token)}&next=${encodeURIComponent(next)}`;
     let emailed = false;
     if (process.env.RESEND_API_KEY && process.env.MAGIC_LINK_FROM) {
-      emailed = await sendMagicEmail(email, link);
+      emailed = await sendMagicEmail(email, link, Boolean(chosen));
     }
     const dev = devMode();
     if (!emailed && !dev) {
@@ -446,13 +585,14 @@ async function handleApi(store, req, res, url) {
       return;
     }
     if (dev) console.log(`Hopewick dev sign-in link for ${email}: ${link}`);
+    const savedNote = chosen ? ' Opening it saves the password you chose.' : '';
     json(res, 200, {
       ok: true,
       emailed,
       devLink: dev ? link : undefined,
       message: emailed
-        ? 'Check your email for a sign-in link. It expires in 30 minutes.'
-        : 'Developer mode: use the sign-in link shown here. It expires in 30 minutes.',
+        ? `Check your email for a sign-in link.${savedNote} It expires in 30 minutes.`
+        : `Developer mode: use the sign-in link shown here.${savedNote} It expires in 30 minutes.`,
     });
     return;
   }
@@ -464,14 +604,18 @@ async function handleApi(store, req, res, url) {
       json(res, 400, { error: 'That sign-in link is invalid or has expired. Request a new one.' });
       return;
     }
+    const magicHash = hashToken(token);
+    const pending = match.pendingPassword;
     match.magic = null;
-    const session = crypto.randomBytes(32).toString('hex');
-    match.session = { hash: hashToken(session), expiresAt: Date.now() + SESSION_MS };
-    store.save(match);
+    if (pending && pending.hash && pending.magicHash === magicHash) {
+      match.passwordHash = pending.hash;
+    }
+    match.pendingPassword = null;
+    const cookie = startSession(match, req, store);
     const next = safeNext(url.searchParams.get('next')) || '/app/?signedin=1';
     res.writeHead(302, {
       Location: next,
-      'Set-Cookie': sessionCookie(session, req, Math.floor(SESSION_MS / 1000)),
+      'Set-Cookie': cookie,
       'Cache-Control': 'no-store',
     });
     res.end();
