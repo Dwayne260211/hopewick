@@ -2164,7 +2164,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
             <div class="account-session-actions">
               <button class="btn" type="button" id="myAccountSignOut">Sign out</button>
               <button class="btn btn-danger" type="button" id="myAccountDelete">Delete account</button>
-              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in on our server. Chats in this browser stay until you clear them in Settings.</p>
+              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in and the saved chats for this account on our server. This browser may still keep a copy until you clear it in Settings.</p>
             </div>
           </div>
         </div>
@@ -2490,8 +2490,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 <dialog id="deleteAccountDlg" aria-labelledby="deleteAccountTitle">
   <form class="dlg-body account-form" id="deleteAccountForm">
     <h2 id="deleteAccountTitle">Delete account</h2>
-    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
-    <p>Chats, journal, and profiles in this browser are not deleted. Clear them in Settings if you want them gone from this device. Stripe may keep invoices for receipts. Hopewick never stores your card number.</p>
+    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. Saved chats for this account on the server are erased. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
+    <p>This browser may still keep a copy of those chats, along with your journal and profiles, until you clear them in Settings. Stripe may keep invoices for receipts. Hopewick never stores your card number.</p>
     <label for="deleteAccountConfirm">Type DELETE to confirm
       <input id="deleteAccountConfirm" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" aria-describedby="deleteAccountHint">
     </label>
@@ -13787,7 +13787,7 @@ async function submitDeleteAccount(e) {
     await refreshBilling();
     setAppTab('home');
     const extra = result && result.subscriptionCanceled ? ' Hopewick Plus was cancelled.' : '';
-    toast('Account deleted.' + extra + ' Chats in this browser are still here until you clear them in Settings.', false, 6000);
+    toast('Account deleted.' + extra + ' Saved chats on the server are gone. This browser may still have a copy until you clear it in Settings.', false, 6000);
   } catch (err) {
     if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not delete the account.'; }
   }

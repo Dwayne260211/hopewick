@@ -104,7 +104,7 @@ The person icon in the top bar, and **More → My Account**, open My Account. It
 - **Payment Method** shows brand, last four, and expiry from Stripe. Adding or changing a card happens on Stripe (Customer Portal, or Checkout in setup mode when there is no Stripe customer yet). Hopewick does not store the card number or CVV.
 - **Billing History** lists Stripe invoices, with the hosted invoice and PDF when Stripe provides them.
 - **Notifications** is labelled coming soon and does not save anything.
-- **Delete account** asks you to type DELETE, cancels a live Stripe subscription immediately, deletes that person’s row in the account file, and signs them out. Chats in the browser stay until they are cleared in Settings. Stripe keeps invoices it already has.
+- **Delete account** asks you to type DELETE, cancels a live Stripe subscription immediately, deletes that person’s row in the account file, erases that account’s saved chats on the server, and signs them out. A copy of the chats in the browser can stay, with the journal and profiles, until they are cleared in Settings. Stripe keeps invoices it already has.
 
 No new environment variables. Use the existing `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_PUBLISHABLE_KEY`, and `STRIPE_WEBHOOK_SECRET`. Webhook events stay `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. A setup-mode Checkout (add a card before subscribing) does not turn Plus on.
 

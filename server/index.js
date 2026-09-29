@@ -1175,14 +1175,14 @@ async function handleApi(store, chats, req, res, url) {
   }
 
   if (url.pathname.startsWith('/api/account')) {
-    await handleAccountApi(store, req, res, route);
+    await handleAccountApi(store, chats, req, res, route);
     return;
   }
 
   json(res, 404, { error: 'Not found.' });
 }
 
-async function handleAccountApi(store, req, res, route) {
+async function handleAccountApi(store, chats, req, res, route) {
   if (req.method === 'GET' && route === '/api/account') {
     const user = requireSession(req, res, store);
     if (!user) return;
@@ -1383,6 +1383,7 @@ async function handleAccountApi(store, req, res, route) {
       }
     }
     const removed = store.remove(user.id);
+    if (removed) chats.forget(user.id);
     deleteAttempts.delete(user.id);
     passwordChangeFailures.delete(user.id);
     json(res, 200, {
@@ -1392,9 +1393,10 @@ async function handleAccountApi(store, req, res, route) {
       deleted: [
         'Your Hopewick sign-in on this server (email, name, phone, and password)',
         'Your subscription status and today’s Hope message count on this server',
+        'Saved chats on this server for this account',
       ],
       kept: [
-        'Chats, journal, profiles, and other notes in this browser — clear them in Settings if you want them gone from this device',
+        'Journal, profiles, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
         'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
       ],
     }, { 'Set-Cookie': clearCookie(req) });

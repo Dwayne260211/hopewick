@@ -190,5 +190,14 @@ export function createChatStore(filePath) {
       persist();
       return publicProfile(profileId, row.profiles[profileId], !!(options && options.plus));
     },
+    /** Drop this account's saved chats. Other accounts are left as they are. */
+    forget(userId) {
+      if (userId == null || userId === '') return false;
+      const key = String(userId);
+      if (!Object.prototype.hasOwnProperty.call(data.users, key)) return false;
+      delete data.users[key];
+      persist();
+      return true;
+    },
   };
 }

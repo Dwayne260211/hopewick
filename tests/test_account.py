@@ -27,6 +27,13 @@ def test_my_account_page_and_nav():
     assert 'id="deleteAccountDlg"' in app
     assert "Type DELETE to confirm" in app
     assert 'id="deleteAccountSubmit" disabled' in app
+    assert "saved chats for this account on our server" in app
+    assert "Saved chats for this account on the server are erased." in app
+    assert "This browser may still keep a copy of those chats" in app
+    assert "Saved chats on the server are gone." in app
+    assert "Chats in this browser stay until you clear them in Settings." not in app
+    assert "Chats in this browser are still here" not in app
+    assert "Chats, journal, and profiles in this browser are not deleted." not in app
     assert "Changing your sign-in email isn’t available." in app
     assert "Hopewick never sees or stores your full card number" in app
     assert "Coming soon. These switches don’t send anything yet" in app
