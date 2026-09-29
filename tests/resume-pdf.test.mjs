@@ -125,7 +125,7 @@ test('companion gates the resume builder on Hopewick Plus', () => {
   assert.match(app, /The resume builder is part of Hopewick Plus/);
   assert.doesNotMatch(app, /not part of Plus/);
   assert.match(plans, /The resume builder, kept on this device/);
-  assert.match(plans, /3 days free/);
+  assert.match(plans, /7 days free/);
   assert.match(app, /id="helpBtn"/);
   assert.match(app, /id="dvView"/);
   assert.match(app, /Word for the day/);

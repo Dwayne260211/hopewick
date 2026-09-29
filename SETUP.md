@@ -1,6 +1,6 @@
 # Hopewick Plus — accounts and Stripe
 
-Individual subscriptions are a **3-day free trial, then AU$20 per month** (AUD). The marketing site and companion stay static HTML. Sign-in, Stripe Checkout, the Customer Portal, and the webhook run in a small Node server (`server/index.js`) with no extra npm packages.
+Individual subscriptions are a **7-day free trial, then AU$20 per month** (AUD). The marketing site and companion stay static HTML. Sign-in, Stripe Checkout, the Customer Portal, and the webhook run in a small Node server (`server/index.js`) with no extra npm packages.
 
 Chats, memories, and readings stay in the browser. The account file stores **email, an optional name and phone, a scrypt password hash when one is set, and subscription status**. Passwords are never stored in plaintext. Card numbers are never stored. Older account files keep working: name, phone, and “cancel at period end” are added only when those actions happen. There is no separate database migration to run.
 
@@ -10,7 +10,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 
 ## Free and paid
 
-| | Free | Hopewick Plus (3 days free, then AU$20/month) |
+| | Free | Hopewick Plus (7 days free, then AU$20/month) |
 |---|---|---|
 | Website | Yes | Yes |
 | Crisis, domestic and family violence, Get help | Always | Always |
@@ -26,7 +26,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
 
-The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 3-day trial, and complimentary founder emails have no daily message cap. Crisis and Get help replies are not counted and are not refused for the free cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
+The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 7-day trial, and complimentary founder emails have no daily message cap. Crisis and Get help replies are not counted and are not refused for the free cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
 
 ## Environment variables
 
@@ -65,9 +65,9 @@ In the Stripe Dashboard (test mode):
 
 The server marks Plus **active** for Stripe statuses `active` and `trialing`. `canceled`, `past_due`, `unpaid`, `incomplete`, and `paused` do not unlock paid features. Cancellation comes from `customer.subscription.deleted` (and from `updated` when Stripe reports a non-Plus status).
 
-## 3-day trial (code, not a Dashboard setting)
+## 7-day trial (code, not a Dashboard setting)
 
-New Checkout sessions set `subscription_data[trial_period_days]=3` on the existing recurring price (`STRIPE_PRICE_ID`). The live or test price id does not change. Stripe collects a card at Checkout (`payment_method_collection=always`) and bills that price when the 3 days end. `trialing` already counts as Plus, so the webhook turns Plus on before the first invoice. When the trial ends, `customer.subscription.updated` moves the status to `active` or `past_due`.
+New Checkout sessions set `subscription_data[trial_period_days]=7` on the existing recurring price (`STRIPE_PRICE_ID`). The live or test price id does not change. Stripe collects a card at Checkout (`payment_method_collection=always`) and bills that price when the 7 days end. `trialing` already counts as Plus, so the webhook turns Plus on before the first invoice. When the trial ends, `customer.subscription.updated` moves the status to `active` or `past_due`.
 
 A person who already has a Stripe subscription id on the account — including after they cancel — does not get a second trial. The founder address (`dwaynesimons1990@gmail.com`, unless `FOUNDER_PLUS_EMAILS` overrides it) never goes through Checkout.
 
@@ -101,7 +101,7 @@ The person icon in the top bar, and **More → My Account**, open My Account. It
 
 - **Personal Details** saves a name and optional phone. The sign-in email cannot be changed.
 - **Password & Security** asks for the current password before a change. Someone who only has an email link is sent through **Create a password** (at least 8 characters).
-- **Subscription** shows plan, AU$20/month, status, and the next date. **Manage** opens the Stripe Customer Portal. **Cancel** asks first, then cancels at period end. Free accounts use the existing 3-day trial checkout. The founder address shows **Founder access** and is not sent to Checkout.
+- **Subscription** shows plan, AU$20/month, status, and the next date. **Manage** opens the Stripe Customer Portal. **Cancel** asks first, then cancels at period end. Free accounts use the existing 7-day trial checkout. The founder address shows **Founder access** and is not sent to Checkout.
 - **Payment Method** shows brand, last four, and expiry from Stripe. Adding or changing a card happens on Stripe (Customer Portal, or Checkout in setup mode when there is no Stripe customer yet). Hopewick does not store the card number or CVV.
 - **Billing History** lists Stripe invoices, with the hosted invoice and PDF when Stripe provides them.
 - **Notifications** is labelled coming soon and does not save anything.
@@ -158,7 +158,7 @@ That checks magic-link sign-in, setting a password, password sign-in, the lastin
 
 GitHub Pages serves https://hopewick.com.au today (apex `A` records to GitHub’s IPs, `www` `CNAME` to `dwayne260211.github.io`). Pages is static, so `https://hopewick.com.au/api/billing/*` returns a GitHub **404** page. The companion calls `/api/...` on the same origin (`SameSite=Lax`, host-only cookie). The process in `server/index.js` already serves the HTML and `/api` together. Production is that one process, on [Render](https://render.com), in Singapore.
 
-Hosted Hope for signed-in Free and Plus accounts runs on this same service: `POST /api/hope/chat`. Set `OPENAI_API_KEY` on the server (the key already used by `hopewick-api` is the one to copy). Do not put that key in the browser or in git. Free is 15 messages a day. Plus, a 3-day trial, and complimentary founder emails have no daily message limit. The count is the Australia/Brisbane calendar day and is stored beside the account, not the conversation.
+Hosted Hope for signed-in Free and Plus accounts runs on this same service: `POST /api/hope/chat`. Set `OPENAI_API_KEY` on the server (the key already used by `hopewick-api` is the one to copy). Do not put that key in the browser or in git. Free is 15 messages a day. Plus, a 7-day trial, and complimentary founder emails have no daily message limit. The count is the Australia/Brisbane calendar day and is stored beside the account, not the conversation.
 
 The older invite-code proxy stays at `https://hopewick-api.azurewebsites.net/api` for Developer / organisation pilots. It is not the path a paying customer uses.
 

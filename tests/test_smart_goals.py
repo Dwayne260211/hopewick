@@ -46,7 +46,7 @@ def test_static_goals_and_journal_nav():
     assert "SMART goals are part of Hopewick Plus" in text
     assert "The journal is part of Hopewick Plus" in text
     assert "gut health and neuroplasticity" in text.lower()
-    assert "Start 3-day free trial" in text
+    assert "Start 7-day free trial" in text
 
 
 def _server():
@@ -98,7 +98,7 @@ def test_smart_goals_journal_nav_and_guards():
             assert page.locator("#journalWorkspace").is_hidden()
             assert page.locator("#journalPlusBtn").is_visible()
             assert "part of Hopewick Plus" in page.inner_text("#journalView")
-            assert "3 days free" in page.inner_text("#journalGate")
+            assert "7 days free" in page.inner_text("#journalGate")
 
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")
@@ -170,7 +170,7 @@ def test_smart_goals_journal_nav_and_guards():
             assert "Relevant" in gate
             assert "Time-bound" in gate
             assert "part of Hopewick Plus" in page.inner_text("#goalsDlg")
-            assert "3 days free" in gate
+            assert "7 days free" in gate
             page.keyboard.press("Escape")
             page.wait_for_function("() => !busy", timeout=20000)
 

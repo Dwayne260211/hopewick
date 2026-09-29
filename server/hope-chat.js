@@ -26,7 +26,7 @@ export function freeDailyCap() {
   return dailyCap('HOPEWICK_FREE_DAILY', FREE_DAILY_DEFAULT);
 }
 
-/** Plus, a 3-day trial, and complimentary founder accounts have no daily message cap. */
+/** Plus, a 7-day trial, and complimentary founder accounts have no daily message cap. */
 export function hasUnlimitedHope(user) {
   return publicUser(user).plus === true;
 }

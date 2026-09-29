@@ -163,7 +163,7 @@ def test_cold_education_plus_gate_phone():
             assert "chest pain" in free
             assert "not a treatment for substance dependence" in free.lower()
             assert "not the full notes" in free
-            assert "Start 3-day free trial" in free
+            assert "Start 7-day free trial" in free
             for title in COLD_TITLES:
                 assert title in free
             for marker in COLD_BODY:

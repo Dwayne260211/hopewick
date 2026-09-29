@@ -26,7 +26,7 @@ def test_static_hope_limit_copy():
     assert "You’ve used your 15 free Hope messages for today" in text
     assert "They reset at midnight, Brisbane time." in text
     assert "Hopewick Plus has no daily limit with Hope." in text
-    assert "A 3-day trial is there if you’d like to keep talking." in text
+    assert "A 7-day trial is there if you’d like to keep talking." in text
     assert "If you’re in danger at today’s limit, Hope shows the crisis numbers without using the model." in text
     assert 'id="hopeLimitHelp"' in text
     assert 'id="hopeLimitDv"' in text
@@ -174,7 +174,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             assert "You’ve used your 15 free Hope messages for today" in limit
             assert "They reset at midnight, Brisbane time." in limit
             assert "no daily limit with Hope" in limit
-            assert "3-day trial" in limit
+            assert "7-day trial" in limit
             assert "without using the model" in limit
             assert "Get help" in limit
             assert page.input_value("#input") == "Can we talk about cravings?"
@@ -245,7 +245,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             _arm(page, remaining=0, trial=False, checkout=False)
             nudge = page.inner_text("#hopeLimitNudge")
             assert "no daily limit with Hope" in nudge
-            assert "3-day trial" not in nudge
+            assert "7-day trial" not in nudge
             assert "See Hopewick Plus" in page.inner_text("#hopeLimit")
 
             assert errors == []

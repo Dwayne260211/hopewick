@@ -58,7 +58,7 @@ def test_phone_gates_free_then_plus():
             assert page.locator("#jBody").is_hidden()
             assert page.locator("#journalPlusBtn").is_visible()
             journal = page.inner_text("#journalView")
-            assert "Start 3-day free trial" in journal
+            assert "Start 7-day free trial" in journal
             assert "part of Hopewick Plus" in journal
             overflow = page.evaluate(
                 """() => ({
@@ -71,7 +71,7 @@ def test_phone_gates_free_then_plus():
             page.click("#journalPlusBtn")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
-            assert "3 days free, then AU$20" in account
+            assert "7 days free, then AU$20" in account
             assert "15 messages/day" in account
             assert "No daily limit" in account
             assert "No daily message limit" in account

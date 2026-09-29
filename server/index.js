@@ -9,8 +9,8 @@
  * OPENAI_API_KEY on this server (the same key can already exist on the
  * Azure invite proxy). The browser never receives it.
  *
- * Plus Checkout includes a 3-day trial, then the existing monthly price.
- * Daily caps: Free is 15 messages. Hopewick Plus, a 3-day trial, and
+ * Plus Checkout includes a 7-day trial, then the existing monthly price.
+ * Daily caps: Free is 15 messages. Hopewick Plus, a 7-day trial, and
  * complimentary founder emails have no daily message cap. Counts use the
  * Australia/Brisbane calendar day. A crisis reply that calls the model
  * spends a message. Once the free cap is reached, crisis gets the static
@@ -72,7 +72,7 @@ export const SESSION_MS = 400 * 24 * 60 * 60 * 1000;
 const MAGIC_MS = 30 * 60 * 1000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PLUS_OK = new Set(['active', 'trialing']);
-const PLUS_TRIAL_DAYS = 3;
+const PLUS_TRIAL_DAYS = 7;
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
