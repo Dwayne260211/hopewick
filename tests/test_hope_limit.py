@@ -17,8 +17,8 @@ def test_static_hope_limit_copy():
     text = APP.read_text(encoding="utf-8")
     land = LAND.read_text(encoding="utf-8")
     server = HOPE.read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.25'" in text
-    assert 'content="hopewick-v5.25"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.26'" in text
+    assert 'content="hopewick-v5.26"' in land
     assert 'id="hopeLimit"' in text
     assert "You’ve used your 5 free Hope messages for today" in text
     assert "They reset at midnight, Brisbane time." in text

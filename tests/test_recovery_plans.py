@@ -19,8 +19,8 @@ APP = ROOT / "app" / "index.html"
 def test_static_plans_hub():
     text = APP.read_text(encoding="utf-8")
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.25'" in text
-    assert 'content="hopewick-v5.25"' in landing
+    assert "EDEN_BUILD = 'hopewick-v5.26'" in text
+    assert 'content="hopewick-v5.26"' in landing
     assert "function openPlans" in text
     assert "function renderPlans" in text
     assert "function normalizePlans" in text

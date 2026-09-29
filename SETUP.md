@@ -2,7 +2,7 @@
 
 Individual subscriptions are a **3-day free trial, then AU$20 per month** (AUD). The marketing site and companion stay static HTML. Sign-in, Stripe Checkout, the Customer Portal, and the webhook run in a small Node server (`server/index.js`) with no extra npm packages.
 
-Chats, memories, and readings stay in the browser. The account file stores **email and subscription status only**.
+Chats, memories, and readings stay in the browser. The account file stores **email, a scrypt password hash when one is set, and subscription status**. Passwords are never stored in plaintext.
 
 Crisis lines, domestic and family violence support, Get help, Hope chat at the free daily cap, the public demo, and **today’s** Word for the day and Just for today stay free. SMART goals, the journal, the resume builder, and education libraries (nutrition, gut health, neuroplasticity, and ice baths and recovery spas) need Hopewick Plus.
 
@@ -22,7 +22,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 | Journal | Tab with an upgrade | Write, edit, deepen |
 | Resume builder | Tease only | Builder and PDF, on this device |
 | Education libraries | Names and an upgrade | Nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Free sees the names only |
-| Account and Stripe Customer Portal | Sign-in optional | Manage card, cancel, invoices |
+| Account and Stripe Customer Portal | Sign-in optional. Email and password, or a one-time link. You stay signed in until you sign out | Manage card, cancel, invoices |
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
 
@@ -46,7 +46,7 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `RESEND_API_KEY` | Production email | Required in production. With `MAGIC_LINK_FROM`, sign-in links are emailed via [Resend](https://resend.com). Without both, production sign-in returns 503 and does not reveal the link. |
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
-| `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. |
+| `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. The session cookie is httpOnly, SameSite=Lax, and refreshed on each return visit until sign-out. |
 | `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. Complimentary Plus is not sent to Stripe Checkout. The same list is the only one that can see Settings → Developer in the companion. |
 | `OPENAI_API_KEY` | Yes, for hosted Hope | Server-only model key. Same secret already configured on the Azure app `hopewick-api`. Never commit it and never send it to the browser. |
 | `OPENAI_MODEL` | No | Default `gpt-4o-mini`. |
@@ -88,14 +88,18 @@ Open **http://127.0.0.1:8787/** (plans are on the home page) and **http://127.0.
 
 Use this server, not `python3 -m http.server`, when you want sign-in or Stripe. The Python server still serves the static demo; `/api` will not be there.
 
-### Sign in without email
+### Sign in
+
+The Hopewick Plus screen leads with **Sign in**: email, password, and **Sign in**. After a magic link or a password sign-in, the browser keeps an httpOnly `hopewick_session` cookie (SameSite=Lax, Secure on https). It lasts 400 days and is refreshed each time you open Hopewick, so you stay signed in on that device until you choose **Sign out**.
+
+A one-time email link is still there (**Email me a sign-in link**, or **Forgot password?**). The link expires in 30 minutes and can be used once. First-time and magic-link-only accounts can **Create a password** after they are signed in. They can also choose a password before the link is sent; opening that link saves it. Passwords are hashed with Node’s scrypt. The account file never stores the password you typed.
 
 With `HOPEWICK_DEV=1` (the local default):
 
 1. In the companion, open **Hopewick Plus**.
-2. Enter an email and request a link.
-3. Click the link shown on screen (it is also printed in the server log).
-4. You are signed in. Checkout stays disabled until Stripe keys and a price id are set.
+2. Enter an email and choose **Email me a sign-in link** (or sign in with a password you already created).
+3. If you asked for a link, click the link shown on screen (it is also printed in the server log).
+4. You are signed in. Create a password if you want to come back without a new email. Checkout stays disabled until Stripe keys and a price id are set.
 
 ### Stripe test mode
 
@@ -133,7 +137,7 @@ curl -s -X POST http://127.0.0.1:8787/api/billing/dev-set \
 npm run test:billing
 ```
 
-That checks magic-link sign-in, Checkout refusing anonymous users, a mocked Stripe Checkout session, webhook signature failure, and active/canceled updates. It does not call Stripe’s network.
+That checks magic-link sign-in, setting a password, password sign-in, the lasting session cookie, sign-out, Checkout refusing anonymous users, a mocked Stripe Checkout session, webhook signature failure, and active/canceled updates. It does not call Stripe’s network.
 
 ## Production
 
