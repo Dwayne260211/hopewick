@@ -200,6 +200,8 @@ def test_cold_education_plus_gate_phone():
             assert page.locator("#coldGate").is_hidden()
             assert page.locator('#coldDlg button:has-text("Open brain habits")').count() == 0
             assert "°" not in plus
+            page.keyboard.press("Escape")
+            page.wait_for_function("() => document.getElementById('coldDlg')?.open !== true")
 
             page.click("#appTabChat")
             page.wait_for_selector("#input", state="visible")
