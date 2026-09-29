@@ -163,7 +163,8 @@ svg { flex: none; }
 .history .del { opacity: 0; width: 32px; height: 32px; }
 .history li:hover .del, .history li.active .del, .history .del:focus-visible { opacity: 1; }
 .history-empty { color: var(--muted); font-size: .88rem; padding: 10px; }
-.sidebar-foot { display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--border); padding-top: 8px; flex: 0 0 auto; padding-bottom: 12px; }
+.sidebar-foot { display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--border); padding-top: 8px; flex: 0 0 auto; padding-bottom: 12px; scroll-margin-top: 8px; border-radius: 12px; }
+.sidebar-foot.is-current { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
 .sidebar-foot .btn { justify-content: flex-start; }
 .side-section-label {
   font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
@@ -453,15 +454,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   text-align: center;
 }
 .bottom-nav-btn:hover { background: var(--surface-2); color: var(--text); }
-.bottom-nav-btn[aria-current="page"],
-.bottom-nav-btn[aria-pressed="true"] {
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-}
 .bottom-nav-btn[aria-current="false"],
 .bottom-nav-btn[aria-pressed="false"] {
   color: var(--muted);
   background: transparent;
+}
+.bottom-nav-btn[aria-current="page"],
+.bottom-nav-btn[aria-pressed="true"] {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
 }
 
 .home-view,
@@ -995,8 +996,17 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .account-form input:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
 .account-signin-title { margin: 0; font-size: 1.05rem; text-align: left; }
 .account-create { margin-top: 4px; text-align: left; }
-.account-create summary { cursor: pointer; font-weight: 700; color: var(--accent-strong); }
-.account-create[open] summary { margin-bottom: 8px; }
+.account-create-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 0; padding: 6px 2px; border-radius: 8px;
+  font-weight: 700; color: var(--accent-strong); text-align: left;
+}
+.account-create-mark { color: var(--muted); font-size: .85rem; }
+.account-create-mark::before { content: '▸'; }
+.account-create-toggle[aria-expanded="true"] .account-create-mark::before { content: '▾'; }
+.account-create-toggle:focus-visible { box-shadow: var(--focus); }
+#accountCreatePanel { margin-top: 8px; }
+#accountCreatePanel[hidden] { display: none !important; }
 .account-status { min-height: 1.2em; font-size: .88rem; color: var(--muted); margin: 8px 0 0; }
 .account-status.bad { color: #b42318; }
 .account-status.ok { color: var(--accent-strong); }
@@ -1634,7 +1644,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     <div class="history-label" id="historyLabel">Conversations</div>
     <p class="history-device" id="historyDeviceNote">Keep your conversation history on this device. Cloud sync is not enabled.</p>
     <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
-    <div class="sidebar-foot">
+    <div class="sidebar-foot" id="sidebarTools" tabindex="-1" aria-label="More tools, settings, and education">
       <div class="side-section-label">Recovery tools</div>
       <button class="btn btn-ghost" type="button" data-open="skills">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
@@ -2132,7 +2142,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span>Journal</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-controls="sidebar" aria-haspopup="true">
+      <button type="button" class="bottom-nav-btn" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-expanded="false" aria-controls="sidebar" aria-haspopup="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
         <span>More</span>
       </button>
@@ -4273,10 +4283,22 @@ function applyLaunchPrefs(opts = {}) {
     if (!isDemo && isCounsellor()) maybeShowDisclaimer();
   }
 }
+function moreUsesDrawer() {
+  return window.matchMedia('(max-width: 860px)').matches;
+}
+function syncMoreTab(open) {
+  if (!el.tabMore) return;
+  const on = !!open;
+  el.tabMore.setAttribute('aria-pressed', on ? 'true' : 'false');
+  el.tabMore.setAttribute('aria-expanded', on ? 'true' : 'false');
+  const tools = document.getElementById('sidebarTools');
+  if (tools) tools.classList.toggle('is-current', on && !moreUsesDrawer());
+}
 function setAppTab(tab, opts = {}) {
   if (tab === 'more') {
-    if (el.app.classList.contains('sidebar-open')) closeSidebar();
-    else openSidebar();
+    const drawer = moreUsesDrawer();
+    if (drawer && el.app.classList.contains('sidebar-open')) closeSidebar();
+    else openSidebar({ focusTools: true });
     return;
   }
   // Bible & SOAP is the study dialog. These ids are not Home/Chat/DV/Journal/Resume tabs.
@@ -4319,10 +4341,11 @@ function setAppTab(tab, opts = {}) {
   if (el.sideResumeBtn) el.sideResumeBtn.setAttribute('aria-current', next === 'resume' ? 'page' : 'false');
   if (el.sideJournalBtn) el.sideJournalBtn.setAttribute('aria-current', next === 'journal' ? 'page' : 'false');
   if (el.sideInfoBtn) el.sideInfoBtn.setAttribute('aria-current', next === 'info' ? 'page' : 'false');
-  if (el.tabMore) {
-    el.tabMore.setAttribute('aria-current', 'false');
-    el.tabMore.setAttribute('aria-pressed', 'false');
+  if (!moreUsesDrawer()) {
+    el.app.classList.remove('sidebar-open');
+    if (el.menuBtn) el.menuBtn.setAttribute('aria-expanded', 'false');
   }
+  syncMoreTab(el.app.classList.contains('sidebar-open'));
   if (next === 'home') {
     renderHome();
   } else if (next === 'dv') {
@@ -11124,11 +11147,25 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'help') openHelp();
 }));
 
-function openSidebar() { el.app.classList.add('sidebar-open'); el.menuBtn.setAttribute('aria-expanded', 'true'); setTimeout(() => el.newChat.focus(), 50); }
+function openSidebar(opts = {}) {
+  el.app.classList.add('sidebar-open');
+  el.menuBtn.setAttribute('aria-expanded', 'true');
+  syncMoreTab(true);
+  const tools = opts.focusTools ? document.getElementById('sidebarTools') : null;
+  const target = tools || el.newChat;
+  setTimeout(() => {
+    if (tools) tools.scrollIntoView({ block: 'start', inline: 'nearest' });
+    if (target) target.focus();
+  }, 50);
+}
 function closeSidebar() {
-  if (!el.app.classList.contains('sidebar-open')) return;
+  if (!el.app.classList.contains('sidebar-open')) {
+    syncMoreTab(false);
+    return;
+  }
   el.app.classList.remove('sidebar-open');
   el.menuBtn.setAttribute('aria-expanded', 'false');
+  syncMoreTab(false);
 }
 el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-open') ? closeSidebar() : openSidebar());
 
@@ -12633,10 +12670,23 @@ function paintAccount() {
     help.className = 'help';
     help.textContent = 'New here, or no password yet? We’ll email a one-time link. Create a password when you’re in, and you stay signed in on this device until you sign out.';
     body.appendChild(help);
-    const create = document.createElement('details');
+    const create = document.createElement('div');
     create.className = 'account-create';
     create.id = 'accountCreate';
-    create.innerHTML = '<summary>Create a password</summary><div class="account-form"><p class="help">Choose a password, then use Email me a sign-in link. Opening that link saves it. The link lasts 30 minutes.</p><label for="accountNewPassword">New password<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountConfirmPassword">Confirm password<input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label></div>';
+    const createToggle = document.createElement('button');
+    createToggle.type = 'button';
+    createToggle.className = 'account-create-toggle';
+    createToggle.id = 'accountCreateToggle';
+    createToggle.setAttribute('aria-expanded', 'false');
+    createToggle.setAttribute('aria-controls', 'accountCreatePanel');
+    createToggle.innerHTML = '<span class="account-create-mark" aria-hidden="true"></span> Create a password';
+    const createPanel = document.createElement('div');
+    createPanel.id = 'accountCreatePanel';
+    createPanel.hidden = true;
+    createPanel.innerHTML = '<div class="account-form"><p class="help">Choose a password, then use Email me a sign-in link. Opening that link saves it. The link lasts 30 minutes.</p><label for="accountNewPassword">New password<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountConfirmPassword">Confirm password<input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label></div>';
+    createToggle.addEventListener('click', () => setCreatePasswordOpen(createToggle.getAttribute('aria-expanded') !== 'true'));
+    create.appendChild(createToggle);
+    create.appendChild(createPanel);
     body.appendChild(create);
     const actions = document.createElement('div');
     actions.className = 'account-actions';
@@ -12753,9 +12803,15 @@ function accountStatus(message, kind) {
   status.className = 'account-status' + (kind ? ' ' + kind : '');
   status.textContent = message;
 }
+function setCreatePasswordOpen(open) {
+  const toggle = $('#accountCreateToggle');
+  const panel = $('#accountCreatePanel');
+  if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (panel) panel.hidden = !open;
+}
 function createPasswordChoice() {
-  const details = $('#accountCreate');
-  if (!details || !details.open) return { include: false };
+  const toggle = $('#accountCreateToggle');
+  if (!toggle || toggle.getAttribute('aria-expanded') !== 'true') return { include: false };
   const a = ($('#accountNewPassword') && $('#accountNewPassword').value) || '';
   const b = ($('#accountConfirmPassword') && $('#accountConfirmPassword').value) || '';
   if (!a && !b) return { include: false };
@@ -12787,8 +12843,9 @@ async function onPasswordSignIn(e) {
   } catch (err) {
     accountStatus(err.message || 'Could not sign in.', 'bad');
     if (err.code === 'password_missing') {
-      const details = $('#accountCreate');
-      if (details) details.open = true;
+      setCreatePasswordOpen(true);
+      const fresh = $('#accountNewPassword');
+      if (fresh) fresh.focus();
     }
   }
 }

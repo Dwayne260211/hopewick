@@ -17,6 +17,14 @@ def test_sign_in_screen_and_build():
     assert "Email me a sign-in link" in app
     assert "Forgot password?" in app
     assert "Create a password" in app
+    sign_in = app.split("form.id = 'accountSignInForm'", 1)[1].split("async function onPasswordSignIn", 1)[0]
+    assert "createToggle.id = 'accountCreateToggle'" in sign_in
+    assert "createToggle.type = 'button'" in sign_in
+    assert "aria-expanded" in sign_in
+    assert "aria-controls" in sign_in
+    assert "accountCreatePanel" in sign_in
+    assert "<summary>Create a password</summary>" not in sign_in
+    assert "setCreatePasswordOpen" in app
     assert "/api/auth/login" in app
     assert "/api/auth/password" in app
     assert "/api/auth/logout" in app
@@ -24,6 +32,5 @@ def test_sign_in_screen_and_build():
     assert "You stay signed in on this device until you sign out." in app
     assert "Email me a sign-in link" in land
     assert "stay signed in on this browser until you sign out" in land
-    sign_in = app.split("form.id = 'accountSignInForm'", 1)[1].split("async function onPasswordSignIn", 1)[0]
     assert "accounts.google.com" not in sign_in
     assert "appleid.apple.com" not in sign_in
