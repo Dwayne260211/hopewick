@@ -2089,83 +2089,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
           <p id="resumeLede">The resume builder is part of Hopewick Plus. Start a 3-day free trial, then AU$20/month. Your draft stays on this device once Plus is active.</p>
         </div>
         <div id="resumeGate" class="nut-gate plus-feature-gate"></div>
-        <div id="resumeBuilder" hidden>
-        <p class="resume-note" id="resumeGapNote">A gap in paid work is ordinary. Volunteering, courses, casual work, and caring for someone all belong here. You do not have to mention recovery unless you want to.</p>
-        <div class="resume-steps" id="resumeSteps" role="tablist" aria-label="Resume steps"></div>
-        <div class="resume-layout">
-          <div>
-            <p class="resume-note" id="resumeTip"></p>
-            <div id="resumePanelContact" class="resume-panel" data-resume-panel="contact" role="tabpanel" aria-labelledby="resumeStep-contact">
-              <div class="field">
-                <label for="resumeName">Your name</label>
-                <input id="resumeName" type="text" maxlength="80" autocomplete="name" placeholder="The name you want on the resume">
-              </div>
-              <div class="field">
-                <label for="resumePhone">Phone <span class="help">(optional)</span></label>
-                <input id="resumePhone" type="tel" maxlength="40" autocomplete="tel" placeholder="Mobile, if you want employers to call">
-              </div>
-              <div class="field">
-                <label for="resumeEmail">Email <span class="help">(optional)</span></label>
-                <input id="resumeEmail" type="text" inputmode="email" maxlength="120" autocomplete="email" placeholder="Email, if you have one">
-              </div>
-              <div class="field">
-                <label for="resumeLocation">Where you are <span class="help">(optional)</span></label>
-                <input id="resumeLocation" type="text" maxlength="80" autocomplete="address-level2" placeholder="Suburb or town — a street address is optional">
-              </div>
-            </div>
-            <div id="resumePanelSummary" class="resume-panel" data-resume-panel="summary" role="tabpanel" aria-labelledby="resumeStep-summary" hidden>
-              <div class="field">
-                <label for="resumeSummary">Short summary</label>
-                <textarea id="resumeSummary" rows="5" maxlength="800" placeholder="A few honest sentences about what you can offer. Plain words are perfect."></textarea>
-              </div>
-              <p class="help" style="margin:12px 0 0">Starting points — edit them so they sound like you:</p>
-              <div class="resume-prompts" id="resumePrompts"></div>
-            </div>
-            <div id="resumePanelExperience" class="resume-panel" data-resume-panel="experience" role="tabpanel" aria-labelledby="resumeStep-experience" hidden>
-              <div id="resumeExpList"></div>
-              <div class="row" style="margin-top:10px">
-                <button class="btn btn-sm" type="button" id="resumeAddExp">Add another</button>
-              </div>
-            </div>
-            <div id="resumePanelEducation" class="resume-panel" data-resume-panel="education" role="tabpanel" aria-labelledby="resumeStep-education" hidden>
-              <div id="resumeEduList"></div>
-              <div class="row" style="margin-top:10px">
-                <button class="btn btn-sm" type="button" id="resumeAddEdu">Add another</button>
-              </div>
-            </div>
-            <div id="resumePanelSkills" class="resume-panel" data-resume-panel="skills" role="tabpanel" aria-labelledby="resumeStep-skills" hidden>
-              <div class="field">
-                <label for="resumeSkills">Skills</label>
-                <textarea id="resumeSkills" rows="5" maxlength="600" placeholder="e.g. teamwork, cooking, being on time, using a phone, driving"></textarea>
-              </div>
-              <p class="help">One skill per line, or separate them with commas.</p>
-            </div>
-            <div id="resumePanelReferences" class="resume-panel" data-resume-panel="references" role="tabpanel" aria-labelledby="resumeStep-references" hidden>
-              <div class="radio-row" role="radiogroup" aria-label="How to show references">
-                <label><input type="radio" name="resumeRefMode" value="available"> Say they are available if asked</label>
-                <label><input type="radio" name="resumeRefMode" value="list"> List people who have already said yes</label>
-              </div>
-              <div id="resumeRefFields">
-                <div id="resumeRefList"></div>
-                <div class="row" style="margin-top:10px">
-                  <button class="btn btn-sm" type="button" id="resumeAddRef">Add another</button>
-                </div>
-              </div>
-            </div>
-            <div class="row resume-actions">
-              <button class="btn" type="button" id="resumeBack">Back</button>
-              <button class="btn" type="button" id="resumeNext">Next</button>
-              <button class="btn btn-primary" type="button" id="resumeDownload">Download PDF</button>
-              <button class="btn btn-ghost" type="button" id="resumeClear">Clear draft</button>
-            </div>
-            <p class="help" id="resumeSaved" aria-live="polite"></p>
-          </div>
-          <aside class="resume-preview-wrap" aria-label="Live preview">
-            <h2>Preview</h2>
-            <div id="resumePreview" class="resume-paper" aria-live="polite"></div>
-          </aside>
-        </div>
-        </div>
+        <div id="resumeEditorMount"></div>
+
       </div>
     </section>
 
@@ -2187,26 +2112,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
           <p id="journalLede">A private place for your thoughts. Writing, editing, and deepening a reflection are part of Hopewick Plus. This tab stays here so you can see what’s included.</p>
         </div>
         <div id="journalGate" class="nut-gate plus-feature-gate"></div>
-        <div id="journalWorkspace" hidden>
-        <div id="journalCompose">
-          <div class="field">
-            <label for="jTitle">Title <span class="help">(optional)</span></label>
-            <input id="jTitle" type="text" maxlength="120" placeholder="What's on your mind?">
-          </div>
-          <div class="field">
-            <label for="jBody">Entry</label>
-            <textarea id="jBody" rows="5" maxlength="8000" placeholder="Write freely…"></textarea>
-          </div>
-          <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
-            <button class="btn btn-primary" type="button" id="jSaveBtn">Save entry</button>
-            <button class="btn" type="button" id="jRefineBtn">Deepen reflection</button>
-            <button class="btn btn-ghost" type="button" id="jCancelEdit" hidden>Cancel edit</button>
-          </div>
-          <div id="jRefineOut" hidden></div>
-        </div>
-        <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 8px">Your entries</h2>
-        <ul class="journal-list" id="journalList" aria-label="Journal entries"></ul>
-        </div>
+        <div id="journalEditorMount"></div>
+
       </div>
     </section>
 
@@ -2857,11 +2764,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   <div class="dlg-body">
     <p id="goalsIntro" style="margin:12px 0 0">Two small goals for this week, Sunday to Saturday. This is your own plan in <span data-brand>Hopewick</span> — not a SMART Recovery meeting. To find a meeting, use <strong>Find a meeting</strong>. The full editor is part of Hopewick Plus.</p>
     <div id="goalsGate" class="nut-gate plus-feature-gate"></div>
-    <div id="goalsEditor" hidden>
-      <p class="help" id="goalsWeekLabel"></p>
-      <div id="goalsList"></div>
-      <p class="help" id="goalsSaved" aria-live="polite"></p>
-    </div>
+    <div id="goalsEditorMount"></div>
+
   </div>
 </dialog>
 
@@ -3484,12 +3388,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     </div>
     <p class="nut-lead" id="plansIntro">A calm place to write a relapse / lapse prevention plan, and exits for high-risk moments. Private on this device.</p>
     <div id="plansGate" class="nut-gate plus-feature-gate"></div>
-    <div id="plansWorkspace" hidden>
-      <p class="help plans-note" id="plansSaved" aria-live="polite"></p>
-      <div id="plansHub"></div>
-      <div id="plansRelapse" hidden></div>
-      <div id="plansExit" hidden></div>
-    </div>
+    <div id="plansEditorMount"></div>
+
   </div>
 </dialog>
 
@@ -4414,7 +4314,10 @@ function convoVisible(c) {
   return !c.accountId || c.accountId === billingState.id;
 }
 function listedConvos() {
-  return convos.filter(c => c && c.messages && c.messages.length && convoVisible(c)).sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  const list = convos.filter(c => c && c.messages && c.messages.length && convoVisible(c)).sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  // Free signed-in accounts only see the recent chat they can open. Older chats stay stored.
+  if (historyGateOn()) return list.slice(0, FREE_HISTORY_KEEP);
+  return list;
 }
 function renderChatsList() {
   const listEl = $('#chatsList');
@@ -5746,6 +5649,11 @@ function updateMoodPill() {
 function renderMessages() {
   const c = activeConvo();
   el.inner.innerHTML = '';
+  if (c && conversationLocked(c.id)) {
+    hideHopeGateway();
+    renderWelcome();
+    return;
+  }
   if (!c || c.messages.length === 0) {
     hideHopeGateway();
     renderWelcome();
@@ -6550,7 +6458,15 @@ function renderJournalList() {
     list.appendChild(li);
   }
 }
-$('#jCancelEdit').addEventListener('click', () => {
+function bindJournalUi() {
+  const root = document.getElementById('journalWorkspace');
+  if (!root || root.dataset.bound === '1') return;
+  const cancel = $('#jCancelEdit');
+  const save = $('#jSaveBtn');
+  const refine = $('#jRefineBtn');
+  if (!cancel || !save || !refine) return;
+  root.dataset.bound = '1';
+  cancel.addEventListener('click', () => {
   journalEditId = null;
   $('#jTitle').value = '';
   $('#jBody').value = '';
@@ -6604,6 +6520,8 @@ $('#jRefineBtn').addEventListener('click', async () => {
   }
   await refineJournalEntry(entry, true);
 });
+}
+bindJournalUi();
 
 function journalRefineSystemPrompt(crisis) {
   return [
@@ -12666,6 +12584,9 @@ function addResumeEntry(list, blank, max, render, focusId) {
   if (node) node.focus();
 }
 function bindResumeUi() {
+  const root = document.getElementById('resumeBuilder');
+  if (!root || root.dataset.bound === '1') return;
+  root.dataset.bound = '1';
   const bind = (id, apply) => {
     const node = document.getElementById(id);
     if (!node) return;
@@ -12764,6 +12685,29 @@ const plusAccess = {
   words: null,
   jft: null,
 };
+const PLUS_EDITOR_MOUNTS = {
+  journal: 'journalEditorMount',
+  resume: 'resumeEditorMount',
+  goals: 'goalsEditorMount',
+  plans: 'plansEditorMount',
+};
+function unmountPlusEditors() {
+  Object.values(PLUS_EDITOR_MOUNTS).forEach((id) => {
+    const host = document.getElementById(id);
+    if (host) host.replaceChildren();
+  });
+}
+function mountPlusEditors(editors) {
+  if (!sessionGate.plus() || !editors || typeof editors !== 'object') return;
+  Object.entries(PLUS_EDITOR_MOUNTS).forEach(([key, id]) => {
+    const host = document.getElementById(id);
+    const html = editors[key];
+    if (!host || typeof html !== 'string' || !html.trim() || host.childElementCount) return;
+    host.innerHTML = html;
+  });
+  bindJournalUi();
+  bindResumeUi();
+}
 function clearPlusLibrary() {
   plusAccess.ready = false;
   plusAccess.nutritionCategories = null;
@@ -12774,6 +12718,7 @@ function clearPlusLibrary() {
   plusAccess.goingDeeper = null;
   plusAccess.words = null;
   plusAccess.jft = null;
+  unmountPlusEditors();
 }
 function educationLibrary(key) {
   const packed = plusAccess[key];
@@ -12794,6 +12739,11 @@ async function installPlusLibrary() {
     plusAccess.goingDeeper = pack.goingDeeper || null;
     plusAccess.words = pack.words || null;
     plusAccess.jft = pack.jft || null;
+    mountPlusEditors(pack.editors);
+    if (!sessionGate.plus()) {
+      clearPlusLibrary();
+      return;
+    }
     plusAccess.ready = true;
   } catch (_) {
     clearPlusLibrary();
@@ -12898,6 +12848,7 @@ async function billingFetch(path, options) {
   return data;
 }
 async function refreshBilling() {
+  const plusBefore = sessionGate.plus();
   try {
     const [user, config] = await Promise.all([
       billingFetch('/api/auth/me'),
@@ -12957,6 +12908,7 @@ async function refreshBilling() {
   await refreshHopeUsage();
   paintAccount();
   if (appTab === 'account') paintMyAccountIdentity();
+  if (sessionGate.plus() !== plusBefore) chatPullKey = '';
   if (profile && billingState.signedIn) pullAccountChats(false).catch(() => {});
   else if (!billingState.signedIn) chatPullKey = '';
   try {

@@ -84,7 +84,8 @@ test('signed-in chats survive a fresh read and stay on that account', async () =
     });
     assert.equal(put.status, 200);
     const saved = await put.json();
-    assert.equal(saved.profile.conversations.length, 2);
+    assert.equal(saved.profile.conversations.length, 1);
+    assert.equal(saved.profile.conversations[0].id, 'c2');
 
     const again = await fetch(`${app.base}/api/chats`, {
       method: 'PUT',
@@ -96,13 +97,29 @@ test('signed-in chats survive a fresh read and stay on that account', async () =
       }),
     });
     const merged = await again.json();
-    const texts = merged.profile.conversations.map((c) => c.messages[0].content).sort();
-    assert.deepEqual(texts, ['hello from yesterday, edited', 'second chat']);
+    assert.deepEqual(merged.profile.conversations.map((c) => c.id), ['c1']);
+    assert.equal(merged.profile.conversations[0].messages[0].content, 'hello from yesterday, edited');
 
     const got = await fetch(`${app.base}/api/chats`, { headers: { cookie: sam } });
     const listed = await got.json();
     assert.equal(listed.profiles[0].id, 'sam1');
-    assert.equal(listed.profiles[0].conversations.length, 2);
+    assert.equal(listed.profiles[0].conversations.length, 1);
+    assert.equal(listed.profiles[0].conversations[0].id, 'c1');
+
+    const upgraded = await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: sam, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'active' }),
+    });
+    assert.equal(upgraded.status, 200);
+    const plusListed = await (await fetch(`${app.base}/api/chats`, { headers: { cookie: sam } })).json();
+    const texts = plusListed.profiles[0].conversations.map((c) => c.messages[0].content).sort();
+    assert.deepEqual(texts, ['hello from yesterday, edited', 'second chat']);
+    await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { cookie: sam, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'none' }),
+    });
 
     const other = await signIn(app.base, 'other@example.com');
     const hidden = await fetch(`${app.base}/api/chats`, { headers: { cookie: other } });

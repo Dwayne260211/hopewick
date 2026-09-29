@@ -1450,6 +1450,12 @@ test('plus library stays off the free page and crisis at the cap does not call t
     assert.equal(hidden.status, 404);
     const hiddenJft = await fetch(`${app.base}/app/data/just-for-today.js`);
     assert.equal(hiddenJft.status, 404);
+    const hiddenEditors = await fetch(`${app.base}/server/library/plus-editors.json`);
+    assert.equal(hiddenEditors.status, 404);
+    const page = await (await fetch(`${app.base}/app/`)).text();
+    for (const id of ['journalWorkspace', 'resumeBuilder', 'goalsEditor', 'plansWorkspace', 'jBody', 'resumeName']) {
+      assert.equal(page.includes(`id="${id}"`), false, id);
+    }
 
     const trial = await signIn(app.base, 'library-trial@example.com');
     const trialSet = await fetch(`${app.base}/api/billing/dev-set`, {
@@ -1464,6 +1470,10 @@ test('plus library stays off the free page and crisis at the cap does not call t
     assert.equal(trialLib.jft.length, 365);
     assert.ok(trialLib.nutritionCards.length > 0);
     assert.ok(trialLib.goingDeeper.length > 0);
+    assert.match(trialLib.editors.journal, /id="journalWorkspace"/);
+    assert.match(trialLib.editors.resume, /id="resumeName"/);
+    assert.match(trialLib.editors.goals, /id="goalsEditor"/);
+    assert.match(trialLib.editors.plans, /id="plansWorkspace"/);
 
     const active = await signIn(app.base, 'library-active@example.com');
     await fetch(`${app.base}/api/billing/dev-set`, {

@@ -8,6 +8,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const MAX_PROFILES = 12;
+/** Free accounts may open this many recent chats. Older ones stay stored. */
+export const FREE_HISTORY_KEEP = 1;
+
+/** What a client may see. Plus gets the stored list. Free gets the recent openable chats only. */
+export function conversationsForViewer(conversations, plus) {
+  const list = Array.isArray(conversations) ? conversations : [];
+  if (plus) return list;
+  const ranked = list
+    .filter((row) => row && Array.isArray(row.messages) && row.messages.length)
+    .slice()
+    .sort((a, b) => (Number(b.updated) || 0) - (Number(a.updated) || 0));
+  const keep = new Set(ranked.slice(0, FREE_HISTORY_KEEP).map((row) => row.id));
+  return list.filter((row) => {
+    if (!row || !Array.isArray(row.messages) || !row.messages.length) return true;
+    return keep.has(row.id);
+  });
+}
+
 const MAX_CONVOS = 80;
 const MAX_MESSAGES = 200;
 const MAX_TEXT = 8000;
@@ -89,13 +107,14 @@ export function mergeConversations(localList, remoteList) {
   return [...map.values()].sort((a, b) => (b.updated || 0) - (a.updated || 0)).slice(0, MAX_CONVOS);
 }
 
-function publicProfile(id, row) {
+function publicProfile(id, row, plus) {
+  const stored = Array.isArray(row.conversations) ? row.conversations : [];
   return {
     id,
     name: row.name || '',
     updated: row.updated || 0,
     activeId: row.activeId || null,
-    conversations: Array.isArray(row.conversations) ? row.conversations : [],
+    conversations: conversationsForViewer(stored, plus === true),
   };
 }
 
@@ -129,15 +148,16 @@ export function createChatStore(filePath) {
   }
 
   return {
-    list(userId) {
+    list(userId, options) {
       const row = data.users[userId];
       if (!row || !row.profiles) return [];
+      const plus = !!(options && options.plus);
       return Object.entries(row.profiles)
-        .map(([id, profile]) => publicProfile(id, profile))
+        .map(([id, profile]) => publicProfile(id, profile, plus))
         .sort((a, b) => (b.updated || 0) - (a.updated || 0))
         .slice(0, MAX_PROFILES);
     },
-    merge(userId, profileId, incoming) {
+    merge(userId, profileId, incoming, options) {
       if (!validProfileId(profileId)) {
         const err = new Error('That profile id is not valid.');
         err.status = 400;
@@ -168,7 +188,7 @@ export function createChatStore(filePath) {
         row.profiles = Object.fromEntries(ids.slice(0, MAX_PROFILES));
       }
       persist();
-      return publicProfile(profileId, row.profiles[profileId]);
+      return publicProfile(profileId, row.profiles[profileId], !!(options && options.plus));
     },
   };
 }

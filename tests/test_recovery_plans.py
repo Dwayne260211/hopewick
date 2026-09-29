@@ -30,7 +30,12 @@ def test_static_plans_hub():
     assert 'id="plansDlg"' in text
     assert 'id="plansGate"' in text
     assert 'id="plansDisclaimer"' in text
-    assert 'id="plansWorkspace"' in text
+    assert 'id="plansWorkspace"' not in text
+    editors = json.loads((ROOT / "server" / "library" / "plus-editors.json").read_text(encoding="utf-8"))
+    assert 'id="plansWorkspace"' in editors["plans"]
+    assert 'id="journalWorkspace"' not in text
+    assert 'id="resumeBuilder"' not in text
+    assert 'id="goalsEditor"' not in text
     assert 'id="sidePlansBtn"' in text
     assert 'data-open="plans"' in text
     assert "eden.p.<id>.plans" in text

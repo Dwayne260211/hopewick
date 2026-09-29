@@ -23,6 +23,7 @@ export function loadPlusLibrary() {
   if (cache) return cache;
   const education = JSON.parse(fs.readFileSync(path.join(dir, 'library', 'education.json'), 'utf8'));
   const goingDeeper = JSON.parse(fs.readFileSync(path.join(dir, 'library', 'going-deeper.json'), 'utf8'));
+  const editors = JSON.parse(fs.readFileSync(path.join(dir, 'library', 'plus-editors.json'), 'utf8'));
   const words = readJsArray(path.join(root, 'app', 'data', 'word-for-the-day.js'), 'WORD_FOR_THE_DAY');
   const jft = readJsArray(path.join(root, 'app', 'data', 'just-for-today.js'), 'JUST_FOR_TODAY');
   cache = {
@@ -32,6 +33,7 @@ export function loadPlusLibrary() {
     brainCards: education.brainCards,
     coldCards: education.coldCards,
     goingDeeper,
+    editors,
     words,
     jft,
   };

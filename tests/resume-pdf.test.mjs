@@ -112,12 +112,16 @@ test('companion gates the resume builder on Hopewick Plus', () => {
   assert.match(app, /src="resume\.js"/);
   assert.match(app, /id="resumeView"/);
   assert.match(app, /data-open="resume"/);
-  assert.match(app, /id="resumeDownload"/);
   assert.match(app, /eden\.p\.<id>\.resume/);
   assert.match(app, /'resume'/);
   assert.match(app, /function syncResumeGate/);
   assert.match(app, /id="resumeGate"/);
-  assert.match(app, /id="resumeBuilder" hidden/);
+  assert.match(app, /id="resumeEditorMount"/);
+  assert.doesNotMatch(app, /id="resumeBuilder"/);
+  assert.doesNotMatch(app, /id="resumeDownload"/);
+  const editors = JSON.parse(readFileSync(new URL('../server/library/plus-editors.json', import.meta.url), 'utf8'));
+  assert.match(editors.resume, /id="resumeBuilder"/);
+  assert.match(editors.resume, /id="resumeDownload"/);
   assert.match(app, /The resume builder is part of Hopewick Plus/);
   assert.doesNotMatch(app, /not part of Plus/);
   assert.match(plans, /The resume builder, kept on this device/);

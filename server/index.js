@@ -627,7 +627,7 @@ async function handleApi(store, chats, req, res, url) {
       json(res, 401, { error: 'Sign in to open saved chats.', code: 'auth' });
       return;
     }
-    json(res, 200, { profiles: chats.list(user.id) });
+    json(res, 200, { profiles: chats.list(user.id, { plus: publicUser(user).plus === true }) });
     return;
   }
 
@@ -653,7 +653,7 @@ async function handleApi(store, chats, req, res, url) {
       conversations: body.conversations,
       activeId: body.activeId,
       removedIds: body.removedIds,
-    });
+    }, { plus: publicUser(user).plus === true });
     json(res, 200, { profile });
     return;
   }

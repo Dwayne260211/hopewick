@@ -13,7 +13,8 @@ def plus_library_fixture():
     if _FIXTURE is None:
         edu = json.loads((ROOT / "server" / "library" / "education.json").read_text(encoding="utf-8"))
         deeper = json.loads((ROOT / "server" / "library" / "going-deeper.json").read_text(encoding="utf-8"))
-        _FIXTURE = {"ok": True, "goingDeeper": deeper, **edu}
+        editors = json.loads((ROOT / "server" / "library" / "plus-editors.json").read_text(encoding="utf-8"))
+        _FIXTURE = {"ok": True, "goingDeeper": deeper, "editors": editors, **edu}
     return _FIXTURE
 
 
