@@ -724,6 +724,67 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   cursor: pointer;
 }
 .today-expand:hover { background: var(--surface-2); }
+.deeper-home {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 0 0 14px;
+}
+.deeper-home h2 { margin: 0 0 4px; font-size: 1.05rem; }
+.deeper-home p { margin: 0 0 10px; color: var(--muted); font-size: .9rem; }
+.deeper-tracks { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.deeper-track, .deeper-day, #deeperDlg .btn { white-space: normal; max-width: 100%; }
+.deeper-track {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  min-height: 44px;
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 650;
+}
+.deeper-track[aria-current="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.deeper-days { display: flex; flex-direction: column; gap: 8px; }
+.deeper-day {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font: inherit;
+  font-weight: 650;
+}
+.deeper-day .deeper-kicker {
+  display: block;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.deeper-reading p { margin: 0 0 10px; line-height: 1.45; }
+.deeper-reading, .deeper-callout { overflow-wrap: anywhere; }
+.deeper-callout {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.deeper-callout strong { display: block; margin-bottom: 4px; }
+.deeper-callout p { margin: 0; }
+#deeperSafety { margin-top: 12px; }
+#deeperDlg { overflow-x: hidden; }
+#deeperLibrary[hidden], #deeperGate[hidden], #deeperDayView[hidden], #deeperDayList[hidden] { display: none !important; }
 .chat-checkin-hint {
   margin: 14px auto 0; max-width: 420px; text-align: center;
 }
@@ -1607,6 +1668,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 6v10"/><path d="M8 8h8"/></svg>
         Bible &amp; SOAP
       </button>
+      <button class="btn btn-ghost" type="button" data-open="deeper" id="sideDeeperBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
+        Going Deeper <span class="plus-pill" id="deeperPlusPill">Plus</span>
+      </button>
       <button class="btn btn-ghost" type="button" data-open="nutrition">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
         Nutrition <span class="plus-pill" id="nutritionPlusPill">Plus</span>
@@ -1721,7 +1786,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p><strong>Hopewick Plus — 3 days free, then AU$20/month.</strong> SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p><strong>Hopewick Plus — 3 days free, then AU$20/month.</strong> SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Hopewick Plus</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
@@ -2166,13 +2231,13 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     </ul>
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Hopewick Plus</button>
-      <p class="help" style="margin:8px 0 0">Hopewick Plus — 3 days free, then AU$20/month. SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 5 messages a day. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
+      <p class="help" style="margin:8px 0 0">Hopewick Plus — 3 days free, then AU$20/month. SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 5 messages a day. Cancel anytime. One subscription per person. Organisation plans coming soon. Add Hopewick to your home screen as a web app today. The Play Store app isn’t ready yet.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy on this device.</strong> Profiles, chats and memories stay in your browser. Sign-in stores your email and subscription status, not your chats.</li>
-        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
+        <li><strong>Hopewick Plus.</strong> 3 days free, then AU$20 a month for one person: SMART goals, journal, resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and saved chat history. Essential support stays free. Organisation plans coming soon.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 5 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
@@ -2583,6 +2648,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </form>
   <div class="dlg-body">
     <p class="help" id="bibleIntro" style="margin:10px 0 0"></p>
+    <p class="help" id="bibleDeeperLink" style="margin:8px 0 0"><button class="btn btn-sm" type="button" id="bibleOpenDeeper">Going Deeper study tracks</button></p>
     <div class="dlg-tabs" role="tablist" aria-label="Bible study sections">
       <button type="button" class="chip" role="tab" id="bibleTabSoap" aria-selected="true" data-bible-tab="soap">SOAP daily</button>
       <button type="button" class="chip" role="tab" id="bibleTabDeeper" aria-selected="false" data-bible-tab="deeper">Diving Deeper Finding Jesus</button>
@@ -2679,7 +2745,33 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </div>
 </dialog>
 
-
+<!-- ============================ Going Deeper study tracks ============================ -->
+<dialog id="deeperDlg" aria-labelledby="deeperTitle">
+  <form method="dialog" class="dlg-head">
+    <h2 id="deeperTitle" tabindex="-1">Going Deeper <span class="plus-pill" id="deeperTitlePill">Plus</span></h2>
+    <button class="icon-btn" value="close" aria-label="Close Going Deeper">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </form>
+  <div class="dlg-body">
+    <div class="crisis-card" id="deeperSafety" role="note">
+      <h3>Study is not care</h3>
+      <p>Going Deeper is optional reading. It is not counselling, not medical advice, and not a substitute for a GP, an AOD service, or a faith leader you trust. A lapse is not a failure.</p>
+      <p>If you are in danger, or thinking feels unsafe, stop this study. Call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>.</p>
+      <button class="btn btn-sm" type="button" id="deeperGetHelp">Get help now</button>
+    </div>
+    <p id="deeperIntro" style="margin:12px 0 0"></p>
+    <p class="help" id="deeperFaithNote"></p>
+    <div class="deeper-tracks" id="deeperTracks" role="group" aria-label="Study tracks"></div>
+    <div id="deeperBrowse"></div>
+    <p id="deeperBlurb"></p>
+    <div id="deeperGate" class="nut-gate"></div>
+    <div id="deeperLibrary" hidden>
+      <div class="deeper-days" id="deeperDayList" aria-label="Study days"></div>
+      <div id="deeperDayView" hidden></div>
+    </div>
+  </div>
+</dialog>
 
 <!-- ============================ Find nearby help ============================ -->
 <dialog id="nearbyDlg" aria-labelledby="nearbyTitle">
@@ -3173,6 +3265,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 
 <script src="data/word-for-the-day.js"></script>
 <script src="data/just-for-today.js"></script>
+<script src="data/going-deeper.js"></script>
 <script src="resume.js"></script>
 <script>
 'use strict';
@@ -3192,13 +3285,14 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.plans         per-person relapse / lapse plan and exit plans (Hopewick Plus; this device only)
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
+     eden.p.<id>.deeper        per-person Going Deeper study progress { completed }
      eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
      eden.p.<id>.resume        per-person resume draft (Hopewick Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-/* v5.24: Clear Free Hope daily limit screen. */
-const EDEN_BUILD = 'hopewick-v5.24';
+/* v5.25: Multi-faith Going Deeper study tracks. */
+const EDEN_BUILD = 'hopewick-v5.25';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -3208,7 +3302,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'breakers', 'selfcare', 'resume', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -3510,6 +3604,10 @@ let exitFocus = null;      // { kind: 'lib'|'custom', id } | null
 let goalsEditing = [true, true];
 let stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
 let bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
+let deeperProgress = { completed: {}, updated: 0 };
+let deeperTrackId = null;
+let deeperDayId = null;
+let deeperBrowseAll = false;
 let bibleTab = 'soap';
 let ddState = { section: 'genesis', dayId: null };
 let breakersState = { custom: [], tried: { date: '', ids: [] } };
@@ -3543,7 +3641,7 @@ const el = {
   switchBtn: $('#switchBtn'), switchAvatar: $('#switchAvatar'), switchName: $('#switchName'),
   soberCard: $('#soberCard'), soberDays: $('#soberDays'), soberLbl: $('#soberLbl'),
   settingsDlg: $('#settingsDlg'), memoriesDlg: $('#memoriesDlg'), pickerDlg: $('#pickerDlg'), helpDlg: $('#helpDlg'), disclaimerDlg: $('#disclaimerDlg'), onboardingDlg: $('#onboardingDlg'), aboutDlg: $('#aboutDlg'), needAiDlg: $('#needAiDlg'), inviteDlg: $('#inviteDlg'), accountDlg: $('#accountDlg'),
-  cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), plansDlg: $('#plansDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'),
+  cleanTimeDlg: $('#cleanTimeDlg'), goalsDlg: $('#goalsDlg'), plansDlg: $('#plansDlg'), stepsDlg: $('#stepsDlg'), bibleDlg: $('#bibleDlg'), deeperDlg: $('#deeperDlg'),
   nearbyDlg: $('#nearbyDlg'), nutritionDlg: $('#nutritionDlg'), gutDlg: $('#gutDlg'), brainDlg: $('#brainDlg'), coldDlg: $('#coldDlg'), skillsDlg: $('#skillsDlg'),
   circuitBreakerDlg: $('#circuitBreakerDlg'), selfCareDlg: $('#selfCareDlg'), meetingDlg: $('#meetingDlg'), treatmentDlg: $('#treatmentDlg'), aodDlg: $('#aodDlg'), churchDlg: $('#churchDlg'),
   toasts: $('#toasts'),
@@ -3636,6 +3734,10 @@ function loadProfileData(pid) {
   exitFocus = null;
   stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, load(pk(pid, 'steps'), {}));
   bibleProgress = normalizeBible(load(pk(pid, 'bible'), {}));
+  deeperProgress = normalizeDeeper(load(pk(pid, 'deeper'), {}));
+  deeperTrackId = null;
+  deeperDayId = null;
+  deeperBrowseAll = false;
   breakersState = normalizeBreakers(load(pk(pid, 'breakers'), {}));
   selfCareState = normalizeSelfCare(load(pk(pid, 'selfcare'), {}));
   resumeState = HopewickResume.normalizeResume(load(pk(pid, 'resume'), null));
@@ -3676,6 +3778,7 @@ function saveGoals() {
 }
 function saveSteps() { if (isDemo) return; save(pk(profile.id, 'steps'), stepsProgress); }
 function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), bibleProgress); }
+function saveDeeper() { if (isDemo) return; save(pk(profile.id, 'deeper'), deeperProgress); }
 function saveBreakers() { if (isDemo) return; save(pk(profile.id, 'breakers'), breakersState); }
 function saveSelfCare() { if (isDemo) return; save(pk(profile.id, 'selfcare'), selfCareState); }
 function saveResume() {
@@ -4463,7 +4566,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper faith content, 12 Steps practice, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
+  note.append('Today’s Readings stay free. Hopewick Plus — 3 days free, then AU$20/month unlocks SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, your clean time tracker, SOAP reflections, Going Deeper study tracks, 12 Steps practice, the full year of readings, and your saved chat history. Keep your conversation history on this device. Cloud sync is not enabled. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -4473,6 +4576,375 @@ function todayPlusNoteEl() {
   return note;
 }
 
+function goingDeeperHomeEl() {
+  const card = document.createElement('section');
+  card.className = 'deeper-home';
+  card.id = 'homeGoingDeeper';
+  const h = document.createElement('h2');
+  h.textContent = 'Going Deeper';
+  const p = document.createElement('p');
+  p.textContent = settings.faith === 'none'
+    ? 'Optional study on the values path. No creed required. Today’s reading above stays free. The study days are part of Hopewick Plus.'
+    : 'Optional study in your own tradition, or on a values path. Today’s reading above stays free. The study days are part of Hopewick Plus.';
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'btn';
+  b.id = 'homeGoingDeeperBtn';
+  b.textContent = 'Open Going Deeper';
+  b.addEventListener('click', () => openGoingDeeper());
+  card.append(h, p, b);
+  return card;
+}
+function goingDeeperTracks() {
+  return (typeof GOING_DEEPER_TRACKS !== 'undefined' && Array.isArray(GOING_DEEPER_TRACKS)) ? GOING_DEEPER_TRACKS : [];
+}
+function deeperTrackById(id) {
+  return goingDeeperTracks().find(t => t.id === id) || null;
+}
+function preferredDeeperTrackId() {
+  const faith = settings.faith || 'general';
+  const match = goingDeeperTracks().find(t => Array.isArray(t.faiths) && t.faiths.includes(faith));
+  return match ? match.id : 'values';
+}
+function visibleDeeperTracks() {
+  const tracks = goingDeeperTracks();
+  if (settings.faith === 'none' && !deeperBrowseAll) return tracks.filter(t => t.id === 'values');
+  return tracks;
+}
+function deeperFaithNote() {
+  const faith = settings.faith || 'general';
+  if (faith === 'none') {
+    return 'You chose no faith content. Bible & SOAP stay off. This opens on the values path. Other traditions stay hidden unless you ask to see them.';
+  }
+  if (faith === 'indigenous') {
+    return 'Hopewick does not write a study for Aboriginal and Torres Strait Islander spirituality. That knowledge belongs with Elders and community. If you need to talk, 13YARN is 13 92 76. The values path is optional. It is not culture, and it is not a substitute for your own people.';
+  }
+  if (faith === 'jewish' || faith === 'sikh') {
+    return 'A full track for Jewish practice, and a full track for Sikh practice, are not in this first set. Hopewick will not invent a thin version of your tradition. The values path is here if you want it. Your own community remains the place for teaching.';
+  }
+  if (faith === 'general') {
+    return 'General spirituality opens on the values path. You can open a tradition’s track if one of them is home. Nothing here is compulsory.';
+  }
+  if (faith === 'catholic') {
+    return 'Catholic and other Christian homes share this short track. It is Hopewick’s own words, not a church’s official teaching. For scripture in the app, use Bible & SOAP.';
+  }
+  return 'This follows your faith setting. You can open another track if you want. Study is optional, and it is not a substitute for your own community.';
+}
+function normalizeDeeper(raw) {
+  const d = Object.assign({ completed: {}, updated: 0 }, raw || {});
+  if (!d.completed || typeof d.completed !== 'object' || Array.isArray(d.completed)) d.completed = {};
+  return d;
+}
+function brisbaneStudySlot(d = new Date()) {
+  const iso = brisbaneDateISO(d);
+  const parts = iso.split('-').map(Number);
+  return readingDayIndex(parts[1], parts[2]) % 7;
+}
+function syncDeeperPlusPill() {
+  const pill = $('#deeperPlusPill');
+  const titlePill = $('#deeperTitlePill');
+  const plus = subscriptionPlus();
+  if (pill) pill.hidden = plus;
+  if (titlePill) titlePill.hidden = plus;
+}
+function bindGoingDeeperOnce() {
+  const dlg = el.deeperDlg;
+  if (!dlg || dlg.dataset.bound === '1') return;
+  dlg.dataset.bound = '1';
+  dlg.addEventListener('click', (e) => {
+    const trackBtn = e.target.closest('[data-deeper-track]');
+    if (trackBtn) {
+      deeperTrackId = trackBtn.getAttribute('data-deeper-track');
+      deeperDayId = null;
+      renderGoingDeeper();
+      return;
+    }
+    const dayBtn = e.target.closest('[data-deeper-day]');
+    if (dayBtn && subscriptionPlus()) {
+      deeperDayId = dayBtn.getAttribute('data-deeper-day');
+      renderGoingDeeper();
+      return;
+    }
+    if (e.target.closest('#deeperBack')) {
+      deeperDayId = null;
+      renderGoingDeeper();
+      return;
+    }
+    if (e.target.closest('#deeperBrowseAll')) {
+      deeperBrowseAll = true;
+      renderGoingDeeper();
+      return;
+    }
+    if (e.target.closest('#deeperHideOthers')) {
+      deeperBrowseAll = false;
+      deeperTrackId = 'values';
+      deeperDayId = null;
+      renderGoingDeeper();
+      return;
+    }
+    if (e.target.closest('#deeperGetHelp')) {
+      dlg.close();
+      openHelp();
+      return;
+    }
+    if (e.target.closest('#deeperPlusBtn')) {
+      dlg.close();
+      openAccountDlg();
+      return;
+    }
+    if (e.target.closest('#deeperToggleDone')) {
+      toggleDeeperDone();
+      return;
+    }
+    if (e.target.closest('#deeperTalk')) {
+      const track = deeperTrackById(deeperTrackId);
+      const day = track && (track.days || []).find(d => d.id === deeperDayId);
+      if (track && day) startDeeperChat(track, day);
+      return;
+    }
+    if (e.target.closest('#deeperOpenBible')) {
+      if (settings.faith === 'none') return;
+      dlg.close();
+      openBible();
+    }
+  });
+}
+function toggleDeeperDone() {
+  const track = deeperTrackById(deeperTrackId);
+  if (!track || !deeperDayId || !subscriptionPlus()) return;
+  const key = track.id + ':' + deeperDayId;
+  deeperProgress.completed = deeperProgress.completed || {};
+  if (deeperProgress.completed[key]) delete deeperProgress.completed[key];
+  else deeperProgress.completed[key] = true;
+  deeperProgress.updated = Date.now();
+  saveDeeper();
+  renderGoingDeeper();
+}
+function startDeeperChat(track, day) {
+  if (el.deeperDlg && el.deeperDlg.open) el.deeperDlg.close();
+  setAppTab('chat', { skipFocus: true });
+  const c = newConversation();
+  c.kind = 'deeper';
+  c.title = 'Going Deeper · ' + track.title;
+  c.systemExtra = [
+    `You are sitting with ${userName()} after an optional Going Deeper study day. This is not clinical care.`,
+    `Track: ${track.title}. Day: ${day.title}.`,
+    `Prompt they were offered: ${day.prompt}`,
+    'These pages are original Hopewick words. Do not invent verses, hadith, or sutras. If you paraphrase a tradition, say so.',
+    'Gentle Australian English. Never preachy or shaming. A lapse is not a moral failing and not a lack of faith.',
+    settings.faith === 'none' ? 'They chose no faith content. Stay with values. Do not introduce God, scripture, or a tradition unless they ask.' : 'Respect their faith setting. Do not push a different tradition.',
+    'If they are in crisis, use the crisis path and Get help. Do not keep studying.',
+  ].filter(Boolean).join('\n');
+  const opener = `Thanks for opening **${day.title}** on the ${track.title} track.\n\n${day.prompt}\n\nNo rush. We can stay with that, or leave it.`;
+  c.messages.push({ role: 'assistant', content: opener, ts: Date.now() });
+  persistConvos();
+  renderAll();
+  focusInput();
+}
+function renderGoingDeeper() {
+  bindGoingDeeperOnce();
+  const tracks = visibleDeeperTracks();
+  if (!tracks.length) return;
+  if (!tracks.some(t => t.id === deeperTrackId)) {
+    deeperTrackId = preferredDeeperTrackId();
+    deeperDayId = null;
+  }
+  if (!tracks.some(t => t.id === deeperTrackId)) {
+    deeperTrackId = tracks[0].id;
+    deeperDayId = null;
+  }
+  const track = deeperTrackById(deeperTrackId) || tracks[0];
+  deeperTrackId = track.id;
+  const note = $('#deeperFaithNote');
+  if (note) note.textContent = deeperFaithNote();
+  const intro = $('#deeperIntro');
+  if (intro) intro.textContent = 'Optional study in plain English. Hopewick wrote these pages. They are not a commercial devotional. They do not replace your community, a GP, or crisis support. Today’s Readings on Home stay free.';
+  const nav = $('#deeperTracks');
+  if (nav) {
+    nav.replaceChildren();
+    for (const t of tracks) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'deeper-track';
+      b.dataset.deeperTrack = t.id;
+      b.textContent = t.title;
+      b.setAttribute('aria-current', t.id === track.id ? 'true' : 'false');
+      nav.appendChild(b);
+    }
+  }
+  const browse = $('#deeperBrowse');
+  if (browse) {
+    browse.replaceChildren();
+    if (settings.faith === 'none') {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn btn-sm';
+      b.id = deeperBrowseAll ? 'deeperHideOthers' : 'deeperBrowseAll';
+      b.textContent = deeperBrowseAll ? 'Hide other traditions' : 'Show other traditions';
+      browse.appendChild(b);
+    }
+  }
+  const blurb = $('#deeperBlurb');
+  if (blurb) blurb.textContent = track.blurb || '';
+  const plus = subscriptionPlus();
+  const gate = $('#deeperGate');
+  const lib = $('#deeperLibrary');
+  if (lib) lib.hidden = !plus;
+  if (gate) {
+    gate.hidden = plus;
+    gate.replaceChildren();
+    if (!plus) {
+      const lead = document.createElement('p');
+      lead.textContent = 'Hopewick Plus opens the study days. Free keeps the track names and the day titles — not the readings. Today’s Readings on Home stay free.';
+      gate.appendChild(lead);
+      const label = document.createElement('p');
+      label.className = 'nut-filter-label';
+      label.textContent = 'Days in Plus · ' + track.title;
+      gate.appendChild(label);
+      const ul = document.createElement('ul');
+      ul.className = 'nut-tease';
+      ul.id = 'deeperTease';
+      for (const day of track.days || []) {
+        const li = document.createElement('li');
+        li.textContent = day.title;
+        ul.appendChild(li);
+      }
+      gate.appendChild(ul);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-primary';
+      btn.id = 'deeperPlusBtn';
+      btn.textContent = 'Start 3-day free trial';
+      gate.appendChild(btn);
+      const help = document.createElement('p');
+      help.className = 'help';
+      help.style.marginTop = '10px';
+      help.textContent = 'With or without Plus: if you are in danger, use Get help and call 000. Study is not a substitute for care.';
+      gate.appendChild(help);
+    }
+  }
+  if (!plus) {
+    const view = $('#deeperDayView');
+    const list = $('#deeperDayList');
+    if (view) { view.hidden = true; view.replaceChildren(); }
+    if (list) { list.replaceChildren(); }
+    syncDeeperPlusPill();
+    return;
+  }
+  if (!lib) { syncDeeperPlusPill(); return; }
+  const slot = brisbaneStudySlot();
+  const day = (track.days || []).find(d => d.id === deeperDayId) || null;
+  const list = $('#deeperDayList');
+  const view = $('#deeperDayView');
+  if (!day) {
+    if (view) { view.hidden = true; view.replaceChildren(); }
+    if (list) {
+      list.hidden = false;
+      list.replaceChildren();
+      (track.days || []).forEach((d, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'deeper-day';
+        b.dataset.deeperDay = d.id;
+        const kick = document.createElement('span');
+        kick.className = 'deeper-kicker';
+        const done = !!(deeperProgress.completed || {})[track.id + ':' + d.id];
+        kick.textContent = (i === slot ? 'Today in Brisbane' : ('Day ' + (i + 1))) + (done ? ' · done' : '');
+        b.appendChild(kick);
+        b.appendChild(document.createTextNode(d.title));
+        list.appendChild(b);
+      });
+    }
+  } else {
+    if (list) { list.hidden = true; list.replaceChildren(); }
+    if (view) {
+      view.hidden = false;
+      view.replaceChildren();
+      const back = document.createElement('button');
+      back.type = 'button';
+      back.className = 'btn btn-sm';
+      back.id = 'deeperBack';
+      back.textContent = 'Back to days';
+      view.appendChild(back);
+      const h = document.createElement('h3');
+      h.id = 'deeperDayTitle';
+      h.textContent = day.title;
+      view.appendChild(h);
+      const read = document.createElement('div');
+      read.className = 'deeper-reading';
+      read.id = 'deeperReading';
+      for (const para of String(day.reading || '').split(/\n\n+/)) {
+        const trimmed = para.trim();
+        if (!trimmed) continue;
+        const p = document.createElement('p');
+        p.textContent = trimmed;
+        read.appendChild(p);
+      }
+      view.appendChild(read);
+      const prompt = document.createElement('div');
+      prompt.className = 'deeper-callout';
+      prompt.id = 'deeperPrompt';
+      const ps = document.createElement('strong');
+      ps.textContent = 'Sit with this';
+      prompt.appendChild(ps);
+      const pp = document.createElement('p');
+      pp.textContent = day.prompt || '';
+      prompt.appendChild(pp);
+      view.appendChild(prompt);
+      const prac = document.createElement('div');
+      prac.className = 'deeper-callout';
+      prac.id = 'deeperPractice';
+      const prs = document.createElement('strong');
+      prs.textContent = 'One small step';
+      prac.appendChild(prs);
+      const prp = document.createElement('p');
+      prp.textContent = day.practice || '';
+      prac.appendChild(prp);
+      view.appendChild(prac);
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.style.marginTop = '12px';
+      const doneKey = track.id + ':' + day.id;
+      const isDone = !!(deeperProgress.completed || {})[doneKey];
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'btn btn-sm';
+      toggle.id = 'deeperToggleDone';
+      toggle.textContent = isDone ? 'Mark not done' : 'Mark day done';
+      row.appendChild(toggle);
+      const talk = document.createElement('button');
+      talk.type = 'button';
+      talk.className = 'btn btn-primary btn-sm';
+      talk.id = 'deeperTalk';
+      talk.textContent = 'Talk with Hope';
+      row.appendChild(talk);
+      if (track.id === 'christian' && settings.faith !== 'none') {
+        const bible = document.createElement('button');
+        bible.type = 'button';
+        bible.className = 'btn btn-sm';
+        bible.id = 'deeperOpenBible';
+        bible.textContent = 'Open Bible & SOAP';
+        row.appendChild(bible);
+      }
+      view.appendChild(row);
+    }
+  }
+  syncDeeperPlusPill();
+}
+function openGoingDeeper() {
+  if (!profile) return;
+  closeSidebar();
+  if (el.bibleDlg && el.bibleDlg.open) el.bibleDlg.close();
+  const visible = visibleDeeperTracks();
+  if (!deeperTrackId || !visible.some(t => t.id === deeperTrackId)) {
+    deeperTrackId = preferredDeeperTrackId();
+    deeperDayId = null;
+  }
+  renderGoingDeeper();
+  if (el.deeperDlg && !el.deeperDlg.open) el.deeperDlg.showModal();
+  const title = $('#deeperTitle');
+  if (title) title.focus();
+}
 function openTodayReading() {
   todayExpanded = true;
   if (appTab !== 'home') setAppTab('home');
@@ -4534,6 +5006,7 @@ function renderHome() {
   box.appendChild(hero);
   box.appendChild(needNowEl());
   box.appendChild(todayCardEl());
+  box.appendChild(goingDeeperHomeEl());
   box.appendChild(todayPlusNoteEl());
 
   const days = soberDaysCount();
@@ -4841,6 +5314,7 @@ function renderAll() {
   renderHistory();
   updateMoodPill();
   syncFaithBibleVisibility();
+  if (el.deeperDlg && el.deeperDlg.open) renderGoingDeeper();
   // Keep current tab; Home owns check-in. Conversations stay in memory either way.
   setAppTab(appTab || 'home', { skipFocus: true, forceRender: true, keepPrefs: launchPrefsOpen });
 }
@@ -4883,11 +5357,12 @@ function inAppToolsPrompt() {
   return [
     'IN-APP TOOLS',
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
-    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, bible, resume, church, selfcare, steps, plus.',
+    'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, deeper, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional wellness, a brain and recovery angle). Not medical advice and not a how-to. Do not give a temperature, a time, or a venue. Do not say cold is a cure for addiction or a treatment for it. Suggest a GP. Not for heart or blood-pressure problems, pregnancy, unmanaged conditions, or intoxication. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional wellness, a brain and recovery angle). Not medical advice and not a how-to. Do not give a temperature, a time, or a venue. Do not say cold is a cure for addiction or a treatment for it. Suggest a GP. Not for heart or blood-pressure problems, pregnancy, unmanaged conditions, or intoxication. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
-    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply.',
+    'deeper = Going Deeper study tracks (Hopewick Plus): optional reflections in the person’s own tradition, or a values path if they prefer no faith content. Not clinical care and not a sermon. If they chose no faith content, name the values path unless they ask for a tradition.',
+    'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply. Do not add deeper on a crisis reply.',
   ].join('\n');
 }
 
@@ -4906,6 +5381,7 @@ function counsellorPrompt(convo) {
     '- If they ask about gut health, the gut and mood, probiotics, fermented foods, fibre, serotonin, or dopamine in that wellness sense, name Gut health and include gut on the TOOLS line. Say the link is real and still being studied. Do not say a food or probiotic treats depression, anxiety, or addiction. Do not give a dose or a brand. Suggest a GP or dietitian, especially with medicine or a gut condition.',
     '- If they ask how habits form, why early recovery feels hard, neuroplasticity, or new pathways in the brain, name Brain habits and include brain on the TOOLS line. Explain it as practice: small repeats, rest, and support. Do not promise that the brain will be rewired, and do not sell a program. You may mention SMART goals, the journal, or chat as places to practise one small step — lightly, without pressure.',
     '- If they ask about ice baths, a cold plunge, cold-water immersion, a recovery spa, or contrast therapy, name Ice baths & recovery spas and include cold on the TOOLS line. Say it is optional wellness education, not a prescription and not a cure for addiction. Do not give a temperature, a time, or a how-to. Do not name a venue. Say it is not for everyone — heart or blood pressure, pregnancy, an unmanaged medical condition, or intoxication — and to talk to a GP. Tell them to stop and get help if they feel dizzy or have chest pain. You may mention Brain habits as the habit-and-path idea, lightly. Do not use an ice bath as a craving skill. TIPP stays a cool drink or a cool cloth, never an ice bath.',
+    '- If they ask to go deeper in their own tradition, or for a study track, or for a values path without faith, name Going Deeper and include deeper on the TOOLS line. It is optional Hopewick Plus reading, not a sermon and not treatment. Do not invent sacred quotations. Paraphrase and say so. If they chose no faith content, offer the values path and do not push a tradition.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
@@ -8420,7 +8896,7 @@ function openPlans() {
 }
 
 /* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
-const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'cold', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'cold', 'deeper', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
 const HOPE_TOOLS = {
   help: { label: 'Open Get help', open: () => openHelp() },
   dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
@@ -8437,6 +8913,7 @@ const HOPE_TOOLS = {
   gut: { label: 'Open gut health', open: () => openGut() },
   brain: { label: 'Open brain habits', open: () => openBrain() },
   cold: { label: 'Open ice baths & spas', open: () => openCold() },
+  deeper: { label: 'Open Going Deeper', open: () => openGoingDeeper() },
   bible: { label: 'Open Bible & SOAP', open: () => setAppTab('bible') },
   resume: { label: 'Open resume builder', open: () => setAppTab('resume') },
   church: { label: 'Find a church', open: () => openChurch() },
@@ -8452,7 +8929,8 @@ const GUT_LANG_RE = /\b(gut health|gut[- ]brain|microbiomes?|probiotics?|ferment
 const BRAIN_LANG_RE = /\b(neuroplasticity|new pathways?|pathways in (?:the |my )?brain|brain can change|how (?:the |my )?brain (?:changes|learns|learnt)|new habits?)\b/i;
 const COLD_LANG_RE = /\b(ice[- ]?baths?|cold[- ]?plung(?:e|es|ing)|cold[- ]water immersion|recovery spas?|contrast therap(?:y|ies)|contrast baths?)\b/i;
 const TODAY_LANG_RE = /\b(word for (the |today)|just for today|today'?s (reading|reflection|word)|daily reading)\b/i;
-const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional|going deeper)\b/i;
+const BIBLE_LANG_RE = /\b(bible|scripture|soap\b|devotional)\b/i;
+const DEEPER_LANG_RE = /\b(going deeper|study tracks?)\b/i;
 const RESUME_LANG_RE = /\b(resume|r[eé]sum[eé]|curriculum vitae|\bcv\b|job application)\b/i;
 const DV_LANG_RE = /\b(domestic( and| &)? family violence|family violence|1800\s*respect|dvconnect|not safe at home)\b/i;
 const HELP_LANG_RE = /\b(get help|helpline|hotline|lifeline|call 000|crisis (line|support|service))\b/i;
@@ -8479,6 +8957,7 @@ function textMatchesHopeTool(id, text) {
   if (id === 'gut') return GUT_LANG_RE.test(t);
   if (id === 'brain') return BRAIN_LANG_RE.test(t);
   if (id === 'cold') return COLD_LANG_RE.test(t);
+  if (id === 'deeper') return DEEPER_LANG_RE.test(t);
   if (id === 'bible') return BIBLE_LANG_RE.test(t);
   if (id === 'resume') return RESUME_LANG_RE.test(t);
   if (id === 'church') return CHURCH_LANG_RE.test(t);
@@ -9422,6 +9901,7 @@ function syncEducationPlusPills() {
   if (gut) gut.hidden = plus;
   if (brain) brain.hidden = plus;
   if (cold) cold.hidden = plus;
+  syncDeeperPlusPill();
 }
 function renderEducationGate(gate, cards, copy) {
   if (!gate) return;
@@ -9933,7 +10413,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, goals: goalsState, plans: plansState, steps: stepsProgress, bible: bibleProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
+    gratitude, journal, goals: goalsState, plans: plansState, steps: stepsProgress, bible: bibleProgress, deeper: deeperProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -9975,6 +10455,10 @@ $('#importFile').addEventListener('change', async (e) => {
     editingExit = null;
     stepsProgress = Object.assign({ currentStep: 1, notes: {}, completed: {}, updated: 0 }, data.steps || {});
     bibleProgress = normalizeBible(data.bible || {});
+    deeperProgress = normalizeDeeper(data.deeper || {});
+    deeperTrackId = null;
+    deeperDayId = null;
+    deeperBrowseAll = false;
     breakersState = normalizeBreakers(data.breakers || {});
     selfCareState = normalizeSelfCare(data.selfcare || {});
     if (data.resume) {
@@ -9984,7 +10468,7 @@ $('#importFile').addEventListener('change', async (e) => {
     }
     activeId = null;
     settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); savePlans(); saveSteps(); saveBible(); saveBreakers(); saveSelfCare(); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); savePlans(); saveSteps(); saveBible(); saveDeeper(); saveBreakers(); saveSelfCare(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
@@ -10594,7 +11078,7 @@ function autoGrow() {
   el.input.style.height = Math.min(el.input.scrollHeight, 180) + 'px';
 }
 function focusInput() {
-  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
+  const anyDialog = [el.pickerDlg, el.disclaimerDlg, el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg, el.needAiDlg, el.inviteDlg, el.aboutDlg, el.accountDlg].some(d => d && d.open);
   if (!anyDialog && window.matchMedia('(pointer: fine)').matches) el.input.focus({ preventScroll: true });
 }
 el.input.addEventListener('input', autoGrow);
@@ -10621,6 +11105,7 @@ $$('[data-open]').forEach(b => b.addEventListener('click', () => {
   else if (o === 'info' || o === 'news') { closeSidebar(); setAppTab('info'); }
   else if (o === 'steps') openSteps();
   else if (o === 'bible' || o === 'soap') setAppTab('bible');
+  else if (o === 'deeper') openGoingDeeper();
   else if (o === 'nearby') openNearby();
   else if (o === 'nutrition') openNutrition();
   else if (o === 'gut') openGut();
@@ -10663,7 +11148,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (profile && !anyDialog && (e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') { e.preventDefault(); newConversation(); }
 });
-[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
+[el.settingsDlg, el.memoriesDlg, el.helpDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.gutDlg, el.brainDlg, el.coldDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.meetingDlg, el.treatmentDlg, el.aodDlg, el.churchDlg].forEach(d => d.addEventListener('click', (e) => { if (e.target === d) d.close(); }));
 
 $('#breakerAddBtn').addEventListener('click', addCustomBreaker);
 $('#breakerCustom').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustomBreaker(); } });
@@ -10674,6 +11159,7 @@ $$('#breakerLinks [data-open=nearby]').forEach(b => b.addEventListener('click', 
 if (el.plansDlg) el.plansDlg.addEventListener('close', () => { commitPlanFields(); savePlans(); });
 $$('[data-bible-tab]').forEach(btn => btn.addEventListener('click', () => setBibleTab(btn.getAttribute('data-bible-tab'))));
 $('#bibleStartSoap')?.addEventListener('click', () => startTodaysSoap());
+$('#bibleOpenDeeper')?.addEventListener('click', () => openGoingDeeper());
 $('#bibleOpenReader')?.addEventListener('click', () => {
   const reading = todaySoapReading();
   openBibleReader(reading.book, reading.chapter, null);
@@ -10899,7 +11385,7 @@ function enterDemo() {
   if (busy) stopGeneration();
   stopSpeaking();
   if (convoMode) setConvoMode(false);
-  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
+  [el.pickerDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
   profile = Object.assign({}, DEMO_PERSON);
@@ -10917,6 +11403,10 @@ function enterDemo() {
   exitFocus = null;
   editingExit = null;
   stepsProgress = sample.steps; bibleProgress = sample.bible;
+  deeperProgress = normalizeDeeper({});
+  deeperTrackId = null;
+  deeperDayId = null;
+  deeperBrowseAll = false;
   breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
   resumeState = HopewickResume.emptyResume();
   resumePaintedFor = null;
@@ -10944,6 +11434,10 @@ function exitDemo() {
   editingExit = null;
   stepsProgress = { currentStep: 1, notes: {}, completed: {}, updated: 0 };
   bibleProgress = { entries: [], planDay: 1, completed: {}, notes: {}, divingDeeper: { completed: {} }, updated: 0 };
+  deeperProgress = { completed: {}, updated: 0 };
+  deeperTrackId = null;
+  deeperDayId = null;
+  deeperBrowseAll = false;
   breakersState = { custom: [], tried: { date: '', ids: [] } };
   selfCareState = { items: null, done: { date: '', ids: [] } };
   resumeState = HopewickResume.emptyResume();
@@ -11894,6 +12388,7 @@ async function refreshBilling() {
       if (el.gutDlg && el.gutDlg.open) renderGut();
       if (el.brainDlg && el.brainDlg.open) renderBrain();
       if (el.coldDlg && el.coldDlg.open) renderCold();
+      if (el.deeperDlg && el.deeperDlg.open) renderGoingDeeper();
       if (appTab === 'journal') {
         syncJournalGate();
         if (subscriptionPlus()) renderJournalList();
@@ -12075,7 +12570,7 @@ function appendPlusOffer(body) {
     'Gut health and neuroplasticity notes — plain language, Plus only',
     'Ice baths and recovery spa notes — plain language, Plus only',
     'Clean time tracker, SOAP reflections, and 12 Steps practice',
-    'Going Deeper faith content',
+    'Going Deeper study tracks — your tradition, or a values path',
     'The full year of readings',
     'Add another profile on this device',
     'Keep your conversation history on this device. Cloud sync is not enabled.',
