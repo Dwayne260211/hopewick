@@ -10,7 +10,6 @@ def test_marketing_plans_copy():
     assert 'id="plans"' in page
     assert "Hopewick Plus — AU$20/month" in page
     assert "AU$20" in page
-    assert "Unlock the full Hopewick experience" in page
     assert "Essential support stays free" in page
     assert "Daily message limits" in page
     assert "5 messages/day" in page
@@ -19,8 +18,9 @@ def test_marketing_plans_copy():
     assert "20 messages/day" not in page
     assert "200 messages/day" not in page
     assert "Cancel anytime. One subscription per person." in page
-    assert "Organisation plans coming soon" in page
-    assert "COMING SOON" in page
+    assert "not on sale yet" in page
+    assert "Organisation plans coming soon" not in page
+    assert "COMING SOON" not in page
     assert "Organisations and clinics" in page
     assert "Today’s Readings" in page
     assert "resume builder" in page.lower()
@@ -28,8 +28,9 @@ def test_marketing_plans_copy():
     assert "gut health and neuroplasticity" in page.lower()
     assert "Email me a sign-in link" in page
     assert "crisis" in page.lower()
-    assert "Add Hopewick to your home screen as a web app today." in page
-    assert "The Play Store app isn’t ready yet." in page
+    assert page.count("Use Hopewick now in your browser or add it to your home screen.") == 1
+    assert page.count("iPhone and Android store apps are coming soon.") == 1
+    assert "The Play Store app isn’t ready yet." not in page
     assert "Try the free demo" not in page
     assert "Join waitlist" not in page
     assert "Phone app coming soon" not in page
@@ -44,18 +45,16 @@ def test_marketing_plans_copy():
 
 
 def test_marketing_mobile_coming_soon():
-    """Landing teaser only — founder copy for iPhone and Android, with no store links yet."""
+    """One calm mention. No store links, and no second copy of the same line."""
     page = (ROOT / "index.html").read_text(encoding="utf-8")
     assert 'id="mobile"' in page
     assert 'id="practices"' not in page
     section = page.split('id="mobile"', 1)[1].split("</section>", 1)[0]
-    assert "Hopewick is coming to mobile" in section
-    assert "The Hopewick app is coming soon to iPhone and Android." in section
-    assert "Take Hope with you wherever you go, with recovery support, check-ins, tools, journalling and more right from your phone." in section
-    assert "Coming soon to the Apple App Store and Google Play." in section
-    assert "COMING SOON" in section
+    assert "Use Hopewick now in your browser or add it to your home screen." in section
+    assert "iPhone and Android store apps are coming soon." in section
     assert "apps.apple.com" not in section
     assert "play.google.com" not in section
+    assert page.count("iPhone and Android store apps are coming soon.") == 1
     assert "Coming soon to the app" not in page
     assert "Cognitive Behavioural Therapy" not in page
     assert "Dialectical Behaviour Therapy" not in page

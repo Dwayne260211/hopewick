@@ -121,8 +121,8 @@ def test_static_education_copy_and_gate():
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
     assert 'content="hopewick-v5.27"' in landing
     assert "Gut health and neuroplasticity notes — plain language, Plus only" in landing
-    assert ">Gut health</h3>" in landing
-    assert ">Brain habits</h3>" in landing
+    assert ">Gut health &amp; recovery</h3>" in landing
+    assert ">Building new brain habits</h3>" in landing
     assert "Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence" in landing
 
 
