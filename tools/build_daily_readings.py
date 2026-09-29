@@ -3,8 +3,13 @@
 
 Writes 365 Word-for-the-day entries and 365 Just-for-today entries, indexed by
 non-leap month and day (1 January = 0 … 31 December = 364). 29 February reuses
-28 February in the app. Prose is original. It is not AA/NA literature, not a
-commercial devotional, and not clinical advice.
+28 February in the app. Prose is original, plain, and written for a hard
+morning in recovery. It is not AA/NA literature, not a commercial devotional,
+and not clinical advice.
+
+The same pair is shown to everyone on that Brisbane date. Faith language is
+optional inside the reading (prayer or a friend, God or the next kind step).
+People who choose no faith content are not told they must believe.
 
 Run from the repo root:
   python3 tools/build_daily_readings.py
@@ -565,7 +570,7 @@ HANDMADE_TITLES = lines(
     """
 One true sentence
 The hour you can hold
-Leave the courtroom
+Skip the inner trial
 Food, then feelings
 Shame is not a coach
 A boundary with kindness
@@ -576,7 +581,7 @@ The pause that protects
 No life overhaul
 The next kind thing
 Water, food, truth
-Do not decide while flooded
+Do not decide while upset
 A softer inner voice
 The help already here
 Let good be good
@@ -593,29 +598,29 @@ Tell someone early
 The craving can wait
 Three small cares
 Mercy for a clumsy try
-A walk without a verdict
-Right-size the task
+A walk without a lecture
+Make the job smaller
 The way back is open
 Stay where it is safe
-Give the future its own calendar
+Leave tomorrow for tomorrow
 A table set for yourself
 Keep today on today's page
-The dignity of small things
+Small things have worth
 Unclench and continue
 A factual next step
 Borrow a little hope
-The lonely hour gets a chair
+Give the lonely hour company
 Do the care, skip the speech
-A gentler motivation
-The thought is not a prophet
+A kinder reason to try
+A thought is not a fact
 Ten minutes of willingness
 Recovery in ordinary clothes
-The unpolished version counts
-A living repair, kept light
+A messy try still counts
+A small repair is enough
 Put the phone in another room
 A kinder coach than shame
-The storm is not the climate
-Food before philosophy
+A bad hour is not the story
+Food before big thoughts
 Someone who wants you well
 A noon beginning
 The sharp word, repaired
@@ -623,36 +628,36 @@ Let the day be ordinary
 Stay for the dull stretch
 A limit that loves you
 Write it down and breathe
-The wave, not the identity
+A feeling is not the whole story
 A meeting, even silent
-The secret loses its job
+Tell the secret safely
 Choose the safer road
-A pocket-sized plan
+A plan for the next hour
 The body you thank
 Pause for one song
 Half a hope still counts
 A human hour
 Unfinished, and still welcome
-The light left for this step
+Enough light for this step
 Choose people
-This date, not every date
+This date is enough
 A longer exhale
 Worth protecting
 Call loneliness by its name
 A meal with no debate
-Steady beats dramatic
+Steady is enough today
 The next right kindness
-Leave the scoreboard
+Stop keeping score
 A day you do not abandon
-The courage of plain hours
+Courage in an ordinary hour
 A slower reply
 Recovery in the kitchen
-Do not stack tomorrow on tonight
-Welcome the unedited story
+Do not load tonight with tomorrow
+Tell the real story
 A night you actually wind down
 Half a prayer, or half a hope
 The habit of coming back
-A text-sized willingness
+Willingness the size of a text
 Hungry, angry, lonely, tired
 A boundary you mean
 """
@@ -662,10 +667,10 @@ TITLE_VERBS = [
     "Stay with",
     "Return to",
     "Make room for",
-    "Be faithful to",
+    "Be kind to",
     "Come back to",
     "Be gentle with",
-    "Keep faith with",
+    "Keep close to",
     "Honour",
 ]
 
@@ -676,39 +681,39 @@ TITLE_OBJECTS = [
     "the safer step",
     "a kinder pace",
     "today's real page",
-    "the help in front of you",
+    "the help already here",
     "a short pause",
     "an honest ask",
     "the way back",
     "a living repair",
     "company instead of a secret",
-    "the tired part of you",
+    "the tired part",
     "a promise sized for today",
-    "a boundary you can keep",
-    "the meal in front of you",
-    "a feeling, not a verdict",
-    "the evening you can still shape",
+    "a boundary that can be kept",
+    "the meal on the table",
+    "a feeling that can pass",
+    "the evening still open",
     "one safe person",
-    "the body that got you here",
-    "the truth that a craving is weather",
+    "the body that got this far",
+    "the truth that a craving can pass",
     "grief that has no tidy name",
-    "the decision not to hide a slip",
-    "the good you almost argued away",
+    "the choice not to hide a slip",
+    "the good almost argued away",
     "a meeting, even a quiet one",
     "sleep as part of staying well",
-    "a no that protects you",
-    "the story that is actually yours",
+    "a no that protects",
+    "the true story",
     "one plain task",
-    "the people who want you well",
-    "a prayer in your own words",
+    "people who are safe and kind",
+    "a simple prayer or a quiet hope",
     "a silence that counts as care",
     "the values under the day",
-    "a hope you borrowed honestly",
-    "the floor under your feet",
+    "a hope borrowed honestly",
+    "the floor underfoot",
     "water and the truth",
-    "the message you are afraid to send",
+    "the hard message",
     "a walk long enough to breathe",
-    "the part of the day you can still choose",
+    "the part of the day still open",
     "an ordinary kindness",
 ]
 
@@ -1481,88 +1486,14 @@ def sentences_of(text: str) -> list[str]:
 
 
 def build() -> tuple[list[dict], list[dict]]:
+    from plain_daily import compose
+
     theme_words = words()
     titles = build_titles()
-    # Titles must not duplicate the word headings or each other.
     overlap = set(theme_words) & set(titles)
     if overlap:
         raise SystemExit(f"titles collide with words: {sorted(overlap)[:8]}")
-
-    scene_pairs = take_pairs(len(PLACES), len(EVENTS), 365, 11)
-    feel_pairs = take_pairs(len(FEELING_WRAPS), len(FEELING_NP), 365, 29)
-    def_pairs = take_pairs(len(GERUNDS), len(ATTACKS), 365, 47)
-    for g, _a in def_pairs:
-        if not re.search(r"ing\b", GERUNDS[g].split()[0]) and not GERUNDS[g].startswith(
-            ("telling", "taking", "asking", "keeping", "staying", "breathing", "naming", "making", "eating", "drinking", "texting", "leaving", "sitting", "beginning", "speaking", "putting", "going", "writing", "letting", "choosing", "admitting", "forgiving", "sharing", "waiting", "coming", "softening", "noticing", "protecting", "saying", "stepping", "praying", "offering", "releasing", "checking", "slowing", "clearing", "preparing", "unclenching", "delaying", "borrowing", "looking", "replacing", "showing", "ending", "washing", "opening", "reading", "laughing", "apologising", "moving", "lighting", "feeding", "placing", "standing", "changing", "sending", "returning", "honouring", "resting", "doing", "winding", "receiving", "pausing", "reconciling", "trusting", "dropping", "tending", "giving", "using", "remembering", "handing", "setting", "walking", "thanking", "treating", "marking")
-        ):
-            # First word should be a gerund; catch obvious misses in review via samples.
-            pass
-
-    for base in PRACTICES:
-        we = to_we(base)
-        ie = to_i(base)
-        if re.search(r"\byou\b|\byour\b|\byourself\b", we):
-            raise SystemExit(f"we-shift failed: {base} -> {we}")
-        if re.search(r"\byou\b|\byour\b|\byourself\b", ie):
-            raise SystemExit(f"i-shift failed: {base} -> {ie}")
-        if not re.match(r"^[a-z]", base):
-            raise SystemExit(f"practice should start lowercase: {base}")
-
-    word_entries = []
-    jft_entries = []
-    for i, word in enumerate(theme_words):
-        month, day = index_to_month_day(i)
-        g_i, a_i = def_pairs[i]
-        definition = make_definition(i, GERUNDS[g_i], ATTACKS[a_i])
-        p_i, e_i = scene_pairs[i]
-        scene = f"You might be {PLACES[p_i]}, and {EVENTS[e_i]}."
-        scene_we = to_we(scene)
-        w_i, n_i = feel_pairs[i]
-        np = FEELING_NP[n_i]
-        feeling = FEELING_WRAPS[w_i].format(np=np, cap=capitalise(np))
-        if not feeling.endswith("."):
-            feeling += "."
-        season = ""
-        if i % 6 == 0:
-            season = SEASONS[month][(i // 6) % 2].format(word=word)
-
-        p_word = PRACTICES[i % len(PRACTICES)]
-        p_jft = PRACTICES[(i + 17) % len(PRACTICES)]
-        you_tag = YOU_TAGS[i % len(YOU_TAGS)].format(word=word)
-        we_tag = WE_TAGS[(i + 3) % len(WE_TAGS)].format(word=word)
-        you_sentence = practice_you(p_word, you_tag)
-        we_sentence = practice_we(p_jft, we_tag)
-        action = to_i(p_jft)
-
-        opener = WORD_OPENERS[i % len(WORD_OPENERS)].format(
-            word=word, definition=definition, scene=scene, feeling=feeling
-        )
-        if season:
-            opener = f"{opener} {season}"
-        jewel = JEWELS[i % len(JEWELS)].format(word=word)
-        spirit = SPIRITS[i % len(SPIRITS)].format(word=word)
-        close = CLOSES[(i + 2) % len(CLOSES)].format(word=word)
-        word_reading = paragraphs(opener, jewel, you_sentence, f"{spirit} {close}")
-
-        old = OLD_PATTERNS[i % len(OLD_PATTERNS)]
-        jft_open = JFT_OPENERS[(i + 4) % len(JFT_OPENERS)].format(word=word, old=old)
-        second = SECONDS[(i + 3) % len(SECONDS)]
-        middle = (
-            f"{scene_we} {we_sentence} "
-            f"Then one more care, small enough for '{word}', can be added: {second}."
-        )
-        jft_spirit = JFT_SPIRITS[(i + 5) % len(JFT_SPIRITS)].format(word=word)
-        jft_close = JFT_CLOSES[(i + 1) % len(JFT_CLOSES)].format(word=word, action=action)
-        if not jft_close.startswith("Just for today"):
-            raise SystemExit("close missing pledge")
-        jft_reading = paragraphs(jft_open, middle, jft_spirit, jft_close)
-
-        word_entries.append(
-            {"month": month, "day": day, "word": word, "reading": word_reading}
-        )
-        jft_entries.append(
-            {"month": month, "day": day, "title": titles[i], "reading": jft_reading}
-        )
+    word_entries, jft_entries = compose(theme_words, titles, index_to_month_day)
     validate(word_entries, jft_entries)
     return word_entries, jft_entries
 
@@ -1618,6 +1549,10 @@ def validate(words_e: list[dict], jft_e: list[dict]) -> None:
             if "<" in text or ">" in text:
                 raise SystemExit("markup in reading")
             for s in sents:
+                # Short refrains may repeat. Longer lines must stay unique so the
+                # year does not collapse into one copied paragraph.
+                if word_count(s) < 12:
+                    continue
                 prev = seen.get(s)
                 if prev:
                     raise SystemExit(f"duplicate sentence ({prev} and {label} {e['month']}-{e['day']}):\n{s}")
@@ -1670,13 +1605,13 @@ def main() -> None:
         OUT_DIR / "word-for-the-day.js",
         "WORD_FOR_THE_DAY",
         words_e,
-        "Word for the day — 365 original short readings.",
+        "Word for the day — 365 original plain-language readings.",
     )
     emit(
         OUT_DIR / "just-for-today.js",
         "JUST_FOR_TODAY",
         jft_e,
-        "Just for today — 365 original fellowship-style readings.",
+        "Just for today — 365 original plain-language readings.",
     )
     counts_w = [word_count(e["reading"]) for e in words_e]
     counts_j = [word_count(e["reading"]) for e in jft_e]
