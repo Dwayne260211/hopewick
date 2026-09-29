@@ -51,7 +51,7 @@ The landing page has a "Pilot with us" section for services. Organisation and cl
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. First-run onboarding is Welcome, what brings you here, a faith preference, then **Start talking to Hope**. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
+The **Get help now** button is always at the top of the screen. A signed-out visitor with no profile sees **Sign in** first. After that session, profile setup is Welcome, what brings you here, a faith preference, then the profile name. Someone already signed in with a profile goes straight to Home. `?demo=1` still skips account sign-in. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
 
 | Service | Number |
 |---|---|
@@ -89,9 +89,9 @@ Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` 
 
 ## First run
 
-1. **Who's chatting?** Add your profile. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you.
-2. Read the short one-time disclaimer.
-3. **Sign in** (email and password, or a one-time email link) and chat with Hope. You stay signed in on that browser until you sign out. Free is 5 messages a day. Hopewick Plus, including a 3-day trial and complimentary founder access, has no daily message limit. No personal API key. Settings → Developer (own API key, model endpoint, own provider, and invite redeem when that entry is turned on) is visible only when the signed-in account email is on `FOUNDER_PLUS_EMAILS`. A profile name does not unlock it. Guest, free, other Plus accounts, and `admin@bridge-bite-co.com` do not see it and cannot paste a key. A key already in this browser does not replace hosted Hope for those accounts.
+1. **Sign in.** Email and password, or **Email me a sign-in link** to create an account. You stay signed in on that browser until you sign out. This is the first screen when the account service is up and there is no profile yet. `?demo=1` skips it and stays on the local demo.
+2. **Profile setup**, only after that session if there is no profile yet: welcome, what brings you here, faith preference, then your name. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you. If you are already signed in and a profile is on this device, Hopewick opens Home instead.
+3. Read the short one-time disclaimer, then chat with Hope. Free is 5 messages a day. Hopewick Plus, including a 3-day trial and complimentary founder access, has no daily message limit. No personal API key. Settings → Developer (own API key, model endpoint, own provider, and invite redeem when that entry is turned on) is visible only when the signed-in account email is on `FOUNDER_PLUS_EMAILS`. A profile name does not unlock it. Guest, free, other Plus accounts, and `admin@bridge-bite-co.com` do not see it and cannot paste a key. A key already in this browser does not replace hosted Hope for those accounts.
 
 ## Features
 
