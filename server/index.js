@@ -86,12 +86,76 @@ const MIME = {
   '.ico': 'image/x-icon',
 };
 
-const magicAttempts = new Map();
+const HOUR_MS = 60 * 60 * 1000;
+const CHAT_WINDOW_MS = 10 * 60 * 1000;
+const magicByEmail = new Map();
+const magicByIp = new Map();
 const passwordFailures = new Map();
 const passwordChangeFailures = new Map();
 const deleteAttempts = new Map();
 const SENSITIVE_WINDOW_MS = 60 * 60 * 1000;
 const SENSITIVE_LIMIT = 8;
+const loginByIp = new Map();
+const chatByUser = new Map();
+const chatByIp = new Map();
+const rateBuckets = [
+  magicByEmail,
+  magicByIp,
+  passwordFailures,
+  loginByIp,
+  chatByUser,
+  chatByIp,
+  passwordChangeFailures,
+  deleteAttempts,
+];
+
+function positiveIntEnv(name, fallback) {
+  const raw = process.env[name];
+  if (raw == null || String(raw).trim() === '') return fallback;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 1) return fallback;
+  return Math.floor(n);
+}
+
+function pruneRateBuckets(now) {
+  if (pruneRateBuckets.last && now - pruneRateBuckets.last < 60_000) return;
+  pruneRateBuckets.last = now;
+  for (const map of rateBuckets) {
+    if (map.size < 2000) continue;
+    for (const [key, stamps] of map) {
+      const fresh = stamps.filter((t) => now - t < HOUR_MS);
+      if (!fresh.length) map.delete(key);
+      else map.set(key, fresh);
+    }
+  }
+}
+
+function recentHits(map, key, windowMs) {
+  const now = Date.now();
+  pruneRateBuckets(now);
+  const prev = (map.get(key) || []).filter((t) => now - t < windowMs);
+  if (!prev.length) map.delete(key);
+  else map.set(key, prev);
+  return prev;
+}
+
+function underLimit(map, key, limit, windowMs) {
+  return recentHits(map, key, windowMs).length < limit;
+}
+
+function recordHit(map, key, windowMs) {
+  const prev = recentHits(map, key, windowMs);
+  prev.push(Date.now());
+  map.set(key, prev);
+}
+
+function tooManyHits(map, key) {
+  return !underLimit(map, key, SENSITIVE_LIMIT, SENSITIVE_WINDOW_MS);
+}
+
+function noteHit(map, key) {
+  recordHit(map, key, SENSITIVE_WINDOW_MS);
+}
 
 export function devMode() {
   if (process.env.HOPEWICK_DEV === '0') return false;
@@ -132,6 +196,93 @@ function cookieSecure(req) {
   if (process.env.COOKIE_SECURE === '0') return false;
   if ((process.env.PUBLIC_BASE_URL || '').startsWith('https://')) return true;
   return requestOrigin(req).startsWith('https://');
+}
+
+/** True only when this request itself arrived over HTTPS (Render sets x-forwarded-proto). */
+function requestIsHttps(req) {
+  const proto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim().toLowerCase();
+  if (proto === 'https') return true;
+  if (proto === 'http') return false;
+  return requestOrigin(req).startsWith('https://');
+}
+
+/**
+ * Last address in X-Forwarded-For is the one a single reverse proxy appends.
+ * A caller-supplied list cannot hide behind a fake first address.
+ */
+function clientIp(req) {
+  const parts = String(req.headers['x-forwarded-for'] || '')
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
+  const last = parts.length ? parts[parts.length - 1] : '';
+  if (last) return last.slice(0, 80);
+  return (req.socket && req.socket.remoteAddress) || 'unknown';
+}
+
+/** Browsers send Origin on POST. Missing Origin is allowed for the app's tests and Stripe. */
+function originAllowed(req) {
+  const origin = req.headers.origin;
+  if (!origin) return true;
+  let url;
+  try { url = new URL(origin); } catch { return false; }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
+  const host = url.hostname.toLowerCase();
+  if (host && host === requestHostname(req)) return true;
+  try {
+    const configured = new URL(process.env.PUBLIC_BASE_URL || '').hostname.toLowerCase();
+    if (configured && host === configured) return true;
+  } catch { /* PUBLIC_BASE_URL is optional in local dev */ }
+  return false;
+}
+
+function contentSecurityPolicy(req) {
+  const connect = ["'self'", 'https:', 'http://127.0.0.1:7071', 'http://localhost:7071'];
+  const parts = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    "font-src 'self' data:",
+    `connect-src ${connect.join(' ')}`,
+  ];
+  if (requestIsHttps(req)) parts.push('upgrade-insecure-requests');
+  return parts.join('; ');
+}
+
+function securityHeaders(req) {
+  const headers = {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(self), geolocation=(self)',
+    'Content-Security-Policy': contentSecurityPolicy(req),
+    'X-Permitted-Cross-Domain-Policies': 'none',
+  };
+  if (requestIsHttps(req)) {
+    headers['Strict-Transport-Security'] = 'max-age=15552000; includeSubDomains';
+  }
+  return headers;
+}
+
+function installSecurityHeaders(req, res) {
+  const writeHead = res.writeHead;
+  res.writeHead = function writeHeadWithSecurity(status, reason, headers) {
+    let message = reason;
+    let hdrs = headers;
+    if (reason !== undefined && typeof reason !== 'string') {
+      hdrs = reason;
+      message = undefined;
+    }
+    const merged = { ...securityHeaders(req) };
+    if (hdrs && typeof hdrs === 'object' && !Array.isArray(hdrs)) Object.assign(merged, hdrs);
+    if (message !== undefined) return writeHead.call(res, status, message, merged);
+    return writeHead.call(res, status, merged);
+  };
 }
 
 /**
@@ -251,44 +402,60 @@ function safeNext(value) {
   return value;
 }
 
-function allowRate(email) {
-  const now = Date.now();
-  const prev = (magicAttempts.get(email) || []).filter((t) => now - t < 60 * 60 * 1000);
-  if (prev.length >= 8) return false;
-  prev.push(now);
-  magicAttempts.set(email, prev);
+function allowMagicLink(email, req) {
+  const ip = clientIp(req);
+  const emailLimit = positiveIntEnv('HOPEWICK_MAGIC_EMAIL_LIMIT', 8);
+  const ipLimit = positiveIntEnv('HOPEWICK_MAGIC_IP_LIMIT', 80);
+  if (!underLimit(magicByEmail, email, emailLimit, HOUR_MS)) return false;
+  if (!underLimit(magicByIp, ip, ipLimit, HOUR_MS)) return false;
+  recordHit(magicByEmail, email, HOUR_MS);
+  recordHit(magicByIp, ip, HOUR_MS);
+  return true;
+}
+
+function allowLoginIp(req) {
+  const ip = clientIp(req);
+  const limit = positiveIntEnv('HOPEWICK_LOGIN_IP_LIMIT', 120);
+  if (!underLimit(loginByIp, ip, limit, HOUR_MS)) return false;
+  recordHit(loginByIp, ip, HOUR_MS);
   return true;
 }
 
 function passwordBlocked(email) {
-  const now = Date.now();
-  const prev = (passwordFailures.get(email) || []).filter((t) => now - t < 60 * 60 * 1000);
-  passwordFailures.set(email, prev);
-  return prev.length >= 8;
+  const limit = positiveIntEnv('HOPEWICK_LOGIN_EMAIL_LIMIT', 8);
+  return !underLimit(passwordFailures, email, limit, HOUR_MS);
 }
 
 function notePasswordFailure(email) {
-  const now = Date.now();
-  const prev = (passwordFailures.get(email) || []).filter((t) => now - t < 60 * 60 * 1000);
-  prev.push(now);
-  passwordFailures.set(email, prev);
+  recordHit(passwordFailures, email, HOUR_MS);
 }
 
-function recentHits(map, key) {
-  const now = Date.now();
-  const prev = (map.get(key) || []).filter((t) => now - t < SENSITIVE_WINDOW_MS);
-  map.set(key, prev);
-  return prev;
+/**
+ * Hope calls that would reach the model. A person chatting normally stays under this.
+ * Crisis text that is already over the limit still gets the emergency message, not a refusal.
+ */
+function allowChatBurst(req, user) {
+  const ip = clientIp(req);
+  const perUser = positiveIntEnv('HOPEWICK_CHAT_BURST', 24);
+  const perIp = positiveIntEnv('HOPEWICK_CHAT_IP_LIMIT', 80);
+  if (!underLimit(chatByUser, user.id, perUser, CHAT_WINDOW_MS)) return false;
+  if (!underLimit(chatByIp, ip, perIp, CHAT_WINDOW_MS)) return false;
+  recordHit(chatByUser, user.id, CHAT_WINDOW_MS);
+  recordHit(chatByIp, ip, CHAT_WINDOW_MS);
+  return true;
 }
 
-function tooManyHits(map, key) {
-  return recentHits(map, key).length >= SENSITIVE_LIMIT;
+let dummyPasswordHashPromise;
+function dummyPasswordHash() {
+  if (!dummyPasswordHashPromise) dummyPasswordHashPromise = hashPassword('hopewick-password-timing');
+  return dummyPasswordHashPromise;
 }
 
-function noteHit(map, key) {
-  const prev = recentHits(map, key);
-  prev.push(Date.now());
-  map.set(key, prev);
+/** Always runs scrypt, including when the email has no account, so timing does not reveal that. */
+async function passwordMatches(password, user) {
+  if (user && user.passwordHash) return verifyPassword(password, user.passwordHash);
+  await verifyPassword(password, await dummyPasswordHash());
+  return false;
 }
 
 const RAW_CARD_KEYS = new Set(['card', 'cardnumber', 'card_number', 'pan', 'cvc', 'cvv', 'securitycode', 'expiry']);
@@ -447,8 +614,8 @@ async function sendMagicEmail(email, link, savingPassword = false) {
     }),
   });
   if (!response.ok) {
-    const detail = await response.text().catch(() => '');
-    const err = new Error(`Could not send the sign-in email (${response.status}). ${detail}`.trim());
+    console.error('Sign-in email was not sent. Provider status:', response.status);
+    const err = new Error('Could not send the sign-in email. Try again in a little while.');
     err.status = 502;
     throw err;
   }
@@ -530,14 +697,26 @@ async function handleWebhook(store, raw) {
   return { received: true, ignored: true };
 }
 
+const PRIVATE_DIRS = new Set(['server', 'tests', 'tools', 'docs', 'node_modules']);
+const PRIVATE_FILES = new Set([
+  'package.json',
+  'package-lock.json',
+  'dockerfile',
+  'render.yaml',
+  'setup.md',
+  'readme.md',
+  'license',
+]);
+
 function blockedStatic(rel) {
   const norm = rel.replace(/\\/g, '/').replace(/^\/+/, '');
   if (!norm) return false;
-  const segments = norm.split('/');
+  const segments = norm.split('/').filter(Boolean);
+  if (!segments.length) return false;
   if (segments.some((seg) => seg.startsWith('.'))) return true;
-  if (segments[0] === 'server') return true;
+  if (PRIVATE_DIRS.has(segments[0].toLowerCase())) return true;
+  if (segments.length === 1 && PRIVATE_FILES.has(segments[0].toLowerCase())) return true;
   if (norm === 'app/data/word-for-the-day.js' || norm === 'app/data/just-for-today.js') return true;
-  if (norm === 'package.json' || norm === 'package-lock.json') return true;
   return false;
 }
 
@@ -711,19 +890,14 @@ async function handleApi(store, chats, req, res, url) {
       json(res, 400, { error: 'Enter your email and password. If you do not have a password yet, email yourself a sign-in link.' });
       return;
     }
-    if (passwordBlocked(email)) {
+    if (!allowLoginIp(req) || passwordBlocked(email)) {
       json(res, 429, { error: 'Too many sign-in attempts. Try again in a little while, or email yourself a sign-in link.' });
       return;
     }
     const user = store.findByEmail(email);
-    if (!user || !user.passwordHash) {
-      // Same response as a wrong password so login cannot confirm that an email exists.
-      notePasswordFailure(email);
-      json(res, 401, { error: 'That email or password is not right.', code: 'password' });
-      return;
-    }
-    const ok = await verifyPassword(password, user.passwordHash);
+    const ok = await passwordMatches(password, user);
     if (!ok) {
+      // Same response whether the email is unknown, has no password, or the password is wrong.
       notePasswordFailure(email);
       json(res, 401, { error: 'That email or password is not right.', code: 'password' });
       return;
@@ -805,7 +979,7 @@ async function handleApi(store, chats, req, res, url) {
         return;
       }
     }
-    if (!allowRate(email)) {
+    if (!allowMagicLink(email, req)) {
       json(res, 429, { error: 'Too many sign-in links for that email. Try again in a little while.' });
       return;
     }
@@ -862,6 +1036,7 @@ async function handleApi(store, chats, req, res, url) {
       Location: next,
       'Set-Cookie': cookie,
       'Cache-Control': 'no-store',
+      'Referrer-Policy': 'no-referrer',
     });
     res.end();
     return;
@@ -1321,6 +1496,21 @@ async function handleHopeChat(store, req, res) {
     return;
   }
 
+  if (!allowChatBurst(req, user)) {
+    if (crisis) {
+      if (stream) writeSse(res, CRISIS_FALLBACK);
+      else json(res, 200, completionJson(CRISIS_FALLBACK));
+      return;
+    }
+    json(res, 429, {
+      error: {
+        message: 'Hope needs a short pause. Please try again in a few minutes.',
+        code: 'rate',
+      },
+    });
+    return;
+  }
+
   commitSpend(user, admission);
   store.save(user);
 
@@ -1384,22 +1574,23 @@ export function createApp({ store, chats, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   return async function onRequest(req, res) {
+    installSecurityHeaders(req, res);
     try {
       if (maybeCanonicalRedirect(req, res)) return;
       const host = req.headers.host || '127.0.0.1';
       const url = new URL(req.url || '/', `http://${host}`);
       if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
-        res.writeHead(204, {
-          'Access-Control-Allow-Origin': requestOrigin(req),
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Headers': 'Content-Type, Accept',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
-          'Access-Control-Max-Age': '600',
-        });
+        res.writeHead(204, { 'Cache-Control': 'no-store' });
         res.end();
         return;
       }
       if (url.pathname.startsWith('/api/')) {
+        const crossSiteWrite = (req.method === 'POST' && url.pathname !== '/api/billing/webhook') || req.method === 'PUT';
+        if (crossSiteWrite && !originAllowed(req)) {
+          req.resume();
+          json(res, 403, { error: 'That request was blocked.' });
+          return;
+        }
         await handleApi(store, chatStore, req, res, url);
         return;
       }

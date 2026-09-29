@@ -8,6 +8,7 @@ import path from 'node:path';
 
 import { startServer, REPO_ROOT, SESSION_MS } from './index.js';
 import { createStore, hashToken } from './store.js';
+import { verifyPassword } from './password.js';
 
 const realFetch = globalThis.fetch;
 
@@ -35,6 +36,11 @@ async function listen(env, stripeCalls) {
     OPENAI_MODEL: process.env.OPENAI_MODEL,
     HOPEWICK_FREE_DAILY: process.env.HOPEWICK_FREE_DAILY,
     HOPEWICK_PLUS_DAILY: process.env.HOPEWICK_PLUS_DAILY,
+    HOPEWICK_CHAT_BURST: process.env.HOPEWICK_CHAT_BURST,
+    HOPEWICK_CHAT_IP_LIMIT: process.env.HOPEWICK_CHAT_IP_LIMIT,
+    HOPEWICK_MAGIC_IP_LIMIT: process.env.HOPEWICK_MAGIC_IP_LIMIT,
+    HOPEWICK_MAGIC_EMAIL_LIMIT: process.env.HOPEWICK_MAGIC_EMAIL_LIMIT,
+    HOPEWICK_LOGIN_IP_LIMIT: process.env.HOPEWICK_LOGIN_IP_LIMIT,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -48,6 +54,11 @@ async function listen(env, stripeCalls) {
   delete process.env.OPENAI_MODEL;
   delete process.env.HOPEWICK_FREE_DAILY;
   delete process.env.HOPEWICK_PLUS_DAILY;
+  delete process.env.HOPEWICK_CHAT_BURST;
+  delete process.env.HOPEWICK_CHAT_IP_LIMIT;
+  delete process.env.HOPEWICK_MAGIC_IP_LIMIT;
+  delete process.env.HOPEWICK_MAGIC_EMAIL_LIMIT;
+  delete process.env.HOPEWICK_LOGIN_IP_LIMIT;
   Object.assign(process.env, env);
 
   const openaiCalls = [];
@@ -858,6 +869,7 @@ test('an expired session does not sign anyone in', () => {
     user.session = { hash: hashToken('fresh-token'), expiresAt: Date.now() + SESSION_MS };
     store.save(user);
     assert.equal(store.findBySession('fresh-token').email, 'old@example.com');
+    assert.equal(fs.statSync(path.join(dir, 'users.json')).mode & 0o777, 0o600);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
@@ -1515,4 +1527,152 @@ test('plus library stays off the free page and crisis at the cap does not call t
   } finally {
     await app.close();
   }
+});
+
+test('responses send security headers and hide repo files', async () => {
+  const app = await listen({}, []);
+  try {
+    const health = await fetch(`${app.base}/api/health`);
+    assert.equal(health.status, 200);
+    assert.equal(health.headers.get('x-content-type-options'), 'nosniff');
+    assert.equal(health.headers.get('x-frame-options'), 'DENY');
+    assert.equal(health.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
+    assert.match(health.headers.get('content-security-policy') || '', /frame-ancestors 'none'/);
+    assert.match(health.headers.get('content-security-policy') || '', /script-src 'self' 'unsafe-inline'/);
+    assert.match(health.headers.get('permissions-policy') || '', /microphone=\(self\)/);
+    assert.equal(health.headers.get('strict-transport-security'), null);
+    assert.equal(health.headers.get('access-control-allow-origin'), null);
+
+    const https = await fetch(`${app.base}/api/health`, { headers: { 'x-forwarded-proto': 'https' } });
+    assert.match(https.headers.get('strict-transport-security') || '', /max-age=15552000/);
+
+    const opt = await fetch(`${app.base}/api/auth/me`, { method: 'OPTIONS' });
+    assert.equal(opt.status, 204);
+    assert.equal(opt.headers.get('access-control-allow-origin'), null);
+    assert.equal(opt.headers.get('x-content-type-options'), 'nosniff');
+
+    const page = await fetch(`${app.base}/app/`);
+    assert.equal(page.status, 200);
+    assert.match(page.headers.get('content-security-policy') || '', /connect-src 'self' https:/);
+
+    for (const route of ['/SETUP.md', '/render.yaml', '/Dockerfile', '/server/index.js', '/server/data/users.json', '/server/library/education.json', '/tests/test_signin.py', '/docs/how-it-fits.md', '/package.json', '/app/data/word-for-the-day.js']) {
+      const hidden = await fetch(`${app.base}${route}`);
+      assert.equal(hidden.status, 404, route);
+    }
+    const guide = await fetch(`${app.base}/how-it-fits.html`);
+    assert.equal(guide.status, 200);
+
+    const sent = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: app.base },
+      body: JSON.stringify({ email: 'headers@example.com' }),
+    });
+    const data = await sent.json();
+    assert.equal(sent.status, 200);
+    const verified = await fetch(data.devLink, {
+      redirect: 'manual',
+      headers: { 'x-forwarded-proto': 'https' },
+    });
+    assert.equal(verified.headers.get('referrer-policy'), 'no-referrer');
+    assert.match(verified.headers.get('set-cookie') || '', /HttpOnly/);
+    assert.match(verified.headers.get('set-cookie') || '', /Secure/);
+  } finally {
+    await app.close();
+  }
+});
+
+test('a different website cannot post a sign-in', async () => {
+  const app = await listen({}, []);
+  try {
+    const blocked = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: 'https://evil.example' },
+      body: JSON.stringify({ email: 'victim@example.com' }),
+    });
+    assert.equal(blocked.status, 403);
+    assert.equal(blocked.headers.get('set-cookie'), null);
+    const disk = fs.existsSync(app.storePath) ? fs.readFileSync(app.storePath, 'utf8') : '';
+    assert.equal(disk.includes('victim@example.com'), false);
+
+    const hook = await fetch(`${app.base}/api/billing/webhook`, {
+      method: 'POST',
+      headers: { Origin: 'https://evil.example', 'Stripe-Signature': 't=1,v1=nope' },
+      body: '{}',
+    });
+    assert.equal(hook.status, 400);
+  } finally {
+    await app.close();
+  }
+});
+
+test('one address cannot request unlimited sign-in links', async () => {
+  const app = await listen({ HOPEWICK_MAGIC_IP_LIMIT: '2' }, []);
+  const ip = '198.51.100.44';
+  try {
+    for (const email of ['one@example.com', 'two@example.com']) {
+      const res = await fetch(`${app.base}/api/auth/magic-link`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': ip },
+        body: JSON.stringify({ email }),
+      });
+      assert.equal(res.status, 200, email);
+    }
+    const blocked = await fetch(`${app.base}/api/auth/magic-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': ip },
+      body: JSON.stringify({ email: 'three@example.com' }),
+    });
+    assert.equal(blocked.status, 429);
+    const disk = fs.readFileSync(app.storePath, 'utf8');
+    assert.equal(disk.includes('three@example.com'), false);
+    assert.equal(disk.includes('one@example.com'), true);
+  } finally {
+    await app.close();
+  }
+});
+
+test('Hope pauses a fast repeat and still gives the crisis message', async () => {
+  const app = await listen({
+    OPENAI_API_KEY: 'sk-test-hope-secret',
+    HOPEWICK_CHAT_BURST: '2',
+  }, []);
+  try {
+    const session = await signIn(app.base, 'burst@example.com');
+    for (let i = 0; i < 2; i += 1) {
+      const ok = await fetch(`${app.base}/api/hope/chat`, {
+        method: 'POST',
+        headers: { cookie: session, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: `Hello ${i}` }] }),
+      });
+      assert.equal(ok.status, 200);
+    }
+    const paused = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'Again' }] }),
+    });
+    assert.equal(paused.status, 429);
+    assert.equal((await paused.json()).error.code, 'rate');
+    assert.equal(app.openaiCalls.length, 2);
+
+    const crisis = await fetch(`${app.base}/api/hope/chat`, {
+      method: 'POST',
+      headers: { cookie: session, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: 'I want to die' }] }),
+    });
+    const crisisBody = await crisis.json();
+    assert.equal(crisis.status, 200);
+    assert.match(crisisBody.choices[0].message.content, /000/);
+    assert.match(crisisBody.choices[0].message.content, /13 11 14/);
+    assert.equal(app.openaiCalls.length, 2);
+  } finally {
+    await app.close();
+  }
+});
+
+test('a tampered password hash is rejected quickly', async () => {
+  const started = Date.now();
+  const ok = await verifyPassword('secret', `scrypt$999999999$99$99$${ 'aa'.repeat(16) }$${ 'bb'.repeat(32) }`);
+  assert.equal(ok, false);
+  assert.ok(Date.now() - started < 1000);
 });
