@@ -42,7 +42,7 @@ def _cold_source() -> str:
 def test_static_cold_education_copy_and_gate():
     text = APP.read_text(encoding="utf-8")
     cards = _cold_source()
-    assert "EDEN_BUILD = 'hopewick-v5.26'" in text
+    assert "EDEN_BUILD = 'hopewick-v5.27'" in text
     assert "function openCold" in text
     assert "function renderCold" in text
     assert 'id="coldLibrary" hidden' in text
@@ -100,7 +100,7 @@ def test_static_cold_education_copy_and_gate():
     assert "api key" not in html_low
     assert "rarely come up" not in html_low
     landing = (ROOT / "index.html").read_text(encoding="utf-8")
-    assert 'content="hopewick-v5.26"' in landing
+    assert 'content="hopewick-v5.27"' in landing
     assert ">Ice baths &amp; recovery spas</h3>" in landing
     assert "meeting discomfort on purpose" in landing
     assert "rarely come up" not in landing

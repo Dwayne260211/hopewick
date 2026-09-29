@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_sign_in_screen_and_build():
     app = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
     land = (ROOT / "index.html").read_text(encoding="utf-8")
-    assert "EDEN_BUILD = 'hopewick-v5.26'" in app
-    assert 'content="hopewick-v5.26"' in land
+    assert "EDEN_BUILD = 'hopewick-v5.27'" in app
+    assert 'content="hopewick-v5.27"' in land
     assert "accountSignInForm" in app
     assert 'id="accountPassword"' in app
     assert 'id="accountSignInBtn"' in app
