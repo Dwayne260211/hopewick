@@ -103,7 +103,7 @@ def test_static_education_copy_and_gate():
     assert "Gut health and neuroplasticity notes — plain language, Plus only" in landing
     assert ">Gut health</h3>" in landing
     assert ">Brain habits</h3>" in landing
-    assert "Nutrition notes — food, water, and supplements people ask about" in landing
+    assert "Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence" in landing
 
 
 def _server():
@@ -271,8 +271,8 @@ def test_education_plus_gate_phone():
             _open_side(page, "nutrition")
             page.wait_for_function("() => document.getElementById('nutritionDlg')?.open === true")
             nut = page.locator("#nutritionDlg").text_content()
-            assert "General information only — not medical advice" in nut
-            assert "Benefit" in nut
+            assert "Education, not individual medical advice" in nut
+            assert "What the evidence says" in nut
             assert "Fish oil / omega-3" in nut
             page.keyboard.press("Escape")
 
