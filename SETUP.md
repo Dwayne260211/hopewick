@@ -14,9 +14,9 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 |---|---|---|
 | Website | Yes | Yes |
 | Crisis, domestic and family violence, Get help | Always | Always |
-| Hope chat | 5 messages/day | No daily message limit |
+| Hope chat | 15 messages/day | No daily message limit |
 | Chat history | Latest conversation on a free account | Saved chat history on this device |
-| Daily message limit (marketing policy) | 5 messages/day | No daily message limit (active, trialing, and founder) |
+| Daily message limit (marketing policy) | 15 messages/day | No daily message limit (active, trialing, and founder) |
 | Reading library (any day of the year) | Today only | Yes |
 | SMART goals | Tease only | Full weekly editor, on this device |
 | Journal | Tab with an upgrade | Write, edit, deepen |
@@ -26,7 +26,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
 
-The free daily message limit (5 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 3-day trial, and complimentary founder emails have no daily message cap. Crisis and Get help replies are not counted and are not refused for the free cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
+The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 3-day trial, and complimentary founder emails have no daily message cap. Crisis and Get help replies are not counted and are not refused for the free cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
 
 ## Environment variables
 
@@ -158,7 +158,7 @@ That checks magic-link sign-in, setting a password, password sign-in, the lastin
 
 GitHub Pages serves https://hopewick.com.au today (apex `A` records to GitHub’s IPs, `www` `CNAME` to `dwayne260211.github.io`). Pages is static, so `https://hopewick.com.au/api/billing/*` returns a GitHub **404** page. The companion calls `/api/...` on the same origin (`SameSite=Lax`, host-only cookie). The process in `server/index.js` already serves the HTML and `/api` together. Production is that one process, on [Render](https://render.com), in Singapore.
 
-Hosted Hope for signed-in Free and Plus accounts runs on this same service: `POST /api/hope/chat`. Set `OPENAI_API_KEY` on the server (the key already used by `hopewick-api` is the one to copy). Do not put that key in the browser or in git. Free is 5 messages a day. Plus, a 3-day trial, and complimentary founder emails have no daily message limit. The count is the Australia/Brisbane calendar day and is stored beside the account, not the conversation.
+Hosted Hope for signed-in Free and Plus accounts runs on this same service: `POST /api/hope/chat`. Set `OPENAI_API_KEY` on the server (the key already used by `hopewick-api` is the one to copy). Do not put that key in the browser or in git. Free is 15 messages a day. Plus, a 3-day trial, and complimentary founder emails have no daily message limit. The count is the Australia/Brisbane calendar day and is stored beside the account, not the conversation.
 
 The older invite-code proxy stays at `https://hopewick-api.azurewebsites.net/api` for Developer / organisation pilots. It is not the path a paying customer uses.
 

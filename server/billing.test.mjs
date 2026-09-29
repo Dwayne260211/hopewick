@@ -500,21 +500,21 @@ test('FOUNDER_PLUS_EMAILS overrides the default and still ignores the organisati
   }
 });
 
-test('free Hope defaults to 5 a day and a trial has no daily cap', async () => {
+test('free Hope defaults to 15 a day and a trial has no daily cap', async () => {
   const app = await listen({
     OPENAI_API_KEY: 'sk-test-hope-secret',
     HOPEWICK_PLUS_DAILY: '2',
   }, []);
   try {
     const config = await (await fetch(`${app.base}/api/billing/config`)).json();
-    assert.equal(config.freeDailyMessages, 5);
+    assert.equal(config.freeDailyMessages, 15);
     assert.equal(config.plusDailyMessages, null);
 
     const free = await signIn(app.base, 'five@example.com');
     const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie: free } })).json();
     assert.equal(usage.plus, false);
-    assert.equal(usage.limit, 5);
-    assert.equal(usage.remaining, 5);
+    assert.equal(usage.limit, 15);
+    assert.equal(usage.remaining, 15);
     assert.equal(usage.resetLabel, 'midnight, Brisbane time');
     assert.equal(usage.trialEligible, true);
 

@@ -176,7 +176,7 @@ def test_cold_education_plus_gate_phone():
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
             assert "Ice baths and recovery spa notes — plain language, Plus only" in account
-            assert "5 messages/day" in account
+            assert "15 messages/day" in account
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
             page.keyboard.press("Escape")

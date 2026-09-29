@@ -10,7 +10,7 @@
  * Azure invite proxy). The browser never receives it.
  *
  * Plus Checkout includes a 3-day trial, then the existing monthly price.
- * Daily caps: Free is 5 messages. Hopewick Plus, a 3-day trial, and
+ * Daily caps: Free is 15 messages. Hopewick Plus, a 3-day trial, and
  * complimentary founder emails have no daily message cap. Counts use the
  * Australia/Brisbane calendar day. A crisis reply that calls the model
  * spends a message. Once the free cap is reached, crisis gets the static
@@ -1502,7 +1502,7 @@ async function pipeUpstream(res, upstream) {
 async function handleHopeChat(store, req, res) {
   const user = currentUser(req, store);
   if (!user) {
-    json(res, 401, { error: { message: 'Sign in to chat with Hope. Free is 5 messages a day. Hopewick Plus has no daily message limit.', code: 'auth' } });
+    json(res, 401, { error: { message: 'Sign in to chat with Hope. Free is 15 messages a day. Hopewick Plus has no daily message limit.', code: 'auth' } });
     return;
   }
 

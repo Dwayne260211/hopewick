@@ -23,7 +23,7 @@ def test_static_hope_limit_copy():
     assert "EDEN_BUILD = 'hopewick-v5.27'" in text
     assert 'content="hopewick-v5.27"' in land
     assert 'id="hopeLimit"' in text
-    assert "You’ve used your 5 free Hope messages for today" in text
+    assert "You’ve used your 15 free Hope messages for today" in text
     assert "They reset at midnight, Brisbane time." in text
     assert "Hopewick Plus has no daily limit with Hope." in text
     assert "A 3-day trial is there if you’d like to keep talking." in text
@@ -39,7 +39,7 @@ def test_static_hope_limit_copy():
     assert "hopeAtDailyCap() && !crisis" in text
     assert "e.code === 'daily_cap'" in text
     assert "left today" in text
-    assert "FREE_DAILY_DEFAULT = 5" in server
+    assert "FREE_DAILY_DEFAULT = 15" in server
     assert "HOPE_RESET_LABEL = 'midnight, Brisbane time'" in server
     assert "You’ve used your ${n} free Hope ${noun} for today" in server
     assert "domestic and family violence resources, and Get help stay free" in server
@@ -55,7 +55,7 @@ def _server():
 def _arm(page, **opts):
     defaults = {
         "remaining": 0,
-        "limit": 5,
+        "limit": 15,
         "trial": True,
         "checkout": True,
         "plus": False,
@@ -116,15 +116,15 @@ def _install_fetch(page):
               }
               if (window.__hopeUsageLive) {
                 window.__hopeUsageLive.remaining = 0;
-                window.__hopeUsageLive.used = window.__hopeUsageLive.limit || 5;
+                window.__hopeUsageLive.used = window.__hopeUsageLive.limit || 15;
               }
               return new Response(JSON.stringify({
                 error: {
-                  message: 'You’ve used your 5 free Hope messages for today. They reset at midnight, Brisbane time.',
+                  message: 'You’ve used your 15 free Hope messages for today. They reset at midnight, Brisbane time.',
                   code: 'daily_cap',
                 },
-                limit: 5,
-                used: 5,
+                limit: 15,
+                used: 15,
                 remaining: 0,
                 resetLabel: 'midnight, Brisbane time',
               }), { status: 429, headers: { 'Content-Type': 'application/json' } });
@@ -160,7 +160,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             assert page.evaluate("() => hopeAtDailyCap()") is False
 
             _arm(page, remaining=2, trial=True, checkout=True)
-            assert page.locator("#hopeAllowance").inner_text() == "2 of 5 left today"
+            assert page.locator("#hopeAllowance").inner_text() == "2 of 15 left today"
             assert page.locator("#hopeLimit").is_hidden()
             assert page.locator("#input").is_enabled()
 
@@ -171,7 +171,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             page.wait_for_function("() => !document.querySelector('.typing')")
             page.wait_for_function("() => document.getElementById('headerOrb').dataset.state !== 'thinking'")
             limit = page.inner_text("#hopeLimit")
-            assert "You’ve used your 5 free Hope messages for today" in limit
+            assert "You’ve used your 15 free Hope messages for today" in limit
             assert "They reset at midnight, Brisbane time." in limit
             assert "no daily limit with Hope" in limit
             assert "3-day trial" in limit
@@ -232,7 +232,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             page.click("#hopeLimitPlus")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
-            assert "5 of 5 messages used today" in account
+            assert "15 of 15 messages used today" in account
             assert "midnight, Brisbane time" in account
             assert "no daily message limit" in account.lower()
             page.keyboard.press("Escape")

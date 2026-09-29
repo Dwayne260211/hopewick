@@ -5,7 +5,7 @@
  */
 import { publicUser } from './store.js';
 
-export const FREE_DAILY_DEFAULT = 5;
+export const FREE_DAILY_DEFAULT = 15;
 /** Free count rolls over at midnight in Australia/Brisbane (no daylight saving). */
 export const HOPE_RESET_LABEL = 'midnight, Brisbane time';
 const MAX_MESSAGES = 40;

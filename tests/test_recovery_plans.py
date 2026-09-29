@@ -59,7 +59,7 @@ def test_static_plans_hub():
     assert 'id="appTabHome"' in text
     assert 'data-tab="plans"' not in text
     assert 'data-need="plans"' not in text
-    assert "5 messages/day" in text
+    assert "15 messages/day" in text
     assert "20 messages/day" not in text
     assert "200 messages/day" not in text
     # Crisis card and Get help stay.
@@ -131,7 +131,7 @@ def test_plans_free_gate_and_plus_builders():
             page.click("#plansPlusBtn")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             assert "Relapse and exit plans — private on this device" in page.inner_text("#accountDlg")
-            assert "5 messages/day" in page.inner_text("#accountDlg")
+            assert "15 messages/day" in page.inner_text("#accountDlg")
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
 
