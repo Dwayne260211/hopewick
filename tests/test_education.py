@@ -20,12 +20,17 @@ GUT_TITLES = (
     "When to talk to a GP or dietitian",
 )
 BRAIN_TITLES = (
-    "The brain can change",
-    "Why early recovery feels hard",
-    "Small repeats matter",
-    "Rest is part of the practice",
-    "You do not have to walk it alone",
-    "A humble note",
+    "Your brain learns from repetition",
+    "A thought is not an instruction",
+    "Stop fighting every feeling",
+    "Cravings are experiences, not commands",
+    "Your environment matters",
+    "Connection matters in recovery",
+    "Values give you direction",
+    "You do not have to believe everything your mind says",
+    "Practice being uncomfortable",
+    "Build a life, not only abstinence",
+    "Research behind these ideas",
 )
 GUT_BODY = (
     "does not cross the blood–brain barrier",
@@ -33,9 +38,9 @@ GUT_BODY = (
     "Skip gut detox kits",
 )
 BRAIN_BODY = (
-    "The first walks are slow",
-    "Those tools do not rewire you",
-    "not brain training you must buy",
+    "Cognitive defusion",
+    "Urge surfing",
+    "What kind of person do I want to be while this feeling is here?",
 )
 
 
@@ -78,7 +83,9 @@ def test_static_education_copy_and_gate():
         assert title in cards
     for marker in GUT_BODY + BRAIN_BODY:
         assert marker in cards
-    assert "Neuroplasticity is a long word" in cards
+    assert "About this information" in text
+    assert "Felitti, Anda, and colleagues" in cards
+    assert "animal research" in cards.lower()
     assert "motivation, movement, and learning from reward" in cards
     assert "yoghurt, kefir, sauerkraut, kimchi, and miso" in cards
     gut_only = cards.split("const BRAIN_CARDS", 1)[0]
@@ -208,7 +215,8 @@ def test_education_plus_gate_phone():
             _open_side(page, "brain")
             page.wait_for_function("() => document.getElementById('brainDlg')?.open === true")
             free_brain = page.inner_text("#brainDlg")
-            assert "General information only — not medical advice" in free_brain
+            assert "About this information" in free_brain
+            assert "does not replace personalised medical or psychological care" in free_brain
             assert "not the full notes" in free_brain
             for title in BRAIN_TITLES:
                 assert title in free_brain
@@ -251,7 +259,7 @@ def test_education_plus_gate_phone():
 
             _open_side(page, "brain")
             page.wait_for_function("() => document.getElementById('brainDlg')?.open === true")
-            page.wait_for_selector('#brainLibrary:not([hidden]) article[data-edu="support"]')
+            page.wait_for_selector('#brainLibrary:not([hidden]) article[data-edu="connection"]')
             plus_brain = page.locator("#brainDlg").text_content()
             for marker in BRAIN_BODY:
                 assert marker in plus_brain
