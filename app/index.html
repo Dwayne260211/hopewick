@@ -336,6 +336,24 @@ svg { flex: none; }
 @media (max-width: 480px) {
   .composer-hint { font-size: .68rem; margin: 2px auto 0; }
 }
+.hope-limit {
+  max-width: 780px; margin: 0 auto 8px; padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  color: var(--text);
+}
+.hope-limit[hidden] { display: none !important; }
+.hope-limit h2 { margin: 0 0 4px; font-size: 1.02rem; line-height: 1.35; font-weight: 700; }
+.hope-limit p { margin: 0 0 6px; font-size: .9rem; line-height: 1.45; }
+.hope-limit-note { margin: 8px 0 0 !important; color: var(--muted); font-size: .82rem !important; }
+.hope-limit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.hope-limit-actions .btn { white-space: normal; text-align: center; }
+.hope-allowance {
+  max-width: 780px; margin: 0 auto 6px; text-align: center;
+  font-size: .78rem; font-weight: 650; color: var(--accent-strong);
+}
+.hope-allowance[hidden] { display: none !important; }
 .convo-mode-bar {
   max-width: 780px; margin: 0 auto 8px; display: flex; align-items: center; gap: 10px; justify-content: center;
   background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
@@ -1997,6 +2015,19 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     </section>
 
     <div class="composer-wrap">
+      <div class="hope-limit" id="hopeLimit" hidden role="region" aria-labelledby="hopeLimitTitle" aria-live="polite">
+        <h2 id="hopeLimitTitle" tabindex="-1">You’ve used your 5 free Hope messages for today</h2>
+        <p id="hopeLimitReset">They reset at midnight, Brisbane time.</p>
+        <p id="hopeLimitNudge">Hopewick Plus has no daily limit with Hope. A 3-day trial is there if you’d like to keep talking.</p>
+        <div class="hope-limit-actions">
+          <button class="btn btn-primary btn-sm" type="button" id="hopeLimitPlus">See Hopewick Plus</button>
+          <button class="btn btn-sm" type="button" id="hopeLimitHelp">Get help</button>
+          <button class="btn btn-sm" type="button" id="hopeLimitDv">Domestic &amp; family violence</button>
+          <button class="btn btn-sm" type="button" id="hopeLimitHome">Today’s Readings</button>
+        </div>
+        <p class="hope-limit-note" id="hopeLimitNote">If you’re in danger, you can still message Hope. Crisis messages aren’t counted. Today’s Readings, Get help, and domestic and family violence support stay free.</p>
+      </div>
+      <p class="hope-allowance" id="hopeAllowance" hidden></p>
       <div class="convo-mode-bar" id="convoBar" hidden>
         <span aria-hidden="true">🎧</span>
         <span id="convoBarText">Conversation mode is on — just talk.</span>
@@ -4949,7 +4980,7 @@ function buildMessages(convo) {
 function endpoint() { return (settings.baseUrl || DEFAULT_SHARED.baseUrl).trim().replace(/\/+$/, '') + '/chat/completions'; }
 
 class ApiError extends Error {
-  constructor(message, status) { super(message); this.name = 'ApiError'; this.status = status; }
+  constructor(message, status, code) { super(message); this.name = 'ApiError'; this.status = status; this.code = code || ''; }
 }
 async function apiErrorFrom(res) {
   let detail = '';
@@ -5037,20 +5068,27 @@ async function hostedChatCompletion(messages, opts = {}) {
   if (!res.ok) {
     let detail = '';
     let code = '';
+    let limit;
+    let used;
     try {
       const j = await res.json();
       detail = (j.error && (j.error.message || j.error)) || j.message || '';
       code = (j.error && j.error.code) || j.code || '';
+      limit = j.limit;
+      used = j.used;
     } catch (_) { detail = ''; }
     if (res.status === 401 || code === 'auth') {
       promptNeedAi(HOSTED_SIGNIN_COPY);
     }
     const message = typeof detail === 'string' && detail
       ? detail
-      : (res.status === 429
-        ? 'You’ve reached today’s message limit with Hope.'
+      : (code === 'daily_cap' || res.status === 429
+        ? 'You’ve used your 5 free Hope messages for today. They reset at midnight, Brisbane time.'
         : 'Hope could not reply just now. Please try again.');
-    throw new ApiError(message, res.status);
+    const err = new ApiError(message, res.status, code);
+    if (typeof limit === 'number') err.hopeLimit = limit;
+    if (typeof used === 'number') err.hopeUsed = used;
+    throw err;
   }
   const text = await readCompletionResponse(res, { onToken, wantStream });
   refreshHopeUsage().catch(() => {});
@@ -5116,6 +5154,11 @@ async function sendMessage(textOverride) {
   if (isDemo) { demoHandle(text); return; }
   const crisis = CRISIS_RE.test(text);
   const crisisKind = crisis ? classifyCrisis(text) : null;
+  if (hopeAtDailyCap() && !crisis) {
+    if (convoMode) setConvoMode(false);
+    showHopeDailyLimit({ attention: true });
+    return;
+  }
   if (!canCallModel() && !crisis) {
     promptNeedAi(billingState.signedIn
       ? 'Hope could not start a reply from this account yet. Today’s Readings, crisis support, and Get Help stay available.'
@@ -5167,7 +5210,23 @@ async function generateReply(c) {
     if (!acc.trim()) acc = "Hmm, I didn't get a reply from the model. Could you try again?";
   } catch (e) {
     if (raf) cancelAnimationFrame(raf);
-    if (!profile || profile.id !== pid) { finish(); return; } // person switched — drop quietly
+    if (e && e.code === 'daily_cap') applyHopeCapPayload(e);
+    if (!profile || profile.id !== pid) { finish(); refreshHopeUsage().catch(() => {}); return; } // person switched — drop quietly
+    if (e && e.code === 'daily_cap') {
+      row.remove();
+      const draft = takeBackUnsentUserMessage(c);
+      if (draft && el.input && !String(el.input.value || '').trim()) {
+        el.input.value = draft;
+        autoGrow();
+      }
+      persistConvos();
+      finish();
+      renderMessages();
+      refreshHopeUsage().catch(() => {});
+      showHopeDailyLimit({ attention: true });
+      if (convoMode) setConvoMode(false);
+      return;
+    }
     if (e.name === 'AbortError') {
       if (!acc.trim()) { row.remove(); finish(); return; }
       acc += ' …';
@@ -9680,6 +9739,7 @@ function expandOwnKey(open) {
   if (d) d.open = !!open;
 }
 function syncKeyBanner() {
+  syncHopeAllowance();
   const banner = el.keyBanner;
   if (!banner) return;
   const text = $('#keyBannerText');
@@ -10902,6 +10962,14 @@ const needAiSignInBtn = $('#needAiSignInBtn');
 if (needAiSignInBtn) needAiSignInBtn.addEventListener('click', () => { closeNeedAi(); openAccountDlg(); });
 const keyBannerSignIn = $('#keyBannerSignIn');
 if (keyBannerSignIn) keyBannerSignIn.addEventListener('click', () => openAccountDlg());
+const hopeLimitPlus = $('#hopeLimitPlus');
+if (hopeLimitPlus) hopeLimitPlus.addEventListener('click', () => openAccountDlg());
+const hopeLimitHelp = $('#hopeLimitHelp');
+if (hopeLimitHelp) hopeLimitHelp.addEventListener('click', () => openHelp());
+const hopeLimitDv = $('#hopeLimitDv');
+if (hopeLimitDv) hopeLimitDv.addEventListener('click', () => setAppTab('dv'));
+const hopeLimitHome = $('#hopeLimitHome');
+if (hopeLimitHome) hopeLimitHome.addEventListener('click', () => setAppTab('home'));
 const needAiInviteBtn = $('#needAiInviteBtn');
 if (needAiInviteBtn) needAiInviteBtn.addEventListener('click', () => { closeNeedAi(); openInviteDlg(); });
 const keyBannerInvite = $('#keyBannerInvite');
@@ -11838,16 +11906,93 @@ async function refreshBilling() {
     }
   } catch (_) { /* home may not be ready on the very first tick */ }
 }
+/** Free Hope chat is capped. Plus, a trial, and a founder key are not. */
+function hopeAtDailyCap() {
+  if (isDemo || usingOwnProvider() || subscriptionPlus()) return false;
+  if (!billingState.signedIn) return false;
+  const snap = billingState.hopeUsage;
+  if (!snap || snap.limit == null) return false;
+  const remaining = typeof snap.remaining === 'number'
+    ? snap.remaining
+    : Math.max(0, snap.limit - (snap.used || 0));
+  return remaining <= 0;
+}
+function hopeLimitTitle(limit) {
+  const n = typeof limit === 'number' ? limit : 5;
+  const noun = n === 1 ? 'message' : 'messages';
+  return `You’ve used your ${n} free Hope ${noun} for today`;
+}
+function hopePlusNudge(snap) {
+  const trial = !!(snap && snap.trialEligible && billingState.checkoutReady);
+  return trial
+    ? 'Hopewick Plus has no daily limit with Hope. A 3-day trial is there if you’d like to keep talking.'
+    : 'Hopewick Plus has no daily limit with Hope, if you’d like to keep talking.';
+}
+function applyHopeCapPayload(err) {
+  const prev = billingState.hopeUsage || {};
+  const limit = typeof err.hopeLimit === 'number' ? err.hopeLimit : (typeof prev.limit === 'number' ? prev.limit : 5);
+  billingState.hopeUsage = Object.assign({}, prev, {
+    limit,
+    used: typeof err.hopeUsed === 'number' ? err.hopeUsed : limit,
+    remaining: 0,
+    plus: false,
+    resetLabel: prev.resetLabel || 'midnight, Brisbane time',
+  });
+}
+function takeBackUnsentUserMessage(c) {
+  if (!c || !c.messages || !c.messages.length) return '';
+  const last = c.messages[c.messages.length - 1];
+  if (!last || last.role !== 'user' || last.crisis) return '';
+  c.messages.pop();
+  return last.content || '';
+}
+function syncHopeAllowance() {
+  const panel = $('#hopeLimit');
+  const allowance = $('#hopeAllowance');
+  const snap = billingState.hopeUsage;
+  const capped = hopeAtDailyCap();
+  if (panel) {
+    panel.hidden = !capped;
+    if (capped) {
+      const title = $('#hopeLimitTitle');
+      if (title) title.textContent = hopeLimitTitle(snap && snap.limit);
+      const reset = $('#hopeLimitReset');
+      const label = (snap && snap.resetLabel) || 'midnight, Brisbane time';
+      if (reset) reset.textContent = `They reset at ${label}.`;
+      const nudge = $('#hopeLimitNudge');
+      if (nudge) nudge.textContent = hopePlusNudge(snap);
+    }
+  }
+  if (allowance) {
+    const showCount = !capped && !!snap && typeof snap.limit === 'number' && typeof snap.remaining === 'number'
+      && snap.remaining > 0 && billingState.signedIn && !subscriptionPlus() && !isDemo && !usingOwnProvider();
+    allowance.hidden = !showCount;
+    if (showCount) allowance.textContent = `${snap.remaining} of ${snap.limit} left today`;
+  }
+  if (el.input) el.input.setAttribute('aria-describedby', capped ? 'composerHint hopeLimit' : 'composerHint');
+}
+function showHopeDailyLimit(opts = {}) {
+  if (appTab !== 'chat') setAppTab('chat', { skipFocus: true });
+  syncHopeAllowance();
+  const panel = $('#hopeLimit');
+  if (!panel || panel.hidden) return;
+  if (opts.attention) {
+    const title = $('#hopeLimitTitle');
+    if (title) title.focus({ preventScroll: true });
+  }
+}
 async function refreshHopeUsage() {
   if (!billingState.signedIn || !billingState.reachable) {
     billingState.hopeUsage = null;
+    syncHopeAllowance();
     return;
   }
   try {
     billingState.hopeUsage = await billingFetch('/api/hope/usage');
-  } catch (_) {
-    billingState.hopeUsage = null;
+  } catch (err) {
+    if (err && err.status === 401) billingState.hopeUsage = null;
   }
+  syncHopeAllowance();
 }
 function appendPlusOffer(body) {
   const price = document.createElement('p');
@@ -12020,9 +12165,12 @@ function paintAccount() {
       ? `${snap.used} messages used today. `
       : `${snap.used} of ${snap.limit} messages used today. `;
   }
+  const resetBit = snap && snap.limit != null && snap.remaining === 0
+    ? ` Your free messages reset at ${snap.resetLabel || 'midnight, Brisbane time'}.`
+    : '';
   allowance.textContent = used + (subscriptionPlus()
     ? 'Hope on this account has no daily message limit.'
-    : 'Hope on this account is 5 messages a day. Hopewick Plus has no daily message limit.');
+    : `Hope on this account is 5 messages a day. Hopewick Plus has no daily message limit.${resetBit}`);
   body.appendChild(allowance);
   const actions = document.createElement('div');
   actions.className = 'account-actions';
