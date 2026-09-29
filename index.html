@@ -71,6 +71,7 @@ a { color: var(--accent-strong); }
 .nav-links { display: flex; gap: 18px; margin-left: auto; list-style: none; padding: 0; flex-wrap: wrap; }
 .nav-links a { color: var(--muted); text-decoration: none; font-size: .95rem; }
 .nav-links a:hover { color: var(--text); }
+.nav-safety { display: none; color: var(--text); font-weight: 700; text-decoration: none; font-size: .95rem; white-space: nowrap; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 14px; font-weight: 650; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: transform .12s, background .15s; font-size: 1rem; text-align: center; max-width: 100%; }
 .btn:hover { transform: translateY(-1px); background: var(--surface-2); }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
@@ -148,7 +149,8 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); margin: 0 0 8px; letter-sp
   .hero-grid, .g2, .plans-grid { grid-template-columns: 1fr; }
   .g3 { grid-template-columns: 1fr 1fr; }
   .nav-links { display: none; }
-  .nav .btn { margin-left: auto; }
+  .nav-safety { display: inline; margin-left: auto; }
+  .nav .btn { margin-left: 10px; }
   .hero { padding: 22px 0 28px; }
 }
 @media (max-width: 600px) {
@@ -189,6 +191,7 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); margin: 0 0 8px; letter-sp
       <li><a href="#clinicians">For services</a></li>
       <li><a href="#plans">Plans</a></li>
     </ul>
+    <a class="nav-safety" href="#safety">Safety</a>
     <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Open Hopewick</a>
   </nav>
 </header>
@@ -246,10 +249,10 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); margin: 0 0 8px; letter-sp
       <p class="section-lede">Practical support for the hours when a counsellor is not beside you. A slip is something to learn from, not the end of the work. Clean time, today’s readings, crisis support and 5 Hope messages a day stay free. The full SMART-goal editor, journal, recovery plans and learning library are part of Hopewick Plus.</p>
       <div class="grid g3">
         <div class="card"><div class="icon" aria-hidden="true">🌊</div><h3>Talk through cravings and difficult moments</h3><p>Guided recovery conversations, urge surfing, HALT, grounding and practical next steps.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Build goals and recovery plans</h3><p>SMART goals, coping plans, relapse planning and practical steps forward.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Build goals and recovery plans</h3><p>SMART goals, and relapse and exit plans, are part of Hopewick Plus. Chat can still help you think through a next step.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">📅</div><h3>Track your progress</h3><p>Clean time, milestones, check-ins and progress without presenting a slip as total failure.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">📓</div><h3>Journal and reflect</h3><p>Private journalling that helps you explore thoughts and emotions without replacing your own voice.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🌿</div><h3>Explore recovery and wellbeing</h3><p>Nutrition, gut health, habits, exercise, cold exposure and other areas people may explore while rebuilding.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">📓</div><h3>Journal and reflect</h3><p>The journal is part of Hopewick Plus. Private writing, in your own voice.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🌿</div><h3>Explore recovery and wellbeing</h3><p>Nutrition, gut health, habits, and cold notes are part of Hopewick Plus.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">📍</div><h3>Find real-world support</h3><p>Meetings, AOD services, treatment, food, shelter, crisis services and faith communities when wanted.</p></div>
       </div>
 

@@ -87,7 +87,10 @@ def test_companion_gates_premium_not_crisis():
     assert "Join waitlist" not in app
     assert "Phone app coming soon" not in app
     assert "Add Hopewick to your home screen as a web app today." in app
-    assert "The Play Store app isn’t ready yet." in app
+    assert "The Play Store app isn’t ready yet." not in app
+    assert "Organisation plans coming soon" not in app
+    assert "SOAP reflections" not in app
+    assert "12 Steps practice" not in app
     assert "Older chats are part of Hopewick Plus" in app
     assert "Start 3-day free trial" in app
     assert "3 days free, then AU$20" in app
