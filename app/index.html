@@ -3166,8 +3166,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.resume        per-person resume draft (Hopewick Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
-/* v5.22: Plus education — ice baths and recovery spas, a brain and recovery angle, not medical advice. */
-const EDEN_BUILD = 'hopewick-v5.22';
+/* v5.23: Plain-language Word for the day and Just for today. */
+const EDEN_BUILD = 'hopewick-v5.23';
 const COPYRIGHT = `© ${BRAND.year} ${BRAND.company} (ABN ${BRAND.abn}). All rights reserved.`;
 /* Companion names that were saved as the old default; treated as "use the current brand name". */
 const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate to BRAND.companion
@@ -4240,8 +4240,9 @@ function moodCardEl(opts = {}) {
 /* ---------------------------------------------------------------------------
    Today — full Word for the day + Just for today.
    Readings live in app/data/*.js (365 each), keyed by Australia/Brisbane
-   month and day. Same pair for everyone on that date. Original prose:
-   not AA/NA literature, and not clinical advice.
+   month and day. Same pair for everyone on that date. Original plain
+   language: not AA/NA literature, and not clinical advice. Faith wording
+   inside a reading is optional. The faith setting does not swap the text.
    --------------------------------------------------------------------------- */
 const NON_LEAP_MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 let todayExpanded = false;
