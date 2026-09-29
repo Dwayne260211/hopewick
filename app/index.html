@@ -3160,19 +3160,26 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     </button>
   </form>
   <div class="dlg-body">
+    <p class="nut-lead" id="coldIntro">You spent years training yourself to escape discomfort. Recovery gives you opportunities to practise meeting discomfort differently. An ice bath is one optional way to do that.</p>
     <div class="crisis-card" id="coldSafety" role="note" style="margin-top:12px">
-      <h3>General information only — not medical advice</h3>
-      <p>Hopewick does not prescribe cold, a plunge, or a recovery spa. These notes are not a how-to, not a temperature, and not a time. They do not cure addiction, and they are not a substitute for treatment or for crisis support.</p>
-      <p>Cold is not for everyone. Skip it with a heart or blood-pressure problem, in pregnancy, with an unmanaged medical condition, or while intoxicated. Talk to a GP before you try cold water or a recovery spa.</p>
-      <p>Stop if you feel dizzy or have chest pain, and call <a href="tel:000">000</a>. In immediate danger call <a href="tel:000">000</a>.</p>
+      <h3>Before you get in</h3>
+      <p>Cold-water immersion places significant stress on the cardiovascular and respiratory systems and is not appropriate for everyone. If you have a heart condition, cardiovascular disease, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, a significant medical condition, or any concern about whether cold exposure is safe for you, speak with your GP or treating clinician before you attempt it.</p>
+      <p>Never use an ice bath while intoxicated or impaired. Avoid doing it alone. Enter gradually rather than diving in. Stop immediately if you have chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong, and call <a href="tel:000">000</a>.</p>
     </div>
-    <p class="nut-lead" id="coldIntro">Some people in recovery never consider cold or a recovery spa. If the idea comes up, the point is a new habit and a new path — the same idea as Brain habits — not a cure. This is general information, not medical advice.</p>
     <div id="coldGate" class="nut-gate"></div>
     <div id="coldLibrary" hidden>
-      <p class="nut-kicker">Easy-read notes</p>
-      <p class="help" style="margin:0 0 8px">Short cards. Nothing here is a protocol, a venue Hopewick recommends, or a result this app promises.</p>
+      <p class="nut-kicker">Practice notes</p>
+      <p class="help" style="margin:0 0 8px">Optional. The point is a commitment you keep with yourself.</p>
       <div class="nut-items" id="coldCards"></div>
     </div>
+    <section id="coldLimits" class="nut-items" aria-label="Alongside the rest of your recovery" style="margin-top:14px">
+      <article class="nut-item">
+        <h3>Alongside the rest of your recovery</h3>
+        <p>This is an optional personal practice. It sits alongside meetings, counselling, medical care, healthy relationships, sleep, exercise, and other established recovery supports.</p>
+        <p>An ice bath is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition. It does not detox the body, cure addiction, permanently increase dopamine, or heal the nervous system, and it does not replace professional treatment or the people you trust.</p>
+        <p>If thinking feels unsafe, or you are in danger, use Get help and call <a href="tel:000">000</a>.</p>
+      </article>
+    </section>
   </div>
 </dialog>
 
@@ -5359,7 +5366,7 @@ function inAppToolsPrompt() {
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
     'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, deeper, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional wellness, a brain and recovery angle). Not medical advice and not a how-to. Do not give a temperature, a time, or a venue. Do not say cold is a cure for addiction or a treatment for it. Suggest a GP. Not for heart or blood-pressure problems, pregnancy, unmanaged conditions, or intoxication. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
     'deeper = Going Deeper study tracks (Hopewick Plus): optional reflections in the person’s own tradition, or a values path if they prefer no faith content. Not clinical care and not a sermon. If they chose no faith content, name the values path unless they ask for a tradition.',
     'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply. Do not add deeper on a crisis reply.',
@@ -5380,7 +5387,7 @@ function counsellorPrompt(convo) {
     '- If they ask about food, hydration, vitamins, or supplements (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, or a multivitamin), or about sleep, mood support, liver or antioxidant interest, heart and brain oils, or energy in that nutrition sense, name Nutrition and include nutrition on the TOOLS line. The screen pairs a benefit people ask about with a nutrient. Describe that pairing as a question for a GP or pharmacist, not as an effect you promise. Do not prescribe a dose. Do not say these products treat, cure, or prevent addiction or withdrawal. Prefer food and water. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
     '- If they ask about gut health, the gut and mood, probiotics, fermented foods, fibre, serotonin, or dopamine in that wellness sense, name Gut health and include gut on the TOOLS line. Say the link is real and still being studied. Do not say a food or probiotic treats depression, anxiety, or addiction. Do not give a dose or a brand. Suggest a GP or dietitian, especially with medicine or a gut condition.',
     '- If they ask how habits form, why early recovery feels hard, neuroplasticity, or new pathways in the brain, name Brain habits and include brain on the TOOLS line. Explain it as practice: small repeats, rest, and support. Do not promise that the brain will be rewired, and do not sell a program. You may mention SMART goals, the journal, or chat as places to practise one small step — lightly, without pressure.',
-    '- If they ask about ice baths, a cold plunge, cold-water immersion, a recovery spa, or contrast therapy, name Ice baths & recovery spas and include cold on the TOOLS line. Say it is optional wellness education, not a prescription and not a cure for addiction. Do not give a temperature, a time, or a how-to. Do not name a venue. Say it is not for everyone — heart or blood pressure, pregnancy, an unmanaged medical condition, or intoxication — and to talk to a GP. Tell them to stop and get help if they feel dizzy or have chest pain. You may mention Brain habits as the habit-and-path idea, lightly. Do not use an ice bath as a craving skill. TIPP stays a cool drink or a cool cloth, never an ice bath.',
+    '- If they ask about ice baths, a cold plunge, cold-water immersion, a recovery spa, or contrast therapy, name Ice baths & recovery spas and include cold on the TOOLS line. Speak to the person in recovery: this is an optional way to practise meeting discomfort instead of escaping it — step in on purpose, control breathing, stay present, resist the first urge to get out, and follow through on a commitment. The win is the follow-through, not how long they stay in. Some people describe feeling alert, refreshed, grounded, or mentally reset afterwards; say that experiences vary. Do not give a temperature, a time, or a venue. Do not frame cold as treatment for substance dependence, withdrawal, trauma, depression, or any medical condition. Do not say it detoxes the body, cures addiction, permanently increases dopamine, heals the nervous system, or replaces professional treatment. If you need that limit, say it once, then stay with the practice. Where research comes up, distinguish physiological responses to cold (the heart, breathing, and alertness reports in healthy people are described in the literature) from evidence about addiction recovery (these studies are not trials of that). Safety, once: significant stress on the cardiovascular and respiratory systems. Heart condition, cardiovascular disease, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, significant medical conditions, or any doubt — speak with a GP or treating clinician first. Never while intoxicated or impaired. Not alone. Enter gradually, do not dive in. Stop immediately for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong, and call 000. Do not use an ice bath as a craving skill. TIPP stays a cool drink or a cool cloth, never an ice bath.',
     '- If they ask to go deeper in their own tradition, or for a study track, or for a values path without faith, name Going Deeper and include deeper on the TOOLS line. It is optional Hopewick Plus reading, not a sermon and not treatment. Do not invent sacred quotations. Paraphrase and say so. If they chose no faith content, offer the values path and do not push a tradition.',
     '',
     'HOW YOU WORK (EVIDENCE-BASED)',
@@ -9843,53 +9850,47 @@ const BRAIN_CARDS = [
 ];
 const COLD_CARDS = [
   {
-    id: 'why',
-    title: 'Why this rarely comes up',
+    id: 'stay',
+    title: 'Practise staying',
     body: [
-      'A lot of people in recovery never consider an ice bath or a recovery spa. The day is already full: sleep, food, a meeting, a safe person, the next hour. Cold water is not on that list, and it does not have to be.',
-      'This page is here so the idea is plain, and so it is not sold as a secret fix. If it is not for you, you can leave it.',
+      'Addiction often builds habits around immediate relief, avoidance, comfort, escape, and repeating a familiar behaviour even when it is destructive. Recovery can involve deliberately learning to do difficult things differently.',
+      'Recovery already asks you to do things that feel uncomfortable. This is another opportunity to practise staying instead of escaping. You knowingly step into the cold. You control your breathing. You stay present. You resist the urge to get out the moment your mind demands it. You complete something you committed to.',
+      'The purpose is that practice: discipline, willingness, commitment, and emotional regulation. It is learning that discomfort does not always need to be escaped.',
     ],
   },
   {
-    id: 'path',
-    title: 'A new path, not a cure',
+    id: 'win',
+    title: 'The win is following through',
     body: [
-      'If you and a GP ever look at cold, or at time in a recovery spa, the useful frame is the same one as Brain habits. A small new practice can become a path the brain walks a little more easily when you repeat it. That is how a habit forms.',
-      'It is not a cure for addiction. It does not treat addiction. It does not rewire you, and it does not replace a counsellor, a meeting, or medicine a doctor has prescribed. Open Brain habits if you want that idea in plainer words.',
+      'The win is not how long you stay in the water. The win is making a commitment to yourself, facing the first urge to get out, staying present, and following through safely.',
+      'Sometimes the achievement is simply getting in when your mind says not to. You meet the first reaction. You breathe. You get out knowing you followed through.',
+    ],
+  },
+  {
+    id: 'after',
+    title: 'What some people notice afterwards',
+    body: [
+      'Some people describe cold exposure as helping them feel alert, refreshed, grounded, or mentally reset afterwards. Others do not feel any of that. Individual experiences vary.',
+      'If you feel clearer when you step out, that can be a welcome part of the practice. It is not a result this page can promise you. The reason to get in is the commitment you keep with yourself.',
     ],
   },
   {
     id: 'research',
-    title: 'What research has explored',
+    title: 'What cold does to the body',
     body: [
-      'As of 2026, research on cold water is mixed. It is mostly about healthy people and about sport. It is not a body of trials about addiction. Hopewick does not turn any of it into a how-to. There is no temperature and no time on this page.',
-      'A 2017 review in Experimental Physiology (Tipton and colleagues) looked across cold-water immersion. It said the evidence for benefits is uneven, and that the risks — including to the heart — are better described than the claimed upsides. Some claims were still anecdotal.',
-      'A small 2023 study in the journal Biology (Yankouskaya and colleagues) asked healthy adults who were new to cold-water swimming how they felt afterwards. On average, the group reported feeling more alert and more active, and less distressed. Scans in that same study were linked with more connection between some brain areas involved in attention and emotion. It was not a study of people in addiction treatment. One study is not proof, and those scans do not show that cold builds a recovery habit.',
-      'A 2010 review in the British Journal of Sports Medicine (Bleakley and Davison) looked at the body’s stress response. Short spells in cold water can raise heart rate and blood pressure. The reason for using cold to recover from sport was still unclear.',
+      'As of 2026, published research describes real physiological responses to cold-water immersion. Most of it is in healthy people or in sport. That is different from evidence about addiction recovery: these studies are not trials of recovery from substance dependence.',
+      'A 2010 review in the British Journal of Sports Medicine (Bleakley and Davison) found that short cold-water immersion raises heart rate, blood pressure, breathing, and metabolism. That stress response is measurable. The review asked why athletes use cold after training, and it did not settle that sporting question. It did show that the heart and the lungs respond.',
+      'A 2017 review in Experimental Physiology (Tipton and colleagues) maps those human responses, including cold shock and strain on the heart. The physiology is described. Longer-term claims about health are less settled.',
+      'A small 2023 study in the journal Biology (Yankouskaya and colleagues) asked healthy adults who were new to cold-water swimming how they felt afterwards. On average, the group reported feeling more alert and more active, and less distressed. Scans in that same study were linked with more connection between some brain areas involved in attention and emotion. The scans were around a single immersion in healthy adults. They describe a response in the moment.',
+      'A 2013 review in PLoS ONE (Bieuzen, Bleakley, and Costello) looked at contrast water therapy — warmer water and colder water — after hard exercise. The trials were about muscle soreness in sport, and all of them had a high risk of bias. In those sport trials, contrast therapy looked better than rest alone for soreness, and not clearly better than other options used in sport.',
     ],
   },
   {
     id: 'spa',
-    title: 'Recovery spas and contrast therapy',
+    title: 'A recovery spa, if you choose one',
     body: [
-      'A recovery spa, and contrast therapy (time in warmer water and colder water), is an optional wellness practice. It is something you might discuss with a clinician. Hopewick does not endorse a venue, a brand, or a booking.',
-      'A 2013 review in PLoS ONE (Bieuzen, Bleakley, and Costello) looked at contrast water therapy after hard exercise. The trials were about muscle soreness in sport. They had a high risk of bias, and the review did not find a clear winner among recovery options used in sport. They were not studies of addiction.',
-    ],
-  },
-  {
-    id: 'who',
-    title: 'Not for everyone',
-    body: [
-      'Cold is not a dare. Skip it if you have a heart problem or blood-pressure trouble, if you are pregnant, if a medical condition is unmanaged, or if you are intoxicated. Talk to a GP before you try cold water or a recovery spa.',
-      'Stop straight away if you feel dizzy, sick, short of breath, or any chest pain, and call 000. Do not do this alone in open water.',
-    ],
-  },
-  {
-    id: 'care',
-    title: 'Not a substitute for treatment',
-    body: [
-      'A spa visit does not stand in for treatment, a counsellor, a GP, or the people you trust. If you are in danger, or thinking feels unsafe, use Get help and call 000.',
-      'A lapse is not a failure. Cold is not a step you owe anyone.',
+      'A recovery spa can be the same kind of practice. You choose something difficult, you stay with it, and you finish. Contrast therapy there means time in warmer water and colder water. It is still optional.',
+      'Hopewick does not endorse a venue, a brand, or a booking. The win is still the follow-through.',
     ],
   },
 ];
@@ -10029,19 +10030,14 @@ function renderCold() {
   const lib = $('#coldLibrary');
   if (lib) lib.hidden = !plus;
   renderEducationGate($('#coldGate'), COLD_CARDS, {
-    lead: 'Hopewick Plus opens the short notes on ice baths and recovery spas. Free keeps the topic names below — not the full notes.',
+    lead: 'Hopewick Plus opens the notes on ice baths and recovery spas — an optional practice of meeting discomfort on purpose. Free keeps the topic names below — not the full notes.',
     teaseLabel: 'Notes in Plus',
     teaseAria: 'Ice bath and recovery spa notes included with Hopewick Plus',
     plusBtnId: 'coldPlusBtn',
     dlg: el.coldDlg,
-    freeHelp: 'With or without Plus: this is not a dare, and it is not medical advice. In a crisis, use Get help and call 000.',
+    freeHelp: 'With or without Plus: read the safety note above before you try cold water. In a crisis, use Get help and call 000.',
   });
-  const closeCold = () => { if (el.coldDlg && el.coldDlg.open) el.coldDlg.close(); };
-  renderEducationCards($('#coldCards'), COLD_CARDS, {
-    path: [
-      { label: 'Open brain habits', run: () => { closeCold(); openBrain(); } },
-    ],
-  });
+  renderEducationCards($('#coldCards'), COLD_CARDS);
   syncEducationPlusPills();
 }
 function openCold() {
