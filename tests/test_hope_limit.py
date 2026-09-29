@@ -223,7 +223,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             page.wait_for_selector("#hopeLimit:not([hidden])")
             page.click("#hopeLimitHome")
             page.wait_for_selector("#todayCard")
-            assert "Word for the day" in page.inner_text("#todayCard")
+            assert "Word for the day" in page.locator("#todayCard").text_content()
             assert page.locator("#appTabChat").is_visible()
 
             page.click("#appTabChat")
