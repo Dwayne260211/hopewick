@@ -1428,6 +1428,23 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   color: var(--muted); font-weight: 700;
 }
 .nut-pair-grid dd { margin: 0; font-size: .92rem; line-height: 1.45; }
+.nut-tones { margin: 10px 0 0; padding-left: 1.15em; }
+.nut-tones li { margin: 4px 0; font-size: .92rem; line-height: 1.45; }
+.nut-founder {
+  margin: 14px 0 0; padding: 12px 14px; border-left: 4px solid var(--accent);
+  background: var(--surface-2); border-radius: 0 14px 14px 0;
+}
+.nut-founder p { margin: 0; font-size: .92rem; line-height: 1.45; }
+.nut-founder .nut-kicker { margin-bottom: 6px; }
+.nut-tier { margin: 6px 0 0; font-size: .78rem; font-weight: 700; color: var(--accent); }
+.nut-item.is-caution { border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
+.nut-item.is-caution .nut-tier { color: var(--danger); }
+.nut-item ul { margin: 0; padding-left: 1.15em; }
+.nut-item li { margin: 4px 0; font-size: .92rem; line-height: 1.45; }
+.nut-group { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.nut-group .nut-kicker { margin-bottom: 0; }
+.nut-exp { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.nut-exp .nut-kicker { margin-bottom: 0; }
 .nut-check { list-style: none; padding: 0; margin: 0; }
 .nut-check li { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: .92rem; }
 .nut-check input { margin-top: 3px; accent-color: var(--accent); }
@@ -3068,7 +3085,6 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 </dialog>
 
 <!-- ============================ Nutrition (Hopewick Plus education library) ============================ -->
-<!-- Gut health and neuroplasticity libraries are upcoming and stay Plus-only. Do not show them on Free. -->
 <dialog id="nutritionDlg" aria-labelledby="nutritionTitle">
   <form method="dialog" class="dlg-head">
     <h2 id="nutritionTitle">🥗 Nutrition</h2>
@@ -3078,40 +3094,27 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </form>
   <div class="dlg-body">
     <div class="crisis-card" id="nutritionSafety" role="note" style="margin-top:12px">
-      <h3>General information only — not medical advice</h3>
-      <p>Hopewick does not diagnose you, prescribe a dose, or treat addiction. Nothing here is a substitute for a GP, pharmacist, dietitian, or withdrawal care, and it is not crisis support. Interactions and what you need are individual.</p>
-      <p>Talk to a GP or pharmacist before you start, stop, or change a supplement or medicine — including NAC, fish oil, vitamins, and magnesium.</p>
-      <p><strong>Alcohol and benzodiazepine withdrawal can be dangerous</strong> (including seizures). See a doctor or an AOD service. Call <a href="tel:000">000</a> for severe symptoms (confusion, seizures, chest pain, trouble breathing). If someone may have taken too much paracetamol, call <a href="tel:000">000</a> or the Poisons Information Centre <a href="tel:131126">13 11 26</a>. A shop supplement is not the response to that.</p>
+      <h3>Education, not individual medical advice</h3>
+      <p id="nutritionDisclaimer">This section is for education, not individual medical advice. Your health, medications and recovery are individual. Some supplements, compounds and major dietary changes can interact with medicines or medical conditions, so speak with an appropriate health professional when that applies to you.</p>
+      <p><strong>Alcohol and benzodiazepine withdrawal can be medically dangerous</strong>, including seizures, and can need medical management. That is separate from ordinary nutrition such as meals, water, or breakfast. Call <a href="tel:000">000</a> for severe symptoms (confusion, seizures, chest pain, trouble breathing). If someone may have taken too much paracetamol, call <a href="tel:000">000</a> or the Poisons Information Centre <a href="tel:131126">13 11 26</a>. A shop supplement is not the response. This page is not crisis support.</p>
     </div>
-    <p class="nut-lead" id="nutritionIntro">Food and water come first. A health habit can be the next meal or a glass of water. Supplements, if you consider them at all, are a conversation with a GP or pharmacist — not a plan from an app.</p>
+    <p class="nut-lead" id="nutritionIntro">Recovery can be a period of rebuilding and experimentation. Food, sleep, water, movement, and ordinary routine are easy to neglect while using. Recovery can bring curiosity back: What helps me feel stronger? What helps me sleep? Which foods leave me feeling better? Am I eating enough? Am I drinking enough water? Is this something to discuss with a doctor, pharmacist, or dietitian?</p>
+    <ul class="nut-tones" id="nutritionTones">
+      <li>Recovery gave me permission to try things differently.</li>
+      <li>You do not have to keep living in the same body routines that existed during addiction.</li>
+      <li>Nutrition is not about finding a magic supplement. It is about becoming curious about what your body needs while it rebuilds.</li>
+      <li>Try things. Learn. Pay attention to how you respond. Keep what genuinely helps you and be willing to change what does not.</li>
+    </ul>
+    <blockquote class="nut-founder" id="nutritionFounder">
+      <p class="nut-kicker">From the founder — personal experience, not evidence</p>
+      <p>During my own recovery I became willing to experiment with things I had never considered before, from changing the way I ate to exploring supplements and other approaches. Not everything I tried will be right for everyone, and my experience isn’t medical evidence. What mattered was that I stopped neglecting myself and started becoming curious about what helped me rebuild.</p>
+    </blockquote>
     <div id="nutritionGate" class="nut-gate"></div>
     <div id="nutritionLibrary" hidden>
-      <p class="nut-kicker">Benefit ↔ nutrient</p>
-      <p class="help" id="nutritionLookupHelp" style="margin:0 0 4px">Each row is one pairing people ask about. It is not a result Hopewick promises, and it is not a dose. Look up a benefit, or pick a nutrient to see the benefits listed for it. Talk to a GP or pharmacist before you start anything.</p>
-      <p class="nut-filter-label" id="nutritionBenefitLabel">Look up by benefit</p>
-      <div id="nutritionBenefitFilters" class="nut-filters" role="group" aria-labelledby="nutritionBenefitLabel"></div>
-      <p class="nut-filter-label" id="nutritionNutrientLabel">Look up by nutrient</p>
-      <div id="nutritionNutrientFilters" class="nut-filters" role="group" aria-labelledby="nutritionNutrientLabel"></div>
-      <div class="nut-items" id="nutritionPairs"></div>
-      <h3 class="nut-kicker" style="margin-top:18px">Food while a habit is changing</h3>
-      <p class="help" style="margin:0 0 8px">Optional food ideas if a particular substance has been part of life. Not a detox, and not a substitute for a doctor.</p>
-      <div class="field">
-        <label for="nutritionSelect">What are you recovering from / supporting?</label>
-        <select id="nutritionSelect">
-          <option value="">Choose one…</option>
-        </select>
-      </div>
-      <div id="nutritionPanel" hidden></div>
-      <div id="nutritionHydration" style="margin-top:16px" hidden>
-        <h3 style="font-size:1rem;margin:0 0 8px">Simple hydration reminder</h3>
-        <p class="help" style="margin:0 0 8px">Rough guide only — sip water through the day. It is not a target you must hit. Seek care if you can’t keep fluids down. Heart, kidney, and other conditions change what is right for you.</p>
-        <div class="radio-row" role="radiogroup" aria-label="Body weight band">
-          <label><input type="radio" name="nutWeight" value="s"> Under ~60 kg</label>
-          <label><input type="radio" name="nutWeight" value="m" checked> ~60–85 kg</label>
-          <label><input type="radio" name="nutWeight" value="l"> Over ~85 kg</label>
-        </div>
-        <p id="nutHydrateMsg" class="help" style="margin-top:8px"></p>
-      </div>
+      <p class="nut-filter-label" id="nutritionCategoryLabel">Browse</p>
+      <div id="nutritionCategoryFilters" class="nut-filters" role="group" aria-labelledby="nutritionCategoryLabel"></div>
+      <div id="nutritionCards"></div>
+      <div id="nutritionExperiment"></div>
     </div>
   </div>
 </dialog>
@@ -3309,6 +3312,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
      eden.p.<id>.deeper        per-person Going Deeper study progress { completed }
      eden.p.<id>.breakers      per-person circuit breakers { custom, tried }
      eden.p.<id>.selfcare      per-person self-care checklist { items, done }
+     eden.p.<id>.nutrition     per-person nutrition experiments (Hopewick Plus; this device only)
      eden.p.<id>.resume        per-person resume draft (Hopewick Plus)
      eden.p.<id>.active        per-person active conversation id
    ============================================================================= */
@@ -3324,7 +3328,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'resume', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'nutrition', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 
 function load(key, fallback) {
@@ -3634,6 +3638,9 @@ let bibleTab = 'soap';
 let ddState = { section: 'genesis', dayId: null };
 let breakersState = { custom: [], tried: { date: '', ids: [] } };
 let selfCareState = { items: null, done: { date: '', ids: [] } }; // items null → use defaults
+let nutritionExperiments = [];
+let nutritionDraft = { changed: '', why: '', felt: '', effects: '', keep: '' };
+let nutritionCategory = 'all';
 let resumeState = HopewickResume.emptyResume();
 let resumeStep = 'contact';
 let resumePaintedFor = null;
@@ -3762,6 +3769,9 @@ function loadProfileData(pid) {
   deeperBrowseAll = false;
   breakersState = normalizeBreakers(load(pk(pid, 'breakers'), {}));
   selfCareState = normalizeSelfCare(load(pk(pid, 'selfcare'), {}));
+  nutritionExperiments = normalizeNutritionExperiments(load(pk(pid, 'nutrition'), []));
+  nutritionDraft = { changed: '', why: '', felt: '', effects: '', keep: '' };
+  nutritionCategory = 'all';
   resumeState = HopewickResume.normalizeResume(load(pk(pid, 'resume'), null));
   resumePaintedFor = null;
   resumeStep = 'contact';
@@ -3803,6 +3813,10 @@ function saveBible() { if (isDemo) return; save(pk(profile.id, 'bible'), biblePr
 function saveDeeper() { if (isDemo) return; save(pk(profile.id, 'deeper'), deeperProgress); }
 function saveBreakers() { if (isDemo) return; save(pk(profile.id, 'breakers'), breakersState); }
 function saveSelfCare() { if (isDemo) return; save(pk(profile.id, 'selfcare'), selfCareState); }
+function saveNutritionExperiments() {
+  if (isDemo || !profile) return;
+  save(pk(profile.id, 'nutrition'), { experiments: nutritionExperiments });
+}
 function saveResume() {
   if (isDemo || !profile) return;
   save(pk(profile.id, 'resume'), resumeState);
@@ -5394,7 +5408,7 @@ function inAppToolsPrompt() {
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
     'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, deeper, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (food, water, and general information about supplements people ask about, such as NAC and fish oil). Educational only. Do not give doses. Do not say a supplement treats or cures addiction or withdrawal. Suggest a GP or pharmacist. Food and water come first. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. goals = SMART goals: two small goals for this week (Sunday–Saturday), free, saved on this device. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (Hopewick Plus): rebuilding meals, fluids, protein, fruit, vegetables and fibre, plus plain-language notes on higher-protein eating, vitamins, magnesium, omega-3, NAC, ashwagandha, ketogenic and carnivore diets, and methylene blue. Separate established nutrition, limited research, and personal stories. Do not give doses. Do not say these treat or cure addiction or withdrawal. Do not tell them to stop prescribed medicine. Methylene blue is not an ordinary supplement: no dose, and a doctor or pharmacist matters, especially with antidepressants. Alcohol and benzodiazepine withdrawal can need medical care. Paracetamol overdose is 000 or 13 11 26, never a shop supplement. Everyday food and water do not need a medical warning. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (plain-language neuroplasticity: new habits as new paths, small repeats, rest). Not a treatment and not a promise. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. deeper = Going Deeper study tracks. resume = the free Resume builder. plus = Hopewick Plus (more daily messages, the full year of readings, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, older chats). Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = 12 Steps practice.',
     'deeper = Going Deeper study tracks (Hopewick Plus): optional reflections in the person’s own tradition, or a values path if they prefer no faith content. Not clinical care and not a sermon. If they chose no faith content, name the values path unless they ask for a tradition.',
     'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply. Do not add deeper on a crisis reply.',
@@ -5412,7 +5426,7 @@ function counsellorPrompt(convo) {
     '- You are an AI recovery companion, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant (especially after crisis action steps), without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
     '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, name Find a meeting (official AA/NA/SMART finders) and include meetings on the TOOLS line. When they ask about rehab, detox, withdrawal management or formal AOD treatment, name Find treatment / rehab and include treatment — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, name Find AOD services and include aod — do not invent phone numbers. When they ask about a church, parish or congregation, name Find a church and include church — do not invent church lists or claim Hopewick runs churches. Do not paste hopewick.com.au links.',
-    '- If they ask about food, hydration, vitamins, or supplements (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, or a multivitamin), or about sleep, mood support, liver or antioxidant interest, heart and brain oils, or energy in that nutrition sense, name Nutrition and include nutrition on the TOOLS line. The screen pairs a benefit people ask about with a nutrient. Describe that pairing as a question for a GP or pharmacist, not as an effect you promise. Do not prescribe a dose. Do not say these products treat, cure, or prevent addiction or withdrawal. Prefer food and water. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
+    '- If they ask about food, hydration, vitamins, supplements, protein, sleep in a nutrition sense, or approaches people explore in recovery (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, a multivitamin, ashwagandha, ketogenic or carnivore eating, or methylene blue), name Nutrition and include nutrition on the TOOLS line. Describe the screen as rebuilding the basics and as curious, honest notes: established nutrition, limited research, and personal experience are different. Encourage paying attention to how they respond. Do not prescribe a dose. Do not tell them to stop a prescribed medicine. Do not say food, a diet, or a supplement treats, cures, or prevents addiction or withdrawal. Everyday meals, water, and vegetables do not need a medical warning. Methylene blue is not an ordinary supplement: give no dose and no schedule, and say it needs a doctor or pharmacist, especially with antidepressants, because of serotonin syndrome. Alcohol and benzodiazepine withdrawal can be medically dangerous and are not a nutrition plan. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
     '- If they ask about gut health, the gut and mood, probiotics, fermented foods, fibre, serotonin, or dopamine in that wellness sense, name Gut health and include gut on the TOOLS line. Say the link is real and still being studied. Do not say a food or probiotic treats depression, anxiety, or addiction. Do not give a dose or a brand. Suggest a GP or dietitian, especially with medicine or a gut condition.',
     '- If they ask how habits form, why early recovery feels hard, neuroplasticity, or new pathways in the brain, name Brain habits and include brain on the TOOLS line. Explain it as practice: small repeats, rest, and support. Do not promise that the brain will be rewired, and do not sell a program. You may mention SMART goals, the journal, or chat as places to practise one small step — lightly, without pressure.',
     '- If they ask about ice baths, a cold plunge, cold-water immersion, a recovery spa, or contrast therapy, name Ice baths & recovery spas and include cold on the TOOLS line. Speak to the person in recovery: this is an optional way to practise meeting discomfort instead of escaping it — step in on purpose, control breathing, stay present, resist the first urge to get out, and follow through on a commitment. The win is the follow-through, not how long they stay in. Some people describe feeling alert, refreshed, grounded, or mentally reset afterwards; say that experiences vary. Do not give a temperature, a time, or a venue. Do not frame cold as treatment for substance dependence, withdrawal, trauma, depression, or any medical condition. Do not say it detoxes the body, cures addiction, permanently increases dopamine, heals the nervous system, or replaces professional treatment. If you need that limit, say it once, then stay with the practice. Where research comes up, distinguish physiological responses to cold (the heart, breathing, and alertness reports in healthy people are described in the literature) from evidence about addiction recovery (these studies are not trials of that). Safety, once: significant stress on the cardiovascular and respiratory systems. Heart condition, cardiovascular disease, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, significant medical conditions, or any doubt — speak with a GP or treating clinician first. Never while intoxicated or impaired. Not alone. Enter gradually, do not dive in. Stop immediately for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong, and call 000. Do not use an ice bath as a craving skill. TIPP stays a cool drink or a cool cloth, never an ice bath.',
@@ -7196,251 +7210,443 @@ let nearbyLastCoarse = ''; // in-memory only; never precise GPS in localStorage
 
 
 /* ---------------------------------------------------------------------------
-   Nutrition & recovery (educational, food-first — not medical advice)
+   Nutrition (Hopewick Plus education)
+   Rebuild the basics, then explore with honest evidence. Not a prescription.
    --------------------------------------------------------------------------- */
-/* Plus library. Benefit ↔ nutrient pairings people ask about.
-   Not a promised effect, not a dose, not a treatment for addiction. */
-const NUTRITION_BENEFITS = [
-  { id: 'sleep', label: 'Sleep' },
-  { id: 'mood', label: 'Mood support' },
-  { id: 'liver', label: 'Liver / antioxidant interest' },
-  { id: 'heart', label: 'Heart & brain oils' },
-  { id: 'energy', label: 'Energy' },
-  { id: 'hydration', label: 'Hydration' },
+function normalizeNutritionExperiments(raw) {
+  const list = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.experiments) ? raw.experiments : []);
+  const keepOk = { keep: 1, change: 1, stop: 1, '': 1 };
+  return list.filter(x => x && typeof x === 'object').slice(0, 20).map(x => ({
+    id: String(x.id || '').trim() || ('nut-' + (Number(x.ts) || 0)),
+    changed: String(x.changed || '').trim().slice(0, 240),
+    why: String(x.why || '').trim().slice(0, 240),
+    felt: String(x.felt || '').trim().slice(0, 240),
+    effects: String(x.effects || '').trim().slice(0, 240),
+    keep: keepOk[x.keep] ? x.keep : '',
+    ts: Number(x.ts) || 0,
+  })).filter(x => x.changed);
+}
+const NUTRITION_KEEP = [
+  { id: '', label: 'Not sure yet' },
+  { id: 'keep', label: 'Keep it' },
+  { id: 'change', label: 'Change it' },
+  { id: 'stop', label: 'Stop it' },
 ];
-const NUTRITION_LIBRARY = [
+const NUTRITION_CATEGORIES = [
   {
-    id: 'food',
-    label: 'Vitamin-rich foods',
-    what: 'Ordinary meals with some colour and protein. Fruit, vegetables, eggs, yoghurt, cheese, legumes, wholegrains, nuts, and oily fish if you eat it. Vegemite on toast counts.',
+    id: 'basics',
+    label: 'Rebuild the basics',
+    intro: 'Meals, fluids, protein, plants, and fibre. These are the rebuild. Eating breakfast, adding vegetables, or drinking water does not need medical permission.',
   },
   {
-    id: 'hydration',
-    label: 'Water / fluids',
-    what: 'Water and other ordinary drinks spread through the day. Soup, milk, and diluted juice count. It is not a detox flush.',
+    id: 'explore',
+    label: 'Explore',
+    intro: 'Nutritional approaches and supplements people hear about in recovery. Each note says what it is, why someone might try it, and what is actually known.',
   },
   {
-    id: 'nac',
-    label: 'NAC (N-acetylcysteine)',
-    what: 'NAC is short for N-acetylcysteine, a form of the amino acid cysteine. In Australia you may see it sold as a supplement. Hospitals use a medical form of NAC in a different, urgent situation. A shop supplement and hospital treatment are not the same thing.',
+    id: 'evidence',
+    label: 'What the evidence says',
+    intro: 'Quality of evidence, in ordinary language. Limited research is a reason to stay curious and honest. It is not proof, and it is not a reason to dismiss the question.',
   },
   {
-    id: 'fish-oil',
-    label: 'Fish oil / omega-3',
-    what: 'Omega-3s are fats in oily fish such as salmon, sardines, and mackerel. Fish-oil capsules are a supplement form of those fats (often called EPA and DHA). Algae oil is an option if you do not eat fish.',
+    id: 'consider',
+    label: 'Things to consider',
+    intro: 'Medicines, health conditions, withdrawal, side effects, and interactions. These are the places where slowing down and getting personal advice matters.',
   },
   {
-    id: 'vitamin-d',
-    label: 'Vitamin D',
-    what: 'A vitamin your skin makes from sunlight. Small amounts are also in oily fish, eggs, and some fortified milks and spreads.',
+    id: 'questions',
+    label: 'Questions for your GP or pharmacist',
+    intro: 'Questions you can take to a GP, pharmacist, or dietitian. Use the ones that fit. Leave the rest.',
   },
   {
-    id: 'b-complex',
-    label: 'B-complex',
-    what: 'B vitamins are a group, including thiamine (B1), that come from food. A B-complex tablet bundles several of them together.',
+    id: 'experiment',
+    label: 'My experiment',
+    intro: '',
+  },
+];
+const NUTRITION_CARDS = [
+  {
+    id: 'basics-meals',
+    category: 'basics',
+    title: 'Regular meals',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['Eating at roughly steady times, even when appetite is unreliable. Breakfast, or whatever the first meal of your day is, counts.'] },
+      { h: 'Why it matters', p: ['In active use, meals often disappear. A regular plate is one way to start rebuilding. Hunger and an empty stomach can sit next to irritability and cravings. Food does not cancel a craving. It gives your body something to work with.'] },
+      { h: 'Try this', p: ['Pick one meal you can repeat. Eggs on toast, yoghurt and fruit, beans on toast, or rice with something that has protein. Vegemite on toast counts. You do not need a new diet to start.'] },
+      { h: 'Notice', p: ['Energy, mood, and cravings in the hours after you eat — and on mornings you skip food.'] },
+    ],
+  },
+  {
+    id: 'basics-protein',
+    category: 'basics',
+    title: 'Protein on the plate',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['The part of a meal that helps you feel fed, and that gives the body material to repair. Eggs, yoghurt, cheese, milk, meat, fish, tofu, tempeh, beans, lentils, and nuts.'] },
+      { h: 'Why it matters', p: ['Appetite in early recovery can be low, huge, or absent. Protein at a meal often keeps people satisfied for longer. You can eat more of it without joining a named diet.'] },
+      { h: 'Try this', p: ['Include a protein food at two meals today.'] },
+      { h: 'Notice', p: ['How long it is until you feel hungry again, and whether your mood is steadier when you are actually fed.'] },
+    ],
+  },
+  {
+    id: 'basics-plants',
+    category: 'basics',
+    title: 'Fruit, vegetables, and fibre',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['Plant foods, and the roughage in them. Fruit, vegetables, oats, beans, lentils, wholegrain bread, nuts, and seeds.'] },
+      { h: 'Why it matters', p: ['These foods carry a lot of the vitamins and minerals a body uses while it rebuilds, and fibre feeds the gut. Opioids can slow the gut. Alcohol can irritate it. A piece of fruit or a handful of vegetables is ordinary care. It is not a cleanse.'] },
+      { h: 'Try this', p: ['Add one plant food to a meal you already eat. If you increase fibre, do it gradually and drink something with it, so your stomach is not surprised.'] },
+      { h: 'Notice', p: ['Energy, fullness, and how your gut feels over a few days.'] },
+    ],
+  },
+  {
+    id: 'basics-fluids',
+    category: 'basics',
+    title: 'Fluids',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['Water and other ordinary drinks through the day. Soup, milk, and fruit count. This is not a detox flush.'] },
+      { h: 'Why it matters', p: ['Alcohol and some other drugs leave people dry, and thirst can sit next to a craving. Drinking water is part of rebuilding. You do not need permission to have a glass.'] },
+      { h: 'Try this', p: ['Keep water where you can see it. Sip through the day rather than drinking a large amount at once. More is reasonable in the heat or after sweating. Energy drinks are a poor stand-in for rest or sleep.'] },
+      { h: 'Notice', p: ['Headache, a dry mouth, and whether a craving softens after a drink of water. If you cannot keep fluids down, or you are confused or faint, that is urgent — call 000 if it is severe.'] },
+    ],
+  },
+  {
+    id: 'basics-enough',
+    category: 'basics',
+    title: 'Eating enough',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['Enough food for the day you are actually having. Not a perfect plan.'] },
+      { h: 'Why it matters', p: ['Early recovery can bring nausea, a small appetite, or eating that feels out of control. Both are common. Small, frequent, familiar foods beat an ideal menu. You are allowed to eat enough.'] },
+      { h: 'Try this', p: ['Three mini-meals if one big meal feels impossible. Keep yoghurt, toast, soup, cheese, fruit, or a smoothie where you can reach them.'] },
+      { h: 'Notice', p: ['Whether you are actually eating, not only thinking about nutrition. If your weight is falling quickly, tell a GP or a dietitian. That is about a change in your health, not about getting permission to eat.'] },
+    ],
+  },
+  {
+    id: 'basics-sleep',
+    category: 'basics',
+    title: 'Sleep and the evening meal',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['Sleep is not a nutrient. It belongs here because people ask what helps them rest, and the nutrition part is simple: a regular evening meal, and less caffeine late in the day.'] },
+      { h: 'Why it matters', p: ['Short sleep makes cravings and low mood louder. You do not have to solve sleep with a product.'] },
+      { h: 'Try this', p: ['Eat something in the evening if you have been skipping it. Move caffeine earlier if you can. Keep the hour before bed quieter than the rest of the day.'] },
+      { h: 'Notice', p: ['Which evenings you fall asleep more easily. Magnesium is one supplement people ask about for sleep. It is in Explore, with the evidence, if you want to read it. You can try the evening meal first.'] },
+    ],
+  },
+  {
+    id: 'protein-pattern',
+    category: 'explore',
+    title: 'Higher-protein eating',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: ['A way of building meals around protein foods, usually while still eating plants and some carbohydrates. It is not the same thing as a carnivore or ketogenic diet.'] },
+      { h: 'Why you might explore it', p: ['People in recovery sometimes find protein-heavy meals more satisfying, and they want to feel stronger. That curiosity is reasonable.'] },
+      { h: 'What the evidence says', p: ['Protein supporting fullness and the body’s repair is an established nutritional principle. There is not strong clinical evidence that a higher-protein diet is a treatment for addiction. You do not need a special diet to include more protein.'] },
+      { h: 'Things to consider', p: ['If you have kidney disease, or you have been told to limit protein, a big increase is a conversation with your GP or dietitian before you change the pattern. Gout can also be stirred up by some high-meat patterns.'] },
+      { h: 'Questions you could ask', items: [
+        'I have been eating more protein because I want to feel fuller. Is there any reason, given my kidneys or anything else, to keep that modest?',
+        'What would enough protein look like for me without a named diet?',
+      ] },
+    ],
+  },
+  {
+    id: 'vitamins',
+    category: 'explore',
+    title: 'Vitamins (B vitamins, vitamin D, and a multivitamin)',
+    tier: 'Established principle',
+    sections: [
+      { h: 'What it is', p: [
+        'Vitamins are nutrients you mostly get from food. B vitamins, including thiamine (B1), come from Vegemite and other yeast spreads, wholegrain bread, fortified cereals, legumes, eggs, meat, and leafy greens.',
+        'Vitamin D is made in skin from sunlight. Small amounts are also in oily fish, eggs, and some fortified milks and spreads. A multivitamin is one tablet that bundles modest amounts of several vitamins and minerals.',
+      ] },
+      { h: 'Why you might explore them', p: ['Eating has often been patchy. People wonder if they are low, tired, or run down, and whether a tablet would help while meals are rebuilt.'] },
+      { h: 'What the evidence says', p: [
+        'Getting vitamins from food is an established principle. Replacing a diagnosed deficiency is ordinary medicine. A blood test is how vitamin D is checked. Hopewick cannot tell you that you are low.',
+        'A multivitamin does not create energy, does not replace meals, and does not detox the body. It is not a treatment for addiction. Research on vitamins for mood or energy, in people who are not deficient, is limited.',
+        'After heavy alcohol use, thiamine can run low, and severe deficiency is a medical problem. Whether you need thiamine, and which product, belongs with a GP, pharmacist, or AOD service.',
+      ] },
+      { h: 'Things to consider', p: ['Do not stop a vitamin a doctor has already prescribed. Do not take a high dose because a webpage suggested one. Very high amounts of some vitamins can cause harm. Safe time outdoors comes before a vitamin D tablet — Slip, Slop, Slap, and don’t burn. If you already take other products, show a pharmacist the packet.'] },
+      { h: 'Questions you could ask', items: [
+        'After the way I was drinking, do I need thiamine continued or checked?',
+        'I have been indoors a lot. Is a vitamin D test useful, or is ordinary sunlight enough?',
+        'If my meals are still patchy, is a multivitamin a reasonable backup, and for how long?',
+      ] },
+    ],
   },
   {
     id: 'magnesium',
-    label: 'Magnesium',
-    what: 'A mineral in nuts, seeds, leafy greens, legumes, and wholegrains.',
+    category: 'explore',
+    title: 'Magnesium',
+    tier: 'Limited research',
+    sections: [
+      { h: 'What it is', p: ['A mineral in nuts, seeds, leafy greens, legumes, and wholegrains. A supplement is a concentrated form of that mineral. Some forms upset the stomach more than others.'] },
+      { h: 'Why you might explore it', p: ['Sleep, tight or restless muscles, and a wired feeling are common reasons people look up magnesium in recovery.'] },
+      { h: 'What the evidence says', p: ['Studies of magnesium for sleep are limited. Some people sleep better. Trials do not show a reliable sleeping-tablet effect. It is not a treatment for withdrawal, and it is not a treatment for addiction. The established part is the food.'] },
+      { h: 'Things to consider', p: ['Kidney disease matters, because the body may not clear extra magnesium. Some medicines are affected by mineral supplements. Stomach upset is a common reason people stop. A supplement is optional. The nuts, seeds, and greens are not.'] },
+      { h: 'Questions you could ask', items: [
+        'Is magnesium from food enough for me?',
+        'If I try a supplement, does anything I already take, or my kidney health, make that a poor idea?',
+        'What should make me stop?',
+      ] },
+    ],
   },
   {
-    id: 'multivitamin',
-    label: 'Multivitamin',
-    what: 'One tablet that combines a range of vitamins and minerals, usually in modest amounts.',
+    id: 'fish-oil',
+    category: 'explore',
+    title: 'Fish oil / omega-3',
+    tier: 'Limited research',
+    sections: [
+      { h: 'What it is', p: ['Omega-3s are fats in oily fish such as salmon, sardines, and mackerel. Fish-oil capsules are a supplement form of those fats, often listed as EPA and DHA. Algae oil is an option if you do not eat fish.'] },
+      { h: 'Why you might explore it', p: ['People ask about mood, the heart, and the brain. A meal of oily fish is the version that starts in the kitchen.'] },
+      { h: 'What the evidence says', p: ['Eating oily fish is an established part of heart-healthy eating. Research on fish-oil capsules for low mood is modest and mixed, often alongside other care. A capsule is not an antidepressant, not a brain medicine, and not a treatment for addiction.'] },
+      { h: 'Things to consider', p: ['Fish oil can add to bleeding risk if you take blood-thinning medicine. Pregnancy is a reason to check with a pharmacist before capsules. A fish meal does not need that conversation.'] },
+      { h: 'Questions you could ask', items: [
+        'I eat fish a couple of times a week. Is there a reason to add a capsule?',
+        'I take a blood thinner. Is fish oil a problem with it?',
+        'What side effects should I watch for?',
+      ] },
+    ],
+  },
+  {
+    id: 'nac',
+    category: 'explore',
+    title: 'NAC (N-acetylcysteine)',
+    tier: 'Limited research',
+    sections: [
+      { h: 'What it is', p: ['NAC is short for N-acetylcysteine, a form of the amino acid cysteine. In Australia you may see it sold as a supplement. Hospitals use a medical form of NAC in a different, urgent situation: paracetamol poisoning. A shop supplement and that hospital treatment are not the same thing. Protein foods — eggs, meat, dairy, legumes, tofu — already contain cysteine.'] },
+      { h: 'Why you might explore it', p: ['People ask because NAC is involved in the body’s own antioxidant system (glutathione), and because researchers have studied it alongside cravings.'] },
+      { h: 'What the evidence says', p: ['Findings are mixed. One trial in younger people who used cannabis looked encouraging. A larger trial in adults did not find the same benefit. Other studies, including for other substances, are small or inconsistent. Any effect is uncertain and individual. NAC is not a liver cleanse, and it is not a treatment for addiction. It does not replace counselling, meetings, a GP, or an AOD service. Hopewick does not give a dose.'] },
+      { h: 'Things to consider', p: ['Nausea, stomach upset, and a strong smell are common. Asthma is a reason for extra care. If someone may have taken too much paracetamol, call 000 or the Poisons Information Centre on 13 11 26. Do not handle that with a shop supplement.'] },
+      { h: 'Questions you could ask', items: [
+        'Given what I use, and the medicines I take, is oral NAC something you would consider, or is food enough?',
+        'What did the cannabis research actually show, in plain language?',
+        'What side effects should make me stop?',
+      ] },
+    ],
+  },
+  {
+    id: 'ashwagandha',
+    category: 'explore',
+    title: 'Ashwagandha',
+    tier: 'Limited research',
+    sections: [
+      { h: 'What it is', p: ['Ashwagandha (Withania somnifera) is a root used in Ayurvedic tradition and sold as a capsule or powder. It is often called an adaptogen — a loose word for a herb people take for stress. That word is not a medical category.'] },
+      { h: 'Why you might explore it', p: ['Stress, sleep, and anxiety symptoms are why people in recovery hear about it. The interest is usually “I want to feel steadier,” not a hunt for a cure.'] },
+      { h: 'What the evidence says', p: ['Small trials have looked at perceived stress and sleep, sometimes with modest short-term changes. That is limited research. It has not been shown to treat addiction. Personal stories are common, and they are not the same as a trial.'] },
+      { h: 'Things to consider', p: ['Rare reports of liver injury have been serious enough for medicines regulators, including Australia’s Therapeutic Goods Administration, to publish safety notices. Ashwagandha may increase thyroid hormone activity, so thyroid disease or thyroid medicine matters. It is often avoided in pregnancy. It can add to sedation with alcohol or with sedating medicines. An autoimmune condition is another reason for a personal conversation before you try it.'] },
+      { h: 'Questions you could ask', items: [
+        'I am curious about ashwagandha for stress. With my medicines, and my liver and thyroid history, is this a poor fit?',
+        'What warning signs, including dark urine or yellow eyes, mean I should stop and be seen?',
+        'Is there a simpler sleep or stress step you would try first?',
+      ] },
+    ],
+  },
+  {
+    id: 'restrictive-diets',
+    category: 'explore',
+    also: ['consider'],
+    title: 'Ketogenic and carnivore diets',
+    tier: 'Limited research',
+    sections: [
+      { h: 'What it is', p: [
+        'A ketogenic diet is very low in carbohydrate, higher in fat, and contains enough protein that the body shifts toward using ketones.',
+        'A carnivore diet is animal foods only — meat, fish, eggs, and sometimes dairy — and leaves out fruit, vegetables, grains, and legumes.',
+      ] },
+      { h: 'Why you might explore it', p: ['Some people in recovery want fewer cravings, steadier energy, or a simpler relationship with food. Others are curious because someone they trust felt mentally clearer. That curiosity is understandable. It is not an instruction. You do not need to follow either diet to recover.'] },
+      { h: 'What the evidence says', p: ['There is early research on ketogenic diets and alcohol, including a small human study during withdrawal and some animal research. It is not established care. The studies are small, and the results are uncertain. Carnivore eating is mostly individual stories. There is very little clinical research, and none that shows it is a treatment for addiction.'] },
+      { h: 'Things to consider', p: [
+        'Both patterns are restrictive. A ketogenic diet can be hard to sustain, and the first days can feel miserable. It is a poor fit in pregnancy, with a history of disordered eating, with gallbladder or significant pancreas trouble, and if you take medicines for diabetes — a sudden drop in carbohydrate can be dangerous with some of those medicines.',
+        'Carnivore eating removes fibre and many vitamins that plants provide, including vitamin C and folate when plants are truly absent. Constipation is common. Cholesterol can change. Kidney disease and gout are reasons to talk with a GP before a meat-heavy experiment. A few weeks of curiosity is still a dietary change with consequences.',
+      ] },
+      { h: 'Questions you could ask', items: [
+        'If I tried a lower-carbohydrate or meat-heavy pattern for a few weeks, what would you want to know about my health first?',
+        'What changes in energy, mood, gut, or blood tests should make me stop?',
+        'How do I keep plants and fibre in the week if I do not want to cut them out?',
+      ] },
+    ],
+  },
+  {
+    id: 'methylene-blue',
+    category: 'explore',
+    also: ['consider'],
+    caution: true,
+    title: 'Methylene blue — higher caution',
+    tier: 'Higher caution',
+    sections: [
+      { h: 'What it is', p: ['Methylene blue is a dye and a medicine used in hospitals for specific problems, including a blood condition called methemoglobinemia. It is not an ordinary wellness supplement. Online, people also talk about it for energy, mood, and mitochondria. That conversation is not the hospital use.'] },
+      { h: 'Why you might explore it', p: ['The stories sound bold: clarity, energy, a different kind of experiment while rebuilding. Curiosity makes sense. This one needs a professional in the conversation before any product does.'] },
+      { h: 'What the evidence says', p: ['Research on mood and cognition is early and limited. It is not a treatment for addiction. Personal experiments posted online are anecdotes. They are not a protocol, and this app will not turn them into one.'] },
+      { h: 'Things to consider', p: [
+        'Methylene blue can act like a monoamine oxidase inhibitor. Combined with many antidepressants — SSRIs, SNRIs, and other medicines that affect serotonin — it can contribute to serotonin syndrome. Agitation, confusion, heavy sweating, tremor, and fever are emergency symptoms. Call 000.',
+        'People with G6PD deficiency can break down red blood cells if they take it. Hopewick does not give a dose, a concentration, or a schedule. Urine or saliva can turn blue-green. That is a known effect of the substance, not a target.',
+      ] },
+      { h: 'Questions you could ask', items: [
+        'I have heard about methylene blue. Here are my medicines, including any antidepressant. Is this something I should leave alone?',
+        'Could G6PD deficiency, or anything else in my history, make it unsafe?',
+        'If I am only curious, what safer experiment would you rather I start with?',
+      ] },
+    ],
+  },
+  {
+    id: 'evidence-kinds',
+    category: 'evidence',
+    title: 'Three kinds of knowledge',
+    tier: 'How to read this section',
+    sections: [
+      { h: 'Established nutritional principles', p: ['Enough food, regular meals, protein, fruit and vegetables, fibre, fluids, and the vitamins and minerals already in ordinary food. These are how bodies are fed while they rebuild. They are worth doing because they are basic care. They are not a cure for addiction, and they do not need a permission slip.'] },
+      { h: 'Emerging or limited research', p: ['Studies exist, and they do not yet add up to a settled treatment. The samples are small, the results disagree, or the people studied are not you. NAC and cravings, omega-3 capsules and mood, magnesium and sleep, ashwagandha and stress, vitamin D when a test shows you are low, and early ketogenic research around alcohol sit here. Interest is reasonable. Certainty is not. Where studies disagree, the honest summary is that the findings are mixed.'] },
+      { h: 'Individual experience', p: ['What one person noticed. That includes stories online, a friend’s week, and the founder note at the top of this screen. Personal experience can make you curious. It is not medical evidence, and it is kept separate from these cards on purpose.'] },
+    ],
+  },
+  {
+    id: 'evidence-claims',
+    category: 'evidence',
+    title: 'What these notes will not claim',
+    tier: 'How to read this section',
+    sections: [
+      { h: 'What the evidence says', p: [
+        'Hopewick will not call a supplement, a restrictive diet, or methylene blue a treatment for addiction. Strong clinical evidence would be needed for that claim. It is not there for the products in Explore.',
+        'Saying so is honesty. It is not a warning to leave yourself alone. You can still change one thing, pay attention, and talk with a professional when the change involves a medicine, a restrictive diet, withdrawal, or a compound such as methylene blue.',
+        'These notes do not give doses. They do not tell you to stop a prescribed medicine.',
+      ] },
+    ],
+  },
+  {
+    id: 'evidence-stories',
+    category: 'evidence',
+    title: 'How to read a promising week',
+    tier: 'Personal stories',
+    sections: [
+      { h: 'What it is', p: ['One good week is information. It is not a trial. Changing five things at once makes it hard to know what helped.'] },
+      { h: 'Try this', p: ['Pick one change. Write why you tried it, how you felt, any side effects, and whether you will keep it, change it, or stop it. My experiment, at the end of this screen, is for that record.'] },
+    ],
+  },
+  {
+    id: 'consider-medicines',
+    category: 'consider',
+    title: 'Medicines and conditions that change the picture',
+    tier: 'Worth a personal conversation',
+    sections: [
+      { h: 'Things to consider', p: ['Most meals do not interact with your prescriptions. Some supplements and big dietary changes can. These are the combinations people most often need a pharmacist or GP to look at with them.'] },
+      { h: 'Examples, not a ban list', items: [
+        'Blood-thinning medicine and fish oil or omega-3 capsules.',
+        'Antidepressants and other serotonergic medicines with methylene blue — serotonin syndrome is an emergency.',
+        'Thyroid medicine, thyroid disease, pregnancy, or sedating medicines with ashwagandha.',
+        'Kidney disease with extra magnesium, or with a large jump in protein.',
+        'Diabetes medicines with a sudden ketogenic diet.',
+        'A vitamin a doctor has already started — do not stop it because of something you read here.',
+      ] },
+    ],
+  },
+  {
+    id: 'consider-withdrawal',
+    category: 'consider',
+    title: 'Alcohol and benzodiazepine withdrawal',
+    tier: 'Medical care, not a meal plan',
+    sections: [
+      { h: 'What it is', p: ['Stopping alcohol or benzodiazepines after regular or heavy use can be medically dangerous, including seizures and confusion. That needs a doctor or an AOD service. It is a different subject from breakfast, water, or vegetables.'] },
+      { h: 'What food can still do', p: ['Regular meals, fluids, and rest can support comfort while proper withdrawal care happens. They do not replace a taper, a detox admission, or thiamine decisions after heavy drinking. Do not stop benzodiazepines suddenly on your own after regular use.'] },
+      { h: 'Emergency', p: ['Shaking that is severe, confusion, a seizure, chest pain, or trouble breathing: call 000.'] },
+    ],
+  },
+  {
+    id: 'consider-hospital',
+    category: 'consider',
+    title: 'A shop bottle is not hospital treatment',
+    tier: 'Worth a personal conversation',
+    sections: [
+      { h: 'What it is', p: ['Some names in Explore are also real hospital medicines, used for different reasons and in different forms. NAC in hospital is a treatment for paracetamol poisoning. Methylene blue in hospital is a treatment for specific medical problems. A wellness bottle is not either of those.'] },
+      { h: 'Emergency', p: ['If someone may have taken too much paracetamol, call 000 or the Poisons Information Centre on 13 11 26. Do not handle that with a shop supplement.'] },
+    ],
+  },
+  {
+    id: 'consider-effects',
+    category: 'consider',
+    title: 'Side effects worth writing down',
+    tier: 'Worth a personal conversation',
+    sections: [
+      { h: 'Notice', p: ['A side effect is information. It is not a failure, and it is not a reason to hide the experiment from yourself. Write it in My experiment.'] },
+      { h: 'Things to consider', items: [
+        'Stomach upset, nausea, rash, or a strong new smell from a product.',
+        'Dark urine or yellow eyes — stop ashwagandha if you are taking it, and be seen.',
+        'Agitation, confusion, heavy sweating, tremor, or fever after methylene blue and an antidepressant — call 000.',
+        'Weight falling quickly, or fluids that will not stay down.',
+      ] },
+    ],
+  },
+  {
+    id: 'questions-food',
+    category: 'questions',
+    title: 'About food and rebuilding',
+    sections: [
+      { h: 'Questions you could ask', items: [
+        'Am I eating enough for this stage of recovery, or is my weight changing in a way you want to check?',
+        'Would a dietitian who understands alcohol and other drugs be useful for me?',
+        'After heavy drinking, do I need thiamine continued or checked?',
+        'I have been indoors a lot. Is a vitamin D test worth doing?',
+      ] },
+    ],
+  },
+  {
+    id: 'questions-supplement',
+    category: 'questions',
+    title: 'About a supplement you are curious about',
+    sections: [
+      { h: 'Questions you could ask', p: ['Name the product — magnesium, fish oil, NAC, ashwagandha, a multivitamin, or something else — and take your medicine list with you.'] },
+      { h: 'A short list', items: [
+        'What is this, in plain language, and why do people in recovery talk about it?',
+        'Is what we know established, limited, or mostly personal stories?',
+        'Here are the medicines and products I already take. Does this add a problem?',
+        'What should I notice over the next couple of weeks?',
+        'What should make me stop and contact you?',
+        'Is food enough for the thing I am hoping to change?',
+      ] },
+    ],
+  },
+  {
+    id: 'questions-diet',
+    category: 'questions',
+    title: 'About a ketogenic or carnivore pattern',
+    sections: [
+      { h: 'Questions you could ask', p: ['You do not need anyone’s permission to keep eating vegetables. These questions are for a major restrictive change.'] },
+      { h: 'A short list', items: [
+        'I am interested because of a specific reason I can name. What would you want monitored if I tried this for a few weeks?',
+        'Given my kidneys, cholesterol, gout, pregnancy, eating history, or diabetes medicines, is this a poor fit?',
+        'How would I know it is not suiting me?',
+        'What would a less extreme version look like if I still want more protein and fewer chaotic meals?',
+      ] },
+    ],
+  },
+  {
+    id: 'questions-methylene',
+    category: 'questions',
+    title: 'About methylene blue',
+    sections: [
+      { h: 'Questions you could ask', items: [
+        'I take these medicines, including any antidepressant. Is methylene blue something I should not take?',
+        'Do I have any condition, such as G6PD deficiency, that would make it unsafe?',
+        'What warning signs mean emergency care, not a wait-and-see?',
+        'What is actually known, and what is only a personal story online?',
+      ] },
+    ],
+  },
+  {
+    id: 'questions-withdrawal',
+    category: 'questions',
+    title: 'If alcohol or benzodiazepines are in the picture',
+    sections: [
+      { h: 'Questions you could ask', items: [
+        'I am cutting down or stopping. Do I need medical withdrawal care, separate from anything I change in my food?',
+        'Who do I call if I get very shaky, confused, or feel a seizure coming? In that moment the answer is 000.',
+        'Does my AOD service or GP want me on thiamine while this is happening?',
+      ] },
+    ],
   },
 ];
-const NUTRITION_PAIRINGS = [
-  {
-    benefit: 'sleep',
-    nutrient: 'magnesium',
-    note: 'People ask about magnesium for sleep, and for tight or restless muscles. It is not a sleeping tablet and not a treatment for withdrawal. Food first: nuts, seeds, leafy greens, legumes, wholegrains. If you still want a supplement, ask a pharmacist and mention kidney health and your other medicines. Some products upset the stomach. Hopewick does not recommend a dose or a brand.',
-  },
-  {
-    benefit: 'sleep',
-    nutrient: 'food',
-    note: 'The food pairing for sleep is a regular evening meal, magnesium-rich foods (nuts, seeds, leafy greens), and less late caffeine. A meal is not a sleeping medicine.',
-  },
-  {
-    benefit: 'mood',
-    nutrient: 'fish-oil',
-    note: 'People ask about fish oil for mood support. A capsule is not a treatment for depression, addiction, or withdrawal. Food first: salmon, sardines, or mackerel, or an algae-based food if you do not eat fish. Ask a pharmacist before capsules if you take blood-thinning medicine, are pregnant, or already take other products. No dose is given here.',
-  },
-  {
-    benefit: 'mood',
-    nutrient: 'vitamin-d',
-    note: 'People ask about vitamin D for mood support when they have been indoors. Whether a level is low is a blood test and a GP. Hopewick cannot tell you that you are low. A tablet is not a mood treatment and not a treatment for addiction. Short, safe time outdoors comes first — Slip, Slop, Slap, and don’t burn.',
-  },
-  {
-    benefit: 'liver',
-    nutrient: 'nac',
-    note: 'People ask about NAC for liver and antioxidant interest because it is involved in the body’s own antioxidant system (glutathione). Researchers have also studied it alongside cravings. Findings are mixed. Any benefit is uncertain and individual. It is not a liver cleanse, not a treatment for addiction, and it does not replace counselling, meetings, a GP, or an AOD service. Hopewick does not give a dose. Protein foods — eggs, meat, dairy, legumes, tofu — already contain cysteine. If someone may have taken too much paracetamol, call 000 or the Poisons Information Centre on 13 11 26. Do not handle that with a shop supplement.',
-  },
-  {
-    benefit: 'heart',
-    nutrient: 'fish-oil',
-    note: 'People ask about fish oil for heart and brain interest because oily fish contain omega-3 fats (EPA and DHA). A capsule is not a treatment for heart disease, not a brain medicine, and not a treatment for addiction. The food pairing is a meal of salmon, sardines, or mackerel. Ask a pharmacist before capsules, especially with blood-thinning medicine. No dose is given here.',
-  },
-  {
-    benefit: 'heart',
-    nutrient: 'food',
-    note: 'The food pairing for heart and brain oils is oily fish itself (salmon, sardines, mackerel), or an algae-based food if you do not eat fish. One meal is the step. It is not a treatment for heart disease.',
-  },
-  {
-    benefit: 'energy',
-    nutrient: 'b-complex',
-    note: 'People ask about a B-complex for energy. B vitamins help the body turn food into energy. A tablet is not an energy drink, not a stimulant replacement, and not a treatment for fatigue or addiction. After heavy alcohol use, thiamine (B1) can run low — that decision belongs to a GP or pharmacist, who may want a specific product. Do not stop a vitamin a doctor has already prescribed. Food: Vegemite and other yeast spreads, wholegrain bread, fortified cereals, legumes, eggs, leafy greens, pork, or fortified alternatives. No dose is given here.',
-  },
-  {
-    benefit: 'energy',
-    nutrient: 'vitamin-d',
-    note: 'People ask about vitamin D for energy when they feel run down. Tiredness has many causes. A GP can check a level. Hopewick cannot. Do not take a high dose because a webpage suggested one. Safe sun and food come first.',
-  },
-  {
-    benefit: 'energy',
-    nutrient: 'multivitamin',
-    note: 'People ask about a multivitamin for energy when eating has been patchy. It is a backup while meals are rebuilt. It does not create energy, it does not replace food, it does not detox the body, and it is not a treatment for addiction. More tablets are not better. Show the packet to a pharmacist and say what else you take, including prescribed medicines. Skip anything sold as a liver flush, an addiction fix, or a rapid detox.',
-  },
-  {
-    benefit: 'energy',
-    nutrient: 'food',
-    note: 'The food pairing for energy is a regular plate: some protein (eggs, beans, yoghurt, cheese, meat, or tofu) and a carbohydrate you already eat. That is everyday food, not a treatment. If weight is dropping quickly, talk to a GP or dietitian.',
-  },
-  {
-    benefit: 'hydration',
-    nutrient: 'hydration',
-    note: 'The pairing for hydration is water and ordinary drinks, not a vitamin. People look this up because alcohol and some other drugs leave them dry, and thirst can sit next to a craving. Sip through the day rather than drinking litres at once. It does not cancel a substance. Skip energy drinks as a stand-in. If you have been very sweaty or vomiting, a pharmacist can say whether an oral rehydration drink is useful. If you cannot keep fluids down, or you are confused or faint, seek care — call 000 if it is severe. The rough guide further down is not a target. Heart, kidney, and other conditions change how much fluid is right.',
-  },
-];
-let nutritionBenefitFilter = 'all';
-let nutritionNutrientFilter = 'all';
-
-const NUTRITION_TOPICS = [
-  {
-    id: 'alcohol',
-    label: 'Alcohol',
-    body: 'Alcohol can dehydrate you, disturb sleep, irritate the gut and deplete B-vitamins (especially thiamine/B1), magnesium and zinc over time. Heavy or dependent use needs medical advice — withdrawal can include tremors, seizures and confusion.',
-    nutrients: [
-      { n: 'Fluids & electrolytes', food: 'Water, oral rehydration (Hydralyte-style), soup, banana, yoghurt' },
-      { n: 'Thiamine (B1)', food: 'Wholegrain bread, fortified cereals, legumes, pork, nuts — ask a pharmacist/GP before any thiamine supplement after heavy drinking' },
-      { n: 'Other B-vitamins', food: 'Eggs, leafy greens, dairy, meat or fortified alternatives' },
-      { n: 'Magnesium', food: 'Nuts, seeds, leafy greens, wholegrains' },
-      { n: 'Protein', food: 'Eggs, yoghurt, lentils, fish, tofu, lean meat' },
-    ],
-    checklist: ['Sip water regularly today', 'Eat something with protein and carbs', 'Prioritise sleep tonight', 'Avoid more alcohol while recovering', 'If shaking, confused or seizing — call 000 / see a doctor'],
-    meals: ['Vegemite on toast + banana', 'Eggs on toast', 'Yoghurt with fruit and oats', 'Chicken and rice soup', 'Baked beans on toast'],
-  },
-  {
-    id: 'cannabis',
-    label: 'Cannabis',
-    body: 'Cannabis can affect motivation, sleep rhythm and appetite (sometimes increasing it, sometimes suppressing it). After heavy use, the body mainly needs routine: food, hydration, movement and sleep — not a special “detox”.',
-    nutrients: [
-      { n: 'Hydration', food: 'Water, herbal tea, fruit' },
-      { n: 'Fibre & steady energy', food: 'Oats, fruit, vegetables, wholegrains' },
-      { n: 'Protein', food: 'Eggs, yoghurt, nuts, legumes' },
-      { n: 'Magnesium (for restlessness)', food: 'Nuts, seeds, leafy greens — food first' },
-    ],
-    checklist: ['Drink water through the day', 'Eat regular simple meals', 'Get some daylight and a short walk', 'Keep a calm sleep routine', 'Be kind if appetite or mood wobbles for a few days'],
-    meals: ['Overnight oats with fruit', 'Toast with peanut butter', 'Rice and stir-fried veg', 'Handful of nuts + apple'],
-  },
-  {
-    id: 'stimulants',
-    label: 'Stimulants / amphetamines',
-    body: 'Stimulants often suppress appetite, raise heart rate and body temperature, and can leave you dehydrated and sleep-deprived. Afterward, the priority is rest, fluids, and gentle re-feeding — not megadoses or “stacks”.',
-    nutrients: [
-      { n: 'Hydration & electrolytes', food: 'Water, oral rehydration, coconut water, banana' },
-      { n: 'Easy protein + carbs', food: 'Smoothie with milk/yoghurt, toast, eggs, soup' },
-      { n: 'Vitamin C & colourful plants', food: 'Citrus, berries, capsicum, kiwi' },
-      { n: 'Magnesium & potassium', food: 'Banana, potato, nuts, leafy greens' },
-    ],
-    checklist: ['Cool down and sip water (not energy drinks)', 'Eat something small even if appetite is low', 'Prioritise long sleep when you can', 'Avoid more stimulants while recovering', 'Chest pain, severe agitation or overheating — call 000'],
-    meals: ['Banana smoothie', 'Toast and scrambled eggs', 'Misoshiru / clear soup', 'Rice porridge', 'Yoghurt cup'],
-  },
-  {
-    id: 'mdma',
-    label: 'MDMA / ecstasy',
-    body: 'MDMA can raise body temperature and deplete fluids and electrolytes; the days after (“come down”) often bring low mood and fatigue. Cool environments, rest and ordinary food help — serotonin “boost” supplement stacks are not recommended here.',
-    nutrients: [
-      { n: 'Cooling & hydration', food: 'Water sipped steadily; oral rehydration if sweaty' },
-      { n: 'Electrolytes', food: 'Banana, yoghurt, soup — avoid overdoing salt tablets without advice' },
-      { n: 'Tryptophan-rich foods (gentle)', food: 'Turkey, eggs, dairy, oats, seeds — as normal meals, not megadoses' },
-      { n: 'Vitamin C & antioxidants from food', food: 'Fruit and vegetables' },
-    ],
-    checklist: ['Rest in a cool place', 'Sip water; don’t force litres at once', 'Eat light, familiar food', 'Plan quiet recovery days', 'Low mood lasting weeks — talk to a GP'],
-    meals: ['Banana + yoghurt', 'Oat porridge', 'Veggie soup', 'Rice and eggs'],
-  },
-  {
-    id: 'opioids',
-    label: 'Opioids',
-    body: 'Opioids slow the gut (constipation), can reduce appetite and affect hormones and sleep. Nutrition support is about gentle fibre, fluids and regular meals — not a detox kit. Withdrawal is uncomfortable; medical and AOD support can help.',
-    nutrients: [
-      { n: 'Fluids', food: 'Water, herbal tea, broth' },
-      { n: 'Fibre (gradual)', food: 'Fruit, veg, oats, legumes — increase slowly' },
-      { n: 'Protein', food: 'Eggs, dairy, legumes, fish' },
-      { n: 'Potassium & magnesium from food', food: 'Banana, potato, greens, nuts' },
-    ],
-    checklist: ['Drink water through the day', 'Move gently if you can (helps the gut)', 'Eat fibre-rich foods gradually', 'Soft foods if nauseous', 'Severe withdrawal or overdose risk — call 000; ask about naloxone'],
-    meals: ['Porridge with fruit', 'Scrambled eggs', 'Lentil soup', 'Stewed apple and yoghurt'],
-  },
-  {
-    id: 'nicotine',
-    label: 'Nicotine / tobacco',
-    body: 'Stopping nicotine can increase appetite and affect mood and concentration. Focusing on regular meals, water instead of “hand-to-mouth” habits, and colourful plants supports the change — quit support (Quitline 13 7848) helps too.',
-    nutrients: [
-      { n: 'Hydration', food: 'Water, flavoured sparkling water' },
-      { n: 'Crunchy substitutes', food: 'Carrot, apple, nuts (portion-aware)' },
-      { n: 'Vitamin C rich foods', food: 'Citrus, berries, kiwi, capsicum' },
-      { n: 'Steady blood sugar', food: 'Regular meals with protein + fibre' },
-    ],
-    checklist: ['Drink water when a craving hits', 'Keep healthy snacks handy', 'Move for 5–10 minutes during urges', 'Celebrate smoke-free hours/days', 'Consider Quitline 13 7848'],
-    meals: ['Apple and handful of almonds', 'Veggie sticks and hummus', 'Grain bowl with beans'],
-  },
-  {
-    id: 'benzos',
-    label: 'Benzodiazepines',
-    body: 'Benzodiazepine withdrawal can be medically serious (including seizures). Do not stop suddenly after regular use — talk to a GP or AOD service about a planned taper. Nutrition can support comfort (food, fluids, sleep routine) but does not replace medical care.',
-    nutrients: [
-      { n: 'Regular meals', food: 'Simple carbs + protein to steady energy' },
-      { n: 'Magnesium-rich foods', food: 'Greens, nuts, seeds — ask GP before supplements' },
-      { n: 'Hydration', food: 'Water, herbal tea' },
-      { n: 'Calming routine foods', food: 'Warm milk or milky alternatives, oats, banana' },
-    ],
-    checklist: ['Do not DIY a rapid stop after regular use', 'Book GP / AOD advice for any taper', 'Keep meals and bedtime steady', 'Limit extra caffeine/alcohol', 'Seizure, severe confusion — call 000'],
-    meals: ['Oats and banana', 'Toast and egg', 'Warm soup'],
-  },
-  {
-    id: 'comedown',
-    label: 'General comedown / after a big night',
-    body: 'After a big night the body often needs sleep, water, electrolytes and easy food. Hangover or comedown symptoms overlap with dehydration and low blood sugar. Go gently — this is care, not punishment.',
-    nutrients: [
-      { n: 'Fluids', food: 'Water, oral rehydration, weak tea' },
-      { n: 'Electrolytes & potassium', food: 'Banana, yoghurt, soup' },
-      { n: 'Easy energy', food: 'Toast, rice, crackers' },
-      { n: 'Protein when ready', food: 'Eggs, yoghurt, leftover dinner' },
-    ],
-    checklist: ['Sip fluids for a few hours', 'Eat something plain', 'Rest or nap safely', 'Skip “hair of the dog”', 'Vomiting blood, chest pain or collapse — call 000'],
-    meals: ['Toast and banana', 'Chicken noodle soup', 'Rice and scrambled egg', 'Hydralyte + crackers'],
-  },
-  {
-    id: 'early-recovery',
-    label: 'Poor appetite in early recovery',
-    body: 'Early recovery can bring nausea, low appetite or chaotic eating. Small, frequent, familiar foods beat perfect meal plans. Rebuild trust with food slowly; a dietitian via your GP or AOD service can help if weight or vitamins are a concern.',
-    nutrients: [
-      { n: 'Small frequent eats', food: 'Yoghurt, smoothies, toast, soup' },
-      { n: 'Protein in every snack', food: 'Cheese, eggs, nuts, hummus' },
-      { n: 'Multivitamin food pattern', food: 'Fruit or veg once or twice a day when possible' },
-      { n: 'Healthy fats', food: 'Avocado, nut butter, olive oil on veg' },
-    ],
-    checklist: ['Aim for 3 mini-meals rather than one big one', 'Keep easy options in the fridge', 'Drink nourishing fluids (milk, smoothie, soup)', 'Tell your GP if weight drops quickly', 'Be patient — appetite often returns'],
-    meals: ['Smoothie', 'Cheese toastie', 'Cup of soup', 'Yoghurt and honey', 'Rice with soy sauce and egg'],
-  },
-];
-
-const NUT_HYDRATE = {
-  s: 'Rough guide: about 1.5–2 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
-  m: 'Rough guide: about 2–2.5 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
-  l: 'Rough guide: about 2.5–3 L of fluids spread across the day (more if hot or sweaty). Sip — don’t chug.',
-};
 
 
 /* ---------------------------------------------------------------------------
@@ -8959,7 +9165,7 @@ const HOPE_TOOLS = {
 const JOURNAL_LANG_RE = /\b(journals?|journaling|diary|write (it |this |that )?(down|out))\b/i;
 const PLANS_LANG_RE = /\b((?:relapse|lapse)(?:\s+or\s+lapse|\s*\/\s*lapse)?(?:\s+prevention)?\s+plans?|(?:relapse|lapse)\s+prevention|exit plans?|my exits)\b/i;
 const GOALS_LANG_RE = /\b((?:my |a |the |two |weekly |this week'?s )?smart goals?|goals? for (?:this |the )?week|weekly goals?)\b/i;
-const NUTRITION_LANG_RE = /\b(nutritions?|supplements?|vitamins?|fish oils?|omega-?3s?|n-?acetyl\s?cysteine|\bnac\b|magnesium|multivitamins?|b-?complex|thiamine|hydrat(?:e|ion|ing)|vitamin d|healthy eating|what (?:should|can) i eat)\b/i;
+const NUTRITION_LANG_RE = /\b(nutritions?|supplements?|vitamins?|fish oils?|omega-?3s?|n-?acetyl\s?cysteine|\bnac\b|magnesium|multivitamins?|b-?complex|thiamine|hydrat(?:e|ion|ing)|vitamin d|healthy eating|what (?:should|can) i eat|ashwagandha|methylene blue|ketogenic|\bketo\b|carnivore|high(?:er)?[- ]protein)\b/i;
 const GUT_LANG_RE = /\b(gut health|gut[- ]brain|microbiomes?|probiotics?|fermented foods?|serotonin|dopamine|sauerkraut|kefir|kimchi)\b/i;
 const BRAIN_LANG_RE = /\b(neuroplasticity|new pathways?|pathways in (?:the |my )?brain|brain can change|how (?:the |my )?brain (?:changes|learns|learnt)|new habits?)\b/i;
 const COLD_LANG_RE = /\b(ice[- ]?baths?|cold[- ]?plung(?:e|es|ing)|cold[- ]water immersion|recovery spas?|contrast therap(?:y|ies)|contrast baths?)\b/i;
@@ -9555,6 +9761,16 @@ function openSkills() {
 function syncNutritionPlusPill() {
   syncPlusFeaturePills();
 }
+function nutritionFilterChip(label, pressed, attr, value, onClick) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'chip';
+  b.textContent = label;
+  b.setAttribute(attr, value);
+  b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+  b.addEventListener('click', onClick);
+  return b;
+}
 function renderNutritionGate() {
   const gate = $('#nutritionGate');
   if (!gate) return;
@@ -9563,31 +9779,31 @@ function renderNutritionGate() {
   gate.replaceChildren();
   if (open) return;
   const lead = document.createElement('p');
-  lead.textContent = 'Hopewick Plus opens the benefit ↔ nutrient list. You can look up a goal, or pick a nutrient such as NAC and see the benefits listed for it. Free keeps the names below — not the full library. Gut health and neuroplasticity stay Plus-only, with the same kind of tease. Ice baths and recovery spas stay Plus-only in the same way.';
+  lead.textContent = 'Hopewick Plus opens the full nutrition notes: rebuild the basics, explore what people try, and read what the evidence actually says. Free keeps the names below — not the full library. Gut health and neuroplasticity stay Plus-only, with the same kind of tease. Ice baths and recovery spas stay Plus-only in the same way.';
   gate.appendChild(lead);
-  const benefitLabel = document.createElement('p');
-  benefitLabel.className = 'nut-filter-label';
-  benefitLabel.textContent = 'Benefits in Plus';
-  gate.appendChild(benefitLabel);
-  const benefits = document.createElement('ul');
-  benefits.className = 'nut-tease';
-  benefits.setAttribute('aria-label', 'Benefits included with Hopewick Plus');
-  for (const benefit of NUTRITION_BENEFITS) {
+  const catLabel = document.createElement('p');
+  catLabel.className = 'nut-filter-label';
+  catLabel.textContent = 'In Hopewick Plus';
+  gate.appendChild(catLabel);
+  const cats = document.createElement('ul');
+  cats.className = 'nut-tease';
+  cats.setAttribute('aria-label', 'Nutrition categories with Hopewick Plus');
+  for (const cat of NUTRITION_CATEGORIES) {
     const li = document.createElement('li');
-    li.textContent = benefit.label;
-    benefits.appendChild(li);
+    li.textContent = cat.label;
+    cats.appendChild(li);
   }
-  gate.appendChild(benefits);
-  const nutrientLabel = document.createElement('p');
-  nutrientLabel.className = 'nut-filter-label';
-  nutrientLabel.textContent = 'Nutrients in Plus';
-  gate.appendChild(nutrientLabel);
+  gate.appendChild(cats);
+  const noteLabel = document.createElement('p');
+  noteLabel.className = 'nut-filter-label';
+  noteLabel.textContent = 'Notes in Plus';
+  gate.appendChild(noteLabel);
   const ul = document.createElement('ul');
   ul.className = 'nut-tease';
-  ul.setAttribute('aria-label', 'Nutrients included with Hopewick Plus');
-  for (const item of NUTRITION_LIBRARY) {
+  ul.setAttribute('aria-label', 'Nutrition notes included with Hopewick Plus');
+  for (const card of NUTRITION_CARDS) {
     const li = document.createElement('li');
-    li.textContent = item.label;
+    li.textContent = card.title;
     ul.appendChild(li);
   }
   gate.appendChild(ul);
@@ -9607,166 +9823,245 @@ function renderNutritionGate() {
   help.textContent = '3 days free, then AU$20/month. Cancel anytime. With or without Plus: drink water through the day and eat something ordinary. In a crisis, use Get help and call 000.';
   gate.appendChild(help);
 }
-function nutritionFilterChip(label, pressed, attr, value, onClick) {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'chip';
-  b.textContent = label;
-  b.setAttribute(attr, value);
-  b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-  b.addEventListener('click', onClick);
-  return b;
+function appendNutritionCard(parent, card) {
+  const article = document.createElement('article');
+  article.className = 'nut-item' + (card.caution ? ' is-caution' : '');
+  article.dataset.card = card.id;
+  const h = document.createElement('h3');
+  h.textContent = card.title;
+  article.appendChild(h);
+  if (card.tier) {
+    const tier = document.createElement('p');
+    tier.className = 'nut-tier';
+    tier.textContent = card.tier;
+    article.appendChild(tier);
+  }
+  for (const section of card.sections || []) {
+    if (section.h) {
+      const h4 = document.createElement('h4');
+      h4.textContent = section.h;
+      article.appendChild(h4);
+    }
+    for (const para of section.p || []) {
+      const p = document.createElement('p');
+      p.textContent = para;
+      article.appendChild(p);
+    }
+    if (section.items && section.items.length) {
+      const list = document.createElement('ul');
+      for (const item of section.items) {
+        const li = document.createElement('li');
+        li.textContent = item;
+        list.appendChild(li);
+      }
+      article.appendChild(list);
+    }
+  }
+  parent.appendChild(article);
 }
-function renderNutritionLookup() {
-  const benefitBox = $('#nutritionBenefitFilters');
-  const nutrientBox = $('#nutritionNutrientFilters');
-  const pairs = $('#nutritionPairs');
-  if (!benefitBox || !nutrientBox || !pairs) return;
-  benefitBox.replaceChildren();
-  nutrientBox.replaceChildren();
-  pairs.replaceChildren();
+function renderNutritionBrowse() {
+  const filters = $('#nutritionCategoryFilters');
+  const box = $('#nutritionCards');
+  if (!filters || !box) return;
+  filters.replaceChildren();
+  box.replaceChildren();
   if (!subscriptionPlus()) return;
-  const setBenefit = (id) => {
-    nutritionBenefitFilter = id;
-    renderNutritionLookup();
+  const setCategory = (id) => {
+    nutritionCategory = id;
+    renderNutritionBrowse();
+    renderNutritionExperiment();
   };
-  const setNutrient = (id) => {
-    nutritionNutrientFilter = id;
-    renderNutritionLookup();
-  };
-  benefitBox.appendChild(nutritionFilterChip('All benefits', nutritionBenefitFilter === 'all', 'data-benefit-filter', 'all', () => setBenefit('all')));
-  for (const benefit of NUTRITION_BENEFITS) {
-    benefitBox.appendChild(nutritionFilterChip(
-      benefit.label,
-      nutritionBenefitFilter === benefit.id,
-      'data-benefit-filter',
-      benefit.id,
-      () => setBenefit(benefit.id)
+  filters.appendChild(nutritionFilterChip('All', nutritionCategory === 'all', 'data-nutrition-category', 'all', () => setCategory('all')));
+  for (const cat of NUTRITION_CATEGORIES) {
+    filters.appendChild(nutritionFilterChip(
+      cat.label,
+      nutritionCategory === cat.id,
+      'data-nutrition-category',
+      cat.id,
+      () => setCategory(cat.id)
     ));
   }
-  nutrientBox.appendChild(nutritionFilterChip('All nutrients', nutritionNutrientFilter === 'all', 'data-nutrient-filter', 'all', () => setNutrient('all')));
-  for (const item of NUTRITION_LIBRARY) {
-    nutrientBox.appendChild(nutritionFilterChip(
-      item.label,
-      nutritionNutrientFilter === item.id,
-      'data-nutrient-filter',
-      item.id,
-      () => setNutrient(item.id)
-    ));
+  const groups = nutritionCategory === 'all'
+    ? NUTRITION_CATEGORIES.filter(cat => cat.id !== 'experiment')
+    : NUTRITION_CATEGORIES.filter(cat => cat.id === nutritionCategory && cat.id !== 'experiment');
+  for (const cat of groups) {
+    const cards = nutritionCategory === 'all'
+      ? NUTRITION_CARDS.filter(card => card.category === cat.id)
+      : NUTRITION_CARDS.filter(card => card.category === cat.id || (card.also || []).includes(cat.id));
+    if (!cards.length) continue;
+    const group = document.createElement('section');
+    group.className = 'nut-group';
+    group.dataset.nutritionGroup = cat.id;
+    const heading = document.createElement('h3');
+    heading.className = 'nut-kicker';
+    heading.textContent = cat.label;
+    group.appendChild(heading);
+    if (cat.intro) {
+      const intro = document.createElement('p');
+      intro.className = 'help';
+      intro.style.margin = '0';
+      intro.textContent = cat.intro;
+      group.appendChild(intro);
+    }
+    const list = document.createElement('div');
+    list.className = 'nut-items';
+    for (const card of cards) appendNutritionCard(list, card);
+    group.appendChild(list);
+    box.appendChild(group);
   }
-  const rows = NUTRITION_PAIRINGS.filter(pair => {
-    if (nutritionBenefitFilter !== 'all' && pair.benefit !== nutritionBenefitFilter) return false;
-    if (nutritionNutrientFilter !== 'all' && pair.nutrient !== nutritionNutrientFilter) return false;
-    return true;
+}
+function nutritionExperimentField(id, label, value, onInput, selectOpts) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+  const lab = document.createElement('label');
+  lab.htmlFor = id;
+  lab.textContent = label;
+  wrap.appendChild(lab);
+  let input;
+  if (selectOpts) {
+    input = document.createElement('select');
+    for (const opt of selectOpts) {
+      const o = document.createElement('option');
+      o.value = opt.id;
+      o.textContent = opt.label;
+      input.appendChild(o);
+    }
+    input.value = value || '';
+    input.addEventListener('change', () => onInput(input.value));
+  } else {
+    input = document.createElement('textarea');
+    input.rows = 2;
+    input.maxLength = 240;
+    input.value = value || '';
+    input.addEventListener('input', () => onInput(input.value));
+  }
+  input.id = id;
+  wrap.appendChild(input);
+  return wrap;
+}
+function nutritionFieldValue(id) {
+  const node = document.getElementById(id);
+  return node ? String(node.value || '') : '';
+}
+function saveNutritionExperimentFromForm() {
+  const changed = (nutritionFieldValue('nutExpChanged') || nutritionDraft.changed || '').trim();
+  if (!changed) { toast('Write what you changed'); return; }
+  const keep = nutritionFieldValue('nutExpKeep') || nutritionDraft.keep || '';
+  nutritionExperiments.unshift({
+    id: 'nut-' + uid(),
+    changed: changed.slice(0, 240),
+    why: (nutritionFieldValue('nutExpWhy') || nutritionDraft.why || '').trim().slice(0, 240),
+    felt: (nutritionFieldValue('nutExpFelt') || nutritionDraft.felt || '').trim().slice(0, 240),
+    effects: (nutritionFieldValue('nutExpEffects') || nutritionDraft.effects || '').trim().slice(0, 240),
+    keep: NUTRITION_KEEP.some(opt => opt.id === keep) ? keep : '',
+    ts: Date.now(),
   });
-  if (!rows.length) {
-    const empty = document.createElement('p');
-    empty.className = 'empty-hint';
-    empty.id = 'nutritionPairEmpty';
-    empty.textContent = 'No pairing for that combination. Clear one filter to see what is listed.';
-    pairs.appendChild(empty);
-    return;
+  nutritionExperiments = nutritionExperiments.slice(0, 20);
+  nutritionDraft = { changed: '', why: '', felt: '', effects: '', keep: '' };
+  saveNutritionExperiments();
+  renderNutritionExperiment();
+  toast(isDemo ? 'Noted for this demo visit' : 'Experiment noted');
+}
+function removeNutritionExperiment(id) {
+  nutritionExperiments = nutritionExperiments.filter(x => x.id !== id);
+  saveNutritionExperiments();
+  renderNutritionExperiment();
+}
+function renderNutritionExperiment() {
+  const box = $('#nutritionExperiment');
+  if (!box) return;
+  const show = subscriptionPlus() && (nutritionCategory === 'all' || nutritionCategory === 'experiment');
+  box.hidden = !show;
+  box.replaceChildren();
+  if (!show) return;
+  box.className = 'nut-exp';
+  const heading = document.createElement('h3');
+  heading.className = 'nut-kicker';
+  heading.id = 'nutritionExperimentTitle';
+  heading.textContent = 'My experiment';
+  box.appendChild(heading);
+  const intro = document.createElement('p');
+  intro.className = 'help';
+  intro.style.margin = '0';
+  intro.textContent = 'Try one thing. Learn. Pay attention to how you respond. Keep what genuinely helps you, and be willing to change what does not. This note is yours. It is a record of curiosity, not a prescription.';
+  box.appendChild(intro);
+  const form = document.createElement('form');
+  form.id = 'nutritionExperimentForm';
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    saveNutritionExperimentFromForm();
+  });
+  form.appendChild(nutritionExperimentField('nutExpChanged', 'What I changed', nutritionDraft.changed, (v) => { nutritionDraft.changed = v; }));
+  form.appendChild(nutritionExperimentField('nutExpWhy', 'Why I tried it', nutritionDraft.why, (v) => { nutritionDraft.why = v; }));
+  form.appendChild(nutritionExperimentField('nutExpFelt', 'How I felt', nutritionDraft.felt, (v) => { nutritionDraft.felt = v; }));
+  form.appendChild(nutritionExperimentField('nutExpEffects', 'Side effects', nutritionDraft.effects, (v) => { nutritionDraft.effects = v; }));
+  form.appendChild(nutritionExperimentField('nutExpKeep', 'Will I continue?', nutritionDraft.keep, (v) => { nutritionDraft.keep = v; }, NUTRITION_KEEP));
+  const saveBtn = document.createElement('button');
+  saveBtn.type = 'submit';
+  saveBtn.className = 'btn btn-primary btn-sm';
+  saveBtn.id = 'nutExpSave';
+  saveBtn.textContent = 'Save this experiment';
+  form.appendChild(saveBtn);
+  box.appendChild(form);
+  const note = document.createElement('p');
+  note.className = 'help';
+  note.id = 'nutritionExperimentSaved';
+  note.style.margin = '0';
+  if (nutritionExperiments.length) {
+    note.textContent = isDemo ? 'This demo visit only — not saved on this device.' : 'Saved on this device.';
   }
-  for (const pair of rows) {
-    const benefit = NUTRITION_BENEFITS.find(b => b.id === pair.benefit);
-    const nutrient = NUTRITION_LIBRARY.find(n => n.id === pair.nutrient);
-    if (!benefit || !nutrient) continue;
-    const card = document.createElement('article');
-    card.className = 'nut-item nut-pair';
-    card.dataset.benefit = pair.benefit;
-    card.dataset.nutrient = pair.nutrient;
-    const dl = document.createElement('dl');
-    dl.className = 'nut-pair-grid';
-    const addRow = (term, text) => {
-      const dt = document.createElement('dt');
-      dt.textContent = term;
-      const dd = document.createElement('dd');
-      dd.textContent = text;
-      dl.append(dt, dd);
+  box.appendChild(note);
+  const list = document.createElement('div');
+  list.id = 'nutritionExperimentList';
+  list.className = 'nut-items';
+  const keepLabels = { keep: 'Keep it', change: 'Change it', stop: 'Stop it' };
+  for (const exp of nutritionExperiments) {
+    const article = document.createElement('article');
+    article.className = 'nut-item';
+    article.dataset.experiment = exp.id;
+    const h = document.createElement('h3');
+    h.textContent = exp.changed;
+    article.appendChild(h);
+    const addLine = (label, text) => {
+      if (!text) return;
+      const p = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = label + ' ';
+      p.appendChild(strong);
+      p.appendChild(document.createTextNode(text));
+      article.appendChild(p);
     };
-    addRow('Benefit', benefit.label);
-    addRow('Nutrient', nutrient.label);
-    addRow('What it is', nutrient.what);
-    addRow('Notes', pair.note);
-    card.appendChild(dl);
-    pairs.appendChild(card);
+    addLine('Why:', exp.why);
+    addLine('How I felt:', exp.felt);
+    addLine('Side effects:', exp.effects);
+    if (exp.keep && keepLabels[exp.keep]) addLine('Continue:', keepLabels[exp.keep]);
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'btn btn-sm';
+    del.textContent = 'Remove';
+    del.addEventListener('click', () => removeNutritionExperiment(exp.id));
+    article.appendChild(del);
+    list.appendChild(article);
   }
+  box.appendChild(list);
 }
 function renderNutrition() {
   const plus = subscriptionPlus();
   const lib = $('#nutritionLibrary');
   if (lib) lib.hidden = !plus;
   renderNutritionGate();
-  renderNutritionLookup();
-  if (plus) {
-    const sel = $('#nutritionSelect');
-    if (sel && sel.options.length <= 1) {
-      for (const t of NUTRITION_TOPICS) {
-        const o = document.createElement('option');
-        o.value = t.id;
-        o.textContent = t.label;
-        sel.appendChild(o);
-      }
-    }
-    const hydration = $('#nutritionHydration');
-    if (hydration) hydration.hidden = false;
-    updateNutHydration();
-    renderNutritionPanel();
-  } else {
-    const panel = $('#nutritionPanel');
-    if (panel) { panel.hidden = true; panel.innerHTML = ''; }
-  }
+  renderNutritionBrowse();
+  renderNutritionExperiment();
   syncNutritionPlusPill();
   syncEducationPlusPills();
 }
 function openNutrition() {
   if (!profile) return;
   closeSidebar();
-  nutritionBenefitFilter = 'all';
-  nutritionNutrientFilter = 'all';
+  nutritionCategory = 'all';
   renderNutrition();
   if (!el.nutritionDlg.open) el.nutritionDlg.showModal();
 }
-function renderNutritionPanel() {
-  const id = $('#nutritionSelect').value;
-  const panel = $('#nutritionPanel');
-  if (!id) { panel.hidden = true; panel.innerHTML = ''; return; }
-  const t = NUTRITION_TOPICS.find(x => x.id === id);
-  if (!t) { panel.hidden = true; return; }
-  panel.hidden = false;
-  panel.className = 'nut-panel';
-  panel.innerHTML = `
-    <h3>How the body can be affected</h3>
-    <p style="font-size:.92rem;margin:0">${escapeHtml(t.body)}</p>
-    <h3>Foods that are often easier to manage</h3>
-    <ul>${t.nutrients.map(n => `<li><strong>${escapeHtml(n.n)}:</strong> ${escapeHtml(n.food)}</li>`).join('')}</ul>
-    <p class="help">Prefer food sources. If a pharmacist or GP suggests a supplement (for example thiamine after heavy drinking), ask them about dose — we don’t recommend DIY high-dose stacks or detox kits.</p>
-    <h3>Simple daily checklist</h3>
-    <ul class="nut-check">${t.checklist.map((c, i) => `<li><input type="checkbox" id="nutc-${t.id}-${i}"><label for="nutc-${t.id}-${i}">${escapeHtml(c)}</label></li>`).join('')}</ul>
-    <h3>Simple meal ideas (pick 2–3)</h3>
-    <div class="meal-chips" id="nutMeals"></div>
-    <p class="help" id="nutMealPicks" style="margin-top:8px"></p>`;
-  const chips = $('#nutMeals', panel);
-  const picks = new Set();
-  for (const m of t.meals) {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'chip'; b.textContent = m;
-    b.setAttribute('aria-pressed', 'false');
-    b.addEventListener('click', () => {
-      if (picks.has(m)) picks.delete(m); else { if (picks.size >= 3) picks.delete([...picks][0]); picks.add(m); }
-      b.setAttribute('aria-pressed', String(picks.has(m)));
-      $$('#nutMeals .chip', panel).forEach(ch => ch.setAttribute('aria-pressed', String(picks.has(ch.textContent))));
-      $('#nutMealPicks', panel).textContent = picks.size ? 'Your picks: ' + [...picks].join(' · ') : '';
-    });
-    chips.appendChild(b);
-  }
-}
-function updateNutHydration() {
-  const band = ($$('input[name="nutWeight"]').find(r => r.checked) || {}).value || 'm';
-  $('#nutHydrateMsg').textContent = NUT_HYDRATE[band] || NUT_HYDRATE.m;
-}
-$('#nutritionSelect').addEventListener('change', renderNutritionPanel);
-$$('input[name="nutWeight"]').forEach(r => r.addEventListener('change', updateNutHydration));
 
 /* ---------------------------------------------------------------------------
    Gut health & brain habits (Plus education — plain language, not medical advice)
@@ -10437,7 +10732,7 @@ $('#exportBtn').addEventListener('click', () => {
   const data = {
     app: 'eden-companion', version: 2, build: EDEN_BUILD, profileName: profile.name, exported: new Date().toISOString(),
     settings: personaSettings(), conversations: convos.filter(c => c.messages.length), memories, moods,
-    gratitude, journal, goals: goalsState, plans: plansState, steps: stepsProgress, bible: bibleProgress, deeper: deeperProgress, breakers: breakersState, selfcare: selfCareState, resume: resumeState,
+    gratitude, journal, goals: goalsState, plans: plansState, steps: stepsProgress, bible: bibleProgress, deeper: deeperProgress, breakers: breakersState, selfcare: selfCareState, nutrition: { experiments: nutritionExperiments }, resume: resumeState,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -10485,6 +10780,8 @@ $('#importFile').addEventListener('change', async (e) => {
     deeperBrowseAll = false;
     breakersState = normalizeBreakers(data.breakers || {});
     selfCareState = normalizeSelfCare(data.selfcare || {});
+    nutritionExperiments = normalizeNutritionExperiments(data.nutrition || []);
+    nutritionDraft = { changed: '', why: '', felt: '', effects: '', keep: '' };
     if (data.resume) {
       resumeState = HopewickResume.normalizeResume(data.resume);
       resumePaintedFor = null;
@@ -10492,7 +10789,7 @@ $('#importFile').addEventListener('change', async (e) => {
     }
     activeId = null;
     settingsThemeBefore = settings.theme;
-    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); savePlans(); saveSteps(); saveBible(); saveDeeper(); saveBreakers(); saveSelfCare(); persistConvos();
+    saveSettings(); saveMemories(); saveMoods(); saveGratitude(); saveJournal(); saveGoals(); savePlans(); saveSteps(); saveBible(); saveDeeper(); saveBreakers(); saveSelfCare(); saveNutritionExperiments(); persistConvos();
     applyTheme();
     el.settingsDlg.close();
     newConversation();
@@ -11446,6 +11743,9 @@ function enterDemo() {
   deeperDayId = null;
   deeperBrowseAll = false;
   breakersState = normalizeBreakers(sample.breakers); selfCareState = normalizeSelfCare(sample.selfcare);
+  nutritionExperiments = [];
+  nutritionDraft = { changed: '', why: '', felt: '', effects: '', keep: '' };
+  nutritionCategory = 'all';
   resumeState = HopewickResume.emptyResume();
   resumePaintedFor = null;
   resumeStep = 'contact';
@@ -11478,6 +11778,9 @@ function exitDemo() {
   deeperBrowseAll = false;
   breakersState = { custom: [], tried: { date: '', ids: [] } };
   selfCareState = { items: null, done: { date: '', ids: [] } };
+  nutritionExperiments = [];
+  nutritionDraft = { changed: '', why: '', felt: '', effects: '', keep: '' };
+  nutritionCategory = 'all';
   resumeState = HopewickResume.emptyResume();
   resumePaintedFor = null;
   resumeStep = 'contact';
@@ -12608,7 +12911,7 @@ function appendPlusOffer(body) {
     'Journal — write, edit, and deepen a reflection',
     'Relapse and exit plans — private on this device',
     'Resume builder, kept on this device',
-    'Nutrition notes — food, water, and supplements people ask about',
+    'Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence',
     'Gut health and neuroplasticity notes — plain language, Plus only',
     'Ice baths and recovery spa notes — plain language, Plus only',
     'Clean time tracker, SOAP reflections, and 12 Steps practice',
