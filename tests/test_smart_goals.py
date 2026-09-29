@@ -82,7 +82,7 @@ def test_smart_goals_journal_nav_and_guards():
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert nav.split()[0:5] == ["Home", "Chat", "Domestic", "&", "family"] or "Journal" in nav
             assert "Home" in nav and "Chat" in nav and "Journal" in nav and "More" in nav
-            assert "Domestic & family violence" in nav
+            assert "Safety" in nav
             assert "News" not in nav
             assert page.is_visible("#helpBtn")
             assert page.locator('#needNow [data-need="goals"]').count() == 0

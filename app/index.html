@@ -334,6 +334,11 @@ svg { flex: none; }
 .mic-btn.listening { background: #f3d77f !important; color: #3d2f00 !important; animation: micpulse 1.4s infinite; }
 @keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(240,200,100,.6); } 50% { box-shadow: 0 0 0 7px rgba(240,200,100,0); } }
 .composer-hint { max-width: 780px; margin: 4px auto 0; font-size: .72rem; color: var(--muted); text-align: center; line-height: 1.35; }
+.composer-hint-short { display: none; }
+@media (max-width: 899px) {
+  .composer-hint-full, .composer-hint-copy { display: none; }
+  .composer-hint-short { display: inline; }
+}
 @media (max-width: 480px) {
   .composer-hint { font-size: .68rem; margin: 2px auto 0; }
 }
@@ -2230,7 +2235,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
           <svg id="sendIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="composer-hint" id="composerHint">Enter to send · <span data-companion>Hope</span> is not emergency or medical care · Emergency 000<br><span class="copyright" data-copyright></span></p>
+      <p class="composer-hint" id="composerHint"><span class="composer-hint-short">Not emergency care · 000</span><span class="composer-hint-full"><span data-companion>Hope</span> is not emergency or medical care · Emergency 000</span><span class="composer-hint-copy"><br><span class="copyright" data-copyright></span></span></p>
     </div>
 
     <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
@@ -2246,9 +2251,9 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
         <span>Chats</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabDv" data-tab="dv" aria-current="false" aria-pressed="false">
+      <button type="button" class="bottom-nav-btn" id="appTabDv" data-tab="dv" aria-current="false" aria-pressed="false" aria-label="Domestic and family violence">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
-        <span>Domestic&nbsp;&amp; family violence</span>
+        <span>Safety</span>
       </button>
       <button type="button" class="bottom-nav-btn" id="appTabJournal" data-tab="journal" aria-current="false" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>

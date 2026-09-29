@@ -80,7 +80,7 @@ def test_need_now_and_hope_gateway():
 
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert "Home" in nav and "Chat" in nav
-            assert "Domestic & family violence" in nav
+            assert "Safety" in nav
             assert "Journal" in nav
             assert "News" not in nav
             assert page.locator("#sideDeveloperBtn").is_hidden()

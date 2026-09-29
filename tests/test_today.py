@@ -160,7 +160,7 @@ def test_today_card_on_home():
             assert "Home" in nav
             assert "Journal" in nav
             assert "News" not in nav
-            assert "Domestic & family violence" in nav
+            assert "Safety" in nav
             assert page.is_visible("#helpBtn")
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")

@@ -130,7 +130,7 @@ def test_launch_prefs_and_info_ui():
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert "Journal" in nav
             assert "News" not in nav
-            assert "Domestic & family violence" in nav
+            assert "Safety" in nav
             assert "Info" not in nav
             assert page.is_visible("#helpBtn")
 

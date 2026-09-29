@@ -184,7 +184,7 @@ def test_education_plus_gate_phone():
 
             nav = page.inner_text("#bottomNav")
             assert "Home" in nav and "Chat" in nav and "Journal" in nav and "More" in nav
-            assert "Domestic" in nav
+            assert "Safety" in nav
             assert page.locator('#needNow [data-need="gut"]').count() == 0
             assert page.locator('#needNow [data-need="brain"]').count() == 0
             assert page.locator('#needNow [data-need="nutrition"]').count() == 0
