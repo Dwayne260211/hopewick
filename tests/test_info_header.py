@@ -139,6 +139,9 @@ def test_launch_prefs_and_info_ui():
             assert "Journal" in page.inner_text("#journalTitle")
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")
+            assert page.locator("#appTabMore").get_attribute("aria-pressed") == "true"
+            assert page.locator("#appTabMore").get_attribute("aria-expanded") == "true"
+            assert page.locator("#sidebarTools").is_visible()
             page.click("#sideInfoBtn")
             page.wait_for_selector("#infoView:not([hidden])")
             assert page.locator("#sideInfoBtn").get_attribute("aria-current") == "page"
@@ -200,6 +203,12 @@ def test_launch_prefs_and_info_ui():
             assert page.locator("#appTabJournal").get_attribute("aria-pressed") == "true"
 
             page.set_viewport_size({"width": 1280, "height": 900})
+            page.click("#appTabMore")
+            assert page.locator("#appTabMore").get_attribute("aria-pressed") == "true"
+            assert page.locator("#appTabMore").get_attribute("aria-expanded") == "true"
+            assert page.locator("#sidebarTools").is_visible()
+            assert page.locator("#sideInfoBtn").is_visible()
+            assert "News & resources" in page.inner_text("#sidebarTools")
             page.click("#sideDvBtn")
             page.wait_for_selector("#dvView:not([hidden])")
             assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
