@@ -12,7 +12,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plus_session import grant_server_session
+from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
 FACTORY = {
@@ -71,6 +71,7 @@ def test_new_user_picker_and_demo_privacy():
             page = fresh.new_page()
             errors = []
             page.on("pageerror", lambda exc: errors.append(str(exc)))
+            install_member_session(page)
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
             page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
             assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
@@ -84,12 +85,11 @@ def test_new_user_picker_and_demo_privacy():
             page.fill("#addPersonInput", "Sam")
             page.locator("#addPersonForm button[type=submit]").click()
             page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
-            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
-            saved = json.loads(page.evaluate("() => sessionStorage.getItem('eden.profiles.v1')"))
+            saved = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
             assert [p["name"] for p in saved["list"]] == ["Sam"]
             blob = json.dumps(saved)
             assert "Dwayne" not in blob and "Abbey" not in blob
-            assert not saved.get("accountId")
+            assert saved.get("accountId") == "test-user"
             assert not errors, errors
             fresh.close()
 
@@ -97,6 +97,7 @@ def test_new_user_picker_and_demo_privacy():
             page = demo.new_page()
             errors = []
             page.on("pageerror", lambda exc: errors.append(str(exc)))
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=15000)
             assert page.locator("#switchName").text_content().strip() == "Alex"
@@ -111,6 +112,7 @@ def test_new_user_picker_and_demo_privacy():
 
             seeded = browser.new_context()
             page = seeded.new_page()
+            install_member_session(page)
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
             page.evaluate(
                 """(factory) => {
@@ -120,15 +122,15 @@ def test_new_user_picker_and_demo_privacy():
                 FACTORY,
             )
             page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            page.wait_for_selector("#pickerDlg[open]", timeout=15000)
             assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
-            page.click("#onboardLaterBtn")
-            page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
             assert _names(page) == []
+            assert "Dwayne" not in page.locator("#pickerDlg").inner_text()
             seeded.close()
 
             used = browser.new_context()
             page = used.new_page()
+            install_member_session(page)
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
             page.evaluate(
                 """(factory) => {
@@ -139,16 +141,15 @@ def test_new_user_picker_and_demo_privacy():
                 FACTORY,
             )
             page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            page.wait_for_selector("#pickerDlg[open]", timeout=15000)
             assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
             assert page.evaluate("() => localStorage.getItem('eden.p.dwayne.settings')") is None
-            page.click("#onboardLaterBtn")
-            page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
             assert _names(page) == []
             used.close()
 
             legacy = browser.new_context()
             page = legacy.new_page()
+            install_member_session(page)
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
             page.evaluate(
                 """() => {
@@ -160,16 +161,20 @@ def test_new_user_picker_and_demo_privacy():
                 }"""
             )
             page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            page.wait_for_function(
+                "() => document.getElementById('pickerDlg')?.open || document.querySelector('#switchName')?.textContent === 'Person 1'",
+                timeout=15000,
+            )
             assert page.evaluate("() => localStorage.getItem('eden.settings.v1')") is None
             assert page.evaluate("() => localStorage.getItem('eden.conversations.v1')") is None
-            assert page.evaluate("() => localStorage.getItem('eden.shared.v1')") is None
-            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
-            assert page.evaluate("() => sessionStorage.getItem('eden.profiles.v1')") is None
+            visible = page.locator("body").inner_text()
+            assert "Dwayne" not in visible
+            assert "Abbey" not in visible
             legacy.close()
 
             demo_seed = browser.new_context()
             page = demo_seed.new_page()
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.evaluate(
                 """(factory) => { localStorage.setItem('eden.profiles.v1', JSON.stringify(factory)); }""",
@@ -210,6 +215,7 @@ def test_add_extra_profile_requires_plus():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
+            install_member_session(page)
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
             page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
             page.click("#onboardLaterBtn")

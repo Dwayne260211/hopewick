@@ -9,6 +9,9 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import install_member_session
 APP = ROOT / "app" / "index.html"
 
 REQUIRED_NUMBERS = [
@@ -103,6 +106,7 @@ def test_launch_prefs_and_info_ui():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             assert page.is_visible("#helpBtn")

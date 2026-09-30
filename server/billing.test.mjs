@@ -41,6 +41,7 @@ async function listen(env, stripeCalls) {
     HOPEWICK_MAGIC_IP_LIMIT: process.env.HOPEWICK_MAGIC_IP_LIMIT,
     HOPEWICK_MAGIC_EMAIL_LIMIT: process.env.HOPEWICK_MAGIC_EMAIL_LIMIT,
     HOPEWICK_LOGIN_IP_LIMIT: process.env.HOPEWICK_LOGIN_IP_LIMIT,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -59,6 +60,7 @@ async function listen(env, stripeCalls) {
   delete process.env.HOPEWICK_MAGIC_IP_LIMIT;
   delete process.env.HOPEWICK_MAGIC_EMAIL_LIMIT;
   delete process.env.HOPEWICK_LOGIN_IP_LIMIT;
+  delete process.env.GOOGLE_CLIENT_ID;
   Object.assign(process.env, env);
 
   const openaiCalls = [];
@@ -1675,4 +1677,24 @@ test('a tampered password hash is rejected quickly', async () => {
   const ok = await verifyPassword('secret', `scrypt$999999999$99$99$${ 'aa'.repeat(16) }$${ 'bb'.repeat(32) }`);
   assert.equal(ok, false);
   assert.ok(Date.now() - started < 1000);
+});
+
+test('google sign-in is refused until GOOGLE_CLIENT_ID is set', async () => {
+  const app = await listen({}, []);
+  try {
+    const config = await fetch(`${app.base}/api/billing/config`);
+    const cfg = await config.json();
+    assert.equal(cfg.googleClientId, '');
+    const google = await fetch(`${app.base}/api/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: 'not-a-real-token' }),
+    });
+    const body = await google.json();
+    assert.equal(google.status, 503);
+    assert.equal(body.code, 'google_unconfigured');
+    assert.match(body.error, /not configured/i);
+  } finally {
+    await app.close();
+  }
 });

@@ -10,6 +10,9 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import install_member_session
 
 
 def _install_readings(page):
@@ -63,6 +66,7 @@ def test_need_now_and_hope_gateway():
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
             _install_readings(page)
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")
@@ -273,6 +277,7 @@ def test_every_need_now_chip_click():
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 390, "height": 844})
             _install_readings(page)
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")

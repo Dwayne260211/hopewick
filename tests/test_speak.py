@@ -8,6 +8,9 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import install_member_session
 APP = ROOT / "app" / "index.html"
 
 # Installed before app/index.html runs so Hope captures this synth, not the browser's.
@@ -121,6 +124,7 @@ def test_chat_speaker_reads_aloud_and_clears_stuck_state():
                 is_mobile=True,
             )
             page.add_init_script(TTS_STUB)
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefsContinue", timeout=20000)
             page.click("#launchPrefsContinue")

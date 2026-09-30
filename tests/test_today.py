@@ -10,6 +10,9 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import install_member_session
 APP = ROOT / "app" / "index.html"
 WORD_JS = ROOT / "app" / "data" / "word-for-the-day.js"
 JFT_JS = ROOT / "app" / "data" / "just-for-today.js"
@@ -108,6 +111,7 @@ def test_today_card_on_home():
                 + json.dumps(_js_array(JFT_JS, "JUST_FOR_TODAY"))
                 + ";"
             )
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")

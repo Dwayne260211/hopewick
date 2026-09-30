@@ -247,9 +247,10 @@ function contentSecurityPolicy(req) {
     "object-src 'none'",
     "frame-ancestors 'none'",
     "form-action 'self'",
-    "script-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline' https://accounts.google.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
+    "frame-src https://accounts.google.com",
     "font-src 'self' data:",
     `connect-src ${connect.join(' ')}`,
   ];
@@ -779,6 +780,7 @@ async function handleApi(store, chats, checkins, req, res, url) {
       hopeHosted: hopeConfigured(),
       freeDailyMessages: freeDailyCap(),
       plusDailyMessages: null,
+      googleClientId: googleClientId(),
     });
     return;
   }
@@ -1005,6 +1007,70 @@ async function handleApi(store, chats, checkins, req, res, url) {
     user.pendingPassword = null;
     const cookie = touchSession(user, req, store);
     json(res, 200, { ok: true, hasPassword: true }, cookie ? { 'Set-Cookie': cookie } : undefined);
+    return;
+  }
+
+
+function googleClientId() {
+  return String(process.env.GOOGLE_CLIENT_ID || '').trim();
+}
+
+async function verifyGoogleCredential(credential) {
+  const clientId = googleClientId();
+  if (!clientId) {
+    const err = new Error('Google sign-in is not configured on this server yet.');
+    err.status = 503;
+    throw err;
+  }
+  if (!credential || typeof credential !== 'string' || credential.length < 20 || credential.length > 5000) {
+    const err = new Error('Google didn’t return a sign-in token.');
+    err.status = 400;
+    throw err;
+  }
+  const response = await fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(credential));
+  let data = {};
+  try { data = await response.json(); } catch { data = {}; }
+  if (!response.ok || !data || data.error) {
+    const err = new Error('Google couldn’t confirm that sign-in. Use your email for now.');
+    err.status = 401;
+    throw err;
+  }
+  if (data.aud !== clientId) {
+    const err = new Error('That Google sign-in is for a different app.');
+    err.status = 401;
+    throw err;
+  }
+  const email = String(data.email || '').trim().toLowerCase();
+  const verified = data.email_verified === true || data.email_verified === 'true';
+  if (!verified || !EMAIL_RE.test(email) || email.length > 120) {
+    const err = new Error('Google didn’t share a verified email. Use your email for now.');
+    err.status = 401;
+    throw err;
+  }
+  return email;
+}
+
+  if (req.method === 'POST' && route === '/api/auth/google') {
+    if (!googleClientId()) {
+      json(res, 503, { error: 'Google sign-in is not configured on this server yet.', code: 'google_unconfigured' });
+      return;
+    }
+    const raw = await readBody(req);
+    let body = {};
+    try { body = raw.length ? JSON.parse(raw.toString('utf8')) : {}; } catch {
+      json(res, 400, { error: 'Send the Google credential as JSON.' });
+      return;
+    }
+    let email = '';
+    try {
+      email = await verifyGoogleCredential(body.credential);
+    } catch (err) {
+      json(res, err.status || 401, { error: err.message || 'Google sign-in didn’t work.', code: 'google' });
+      return;
+    }
+    const user = store.findByEmail(email) || store.createUser(email);
+    const cookie = startSession(user, req, store);
+    json(res, 200, publicUser(user), { 'Set-Cookie': cookie });
     return;
   }
 

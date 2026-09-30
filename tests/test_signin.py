@@ -32,5 +32,10 @@ def test_sign_in_screen_and_build():
     assert "You stay signed in on this device until you sign out." in app
     assert "Email me a sign-in link" in land
     assert "stay signed in on this browser until you sign out" in land
-    assert "accounts.google.com" not in sign_in
-    assert "appleid.apple.com" not in sign_in
+    assert "Sign in with Google" in app
+    assert "Google sign-in isn’t set up on this server yet." in app
+    assert "/api/auth/google" in app
+    assert "appleid.apple.com" not in app
+    assert "Sign in with Apple" not in app
+    assert "apps.googleusercontent.com" not in app
+    assert "accounts.google.com/gsi/client" in app

@@ -11,7 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plus_session import grant_server_session
+from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
 COLD_TITLES = (
@@ -122,6 +122,7 @@ def _server():
 
 
 def _enter_demo(page, base):
+    install_member_session(page)
     page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
     page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
     page.click("#launchPrefsContinue")
@@ -172,7 +173,9 @@ def test_cold_education_plus_gate_phone():
             assert page.locator("#coldPlusBtn").is_visible()
             assert page.locator("#coldCards article").count() == 0
             assert page.locator('#coldDlg button:has-text("Open brain habits")').count() == 0
-            page.click("#coldPlusBtn")
+            with page.expect_request("**/api/billing/checkout"):
+                page.click("#coldPlusBtn")
+            page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
             assert "Ice baths and recovery spa notes — plain language, Plus only" in account

@@ -10,7 +10,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plus_session import grant_server_session
+from plus_session import grant_server_session, install_member_session
 
 
 def _server():
@@ -36,6 +36,7 @@ def test_phone_gates_free_then_plus():
             page = browser.new_page(viewport={"width": 390, "height": 844})
             errors = []
             page.on("pageerror", lambda exc: errors.append(str(exc)))
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")
@@ -68,7 +69,10 @@ def test_phone_gates_free_then_plus():
             )
             assert overflow["sw"] <= overflow["cw"] + 1
 
-            page.click("#journalPlusBtn")
+            with page.expect_request("**/api/billing/checkout") as checkout_req:
+                page.click("#journalPlusBtn")
+            assert checkout_req.value.method == "POST"
+            page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
             assert "7 days free, then AU$20" in account

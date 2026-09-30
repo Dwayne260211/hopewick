@@ -2306,9 +2306,22 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   <div class="onboard-body">
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
     <h2 id="signInTitle">Sign in</h2>
-    <p class="lead">Sign in or create an account. Your name, what brings you here, and faith preference come after this.</p>
+    <p class="lead" id="signInLead">Sign in or create an account to use Hopewick. You can stay on the free account afterwards. Hope on Free is 15 messages a day.</p>
     <div id="signInBody"></div>
+    <p class="privacy-note">If you are in danger, call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>. You do not need an account to call.</p>
     <p class="privacy-note"><a href="../">Landing page</a></p>
+  </div>
+</dialog>
+
+<dialog id="plusChoiceDlg" aria-labelledby="plusChoiceTitle">
+  <div class="onboard-body">
+    <h2 id="plusChoiceTitle">Hopewick Plus</h2>
+    <p class="lead">7 days free, then AU$20/month. A card is required to start the trial. You won’t be charged until the trial ends. Cancel anytime.</p>
+    <p>Or stay on the free account. That is 15 Hope messages a day, with no card and no charge. Today’s Readings and Get help stay free either way.</p>
+    <div class="onboard-actions">
+      <button class="btn btn-primary" type="button" id="plusChoiceTrial">Start 7-day free trial</button>
+      <button class="btn" type="button" id="plusChoiceFree">Stay on the free account</button>
+    </div>
   </div>
 </dialog>
 
@@ -3863,6 +3876,13 @@ function migrateStorage() {
   }
   shared = Object.assign({}, DEFAULT_SHARED, load(K.shared, {}));
   profilesState = load(K.profiles, null);
+  if (profilesState && !profilesState.accountId) {
+    try { localStorage.removeItem(K.profiles); } catch (_) {}
+    edenKeys(localStorage).forEach((k) => {
+      if (k.startsWith('eden.p.')) localStorage.removeItem(k);
+    });
+    profilesState = null;
+  }
   if (profilesState && profilesState.accountId && profilesState.accountId !== billingState.id) {
     profilesState = { list: [], lastId: null, accountId: billingState.id };
     return;
@@ -5380,7 +5400,7 @@ function bindGoingDeeperOnce() {
     }
     if (e.target.closest('#deeperPlusBtn')) {
       dlg.close();
-      openAccountDlg();
+      startCheckout();
       return;
     }
     if (e.target.closest('#deeperToggleDone')) {
@@ -6697,7 +6717,7 @@ function renderPlusFeatureGate(host, spec) {
   btn.textContent = 'Start 7-day free trial';
   btn.addEventListener('click', () => {
     if (typeof spec.close === 'function') spec.close();
-    openAccountDlg();
+    startCheckout();
   });
   host.appendChild(btn);
   const help = document.createElement('p');
@@ -10438,7 +10458,7 @@ function renderNutritionGate() {
   btn.textContent = 'Start 7-day free trial';
   btn.addEventListener('click', () => {
     if (el.nutritionDlg && el.nutritionDlg.open) el.nutritionDlg.close();
-    openAccountDlg();
+    startCheckout();
   });
   gate.appendChild(btn);
   const help = document.createElement('p');
@@ -10826,7 +10846,7 @@ function renderEducationGate(gate, cards, copy) {
   btn.textContent = 'Start 7-day free trial';
   btn.addEventListener('click', () => {
     if (copy.dlg && copy.dlg.open) copy.dlg.close();
-    openAccountDlg();
+    startCheckout();
   });
   gate.appendChild(btn);
   const help = document.createElement('p');
@@ -11504,6 +11524,7 @@ $('#pinForm').addEventListener('submit', (e) => {
 $('#pinCancel').addEventListener('click', () => { $('#pinForm').hidden = true; $('#pinError').textContent = ''; pendingPid = null; });
 
 function enterProfile(pid) {
+  if (!isDemo && !realSession()) { showSignInGate(); return; }
   profile = findProfile(pid);
   profilesState.lastId = pid;
   saveProfiles();
@@ -13279,6 +13300,11 @@ function prepareVisitStorage() {
     if (!signed) clearGuestDurableKeys();
     storageReady = true;
     if (isDemo) {
+      try {
+        const raw = localStorage.getItem(K.profiles);
+        const parsed = raw ? JSON.parse(raw) : null;
+        if (parsed && !parsed.accountId) localStorage.removeItem(K.profiles);
+      } catch (_) {}
       if (!profilesState) profilesState = { list: [], lastId: null };
       return;
     }
@@ -13319,6 +13345,7 @@ const billingState = {
   name: '',
   phone: '',
   cancelAtPeriodEnd: false,
+  googleClientId: '',
   plan: 'Free',
   priceLabel: '',
   billingStatus: 'none',
@@ -13533,6 +13560,7 @@ async function refreshBilling() {
     billingState.currentPeriodEnd = user.currentPeriodEnd || null;
     billingState.plus = !!user.plus;
     billingState.checkoutReady = !!config.checkoutReady;
+    billingState.googleClientId = config.googleClientId || '';
     billingState.devMagic = !!config.devMagic;
     billingState.complimentary = !!user.complimentary;
     billingState.founder = !!user.founder;
@@ -13542,6 +13570,10 @@ async function refreshBilling() {
     billingState.cancelAtPeriodEnd = !!user.cancelAtPeriodEnd;
     billingState.hopeHosted = !!config.hopeHosted;
     sessionGate.apply(user);
+    if (!demoFromUrlHandled && !isDemo && realSession() && new URLSearchParams(location.search).get('demo') === '1') {
+      demoFromUrlHandled = true;
+      enterDemo();
+    }
     await installPlusLibrary();
   } catch (_) {
     billingState.reachable = false;
@@ -13716,13 +13748,8 @@ function appendPlusOffer(body) {
     sub.textContent = 'Start 7-day free trial';
     if (!billingState.reachable || (billingState.signedIn && !billingState.checkoutReady)) {
       sub.disabled = true;
-    } else if (!billingState.signedIn) {
-      sub.addEventListener('click', () => {
-        const email = $('#accountEmail');
-        if (email) email.focus();
-        const status = $('#accountStatus');
-        if (status) status.textContent = 'Sign in below with your email and password, or email yourself a link. Then you can start a 7-day free trial.';
-      });
+    } else if (!realSession()) {
+      sub.addEventListener('click', () => startCheckout());
     } else {
       sub.addEventListener('click', () => startCheckout());
     }
@@ -13736,7 +13763,7 @@ function appendPlusOffer(body) {
     } else if (billingState.reachable && !billingState.signedIn) {
       const hint = document.createElement('p');
       hint.className = 'help';
-      hint.textContent = 'Sign in below with your email and password, then start a 7-day free trial.';
+      hint.textContent = 'Sign in below first. Checkout then asks for a card. You won’t be charged until the 7-day trial ends, then AU$20/month.';
       body.appendChild(hint);
     }
   }
@@ -14665,8 +14692,15 @@ function mountSignInForm(body) {
   forgot.className = 'linkish';
   forgot.id = 'accountForgotBtn';
   forgot.textContent = 'Forgot password?';
+  const google = document.createElement('button');
+  google.type = 'button';
+  google.className = 'btn';
+  google.id = 'accountGoogleBtn';
+  google.textContent = 'Sign in with Google';
   actions.appendChild(magic);
+  actions.appendChild(google);
   actions.appendChild(forgot);
+  google.addEventListener('click', () => startGoogleSignIn());
   body.appendChild(actions);
   const status = document.createElement('p');
   status.className = 'account-status';
@@ -14724,7 +14758,7 @@ async function onPasswordSignIn(e) {
     });
     if (passwordInput) passwordInput.value = '';
     await refreshBilling();
-    toast('You’re signed in. You stay signed in on this device until you sign out.', false, 3500);
+    await afterAccountSignIn('You’re signed in. You stay signed in on this device until you sign out.');
   } catch (err) {
     accountStatus(err.message || 'Could not sign in.', 'bad');
   }
@@ -14736,7 +14770,7 @@ async function requestMagicLink(opts) {
   const choice = (opts && opts.includePassword) ? createPasswordChoice() : { include: false };
   if (choice.error) { accountStatus(choice.error, 'bad'); return; }
   accountStatus('Sending a sign-in link…');
-  const payload = { email: email, next: '/app/?signedin=1' };
+  const payload = { email: email, next: pendingTrialCheckout ? '/app/?signedin=1&trial=1' : '/app/?signedin=1' };
   if (choice.include) payload.password = choice.password;
   try {
     const data = await billingFetch('/api/auth/magic-link', {
@@ -14793,9 +14827,106 @@ async function onSetPassword(e) {
     accountStatus(err.message || 'Could not save that password.', 'bad');
   }
 }
+function realSession() {
+  return !!(sessionGate.signedIn() && billingState.signedIn && billingState.id);
+}
+let pendingTrialCheckout = false;
+let demoFromUrlHandled = false;
+function declinedPlusForThisAccount() {
+  try { return localStorage.getItem('hopewick.plusDeclined.v1') === billingState.id; }
+  catch (_) { return false; }
+}
+function declinePlusOffer() {
+  try { if (billingState.id) localStorage.setItem('hopewick.plusDeclined.v1', billingState.id); } catch (_) {}
+  pendingTrialCheckout = false;
+  const dlg = $('#plusChoiceDlg');
+  if (dlg && dlg.open) dlg.close();
+}
+function showPlusChoice() {
+  if (!realSession() || isDemo || subscriptionPlus() || pendingTrialCheckout || declinedPlusForThisAccount()) return;
+  const dlg = $('#plusChoiceDlg');
+  if (!dlg || dlg.open) return;
+  dlg.showModal();
+}
+async function afterAccountSignIn(message) {
+  if (!realSession()) return;
+  closeSignInGate();
+  if (pendingTrialCheckout) {
+    pendingTrialCheckout = false;
+    await startCheckout();
+    return;
+  }
+  if (message) toast(message, false, 3500);
+  showPlusChoice();
+}
+function loadGoogleIdentity() {
+  if (window.google && google.accounts && google.accounts.id) return Promise.resolve();
+  if (window.__hopewickGoogleLoad) return window.__hopewickGoogleLoad;
+  window.__hopewickGoogleLoad = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Google sign-in didn’t load. Use your email for now.'));
+    document.head.appendChild(script);
+  });
+  return window.__hopewickGoogleLoad;
+}
+async function finishGoogleSignIn(credential) {
+  if (!credential) {
+    accountStatus('Google didn’t complete sign-in. Use your email for now.', 'bad');
+    return;
+  }
+  accountStatus('Signing you in…');
+  try {
+    await billingFetch('/api/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: credential }),
+    });
+    await refreshBilling();
+    await afterAccountSignIn('You’re signed in with Google. You stay signed in on this device until you sign out.');
+  } catch (err) {
+    accountStatus(err.message || 'Google sign-in didn’t work. Use your email for now.', 'bad');
+  }
+}
+async function startGoogleSignIn() {
+  const clientId = billingState.googleClientId || '';
+  if (!clientId) {
+    accountStatus('Google sign-in isn’t set up on this server yet. Use your email for now.', 'bad');
+    return;
+  }
+  accountStatus('Opening Google…');
+  try {
+    await loadGoogleIdentity();
+    if (!window.google || !google.accounts || !google.accounts.id) {
+      accountStatus('Google sign-in didn’t load. Use your email for now.', 'bad');
+      return;
+    }
+    google.accounts.id.initialize({
+      client_id: clientId,
+      callback: (resp) => { finishGoogleSignIn(resp && resp.credential); },
+      ux_mode: 'popup',
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    });
+    google.accounts.id.prompt((notification) => {
+      if (notification && (notification.isNotDisplayed() || notification.isSkippedMoment())) {
+        accountStatus('Google didn’t open. Check that this site is allowed for the Google client, or use your email.', 'bad');
+      }
+    });
+  } catch (err) {
+    accountStatus((err && err.message) || 'Google sign-in didn’t open. Use your email for now.', 'bad');
+  }
+}
 async function startCheckout() {
   const status = $('#accountStatus');
-  if (!billingState.signedIn) { openAccountDlg(); return; }
+  if (!realSession()) {
+    pendingTrialCheckout = true;
+    showSignInGate();
+    accountStatus('Sign in or create an account first. Then we’ll open secure checkout. A card is required for the 7-day trial. You won’t be charged until it ends, then AU$20/month.');
+    return;
+  }
   if (status) status.textContent = 'Opening secure checkout…';
   try {
     const data = await billingFetch('/api/billing/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
@@ -14856,6 +14987,16 @@ async function devSetStatus(status) {
 }
 const accountCloseBtn = $('#accountCloseBtn');
 if (accountCloseBtn) accountCloseBtn.addEventListener('click', closeAccountDlg);
+const plusChoiceTrial = $('#plusChoiceTrial');
+if (plusChoiceTrial) plusChoiceTrial.addEventListener('click', () => {
+  const dlg = $('#plusChoiceDlg');
+  if (dlg && dlg.open) dlg.close();
+  startCheckout();
+});
+const plusChoiceFree = $('#plusChoiceFree');
+if (plusChoiceFree) plusChoiceFree.addEventListener('click', () => declinePlusOffer());
+const plusChoiceDlg = $('#plusChoiceDlg');
+if (plusChoiceDlg) plusChoiceDlg.addEventListener('cancel', (e) => { e.preventDefault(); declinePlusOffer(); });
 
 let firstRunRouted = false;
 function hasRealProfile() {
@@ -14872,7 +15013,16 @@ function closeSignInGate() {
 function showSignInGate() {
   const body = $('#signInBody');
   if (!body || !el.signInDlg) return;
+  const lead = $('#signInLead');
+  if (lead) {
+    lead.textContent = pendingTrialCheckout
+      ? 'Sign in or create an account to start the 7-day trial. Checkout then asks for a card. You won’t be charged until the trial ends, then AU$20/month.'
+      : 'Sign in or create an account to use Hopewick. You can stay on the free account afterwards. Hope on Free is 15 messages a day.';
+  }
   if (!body.childElementCount) mountSignInForm(body);
+  if (!billingState.reachable && billingState.loaded) {
+    accountStatus('Sign-in needs the Hopewick account service on this site. The crisis numbers above still work.', 'bad');
+  }
   if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
   if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
   const wasOpen = el.signInDlg.open;
@@ -14881,9 +15031,14 @@ function showSignInGate() {
   if (!wasOpen && email) email.focus();
 }
 function routeFirstRun() {
-  if (isDemo || profile) return;
   if (!billingState.loaded) return;
-  // A signed-out visit can use the tools. Sign-in is for keeping data, not for opening them.
+  if (!realSession()) {
+    showSignInGate();
+    if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+    if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
+    return;
+  }
+  if (isDemo || profile) return;
   if (firstRunRouted) return;
   firstRunRouted = true;
   closeSignInGate();
@@ -14913,16 +15068,24 @@ renderHelpList();
   ensureCompanionName();
   applyTheme();
 })();
-if (new URLSearchParams(location.search).get('demo') === '1') {
-  enterDemo();
-}
 refreshBilling().then(() => {
   const q = new URLSearchParams(location.search);
+  if (q.get('trial') === '1' || q.get('account') === '1') pendingTrialCheckout = true;
+  if (!realSession()) {
+    showSignInGate();
+    return;
+  }
   if (!isDemo) routeFirstRun();
   if (q.get('checkout') === 'success') toast('Thanks. If Plus isn’t showing yet, it will as soon as Stripe confirms the payment.', false, 5500);
   if (q.get('checkout') === 'cancel') toast('No worries — nothing was charged.', false, 4000);
   if (q.get('portal') === 'return') toast('You’re back from billing.', false, 3000);
-  if (q.get('signedin') === '1' && billingState.signedIn) toast('You’re signed in.', false, 3000);
+  if (q.get('signedin') === '1' && realSession() && !pendingTrialCheckout) toast('You’re signed in.', false, 3000);
+  if (pendingTrialCheckout && realSession() && !subscriptionPlus()) {
+    pendingTrialCheckout = false;
+    startCheckout();
+  } else if (realSession()) {
+    showPlusChoice();
+  }
   const settingUp = !hasRealProfile() && (
     (el.signInDlg && el.signInDlg.open) ||
     (el.onboardingDlg && el.onboardingDlg.open) ||

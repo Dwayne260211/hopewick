@@ -72,10 +72,14 @@ def _route_account(page, state):
                 return
             route.fulfill(status=200, content_type="application/json", body=json.dumps(USAGE))
             return
+        if "/api/billing/checkout" in url:
+            state["checkout"] = state.get("checkout", 0) + 1
+            route.fulfill(status=200, content_type="application/json", body=json.dumps({"url": "/app/?checkout=success", "id": "cs_test"}))
+            return
         if "/api/plus/library" in url:
             route.fulfill(status=403, content_type="application/json", body=json.dumps({"error": "Hopewick Plus opens this library.", "code": "plus"}))
             return
-        if "/api/chats" in url or "/api/readings/" in url:
+        if "/api/checkins" in url or "/api/chats" in url or "/api/readings/" in url:
             route.fulfill(status=404, content_type="application/json", body=json.dumps({}))
             return
         route.continue_()
@@ -83,28 +87,43 @@ def _route_account(page, state):
     page.route("**/api/**", handle)
 
 
-def test_sign_in_before_profile_and_home_when_already_in():
+def test_app_requires_sign_in_and_trial_needs_account():
+    """The app stays closed until a real session. Guest storage, demo, and a trial click do not open checkout."""
     from playwright.sync_api import sync_playwright
+
+    home = (ROOT / "index.html").read_text(encoding="utf-8")
+    server = (ROOT / "server" / "index.js").read_text(encoding="utf-8")
+    assert 'href="tel:000"' in home
+    assert "13 11 14" in home
+    assert 'href="app/?trial=1"' in home
+    assert "payment_method_collection: 'always'" in server
+    assert "trial_period_days" in server
+    assert "GOOGLE_CLIENT_ID" in server
+    assert "apps.googleusercontent.com" not in server
 
     httpd = _server()
     base = f"http://127.0.0.1:{httpd.server_address[1]}"
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
-
-            state = {"signedIn": False}
+            state = {"signedIn": False, "checkout": 0}
             page = browser.new_page(viewport={"width": 390, "height": 844})
             errors = []
             page.on("pageerror", lambda exc: errors.append(str(exc)))
             _route_account(page, state)
-            page.goto(f"{base}/app/", wait_until="domcontentloaded")
-            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
-            assert page.locator("#signInDlg[open]").count() == 0
-            help_text = page.locator("#helpDlg").text_content()
-            assert "000" in help_text
-            assert "13 11 14" in help_text
-            assert "000" in page.locator("#composerHint").inner_text()
-            assert "000" in page.locator("#dvView").text_content()
+            page.goto(f"{base}/app/?trial=1", wait_until="domcontentloaded")
+            page.wait_for_selector("#signInDlg[open]", timeout=15000)
+            assert page.locator("#onboardingDlg[open]").count() == 0
+            assert page.locator("#pickerDlg[open]").count() == 0
+            gate = page.inner_text("#signInDlg")
+            assert "000" in gate
+            assert "13 11 14" in gate
+            assert "Sign in with Google" in gate
+            assert "Email me a sign-in link" in gate
+            assert state["checkout"] == 0
+            page.click("#accountGoogleBtn")
+            page.wait_for_function("() => (document.getElementById('accountStatus')?.textContent || '').includes('isn’t set up')")
+            assert state["checkout"] == 0
 
             page.evaluate(
                 """() => {
@@ -112,87 +131,57 @@ def test_sign_in_before_profile_and_home_when_already_in():
                     list: [{id:'old', name:'Old guest', pin:null, created:1}],
                     lastId: 'old'
                   }));
-                  localStorage.setItem('eden.p.old.journal', JSON.stringify([{id:'j', body:'yesterday'}]));
+                  localStorage.setItem('hopewick.plus', '1');
+                  sessionStorage.setItem('eden.profiles.v1', JSON.stringify({
+                    list: [{id:'visit', name:'Visit only', pin:null, created:1}],
+                    lastId: 'visit'
+                  }));
                 }"""
             )
             page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            page.wait_for_selector("#signInDlg[open]", timeout=15000)
+            assert page.locator("#onboardingDlg[open]").count() == 0
+            assert "Old guest" not in page.inner_text("body")
+            assert "Visit only" not in page.inner_text("body")
+            assert state["checkout"] == 0
             assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
-            assert page.evaluate("() => localStorage.getItem('eden.p.old.journal')") is None
-            assert "Old guest" not in page.locator("body").inner_text()
 
-            page.click("#onboardLaterBtn")
-            page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
-            page.fill("#addPersonInput", "Sam")
-            page.locator("#addPersonForm button[type=submit]").click()
-            page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
-            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
-            assert "Sam" in page.evaluate("() => sessionStorage.getItem('eden.profiles.v1')")
-            page.evaluate(
-                """() => {
-                  journal = [{id:'j1', title:'Today', body:'this visit', created:1, updated:1}];
-                  saveJournal();
-                  goalsState = normalizeGoals({});
-                  saveGoals();
-                }"""
-            )
-            assert page.evaluate("() => localStorage.getItem('eden.p.' + profile.id + '.journal')") is None
-            assert "this visit" in page.evaluate("() => sessionStorage.getItem('eden.p.' + profile.id + '.journal')")
-            page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#pickerDlg[open] .profile-card")
-            assert page.locator("#profileList .pname").all_text_contents() == ["Sam"]
+            page.fill("#accountEmail", "sam@example.com")
+            page.fill("#accountPassword", "correct-horse")
+            page.click("#accountSignInBtn", no_wait_after=True)
+            page.wait_for_function("() => location.search.includes('checkout=success')", timeout=15000)
+            assert state["checkout"] == 1
             assert not errors, errors
             page.close()
 
-            gone = browser.new_context(viewport={"width": 390, "height": 844})
-            fresh = gone.new_page()
-            fresh.on("pageerror", lambda exc: errors.append(str(exc)))
-            _route_account(fresh, {"signedIn": False})
-            fresh.goto(f"{base}/app/", wait_until="domcontentloaded")
-            fresh.wait_for_selector("#onboardingDlg[open]", timeout=15000)
-            assert fresh.evaluate("() => sessionStorage.getItem('eden.profiles.v1')") is None
-            assert fresh.locator("#signInDlg[open]").count() == 0
+            free = browser.new_page(viewport={"width": 390, "height": 844})
+            free_state = {"signedIn": False, "checkout": 0}
+            free.on("pageerror", lambda exc: errors.append(str(exc)))
+            _route_account(free, free_state)
+            free.goto(f"{base}/app/", wait_until="domcontentloaded")
+            free.wait_for_selector("#signInDlg[open]", timeout=15000)
+            free.fill("#accountEmail", "sam@example.com")
+            free.fill("#accountPassword", "correct-horse")
+            free.click("#accountSignInBtn")
+            free.wait_for_selector("#plusChoiceDlg[open]", timeout=15000)
+            assert free_state["checkout"] == 0
+            free.click("#plusChoiceFree")
+            free.wait_for_function("() => document.getElementById('plusChoiceDlg')?.open !== true")
+            assert free_state["checkout"] == 0
+            assert free.locator("#signInDlg[open]").count() == 0
+            free.wait_for_selector("#onboardingDlg[open]", timeout=15000)
             assert not errors, errors
-            gone.close()
-
-            state = {"signedIn": True}
-            home = browser.new_page(viewport={"width": 390, "height": 844})
-            errors = []
-            home.on("pageerror", lambda exc: errors.append(str(exc)))
-            _route_account(home, state)
-            home.goto(f"{base}/app/", wait_until="domcontentloaded")
-            home.evaluate(
-                """() => {
-                  localStorage.setItem('eden.onboarding.v1', JSON.stringify({seen:true}));
-                  localStorage.setItem('eden.profiles.v1', JSON.stringify({
-                    list: [{id:'sam1', name:'Sam', pin:null, created:1}],
-                    lastId: 'sam1'
-                  }));
-                  localStorage.setItem('eden.p.sam1.settings', JSON.stringify({
-                    settingsVersion: 2, mode: 'counsellor', disclaimerAck: true
-                  }));
-                }"""
-            )
-            home.reload(wait_until="domcontentloaded")
-            home.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'", timeout=15000)
-            assert home.locator("#signInDlg[open]").count() == 0
-            assert home.locator("#onboardingDlg[open]").count() == 0
-            assert home.locator("#pickerDlg[open]").count() == 0
-            assert home.locator("#homeView").is_visible()
-            assert home.evaluate("() => subscriptionPlus()") is False
-            assert home.evaluate("() => plusAccess.ready") is False
-            assert not errors, errors
-            home.close()
+            free.close()
 
             demo = browser.new_page(viewport={"width": 1100, "height": 800})
-            errors = []
+            demo_state = {"signedIn": False, "checkout": 0}
             demo.on("pageerror", lambda exc: errors.append(str(exc)))
+            _route_account(demo, demo_state)
             demo.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
-            demo.wait_for_selector("#launchPrefs:not([hidden])", timeout=15000)
-            assert demo.locator("#signInDlg[open]").count() == 0
-            assert demo.locator("#onboardingDlg[open]").count() == 0
-            assert demo.locator("#switchName").inner_text().strip() == "Alex"
-            assert not errors, errors
+            demo.wait_for_selector("#signInDlg[open]", timeout=15000)
+            assert demo.locator("#launchPrefs:not([hidden])").count() == 0
+            assert demo.locator("#switchName").inner_text().strip() != "Alex"
+            assert demo_state["checkout"] == 0
             demo.close()
 
             browser.close()

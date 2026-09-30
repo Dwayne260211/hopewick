@@ -9,6 +9,9 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from plus_session import install_member_session
 APP = ROOT / "app" / "index.html"
 LAND = ROOT / "index.html"
 
@@ -81,6 +84,7 @@ def test_church_finder_ui_and_faith_hide():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 1280, "height": 900})
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1", wait_until="domcontentloaded")
             page.wait_for_selector("#sideChurchBtn", timeout=20000)
             if not page.is_visible("#sideChurchBtn"):
@@ -134,6 +138,7 @@ def test_church_chat_chip():
         with sync_playwright() as p:
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": 1280, "height": 900})
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")

@@ -11,7 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plus_session import grant_server_session
+from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
 GUT_TITLES = (
@@ -134,6 +134,7 @@ def _server():
 
 
 def _enter_demo(page, base):
+    install_member_session(page)
     page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
     page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
     page.click("#launchPrefsContinue")
@@ -206,7 +207,9 @@ def test_education_plus_gate_phone():
             assert page.locator("#gutLibrary").is_hidden()
             assert page.locator("#gutPlusBtn").is_visible()
             _assert_notes_not_in_dom(page, "#gutCards", GUT_BODY)
-            page.click("#gutPlusBtn")
+            with page.expect_request("**/api/billing/checkout"):
+                page.click("#gutPlusBtn")
+            page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             account = page.inner_text("#accountDlg")
             assert "gut health and neuroplasticity" in account.lower()

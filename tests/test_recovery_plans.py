@@ -15,7 +15,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plus_session import grant_server_session
+from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
 
@@ -79,6 +79,7 @@ def _server():
 
 
 def _enter_demo(page, base):
+    install_member_session(page)
     page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
     page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
     page.click("#launchPrefsContinue")
@@ -128,7 +129,9 @@ def test_plans_free_gate_and_plus_builders():
             assert page.locator("#plansPlusBtn").is_visible()
             assert page.evaluate("() => document.getElementById('plansPlusPill').hidden") is False
 
-            page.click("#plansPlusBtn")
+            with page.expect_request("**/api/billing/checkout"):
+                page.click("#plansPlusBtn")
+            page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
             assert "Relapse and exit plans — private on this device" in page.inner_text("#accountDlg")
             assert "15 messages/day" in page.inner_text("#accountDlg")

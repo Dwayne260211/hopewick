@@ -11,7 +11,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plus_session import grant_server_session
+from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
 
@@ -102,6 +102,7 @@ def test_smart_goals_journal_nav_and_guards():
             page = browser.new_page(viewport={"width": 390, "height": 844})
             errors = []
             page.on("pageerror", lambda exc: errors.append(str(exc)))
+            install_member_session(page)
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")
@@ -227,6 +228,7 @@ def test_smart_goals_journal_nav_and_guards():
             errors = []
             fresh.on("pageerror", lambda exc: errors.append(str(exc)))
             fresh.on("dialog", lambda dialog: dialog.accept())
+            install_member_session(fresh)
             fresh.goto(f"{base}/app/", wait_until="domcontentloaded")
             fresh.wait_for_selector("#onboardingDlg[open]", timeout=15000)
             fresh.click("#onboardLaterBtn")

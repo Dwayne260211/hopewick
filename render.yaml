@@ -40,6 +40,9 @@ services:
         sync: false
       - key: RESEND_API_KEY
         sync: false
+      # Google Cloud web OAuth client. Origins: https://hopewick.com.au and https://hopewick.com.au/app/
+      - key: GOOGLE_CLIENT_ID
+        sync: false
       - key: MAGIC_LINK_FROM
         sync: false
       # Founder complimentary Plus. Not the organisations inbox.

@@ -70,3 +70,62 @@ def grant_server_session(page, plus=True, founder=False, library="auto", **opts)
     payload = {"plus": plus, "founder": founder}
     payload.update(opts)
     page.evaluate(_GRANT_JS, payload)
+
+
+def install_member_session(page, plus=False, founder=False, declined=True, user_id="test-user"):
+    """Signed-in /api/auth/me before navigation. Local leftovers are not a session."""
+    if declined:
+        page.add_init_script(
+            "try { localStorage.setItem('hopewick.plusDeclined.v1', %s); } catch (e) {}" % json.dumps(user_id)
+        )
+    me_plus = bool(plus or founder)
+    me = {
+        "signedIn": True,
+        "plus": me_plus,
+        "founder": bool(founder),
+        "complimentary": bool(founder) and not plus,
+        "email": "founder@example.com" if founder else "member@example.com",
+        "subscriptionStatus": "active" if me_plus else "none",
+        "hasPassword": True,
+        "id": user_id,
+        "name": "",
+        "phone": "",
+        "cancelAtPeriodEnd": False,
+    }
+    usage = {
+        "used": 0,
+        "limit": None if me_plus else 15,
+        "remaining": None if me_plus else 15,
+        "plus": me_plus,
+        "trialEligible": not me_plus,
+        "resetLabel": None if me_plus else "midnight, Brisbane time",
+        "complimentary": bool(founder),
+    }
+    config = {"checkoutReady": True, "devMagic": False, "hopeHosted": True, "googleClientId": "", "trialDays": 7, "amountLabel": "AU$20/month"}
+
+    def handle(route):
+        url = route.request.url
+        if "/api/billing/checkout" in url:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps({"ok": True, "id": "cs_test"}))
+            return
+        if "/api/auth/me" in url or "/api/auth/login" in url or "/api/auth/google" in url:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps(me))
+            return
+        if "/api/billing/config" in url:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps(config))
+            return
+        if "/api/hope/usage" in url:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps(usage))
+            return
+        if "/api/plus/library" in url:
+            if not me_plus:
+                route.fulfill(status=403, content_type="application/json", body=json.dumps({"error": "Hopewick Plus opens this library.", "code": "plus"}))
+                return
+            route.fulfill(status=200, content_type="application/json", body=json.dumps(plus_library_fixture()))
+            return
+        if "/api/chats" in url or "/api/checkins" in url:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps({"profiles": []}))
+            return
+        route.fulfill(status=404, content_type="application/json", body="{}")
+
+    page.route("**/api/**", handle)
