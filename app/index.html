@@ -10,6 +10,19 @@
    ============================================================================ */
 const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, founder: 'Dwayne Stevens' };
 </script>
+<script>
+/* First-party visit count. One landing per tab session. The number is not shown. */
+(function () {
+  var key = 'hopewick.visit.app';
+  try {
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+  } catch (e) {}
+  try {
+    fetch('/api/visit', { method: 'POST', keepalive: true, credentials: 'same-origin' }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="AOD recovery support between sessions.">
 <meta name="theme-color" content="#3f8f5f">

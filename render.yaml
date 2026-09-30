@@ -11,6 +11,7 @@ services:
     # Smallest paid plan. A disk cannot be attached to the free plan, and the free
     # plan sleeps, which drops Stripe webhooks. Do not scale past one instance:
     # the account file lives on this disk and is not shared.
+    # visits.json on this disk is a page-visit count only (no names or IPs).
     plan: 0.5c-512mb
     healthCheckPath: /api/health
     autoDeployTrigger: commit

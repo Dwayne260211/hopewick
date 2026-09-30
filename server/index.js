@@ -19,6 +19,8 @@
  * beside the account file. The model call itself does not write that file.
  * Check-ins and weekly SMART goals live in checkins.json beside that file,
  * per account and profile. They are free. Deleting an account erases them.
+ * A page visit counter lives in visits.json beside that file. It stores a
+ * number only: no names, emails, or IP addresses, and the site does not show it.
  * The account file holds email, an optional name and phone, a scrypt
  * password hash when one is set, subscription status, and that day's
  * message count. Card numbers, CVV, and full payment details are never
@@ -42,6 +44,7 @@ import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-cli
 import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
 import { createChatStore, validProfileId } from './chats.js';
 import { createCheckinStore } from './checkins.js';
+import { createVisitCounter, visitsPathBeside } from './visits.js';
 import {
   hopeConfigured,
   freeDailyCap,
@@ -760,8 +763,14 @@ function serveStatic(root, req, res, urlPath) {
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 
-async function handleApi(store, chats, checkins, req, res, url) {
+async function handleApi(store, chats, checkins, visits, req, res, url) {
   const route = url.pathname;
+
+  if (req.method === 'POST' && route === '/api/visit') {
+    req.resume();
+    json(res, 200, { visits: visits.increment() });
+    return;
+  }
 
   if (req.method === 'GET' && route === '/api/health') {
     json(res, 200, { ok: true });
@@ -1691,10 +1700,11 @@ async function handleHopeChat(store, req, res) {
   }
 }
 
-export function createApp({ store, chats, checkins, root = REPO_ROOT } = {}) {
+export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   const checkinStore = checkins || createCheckinStore(path.join(REPO_ROOT, 'server', 'data', 'checkins.json'));
+  const visitCounter = visits || createVisitCounter(path.join(REPO_ROOT, 'server', 'data', 'visits.json'));
   return async function onRequest(req, res) {
     installSecurityHeaders(req, res);
     try {
@@ -1713,7 +1723,7 @@ export function createApp({ store, chats, checkins, root = REPO_ROOT } = {}) {
           json(res, 403, { error: 'That request was blocked.' });
           return;
         }
-        await handleApi(store, chatStore, checkinStore, req, res, url);
+        await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url);
         return;
       }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -1733,14 +1743,17 @@ export function startServer({
   storePath = process.env.BILLING_STORE || path.join(REPO_ROOT, 'server', 'data', 'users.json'),
   chatsPath,
   checkinsPath,
+  visitsPath,
   root = REPO_ROOT,
 } = {}) {
   const store = createStore(storePath);
   const chatFile = chatsPath || process.env.CHATS_STORE || path.join(path.dirname(storePath), 'chats.json');
   const checkinFile = checkinsPath || process.env.CHECKINS_STORE || path.join(path.dirname(storePath), 'checkins.json');
+  const visitFile = visitsPath || process.env.VISITS_STORE || visitsPathBeside(storePath);
   const chats = createChatStore(chatFile);
   const checkins = createCheckinStore(checkinFile);
-  const server = http.createServer(createApp({ store, chats, checkins, root }));
+  const visits = createVisitCounter(visitFile);
+  const server = http.createServer(createApp({ store, chats, checkins, visits, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));
   });
@@ -1760,6 +1773,7 @@ if (isMain) {
     console.log(`Hopewick is running at http://${host}:${addr.port}`);
     console.log(`Health: http://${host}:${addr.port}/api/health`);
     console.log(`Account file: ${storePath}`);
+    console.log(`Visit counter: ${process.env.VISITS_STORE || visitsPathBeside(storePath)}`);
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {

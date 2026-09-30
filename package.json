@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node server/index.js",
     "test:billing": "node --test --test-concurrency=1 server/billing.test.mjs",
+    "test:visits": "node --test server/visits.test.mjs",
     "test:resume": "node --test tests/resume-pdf.test.mjs"
   }
 }

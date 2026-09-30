@@ -10,6 +10,19 @@
    ============================================================================ */
 const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Recovery support for the hours between appointments', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, siteUrl: 'https://hopewick.com.au/', founder: 'Dwayne Stevens' };
 </script>
+<script>
+/* First-party visit count. One landing per tab session. The number is not shown. */
+(function () {
+  var key = 'hopewick.visit.home';
+  try {
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+  } catch (e) {}
+  try {
+    fetch('/api/visit', { method: 'POST', keepalive: true, credentials: 'same-origin' }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hopewick · Recovery support for the hours between appointments</title>
 <meta name="description" content="Hopewick is private addiction recovery support for the hours between appointments. Talk through cravings, relapse prevention, SMART goals and recovery planning. For people in recovery, families, and Australian AOD services. Not a replacement for treatment or emergency care.">
