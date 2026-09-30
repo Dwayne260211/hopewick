@@ -38,22 +38,22 @@ def test_chats_tab_and_tab_switch_keeps_conversation():
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
             page.evaluate(
                 """() => {
-                  localStorage.setItem('eden.onboarding.v1', JSON.stringify({seen:true}));
-                  localStorage.setItem('eden.profiles.v1', JSON.stringify({
+                  sessionStorage.setItem('eden.onboarding.v1', JSON.stringify({seen:true}));
+                  sessionStorage.setItem('eden.profiles.v1', JSON.stringify({
                     list: [{id:'sam1', name:'Sam', pin:null, created:1}],
                     lastId: 'sam1'
                   }));
-                  localStorage.setItem('eden.p.sam1.settings', JSON.stringify({
+                  sessionStorage.setItem('eden.p.sam1.settings', JSON.stringify({
                     settingsVersion: 2, mode: 'counsellor', disclaimerAck: true
                   }));
-                  localStorage.setItem('eden.p.sam1.convos', JSON.stringify([{
+                  sessionStorage.setItem('eden.p.sam1.convos', JSON.stringify([{
                     id: 'c1',
                     title: 'Evening check-in',
                     created: 1700000000000,
                     updated: 1700000000000,
                     messages: [{role:'user', content:'hello from yesterday', ts:1700000000000}]
                   }]));
-                  localStorage.setItem('eden.p.sam1.active', JSON.stringify('c1'));
+                  sessionStorage.setItem('eden.p.sam1.active', JSON.stringify('c1'));
                 }"""
             )
             page.reload(wait_until="domcontentloaded")
@@ -65,14 +65,15 @@ def test_chats_tab_and_tab_switch_keeps_conversation():
             def stored():
                 return page.evaluate(
                     """() => ({
-                      active: JSON.parse(localStorage.getItem('eden.p.sam1.active')),
-                      convos: JSON.parse(localStorage.getItem('eden.p.sam1.convos')),
+                      active: JSON.parse(sessionStorage.getItem('eden.p.sam1.active')),
+                      convos: JSON.parse(sessionStorage.getItem('eden.p.sam1.convos')),
                       appTab
                     })"""
                 )
 
             before = stored()
             assert before["active"] == "c1"
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
             assert before["convos"][0]["messages"][0]["content"] == "hello from yesterday"
 
             for tab_id in ("#appTabHome", "#appTabChats", "#appTabJournal", "#appTabDv", "#appTabChat"):

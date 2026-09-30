@@ -84,10 +84,12 @@ def test_new_user_picker_and_demo_privacy():
             page.fill("#addPersonInput", "Sam")
             page.locator("#addPersonForm button[type=submit]").click()
             page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
-            saved = _profiles(page)
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
+            saved = json.loads(page.evaluate("() => sessionStorage.getItem('eden.profiles.v1')"))
             assert [p["name"] for p in saved["list"]] == ["Sam"]
             blob = json.dumps(saved)
             assert "Dwayne" not in blob and "Abbey" not in blob
+            assert not saved.get("accountId")
             assert not errors, errors
             fresh.close()
 
@@ -118,9 +120,11 @@ def test_new_user_picker_and_demo_privacy():
                 FACTORY,
             )
             page.reload(wait_until="domcontentloaded")
+            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
+            page.click("#onboardLaterBtn")
             page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
             assert _names(page) == []
-            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
             seeded.close()
 
             used = browser.new_context()
@@ -135,10 +139,12 @@ def test_new_user_picker_and_demo_privacy():
                 FACTORY,
             )
             page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#pickerDlg[open] .profile-card")
-            assert _names(page) == ["Dwayne", "Abbey"]
-            kept = _profiles(page)
-            assert [p["name"] for p in kept["list"]] == ["Dwayne", "Abbey"]
+            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
+            assert page.evaluate("() => localStorage.getItem('eden.p.dwayne.settings')") is None
+            page.click("#onboardLaterBtn")
+            page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
+            assert _names(page) == []
             used.close()
 
             legacy = browser.new_context()
@@ -154,18 +160,12 @@ def test_new_user_picker_and_demo_privacy():
                 }"""
             )
             page.reload(wait_until="domcontentloaded")
-            page.wait_for_selector("#pickerDlg[open] .pname")
-            assert _names(page) == ["Person 1"]
+            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
             assert page.evaluate("() => localStorage.getItem('eden.settings.v1')") is None
             assert page.evaluate("() => localStorage.getItem('eden.conversations.v1')") is None
-            migrated = _profiles(page)
-            assert [p["name"] for p in migrated["list"]] == ["Person 1"]
-            pid = migrated["list"][0]["id"]
-            assert pid not in ("dwayne", "abbey")
-            shared = json.loads(page.evaluate("() => localStorage.getItem('eden.shared.v1')"))
-            assert shared["apiKey"] == "legacy-key"
-            convos = page.evaluate("(id) => localStorage.getItem('eden.p.' + id + '.convos')", pid)
-            assert "hi" in convos
+            assert page.evaluate("() => localStorage.getItem('eden.shared.v1')") is None
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
+            assert page.evaluate("() => sessionStorage.getItem('eden.profiles.v1')") is None
             legacy.close()
 
             demo_seed = browser.new_context()
@@ -178,16 +178,11 @@ def test_new_user_picker_and_demo_privacy():
             page.reload(wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])")
             assert page.locator("#switchName").text_content().strip() == "Alex"
-            still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
-            assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
             page.click("#exitDemoBtn")
-            page.wait_for_selector("#pickerDlg[open] .profile-card")
-            assert _names(page) == ["Dwayne", "Abbey"]
-            still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
-            assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
-            page.evaluate("() => saveProfiles()")
-            still = json.loads(page.evaluate("() => localStorage.getItem('eden.profiles.v1')"))
-            assert [p["name"] for p in still["list"]] == ["Dwayne", "Abbey"]
+            page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
+            assert _names(page) == []
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
             demo_seed.close()
 
             browser.close()
@@ -196,7 +191,9 @@ def test_new_user_picker_and_demo_privacy():
 
 
 def _profile_names(page):
-    raw = page.evaluate("() => localStorage.getItem('eden.profiles.v1')")
+    raw = page.evaluate(
+        "() => sessionStorage.getItem('eden.profiles.v1') || localStorage.getItem('eden.profiles.v1')"
+    )
     if not raw:
         return []
     return [p["name"] for p in json.loads(raw)["list"]]

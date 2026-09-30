@@ -15,6 +15,34 @@ from plus_session import grant_server_session
 APP = ROOT / "app" / "index.html"
 
 
+
+def _signed_in_account(route):
+    import json as _json
+    url = route.request.url
+    if "/api/auth/me" in url:
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps({
+            "signedIn": True, "id": "test-user", "email": "member@example.com",
+            "plus": False, "founder": False, "complimentary": False, "hasPassword": True,
+            "subscriptionStatus": "none", "name": "", "phone": "",
+        }))
+        return
+    if "/api/billing/config" in url:
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps({
+            "checkoutReady": True, "devMagic": False, "hopeHosted": True,
+        }))
+        return
+    if "/api/hope/usage" in url:
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps({
+            "used": 0, "limit": 15, "remaining": 15, "plus": False, "trialEligible": True,
+            "resetLabel": "midnight, Brisbane time", "complimentary": False,
+        }))
+        return
+    if "/api/chats" in url or "/api/checkins" in url:
+        route.fulfill(status=200, content_type="application/json", body=_json.dumps({"profiles": []}))
+        return
+    route.fulfill(status=404, content_type="application/json", body="{}")
+
+
 def test_static_goals_and_journal_nav():
     text = APP.read_text(encoding="utf-8")
     assert "EDEN_BUILD = 'hopewick-v5.27'" in text
@@ -239,10 +267,9 @@ def test_smart_goals_journal_nav_and_guards():
             assert saved["weeks"][current]["goals"][1]["specific"] == ""
 
             fresh.keyboard.press("Escape")
+            fresh.route("**/api/**", lambda route: _signed_in_account(route))
             fresh.reload(wait_until="domcontentloaded")
-            fresh.wait_for_selector("#pickerDlg[open] .profile-card")
-            fresh.locator("#profileList .profile-card", has_text="Sam").click()
-            fresh.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
+            fresh.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'", timeout=15000)
             _dismiss_disclaimer(fresh)
             grant_server_session(fresh, plus=True, founder=False, status='trialing')
             fresh.click("#appTabMore")
@@ -284,7 +311,7 @@ def test_smart_goals_journal_nav_and_guards():
 
             # Second profile stays Plus-only. This visit is not a paid account.
             fresh.keyboard.press("Escape")
-            grant_server_session(fresh, plus=False, founder=False, signedIn=False)
+            grant_server_session(fresh, plus=False, founder=False)
             fresh.click("#switchBtn")
             fresh.wait_for_selector("#pickerDlg[open] .profile-card")
             assert fresh.locator("#addPersonBtn").is_hidden()

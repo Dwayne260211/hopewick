@@ -3429,7 +3429,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 /* =============================================================================
    Hopewick — a standalone AI companion (v3: profiles, AOD counsellor, demo mode).
    Build: eden-v2-profiles-aod
-   Storage layout (localStorage):
+   Storage layout:
+     Signed out: sessionStorage for this tab only (cleared when the tab closes).
+     Signed in: localStorage on this device, plus the account on the server.
+     Guest localStorage keys with no account id are removed on load.
      eden.shared.v1            provider settings shared on this device (URL, model, key, stream)
      eden.profiles.v1          { list: [{id, name, pin, created}], lastId }
      eden.p.<id>.settings      per-person persona / mode / faith / voice / recovery settings
@@ -3464,14 +3467,33 @@ const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
 const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'nutrition', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
+/* Signed-out visits use sessionStorage. localStorage is only for a signed-in account. */
+let accountStorageOn = false;
+let storageReady = false;
 
+function visitStore() {
+  return accountStorageOn ? localStorage : sessionStorage;
+}
 function load(key, fallback) {
-  try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+  try { const raw = visitStore().getItem(key); return raw ? JSON.parse(raw) : fallback; }
   catch (e) { return fallback; }
 }
 function save(key, value) {
-  try { localStorage.setItem(key, JSON.stringify(value)); }
-  catch (e) { toast('Could not save to browser storage (it may be full or disabled).', true); }
+  try {
+    visitStore().setItem(key, JSON.stringify(value));
+    if (accountStorageOn && billingState.id) localStorage.setItem('eden.account.v1', billingState.id);
+  } catch (e) { toast('Could not save to browser storage (it may be full or disabled).', true); }
+}
+function removeStoredKey(key) {
+  try { localStorage.removeItem(key); } catch (_) {}
+  try { sessionStorage.removeItem(key); } catch (_) {}
+}
+function edenKeys(store) {
+  try { return Object.keys(store).filter(k => k.startsWith('eden.')); }
+  catch (_) { return []; }
+}
+function visitOnlyLine() {
+  return 'This visit only. Closing this tab clears it. Sign in to keep it on your account.';
 }
 
 /* ---------------------------------------------------------------------------
@@ -3823,7 +3845,7 @@ function isUntouchedFactorySeed(state) {
   // The shipped names matched these ids. A rename, PIN, or any saved data means keep them.
   if (state.list.some(p => String(p.name || '').trim().toLowerCase() !== String(p.id || '').toLowerCase())) return false;
   for (const id of ids) {
-    if (PK.some(what => localStorage.getItem(pk(id, what)) !== null)) return false;
+    if (PK.some(what => visitStore().getItem(pk(id, what)) !== null)) return false;
   }
   return true;
 }
@@ -3831,18 +3853,39 @@ function isUntouchedFactorySeed(state) {
 /** Fresh installs start with no profiles. Legacy single-user data moves into one neutral profile. */
 function migrateStorage() {
   const demoOpen = new URLSearchParams(location.search).get('demo') === '1';
+  if (!billingState.signedIn) {
+    profilesState = load(K.profiles, null);
+    if (isUntouchedFactorySeed(profilesState)) profilesState = null;
+    if (!(profilesState && Array.isArray(profilesState.list) && profilesState.list.length)) {
+      profilesState = { list: [], lastId: null };
+    }
+    return;
+  }
+  shared = Object.assign({}, DEFAULT_SHARED, load(K.shared, {}));
   profilesState = load(K.profiles, null);
+  if (profilesState && profilesState.accountId && profilesState.accountId !== billingState.id) {
+    profilesState = { list: [], lastId: null, accountId: billingState.id };
+    return;
+  }
   if (isUntouchedFactorySeed(profilesState)) {
     // Demo must not write storage. Hide the unused names in memory; a normal visit removes them.
     if (!demoOpen) localStorage.removeItem(K.profiles);
     profilesState = null;
   }
-  if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length) return;
+  if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length) {
+    if (!profilesState.accountId && billingState.id) {
+      profilesState.accountId = billingState.id;
+      try { localStorage.setItem('eden.account.v1', billingState.id); } catch (_) {}
+      save(K.profiles, profilesState);
+    }
+    return;
+  }
   const oldSettings = load(LEGACY.settings, null);
   const hasLegacy = Object.values(LEGACY).some(k => localStorage.getItem(k) !== null);
   // Opening straight into the demo on a fresh device must not write anything.
   if (!hasLegacy) {
     profilesState = { list: [], lastId: null };
+    if (billingState.signedIn && billingState.id) profilesState.accountId = billingState.id;
     return;
   }
   const id = uid();
@@ -3864,6 +3907,10 @@ function migrateStorage() {
     if (raw !== null) localStorage.setItem(pk(id, what), raw);
   }
   Object.values(LEGACY).forEach(k => localStorage.removeItem(k));
+  if (billingState.signedIn && billingState.id) {
+    profilesState.accountId = billingState.id;
+    try { localStorage.setItem('eden.account.v1', billingState.id); } catch (_) {}
+  }
   save(K.shared, shared);
   save(K.profiles, profilesState);
 }
@@ -3874,6 +3921,10 @@ function saveProfiles() {
   if (profilesState && Array.isArray(profilesState.list) && profilesState.list.length === 0) {
     const stored = load(K.profiles, null);
     if (isUntouchedFactorySeed(stored)) return;
+  }
+  if (profilesState) {
+    if (accountStorageOn && billingState.id) profilesState.accountId = billingState.id;
+    else delete profilesState.accountId;
   }
   save(K.profiles, profilesState);
 }
@@ -4085,7 +4136,7 @@ function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), jou
 function goalsSavedLine() {
   if (isDemo) return 'This demo visit only — not saved on this device.';
   if (billingState.signedIn) return 'Saved on this device and your account.';
-  return 'Saved on this device.';
+  return visitOnlyLine();
 }
 function saveGoals() {
   if (isDemo || !profile) return;
@@ -4318,7 +4369,7 @@ function saveResume() {
   if (isDemo || !profile) return;
   save(pk(profile.id, 'resume'), resumeState);
   const note = $('#resumeSaved');
-  if (note && appTab === 'resume') note.textContent = 'Draft saved on this device.';
+  if (note && appTab === 'resume') note.textContent = billingState.signedIn ? 'Draft saved on this device and your account.' : visitOnlyLine();
 }
 function savePlans() {
   if (isDemo || !profile) return;
@@ -8691,9 +8742,7 @@ function renderGoals() {
   });
   const note = $('#goalsSaved');
   if (note && !note.textContent) {
-    note.textContent = isDemo
-      ? 'This demo visit only — not saved on this device.'
-      : (billingState.signedIn ? 'Saved on this device and your account.' : 'Stays on this device.');
+    note.textContent = goalsSavedLine();
   }
 }
 function openGoals() {
@@ -8822,7 +8871,8 @@ function normalizePlans(raw) {
 }
 function plansStatusText() {
   if (isDemo) return 'This demo visit only — not saved on this device.';
-  return 'Saved on this device. Included when you export a backup from Settings.';
+  if (billingState.signedIn) return 'Saved on this device and your account.';
+  return visitOnlyLine();
 }
 function relapseHasContent(plan) {
   const r = plan || plansState.relapse;
@@ -10584,7 +10634,7 @@ function renderNutritionExperiment() {
   note.id = 'nutritionExperimentSaved';
   note.style.margin = '0';
   if (nutritionExperiments.length) {
-    note.textContent = isDemo ? 'This demo visit only — not saved on this device.' : 'Saved on this device.';
+    note.textContent = isDemo ? 'This demo visit only — not saved on this device.' : (billingState.signedIn ? 'Saved on this device and your account.' : visitOnlyLine());
   }
   box.appendChild(note);
   const list = document.createElement('div');
@@ -11326,7 +11376,7 @@ $('#clearMineBtn').addEventListener('click', () => {
   chatHoldPull = true;
   checkinHoldPull = true;
   convos.forEach(c => { if (c && c.id) removedChatIds.push(c.id); });
-  PK.forEach(w => localStorage.removeItem(pk(profile.id, w)));
+  PK.forEach(w => removeStoredKey(pk(profile.id, w)));
   loadProfileData(profile.id);
   goalsState.clearedAt = Date.now();
   if (!isDemo && billingState.signedIn) saveGoals();
@@ -11339,7 +11389,8 @@ $('#clearMineBtn').addEventListener('click', () => {
 });
 $('#clearAllBtn').addEventListener('click', () => {
   if (!confirm(`Clear ALL ${BRAND.name} data on this device — every person\'s chats, memories, resumes and settings, plus the API key? This cannot be undone.`)) return;
-  Object.keys(localStorage).filter(k => k.startsWith('eden.')).forEach(k => localStorage.removeItem(k));
+  edenKeys(localStorage).forEach(k => localStorage.removeItem(k));
+  edenKeys(sessionStorage).forEach(k => sessionStorage.removeItem(k));
   location.reload();
 });
 
@@ -11531,7 +11582,7 @@ function deleteProfile(p) {
   if (profilesState.list.length <= 1) { toast('You need at least one profile.', true); return; }
   if (!checkPinFor(p, 'delete them')) return;
   if (!confirm(`Delete ${p.name} and all of their chats, memories and settings? This cannot be undone.`)) return;
-  PK.forEach(w => localStorage.removeItem(pk(p.id, w)));
+  PK.forEach(w => removeStoredKey(pk(p.id, w)));
   profilesState.list = profilesState.list.filter(x => x.id !== p.id);
   if (profilesState.lastId === p.id) profilesState.lastId = profilesState.list[0].id;
   if (profile && profile.id === p.id) { profile = null; el.inner.innerHTML = ''; }
@@ -12988,7 +13039,7 @@ function onResumeChanged() {
   resumeSaveTimer = setTimeout(() => {
     saveResume();
     const saved = $('#resumeSaved');
-    if (saved && appTab === 'resume') saved.textContent = 'Draft saved on this device.';
+    if (saved && appTab === 'resume') saved.textContent = billingState.signedIn ? 'Draft saved on this device and your account.' : visitOnlyLine();
   }, 280);
 }
 function paintResumeForm() {
@@ -13120,6 +13171,135 @@ bindResumeUi();
    Hopewick Plus — email sign-in, Stripe, and soft gating
    Account service is same-origin /api (npm start). Chats stay in this browser.
    --------------------------------------------------------------------------- */
+function durableProfiles() {
+  try {
+    const raw = localStorage.getItem(K.profiles);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) { return null; }
+}
+function accountProfileIds(state) {
+  return new Set(((state && state.list) || []).map(p => p && p.id).filter(Boolean));
+}
+/** Drop localStorage that is not tied to a signed-in account. Account copies stay for the next sign-in. */
+function clearGuestDurableKeys() {
+  const state = durableProfiles();
+  let accountId = '';
+  try { accountId = localStorage.getItem('eden.account.v1') || ''; } catch (_) { accountId = ''; }
+  if (!accountId && state && state.accountId) accountId = state.accountId;
+  const keepBible = 'eden.webBibleCache.v1';
+  if (!accountId) {
+    edenKeys(localStorage).forEach(k => { if (k !== keepBible) localStorage.removeItem(k); });
+    return;
+  }
+  const legacy = new Set(Object.values(LEGACY));
+  edenKeys(localStorage).forEach(k => {
+    if (k === keepBible || k === 'eden.account.v1' || k === K.profiles || k === K.shared || k === K.onboarding) return;
+    if (k.startsWith('eden.p.')) return;
+    if (legacy.has(k)) localStorage.removeItem(k);
+  });
+}
+function copySessionBlobsToAccount() {
+  edenKeys(sessionStorage).forEach(k => {
+    if (k === 'eden.webBibleCache.v1') return;
+    try {
+      if (localStorage.getItem(k) === null) localStorage.setItem(k, sessionStorage.getItem(k));
+    } catch (_) {}
+  });
+}
+function clearSessionEden() {
+  edenKeys(sessionStorage).forEach(k => { try { sessionStorage.removeItem(k); } catch (_) {} });
+}
+function flushCurrentProfile() {
+  if (isDemo || !profile) return;
+  saveSettings();
+  persistConvos();
+  saveMemories();
+  saveMoods();
+  saveGratitude();
+  saveJournal();
+  saveGoals();
+  savePlans();
+  saveSteps();
+  saveBible();
+  saveDeeper();
+  saveBreakers();
+  saveSelfCare();
+  saveNutritionExperiments();
+  saveResume();
+}
+function enterAccountIfReady() {
+  if (isDemo || profile || !billingState.signedIn || !hasRealProfile()) return;
+  firstRunRouted = true;
+  closeSignInGate();
+  if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+  if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
+  const last = findProfile(profilesState.lastId) || profilesState.list[0];
+  if (last && !last.pin) enterProfile(last.id);
+  else showPicker();
+}
+function adoptVisitOntoAccount() {
+  if (!billingState.signedIn || !billingState.id || isDemo) return;
+  const durable = durableProfiles();
+  const durableList = (durable && (!durable.accountId || durable.accountId === billingState.id) && Array.isArray(durable.list)) ? durable.list : [];
+  const visitList = (profilesState && Array.isArray(profilesState.list)) ? profilesState.list : [];
+  copySessionBlobsToAccount();
+  const merged = [];
+  const seen = new Set();
+  durableList.concat(visitList).forEach(p => {
+    if (!p || !p.id || seen.has(p.id)) return;
+    seen.add(p.id);
+    merged.push(p);
+  });
+  if (merged.length) {
+    const lastId = (profilesState && profilesState.lastId) || (durable && durable.lastId) || merged[0].id;
+    profilesState = { list: merged, lastId: lastId, accountId: billingState.id };
+    saveProfiles();
+    flushCurrentProfile();
+  }
+  clearSessionEden();
+  if (!profile && merged.length) enterAccountIfReady();
+}
+function forgetVisitMemory() {
+  clearSessionEden();
+  profile = null;
+  profilesState = { list: [], lastId: null };
+  convos = []; memories = []; moods = []; gratitude = []; journal = [];
+  goalsState = { weeks: {}, held: {}, clearedAt: 0 };
+  plansState = normalizePlans({});
+  activeId = null;
+  firstRunRouted = false;
+  if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
+  if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+  if (el.inner) el.inner.innerHTML = '';
+}
+function prepareVisitStorage() {
+  const signed = !!(billingState.signedIn && billingState.id);
+  if (!storageReady) {
+    accountStorageOn = signed;
+    if (!signed) clearGuestDurableKeys();
+    storageReady = true;
+    if (isDemo) {
+      if (!profilesState) profilesState = { list: [], lastId: null };
+      return;
+    }
+    migrateStorage();
+    if (profilesState && profilesState.lastId) {
+      const last = load(pk(profilesState.lastId, 'settings'), {}) || {};
+      if (last && last.theme) { settings.theme = last.theme; applyTheme(); }
+    }
+    return;
+  }
+  if (signed && !accountStorageOn) {
+    accountStorageOn = true;
+    adoptVisitOntoAccount();
+    return;
+  }
+  if (!signed && accountStorageOn) {
+    accountStorageOn = false;
+    forgetVisitMemory();
+  }
+}
+
 const billingState = {
   loaded: false,
   reachable: false,
@@ -13380,6 +13560,7 @@ async function refreshBilling() {
     clearPlusLibrary();
   }
   billingState.loaded = true;
+  try { prepareVisitStorage(); } catch (err) { console.error(err); }
   try { routeFirstRun(); } catch (_) { /* profile screens are wired before boot */ }
   await ensureTodayReading();
   syncDeveloperChrome();
@@ -14702,11 +14883,7 @@ function showSignInGate() {
 function routeFirstRun() {
   if (isDemo || profile) return;
   if (!billingState.loaded) return;
-  if (signInBeforeProfile()) {
-    firstRunRouted = false;
-    showSignInGate();
-    return;
-  }
+  // A signed-out visit can use the tools. Sign-in is for keeping data, not for opening them.
   if (firstRunRouted) return;
   firstRunRouted = true;
   closeSignInGate();
@@ -14729,13 +14906,10 @@ if (el.signInDlg) {
 }
 
 applyBrand();
-migrateStorage();
 renderHelpList();
 (function preTheme() {
-  // Use the last profile's theme behind the picker without loading any of their data.
-  const lastId = profilesState && profilesState.lastId;
-  const last = lastId ? (load(pk(lastId, 'settings'), {}) || {}) : {};
-  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: last.theme || 'system' }, providerFrom(shared));
+  // Theme from a profile is applied after we know whether this visit is signed in.
+  settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, { theme: 'system' }, providerFrom(shared));
   ensureCompanionName();
   applyTheme();
 })();

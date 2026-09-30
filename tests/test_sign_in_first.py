@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Signed-out first run is Sign in, then profile setup. A signed-in profile opens Home. Demo skips the account."""
+"""A signed-out visit can use Hopewick without an account. That visit is not durable. A signed-in profile still opens Home."""
 from __future__ import annotations
 
 import json
@@ -98,32 +98,62 @@ def test_sign_in_before_profile_and_home_when_already_in():
             page.on("pageerror", lambda exc: errors.append(str(exc)))
             _route_account(page, state)
             page.goto(f"{base}/app/", wait_until="domcontentloaded")
-            page.wait_for_selector("#signInDlg[open]", timeout=15000)
-            assert page.locator("#signInTitle").inner_text().strip() == "Sign in"
-            assert page.locator("#signInDlg #accountEmail").is_visible()
-            assert page.locator("#signInDlg #accountPassword").is_visible()
-            assert page.locator("#signInDlg #accountSignInBtn").inner_text().strip() == "Sign in"
-            assert page.locator("#signInDlg #accountMagicBtn").inner_text().strip() == "Email me a sign-in link"
-            assert page.locator("#signInDlg #accountCreateToggle").is_visible()
-            assert page.locator("#onboardingDlg[open]").count() == 0
-            assert page.locator("#pickerDlg[open]").count() == 0
-            assert page.locator("#signInDlg #startPlusBtn").count() == 0
-            assert "Hopewick Plus" not in page.locator("#signInTitle").inner_text()
-
-            page.fill("#accountEmail", "sam@example.com")
-            page.fill("#accountPassword", "password1")
-            page.click("#accountSignInBtn")
             page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
-            page.wait_for_function("() => !document.getElementById('signInDlg').open")
-            assert page.locator("#pickerDlg[open]").count() == 0
-            assert page.evaluate("() => subscriptionPlus()") is False
-            assert page.evaluate("() => plusAccess.ready") is False
+            assert page.locator("#signInDlg[open]").count() == 0
+            help_text = page.locator("#helpDlg").text_content()
+            assert "000" in help_text
+            assert "13 11 14" in help_text
+            assert "000" in page.locator("#composerHint").inner_text()
+            assert "000" in page.locator("#dvView").text_content()
+
+            page.evaluate(
+                """() => {
+                  localStorage.setItem('eden.profiles.v1', JSON.stringify({
+                    list: [{id:'old', name:'Old guest', pin:null, created:1}],
+                    lastId: 'old'
+                  }));
+                  localStorage.setItem('eden.p.old.journal', JSON.stringify([{id:'j', body:'yesterday'}]));
+                }"""
+            )
+            page.reload(wait_until="domcontentloaded")
+            page.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
+            assert page.evaluate("() => localStorage.getItem('eden.p.old.journal')") is None
+            assert "Old guest" not in page.locator("body").inner_text()
 
             page.click("#onboardLaterBtn")
             page.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])")
-            assert page.evaluate("() => subscriptionPlus()") is False
+            page.fill("#addPersonInput", "Sam")
+            page.locator("#addPersonForm button[type=submit]").click()
+            page.wait_for_function("() => document.querySelector('#switchName').textContent === 'Sam'")
+            assert page.evaluate("() => localStorage.getItem('eden.profiles.v1')") is None
+            assert "Sam" in page.evaluate("() => sessionStorage.getItem('eden.profiles.v1')")
+            page.evaluate(
+                """() => {
+                  journal = [{id:'j1', title:'Today', body:'this visit', created:1, updated:1}];
+                  saveJournal();
+                  goalsState = normalizeGoals({});
+                  saveGoals();
+                }"""
+            )
+            assert page.evaluate("() => localStorage.getItem('eden.p.' + profile.id + '.journal')") is None
+            assert "this visit" in page.evaluate("() => sessionStorage.getItem('eden.p.' + profile.id + '.journal')")
+            page.reload(wait_until="domcontentloaded")
+            page.wait_for_selector("#pickerDlg[open] .profile-card")
+            assert page.locator("#profileList .pname").all_text_contents() == ["Sam"]
             assert not errors, errors
             page.close()
+
+            gone = browser.new_context(viewport={"width": 390, "height": 844})
+            fresh = gone.new_page()
+            fresh.on("pageerror", lambda exc: errors.append(str(exc)))
+            _route_account(fresh, {"signedIn": False})
+            fresh.goto(f"{base}/app/", wait_until="domcontentloaded")
+            fresh.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            assert fresh.evaluate("() => sessionStorage.getItem('eden.profiles.v1')") is None
+            assert fresh.locator("#signInDlg[open]").count() == 0
+            assert not errors, errors
+            gone.close()
 
             state = {"signedIn": True}
             home = browser.new_page(viewport={"width": 390, "height": 844})
