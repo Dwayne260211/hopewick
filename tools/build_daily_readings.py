@@ -3,13 +3,15 @@
 
 Writes 365 Word-for-the-day entries and 365 Just-for-today entries, indexed by
 non-leap month and day (1 January = 0 … 31 December = 364). 29 February reuses
-28 February in the app. Prose is original, plain, and written for a hard
-morning in recovery. It is not AA/NA literature, not a commercial devotional,
-and not clinical advice.
+28 February in the app. Prose is original. Word for the day is a Christian reflection, not NA
+literature and not a commercial devotional. Just for today is NA in spirit
+and is not a page from the copyrighted Just for Today book. Neither is
+clinical advice.
 
-The same pair is shown to everyone on that Brisbane date. Faith language is
-optional inside the reading (prayer or a friend, God or the next kind step).
-People who choose no faith content are not told they must believe.
+The same calendar date shows both readings, but they are not the same piece.
+Word for the day is Christian, with a Bible reference. Just for today is
+Narcotics Anonymous in spirit: one day at a time, original wording, no sermon.
+The rest of the app is not made Christians-only by this card.
 
 Run from the repo root:
   python3 tools/build_daily_readings.py
@@ -1486,7 +1488,7 @@ def sentences_of(text: str) -> list[str]:
 
 
 def build() -> tuple[list[dict], list[dict]]:
-    from plain_daily import compose
+    from distinct_readings import compose
 
     theme_words = words()
     titles = build_titles()
@@ -1579,15 +1581,14 @@ def validate(words_e: list[dict], jft_e: list[dict]) -> None:
             raise SystemExit(f"exclusivist phrase: {banned}")
 
 
-def emit(path: Path, var_name: str, entries: list[dict], blurb: str) -> None:
+def emit(path: Path, var_name: str, entries: list[dict], blurb: str, note: str) -> None:
     payload = json.dumps(entries, ensure_ascii=False, indent=2)
     # JSON is valid JS. Keep the file as a classic script so file:// and the
     # single-page app can share the array without a build step.
     text = (
         "/*\n"
         f"   {blurb}\n"
-        "   Original Hopewick prose. Not AA/NA literature, not a commercial\n"
-        "   devotional, and not clinical advice.\n"
+        f"   {note}\n"
         "   Index: non-leap month-day in Australia/Brisbane.\n"
         "   0 = 1 January, 58 = 28 February, 59 = 1 March, 364 = 31 December.\n"
         "   29 February reuses 28 February.\n"
@@ -1605,13 +1606,15 @@ def main() -> None:
         OUT_DIR / "word-for-the-day.js",
         "WORD_FOR_THE_DAY",
         words_e,
-        "Word for the day — 365 original plain-language readings.",
+        "Word for the day — 365 original Christian reflections.",
+        "Original Christian reflection with a Bible reference (book chapter:verse). Not NA literature, not a commercial devotional, and not clinical advice.",
     )
     emit(
         OUT_DIR / "just-for-today.js",
         "JUST_FOR_TODAY",
         jft_e,
-        "Just for today — 365 original plain-language readings.",
+        "Just for today — 365 original NA-style reflections.",
+        "Original Narcotics Anonymous-style reflection, one day at a time. Not a page from the copyrighted Just for Today book, not a sermon, and not clinical advice.",
     )
     counts_w = [word_count(e["reading"]) for e in words_e]
     counts_j = [word_count(e["reading"]) for e in jft_e]

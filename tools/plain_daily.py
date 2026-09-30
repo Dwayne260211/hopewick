@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Plain-language daily readings for Hopewick.
 
-The app shows one Word for the day and one Just for today to everyone on the
-same Australia/Brisbane date. Faith settings do not swap the text. Prayer and
-God are offered as a choice, next to a friend, a value, or the next small step.
-People who want no faith content are not told they must believe.
+Shared word lists, scene lines, and title glosses for the daily readings.
+The two slots are composed in distinct_readings.py so a Christian Word for
+the day and an NA Just for today are not the same theme. This module's
+compose() is the older intertwined generator and is not what the app ships.
 
 Run via tools/build_daily_readings.py.
 """

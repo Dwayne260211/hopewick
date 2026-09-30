@@ -74,16 +74,35 @@ def test_today_source():
     blob = json.dumps(words + jfts).lower()
     for banned in BANNED:
         assert banned not in blob
+    ref = re.compile(r"\b(?:[1-3]\s)?[A-Z][a-z]+(?:\s[A-Z][a-z]+)?\s\d+:\d+\b")
+    na_church = re.compile(r"\b(jesus|christ|bible|church|scripture|gospel|sermon)\b", re.I)
     for entry in words:
         assert 1 <= len(entry["word"]) <= 28
         assert entry["reading"].count(".") >= 3
         assert len(entry["reading"]) > 400
         assert "Just for today" not in entry["reading"]
+        assert "just for today" not in entry["reading"].lower()
+        assert ref.search(entry["reading"]), entry["word"]
+        low = entry["reading"].lower()
+        assert "narcotics anonymous" not in low
+        assert "sponsor" not in low
+        assert "home group" not in low
+        assert "higher power" not in low
     for entry in jfts:
         assert entry["reading"].strip().endswith(".") or entry["reading"].rstrip().endswith(".")
-        paras = [p for p in entry["reading"].split("\n\n") if p.strip()]
+        paras = [part for part in entry["reading"].split("\n\n") if part.strip()]
         assert paras[-1].startswith("Just for today")
         assert len(entry["reading"]) > 400
+        assert "Narcotics Anonymous" in entry["reading"]
+        assert not ref.search(entry["reading"]), entry["title"]
+        assert not na_church.search(entry["reading"]), entry["title"]
+    for word, jft in zip(words, jfts):
+        assert word["reading"] != jft["reading"]
+        assert not re.search(rf"\b{re.escape(word['word'].lower())}\b", jft["reading"].lower())
+        assert jft["title"].lower() not in word["reading"].lower()
+        w_sents = {s.strip().lower() for s in re.split(r"(?<=[.!?])\s+", word["reading"].replace("\n", " ")) if s.strip()}
+        j_sents = {s.strip().lower() for s in re.split(r"(?<=[.!?])\s+", jft["reading"].replace("\n", " ")) if s.strip()}
+        assert not (w_sents & j_sents), (word["word"], jft["title"])
 
 
 def _server():

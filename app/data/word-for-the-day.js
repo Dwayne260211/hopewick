@@ -1,7 +1,6 @@
 /*
-   Word for the day — 365 original plain-language readings.
-   Original Hopewick prose. Not AA/NA literature, not a commercial
-   devotional, and not clinical advice.
+   Word for the day — 365 original Christian reflections.
+   Original Christian reflection with a Bible reference (book chapter:verse). Not NA literature, not a commercial devotional, and not clinical advice.
    Index: non-leap month-day in Australia/Brisbane.
    0 = 1 January, 58 = 28 February, 59 = 1 March, 364 = 31 December.
    29 February reuses 28 February.
@@ -12,2190 +11,2190 @@ var WORD_FOR_THE_DAY = [
     "month": 1,
     "day": 1,
     "word": "Honesty",
-    "reading": "Honesty can stay small today. One true sentence is enough when a softer lie would be easier. You can start before you feel brave, and honesty still counts.\n\nYou might be in a quiet car park, and a drink, a drug, or a numbing scroll looks tempting. Shame can be here too, and honesty can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so honesty has a real step today. Honesty still counts if that is all you do. A text to someone safe gives honesty a little extra help.\n\nHonesty can be a short prayer, or a few quiet words to a friend.\n\nIn the January heat, let honesty include water, shade, and a slower pace."
+    "reading": "The Christian theme, Honesty, is read with Matthew 11:28. For Honesty, the sense of Matthew 11:28 is this: Jesus invites weary people to come to him and find rest.\n\nChrist is gentle with unfinished people, so Honesty does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Honesty shows up this afternoon.\n\nYou can begin Honesty before you feel holy, because the Father already knows the day. If the morning was clumsy, Honesty can begin again after lunch in the sight of God. God's kindness towards you is the ground under Honesty, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 2,
     "word": "Patience",
-    "reading": "Patience fits a hard morning. Waiting ten minutes can stop a craving from turning into a plan. You can start before you feel brave, and patience still counts.\n\nYou might be waiting for the kettle, and grief showed up without warning. A craving can be here too, and patience can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so patience has a real step today. Patience still counts if that is all you do. Lights dimmed at a decent hour gives patience a little extra help.\n\nPatience can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Patience, and the text is Isaiah 41:10. For Patience, the sense of Isaiah 41:10 is this: God tells his people not to fear, because he is with them and will strengthen them.\n\nThat verse is a welcome, not a test you pass before God will look at Patience. To live Patience, read Isaiah 41:10 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Isaiah 41:10, for Patience, is trust, not a performance. God's kindness towards you is the ground under Patience, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 3,
     "word": "Courage",
-    "reading": "Courage is only for this day. Courage today can be a short text that asks for help. You can start before you feel brave, and courage still counts.\n\nYou might be walking the long way home, and a craving is trying to sound like a good idea. Loneliness can be here too, and courage can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so courage has a real step today. Courage still counts if that is all you do. Quiet company gives courage a little extra help.\n\nCourage can stay small while you borrow hope from someone safe."
+    "reading": "Courage is the Christian theme here, set beside Psalm 34:18. For Courage, the sense of Psalm 34:18 is this: the Lord is near to people whose hearts are broken.\n\nNothing in Psalm 34:18 asks you to pretend, and Courage can begin while you are still tired. Give Courage a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Courage is allowed to be slow. Keep Courage Christian and specific: one verse, one prayer, one person. In Christ, Courage is worth attention even when the calendar is full."
   },
   {
     "month": 1,
     "day": 4,
     "word": "Willingness",
-    "reading": "Willingness is allowed to be imperfect. Willingness can be as small as one yes. You can start before you feel brave, and willingness still counts.\n\nYou might be on a short walk, and comparison has crept in. Anger can be here too, and willingness can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so willingness has a real step today. Willingness still counts if that is all you do. A simple meal gives willingness a little extra help.\n\nWillingness belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Willingness, is read with Matthew 6:34. For Willingness, the sense of Matthew 6:34 is this: Jesus says not to borrow tomorrow's trouble, because this date has enough of its own.\n\nRead Willingness in the light of that verse, without turning it into a performance for other people. Let Willingness sound like a softer answer where the house has been sharp, with Matthew 6:34 still in mind.\n\nNo one else has to share your creed for you to practise Willingness in the sight of God. In Christ, Willingness is worth attention even when the calendar is full."
   },
   {
     "month": 1,
     "day": 5,
     "word": "Kindness",
-    "reading": "Kindness does not have to be loud to be real. Kindness can start with the tone used on yourself. You can start before you feel brave, and kindness still counts.\n\nYou might be in a group, smiling more than the feeling matches, and food is being put off. Tiredness can be here too, and kindness can stay small. You do not have to fix all of that today.\n\nText one safe person, so kindness has a real step today. Kindness still counts if that is all you do. The phone in another room gives kindness a little extra help.\n\nKindness grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Kindness, and the text is Psalm 46:10. For Kindness, the sense of Psalm 46:10 is this: God says to be still and know that he is God.\n\nChrist is gentle with unfinished people, so Kindness does not have to arrive already polished. Carry Kindness into an ordinary hour by telling the truth kindly, in the spirit of Psalm 46:10.\n\nPut Kindness where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Kindness still fits the actual day."
   },
   {
     "month": 1,
     "day": 6,
     "word": "Rest",
-    "reading": "Rest can start in an ordinary hour. Rest is part of staying well, not a prize to earn. You can start before you feel brave, and rest still counts.\n\nYou might be by a window, and grief showed up without warning. Fear can be here too, and rest can stay small. You do not have to fix all of that today.\n\nMake the evening small: food, a wash, and lights out, so rest has a real step today. Rest still counts if that is all you do. An open window gives rest a little extra help.\n\nRest can be a value you keep, in a quiet way that fits you."
+    "reading": "Rest is the Christian theme here, set beside 1 Peter 5:7. For Rest, the sense of 1 Peter 5:7 is this: Peter says to cast anxiety on God, because God cares.\n\nThat verse is a welcome, not a test you pass before God will look at Rest. Practise Rest at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Rest honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Rest."
   },
   {
     "month": 1,
     "day": 7,
     "word": "Hope",
-    "reading": "Hope can stay small today. Hope can be borrowed from a friend when it cannot be felt. You can start before you feel brave, and hope still counts.\n\nYou might be folding the washing, and the urge to hide is strong. Sadness can be here too, and hope can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so hope has a real step today. Hope still counts if that is all you do. A glass of water gives hope a little extra help.\n\nHope gets easier to hold when you ask for help in a short text.\n\nIn the January heat, let hope include water, shade, and a slower pace."
+    "reading": "The Christian theme, Hope, is read with Galatians 6:2. For Hope, the sense of Galatians 6:2 is this: carry one another's burdens.\n\nNothing in Galatians 6:2 asks you to pretend, and Hope can begin while you are still tired. If you were wrong, let Hope include an apology in a single clean sentence, because of Galatians 6:2.\n\nMercy is wider than today's mistakes, and Hope can stand inside that mercy without showing off. If the morning was clumsy, Hope can begin again after lunch in the sight of God. God's kindness towards you is the ground under Hope, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 8,
     "word": "Humility",
-    "reading": "Humility fits a hard morning. Humility is telling the truth about how hard today is. You can start before you feel brave, and humility still counts.\n\nYou might be in a group, smiling more than the feeling matches, and someone's words are still ringing. The urge to hide can be here too, and humility can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so humility has a real step today. Humility still counts if that is all you do. A short walk gives humility a little extra help.\n\nIf God is part of your life, you can pray about humility today. If not, a friend can sit with you, and humility can be shared."
+    "reading": "On this page the Christian theme is Humility, and the text is Psalm 121:2. For Humility, the sense of Psalm 121:2 is this: help comes from the Lord, maker of heaven and earth.\n\nRead Humility in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Psalm 121:2, and let Humility be unhurried company for someone lonely.\n\nHand the evening to God, and let Humility be unfinished without being abandoned. God's kindness towards you is the ground under Humility, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 9,
     "word": "Connection",
-    "reading": "Connection is only for this day. A lonely hour gets lighter when one safe person knows. You can start before you feel brave, and connection still counts.\n\nYou might be staring at an unanswered message, and being alone is pretending to be strength. Money stress can be here too, and connection can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so connection has a real step today. Connection still counts if that is all you do. A kind sentence, spoken as to a friend gives connection a little extra help.\n\nConnection can be a short prayer, or a few quiet words to a friend."
+    "reading": "Connection is the Christian theme here, set beside Matthew 5:7. For Connection, the sense of Matthew 5:7 is this: Jesus says the merciful are blessed and will receive mercy.\n\nChrist is gentle with unfinished people, so Connection does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Connection shows up this afternoon.\n\nYou can begin Connection before you feel holy, because the Father already knows the day. In Christ, Connection is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Connection still fits the actual day."
   },
   {
     "month": 1,
     "day": 10,
     "word": "Gratitude",
-    "reading": "Gratitude is allowed to be imperfect. Gratitude can be one ordinary thing that is still all right. You can start before you feel brave, and gratitude still counts.\n\nYou might be on a short walk, and someone's words are still ringing. Grief can be here too, and gratitude can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so gratitude has a real step today. Gratitude still counts if that is all you do. A glass of water gives gratitude a little extra help.\n\nGratitude can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Gratitude, is read with Psalm 103:12. For Gratitude, the sense of Psalm 103:12 is this: God removes sins as far as east is from west.\n\nThat verse is a welcome, not a test you pass before God will look at Gratitude. To live Gratitude, read Psalm 103:12 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 103:12, for Gratitude, is trust, not a performance. In Christ, Gratitude is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Gratitude still fits the actual day."
   },
   {
     "month": 1,
     "day": 11,
     "word": "Boundaries",
-    "reading": "Boundaries does not have to be loud to be real. A short no can be kind and still be firm. You can start before you feel brave, and boundaries still counts.\n\nYou might be on a short walk, and shame got there first. The wish to give up can be here too, and boundaries can stay small. You do not have to fix all of that today.\n\nChoose safer company for the next hour, so boundaries has a real step today. Boundaries still counts if that is all you do. A washed face gives boundaries a little extra help.\n\nBoundaries can stay small while you borrow hope from someone safe."
+    "reading": "Boundaries is the Christian theme here, set beside John 15:12. For Boundaries, the sense of John 15:12 is this: Jesus tells his friends to love one another as he has loved them.\n\nNothing in John 15:12 asks you to pretend, and Boundaries can begin while you are still tired. Give Boundaries a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Boundaries is allowed to be slow. Australian weather can be hot, wet, or cold, and Boundaries still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Boundaries."
   },
   {
     "month": 1,
     "day": 12,
     "word": "Presence",
-    "reading": "Presence can start in an ordinary hour. Presence means this room, not the worst-case future. You can start before you feel brave, and presence still counts.\n\nYou might be on the bus, and loneliness is louder than the noise around. Comparison can be here too, and presence can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so presence has a real step today. Presence still counts if that is all you do. A slower breath gives presence a little extra help.\n\nPresence belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Presence is the Christian theme here, set beside 2 Timothy 1:7. For Presence, the sense of 2 Timothy 1:7 is this: God gives a spirit of power, love, and self-control, not fear.\n\nRead Presence in the light of that verse, without turning it into a performance for other people. Let Presence sound like a softer answer where the house has been sharp, with 2 Timothy 1:7 still in mind.\n\nNo one else has to share your creed for you to practise Presence in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Presence."
   },
   {
     "month": 1,
     "day": 13,
     "word": "Enough",
-    "reading": "Enough can stay small today. Enough can be chosen, even before it feels true. You can start before you feel brave, and enough still counts.\n\nYou might be on the phone, on hold, and help is on offer and feels hard to take. The urge to go numb can be here too, and enough can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so enough has a real step today. Enough still counts if that is all you do. One money worry named to someone safe gives enough a little extra help.\n\nEnough grows more easily with a kind tone than with shame.\n\nIn the January heat, let enough include water, shade, and a slower pace."
+    "reading": "The Christian theme, Enough, is read with Deuteronomy 31:8. For Enough, the sense of Deuteronomy 31:8 is this: the Lord goes ahead and does not abandon his people.\n\nChrist is gentle with unfinished people, so Enough does not have to arrive already polished. Carry Enough into an ordinary hour by telling the truth kindly, in the spirit of Deuteronomy 31:8.\n\nPut Enough where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Enough can begin again after lunch in the sight of God."
   },
   {
     "month": 1,
     "day": 14,
     "word": "Begin",
-    "reading": "Begin fits a hard morning. A new start can happen at this hour, not only at midnight. You can start before you feel brave, and begin still counts.\n\nYou might be at the kitchen sink, and grief showed up without warning. Hunger can be here too, and begin can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so begin has a real step today. Begin still counts if that is all you do. A few minutes of daylight gives begin a little extra help.\n\nBegin can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Begin, and the text is Proverbs 15:1. For Begin, the sense of Proverbs 15:1 is this: a soft answer turns anger aside.\n\nThat verse is a welcome, not a test you pass before God will look at Begin. If you were wrong, let Begin include an apology in a single clean sentence, because of Proverbs 15:1.\n\nAsk the Lord to keep Begin honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Begin, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 15,
     "word": "Breathe",
-    "reading": "Breathe is only for this day. A longer breath out can give a loud feeling less power. You can start before you feel brave, and breathe still counts.\n\nYou might be on the bus, and help is on offer and feels hard to take. A heavy secret can be here too, and breathe can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so breathe has a real step today. Breathe still counts if that is all you do. One worry written on paper gives breathe a little extra help.\n\nBreathe gets easier to hold when you ask for help in a short text."
+    "reading": "Breathe is the Christian theme here, set beside Jeremiah 29:11. For Breathe, the sense of Jeremiah 29:11 is this: the Lord speaks of a future and a hope, not of plans to harm.\n\nNothing in Jeremiah 29:11 asks you to pretend, and Breathe can begin while you are still tired. If you were wrong, let Breathe include an apology in a single clean sentence, because of Jeremiah 29:11.\n\nMercy is wider than today's mistakes, and Breathe can stand inside that mercy without showing off. Keep Breathe Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 1,
     "day": 16,
     "word": "Ask",
-    "reading": "Ask is allowed to be imperfect. Asking for help is a strong move, not a failed one. You can start before you feel brave, and ask still counts.\n\nYou might be in the bathroom, putting off the next thing, and the body is tired and the mind is loud. Worry about the future can be here too, and ask can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so ask has a real step today. Ask still counts if that is all you do. A ten-minute pause before a big choice gives ask a little extra help.\n\nIf God is part of your life, you can pray about ask today. If not, a friend can sit with you, and ask can be shared."
+    "reading": "The Christian theme, Ask, is read with Luke 6:36. For Ask, the sense of Luke 6:36 is this: Jesus says to be merciful, as your Father is merciful.\n\nRead Ask in the light of that verse, without turning it into a performance for other people. Leave a harsh opinion unsaid, and let that restraint be how Ask shows up this afternoon.\n\nHand the evening to God, and let Ask be unfinished without being abandoned. In Christ, Ask is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Ask still fits the actual day."
   },
   {
     "month": 1,
     "day": 17,
     "word": "Stay",
-    "reading": "Stay does not have to be loud to be real. Staying through a dull hour often keeps the day safe. You can start before you feel brave, and stay still counts.\n\nYou might be at the kitchen sink, and food is being put off. Numbness can be here too, and stay can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so stay has a real step today. Stay still counts if that is all you do. A text to someone safe gives stay a little extra help.\n\nStay can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Stay, and the text is Romans 8:38. For Stay, the sense of Romans 8:38 is this: nothing can separate us from the love of God in Christ.\n\nChrist is gentle with unfinished people, so Stay does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Stay shows up this afternoon.\n\nYou can begin Stay before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Stay still fits the actual day."
   },
   {
     "month": 1,
     "day": 18,
     "word": "Gentle",
-    "reading": "Gentle can start in an ordinary hour. A gentle pace still counts as recovery. You can start before you feel brave, and gentle still counts.\n\nYou might be awake too late, and the urge to hide is strong. The thought that the day is already ruined can be here too, and gentle can stay small. You do not have to fix all of that today.\n\nEat something simple, so gentle has a real step today. Gentle still counts if that is all you do. Lights dimmed at a decent hour gives gentle a little extra help.\n\nGentle can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Gentle is the Christian theme here, set beside Ephesians 4:32. For Gentle, the sense of Ephesians 4:32 is this: be kind and tender-hearted, forgiving as God in Christ forgave you.\n\nThat verse is a welcome, not a test you pass before God will look at Gentle. To live Gentle, read Ephesians 4:32 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Ephesians 4:32, for Gentle, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Gentle."
   },
   {
     "month": 1,
     "day": 19,
     "word": "Truth",
-    "reading": "Truth can stay small today. Truth can be one fact, without a punishment stuck on the end. You can start before you feel brave, and truth still counts.\n\nYou might be at the kitchen sink, and a message is waiting and feels hard to open. Irritation can be here too, and truth can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so truth has a real step today. Truth still counts if that is all you do. Quiet company gives truth a little extra help.\n\nTruth can stay small while you borrow hope from someone safe.\n\nIn the January heat, let truth include water, shade, and a slower pace."
+    "reading": "The Christian theme, Truth, is read with 1 Thessalonians 5:11. For Truth, the sense of 1 Thessalonians 5:11 is this: encourage one another and build each other up.\n\nNothing in 1 Thessalonians 5:11 asks you to pretend, and Truth can begin while you are still tired. Give Truth a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Truth is allowed to be slow. If the morning was clumsy, Truth can begin again after lunch in the sight of God. God's kindness towards you is the ground under Truth, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 20,
     "word": "Pause",
-    "reading": "Pause fits a hard morning. A pause before a reply can save a mood and a relationship. You can start before you feel brave, and pause still counts.\n\nYou might be in the doorway, keys still in hand, and food is being put off. The pull to be alone can be here too, and pause can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so pause has a real step today. Pause still counts if that is all you do. A simple meal gives pause a little extra help.\n\nPause belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Pause, and the text is 1 Peter 4:8. For Pause, the sense of 1 Peter 4:8 is this: keep love earnest, because love covers a multitude of sins.\n\nRead Pause in the light of that verse, without turning it into a performance for other people. Let Pause sound like a softer answer where the house has been sharp, with 1 Peter 4:8 still in mind.\n\nNo one else has to share your creed for you to practise Pause in the sight of God. God's kindness towards you is the ground under Pause, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 21,
     "word": "Trust",
-    "reading": "Trust is only for this day. Trust can start as one small promise that is actually kept. You can start before you feel brave, and trust still counts.\n\nYou might be in the kitchen, before any real food, and a slip is on the mind. Shame can be here too, and trust can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so trust has a real step today. Trust still counts if that is all you do. The phone in another room gives trust a little extra help.\n\nTrust grows more easily with a kind tone than with shame."
+    "reading": "Trust is the Christian theme here, set beside Psalm 27:1. For Trust, the sense of Psalm 27:1 is this: the Lord is light and salvation.\n\nChrist is gentle with unfinished people, so Trust does not have to arrive already polished. Carry Trust into an ordinary hour by telling the truth kindly, in the spirit of Psalm 27:1.\n\nPut Trust where your hands are, and let the text stay a lamp rather than a weapon. In Christ, Trust is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Trust still fits the actual day."
   },
   {
     "month": 1,
     "day": 22,
     "word": "Show up",
-    "reading": "Show up is allowed to be imperfect. Showing up can mean staying in the room, even while quiet. You can start before you feel brave, and show up still counts.\n\nYou might be halfway up the stairs, and comparison has crept in. A craving can be here too, and show up can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so show up has a real step today. Show up still counts if that is all you do. An open window gives show up a little extra help.\n\nShow up can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Show up, is read with Psalm 139:14. For Show up, the sense of Psalm 139:14 is this: people are wonderfully made by God.\n\nThat verse is a welcome, not a test you pass before God will look at Show up. If you were wrong, let Show up include an apology in a single clean sentence, because of Psalm 139:14.\n\nAsk the Lord to keep Show up honest and gentle until you sleep, and leave the rest in God's care. In Christ, Show up is worth attention even when the calendar is full."
   },
   {
     "month": 1,
     "day": 23,
     "word": "Small steps",
-    "reading": "Small steps does not have to be loud to be real. Three tiny steps beat a perfect plan that never starts. You can start before you feel brave, and small steps still counts.\n\nYou might be folding the washing, and the house is quiet and the mind is not. Loneliness can be here too, and small steps can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so small steps has a real step today. Small steps still counts if that is all you do. A glass of water gives small steps a little extra help.\n\nSmall steps gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Small steps, and the text is Matthew 5:16. For Small steps, the sense of Matthew 5:16 is this: let your light shine so that good work points people to the Father.\n\nNothing in Matthew 5:16 asks you to pretend, and Small steps can begin while you are still tired. If you were wrong, let Small steps include an apology in a single clean sentence, because of Matthew 5:16.\n\nMercy is wider than today's mistakes, and Small steps can stand inside that mercy without showing off."
   },
   {
     "month": 1,
     "day": 24,
     "word": "Belonging",
-    "reading": "Belonging can start in an ordinary hour. There is a place among people who are trying, even on a messy day. You can start before you feel brave, and belonging still counts.\n\nYou might be waiting for the kettle, and hunger and irritation are easy to mix up. Anger can be here too, and belonging can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so belonging has a real step today. Belonging still counts if that is all you do. A short walk gives belonging a little extra help.\n\nIf God is part of your life, you can pray about belonging today. If not, a friend can sit with you, and belonging can be shared."
+    "reading": "Belonging is the Christian theme here, set beside Mark 12:30. For Belonging, the sense of Mark 12:30 is this: love the Lord your God with heart, soul, mind, and strength.\n\nRead Belonging in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Mark 12:30, and let Belonging be unhurried company for someone lonely.\n\nHand the evening to God, and let Belonging be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Belonging."
   },
   {
     "month": 1,
     "day": 25,
     "word": "Forgiveness",
-    "reading": "Forgiveness can stay small today. Forgiveness can be one clean sentence and a kinder next hour. You can start before you feel brave, and forgiveness still counts.\n\nYou might be on a lunch break, and help is on offer and feels hard to take. Tiredness can be here too, and forgiveness can stay small. You do not have to fix all of that today.\n\nSpeak kindly, as to a friend, so forgiveness has a real step today. Forgiveness still counts if that is all you do. A kind sentence, spoken as to a friend gives forgiveness a little extra help.\n\nForgiveness can be a short prayer, or a few quiet words to a friend.\n\nIn the January heat, let forgiveness include water, shade, and a slower pace."
+    "reading": "The Christian theme, Forgiveness, is read with John 14:1. For Forgiveness, the sense of John 14:1 is this: Jesus tells his friends not to let their hearts be troubled, and to trust God.\n\nChrist is gentle with unfinished people, so Forgiveness does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Forgiveness shows up this afternoon.\n\nYou can begin Forgiveness before you feel holy, because the Father already knows the day. If the morning was clumsy, Forgiveness can begin again after lunch in the sight of God."
   },
   {
     "month": 1,
     "day": 26,
     "word": "Clarity",
-    "reading": "Clarity fits a hard morning. Clarity often comes after food, water, and a slower breath. You can start before you feel brave, and clarity still counts.\n\nYou might be on the phone, on hold, and loneliness is louder than the noise around. Fear can be here too, and clarity can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so clarity has a real step today. Clarity still counts if that is all you do. A stretch and a drink of water gives clarity a little extra help.\n\nClarity can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Clarity, and the text is Romans 8:28. For Clarity, the sense of Romans 8:28 is this: for those who love God, he works things towards good.\n\nThat verse is a welcome, not a test you pass before God will look at Clarity. To live Clarity, read Romans 8:28 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 8:28, for Clarity, is trust, not a performance. God's kindness towards you is the ground under Clarity, not a prize withheld until you improve."
   },
   {
     "month": 1,
     "day": 27,
     "word": "Steady",
-    "reading": "Steady is only for this day. Steady work beats a dramatic promise that cannot be kept. You can start before you feel brave, and steady still counts.\n\nYou might be at work, trying to look fine, and a sharp sentence already landed. Sadness can be here too, and steady can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so steady has a real step today. Steady still counts if that is all you do. A washed face gives steady a little extra help.\n\nSteady can stay small while you borrow hope from someone safe."
+    "reading": "Steady is the Christian theme here, set beside 1 Corinthians 16:14. For Steady, the sense of 1 Corinthians 16:14 is this: let everything you do be done in love.\n\nNothing in 1 Corinthians 16:14 asks you to pretend, and Steady can begin while you are still tired. Give Steady a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Steady is allowed to be slow. Keep Steady Christian and specific: one verse, one prayer, one person. In Christ, Steady is worth attention even when the calendar is full."
   },
   {
     "month": 1,
     "day": 28,
     "word": "Openness",
-    "reading": "Openness is allowed to be imperfect. Openness is letting one safe person see the unpolished truth. You can start before you feel brave, and openness still counts.\n\nYou might be on the bus, and a message is waiting and feels hard to open. The urge to hide can be here too, and openness can stay small. You do not have to fix all of that today.\n\nText one safe person, so openness has a real step today. Openness still counts if that is all you do. A slower breath gives openness a little extra help.\n\nOpenness belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Openness, is read with Ephesians 4:26. For Openness, the sense of Ephesians 4:26 is this: be angry, and do not let the anger turn into sin.\n\nThat verse is a welcome, not a test you pass before God will look at Openness. Let Openness sound like a softer answer where the house has been sharp, with Ephesians 4:26 still in mind.\n\nNo one else has to share your creed for you to practise Openness in the sight of God. In Christ, Openness is worth attention even when the calendar is full."
   },
   {
     "month": 1,
     "day": 29,
     "word": "Care",
-    "reading": "Care does not have to be loud to be real. Care can look like a meal, a wash, and a decent bedtime. You can start before you feel brave, and care still counts.\n\nYou might be folding the washing, and a message is waiting and feels hard to open. Money stress can be here too, and care can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so care has a real step today. Care still counts if that is all you do. One money worry named to someone safe gives care a little extra help.\n\nCare grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Care, and the text is 1 Thessalonians 5:16. For Care, the sense of 1 Thessalonians 5:16 is this: rejoice always.\n\nChrist is gentle with unfinished people, so Care does not have to arrive already polished. Practise Care at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Care where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Care still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Care."
   },
   {
     "month": 1,
     "day": 30,
     "word": "Listen",
-    "reading": "Listen can start in an ordinary hour. Listening can mean hearing the body before a big choice. You can start before you feel brave, and listen still counts.\n\nYou might be on the edge of the bed, and quitting looks easier than starting. Grief can be here too, and listen can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so listen has a real step today. Listen still counts if that is all you do. A few minutes of daylight gives listen a little extra help.\n\nListen can be a value you keep, in a quiet way that fits you."
+    "reading": "Listen is the Christian theme here, set beside Hebrews 11:1. For Listen, the sense of Hebrews 11:1 is this: faith is confidence in what is hoped for, even when it is not yet seen.\n\nNothing in Hebrews 11:1 asks you to pretend, and Listen can begin while you are still tired. Practise Listen at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Listen honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Listen."
   },
   {
     "month": 1,
     "day": 31,
     "word": "Choice",
-    "reading": "Choice can stay small today. The safer next hour is a real choice. You can start before you feel brave, and choice still counts.\n\nYou might be in the kitchen, before any real food, and hunger and irritation are easy to mix up. The wish to give up can be here too, and choice can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so choice has a real step today. Choice still counts if that is all you do. One worry written on paper gives choice a little extra help.\n\nChoice gets easier to hold when you ask for help in a short text.\n\nIn the January heat, let choice include water, shade, and a slower pace."
+    "reading": "The Christian theme, Choice, is read with 1 John 4:18. For Choice, the sense of 1 John 4:18 is this: perfect love drives fear out.\n\nNothing in 1 John 4:18 asks you to pretend, and Choice can begin while you are still tired. If you were wrong, let Choice include an apology in a single clean sentence, because of 1 John 4:18.\n\nMercy is wider than today's mistakes, and Choice can stand inside that mercy without showing off. If the morning was clumsy, Choice can begin again after lunch in the sight of God."
   },
   {
     "month": 2,
     "day": 1,
     "word": "Mercy",
-    "reading": "Mercy fits a hard morning. Mercy lets a person start again without a lecture. You can start before you feel brave, and mercy still counts.\n\nYou might be holding a bill that is hard to open, and sleep was short. Comparison can be here too, and mercy can stay small. You do not have to fix all of that today.\n\nTell someone safe about a slip, if there was one, so mercy has a real step today. Mercy still counts if that is all you do. A ten-minute pause before a big choice gives mercy a little extra help.\n\nIf God is part of your life, you can pray about mercy today. If not, a friend can sit with you, and mercy can be shared."
+    "reading": "On this page the Christian theme is Mercy, and the text is Numbers 6:24. For Mercy, the sense of Numbers 6:24 is this: the blessing asks the Lord to bless his people and keep them.\n\nRead Mercy in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Numbers 6:24, and let Mercy be unhurried company for someone lonely.\n\nHand the evening to God, and let Mercy be unfinished without being abandoned. God's kindness towards you is the ground under Mercy, not a prize withheld until you improve."
   },
   {
     "month": 2,
     "day": 2,
     "word": "Progress",
-    "reading": "Progress is only for this day. Progress is any honest step, including a late one. You can start before you feel brave, and progress still counts.\n\nYou might be on the edge of the bed, and shame got there first. The urge to go numb can be here too, and progress can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so progress has a real step today. Progress still counts if that is all you do. A text to someone safe gives progress a little extra help.\n\nProgress can be a short prayer, or a few quiet words to a friend."
+    "reading": "Progress is the Christian theme here, set beside Nehemiah 8:10. For Progress, the sense of Nehemiah 8:10 is this: the joy of the Lord is strength.\n\nChrist is gentle with unfinished people, so Progress does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Progress shows up this afternoon.\n\nYou can begin Progress before you feel holy, because the Father already knows the day. Keep Progress Christian and specific: one verse, one prayer, one person. In Christ, Progress is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 3,
     "word": "Simplicity",
-    "reading": "Simplicity is allowed to be imperfect. A simple plan is easier to keep on a tired day. You can start before you feel brave, and simplicity still counts.\n\nYou might be on the phone, on hold, and the body is tired and the mind is loud. Hunger can be here too, and simplicity can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so simplicity has a real step today. Simplicity still counts if that is all you do. Lights dimmed at a decent hour gives simplicity a little extra help.\n\nSimplicity can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Simplicity, is read with Psalm 19:1. For Simplicity, the sense of Psalm 19:1 is this: the heavens declare the glory of God.\n\nThat verse is a welcome, not a test you pass before God will look at Simplicity. To live Simplicity, read Psalm 19:1 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 19:1, for Simplicity, is trust, not a performance. In Christ, Simplicity is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Simplicity still fits the actual day."
   },
   {
     "month": 2,
     "day": 4,
     "word": "Support",
-    "reading": "Support does not have to be loud to be real. Support is the help already near, if it is let in. You can start before you feel brave, and support still counts.\n\nYou might be halfway up the stairs, and the body is tired and the mind is loud. A heavy secret can be here too, and support can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so support has a real step today. Support still counts if that is all you do. Quiet company gives support a little extra help.\n\nSupport can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Support, and the text is Psalm 37:5. For Support, the sense of Psalm 37:5 is this: commit your way to the Lord and trust him.\n\nNothing in Psalm 37:5 asks you to pretend, and Support can begin while you are still tired. Give Support a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Support is allowed to be slow. Australian weather can be hot, wet, or cold, and Support still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Support."
   },
   {
     "month": 2,
     "day": 5,
     "word": "Keep going",
-    "reading": "Keep going can start in an ordinary hour. Keeping going can mean the next hour, not a flawless year. You can start before you feel brave, and keep going still counts.\n\nYou might be on the floor by the cupboard, and hunger and irritation are easy to mix up. Worry about the future can be here too, and keep going can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so keep going has a real step today. Keep going still counts if that is all you do. A simple meal gives keep going a little extra help.\n\nKeep going belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Keep going is the Christian theme here, set beside Psalm 73:26. For Keep going, the sense of Psalm 73:26 is this: body and heart may fail, and God remains the strength of the heart.\n\nRead Keep going in the light of that verse, without turning it into a performance for other people. Let Keep going sound like a softer answer where the house has been sharp, with Psalm 73:26 still in mind.\n\nNo one else has to share your creed for you to practise Keep going in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Keep going."
   },
   {
     "month": 2,
     "day": 6,
     "word": "Soften",
-    "reading": "Soften can stay small today. The jaw, the voice, or the inner insult can soften. You can start before you feel brave, and soften still counts.\n\nYou might be on the edge of the bed, and loneliness is louder than the noise around. Numbness can be here too, and soften can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so soften has a real step today. Soften still counts if that is all you do. The phone in another room gives soften a little extra help.\n\nSoften grows more easily with a kind tone than with shame.\n\nLate summer can feel heavy, so let soften stay lighter than the weather."
+    "reading": "The Christian theme, Soften, is read with Psalm 103:8. For Soften, the sense of Psalm 103:8 is this: the Lord is merciful and gracious, slow to anger, and rich in steadfast love.\n\nChrist is gentle with unfinished people, so Soften does not have to arrive already polished. Carry Soften into an ordinary hour by telling the truth kindly, in the spirit of Psalm 103:8.\n\nPut Soften where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Soften can begin again after lunch in the sight of God."
   },
   {
     "month": 2,
     "day": 7,
     "word": "Morning",
-    "reading": "Morning fits a hard morning. Morning can be a glass of water and one true line. You can start before you feel brave, and morning still counts.\n\nYou might be awake before the alarm, and the room is safe enough, but the chest is tight. The thought that the day is already ruined can be here too, and morning can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so morning has a real step today. Morning still counts if that is all you do. An open window gives morning a little extra help.\n\nMorning can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Morning, and the text is Psalm 133:1. For Morning, the sense of Psalm 133:1 is this: it is good when God's people live together in unity.\n\nThat verse is a welcome, not a test you pass before God will look at Morning. Practise Morning at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Morning honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Morning, not a prize withheld until you improve."
   },
   {
     "month": 2,
     "day": 8,
     "word": "Light",
-    "reading": "Light is only for this day. Light can be a lamp, a window, or one less harsh thought. You can start before you feel brave, and light still counts.\n\nYou might be outside a meeting, and comparison has crept in. Irritation can be here too, and light can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so light has a real step today. Light still counts if that is all you do. A glass of water gives light a little extra help.\n\nLight gets easier to hold when you ask for help in a short text."
+    "reading": "Light is the Christian theme here, set beside Proverbs 17:17. For Light, the sense of Proverbs 17:17 is this: a friend loves at all times.\n\nRead Light in the light of that verse, without turning it into a performance for other people. If you were wrong, let Light include an apology in a single clean sentence, because of Proverbs 17:17.\n\nMercy is wider than today's mistakes, and Light can stand inside that mercy without showing off. Keep Light Christian and specific: one verse, one prayer, one person. In Christ, Light is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 9,
     "word": "Company",
-    "reading": "Company is allowed to be imperfect. Company can be quiet and still mean not being alone. You can start before you feel brave, and company still counts.\n\nYou might be in bed, not sleeping, and grief showed up without warning. The pull to be alone can be here too, and company can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so company has a real step today. Company still counts if that is all you do. A short walk gives company a little extra help.\n\nIf God is part of your life, you can pray about company today. If not, a friend can sit with you, and company can be shared."
+    "reading": "The Christian theme, Company, is read with Isaiah 26:3. For Company, the sense of Isaiah 26:3 is this: God keeps in peace the mind that stays on him.\n\nRead Company in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Isaiah 26:3, and let Company be unhurried company for someone lonely.\n\nHand the evening to God, and let Company be unfinished without being abandoned. In Christ, Company is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Company still fits the actual day."
   },
   {
     "month": 2,
     "day": 10,
     "word": "Return",
-    "reading": "Return does not have to be loud to be real. The way back can be a text, a meeting, or the next kind action. You can start before you feel brave, and return still counts.\n\nYou might be after a hard conversation, and help is on offer and feels hard to take. Shame can be here too, and return can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so return has a real step today. Return still counts if that is all you do. A kind sentence, spoken as to a friend gives return a little extra help.\n\nReturn can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Return, and the text is Jeremiah 31:3. For Return, the sense of Jeremiah 31:3 is this: the Lord has loved his people with an everlasting love.\n\nChrist is gentle with unfinished people, so Return does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Return shows up this afternoon.\n\nYou can begin Return before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Return still fits the actual day."
   },
   {
     "month": 2,
     "day": 11,
     "word": "Quiet",
-    "reading": "Quiet can start in an ordinary hour. Quiet can be rest, not a sign of giving up. You can start before you feel brave, and quiet still counts.\n\nYou might be on the edge of the bed, and someone's words are still ringing. A craving can be here too, and quiet can stay small. You do not have to fix all of that today.\n\nMake the evening small: food, a wash, and lights out, so quiet has a real step today. Quiet still counts if that is all you do. A stretch and a drink of water gives quiet a little extra help.\n\nQuiet can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Quiet is the Christian theme here, set beside Micah 7:18. For Quiet, the sense of Micah 7:18 is this: God delights to show steadfast love.\n\nThat verse is a welcome, not a test you pass before God will look at Quiet. To live Quiet, read Micah 7:18 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Micah 7:18, for Quiet, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Quiet. If the morning was clumsy, Quiet can begin again after lunch in the sight of God."
   },
   {
     "month": 2,
     "day": 12,
     "word": "Strength",
-    "reading": "Strength can stay small today. Strength can be borrowed when your own feels thin. You can start before you feel brave, and strength still counts.\n\nYou might be by a window, and quitting looks easier than starting. Loneliness can be here too, and strength can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so strength has a real step today. Strength still counts if that is all you do. A washed face gives strength a little extra help.\n\nStrength can stay small while you borrow hope from someone safe.\n\nLate summer can feel heavy, so let strength stay lighter than the weather."
+    "reading": "The Christian theme, Strength, is read with Matthew 6:33. For Strength, the sense of Matthew 6:33 is this: seek God's kingdom and his righteousness first.\n\nNothing in Matthew 6:33 asks you to pretend, and Strength can begin while you are still tired. Give Strength a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Strength is allowed to be slow. If the morning was clumsy, Strength can begin again after lunch in the sight of God. God's kindness towards you is the ground under Strength, not a prize withheld until you improve."
   },
   {
     "month": 2,
     "day": 13,
     "word": "Accept",
-    "reading": "Accept fits a hard morning. A feeling can be accepted, and a safe action can still be chosen. You can start before you feel brave, and accept still counts.\n\nYou might be in a supermarket aisle, and the body is tired and the mind is loud. Anger can be here too, and accept can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so accept has a real step today. Accept still counts if that is all you do. A slower breath gives accept a little extra help.\n\nAccept belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Accept, and the text is Matthew 25:40. For Accept, the sense of Matthew 25:40 is this: what is done for the least of these is received by Jesus as done for him.\n\nRead Accept in the light of that verse, without turning it into a performance for other people. Let Accept sound like a softer answer where the house has been sharp, with Matthew 25:40 still in mind.\n\nNo one else has to share your creed for you to practise Accept in the sight of God."
   },
   {
     "month": 2,
     "day": 14,
     "word": "One step",
-    "reading": "One step is only for this day. One true next step is a full success. You can start before you feel brave, and one step still counts.\n\nYou might be after a hard conversation, and everything feels behind. Tiredness can be here too, and one step can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so one step has a real step today. One step still counts if that is all you do. One money worry named to someone safe gives one step a little extra help.\n\nOne step grows more easily with a kind tone than with shame."
+    "reading": "One step is the Christian theme here, set beside Luke 1:37. For One step, the sense of Luke 1:37 is this: nothing will be impossible with God.\n\nChrist is gentle with unfinished people, so One step does not have to arrive already polished. Carry One step into an ordinary hour by telling the truth kindly, in the spirit of Luke 1:37.\n\nPut One step where your hands are, and let the text stay a lamp rather than a weapon. Keep One step Christian and specific: one verse, one prayer, one person. In Christ, One step is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 15,
     "word": "Warmth",
-    "reading": "Warmth is allowed to be imperfect. Warmth can be a blanket, a mug, or a kind voice. You can start before you feel brave, and warmth still counts.\n\nYou might be at the kitchen table, and a craving is trying to sound like a good idea. Fear can be here too, and warmth can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so warmth has a real step today. Warmth still counts if that is all you do. A few minutes of daylight gives warmth a little extra help.\n\nWarmth can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Warmth, is read with John 1:14. For Warmth, the sense of John 1:14 is this: the Word became flesh and lived among us, full of grace and truth.\n\nThat verse is a welcome, not a test you pass before God will look at Warmth. Practise Warmth at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Warmth honest and gentle until you sleep, and leave the rest in God's care. In Christ, Warmth is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 16,
     "word": "Release",
-    "reading": "Release does not have to be loud to be real. A fight that cannot be won today can be put down. You can start before you feel brave, and release still counts.\n\nYou might be at the kitchen table, and food is being put off. Sadness can be here too, and release can stay small. You do not have to fix all of that today.\n\nPut the phone in another room for twenty minutes, so release has a real step today. Release still counts if that is all you do. One worry written on paper gives release a little extra help.\n\nRelease gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Release, and the text is John 10:10. For Release, the sense of John 10:10 is this: Jesus says he came so that people may have life in full.\n\nNothing in John 10:10 asks you to pretend, and Release can begin while you are still tired. If you were wrong, let Release include an apology in a single clean sentence, because of John 10:10.\n\nMercy is wider than today's mistakes, and Release can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Release still fits the actual day."
   },
   {
     "month": 2,
     "day": 17,
     "word": "Notice",
-    "reading": "Notice can start in an ordinary hour. One thing that is still all right can be allowed to stay all right. You can start before you feel brave, and notice still counts.\n\nYou might be at a family table, and being alone is pretending to be strength. The urge to hide can be here too, and notice can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so notice has a real step today. Notice still counts if that is all you do. A ten-minute pause before a big choice gives notice a little extra help.\n\nIf God is part of your life, you can pray about notice today. If not, a friend can sit with you, and notice can be shared."
+    "reading": "Notice is the Christian theme here, set beside John 15:5. For Notice, the sense of John 15:5 is this: Jesus is the vine, and apart from him his people cannot bear lasting fruit.\n\nRead Notice in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of John 15:5, and let Notice be unhurried company for someone lonely.\n\nHand the evening to God, and let Notice be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Notice."
   },
   {
     "month": 2,
     "day": 18,
     "word": "Repair",
-    "reading": "Repair can stay small today. A repair can be one honest sentence while the hurt is still small. You can start before you feel brave, and repair still counts.\n\nYou might be on a short walk, and a sharp sentence already landed. Money stress can be here too, and repair can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so repair has a real step today. Repair still counts if that is all you do. A text to someone safe gives repair a little extra help.\n\nRepair can be a short prayer, or a few quiet words to a friend.\n\nLate summer can feel heavy, so let repair stay lighter than the weather."
+    "reading": "The Christian theme, Repair, is read with Romans 15:13. For Repair, the sense of Romans 15:13 is this: the God of hope fills his people with joy and peace as they trust him.\n\nChrist is gentle with unfinished people, so Repair does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Repair shows up this afternoon.\n\nYou can begin Repair before you feel holy, because the Father already knows the day. If the morning was clumsy, Repair can begin again after lunch in the sight of God."
   },
   {
     "month": 2,
     "day": 19,
     "word": "Shelter",
-    "reading": "Shelter fits a hard morning. Shelter is a safe person, a safe room, or Get help if danger is close. You can start before you feel brave, and shelter still counts.\n\nYou might be on a lunch break, and the urge to hide is strong. Grief can be here too, and shelter can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so shelter has a real step today. Shelter still counts if that is all you do. Lights dimmed at a decent hour gives shelter a little extra help.\n\nShelter can begin again today, and mercy means you do not have to earn that start.\n\nIf shelter sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about shelter is not a crisis plan."
+    "reading": "On this page the Christian theme is Shelter, and the text is 2 Corinthians 5:7. For Shelter, the sense of 2 Corinthians 5:7 is this: we walk by faith, not by sight.\n\nThat verse is a welcome, not a test you pass before God will look at Shelter. To live Shelter, read 2 Corinthians 5:7 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 2 Corinthians 5:7, for Shelter, is trust, not a performance. God's kindness towards you is the ground under Shelter, not a prize withheld until you improve."
   },
   {
     "month": 2,
     "day": 20,
     "word": "Practice",
-    "reading": "Practice is only for this day. Practice is doing the care again, even when it feels ordinary. You can start before you feel brave, and practice still counts.\n\nYou might be at work, trying to look fine, and everything feels behind. The wish to give up can be here too, and practice can stay small. You do not have to fix all of that today.\n\nText one safe person, so practice has a real step today. Practice still counts if that is all you do. Quiet company gives practice a little extra help.\n\nPractice can stay small while you borrow hope from someone safe."
+    "reading": "Practice is the Christian theme here, set beside Ephesians 2:10. For Practice, the sense of Ephesians 2:10 is this: we are God's workmanship, made in Christ for good works he prepared.\n\nNothing in Ephesians 2:10 asks you to pretend, and Practice can begin while you are still tired. Let Practice sound like a softer answer where the house has been sharp, with Ephesians 2:10 still in mind.\n\nJesus does not rush slow learners, and Practice is allowed to be slow. Keep Practice Christian and specific: one verse, one prayer, one person. In Christ, Practice is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 21,
     "word": "Ease",
-    "reading": "Ease is allowed to be imperfect. Ease can mean a slower pace, not giving up. You can start before you feel brave, and ease still counts.\n\nYou might be in a quiet car park, and help is on offer and feels hard to take. Comparison can be here too, and ease can stay small. You do not have to fix all of that today.\n\nLeave worries on paper before bed, so ease has a real step today. Ease still counts if that is all you do. A simple meal gives ease a little extra help.\n\nEase belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Ease, is read with Philippians 1:6. For Ease, the sense of Philippians 1:6 is this: he who began a good work in you will carry it on towards completion.\n\nRead Ease in the light of that verse, without turning it into a performance for other people. Let Ease sound like a softer answer where the house has been sharp, with Philippians 1:6 still in mind.\n\nNo one else has to share your creed for you to practise Ease in the sight of God. In Christ, Ease is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 22,
     "word": "Reach",
-    "reading": "Reach does not have to be loud to be real. Reach out before silence turns into a plan to disappear. You can start before you feel brave, and reach still counts.\n\nYou might be packing a bag and feeling unsure, and being alone is pretending to be strength. The urge to go numb can be here too, and reach can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so reach has a real step today. Reach still counts if that is all you do. The phone in another room gives reach a little extra help.\n\nReach grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Reach, and the text is Colossians 3:23. For Reach, the sense of Colossians 3:23 is this: do your work as for the Lord, not only to impress people.\n\nChrist is gentle with unfinished people, so Reach does not have to arrive already polished. Carry Reach into an ordinary hour by telling the truth kindly, in the spirit of Colossians 3:23.\n\nPut Reach where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Reach still fits the actual day."
   },
   {
     "month": 2,
     "day": 23,
     "word": "Ground",
-    "reading": "Ground can start in an ordinary hour. Feet on the floor, and a name for the room, can bring you back. You can start before you feel brave, and ground still counts.\n\nYou might be in a group, smiling more than the feeling matches, and the room is safe enough, but the chest is tight. Hunger can be here too, and ground can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so ground has a real step today. Ground still counts if that is all you do. An open window gives ground a little extra help.\n\nGround can be a value you keep, in a quiet way that fits you."
+    "reading": "Ground is the Christian theme here, set beside Hebrews 4:15. For Ground, the sense of Hebrews 4:15 is this: Jesus sympathises with weakness, because he was tested too.\n\nThat verse is a welcome, not a test you pass before God will look at Ground. Practise Ground at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Ground can stand inside that mercy without showing off. A neighbour does not need a creed explained before they can receive the fruit of Ground."
   },
   {
     "month": 2,
     "day": 24,
     "word": "Fresh",
-    "reading": "Fresh can stay small today. Fresh can be a wash, clean clothes, or a new start after lunch. You can start before you feel brave, and fresh still counts.\n\nYou might be in a room where a sharp sentence still hangs, and money stress is sitting on the table. A heavy secret can be here too, and fresh can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so fresh has a real step today. Fresh still counts if that is all you do. A glass of water gives fresh a little extra help.\n\nFresh gets easier to hold when you ask for help in a short text.\n\nLate summer can feel heavy, so let fresh stay lighter than the weather."
+    "reading": "The Christian theme, Fresh, is read with Hebrews 13:8. For Fresh, the sense of Hebrews 13:8 is this: Jesus Christ is the same yesterday, today, and forever.\n\nNothing in Hebrews 13:8 asks you to pretend, and Fresh can begin while you are still tired. If you were wrong, let Fresh include an apology in a single clean sentence, because of Hebrews 13:8.\n\nMercy is wider than today's mistakes, and Fresh can stand inside that mercy without showing off. If the morning was clumsy, Fresh can begin again after lunch in the sight of God."
   },
   {
     "month": 2,
     "day": 25,
     "word": "Hold both",
-    "reading": "Hold both fits a hard morning. A hard feeling and a good fact can sit in the same hour. You can start before you feel brave, and hold both still counts.\n\nYou might be packing a bag and feeling unsure, and a drink, a drug, or a numbing scroll looks tempting. Worry about the future can be here too, and hold both can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so hold both has a real step today. Hold both still counts if that is all you do. A short walk gives hold both a little extra help.\n\nIf God is part of your life, you can pray about hold both today. If not, a friend can sit with you, and hold both can be shared."
+    "reading": "On this page the Christian theme is Hold both, and the text is James 4:6. For Hold both, the sense of James 4:6 is this: God gives grace to the humble.\n\nRead Hold both in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of James 4:6, and let Hold both be unhurried company for someone lonely.\n\nHand the evening to God, and let Hold both be unfinished without being abandoned. God's kindness towards you is the ground under Hold both, not a prize withheld until you improve."
   },
   {
     "month": 2,
     "day": 26,
     "word": "Share",
-    "reading": "Share is only for this day. One hidden fact can be shared with someone who is safe. You can start before you feel brave, and share still counts.\n\nYou might be on the couch, and a sharp sentence already landed. Numbness can be here too, and share can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so share has a real step today. Share still counts if that is all you do. A kind sentence, spoken as to a friend gives share a little extra help.\n\nShare can be a short prayer, or a few quiet words to a friend."
+    "reading": "Share is the Christian theme here, set beside 1 Peter 5:6. For Share, the sense of 1 Peter 5:6 is this: humble yourselves under God's hand, and he will lift you up in time.\n\nChrist is gentle with unfinished people, so Share does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Share shows up this afternoon.\n\nYou can begin Share before you feel holy, because the Father already knows the day. Keep Share Christian and specific: one verse, one prayer, one person. In Christ, Share is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 27,
     "word": "Wait",
-    "reading": "Wait is allowed to be imperfect. A feeling can be waited out, and it can move. You can start before you feel brave, and wait still counts.\n\nYou might be in a room where a sharp sentence still hangs, and a big decision is trying to happen while feelings are hot. The thought that the day is already ruined can be here too, and wait can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so wait has a real step today. Wait still counts if that is all you do. A stretch and a drink of water gives wait a little extra help.\n\nWait can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Wait, is read with 1 John 4:16. For Wait, the sense of 1 John 4:16 is this: God is love, and those who remain in love remain in God.\n\nThat verse is a welcome, not a test you pass before God will look at Wait. To live Wait, read 1 John 4:16 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 1 John 4:16, for Wait, is trust, not a performance. In Christ, Wait is worth attention even when the calendar is full."
   },
   {
     "month": 2,
     "day": 28,
     "word": "Try again",
-    "reading": "Try again does not have to be loud to be real. A slip does not lock the door on trying again today. You can start before you feel brave, and try again still counts.\n\nYou might be walking the long way home, and the house is quiet and the mind is not. Irritation can be here too, and try again can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so try again has a real step today. Try again still counts if that is all you do. A washed face gives try again a little extra help.\n\nTry again can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Try again, and the text is Exodus 33:14. For Try again, the sense of Exodus 33:14 is this: God says his presence will go with his people and give them rest.\n\nNothing in Exodus 33:14 asks you to pretend, and Try again can begin while you are still tired. Give Try again a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Try again is allowed to be slow. Australian weather can be hot, wet, or cold, and Try again still fits the actual day."
   },
   {
     "month": 3,
     "day": 1,
     "word": "Safe",
-    "reading": "Safe can start in an ordinary hour. Safe means leaving what causes harm and staying near kind people. You can start before you feel brave, and safe still counts.\n\nYou might be in a group, smiling more than the feeling matches, and shame got there first. The pull to be alone can be here too, and safe can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so safe has a real step today. Safe still counts if that is all you do. A slower breath gives safe a little extra help.\n\nSafe belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Safe is the Christian theme here, set beside Ruth 1:16. For Safe, the sense of Ruth 1:16 is this: Ruth promises loyal companionship, to go where the other goes.\n\nRead Safe in the light of that verse, without turning it into a performance for other people. Let Safe sound like a softer answer where the house has been sharp, with Ruth 1:16 still in mind.\n\nNo one else has to share your creed for you to practise Safe in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Safe."
   },
   {
     "month": 3,
     "day": 2,
     "word": "Real",
-    "reading": "Real can stay small today. Real is the true story, not the polished one. You can start before you feel brave, and real still counts.\n\nYou might be on the bus, and the day feels very dark. Shame can be here too, and real can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so real has a real step today. Real still counts if that is all you do. One money worry named to someone safe gives real a little extra help.\n\nReal grows more easily with a kind tone than with shame.\n\nCooler mornings are here, and real can use that gentler pace.\n\nIf real sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about real is not a crisis plan."
+    "reading": "The Christian theme, Real, is read with Psalm 34:8. For Real, the sense of Psalm 34:8 is this: taste and see that the Lord is good.\n\nChrist is gentle with unfinished people, so Real does not have to arrive already polished. Carry Real into an ordinary hour by telling the truth kindly, in the spirit of Psalm 34:8.\n\nAsk the Lord to keep Real honest and gentle until you sleep, and leave the rest in God's care. If the morning was clumsy, Real can begin again after lunch in the sight of God."
   },
   {
     "month": 3,
     "day": 3,
     "word": "Slow",
-    "reading": "Slow fits a hard morning. Slow is often the pace that keeps a person well. You can start before you feel brave, and slow still counts.\n\nYou might be at work, trying to look fine, and the room is safe enough, but the chest is tight. A craving can be here too, and slow can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so slow has a real step today. Slow still counts if that is all you do. A few minutes of daylight gives slow a little extra help.\n\nSlow can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Slow, and the text is Psalm 63:1. For Slow, the sense of Psalm 63:1 is this: the soul thirsts for God.\n\nThat verse is a welcome, not a test you pass before God will look at Slow. Practise Slow at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Slow can stand inside that mercy without showing off. God's kindness towards you is the ground under Slow, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 4,
     "word": "Here",
-    "reading": "Here is only for this day. Here means this room and this hour, not every fear at once. You can start before you feel brave, and here still counts.\n\nYou might be in a supermarket aisle, and hunger and irritation are easy to mix up. Loneliness can be here too, and here can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so here has a real step today. Here still counts if that is all you do. One worry written on paper gives here a little extra help.\n\nHere gets easier to hold when you ask for help in a short text."
+    "reading": "Here is the Christian theme here, set beside Psalm 116:1. For Here, the sense of Psalm 116:1 is this: the psalmist loves the Lord because the Lord heard his cry.\n\nNothing in Psalm 116:1 asks you to pretend, and Here can begin while you are still tired. If you were wrong, let Here include an apology in a single clean sentence, because of Psalm 116:1.\n\nMercy is wider than today's mistakes, and Here can stand inside that mercy without showing off. Keep Here Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 3,
     "day": 5,
     "word": "Next",
-    "reading": "Next is allowed to be imperfect. Next is the following small action, not the tenth one. You can start before you feel brave, and next still counts.\n\nYou might be in bed, not sleeping, and a slip is on the mind. Anger can be here too, and next can stay small. You do not have to fix all of that today.\n\nEat something simple, so next has a real step today. Next still counts if that is all you do. A ten-minute pause before a big choice gives next a little extra help.\n\nIf God is part of your life, you can pray about next today. If not, a friend can sit with you, and next can be shared."
+    "reading": "The Christian theme, Next, is read with Psalm 139:7. For Next, the sense of Psalm 139:7 is this: there is nowhere to flee from God's presence.\n\nRead Next in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Psalm 139:7, and let Next be unhurried company for someone lonely.\n\nHand the evening to God, and let Next be unfinished without being abandoned. In Christ, Next is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Next still fits the actual day."
   },
   {
     "month": 3,
     "day": 6,
     "word": "Room",
-    "reading": "Room does not have to be loud to be real. The day needs room for food, rest, and one person. You can start before you feel brave, and room still counts.\n\nYou might be staring at an unanswered message, and the room is safe enough, but the chest is tight. Tiredness can be here too, and room can stay small. You do not have to fix all of that today.\n\nWash face and hands, so room has a real step today. Room still counts if that is all you do. A text to someone safe gives room a little extra help.\n\nRoom can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Room, and the text is Proverbs 16:24. For Room, the sense of Proverbs 16:24 is this: gracious words are sweet and bring healing.\n\nThat verse is a welcome, not a test you pass before God will look at Room. Leave a harsh opinion unsaid, and let that restraint be how Room shows up this afternoon.\n\nYou can begin Room before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Room still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Room."
   },
   {
     "month": 3,
     "day": 7,
     "word": "Peace",
-    "reading": "Peace can start in an ordinary hour. Peace can be a truce with this hour, not a perfect calm. You can start before you feel brave, and peace still counts.\n\nYou might be in a group, smiling more than the feeling matches, and a craving is trying to sound like a good idea. Fear can be here too, and peace can stay small. You do not have to fix all of that today.\n\nMake the evening small: food, a wash, and lights out, so peace has a real step today. Peace still counts if that is all you do. Lights dimmed at a decent hour gives peace a little extra help.\n\nPeace can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Peace is the Christian theme here, set beside Isaiah 26:4. For Peace, the sense of Isaiah 26:4 is this: trust in the Lord forever, for the Lord is an everlasting rock.\n\nThat verse is a welcome, not a test you pass before God will look at Peace. To live Peace, read Isaiah 26:4 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Isaiah 26:4, for Peace, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Peace."
   },
   {
     "month": 3,
     "day": 8,
     "word": "Tender",
-    "reading": "Tender can stay small today. A sore place needs care, not contempt. You can start before you feel brave, and tender still counts.\n\nYou might be at the kitchen sink, and a sharp sentence already landed. Sadness can be here too, and tender can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so tender has a real step today. Tender still counts if that is all you do. Quiet company gives tender a little extra help.\n\nTender can stay small while you borrow hope from someone safe.\n\nCooler mornings are here, and tender can use that gentler pace."
+    "reading": "The Christian theme, Tender, is read with Isaiah 43:2. For Tender, the sense of Isaiah 43:2 is this: when you pass through deep waters, God says he will be with you.\n\nNothing in Isaiah 43:2 asks you to pretend, and Tender can begin while you are still tired. Give Tender a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Tender is allowed to be slow. If the morning was clumsy, Tender can begin again after lunch in the sight of God. God's kindness towards you is the ground under Tender, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 9,
     "word": "Whole",
-    "reading": "Whole fits a hard morning. A shaky day does not cancel being a whole person. You can start before you feel brave, and whole still counts.\n\nYou might be on a short walk, and a message is waiting and feels hard to open. The urge to hide can be here too, and whole can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so whole has a real step today. Whole still counts if that is all you do. A simple meal gives whole a little extra help.\n\nWhole belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Whole, and the text is Jeremiah 29:13. For Whole, the sense of Jeremiah 29:13 is this: you will find God when you seek him with all your heart.\n\nRead Whole in the light of that verse, without turning it into a performance for other people. Let Whole sound like a softer answer where the house has been sharp, with Jeremiah 29:13 still in mind.\n\nNo one else has to share your creed for you to practise Whole in the sight of God. God's kindness towards you is the ground under Whole, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 10,
     "word": "Free",
-    "reading": "Free is only for this day. Free can mean one hour not run by a craving or a secret. You can start before you feel brave, and free still counts.\n\nYou might be in the car, not ready to go in, and shame got there first. Money stress can be here too, and free can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so free has a real step today. Free still counts if that is all you do. The phone in another room gives free a little extra help.\n\nFree grows more easily with a kind tone than with shame."
+    "reading": "Free is the Christian theme here, set beside Amos 5:24. For Free, the sense of Amos 5:24 is this: let justice roll down like waters.\n\nThat verse is a welcome, not a test you pass before God will look at Free. Carry Free into an ordinary hour by telling the truth kindly, in the spirit of Amos 5:24.\n\nPut Free where your hands are, and let the text stay a lamp rather than a weapon. In Christ, Free is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Free still fits the actual day."
   },
   {
     "month": 3,
     "day": 11,
     "word": "Together",
-    "reading": "Together is allowed to be imperfect. This day does not have to be done in secret. You can start before you feel brave, and together still counts.\n\nYou might be in the car, not ready to go in, and sleep was short. Grief can be here too, and together can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so together has a real step today. Together still counts if that is all you do. An open window gives together a little extra help.\n\nTogether can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Together, is read with Nahum 1:7. For Together, the sense of Nahum 1:7 is this: the Lord is good, a stronghold in the day of trouble.\n\nThat verse is a welcome, not a test you pass before God will look at Together. Practise Together at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Together honest and gentle until you sleep, and leave the rest in God's care. In Christ, Together is worth attention even when the calendar is full."
   },
   {
     "month": 3,
     "day": 12,
     "word": "Unlearn",
-    "reading": "Unlearn does not have to be loud to be real. One harsh inner rule can be refused for today. You can start before you feel brave, and unlearn still counts.\n\nYou might be at the kitchen sink, and money stress is sitting on the table. The wish to give up can be here too, and unlearn can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so unlearn has a real step today. Unlearn still counts if that is all you do. A glass of water gives unlearn a little extra help.\n\nUnlearn gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Unlearn, and the text is Matthew 5:14. For Unlearn, the sense of Matthew 5:14 is this: Jesus tells his followers they are the light of the world.\n\nNothing in Matthew 5:14 asks you to pretend, and Unlearn can begin while you are still tired. If you were wrong, let Unlearn include an apology in a single clean sentence, because of Matthew 5:14.\n\nMercy is wider than today's mistakes, and Unlearn can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Unlearn still fits the actual day."
   },
   {
     "month": 3,
     "day": 13,
     "word": "Keep",
-    "reading": "Keep can start in an ordinary hour. One small promise, like water, food, or a text, can be kept. You can start before you feel brave, and keep still counts.\n\nYou might be in the bathroom, putting off the next thing, and a message is waiting and feels hard to open. Comparison can be here too, and keep can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so keep has a real step today. Keep still counts if that is all you do. A short walk gives keep a little extra help.\n\nIf God is part of your life, you can pray about keep today. If not, a friend can sit with you, and keep can be shared."
+    "reading": "Keep is the Christian theme here, set beside Matthew 9:36. For Keep, the sense of Matthew 9:36 is this: Jesus had compassion on crowds who were harassed and helpless.\n\nRead Keep in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Matthew 9:36, and let Keep be unhurried company for someone lonely.\n\nHand the evening to God, and let Keep be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Keep."
   },
   {
     "month": 3,
     "day": 14,
     "word": "Name it",
-    "reading": "Name it can stay small today. A feeling named in a few words has less secret power. You can start before you feel brave, and name it still counts.\n\nYou might be in a quiet car park, and the body is tired and the mind is loud. The urge to go numb can be here too, and name it can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so name it has a real step today. Name it still counts if that is all you do. A kind sentence, spoken as to a friend gives name it a little extra help.\n\nName it can be a short prayer, or a few quiet words to a friend.\n\nCooler mornings are here, and name it can use that gentler pace."
+    "reading": "The Christian theme, Name it, is read with Luke 10:27. For Name it, the sense of Luke 10:27 is this: love the Lord your God, and love your neighbour as yourself.\n\nThat verse is a welcome, not a test you pass before God will look at Name it. Leave a harsh opinion unsaid, and let that restraint be how Name it shows up this afternoon.\n\nYou can begin Name it before you feel holy, because the Father already knows the day. If the morning was clumsy, Name it can begin again after lunch in the sight of God."
   },
   {
     "month": 3,
     "day": 15,
     "word": "Allow",
-    "reading": "Allow fits a hard morning. A feeling can be here without being obeyed. You can start before you feel brave, and allow still counts.\n\nYou might be after a hard conversation, and the room is safe enough, but the chest is tight. Hunger can be here too, and allow can stay small. You do not have to fix all of that today.\n\nText one safe person, so allow has a real step today. Allow still counts if that is all you do. A stretch and a drink of water gives allow a little extra help.\n\nAllow can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Allow, and the text is John 14:18. For Allow, the sense of John 14:18 is this: Jesus says he will not leave his friends as orphans.\n\nThat verse is a welcome, not a test you pass before God will look at Allow. To live Allow, read John 14:18 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of John 14:18, for Allow, is trust, not a performance. God's kindness towards you is the ground under Allow, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 16,
     "word": "Balance",
-    "reading": "Balance is only for this day. Food, rest, and honesty can share the same day. You can start before you feel brave, and balance still counts.\n\nYou might be on the couch, and a secret feels heavy. A heavy secret can be here too, and balance can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so balance has a real step today. Balance still counts if that is all you do. A washed face gives balance a little extra help.\n\nBalance can stay small while you borrow hope from someone safe."
+    "reading": "Balance is the Christian theme here, set beside Romans 6:23. For Balance, the sense of Romans 6:23 is this: the free gift of God is eternal life in Christ Jesus.\n\nNothing in Romans 6:23 asks you to pretend, and Balance can begin while you are still tired. Let Balance sound like a softer answer where the house has been sharp, with Romans 6:23 still in mind.\n\nJesus does not rush slow learners, and Balance is allowed to be slow. In Christ, Balance is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Balance still fits the actual day."
   },
   {
     "month": 3,
     "day": 17,
     "word": "Dignity",
-    "reading": "Dignity is allowed to be imperfect. A wash, a meal, or a true sentence can restore a bit of dignity. You can start before you feel brave, and dignity still counts.\n\nYou might be on a short walk, and the day feels very dark. Worry about the future can be here too, and dignity can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so dignity has a real step today. Dignity still counts if that is all you do. A slower breath gives dignity a little extra help.\n\nDignity belongs to this day only, and tomorrow can keep its own worries.\n\nIf dignity sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about dignity is not a crisis plan."
+    "reading": "The Christian theme, Dignity, is read with 1 Corinthians 15:58. For Dignity, the sense of 1 Corinthians 15:58 is this: be steadfast, because in the Lord your labour is not in vain.\n\nRead Dignity in the light of that verse, without turning it into a performance for other people. Let Dignity sound like a softer answer where the house has been sharp, with 1 Corinthians 15:58 still in mind.\n\nNo one else has to share your creed for you to practise Dignity in the sight of God. In Christ, Dignity is worth attention even when the calendar is full."
   },
   {
     "month": 3,
     "day": 18,
     "word": "Neighbour",
-    "reading": "Neighbour does not have to be loud to be real. Anyone near you can be met with an ordinary kind tone. You can start before you feel brave, and neighbour still counts.\n\nYou might be holding a bill that is hard to open, and everything feels behind. Numbness can be here too, and neighbour can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so neighbour has a real step today. Neighbour still counts if that is all you do. One money worry named to someone safe gives neighbour a little extra help.\n\nNeighbour grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Neighbour, and the text is Philippians 4:4. For Neighbour, the sense of Philippians 4:4 is this: rejoice in the Lord always.\n\nChrist is gentle with unfinished people, so Neighbour does not have to arrive already polished. Carry Neighbour into an ordinary hour by telling the truth kindly, in the spirit of Philippians 4:4.\n\nPut Neighbour where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Neighbour still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Neighbour."
   },
   {
     "month": 3,
     "day": 19,
     "word": "Dawn",
-    "reading": "Dawn can start in an ordinary hour. A poor sleep does not remove the chance in a new morning. You can start before you feel brave, and dawn still counts.\n\nYou might be folding the washing, and a drink, a drug, or a numbing scroll looks tempting. The thought that the day is already ruined can be here too, and dawn can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so dawn has a real step today. Dawn still counts if that is all you do. A few minutes of daylight gives dawn a little extra help.\n\nDawn can be a value you keep, in a quiet way that fits you."
+    "reading": "Dawn is the Christian theme here, set beside 2 Timothy 3:16. For Dawn, the sense of 2 Timothy 3:16 is this: all Scripture is breathed out by God and is useful for teaching.\n\nThat verse is a welcome, not a test you pass before God will look at Dawn. Practise Dawn at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Dawn can stand inside that mercy without showing off. A neighbour does not need a creed explained before they can receive the fruit of Dawn."
   },
   {
     "month": 3,
     "day": 20,
     "word": "Carry less",
-    "reading": "Carry less can stay small today. This hour is enough to carry, and the other years can be set down. You can start before you feel brave, and carry less still counts.\n\nYou might be in a quiet car park, and the day feels very dark. Irritation can be here too, and carry less can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so carry less has a real step today. Carry less still counts if that is all you do. One worry written on paper gives carry less a little extra help.\n\nCarry less gets easier to hold when you ask for help in a short text.\n\nCooler mornings are here, and carry less can use that gentler pace.\n\nIf carry less sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about carry less is not a crisis plan."
+    "reading": "The Christian theme, Carry less, is read with James 1:12. For Carry less, the sense of James 1:12 is this: blessed is the person who remains steadfast under trial.\n\nNothing in James 1:12 asks you to pretend, and Carry less can begin while you are still tired. If you were wrong, let Carry less include an apology in a single clean sentence, because of James 1:12.\n\nMercy is wider than today's mistakes, and Carry less can stand inside that mercy without showing off. If the morning was clumsy, Carry less can begin again after lunch in the sight of God."
   },
   {
     "month": 3,
     "day": 21,
     "word": "Undo",
-    "reading": "Undo fits a hard morning. A sharp word can be met with one clean apology, then the self-attack can stop. You can start before you feel brave, and undo still counts.\n\nYou might be on a lunch break, and sleep was short. The pull to be alone can be here too, and undo can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so undo has a real step today. Undo still counts if that is all you do. A ten-minute pause before a big choice gives undo a little extra help.\n\nIf God is part of your life, you can pray about undo today. If not, a friend can sit with you, and undo can be shared."
+    "reading": "On this page the Christian theme is Undo, and the text is 1 Peter 4:10. For Undo, the sense of 1 Peter 4:10 is this: serve one another with the gift you have been given.\n\nRead Undo in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 Peter 4:10, and let Undo be unhurried company for someone lonely.\n\nHand the evening to God, and let Undo be unfinished without being abandoned. God's kindness towards you is the ground under Undo, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 22,
     "word": "Welcome",
-    "reading": "Welcome is only for this day. The tired part can be welcomed and given care. You can start before you feel brave, and welcome still counts.\n\nYou might be in a quiet house with a loud mind, and a craving is trying to sound like a good idea. Shame can be here too, and welcome can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so welcome has a real step today. Welcome still counts if that is all you do. A text to someone safe gives welcome a little extra help.\n\nWelcome can be a short prayer, or a few quiet words to a friend."
+    "reading": "Welcome is the Christian theme here, set beside 1 John 4:11. For Welcome, the sense of 1 John 4:11 is this: if God so loved us, we ought to love one another.\n\nChrist is gentle with unfinished people, so Welcome does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Welcome shows up this afternoon.\n\nYou can begin Welcome before you feel holy, because the Father already knows the day. Keep Welcome Christian and specific: one verse, one prayer, one person. In Christ, Welcome is worth attention even when the calendar is full."
   },
   {
     "month": 3,
     "day": 23,
     "word": "Still",
-    "reading": "Still is allowed to be imperfect. A pause can be allowed, and a pause is not failure. You can start before you feel brave, and still still counts.\n\nYou might be scrolling, and feeling alone, and quitting looks easier than starting. A craving can be here too, and still can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so still has a real step today. Still still counts if that is all you do. Lights dimmed at a decent hour gives still a little extra help.\n\nStill can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Still, is read with Genesis 2:2. For Still, the sense of Genesis 2:2 is this: God rested from the work of creation.\n\nThat verse is a welcome, not a test you pass before God will look at Still. To live Still, read Genesis 2:2 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Genesis 2:2, for Still, is trust, not a performance. Australian weather can be hot, wet, or cold, and Still still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Still."
   },
   {
     "month": 3,
     "day": 24,
     "word": "Little",
-    "reading": "Little does not have to be loud to be real. A little care is still care. You can start before you feel brave, and little still counts.\n\nYou might be outside a meeting, and a slip is on the mind. Loneliness can be here too, and little can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so little has a real step today. Little still counts if that is all you do. Quiet company gives little a little extra help.\n\nLittle can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Little, and the text is Psalm 1:2. For Little, the sense of Psalm 1:2 is this: the blessed person delights in the Lord's instruction.\n\nNothing in Psalm 1:2 asks you to pretend, and Little can begin while you are still tired. Let Little sound like a softer answer where the house has been sharp, with Psalm 1:2 still in mind.\n\nJesus does not rush slow learners, and Little is allowed to be slow. Australian weather can be hot, wet, or cold, and Little still fits the actual day."
   },
   {
     "month": 3,
     "day": 25,
     "word": "Stay close",
-    "reading": "Stay close can start in an ordinary hour. Stay near the people and routines that keep you steady. You can start before you feel brave, and stay close still counts.\n\nYou might be in a room where a sharp sentence still hangs, and the day feels very dark. Anger can be here too, and stay close can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so stay close has a real step today. Stay close still counts if that is all you do. A simple meal gives stay close a little extra help.\n\nStay close belongs to this day only, and tomorrow can keep its own worries.\n\nIf stay close sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about stay close is not a crisis plan."
+    "reading": "Stay close is the Christian theme here, set beside Psalm 32:8. For Stay close, the sense of Psalm 32:8 is this: the Lord promises to instruct and to teach the way.\n\nRead Stay close in the light of that verse, without turning it into a performance for other people. Let Stay close sound like a softer answer where the house has been sharp, with Psalm 32:8 still in mind.\n\nNo one else has to share your creed for you to practise Stay close in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Stay close."
   },
   {
     "month": 3,
     "day": 26,
     "word": "Renew",
-    "reading": "Renew can stay small today. If the morning went badly, the day can renew at noon. You can start before you feel brave, and renew still counts.\n\nYou might be on the bus, and hunger and irritation are easy to mix up. Tiredness can be here too, and renew can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so renew has a real step today. Renew still counts if that is all you do. The phone in another room gives renew a little extra help.\n\nRenew grows more easily with a kind tone than with shame.\n\nCooler mornings are here, and renew can use that gentler pace."
+    "reading": "The Christian theme, Renew, is read with Psalm 94:19. For Renew, the sense of Psalm 94:19 is this: when cares are many, God's consolations cheer the soul.\n\nChrist is gentle with unfinished people, so Renew does not have to arrive already polished. Carry Renew into an ordinary hour by telling the truth kindly, in the spirit of Psalm 94:19.\n\nPut Renew where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Renew can begin again after lunch in the sight of God. God's kindness towards you is the ground under Renew, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 27,
     "word": "Honest ask",
-    "reading": "Honest ask fits a hard morning. An honest ask is a short request for help, without a speech. You can start before you feel brave, and honest ask still counts.\n\nYou might be on the edge of the bed, and food is being put off. Fear can be here too, and honest ask can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so honest ask has a real step today. Honest ask still counts if that is all you do. An open window gives honest ask a little extra help.\n\nHonest ask can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Honest ask, and the text is Proverbs 11:25. For Honest ask, the sense of Proverbs 11:25 is this: a generous person is refreshed.\n\nThat verse is a welcome, not a test you pass before God will look at Honest ask. Practise Honest ask at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Honest ask honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Honest ask, not a prize withheld until you improve."
   },
   {
     "month": 3,
     "day": 28,
     "word": "Spare",
-    "reading": "Spare is only for this day. A little energy can be spared, and not all of it spent on worry. You can start before you feel brave, and spare still counts.\n\nYou might be at the kitchen table, and help is on offer and feels hard to take. Sadness can be here too, and spare can stay small. You do not have to fix all of that today.\n\nEat something simple, so spare has a real step today. Spare still counts if that is all you do. A glass of water gives spare a little extra help.\n\nSpare gets easier to hold when you ask for help in a short text."
+    "reading": "Spare is the Christian theme here, set beside Isaiah 12:2. For Spare, the sense of Isaiah 12:2 is this: God is salvation, so trust can replace fear.\n\nNothing in Isaiah 12:2 asks you to pretend, and Spare can begin while you are still tired. If you were wrong, let Spare include an apology in a single clean sentence, because of Isaiah 12:2.\n\nMercy is wider than today's mistakes, and Spare can stand inside that mercy without showing off. Keep Spare Christian and specific: one verse, one prayer, one person. In Christ, Spare is worth attention even when the calendar is full."
   },
   {
     "month": 3,
     "day": 29,
     "word": "Return path",
-    "reading": "Return path is allowed to be imperfect. The way back is shorter than shame says it is. You can start before you feel brave, and return path still counts.\n\nYou might be outside a meeting, and shame got there first. The urge to hide can be here too, and return path can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so return path has a real step today. Return path still counts if that is all you do. A short walk gives return path a little extra help.\n\nIf God is part of your life, you can pray about return path today. If not, a friend can sit with you, and return path can be shared."
+    "reading": "The Christian theme, Return path, is read with Isaiah 58:11. For Return path, the sense of Isaiah 58:11 is this: the Lord will guide you and satisfy you in dry places.\n\nRead Return path in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Isaiah 58:11, and let Return path be unhurried company for someone lonely.\n\nHand the evening to God, and let Return path be unfinished without being abandoned. In Christ, Return path is worth attention even when the calendar is full."
   },
   {
     "month": 3,
     "day": 30,
     "word": "Companionship",
-    "reading": "Companionship does not have to be loud to be real. One safe voice can be enough company for a lonely hour. You can start before you feel brave, and companionship still counts.\n\nYou might be on the edge of the bed, and the body is tired and the mind is loud. Money stress can be here too, and companionship can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so companionship has a real step today. Companionship still counts if that is all you do. A kind sentence, spoken as to a friend gives companionship a little extra help.\n\nCompanionship can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Companionship, and the text is Jeremiah 33:3. For Companionship, the sense of Jeremiah 33:3 is this: call to the Lord and he will answer.\n\nChrist is gentle with unfinished people, so Companionship does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Companionship shows up this afternoon.\n\nYou can begin Companionship before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Companionship still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Companionship."
   },
   {
     "month": 3,
     "day": 31,
     "word": "This day",
-    "reading": "This day can start in an ordinary hour. This day is the only page that has to be lived. You can start before you feel brave, and this day still counts.\n\nYou might be avoiding the mirror, and the body is tired and the mind is loud. Grief can be here too, and this day can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so this day has a real step today. This day still counts if that is all you do. A stretch and a drink of water gives this day a little extra help.\n\nThis day can begin again today, and mercy means you do not have to earn that start."
+    "reading": "This day is the Christian theme here, set beside Matthew 4:4. For This day, the sense of Matthew 4:4 is this: people do not live by bread alone, but by every word from God.\n\nThat verse is a welcome, not a test you pass before God will look at This day. To live This day, read Matthew 4:4 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 4:4, for This day, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of This day."
   },
   {
     "month": 4,
     "day": 1,
     "word": "Amends",
-    "reading": "Amends can stay small today. Amends can be a changed hour, not a dramatic vow. You can start before you feel brave, and amends still counts.\n\nYou might be in the doorway, keys still in hand, and everything feels behind. The wish to give up can be here too, and amends can stay small. You do not have to fix all of that today.\n\nName the feeling without an insult, so amends has a real step today. Amends still counts if that is all you do. A washed face gives amends a little extra help.\n\nAmends can stay small while you borrow hope from someone safe.\n\nEvenings draw in, so let amends live inside a smaller day."
+    "reading": "The Christian theme, Amends, is read with Matthew 7:12. For Amends, the sense of Matthew 7:12 is this: do for others what you would wish them to do for you.\n\nNothing in Matthew 7:12 asks you to pretend, and Amends can begin while you are still tired. Give Amends a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Amends is allowed to be slow. If the morning was clumsy, Amends can begin again after lunch in the sight of God. Keep Amends Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 4,
     "day": 2,
     "word": "Anger",
-    "reading": "Anger fits a hard morning. Anger is a signal, and it does not have to pick a fight. You can start before you feel brave, and anger still counts.\n\nYou might be in the doorway, keys still in hand, and grief showed up without warning. Comparison can be here too, and anger can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so anger has a real step today. Anger still counts if that is all you do. A slower breath gives anger a little extra help.\n\nAnger belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Anger, and the text is Luke 6:27. For Anger, the sense of Luke 6:27 is this: love your enemies and do good to people who hate you.\n\nRead Anger in the light of that verse, without turning it into a performance for other people. Let Anger sound like a softer answer where the house has been sharp, with Luke 6:27 still in mind.\n\nNo one else has to share your creed for you to practise Anger in the sight of God. God's kindness towards you is the ground under Anger, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 3,
     "word": "Attention",
-    "reading": "Attention is only for this day. Hunger, anger, loneliness, or tiredness may be what needs attention. You can start before you feel brave, and attention still counts.\n\nYou might be at the kitchen table, and quitting looks easier than starting. The urge to go numb can be here too, and attention can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so attention has a real step today. Attention still counts if that is all you do. One money worry named to someone safe gives attention a little extra help.\n\nAttention grows more easily with a kind tone than with shame."
+    "reading": "Attention is the Christian theme here, set beside John 13:14. For Attention, the sense of John 13:14 is this: Jesus washed his friends' feet and tells them to serve in the same way.\n\nChrist is gentle with unfinished people, so Attention does not have to arrive already polished. Carry Attention into an ordinary hour by telling the truth kindly, in the spirit of John 13:14.\n\nPut Attention where your hands are, and let the text stay a lamp rather than a weapon. Keep Attention Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 4,
     "day": 4,
     "word": "Awe",
-    "reading": "Awe is allowed to be imperfect. One minute with the sky, a tree, or a pet can be enough wonder. You can start before you feel brave, and awe still counts.\n\nYou might be by a window, and a message is waiting and feels hard to open. Hunger can be here too, and awe can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so awe has a real step today. Awe still counts if that is all you do. A few minutes of daylight gives awe a little extra help.\n\nAwe can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Awe, is read with Acts 20:35. For Awe, the sense of Acts 20:35 is this: it is more blessed to give than to receive.\n\nThat verse is a welcome, not a test you pass before God will look at Awe. Practise Awe at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Awe honest and gentle until you sleep, and leave the rest in God's care. In Christ, Awe is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Awe still fits the actual day."
   },
   {
     "month": 4,
     "day": 5,
     "word": "Beauty",
-    "reading": "Beauty does not have to be loud to be real. Beauty can be a clean corner, a plant, or light on a wall. You can start before you feel brave, and beauty still counts.\n\nYou might be on the phone, on hold, and a slip is on the mind. A heavy secret can be here too, and beauty can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so beauty has a real step today. Beauty still counts if that is all you do. One worry written on paper gives beauty a little extra help.\n\nBeauty gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Beauty, and the text is Romans 13:8. For Beauty, the sense of Romans 13:8 is this: owe no one anything, except to love one another.\n\nNothing in Romans 13:8 asks you to pretend, and Beauty can begin while you are still tired. If you were wrong, let Beauty include an apology in a single clean sentence, because of Romans 13:8.\n\nMercy is wider than today's mistakes, and Beauty can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Beauty still fits the actual day."
   },
   {
     "month": 4,
     "day": 6,
     "word": "Become",
-    "reading": "Become can start in an ordinary hour. Becoming is slow, and today only asks for a little more honesty. You can start before you feel brave, and become still counts.\n\nYou might be in the shower, and a big decision is trying to happen while feelings are hot. Worry about the future can be here too, and become can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so become has a real step today. Become still counts if that is all you do. A ten-minute pause before a big choice gives become a little extra help.\n\nIf God is part of your life, you can pray about become today. If not, a friend can sit with you, and become can be shared."
+    "reading": "Become is the Christian theme here, set beside 2 Corinthians 9:7. For Become, the sense of 2 Corinthians 9:7 is this: God loves a cheerful giver.\n\nRead Become in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 2 Corinthians 9:7, and let Become be unhurried company for someone lonely.\n\nHand the evening to God, and let Become be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Become."
   },
   {
     "month": 4,
     "day": 7,
     "word": "Bend",
-    "reading": "Bend can stay small today. A plan can bend without the day breaking. You can start before you feel brave, and bend still counts.\n\nYou might be on the couch, and money stress is sitting on the table. Numbness can be here too, and bend can stay small. You do not have to fix all of that today.\n\nText one safe person, so bend has a real step today. Bend still counts if that is all you do. A few minutes of daylight gives bend a little extra help.\n\nBend can be a short prayer, or a few quiet words to a friend.\n\nEvenings draw in, so let bend live inside a smaller day."
+    "reading": "The Christian theme, Bend, is read with Ephesians 1:7. For Bend, the sense of Ephesians 1:7 is this: in Christ we have redemption and forgiveness by grace.\n\nChrist is gentle with unfinished people, so Bend does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Bend shows up this afternoon.\n\nYou can begin Bend before you feel holy, because the Father already knows the day. If the morning was clumsy, Bend can begin again after lunch in the sight of God. God's kindness towards you is the ground under Bend, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 8,
     "word": "Blessing",
-    "reading": "Blessing fits a hard morning. A blessing can be help that was not earned, or a meal that was eaten. You can start before you feel brave, and blessing still counts.\n\nYou might be in a group, smiling more than the feeling matches, and comparison has crept in. The thought that the day is already ruined can be here too, and blessing can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so blessing has a real step today. Blessing still counts if that is all you do. Lights dimmed at a decent hour gives blessing a little extra help.\n\nBlessing can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Blessing, and the text is Philippians 2:4. For Blessing, the sense of Philippians 2:4 is this: look to the interests of others, not only to your own.\n\nThat verse is a welcome, not a test you pass before God will look at Blessing. To live Blessing, read Philippians 2:4 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Philippians 2:4, for Blessing, is trust, not a performance. God's kindness towards you is the ground under Blessing, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 9,
     "word": "Body",
-    "reading": "Body is only for this day. The body needs food, water, movement, and rest before a big decision. You can start before you feel brave, and body still counts.\n\nYou might be halfway up the stairs, and food is being put off. Irritation can be here too, and body can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so body has a real step today. Body still counts if that is all you do. Quiet company gives body a little extra help.\n\nBody can stay small while you borrow hope from someone safe."
+    "reading": "Body is the Christian theme here, set beside 2 Thessalonians 3:3. For Body, the sense of 2 Thessalonians 3:3 is this: the Lord is faithful, and he will strengthen and guard you.\n\nNothing in 2 Thessalonians 3:3 asks you to pretend, and Body can begin while you are still tired. Give Body a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Body is allowed to be slow. Keep Body Christian and specific: one verse, one prayer, one person. In Christ, Body is worth attention even when the calendar is full."
   },
   {
     "month": 4,
     "day": 10,
     "word": "Brave",
-    "reading": "Brave is allowed to be imperfect. Brave can be telling the truth while a voice shakes. You can start before you feel brave, and brave still counts.\n\nYou might be awake before the alarm, and a message is waiting and feels hard to open. The pull to be alone can be here too, and brave can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so brave has a real step today. Brave still counts if that is all you do. A simple meal gives brave a little extra help.\n\nBrave belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Brave, is read with Titus 2:11. For Brave, the sense of Titus 2:11 is this: the grace of God has appeared, bringing salvation.\n\nRead Brave in the light of that verse, without turning it into a performance for other people. Let Brave sound like a softer answer where the house has been sharp, with Titus 2:11 still in mind.\n\nNo one else has to share your creed for you to practise Brave in the sight of God. In Christ, Brave is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Brave still fits the actual day."
   },
   {
     "month": 4,
     "day": 11,
     "word": "Bridge",
-    "reading": "Bridge does not have to be loud to be real. A bridge back can be a text, a meeting, or a simple apology. You can start before you feel brave, and bridge still counts.\n\nYou might be on the couch, and food is being put off. Shame can be here too, and bridge can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so bridge has a real step today. Bridge still counts if that is all you do. The phone in another room gives bridge a little extra help.\n\nBridge grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Bridge, and the text is James 2:17. For Bridge, the sense of James 2:17 is this: faith that never acts is dead.\n\nThat verse is a welcome, not a test you pass before God will look at Bridge. Carry Bridge into an ordinary hour by telling the truth kindly, in the spirit of James 2:17.\n\nPut Bridge where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Bridge still fits the actual day."
   },
   {
     "month": 4,
     "day": 12,
     "word": "Calm",
-    "reading": "Calm can start in an ordinary hour. Calm can be three slow breaths, not a new personality. You can start before you feel brave, and calm still counts.\n\nYou might be avoiding the mirror, and a big decision is trying to happen while feelings are hot. A craving can be here too, and calm can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so calm has a real step today. Calm still counts if that is all you do. An open window gives calm a little extra help.\n\nCalm can be a value you keep, in a quiet way that fits you."
+    "reading": "Calm is the Christian theme here, set beside 1 Peter 3:15. For Calm, the sense of 1 Peter 3:15 is this: honour Christ as holy, and answer with gentleness and respect.\n\nThat verse is a welcome, not a test you pass before God will look at Calm. Practise Calm at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Calm honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Calm."
   },
   {
     "month": 4,
     "day": 13,
     "word": "Candle",
-    "reading": "Candle can stay small today. There can be enough light for the next step, not the whole road. You can start before you feel brave, and candle still counts.\n\nYou might be in a supermarket aisle, and the urge to hide is strong. Loneliness can be here too, and candle can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so candle has a real step today. Candle still counts if that is all you do. A glass of water gives candle a little extra help.\n\nCandle gets easier to hold when you ask for help in a short text.\n\nEvenings draw in, so let candle live inside a smaller day."
+    "reading": "The Christian theme, Candle, is read with 1 John 2:1. For Candle, the sense of 1 John 2:1 is this: if anyone sins, we have an advocate with the Father, Jesus Christ the righteous.\n\nNothing in 1 John 2:1 asks you to pretend, and Candle can begin while you are still tired. If you were wrong, let Candle include an apology in a single clean sentence, because of 1 John 2:1.\n\nMercy is wider than today's mistakes, and Candle can stand inside that mercy without showing off. If the morning was clumsy, Candle can begin again after lunch in the sight of God."
   },
   {
     "month": 4,
     "day": 14,
     "word": "Change",
-    "reading": "Change fits a hard morning. Change can start with one different choice in this hour. You can start before you feel brave, and change still counts.\n\nYou might be at a family table, and a craving is trying to sound like a good idea. Anger can be here too, and change can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so change has a real step today. Change still counts if that is all you do. A short walk gives change a little extra help.\n\nIf God is part of your life, you can pray about change today. If not, a friend can sit with you, and change can be shared."
+    "reading": "On this page the Christian theme is Change, and the text is Revelation 7:17. For Change, the sense of Revelation 7:17 is this: God will wipe away every tear.\n\nRead Change in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Revelation 7:17, and let Change be unhurried company for someone lonely.\n\nHand the evening to God, and let Change be unfinished without being abandoned. God's kindness towards you is the ground under Change, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 15,
     "word": "Circle",
-    "reading": "Circle is only for this day. Safe people around you can make a heavy day lighter. You can start before you feel brave, and circle still counts.\n\nYou might be by a window, and the room is safe enough, but the chest is tight. Tiredness can be here too, and circle can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so circle has a real step today. Circle still counts if that is all you do. A kind sentence, spoken as to a friend gives circle a little extra help.\n\nCircle can be a short prayer, or a few quiet words to a friend."
+    "reading": "Circle is the Christian theme here, set beside Psalm 25:4. For Circle, the sense of Psalm 25:4 is this: the psalmist asks God to make his ways known.\n\nChrist is gentle with unfinished people, so Circle does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Circle shows up this afternoon.\n\nYou can begin Circle before you feel holy, because the Father already knows the day. In Christ, Circle is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Circle still fits the actual day."
   },
   {
     "month": 4,
     "day": 16,
     "word": "Comfort",
-    "reading": "Comfort is allowed to be imperfect. Comfort can be a blanket, a warm drink, or a kind sentence. You can start before you feel brave, and comfort still counts.\n\nYou might be on the back step, and comparison has crept in. Fear can be here too, and comfort can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so comfort has a real step today. Comfort still counts if that is all you do. A stretch and a drink of water gives comfort a little extra help.\n\nComfort can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Comfort, is read with Psalm 68:19. For Comfort, the sense of Psalm 68:19 is this: blessed be the Lord, who daily bears us up.\n\nThat verse is a welcome, not a test you pass before God will look at Comfort. To live Comfort, read Psalm 68:19 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 68:19, for Comfort, is trust, not a performance. In Christ, Comfort is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Comfort still fits the actual day."
   },
   {
     "month": 4,
     "day": 17,
     "word": "Commit",
-    "reading": "Commit does not have to be loud to be real. The next hour can be the commitment, and the month can wait. You can start before you feel brave, and commit still counts.\n\nYou might be in the shower, and food is being put off. Sadness can be here too, and commit can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so commit has a real step today. Commit still counts if that is all you do. A washed face gives commit a little extra help.\n\nCommit can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Commit, and the text is Psalm 145:9. For Commit, the sense of Psalm 145:9 is this: the Lord is good to all, and his mercy is over all he has made.\n\nNothing in Psalm 145:9 asks you to pretend, and Commit can begin while you are still tired. Give Commit a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Commit is allowed to be slow. Australian weather can be hot, wet, or cold, and Commit still fits the actual day."
   },
   {
     "month": 4,
     "day": 18,
     "word": "Compassion",
-    "reading": "Compassion can start in an ordinary hour. Compassion uses the voice you would use for a friend. You can start before you feel brave, and compassion still counts.\n\nYou might be in the shower, and a secret feels heavy. The urge to hide can be here too, and compassion can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so compassion has a real step today. Compassion still counts if that is all you do. A slower breath gives compassion a little extra help.\n\nCompassion belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Compassion is the Christian theme here, set beside Proverbs 22:1. For Compassion, the sense of Proverbs 22:1 is this: a good name is to be chosen rather than great riches.\n\nRead Compassion in the light of that verse, without turning it into a performance for other people. Let Compassion sound like a softer answer where the house has been sharp, with Proverbs 22:1 still in mind.\n\nNo one else has to share your creed for you to practise Compassion in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Compassion."
   },
   {
     "month": 4,
     "day": 19,
     "word": "Confidence",
-    "reading": "Confidence can stay small today. Confidence can be one finished task, not a loud feeling. You can start before you feel brave, and confidence still counts.\n\nYou might be in a quiet car park, and someone's words are still ringing. Money stress can be here too, and confidence can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so confidence has a real step today. Confidence still counts if that is all you do. One money worry named to someone safe gives confidence a little extra help.\n\nConfidence grows more easily with a kind tone than with shame.\n\nEvenings draw in, so let confidence live inside a smaller day."
+    "reading": "The Christian theme, Confidence, is read with Habakkuk 2:20. For Confidence, the sense of Habakkuk 2:20 is this: the Lord is in his holy temple, and the earth is called to keep silence before him.\n\nChrist is gentle with unfinished people, so Confidence does not have to arrive already polished. Carry Confidence into an ordinary hour by telling the truth kindly, in the spirit of Habakkuk 2:20.\n\nPut Confidence where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Confidence can begin again after lunch in the sight of God."
   },
   {
     "month": 4,
     "day": 20,
     "word": "Consider",
-    "reading": "Consider fits a hard morning. The safer option can be considered before the fast one. You can start before you feel brave, and consider still counts.\n\nYou might be on the phone, on hold, and hunger and irritation are easy to mix up. Grief can be here too, and consider can stay small. You do not have to fix all of that today.\n\nEat something simple, so consider has a real step today. Consider still counts if that is all you do. A few minutes of daylight gives consider a little extra help.\n\nConsider can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Consider, and the text is Acts 1:8. For Consider, the sense of Acts 1:8 is this: Jesus promises power when the Holy Spirit comes, so his people can witness.\n\nThat verse is a welcome, not a test you pass before God will look at Consider. Practise Consider at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Consider honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Consider, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 21,
     "word": "Continue",
-    "reading": "Continue is only for this day. A messy patch does not mean the whole day has to be binned. You can start before you feel brave, and continue still counts.\n\nYou might be waiting for the kettle, and money stress is sitting on the table. The wish to give up can be here too, and continue can stay small. You do not have to fix all of that today.\n\nWash face and hands, so continue has a real step today. Continue still counts if that is all you do. One worry written on paper gives continue a little extra help.\n\nContinue gets easier to hold when you ask for help in a short text."
+    "reading": "Continue is the Christian theme here, set beside 1 Kings 8:56. For Continue, the sense of 1 Kings 8:56 is this: not one word has failed of all the Lord's good promise.\n\nNothing in 1 Kings 8:56 asks you to pretend, and Continue can begin while you are still tired. If you were wrong, let Continue include an apology in a single clean sentence, because of 1 Kings 8:56.\n\nMercy is wider than today's mistakes, and Continue can stand inside that mercy without showing off. Keep Continue Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 4,
     "day": 22,
     "word": "Courtesy",
-    "reading": "Courtesy is allowed to be imperfect. A kinder tone is still possible when irritation is up. You can start before you feel brave, and courtesy still counts.\n\nYou might be in a waiting room, and grief showed up without warning. Comparison can be here too, and courtesy can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so courtesy has a real step today. Courtesy still counts if that is all you do. A ten-minute pause before a big choice gives courtesy a little extra help.\n\nIf God is part of your life, you can pray about courtesy today. If not, a friend can sit with you, and courtesy can be shared."
+    "reading": "The Christian theme, Courtesy, is read with John 3:16. For Courtesy, the sense of John 3:16 is this: God loved the world and gave his Son so that trust in him leads to life with God.\n\nRead Courtesy in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of John 3:16, and let Courtesy be unhurried company for someone lonely.\n\nHand the evening to God, and let Courtesy be unfinished without being abandoned. In Christ, Courtesy is worth attention even when the calendar is full."
   },
   {
     "month": 4,
     "day": 23,
     "word": "Curiosity",
-    "reading": "Curiosity does not have to be loud to be real. Curiosity asks what a feeling needs, instead of obeying it. You can start before you feel brave, and curiosity still counts.\n\nYou might be in a quiet car park, and money stress is sitting on the table. The urge to go numb can be here too, and curiosity can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so curiosity has a real step today. Curiosity still counts if that is all you do. A text to someone safe gives curiosity a little extra help.\n\nCuriosity can be a short prayer, or a few quiet words to a friend."
+    "reading": "Curiosity is the Christian theme here, set beside Philippians 4:6. For Curiosity, the sense of Philippians 4:6 is this: Paul tells believers to bring worries to God in prayer instead of carrying anxiety alone.\n\nChrist is gentle with unfinished people, so Curiosity does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Curiosity shows up this afternoon.\n\nYou can begin Curiosity before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Curiosity still fits the actual day."
   },
   {
     "month": 4,
     "day": 24,
     "word": "Dare",
-    "reading": "Dare can start in an ordinary hour. Help can be asked for before pride writes a long speech. You can start before you feel brave, and dare still counts.\n\nYou might be outside a meeting, and loneliness is louder than the noise around. Hunger can be here too, and dare can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so dare has a real step today. Dare still counts if that is all you do. Lights dimmed at a decent hour gives dare a little extra help.\n\nDare can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Dare is the Christian theme here, set beside Romans 8:1. For Dare, the sense of Romans 8:1 is this: there is no condemnation for those who are in Christ Jesus.\n\nThat verse is a welcome, not a test you pass before God will look at Dare. To live Dare, read Romans 8:1 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 8:1, for Dare, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Dare."
   },
   {
     "month": 4,
     "day": 25,
     "word": "Daylight",
-    "reading": "Daylight can stay small today. A few minutes of daylight on the face can shift a heavy mood. You can start before you feel brave, and daylight still counts.\n\nYou might be at the kitchen table, and loneliness is louder than the noise around. A heavy secret can be here too, and daylight can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so daylight has a real step today. Daylight still counts if that is all you do. Quiet company gives daylight a little extra help.\n\nDaylight can stay small while you borrow hope from someone safe.\n\nEvenings draw in, so let daylight live inside a smaller day."
+    "reading": "The Christian theme, Daylight, is read with 1 John 4:19. For Daylight, the sense of 1 John 4:19 is this: we love because God loved us first.\n\nNothing in 1 John 4:19 asks you to pretend, and Daylight can begin while you are still tired. Give Daylight a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Daylight is allowed to be slow. If the morning was clumsy, Daylight can begin again after lunch in the sight of God. God's kindness towards you is the ground under Daylight, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 26,
     "word": "Decide",
-    "reading": "Decide fits a hard morning. The next small thing can be decided, and the life-sized choice can wait. You can start before you feel brave, and decide still counts.\n\nYou might be in the bathroom, putting off the next thing, and a craving is trying to sound like a good idea. Worry about the future can be here too, and decide can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so decide has a real step today. Decide still counts if that is all you do. A simple meal gives decide a little extra help.\n\nDecide belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Decide, and the text is 2 Corinthians 12:9. For Decide, the sense of 2 Corinthians 12:9 is this: grace is enough, and strength shows up in weakness.\n\nRead Decide in the light of that verse, without turning it into a performance for other people. Let Decide sound like a softer answer where the house has been sharp, with 2 Corinthians 12:9 still in mind.\n\nNo one else has to share your creed for you to practise Decide in the sight of God. God's kindness towards you is the ground under Decide, not a prize withheld until you improve."
   },
   {
     "month": 4,
     "day": 27,
     "word": "Delight",
-    "reading": "Delight is only for this day. A good moment is allowed, and it does not need an apology. You can start before you feel brave, and delight still counts.\n\nYou might be in a quiet house with a loud mind, and the evening feels risky. Numbness can be here too, and delight can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so delight has a real step today. Delight still counts if that is all you do. The phone in another room gives delight a little extra help.\n\nDelight grows more easily with a kind tone than with shame."
+    "reading": "Delight is the Christian theme here, set beside Hebrews 13:5. For Delight, the sense of Hebrews 13:5 is this: God promises never to leave his people or forsake them.\n\nChrist is gentle with unfinished people, so Delight does not have to arrive already polished. Practise Delight at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Delight where your hands are, and let the text stay a lamp rather than a weapon. Keep Delight Christian and specific: one verse, one prayer, one person. In Christ, Delight is worth attention even when the calendar is full."
   },
   {
     "month": 4,
     "day": 28,
     "word": "Depend",
-    "reading": "Depend is allowed to be imperfect. Leaning on safe people can be a form of strength. You can start before you feel brave, and depend still counts.\n\nYou might be outside a meeting, and a secret feels heavy. The thought that the day is already ruined can be here too, and depend can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so depend has a real step today. Depend still counts if that is all you do. An open window gives depend a little extra help.\n\nDepend can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Depend, is read with Colossians 3:13. For Depend, the sense of Colossians 3:13 is this: forgive, because the Lord has forgiven.\n\nThat verse is a welcome, not a test you pass before God will look at Depend. Practise Depend at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Depend can stand inside that mercy without showing off. In Christ, Depend is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Depend still fits the actual day."
   },
   {
     "month": 4,
     "day": 29,
     "word": "Depth",
-    "reading": "Depth does not have to be loud to be real. A simple truth is deep enough for today. You can start before you feel brave, and depth still counts.\n\nYou might be outside a meeting, and help is on offer and feels hard to take. Irritation can be here too, and depth can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so depth has a real step today. Depth still counts if that is all you do. A glass of water gives depth a little extra help.\n\nDepth gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Depth, and the text is John 8:12. For Depth, the sense of John 8:12 is this: Jesus calls himself the light of the world.\n\nNothing in John 8:12 asks you to pretend, and Depth can begin while you are still tired. If you were wrong, let Depth include an apology in a single clean sentence, because of John 8:12.\n\nMercy is wider than today's mistakes, and Depth can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Depth still fits the actual day."
   },
   {
     "month": 4,
     "day": 30,
     "word": "Deserve",
-    "reading": "Deserve can start in an ordinary hour. Food, rest, and kindness still belong on a day that went badly. You can start before you feel brave, and deserve still counts.\n\nYou might be staring at an unanswered message, and the urge to hide is strong. The pull to be alone can be here too, and deserve can stay small. You do not have to fix all of that today.\n\nText one safe person, so deserve has a real step today. Deserve still counts if that is all you do. A short walk gives deserve a little extra help.\n\nIf God is part of your life, you can pray about deserve today. If not, a friend can sit with you, and deserve can be shared."
+    "reading": "Deserve is the Christian theme here, set beside Isaiah 40:31. For Deserve, the sense of Isaiah 40:31 is this: those who wait on the Lord renew their strength.\n\nRead Deserve in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Isaiah 40:31, and let Deserve be unhurried company for someone lonely.\n\nHand the evening to God, and let Deserve be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Deserve."
   },
   {
     "month": 5,
     "day": 1,
     "word": "Detach",
-    "reading": "Detach can stay small today. An argument that cannot be won can be left, and your own side tended. You can start before you feel brave, and detach still counts.\n\nYou might be walking the long way home, and help is on offer and feels hard to take. Shame can be here too, and detach can stay small. You do not have to fix all of that today.\n\nWait ten minutes before acting on a craving, so detach has a real step today. Detach still counts if that is all you do. A kind sentence, spoken as to a friend gives detach a little extra help.\n\nDetach can be a short prayer, or a few quiet words to a friend.\n\nThe dark comes earlier, so let detach include a real light turned on."
+    "reading": "The Christian theme, Detach, is read with John 11:35. For Detach, the sense of John 11:35 is this: the gospel records that Jesus wept with grieving friends.\n\nChrist is gentle with unfinished people, so Detach does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Detach shows up this afternoon.\n\nYou can begin Detach before you feel holy, because the Father already knows the day. If the morning was clumsy, Detach can begin again after lunch in the sight of God. God's kindness towards you is the ground under Detach, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 2,
     "word": "Direction",
-    "reading": "Direction fits a hard morning. Direction can be the safer road, chosen on purpose. You can start before you feel brave, and direction still counts.\n\nYou might be at the kitchen sink, and sleep was short. A craving can be here too, and direction can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so direction has a real step today. Direction still counts if that is all you do. A stretch and a drink of water gives direction a little extra help.\n\nDirection can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Direction, and the text is Matthew 22:39. For Direction, the sense of Matthew 22:39 is this: Jesus says to love your neighbour as yourself.\n\nThat verse is a welcome, not a test you pass before God will look at Direction. To live Direction, read Matthew 22:39 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 22:39, for Direction, is trust, not a performance. God's kindness towards you is the ground under Direction, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 3,
     "word": "Doorway",
-    "reading": "Doorway is only for this day. A meal or a text can be a doorway back into the day. You can start before you feel brave, and doorway still counts.\n\nYou might be in bed, not sleeping, and quitting looks easier than starting. Loneliness can be here too, and doorway can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so doorway has a real step today. Doorway still counts if that is all you do. A washed face gives doorway a little extra help.\n\nDoorway can stay small while you borrow hope from someone safe."
+    "reading": "Doorway is the Christian theme here, set beside Philippians 4:13. For Doorway, the sense of Philippians 4:13 is this: Paul says he can face what comes through Christ who strengthens him.\n\nNothing in Philippians 4:13 asks you to pretend, and Doorway can begin while you are still tired. Give Doorway a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Doorway is allowed to be slow. Keep Doorway Christian and specific: one verse, one prayer, one person. In Christ, Doorway is worth attention even when the calendar is full."
   },
   {
     "month": 5,
     "day": 4,
     "word": "Early",
-    "reading": "Early is allowed to be imperfect. Early help is better than a perfect speech later. You can start before you feel brave, and early still counts.\n\nYou might be in a group, smiling more than the feeling matches, and the day feels very dark. Anger can be here too, and early can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so early has a real step today. Early still counts if that is all you do. A slower breath gives early a little extra help.\n\nEarly belongs to this day only, and tomorrow can keep its own worries.\n\nIf early sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about early is not a crisis plan."
+    "reading": "The Christian theme, Early, is read with Joshua 1:9. For Early, the sense of Joshua 1:9 is this: God tells Joshua to be strong and courageous, because the Lord is with him.\n\nRead Early in the light of that verse, without turning it into a performance for other people. Let Early sound like a softer answer where the house has been sharp, with Joshua 1:9 still in mind.\n\nNo one else has to share your creed for you to practise Early in the sight of God. In Christ, Early is worth attention even when the calendar is full."
   },
   {
     "month": 5,
     "day": 5,
     "word": "Earnest",
-    "reading": "Earnest does not have to be loud to be real. A small promise counts when it is meant, even if it looks plain. You can start before you feel brave, and earnest still counts.\n\nYou might be at a family table, and the house is quiet and the mind is not. Tiredness can be here too, and earnest can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so earnest has a real step today. Earnest still counts if that is all you do. One money worry named to someone safe gives earnest a little extra help.\n\nEarnest grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Earnest, and the text is Proverbs 15:1. For Earnest, the sense of Proverbs 15:1 is this: a soft answer turns anger aside.\n\nChrist is gentle with unfinished people, so Earnest does not have to arrive already polished. Practise Earnest at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Earnest honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Earnest."
   },
   {
     "month": 5,
     "day": 6,
     "word": "Effort",
-    "reading": "Effort can start in an ordinary hour. Effort counts even when nobody claps. You can start before you feel brave, and effort still counts.\n\nYou might be in a waiting room, and the body is tired and the mind is loud. Fear can be here too, and effort can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so effort has a real step today. Effort still counts if that is all you do. A few minutes of daylight gives effort a little extra help.\n\nEffort can be a value you keep, in a quiet way that fits you."
+    "reading": "Effort is the Christian theme here, set beside Isaiah 43:1. For Effort, the sense of Isaiah 43:1 is this: God says he has called his people by name, and they are his.\n\nThat verse is a welcome, not a test you pass before God will look at Effort. Practise Effort at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Effort honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Effort."
   },
   {
     "month": 5,
     "day": 7,
     "word": "Embrace",
-    "reading": "Embrace can stay small today. The real day can be met, not only the one that was rehearsed. You can start before you feel brave, and embrace still counts.\n\nYou might be in the kitchen, before any real food, and a big decision is trying to happen while feelings are hot. Sadness can be here too, and embrace can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so embrace has a real step today. Embrace still counts if that is all you do. One worry written on paper gives embrace a little extra help.\n\nEmbrace gets easier to hold when you ask for help in a short text.\n\nThe dark comes earlier, so let embrace include a real light turned on."
+    "reading": "The Christian theme, Embrace, is read with Mark 4:39. For Embrace, the sense of Mark 4:39 is this: Jesus speaks peace to a storm.\n\nNothing in Mark 4:39 asks you to pretend, and Embrace can begin while you are still tired. If you were wrong, let Embrace include an apology in a single clean sentence, because of Mark 4:39.\n\nMercy is wider than today's mistakes, and Embrace can stand inside that mercy without showing off. If the morning was clumsy, Embrace can begin again after lunch in the sight of God. God's kindness towards you is the ground under Embrace, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 8,
     "word": "Emerge",
-    "reading": "Emerge fits a hard morning. Leaving the bed, the scroll, or the secret can be a real step. You can start before you feel brave, and emerge still counts.\n\nYou might be waiting for the kettle, and someone's words are still ringing. The urge to hide can be here too, and emerge can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so emerge has a real step today. Emerge still counts if that is all you do. A ten-minute pause before a big choice gives emerge a little extra help.\n\nIf God is part of your life, you can pray about emerge today. If not, a friend can sit with you, and emerge can be shared."
+    "reading": "On this page the Christian theme is Emerge, and the text is Acts 2:42. For Emerge, the sense of Acts 2:42 is this: the early church stayed with teaching, shared life, meals, and prayers.\n\nRead Emerge in the light of that verse, without turning it into a performance for other people. Leave a harsh opinion unsaid, and let that restraint be how Emerge shows up this afternoon.\n\nHand the evening to God, and let Emerge be unfinished without being abandoned. God's kindness towards you is the ground under Emerge, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 9,
     "word": "Empty",
-    "reading": "Empty is only for this day. Empty feelings pass more safely with food, people, and rest. You can start before you feel brave, and empty still counts.\n\nYou might be in bed, not sleeping, and the house is quiet and the mind is not. Money stress can be here too, and empty can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so empty has a real step today. Empty still counts if that is all you do. A text to someone safe gives empty a little extra help.\n\nEmpty can be a short prayer, or a few quiet words to a friend.\n\nIf empty sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about empty is not a crisis plan."
+    "reading": "Empty is the Christian theme here, set beside Galatians 5:22. For Empty, the sense of Galatians 5:22 is this: the Spirit grows love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control.\n\nThat verse is a welcome, not a test you pass before God will look at Empty. Leave a harsh opinion unsaid, and let that restraint be how Empty shows up this afternoon.\n\nYou can begin Empty before you feel holy, because the Father already knows the day. Keep Empty Christian and specific: one verse, one prayer, one person. In Christ, Empty is worth attention even when the calendar is full."
   },
   {
     "month": 5,
     "day": 10,
     "word": "Encourage",
-    "reading": "Encourage is allowed to be imperfect. One factual kind sentence can encourage a hard hour. You can start before you feel brave, and encourage still counts.\n\nYou might be folding the washing, and shame got there first. Grief can be here too, and encourage can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so encourage has a real step today. Encourage still counts if that is all you do. Lights dimmed at a decent hour gives encourage a little extra help.\n\nEncourage can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Encourage, is read with Colossians 3:15. For Encourage, the sense of Colossians 3:15 is this: let the peace of Christ rule in your hearts.\n\nThat verse is a welcome, not a test you pass before God will look at Encourage. To live Encourage, read Colossians 3:15 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Colossians 3:15, for Encourage, is trust, not a performance. In Christ, Encourage is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Encourage still fits the actual day."
   },
   {
     "month": 5,
     "day": 11,
     "word": "Endurance",
-    "reading": "Endurance does not have to be loud to be real. Endurance is staying for this hour, not grinding yourself down. You can start before you feel brave, and endurance still counts.\n\nYou might be by a window, and food is being put off. The wish to give up can be here too, and endurance can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so endurance has a real step today. Endurance still counts if that is all you do. Quiet company gives endurance a little extra help.\n\nEndurance can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Endurance, and the text is James 1:5. For Endurance, the sense of James 1:5 is this: if you lack wisdom, ask God, who gives generously.\n\nNothing in James 1:5 asks you to pretend, and Endurance can begin while you are still tired. Give Endurance a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Endurance is allowed to be slow. Australian weather can be hot, wet, or cold, and Endurance still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Endurance."
   },
   {
     "month": 5,
     "day": 12,
     "word": "Energy",
-    "reading": "Energy can start in an ordinary hour. Food, water, and a short walk often bring a little energy back. You can start before you feel brave, and energy still counts.\n\nYou might be folding the washing, and quitting looks easier than starting. Comparison can be here too, and energy can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so energy has a real step today. Energy still counts if that is all you do. A simple meal gives energy a little extra help.\n\nEnergy belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Energy is the Christian theme here, set beside Psalm 23:4. For Energy, the sense of Psalm 23:4 is this: even in a dark valley the psalmist is not abandoned, because the Lord is with him.\n\nRead Energy in the light of that verse, without turning it into a performance for other people. Let Energy sound like a softer answer where the house has been sharp, with Psalm 23:4 still in mind.\n\nNo one else has to share your creed for you to practise Energy in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Energy."
   },
   {
     "month": 5,
     "day": 13,
     "word": "Evening",
-    "reading": "Evening can stay small today. An evening is safer when it is smaller: food, a wash, and an earlier night. You can start before you feel brave, and evening still counts.\n\nYou might be in the shower, and loneliness is louder than the noise around. The urge to go numb can be here too, and evening can stay small. You do not have to fix all of that today.\n\nDim the lights and aim for a decent bedtime, so evening has a real step today. Evening still counts if that is all you do. The phone in another room gives evening a little extra help.\n\nEvening grows more easily with a kind tone than with shame.\n\nThe dark comes earlier, so let evening include a real light turned on."
+    "reading": "The Christian theme, Evening, is read with Psalm 51:10. For Evening, the sense of Psalm 51:10 is this: the psalmist asks God for a clean heart and a steady spirit within.\n\nChrist is gentle with unfinished people, so Evening does not have to arrive already polished. Carry Evening into an ordinary hour by telling the truth kindly, in the spirit of Psalm 51:10.\n\nPut Evening where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Evening can begin again after lunch in the sight of God."
   },
   {
     "month": 5,
     "day": 14,
     "word": "Faith",
-    "reading": "Faith fits a hard morning. Faith can mean trust in the next hour, with or without religious words. You can start before you feel brave, and faith still counts.\n\nYou might be halfway up the stairs, and a drink, a drug, or a numbing scroll looks tempting. Hunger can be here too, and faith can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so faith has a real step today. Faith still counts if that is all you do. An open window gives faith a little extra help.\n\nFaith can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Faith, and the text is Matthew 5:9. For Faith, the sense of Matthew 5:9 is this: Jesus says peacemakers are blessed and called children of God.\n\nThat verse is a welcome, not a test you pass before God will look at Faith. Practise Faith at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Faith honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Faith, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 15,
     "word": "Family",
-    "reading": "Family is only for this day. Family can be warm or complicated, and a kind boundary can still stand. You can start before you feel brave, and family still counts.\n\nYou might be packing a bag and feeling unsure, and help is on offer and feels hard to take. A heavy secret can be here too, and family can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so family has a real step today. Family still counts if that is all you do. A glass of water gives family a little extra help.\n\nFamily gets easier to hold when you ask for help in a short text."
+    "reading": "Family is the Christian theme here, set beside Mark 12:30. For Family, the sense of Mark 12:30 is this: love the Lord your God with heart, soul, mind, and strength.\n\nNothing in Mark 12:30 asks you to pretend, and Family can begin while you are still tired. If you were wrong, let Family include an apology in a single clean sentence, because of Mark 12:30.\n\nMercy is wider than today's mistakes, and Family can stand inside that mercy without showing off. Keep Family Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 5,
     "day": 16,
     "word": "Fear",
-    "reading": "Fear is allowed to be imperfect. Fear can be named and shared, and it does not have to run the day. You can start before you feel brave, and fear still counts.\n\nYou might be on the phone, on hold, and quitting looks easier than starting. Worry about the future can be here too, and fear can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so fear has a real step today. Fear still counts if that is all you do. A short walk gives fear a little extra help.\n\nIf God is part of your life, you can pray about fear today. If not, a friend can sit with you, and fear can be shared.\n\nIf fear sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about fear is not a crisis plan."
+    "reading": "The Christian theme, Fear, is read with John 1:5. For Fear, the sense of John 1:5 is this: the light shines in the darkness, and the darkness has not overcome it.\n\nRead Fear in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of John 1:5, and let Fear be unhurried company for someone lonely.\n\nHand the evening to God, and let Fear be unfinished without being abandoned. In Christ, Fear is worth attention even when the calendar is full."
   },
   {
     "month": 5,
     "day": 17,
     "word": "Fellowship",
-    "reading": "Fellowship does not have to be loud to be real. Fellowship is people who stay, even a meeting where you barely speak. You can start before you feel brave, and fellowship still counts.\n\nYou might be packing a bag and feeling unsure, and loneliness is louder than the noise around. Numbness can be here too, and fellowship can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so fellowship has a real step today. Fellowship still counts if that is all you do. A kind sentence, spoken as to a friend gives fellowship a little extra help.\n\nFellowship can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Fellowship, and the text is Romans 8:26. For Fellowship, the sense of Romans 8:26 is this: the Spirit helps when we are weak and do not know how to pray.\n\nNothing in Romans 8:26 asks you to pretend, and Fellowship can begin while you are still tired. Leave a harsh opinion unsaid, and let that restraint be how Fellowship shows up this afternoon.\n\nYou can begin Fellowship before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Fellowship still fits the actual day."
   },
   {
     "month": 5,
     "day": 18,
     "word": "Flourish",
-    "reading": "Flourish can start in an ordinary hour. Getting through today kindly is enough growth. You can start before you feel brave, and flourish still counts.\n\nYou might be in a group, smiling more than the feeling matches, and a secret feels heavy. The thought that the day is already ruined can be here too, and flourish can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so flourish has a real step today. Flourish still counts if that is all you do. A stretch and a drink of water gives flourish a little extra help.\n\nFlourish can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Flourish is the Christian theme here, set beside Romans 12:21. For Flourish, the sense of Romans 12:21 is this: do not be overcome by evil, but overcome evil with good.\n\nNothing in Romans 12:21 asks you to pretend, and Flourish can begin while you are still tired. To live Flourish, read Romans 12:21 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 12:21, for Flourish, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Flourish."
   },
   {
     "month": 5,
     "day": 19,
     "word": "Focus",
-    "reading": "Focus can stay small today. The next task can have the focus, and the long list can wait. You can start before you feel brave, and focus still counts.\n\nYou might be at the clothesline, and comparison has crept in. Irritation can be here too, and focus can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so focus has a real step today. Focus still counts if that is all you do. A washed face gives focus a little extra help.\n\nFocus can stay small while you borrow hope from someone safe.\n\nThe dark comes earlier, so let focus include a real light turned on."
+    "reading": "The Christian theme, Focus, is read with 2 Corinthians 5:17. For Focus, the sense of 2 Corinthians 5:17 is this: anyone in Christ is a new creation.\n\nNothing in 2 Corinthians 5:17 asks you to pretend, and Focus can begin while you are still tired. Give Focus a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Focus is allowed to be slow. If the morning was clumsy, Focus can begin again after lunch in the sight of God. God's kindness towards you is the ground under Focus, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 20,
     "word": "Food",
-    "reading": "Food fits a hard morning. Food comes before feelings, especially when thoughts are harsh. You can start before you feel brave, and food still counts.\n\nYou might be in the kitchen, before any real food, and everything feels behind. The pull to be alone can be here too, and food can stay small. You do not have to fix all of that today.\n\nEat something simple before any big decision, so food has a real step today. Food still counts if that is all you do. A kind sentence, spoken as to a friend gives food a little extra help.\n\nFood belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Food, and the text is Philippians 4:8. For Food, the sense of Philippians 4:8 is this: think on what is true, honourable, just, pure, and lovely.\n\nRead Food in the light of that verse, without turning it into a performance for other people. Let Food sound like a softer answer where the house has been sharp, with Philippians 4:8 still in mind.\n\nNo one else has to share your creed for you to practise Food in the sight of God. God's kindness towards you is the ground under Food, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 21,
     "word": "Footing",
-    "reading": "Footing is only for this day. Both feet on the floor, and a plan for the next hour, is a footing. You can start before you feel brave, and footing still counts.\n\nYou might be in a waiting room, and someone's words are still ringing. Shame can be here too, and footing can stay small. You do not have to fix all of that today.\n\nWash face and hands, so footing has a real step today. Footing still counts if that is all you do. One money worry named to someone safe gives footing a little extra help.\n\nFooting grows more easily with a kind tone than with shame."
+    "reading": "Footing is the Christian theme here, set beside 1 Thessalonians 5:18. For Footing, the sense of 1 Thessalonians 5:18 is this: give thanks in all circumstances, for this is God's will in Christ.\n\nChrist is gentle with unfinished people, so Footing does not have to arrive already polished. Carry Footing into an ordinary hour by telling the truth kindly, in the spirit of 1 Thessalonians 5:18.\n\nAsk the Lord to keep Footing honest and gentle until you sleep, and leave the rest in God's care. Keep Footing Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 5,
     "day": 22,
     "word": "Forgive",
-    "reading": "Forgive is allowed to be imperfect. A clumsy try can be forgiven, and one cleaner try can follow. You can start before you feel brave, and forgive still counts.\n\nYou might be on the phone, on hold, and shame got there first. A craving can be here too, and forgive can stay small. You do not have to fix all of that today.\n\nReplace the inner insult with one factual sentence, so forgive has a real step today. Forgive still counts if that is all you do. A few minutes of daylight gives forgive a little extra help.\n\nForgive can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Forgive, is read with 1 John 4:7. For Forgive, the sense of 1 John 4:7 is this: love is from God.\n\nThat verse is a welcome, not a test you pass before God will look at Forgive. Practise Forgive at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Forgive honest and gentle until you sleep, and leave the rest in God's care. In Christ, Forgive is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Forgive still fits the actual day."
   },
   {
     "month": 5,
     "day": 23,
     "word": "Foundation",
-    "reading": "Foundation does not have to be loud to be real. Water, food, truth, and one person are a strong base for a day. You can start before you feel brave, and foundation still counts.\n\nYou might be in a quiet car park, and a message is waiting and feels hard to open. Loneliness can be here too, and foundation can stay small. You do not have to fix all of that today.\n\nText one safe person, so foundation has a real step today. Foundation still counts if that is all you do. One worry written on paper gives foundation a little extra help.\n\nFoundation gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Foundation, and the text is Exodus 14:14. For Foundation, the sense of Exodus 14:14 is this: the Lord fights for his people, and they are told to be still.\n\nNothing in Exodus 14:14 asks you to pretend, and Foundation can begin while you are still tired. If you were wrong, let Foundation include an apology in a single clean sentence, because of Exodus 14:14.\n\nMercy is wider than today's mistakes, and Foundation can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Foundation still fits the actual day."
   },
   {
     "month": 5,
     "day": 24,
     "word": "Fragile",
-    "reading": "Fragile can start in an ordinary hour. A fragile day needs a slower pace and more help, not more shame. You can start before you feel brave, and fragile still counts.\n\nYou might be waiting for the kettle, and help is on offer and feels hard to take. Anger can be here too, and fragile can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so fragile has a real step today. Fragile still counts if that is all you do. A ten-minute pause before a big choice gives fragile a little extra help.\n\nIf God is part of your life, you can pray about fragile today. If not, a friend can sit with you, and fragile can be shared.\n\nIf fragile sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about fragile is not a crisis plan."
+    "reading": "Fragile is the Christian theme here, set beside 1 Samuel 16:7. For Fragile, the sense of 1 Samuel 16:7 is this: people look at the outside, and the Lord looks at the heart.\n\nRead Fragile in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 Samuel 16:7, and let Fragile be unhurried company for someone lonely.\n\nHand the evening to God, and let Fragile be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Fragile."
   },
   {
     "month": 5,
     "day": 25,
     "word": "Freedom",
-    "reading": "Freedom can stay small today. Freedom can be one hour that is not handed to a craving. You can start before you feel brave, and freedom still counts.\n\nYou might be waiting for the kettle, and a sharp sentence already landed. Tiredness can be here too, and freedom can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so freedom has a real step today. Freedom still counts if that is all you do. A text to someone safe gives freedom a little extra help.\n\nFreedom can be a short prayer, or a few quiet words to a friend.\n\nThe dark comes earlier, so let freedom include a real light turned on."
+    "reading": "The Christian theme, Freedom, is read with Psalm 4:8. For Freedom, the sense of Psalm 4:8 is this: the psalmist lies down in peace because the Lord makes him dwell in safety.\n\nChrist is gentle with unfinished people, so Freedom does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Freedom shows up this afternoon.\n\nYou can begin Freedom before you feel holy, because the Father already knows the day. If the morning was clumsy, Freedom can begin again after lunch in the sight of God."
   },
   {
     "month": 5,
     "day": 26,
     "word": "Friend",
-    "reading": "Friend fits a hard morning. A friend can hold a sentence that feels too heavy to hold alone. You can start before you feel brave, and friend still counts.\n\nYou might be at a family table, and shame got there first. Fear can be here too, and friend can stay small. You do not have to fix all of that today.\n\nText one safe person, so friend has a real step today. Friend still counts if that is all you do. Lights dimmed at a decent hour gives friend a little extra help.\n\nFriend can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Friend is the Christian theme here, set beside Psalm 30:5. For Friend, the sense of Psalm 30:5 is this: weeping may last for a night, and joy comes with the morning.\n\nThat verse is a welcome, not a test you pass before God will look at Friend. To live Friend, read Psalm 30:5 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 30:5, for Friend, is trust, not a performance. God's kindness towards you is the ground under Friend, not a prize withheld until you improve."
   },
   {
     "month": 5,
     "day": 27,
     "word": "Fruit",
-    "reading": "Fruit is only for this day. The fruit of this work is often quiet: a safer night, a kinder tone. You can start before you feel brave, and fruit still counts.\n\nYou might be on the couch, and grief showed up without warning. Sadness can be here too, and fruit can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so fruit has a real step today. Fruit still counts if that is all you do. Quiet company gives fruit a little extra help.\n\nFruit can stay small while you borrow hope from someone safe."
+    "reading": "Fruit is the Christian theme here, set beside Psalm 55:22. For Fruit, the sense of Psalm 55:22 is this: cast your burden on the Lord, and he will sustain you.\n\nNothing in Psalm 55:22 asks you to pretend, and Fruit can begin while you are still tired. Let Fruit sound like a softer answer where the house has been sharp, with Psalm 55:22 still in mind.\n\nJesus does not rush slow learners, and Fruit is allowed to be slow. Keep Fruit Christian and specific: one verse, one prayer, one person. In Christ, Fruit is worth attention even when the calendar is full."
   },
   {
     "month": 5,
     "day": 28,
     "word": "Gather",
-    "reading": "Gather is allowed to be imperfect. One fact, one need, and one person are enough to gather. You can start before you feel brave, and gather still counts.\n\nYou might be alone with a craving, and a slip is on the mind. The urge to hide can be here too, and gather can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so gather has a real step today. Gather still counts if that is all you do. A simple meal gives gather a little extra help.\n\nGather belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Gather, is read with Psalm 100:4. For Gather, the sense of Psalm 100:4 is this: enter God's gates with thanksgiving.\n\nThat verse is a welcome, not a test you pass before God will look at Gather. Let Gather sound like a softer answer where the house has been sharp, with Psalm 100:4 still in mind.\n\nNo one else has to share your creed for you to practise Gather in the sight of God. In Christ, Gather is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Gather still fits the actual day."
   },
   {
     "month": 5,
     "day": 29,
     "word": "Generous",
-    "reading": "Generous does not have to be loud to be real. A specific thank-you, or a meal you allow yourself, can be generous. You can start before you feel brave, and generous still counts.\n\nYou might be holding a bill that is hard to open, and someone's words are still ringing. Money stress can be here too, and generous can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so generous has a real step today. Generous still counts if that is all you do. The phone in another room gives generous a little extra help.\n\nGenerous grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Generous, and the text is Psalm 119:105. For Generous, the sense of Psalm 119:105 is this: God's word is a lamp for the feet and a light for the path.\n\nChrist is gentle with unfinished people, so Generous does not have to arrive already polished. Carry Generous into an ordinary hour by telling the truth kindly, in the spirit of Psalm 119:105.\n\nAsk the Lord to keep Generous honest and gentle until you sleep, and leave the rest in God's care. Australian weather can be hot, wet, or cold, and Generous still fits the actual day."
   },
   {
     "month": 5,
     "day": 30,
     "word": "Gift",
-    "reading": "Gift can start in an ordinary hour. Help can be received as a gift, without keeping a score. You can start before you feel brave, and gift still counts.\n\nYou might be in a supermarket aisle, and a secret feels heavy. Grief can be here too, and gift can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so gift has a real step today. Gift still counts if that is all you do. An open window gives gift a little extra help.\n\nGift can be a value you keep, in a quiet way that fits you."
+    "reading": "Gift is the Christian theme here, set beside Psalm 147:3. For Gift, the sense of Psalm 147:3 is this: he heals the brokenhearted and binds up their wounds.\n\nThat verse is a welcome, not a test you pass before God will look at Gift. Practise Gift at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Gift honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Gift."
   },
   {
     "month": 5,
     "day": 31,
     "word": "Go gently",
-    "reading": "Go gently can stay small today. When the day is loud, a gentle pace can be the whole plan. You can start before you feel brave, and go gently still counts.\n\nYou might be in the car, not ready to go in, and the house is quiet and the mind is not. The wish to give up can be here too, and go gently can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so go gently has a real step today. Go gently still counts if that is all you do. A glass of water gives go gently a little extra help.\n\nGo gently gets easier to hold when you ask for help in a short text.\n\nThe dark comes earlier, so let go gently include a real light turned on."
+    "reading": "The Christian theme, Go gently, is read with Ecclesiastes 3:1. For Go gently, the sense of Ecclesiastes 3:1 is this: there is a season for everything.\n\nNothing in Ecclesiastes 3:1 asks you to pretend, and Go gently can begin while you are still tired. If you were wrong, let Go gently include an apology in a single clean sentence, because of Ecclesiastes 3:1.\n\nMercy is wider than today's mistakes, and Go gently can stand inside that mercy without showing off. If the morning was clumsy, Go gently can begin again after lunch in the sight of God."
   },
   {
     "month": 6,
     "day": 1,
     "word": "Goodwill",
-    "reading": "Goodwill fits a hard morning. Goodwill can be one concrete wish for your own good. You can start before you feel brave, and goodwill still counts.\n\nYou might be after a hard conversation, and being alone is pretending to be strength. Comparison can be here too, and goodwill can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so goodwill has a real step today. Goodwill still counts if that is all you do. A short walk gives goodwill a little extra help.\n\nIf God is part of your life, you can pray about goodwill today. If not, a friend can sit with you, and goodwill can be shared."
+    "reading": "On this page the Christian theme is Goodwill, and the text is Isaiah 41:13. For Goodwill, the sense of Isaiah 41:13 is this: the Lord holds his people's hand and tells them not to fear.\n\nRead Goodwill in the light of that verse, without turning it into a performance for other people. Leave a harsh opinion unsaid, and let that restraint be how Goodwill shows up this afternoon.\n\nHand the evening to God, and let Goodwill be unfinished without being abandoned. God's kindness towards you is the ground under Goodwill, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 2,
     "word": "Grace",
-    "reading": "Grace is only for this day. Grace is kindness that does not have to be earned before a new start. You can start before you feel brave, and grace still counts.\n\nYou might be on the phone, on hold, and money stress is sitting on the table. The urge to go numb can be here too, and grace can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so grace has a real step today. Grace still counts if that is all you do. A kind sentence, spoken as to a friend gives grace a little extra help.\n\nGrace can be a short prayer, or a few quiet words to a friend."
+    "reading": "Grace is the Christian theme here, set beside Ezekiel 36:26. For Grace, the sense of Ezekiel 36:26 is this: God promises a new heart and a new spirit.\n\nChrist is gentle with unfinished people, so Grace does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Grace shows up this afternoon.\n\nYou can begin Grace before you feel holy, because the Father already knows the day. Keep Grace Christian and specific: one verse, one prayer, one person. In Christ, Grace is worth attention even when the calendar is full."
   },
   {
     "month": 6,
     "day": 3,
     "word": "Grieve",
-    "reading": "Grieve is allowed to be imperfect. Grief can sit with you, and it does not have to be numbed to get through the hour. You can start before you feel brave, and grieve still counts.\n\nYou might be on the couch, and the day feels very dark. Hunger can be here too, and grieve can stay small. You do not have to fix all of that today.\n\nLet the sad feeling be here for ten minutes, without numbing it, so grieve has a real step today. Grieve still counts if that is all you do. A stretch and a drink of water gives grieve a little extra help.\n\nGrieve can begin again today, and mercy means you do not have to earn that start.\n\nIf grieve sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about grieve is not a crisis plan."
+    "reading": "The Christian theme, Grieve, is read with Matthew 5:8. For Grieve, the sense of Matthew 5:8 is this: Jesus says the pure in heart will see God.\n\nThat verse is a welcome, not a test you pass before God will look at Grieve. To live Grieve, read Matthew 5:8 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 5:8, for Grieve, is trust, not a performance. In Christ, Grieve is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Grieve still fits the actual day."
   },
   {
     "month": 6,
     "day": 4,
     "word": "Grounded",
-    "reading": "Grounded does not have to be loud to be real. Grounded means a body in a real room, not a mind stuck in next year. You can start before you feel brave, and grounded still counts.\n\nYou might be staring at an unanswered message, and a drink, a drug, or a numbing scroll looks tempting. A heavy secret can be here too, and grounded can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so grounded has a real step today. Grounded still counts if that is all you do. A washed face gives grounded a little extra help.\n\nGrounded can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Grounded, and the text is Matthew 18:20. For Grounded, the sense of Matthew 18:20 is this: where two or three gather in Jesus' name, he is there among them.\n\nNothing in Matthew 18:20 asks you to pretend, and Grounded can begin while you are still tired. Give Grounded a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Grounded is allowed to be slow. Australian weather can be hot, wet, or cold, and Grounded still fits the actual day."
   },
   {
     "month": 6,
     "day": 5,
     "word": "Grow",
-    "reading": "Grow can start in an ordinary hour. One honest action is enough growth for today. You can start before you feel brave, and grow still counts.\n\nYou might be at a family table, and quitting looks easier than starting. Worry about the future can be here too, and grow can stay small. You do not have to fix all of that today.\n\nEat something simple, so grow has a real step today. Grow still counts if that is all you do. A kind sentence, spoken as to a friend gives grow a little extra help.\n\nGrow belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Grow is the Christian theme here, set beside Luke 1:37. For Grow, the sense of Luke 1:37 is this: nothing will be impossible with God.\n\nRead Grow in the light of that verse, without turning it into a performance for other people. Let Grow sound like a softer answer where the house has been sharp, with Luke 1:37 still in mind.\n\nNo one else has to share your creed for you to practise Grow in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Grow."
   },
   {
     "month": 6,
     "day": 6,
     "word": "Guard",
-    "reading": "Guard can stay small today. Sleep, safety, and the company you keep are worth guarding. You can start before you feel brave, and guard still counts.\n\nYou might be waiting for the kettle, and shame got there first. Numbness can be here too, and guard can stay small. You do not have to fix all of that today.\n\nSay one short no, and keep it short, so guard has a real step today. Guard still counts if that is all you do. One money worry named to someone safe gives guard a little extra help.\n\nGuard grows more easily with a kind tone than with shame.\n\nWinter mornings are hard, so let guard stay small."
+    "reading": "The Christian theme, Guard, is read with Luke 19:10. For Guard, the sense of Luke 19:10 is this: the Son of Man came to seek and to save the lost.\n\nChrist is gentle with unfinished people, so Guard does not have to arrive already polished. Carry Guard into an ordinary hour by telling the truth kindly, in the spirit of Luke 19:10.\n\nPut Guard where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Guard can begin again after lunch in the sight of God."
   },
   {
     "month": 6,
     "day": 7,
     "word": "Guide",
-    "reading": "Guide fits a hard morning. A safe person or a simple plan can guide the next hour. You can start before you feel brave, and guide still counts.\n\nYou might be in bed, not sleeping, and a secret feels heavy. The thought that the day is already ruined can be here too, and guide can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so guide has a real step today. Guide still counts if that is all you do. A few minutes of daylight gives guide a little extra help.\n\nGuide can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Guide, and the text is John 6:35. For Guide, the sense of John 6:35 is this: Jesus says he is the bread of life.\n\nThat verse is a welcome, not a test you pass before God will look at Guide. Practise Guide at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Guide honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Guide, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 8,
     "word": "Habit",
-    "reading": "Habit is only for this day. Coming back matters more than a perfect streak. You can start before you feel brave, and habit still counts.\n\nYou might be scrolling, and feeling alone, and the room is safe enough, but the chest is tight. Irritation can be here too, and habit can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so habit has a real step today. Habit still counts if that is all you do. One worry written on paper gives habit a little extra help.\n\nHabit gets easier to hold when you ask for help in a short text."
+    "reading": "Habit is the Christian theme here, set beside John 15:5. For Habit, the sense of John 15:5 is this: Jesus is the vine, and apart from him his people cannot bear lasting fruit.\n\nNothing in John 15:5 asks you to pretend, and Habit can begin while you are still tired. If you were wrong, let Habit include an apology in a single clean sentence, because of John 15:5.\n\nMercy is wider than today's mistakes, and Habit can stand inside that mercy without showing off. Keep Habit Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 6,
     "day": 9,
     "word": "Hands",
-    "reading": "Hands is allowed to be imperfect. Hands can do the next care: a mug, a text, a washed plate. You can start before you feel brave, and hands still counts.\n\nYou might be in a quiet house with a loud mind, and a drink, a drug, or a numbing scroll looks tempting. The pull to be alone can be here too, and hands can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so hands has a real step today. Hands still counts if that is all you do. A ten-minute pause before a big choice gives hands a little extra help.\n\nIf God is part of your life, you can pray about hands today. If not, a friend can sit with you, and hands can be shared."
+    "reading": "The Christian theme, Hands, is read with Romans 12:10. For Hands, the sense of Romans 12:10 is this: love one another with genuine affection and outdo one another in showing honour.\n\nRead Hands in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Romans 12:10, and let Hands be unhurried company for someone lonely.\n\nHand the evening to God, and let Hands be unfinished without being abandoned. In Christ, Hands is worth attention even when the calendar is full."
   },
   {
     "month": 6,
     "day": 10,
     "word": "Harmony",
-    "reading": "Harmony does not have to be loud to be real. A truce can be enough harmony for a feeling-filled house. You can start before you feel brave, and harmony still counts.\n\nYou might be in a quiet house with a loud mind, and the room is safe enough, but the chest is tight. Shame can be here too, and harmony can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so harmony has a real step today. Harmony still counts if that is all you do. A text to someone safe gives harmony a little extra help.\n\nHarmony can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Harmony, and the text is 1 Corinthians 13:13. For Harmony, the sense of 1 Corinthians 13:13 is this: faith, hope, and love remain, and the greatest of these is love.\n\nChrist is gentle with unfinished people, so Harmony does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Harmony shows up this afternoon.\n\nYou can begin Harmony before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Harmony still fits the actual day."
   },
   {
     "month": 6,
     "day": 11,
     "word": "Heal",
-    "reading": "Heal can start in an ordinary hour. Healing is slow, and today the sore place can be tended kindly. You can start before you feel brave, and heal still counts.\n\nYou might be at the clothesline, and being alone is pretending to be strength. A craving can be here too, and heal can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so heal has a real step today. Heal still counts if that is all you do. Lights dimmed at a decent hour gives heal a little extra help.\n\nHeal can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Heal is the Christian theme here, set beside Galatians 6:9. For Heal, the sense of Galatians 6:9 is this: do not grow weary of doing good, for the harvest comes in time.\n\nThat verse is a welcome, not a test you pass before God will look at Heal. To live Heal, read Galatians 6:9 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Galatians 6:9, for Heal, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Heal."
   },
   {
     "month": 6,
     "day": 12,
     "word": "Heart",
-    "reading": "Heart can stay small today. Heart shows up as honesty, not as a performance of being fine. You can start before you feel brave, and heart still counts.\n\nYou might be at a family table, and the body is tired and the mind is loud. Loneliness can be here too, and heart can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so heart has a real step today. Heart still counts if that is all you do. Quiet company gives heart a little extra help.\n\nHeart can stay small while you borrow hope from someone safe.\n\nWinter mornings are hard, so let heart stay small."
+    "reading": "The Christian theme, Heart, is read with Ephesians 4:29. For Heart, the sense of Ephesians 4:29 is this: let your words build people up.\n\nNothing in Ephesians 4:29 asks you to pretend, and Heart can begin while you are still tired. Give Heart a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Heart is allowed to be slow. If the morning was clumsy, Heart can begin again after lunch in the sight of God. God's kindness towards you is the ground under Heart, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 13,
     "word": "Help",
-    "reading": "Help fits a hard morning. Help is allowed today, and it can be asked for in a few words. You can start before you feel brave, and help still counts.\n\nYou might be on the floor by the cupboard, and comparison has crept in. Anger can be here too, and help can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so help has a real step today. Help still counts if that is all you do. A simple meal gives help a little extra help.\n\nHelp belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Help, and the text is Colossians 3:12. For Help, the sense of Colossians 3:12 is this: as God's chosen people, put on compassion, kindness, humility, and patience.\n\nRead Help in the light of that verse, without turning it into a performance for other people. Let Help sound like a softer answer where the house has been sharp, with Colossians 3:12 still in mind.\n\nNo one else has to share your creed for you to practise Help in the sight of God. God's kindness towards you is the ground under Help, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 14,
     "word": "Home",
-    "reading": "Home is only for this day. Food, light, and a safe plan can make home a little kinder. You can start before you feel brave, and home still counts.\n\nYou might be on a short walk, and help is on offer and feels hard to take. Tiredness can be here too, and home can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so home has a real step today. Home still counts if that is all you do. The phone in another room gives home a little extra help.\n\nHome grows more easily with a kind tone than with shame."
+    "reading": "Home is the Christian theme here, set beside Titus 3:5. For Home, the sense of Titus 3:5 is this: God saves by mercy, not by works anyone can boast about.\n\nChrist is gentle with unfinished people, so Home does not have to arrive already polished. Carry Home into an ordinary hour by telling the truth kindly, in the spirit of Titus 3:5.\n\nPut Home where your hands are, and let the text stay a lamp rather than a weapon. Keep Home Christian and specific: one verse, one prayer, one person. In Christ, Home is worth attention even when the calendar is full."
   },
   {
     "month": 6,
     "day": 15,
     "word": "Honour",
-    "reading": "Honour is allowed to be imperfect. A limit that protects sleep, safety, or peace is worth honouring. You can start before you feel brave, and honour still counts.\n\nYou might be at work, trying to look fine, and shame got there first. Fear can be here too, and honour can stay small. You do not have to fix all of that today.\n\nText one safe person, so honour has a real step today. Honour still counts if that is all you do. An open window gives honour a little extra help.\n\nHonour can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Honour, is read with Hebrews 12:2. For Honour, the sense of Hebrews 12:2 is this: look to Jesus, the pioneer and perfecter of faith.\n\nNothing in Hebrews 12:2 asks you to pretend, and Honour can begin while you are still tired. Practise Honour at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Honour can stand inside that mercy without showing off. In Christ, Honour is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Honour still fits the actual day."
   },
   {
     "month": 6,
     "day": 16,
     "word": "Hopeful",
-    "reading": "Hopeful does not have to be loud to be real. A tiny hope still counts. You can start before you feel brave, and hopeful still counts.\n\nYou might be on the edge of the bed, and the day feels very dark. Sadness can be here too, and hopeful can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so hopeful has a real step today. Hopeful still counts if that is all you do. A glass of water gives hopeful a little extra help.\n\nHopeful gets easier to hold when you ask for help in a short text.\n\nIf hopeful sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about hopeful is not a crisis plan."
+    "reading": "On this page the Christian theme is Hopeful, and the text is James 1:22. For Hopeful, the sense of James 1:22 is this: be doers of the word, not hearers only.\n\nNothing in James 1:22 asks you to pretend, and Hopeful can begin while you are still tired. If you were wrong, let Hopeful include an apology in a single clean sentence, because of James 1:22.\n\nMercy is wider than today's mistakes, and Hopeful can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Hopeful still fits the actual day."
   },
   {
     "month": 6,
     "day": 17,
     "word": "Humble",
-    "reading": "Humble can start in an ordinary hour. Saying you need help, without name-calling, is a humble act. You can start before you feel brave, and humble still counts.\n\nYou might be after a hard conversation, and the body is tired and the mind is loud. The urge to hide can be here too, and humble can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so humble has a real step today. Humble still counts if that is all you do. A short walk gives humble a little extra help.\n\nIf God is part of your life, you can pray about humble today. If not, a friend can sit with you, and humble can be shared."
+    "reading": "Humble is the Christian theme here, set beside 1 Peter 1:3. For Humble, the sense of 1 Peter 1:3 is this: God has given new birth into a living hope through the resurrection of Jesus.\n\nRead Humble in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 Peter 1:3, and let Humble be unhurried company for someone lonely.\n\nHand the evening to God, and let Humble be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Humble."
   },
   {
     "month": 6,
     "day": 18,
     "word": "Humour",
-    "reading": "Humour can stay small today. A joke can tell the truth without being cruel, especially to yourself. You can start before you feel brave, and humour still counts.\n\nYou might be outside a meeting, and a message is waiting and feels hard to open. Money stress can be here too, and humour can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so humour has a real step today. Humour still counts if that is all you do. A kind sentence, spoken as to a friend gives humour a little extra help.\n\nHumour can be a short prayer, or a few quiet words to a friend.\n\nWinter mornings are hard, so let humour stay small."
+    "reading": "The Christian theme, Humour, is read with 1 John 3:18. For Humour, the sense of 1 John 3:18 is this: let love be shown in deed and in truth, not in talk alone.\n\nChrist is gentle with unfinished people, so Humour does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Humour shows up this afternoon.\n\nYou can begin Humour before you feel holy, because the Father already knows the day. If the morning was clumsy, Humour can begin again after lunch in the sight of God."
   },
   {
     "month": 6,
     "day": 19,
     "word": "Hunger",
-    "reading": "Hunger fits a hard morning. Hunger can dress up as anger, so eat before a decision. You can start before you feel brave, and hunger still counts.\n\nYou might be in the shower, and money stress is sitting on the table. Grief can be here too, and hunger can stay small. You do not have to fix all of that today.\n\nEat something simple before any big decision, so hunger has a real step today. Hunger still counts if that is all you do. A stretch and a drink of water gives hunger a little extra help.\n\nHunger can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Hunger, and the text is Genesis 1:27. For Hunger, the sense of Genesis 1:27 is this: God created people in his image.\n\nThat verse is a welcome, not a test you pass before God will look at Hunger. To live Hunger, read Genesis 1:27 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Genesis 1:27, for Hunger, is trust, not a performance. God's kindness towards you is the ground under Hunger, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 20,
     "word": "Hush",
-    "reading": "Hush is only for this day. The inner insult can be hushed for one quiet minute. You can start before you feel brave, and hush still counts.\n\nYou might be in a quiet house with a loud mind, and someone's words are still ringing. The wish to give up can be here too, and hush can stay small. You do not have to fix all of that today.\n\nPut the phone in another room for twenty minutes, so hush has a real step today. Hush still counts if that is all you do. A washed face gives hush a little extra help.\n\nHush can stay small while you borrow hope from someone safe."
+    "reading": "Hush is the Christian theme here, set beside Deuteronomy 31:6. For Hush, the sense of Deuteronomy 31:6 is this: be strong and courageous, because the Lord goes with you.\n\nNothing in Deuteronomy 31:6 asks you to pretend, and Hush can begin while you are still tired. Give Hush a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Hush is allowed to be slow. Keep Hush Christian and specific: one verse, one prayer, one person. In Christ, Hush is worth attention even when the calendar is full."
   },
   {
     "month": 6,
     "day": 21,
     "word": "Imagine",
-    "reading": "Imagine is allowed to be imperfect. The next kind action can be pictured, then done. You can start before you feel brave, and imagine still counts.\n\nYou might be at the kitchen table, and a sharp sentence already landed. Comparison can be here too, and imagine can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so imagine has a real step today. Imagine still counts if that is all you do. A slower breath gives imagine a little extra help.\n\nImagine belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Imagine, is read with Psalm 18:2. For Imagine, the sense of Psalm 18:2 is this: the Lord is a rock, a fortress, and a deliverer.\n\nRead Imagine in the light of that verse, without turning it into a performance for other people. Let Imagine sound like a softer answer where the house has been sharp, with Psalm 18:2 still in mind.\n\nNo one else has to share your creed for you to practise Imagine in the sight of God. In Christ, Imagine is worth attention even when the calendar is full."
   },
   {
     "month": 6,
     "day": 22,
     "word": "Integrity",
-    "reading": "Integrity does not have to be loud to be real. Integrity is one small action that matches the words. You can start before you feel brave, and integrity still counts.\n\nYou might be awake too late, and a craving is trying to sound like a good idea. The urge to go numb can be here too, and integrity can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so integrity has a real step today. Integrity still counts if that is all you do. One money worry named to someone safe gives integrity a little extra help.\n\nIntegrity grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Integrity, and the text is Psalm 51:17. For Integrity, the sense of Psalm 51:17 is this: a broken and contrite heart is not despised by God.\n\nChrist is gentle with unfinished people, so Integrity does not have to arrive already polished. Carry Integrity into an ordinary hour by telling the truth kindly, in the spirit of Psalm 51:17.\n\nPut Integrity where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Integrity still fits the actual day."
   },
   {
     "month": 6,
     "day": 23,
     "word": "Intention",
-    "reading": "Intention can start in an ordinary hour. An intention becomes real when the next tiny step is done. You can start before you feel brave, and intention still counts.\n\nYou might be on the phone, on hold, and grief showed up without warning. Hunger can be here too, and intention can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so intention has a real step today. Intention still counts if that is all you do. A few minutes of daylight gives intention a little extra help.\n\nIntention can be a value you keep, in a quiet way that fits you."
+    "reading": "Intention is the Christian theme here, set beside Psalm 90:12. For Intention, the sense of Psalm 90:12 is this: teach us to number our days so that we gain a wise heart.\n\nThat verse is a welcome, not a test you pass before God will look at Intention. Practise Intention at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Intention honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Intention."
   },
   {
     "month": 6,
     "day": 24,
     "word": "Invite",
-    "reading": "Invite can stay small today. Help can be invited in, even if the invite is a short text. You can start before you feel brave, and invite still counts.\n\nYou might be waiting for the kettle, and comparison has crept in. A heavy secret can be here too, and invite can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so invite has a real step today. Invite still counts if that is all you do. One worry written on paper gives invite a little extra help.\n\nInvite gets easier to hold when you ask for help in a short text.\n\nWinter mornings are hard, so let invite stay small."
+    "reading": "The Christian theme, Invite, is read with Psalm 121:7. For Invite, the sense of Psalm 121:7 is this: the Lord will keep your life.\n\nNothing in Psalm 121:7 asks you to pretend, and Invite can begin while you are still tired. If you were wrong, let Invite include an apology in a single clean sentence, because of Psalm 121:7.\n\nMercy is wider than today's mistakes, and Invite can stand inside that mercy without showing off. If the morning was clumsy, Invite can begin again after lunch in the sight of God. God's kindness towards you is the ground under Invite, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 25,
     "word": "Joy",
-    "reading": "Joy fits a hard morning. Joy is allowed to visit, and it does not have to be argued with. You can start before you feel brave, and joy still counts.\n\nYou might be at the kitchen table, and a message is waiting and feels hard to open. Worry about the future can be here too, and joy can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so joy has a real step today. Joy still counts if that is all you do. A ten-minute pause before a big choice gives joy a little extra help.\n\nIf God is part of your life, you can pray about joy today. If not, a friend can sit with you, and joy can be shared."
+    "reading": "On this page the Christian theme is Joy, and the text is Proverbs 12:25. For Joy, the sense of Proverbs 12:25 is this: anxiety weighs a heart down, and a good word cheers it.\n\nRead Joy in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Proverbs 12:25, and let Joy be unhurried company for someone lonely.\n\nHand the evening to God, and let Joy be unfinished without being abandoned. God's kindness towards you is the ground under Joy, not a prize withheld until you improve."
   },
   {
     "month": 6,
     "day": 26,
     "word": "Journey",
-    "reading": "Journey is only for this day. The way is walked one day at a time, and this is that day. You can start before you feel brave, and journey still counts.\n\nYou might be scrolling, and feeling alone, and the evening feels risky. Numbness can be here too, and journey can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so journey has a real step today. Journey still counts if that is all you do. A text to someone safe gives journey a little extra help.\n\nJourney can be a short prayer, or a few quiet words to a friend."
+    "reading": "The Christian theme, Journey, is read with Isaiah 9:6. For Journey, the sense of Isaiah 9:6 is this: a child is promised who is called Wonderful Counsellor and Prince of Peace.\n\nChrist is gentle with unfinished people, so Journey does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Journey shows up this afternoon.\n\nYou can begin Journey before you feel holy, because the Father already knows the day. Keep Journey Christian and specific: one verse, one prayer, one person. In Christ, Journey is worth attention even when the calendar is full."
   },
   {
     "month": 6,
     "day": 27,
     "word": "Justice",
-    "reading": "Justice is allowed to be imperfect. Fairness includes being fair to yourself, not only hard on yourself. You can start before you feel brave, and justice still counts.\n\nYou might be in a waiting room, and the day feels very dark. The thought that the day is already ruined can be here too, and justice can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so justice has a real step today. Justice still counts if that is all you do. Lights dimmed at a decent hour gives justice a little extra help.\n\nJustice can begin again today, and mercy means you do not have to earn that start.\n\nIf justice sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about justice is not a crisis plan."
+    "reading": "The Christian theme, Justice, is read with Isaiah 40:29. For Justice, the sense of Isaiah 40:29 is this: he gives power to the faint.\n\nThat verse is a welcome, not a test you pass before God will look at Justice. To live Justice, read Isaiah 40:29 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Isaiah 40:29, for Justice, is trust, not a performance. In Christ, Justice is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Justice still fits the actual day."
   },
   {
     "month": 6,
     "day": 28,
     "word": "Keep faith",
-    "reading": "Keep faith does not have to be loud to be real. The next hour can be stayed inside, and that is a faithful act. You can start before you feel brave, and keep faith still counts.\n\nYou might be at the kitchen sink, and someone's words are still ringing. Irritation can be here too, and keep faith can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so keep faith has a real step today. Keep faith still counts if that is all you do. Quiet company gives keep faith a little extra help.\n\nKeep faith can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Keep faith, and the text is Isaiah 55:6. For Keep faith, the sense of Isaiah 55:6 is this: seek the Lord while he may be found.\n\nNothing in Isaiah 55:6 asks you to pretend, and Keep faith can begin while you are still tired. Give Keep faith a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Keep faith is allowed to be slow. Australian weather can be hot, wet, or cold, and Keep faith still fits the actual day."
   },
   {
     "month": 6,
     "day": 29,
     "word": "Kind voice",
-    "reading": "Kind voice can start in an ordinary hour. Use the voice you would want a friend to hear on a hard day. You can start before you feel brave, and kind voice still counts.\n\nYou might be at a family table, and money stress is sitting on the table. The pull to be alone can be here too, and kind voice can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so kind voice has a real step today. Kind voice still counts if that is all you do. A simple meal gives kind voice a little extra help.\n\nKind voice belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Kind voice is the Christian theme here, set beside Amos 5:24. For Kind voice, the sense of Amos 5:24 is this: let justice roll down like waters.\n\nRead Kind voice in the light of that verse, without turning it into a performance for other people. Let Kind voice sound like a softer answer where the house has been sharp, with Amos 5:24 still in mind.\n\nNo one else has to share your creed for you to practise Kind voice in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Kind voice."
   },
   {
     "month": 6,
     "day": 30,
     "word": "Laugh",
-    "reading": "Laugh can stay small today. Laughter can come, and it does not mean the hard thing is fake. You can start before you feel brave, and laugh still counts.\n\nYou might be in a group, smiling more than the feeling matches, and sleep was short. Shame can be here too, and laugh can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so laugh has a real step today. Laugh still counts if that is all you do. The phone in another room gives laugh a little extra help.\n\nLaugh grows more easily with a kind tone than with shame.\n\nWinter mornings are hard, so let laugh stay small."
+    "reading": "The Christian theme, Laugh, is read with Micah 7:7. For Laugh, the sense of Micah 7:7 is this: the writer will look to the Lord and wait for the God of salvation.\n\nChrist is gentle with unfinished people, so Laugh does not have to arrive already polished. Practise Laugh at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Laugh where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Laugh can begin again after lunch in the sight of God."
   },
   {
     "month": 7,
     "day": 1,
     "word": "Lay down",
-    "reading": "Lay down fits a hard morning. Other people's choices can be laid down. You can start before you feel brave, and lay down still counts.\n\nYou might be outside a meeting, and the body is tired and the mind is loud. A craving can be here too, and lay down can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so lay down has a real step today. Lay down still counts if that is all you do. An open window gives lay down a little extra help.\n\nLay down can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Lay down, and the text is Malachi 3:6. For Lay down, the sense of Malachi 3:6 is this: the Lord does not change.\n\nThat verse is a welcome, not a test you pass before God will look at Lay down. Practise Lay down at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Lay down can stand inside that mercy without showing off. God's kindness towards you is the ground under Lay down, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 2,
     "word": "Lean",
-    "reading": "Lean is only for this day. Lean on someone safe before an old habit gets the lean. You can start before you feel brave, and lean still counts.\n\nYou might be in the shower, and a message is waiting and feels hard to open. Loneliness can be here too, and lean can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so lean has a real step today. Lean still counts if that is all you do. A glass of water gives lean a little extra help.\n\nLean gets easier to hold when you ask for help in a short text."
+    "reading": "Lean is the Christian theme here, set beside Matthew 6:21. For Lean, the sense of Matthew 6:21 is this: where your treasure is, your heart will be also.\n\nNothing in Matthew 6:21 asks you to pretend, and Lean can begin while you are still tired. If you were wrong, let Lean include an apology in a single clean sentence, because of Matthew 6:21.\n\nMercy is wider than today's mistakes, and Lean can stand inside that mercy without showing off. Keep Lean Christian and specific: one verse, one prayer, one person. In Christ, Lean is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 3,
     "word": "Learn",
-    "reading": "Learn is allowed to be imperfect. One plain lesson is enough, and then rest is allowed. You can start before you feel brave, and learn still counts.\n\nYou might be on a lunch break, and the house is quiet and the mind is not. Anger can be here too, and learn can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so learn has a real step today. Learn still counts if that is all you do. A short walk gives learn a little extra help.\n\nIf God is part of your life, you can pray about learn today. If not, a friend can sit with you, and learn can be shared."
+    "reading": "The Christian theme, Learn, is read with Luke 4:18. For Learn, the sense of Luke 4:18 is this: Jesus says the Spirit has anointed him to bring good news to the poor.\n\nRead Learn in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Luke 4:18, and let Learn be unhurried company for someone lonely.\n\nHand the evening to God, and let Learn be unfinished without being abandoned. In Christ, Learn is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 4,
     "word": "Let be",
-    "reading": "Let be does not have to be loud to be real. Some things can stay unfinished while one care gets done. You can start before you feel brave, and let be still counts.\n\nYou might be in the car, not ready to go in, and a sharp sentence already landed. Tiredness can be here too, and let be can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so let be has a real step today. Let be still counts if that is all you do. A kind sentence, spoken as to a friend gives let be a little extra help.\n\nLet be can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Let be, and the text is John 6:37. For Let be, the sense of John 6:37 is this: whoever comes to Jesus he will never cast out.\n\nChrist is gentle with unfinished people, so Let be does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Let be shows up this afternoon.\n\nYou can begin Let be before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Let be still fits the actual day."
   },
   {
     "month": 7,
     "day": 5,
     "word": "Lift",
-    "reading": "Lift can start in an ordinary hour. Daylight, a wash, or a kind text can lift the day a little. You can start before you feel brave, and lift still counts.\n\nYou might be at the kitchen sink, and loneliness is louder than the noise around. Fear can be here too, and lift can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so lift has a real step today. Lift still counts if that is all you do. A stretch and a drink of water gives lift a little extra help.\n\nLift can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Lift is the Christian theme here, set beside Acts 17:28. For Lift, the sense of Acts 17:28 is this: in God we live and move and have our being.\n\nThat verse is a welcome, not a test you pass before God will look at Lift. To live Lift, read Acts 17:28 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Acts 17:28, for Lift, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Lift."
   },
   {
     "month": 7,
     "day": 6,
     "word": "Limit",
-    "reading": "Limit can stay small today. A limit can protect sleep, money, or safety. You can start before you feel brave, and limit still counts.\n\nYou might be awake before the alarm, and help is on offer and feels hard to take. Sadness can be here too, and limit can stay small. You do not have to fix all of that today.\n\nChoose safer company for the next hour, so limit has a real step today. Limit still counts if that is all you do. A washed face gives limit a little extra help.\n\nLimit can stay small while you borrow hope from someone safe.\n\nGetting up in midwinter is already brave, and limit can be part of that bravery."
+    "reading": "The Christian theme, Limit, is read with Romans 14:19. For Limit, the sense of Romans 14:19 is this: pursue what makes for peace and for building one another up.\n\nNothing in Romans 14:19 asks you to pretend, and Limit can begin while you are still tired. Give Limit a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Limit is allowed to be slow. If the morning was clumsy, Limit can begin again after lunch in the sight of God. God's kindness towards you is the ground under Limit, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 7,
     "word": "Longing",
-    "reading": "Longing fits a hard morning. A longing for comfort is human, and it can be met without a substance. You can start before you feel brave, and longing still counts.\n\nYou might be in the shower, and quitting looks easier than starting. The urge to hide can be here too, and longing can stay small. You do not have to fix all of that today.\n\nLet the sad feeling be here for ten minutes, without numbing it, so longing has a real step today. Longing still counts if that is all you do. A slower breath gives longing a little extra help.\n\nLonging belongs to this day only, and tomorrow can keep its own worries.\n\nIf longing sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about longing is not a crisis plan."
+    "reading": "On this page the Christian theme is Longing, and the text is Ephesians 3:20. For Longing, the sense of Ephesians 3:20 is this: God can do far more than we ask or imagine.\n\nRead Longing in the light of that verse, without turning it into a performance for other people. Let Longing sound like a softer answer where the house has been sharp, with Ephesians 3:20 still in mind.\n\nNo one else has to share your creed for you to practise Longing in the sight of God. God's kindness towards you is the ground under Longing, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 8,
     "word": "Look up",
-    "reading": "Look up is only for this day. Looking up from the screen shows the room you are actually in. You can start before you feel brave, and look up still counts.\n\nYou might be after a hard conversation, and a drink, a drug, or a numbing scroll looks tempting. Money stress can be here too, and look up can stay small. You do not have to fix all of that today.\n\nText one safe person, so look up has a real step today. Look up still counts if that is all you do. One money worry named to someone safe gives look up a little extra help.\n\nLook up grows more easily with a kind tone than with shame."
+    "reading": "Look up is the Christian theme here, set beside 1 Thessalonians 4:11. For Look up, the sense of 1 Thessalonians 4:11 is this: aspire to live quietly, mind your own affairs, and work with your hands.\n\nChrist is gentle with unfinished people, so Look up does not have to arrive already polished. Carry Look up into an ordinary hour by telling the truth kindly, in the spirit of 1 Thessalonians 4:11.\n\nPut Look up where your hands are, and let the text stay a lamp rather than a weapon. In Christ, Look up is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 9,
     "word": "Love",
-    "reading": "Love is allowed to be imperfect. Love can be practical: food, truth, and staying near safe people. You can start before you feel brave, and love still counts.\n\nYou might be at a family table, and food is being put off. Grief can be here too, and love can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so love has a real step today. Love still counts if that is all you do. A few minutes of daylight gives love a little extra help.\n\nLove can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Love, is read with Hebrews 11:6. For Love, the sense of Hebrews 11:6 is this: without faith it is impossible to please God, and he rewards those who seek him.\n\nThat verse is a welcome, not a test you pass before God will look at Love. Practise Love at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Love honest and gentle until you sleep, and leave the rest in God's care. In Christ, Love is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 10,
     "word": "Margin",
-    "reading": "Margin does not have to be loud to be real. A little spare room in the day stops a feeling from running it. You can start before you feel brave, and margin still counts.\n\nYou might be staring at an unanswered message, and grief showed up without warning. The wish to give up can be here too, and margin can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so margin has a real step today. Margin still counts if that is all you do. One worry written on paper gives margin a little extra help.\n\nMargin gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Margin, and the text is 1 Peter 3:8. For Margin, the sense of 1 Peter 3:8 is this: have unity of mind, sympathy, and a tender heart.\n\nNothing in 1 Peter 3:8 asks you to pretend, and Margin can begin while you are still tired. If you were wrong, let Margin include an apology in a single clean sentence, because of 1 Peter 3:8.\n\nMercy is wider than today's mistakes, and Margin can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Margin still fits the actual day."
   },
   {
     "month": 7,
     "day": 11,
     "word": "Meal",
-    "reading": "Meal can start in an ordinary hour. A meal is a recovery tool, even when it is plain. You can start before you feel brave, and meal still counts.\n\nYou might be on the phone, on hold, and a message is waiting and feels hard to open. Comparison can be here too, and meal can stay small. You do not have to fix all of that today.\n\nEat something simple before any big decision, so meal has a real step today. Meal still counts if that is all you do. A ten-minute pause before a big choice gives meal a little extra help.\n\nIf God is part of your life, you can pray about meal today. If not, a friend can sit with you, and meal can be shared."
+    "reading": "The Christian theme, Meal, is read with 1 John 1:7. For Meal, the sense of 1 John 1:7 is this: walking in the light brings real fellowship, and Jesus cleanses.\n\nRead Meal in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 John 1:7, and let Meal be unhurried company for someone lonely.\n\nHand the evening to God, and let Meal be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Meal."
   },
   {
     "month": 7,
     "day": 12,
     "word": "Meaning",
-    "reading": "Meaning can stay small today. The next kind action can be meaning enough for today. You can start before you feel brave, and meaning still counts.\n\nYou might be in the doorway, keys still in hand, and money stress is sitting on the table. The urge to go numb can be here too, and meaning can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so meaning has a real step today. Meaning still counts if that is all you do. A text to someone safe gives meaning a little extra help.\n\nMeaning can be a short prayer, or a few quiet words to a friend.\n\nGetting up in midwinter is already brave, and meaning can be part of that bravery."
+    "reading": "The Christian theme, Meaning, is read with Revelation 1:8. For Meaning, the sense of Revelation 1:8 is this: the Lord God is the Alpha and the Omega.\n\nThat verse is a welcome, not a test you pass before God will look at Meaning. Leave a harsh opinion unsaid, and let that restraint be how Meaning shows up this afternoon.\n\nYou can begin Meaning before you feel holy, because the Father already knows the day. If the morning was clumsy, Meaning can begin again after lunch in the sight of God. God's kindness towards you is the ground under Meaning, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 13,
     "word": "Memory",
-    "reading": "Memory fits a hard morning. A memory can visit without being put in charge of tonight. You can start before you feel brave, and memory still counts.\n\nYou might be at the kitchen sink, and the room is safe enough, but the chest is tight. Hunger can be here too, and memory can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so memory has a real step today. Memory still counts if that is all you do. Lights dimmed at a decent hour gives memory a little extra help.\n\nMemory can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Memory, and the text is Joshua 24:15. For Memory, the sense of Joshua 24:15 is this: choose whom you will serve, and the speaker chooses the Lord.\n\nThat verse is a welcome, not a test you pass before God will look at Memory. To live Memory, read Joshua 24:15 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Joshua 24:15, for Memory, is trust, not a performance. God's kindness towards you is the ground under Memory, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 14,
     "word": "Mend",
-    "reading": "Mend is only for this day. A sharp moment can be mended while it is still small. You can start before you feel brave, and mend still counts.\n\nYou might be at a family table, and the day feels very dark. A heavy secret can be here too, and mend can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so mend has a real step today. Mend still counts if that is all you do. Quiet company gives mend a little extra help.\n\nMend can stay small while you borrow hope from someone safe.\n\nIf mend sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about mend is not a crisis plan."
+    "reading": "Mend is the Christian theme here, set beside Psalm 27:14. For Mend, the sense of Psalm 27:14 is this: wait for the Lord, be strong, and let your heart take courage.\n\nNothing in Psalm 27:14 asks you to pretend, and Mend can begin while you are still tired. Give Mend a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Mend is allowed to be slow. Keep Mend Christian and specific: one verse, one prayer, one person. In Christ, Mend is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 15,
     "word": "Mirror",
-    "reading": "Mirror is allowed to be imperfect. The mirror does not get the last word, and a wash is enough. You can start before you feel brave, and mirror still counts.\n\nYou might be awake before the alarm, and food is being put off. Worry about the future can be here too, and mirror can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so mirror has a real step today. Mirror still counts if that is all you do. A simple meal gives mirror a little extra help.\n\nMirror belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Mirror, is read with Psalm 84:11. For Mirror, the sense of Psalm 84:11 is this: the Lord bestows favour and honour and does not withhold what is good.\n\nRead Mirror in the light of that verse, without turning it into a performance for other people. Let Mirror sound like a softer answer where the house has been sharp, with Psalm 84:11 still in mind.\n\nNo one else has to share your creed for you to practise Mirror in the sight of God. In Christ, Mirror is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 16,
     "word": "Modest",
-    "reading": "Modest does not have to be loud to be real. A modest goal is one that can be finished today. You can start before you feel brave, and modest still counts.\n\nYou might be in a quiet house with a loud mind, and money stress is sitting on the table. Numbness can be here too, and modest can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so modest has a real step today. Modest still counts if that is all you do. The phone in another room gives modest a little extra help.\n\nModest grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Modest, and the text is Psalm 143:8. For Modest, the sense of Psalm 143:8 is this: in the morning the psalmist asks to hear of God's steadfast love.\n\nChrist is gentle with unfinished people, so Modest does not have to arrive already polished. Practise Modest at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Modest where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Modest still fits the actual day."
   },
   {
     "month": 7,
     "day": 17,
     "word": "Music",
-    "reading": "Music can start in an ordinary hour. One song can hold you while an urge rises and falls. You can start before you feel brave, and music still counts.\n\nYou might be after a hard conversation, and the urge to hide is strong. The thought that the day is already ruined can be here too, and music can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so music has a real step today. Music still counts if that is all you do. An open window gives music a little extra help.\n\nMusic can be a value you keep, in a quiet way that fits you."
+    "reading": "Music is the Christian theme here, set beside Proverbs 19:21. For Music, the sense of Proverbs 19:21 is this: people make many plans, and the Lord's purpose stands.\n\nThat verse is a welcome, not a test you pass before God will look at Music. Practise Music at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Music honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Music."
   },
   {
     "month": 7,
     "day": 18,
     "word": "Mystery",
-    "reading": "Mystery can stay small today. Some answers can wait while the next safe thing is done. You can start before you feel brave, and mystery still counts.\n\nYou might be in bed, not sleeping, and a drink, a drug, or a numbing scroll looks tempting. Irritation can be here too, and mystery can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so mystery has a real step today. Mystery still counts if that is all you do. A glass of water gives mystery a little extra help.\n\nMystery gets easier to hold when you ask for help in a short text.\n\nGetting up in midwinter is already brave, and mystery can be part of that bravery."
+    "reading": "The Christian theme, Mystery, is read with Isaiah 54:10. For Mystery, the sense of Isaiah 54:10 is this: mountains may move, and God's steadfast love will not.\n\nRead Mystery in the light of that verse, without turning it into a performance for other people. If you were wrong, let Mystery include an apology in a single clean sentence, because of Isaiah 54:10.\n\nMercy is wider than today's mistakes, and Mystery can stand inside that mercy without showing off. If the morning was clumsy, Mystery can begin again after lunch in the sight of God."
   },
   {
     "month": 7,
     "day": 19,
     "word": "Nourish",
-    "reading": "Nourish fits a hard morning. The body can be fed first, and the speeches can come second. You can start before you feel brave, and nourish still counts.\n\nYou might be avoiding the mirror, and the day feels very dark. The pull to be alone can be here too, and nourish can stay small. You do not have to fix all of that today.\n\nEat something simple before any big decision, so nourish has a real step today. Nourish still counts if that is all you do. A short walk gives nourish a little extra help.\n\nIf God is part of your life, you can pray about nourish today. If not, a friend can sit with you, and nourish can be shared.\n\nIf nourish sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about nourish is not a crisis plan."
+    "reading": "On this page the Christian theme is Nourish, and the text is Jeremiah 17:7. For Nourish, the sense of Jeremiah 17:7 is this: blessed is the person who trusts in the Lord.\n\nRead Nourish in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Jeremiah 17:7, and let Nourish be unhurried company for someone lonely.\n\nHand the evening to God, and let Nourish be unfinished without being abandoned. God's kindness towards you is the ground under Nourish, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 20,
     "word": "Nudge",
-    "reading": "Nudge is only for this day. A nudge toward help is kinder than a shove of shame. You can start before you feel brave, and nudge still counts.\n\nYou might be by a window, and the body is tired and the mind is loud. Shame can be here too, and nudge can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so nudge has a real step today. Nudge still counts if that is all you do. A kind sentence, spoken as to a friend gives nudge a little extra help.\n\nNudge can be a short prayer, or a few quiet words to a friend."
+    "reading": "Nudge is the Christian theme here, set beside Habakkuk 3:19. For Nudge, the sense of Habakkuk 3:19 is this: the Lord God is the writer's strength.\n\nThat verse is a welcome, not a test you pass before God will look at Nudge. Leave a harsh opinion unsaid, and let that restraint be how Nudge shows up this afternoon.\n\nYou can begin Nudge before you feel holy, because the Father already knows the day. Keep Nudge Christian and specific: one verse, one prayer, one person. In Christ, Nudge is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 21,
     "word": "Offer",
-    "reading": "Offer is allowed to be imperfect. The care you would offer a friend can be offered inward too. You can start before you feel brave, and offer still counts.\n\nYou might be in the shower, and the body is tired and the mind is loud. A craving can be here too, and offer can stay small. You do not have to fix all of that today.\n\nEat something simple, so offer has a real step today. Offer still counts if that is all you do. A stretch and a drink of water gives offer a little extra help.\n\nOffer can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Offer, is read with Matthew 6:14. For Offer, the sense of Matthew 6:14 is this: if you forgive others, your heavenly Father also forgives.\n\nThat verse is a welcome, not a test you pass before God will look at Offer. To live Offer, read Matthew 6:14 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 6:14, for Offer, is trust, not a performance. In Christ, Offer is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Offer still fits the actual day."
   },
   {
     "month": 7,
     "day": 22,
     "word": "Old patterns",
-    "reading": "Old patterns does not have to be loud to be real. Old patterns speak in a familiar voice, and they can be declined. You can start before you feel brave, and old patterns still counts.\n\nYou might be in a group, smiling more than the feeling matches, and everything feels behind. Loneliness can be here too, and old patterns can stay small. You do not have to fix all of that today.\n\nTell someone safe that a craving is loud, so old patterns has a real step today. Old patterns still counts if that is all you do. A washed face gives old patterns a little extra help.\n\nOld patterns can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Old patterns, and the text is Mark 11:25. For Old patterns, the sense of Mark 11:25 is this: when you pray, forgive, so that the Father may forgive you.\n\nNothing in Mark 11:25 asks you to pretend, and Old patterns can begin while you are still tired. Give Old patterns a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Old patterns is allowed to be slow. A neighbour does not need a creed explained before they can receive the fruit of Old patterns."
   },
   {
     "month": 7,
     "day": 23,
     "word": "One thing",
-    "reading": "One thing can start in an ordinary hour. One thing done is better than ten things promised. You can start before you feel brave, and one thing still counts.\n\nYou might be staring at an unanswered message, and quitting looks easier than starting. Anger can be here too, and one thing can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so one thing has a real step today. One thing still counts if that is all you do. A slower breath gives one thing a little extra help.\n\nOne thing belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "One thing is the Christian theme here, set beside John 8:32. For One thing, the sense of John 8:32 is this: you will know the truth, and the truth will set you free.\n\nRead One thing in the light of that verse, without turning it into a performance for other people. Let One thing sound like a softer answer where the house has been sharp, with John 8:32 still in mind.\n\nNo one else has to share your creed for you to practise One thing in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of One thing."
   },
   {
     "month": 7,
     "day": 24,
     "word": "Open hands",
-    "reading": "Open hands can stay small today. Help can be received without keeping score. You can start before you feel brave, and open hands still counts.\n\nYou might be avoiding the mirror, and a secret feels heavy. Tiredness can be here too, and open hands can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so open hands has a real step today. Open hands still counts if that is all you do. One money worry named to someone safe gives open hands a little extra help.\n\nOpen hands grows more easily with a kind tone than with shame.\n\nGetting up in midwinter is already brave, and open hands can be part of that bravery."
+    "reading": "The Christian theme, Open hands, is read with John 20:21. For Open hands, the sense of John 20:21 is this: Jesus speaks peace and sends his friends as the Father sent him.\n\nChrist is gentle with unfinished people, so Open hands does not have to arrive already polished. Carry Open hands into an ordinary hour by telling the truth kindly, in the spirit of John 20:21.\n\nPut Open hands where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Open hands can begin again after lunch in the sight of God."
   },
   {
     "month": 7,
     "day": 25,
     "word": "Ordinary",
-    "reading": "Ordinary fits a hard morning. Ordinary days are where recovery is actually kept. You can start before you feel brave, and ordinary still counts.\n\nYou might be waiting for the kettle, and a drink, a drug, or a numbing scroll looks tempting. Fear can be here too, and ordinary can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so ordinary has a real step today. Ordinary still counts if that is all you do. A few minutes of daylight gives ordinary a little extra help.\n\nOrdinary can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Ordinary, and the text is Romans 12:2. For Ordinary, the sense of Romans 12:2 is this: do not be squeezed into the world's mould, but let your mind be renewed.\n\nThat verse is a welcome, not a test you pass before God will look at Ordinary. Practise Ordinary at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Ordinary honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Ordinary, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 26,
     "word": "Pain",
-    "reading": "Pain is only for this day. Pain can be named and shared, and it does not have to be faced alone. You can start before you feel brave, and pain still counts.\n\nYou might be on the bus, and food is being put off. Sadness can be here too, and pain can stay small. You do not have to fix all of that today.\n\nLet the sad feeling be here for ten minutes, without numbing it, so pain has a real step today. Pain still counts if that is all you do. One worry written on paper gives pain a little extra help.\n\nPain gets easier to hold when you ask for help in a short text.\n\nIf pain sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about pain is not a crisis plan."
+    "reading": "Pain is the Christian theme here, set beside 2 Corinthians 3:17. For Pain, the sense of 2 Corinthians 3:17 is this: where the Spirit of the Lord is, there is freedom.\n\nNothing in 2 Corinthians 3:17 asks you to pretend, and Pain can begin while you are still tired. If you were wrong, let Pain include an apology in a single clean sentence, because of 2 Corinthians 3:17.\n\nMercy is wider than today's mistakes, and Pain can stand inside that mercy without showing off. Keep Pain Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 7,
     "day": 27,
     "word": "Pardon",
-    "reading": "Pardon is allowed to be imperfect. A clumsy hour can be pardoned, and the next hour can be cleaner. You can start before you feel brave, and pardon still counts.\n\nYou might be scrolling, and feeling alone, and a secret feels heavy. The urge to hide can be here too, and pardon can stay small. You do not have to fix all of that today.\n\nTell someone safe about a slip, if there was one, so pardon has a real step today. Pardon still counts if that is all you do. A ten-minute pause before a big choice gives pardon a little extra help.\n\nIf God is part of your life, you can pray about pardon today. If not, a friend can sit with you, and pardon can be shared."
+    "reading": "The Christian theme, Pardon, is read with Galatians 5:1. For Pardon, the sense of Galatians 5:1 is this: Christ has set us free, so do not go back under a slave's yoke.\n\nRead Pardon in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Galatians 5:1, and let Pardon be unhurried company for someone lonely.\n\nHand the evening to God, and let Pardon be unfinished without being abandoned. In Christ, Pardon is worth attention even when the calendar is full."
   },
   {
     "month": 7,
     "day": 28,
     "word": "Path",
-    "reading": "Path does not have to be loud to be real. Today's path is the safer step, not the fastest one. You can start before you feel brave, and path still counts.\n\nYou might be walking the long way home, and hunger and irritation are easy to mix up. Money stress can be here too, and path can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so path has a real step today. Path still counts if that is all you do. A text to someone safe gives path a little extra help.\n\nPath can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Path, and the text is Ephesians 6:10. For Path, the sense of Ephesians 6:10 is this: be strong in the Lord and in his mighty power.\n\nChrist is gentle with unfinished people, so Path does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Path shows up this afternoon.\n\nYou can begin Path before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Path still fits the actual day."
   },
   {
     "month": 7,
     "day": 29,
     "word": "Pay attention",
-    "reading": "Pay attention can start in an ordinary hour. Hunger, anger, loneliness, and tiredness are worth a check. You can start before you feel brave, and pay attention still counts.\n\nYou might be in bed, not sleeping, and being alone is pretending to be strength. Grief can be here too, and pay attention can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so pay attention has a real step today. Pay attention still counts if that is all you do. Lights dimmed at a decent hour gives pay attention a little extra help.\n\nPay attention can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Pay attention is the Christian theme here, set beside 1 Thessalonians 5:14. For Pay attention, the sense of 1 Thessalonians 5:14 is this: encourage the fainthearted and help the weak.\n\nThat verse is a welcome, not a test you pass before God will look at Pay attention. To live Pay attention, read 1 Thessalonians 5:14 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 1 Thessalonians 5:14, for Pay attention, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Pay attention."
   },
   {
     "month": 7,
     "day": 30,
     "word": "Persist",
-    "reading": "Persist can stay small today. The small care can continue even when the mood dips. You can start before you feel brave, and persist still counts.\n\nYou might be folding the washing, and someone's words are still ringing. The wish to give up can be here too, and persist can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so persist has a real step today. Persist still counts if that is all you do. Quiet company gives persist a little extra help.\n\nPersist can stay small while you borrow hope from someone safe.\n\nGetting up in midwinter is already brave, and persist can be part of that bravery."
+    "reading": "The Christian theme, Persist, is read with 2 Timothy 2:1. For Persist, the sense of 2 Timothy 2:1 is this: be strengthened by the grace that is in Christ Jesus.\n\nNothing in 2 Timothy 2:1 asks you to pretend, and Persist can begin while you are still tired. Give Persist a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Persist is allowed to be slow. If the morning was clumsy, Persist can begin again after lunch in the sight of God. God's kindness towards you is the ground under Persist, not a prize withheld until you improve."
   },
   {
     "month": 7,
     "day": 31,
     "word": "Plan",
-    "reading": "Plan fits a hard morning. A plan for the next hour beats a plan for ten years. You can start before you feel brave, and plan still counts.\n\nYou might be in the shower, and hunger and irritation are easy to mix up. Comparison can be here too, and plan can stay small. You do not have to fix all of that today.\n\nText one safe person, so plan has a real step today. Plan still counts if that is all you do. A simple meal gives plan a little extra help.\n\nPlan belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Plan, and the text is James 1:2. For Plan, the sense of James 1:2 is this: when trials come, steadfastness is being grown.\n\nRead Plan in the light of that verse, without turning it into a performance for other people. Let Plan sound like a softer answer where the house has been sharp, with James 1:2 still in mind.\n\nNo one else has to share your creed for you to practise Plan in the sight of God. God's kindness towards you is the ground under Plan, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 1,
     "word": "Praise",
-    "reading": "Praise is only for this day. Praise can be naming one thing that went all right. You can start before you feel brave, and praise still counts.\n\nYou might be in the kitchen, before any real food, and someone's words are still ringing. The urge to go numb can be here too, and praise can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so praise has a real step today. Praise still counts if that is all you do. The phone in another room gives praise a little extra help.\n\nPraise grows more easily with a kind tone than with shame."
+    "reading": "Praise is the Christian theme here, set beside 1 Peter 2:17. For Praise, the sense of 1 Peter 2:17 is this: honour everyone and love the family of believers.\n\nChrist is gentle with unfinished people, so Praise does not have to arrive already polished. Carry Praise into an ordinary hour by telling the truth kindly, in the spirit of 1 Peter 2:17.\n\nPut Praise where your hands are, and let the text stay a lamp rather than a weapon. Keep Praise Christian and specific: one verse, one prayer, one person. In Christ, Praise is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 2,
     "word": "Prayer",
-    "reading": "Prayer is allowed to be imperfect. Prayer can be a few honest words, or a quiet minute if that fits better. You can start before you feel brave, and prayer still counts.\n\nYou might be holding a bill that is hard to open, and the urge to hide is strong. Hunger can be here too, and prayer can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so prayer has a real step today. Prayer still counts if that is all you do. An open window gives prayer a little extra help.\n\nPrayer can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Prayer, is read with 2 Peter 3:9. For Prayer, the sense of 2 Peter 3:9 is this: the Lord is patient, not wishing that any should perish.\n\nThat verse is a welcome, not a test you pass before God will look at Prayer. Practise Prayer at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Prayer can stand inside that mercy without showing off. In Christ, Prayer is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Prayer still fits the actual day."
   },
   {
     "month": 8,
     "day": 3,
     "word": "Prepare",
-    "reading": "Prepare does not have to be loud to be real. Tonight can prepare one kindness for the morning: food, clothes, or who to call. You can start before you feel brave, and prepare still counts.\n\nYou might be at the kitchen table, and the day feels very dark. A heavy secret can be here too, and prepare can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so prepare has a real step today. Prepare still counts if that is all you do. A glass of water gives prepare a little extra help.\n\nPrepare gets easier to hold when you ask for help in a short text.\n\nIf prepare sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about prepare is not a crisis plan."
+    "reading": "On this page the Christian theme is Prepare, and the text is Jude 1:21. For Prepare, the sense of Jude 1:21 is this: keep yourselves in the love of God.\n\nNothing in Jude 1:21 asks you to pretend, and Prepare can begin while you are still tired. If you were wrong, let Prepare include an apology in a single clean sentence, because of Jude 1:21.\n\nMercy is wider than today's mistakes, and Prepare can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Prepare still fits the actual day."
   },
   {
     "month": 8,
     "day": 4,
     "word": "Present",
-    "reading": "Present can start in an ordinary hour. This hour counts more when the phone is down for a little while. You can start before you feel brave, and present still counts.\n\nYou might be in a room where a sharp sentence still hangs, and hunger and irritation are easy to mix up. Worry about the future can be here too, and present can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so present has a real step today. Present still counts if that is all you do. A short walk gives present a little extra help.\n\nIf God is part of your life, you can pray about present today. If not, a friend can sit with you, and present can be shared."
+    "reading": "Present is the Christian theme here, set beside Psalm 16:8. For Present, the sense of Psalm 16:8 is this: the psalmist sets the Lord always before him.\n\nRead Present in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Psalm 16:8, and let Present be unhurried company for someone lonely.\n\nYou can begin Present before you feel holy, because the Father already knows the day. A neighbour does not need a creed explained before they can receive the fruit of Present."
   },
   {
     "month": 8,
     "day": 5,
     "word": "Preserve",
-    "reading": "Preserve can stay small today. Sleep and safety come before looking as if everything is fine. You can start before you feel brave, and preserve still counts.\n\nYou might be in a waiting room, and the room is safe enough, but the chest is tight. Numbness can be here too, and preserve can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so preserve has a real step today. Preserve still counts if that is all you do. A kind sentence, spoken as to a friend gives preserve a little extra help.\n\nPreserve can be a short prayer, or a few quiet words to a friend.\n\nLate winter can look bare and still be growing, and preserve can be quiet too."
+    "reading": "The Christian theme, Preserve, is read with Psalm 62:5. For Preserve, the sense of Psalm 62:5 is this: the soul waits in silence for God alone.\n\nChrist is gentle with unfinished people, so Preserve does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Preserve shows up this afternoon.\n\nYou can begin Preserve before you feel holy, because the Father already knows the day. If the morning was clumsy, Preserve can begin again after lunch in the sight of God. God's kindness towards you is the ground under Preserve, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 6,
     "word": "Promise",
-    "reading": "Promise fits a hard morning. A promise can stay small enough for this day to hold. You can start before you feel brave, and promise still counts.\n\nYou might be on the phone, on hold, and a sharp sentence already landed. The thought that the day is already ruined can be here too, and promise can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so promise has a real step today. Promise still counts if that is all you do. A stretch and a drink of water gives promise a little extra help.\n\nPromise can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Promise, and the text is Psalm 138:8. For Promise, the sense of Psalm 138:8 is this: the Lord will fulfil his purpose.\n\nThat verse is a welcome, not a test you pass before God will look at Promise. To live Promise, read Psalm 138:8 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 138:8, for Promise, is trust, not a performance. God's kindness towards you is the ground under Promise, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 7,
     "word": "Protect",
-    "reading": "Protect is only for this day. Sleep, safety, and a kind boundary are worth protecting. You can start before you feel brave, and protect still counts.\n\nYou might be on the bus, and a craving is trying to sound like a good idea. Irritation can be here too, and protect can stay small. You do not have to fix all of that today.\n\nChoose safer company for the next hour, so protect has a real step today. Protect still counts if that is all you do. A washed face gives protect a little extra help.\n\nProtect can stay small while you borrow hope from someone safe."
+    "reading": "Protect is the Christian theme here, set beside Proverbs 4:23. For Protect, the sense of Proverbs 4:23 is this: guard your heart, for life flows from it.\n\nNothing in Proverbs 4:23 asks you to pretend, and Protect can begin while you are still tired. Give Protect a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Protect is allowed to be slow. Keep Protect Christian and specific: one verse, one prayer, one person. In Christ, Protect is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 8,
     "word": "Purpose",
-    "reading": "Purpose is allowed to be imperfect. Staying safe and being honest can be purpose enough today. You can start before you feel brave, and purpose still counts.\n\nYou might be in the car, not ready to go in, and food is being put off. The pull to be alone can be here too, and purpose can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so purpose has a real step today. Purpose still counts if that is all you do. A slower breath gives purpose a little extra help.\n\nPurpose belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Purpose, is read with Isaiah 55:8. For Purpose, the sense of Isaiah 55:8 is this: God's thoughts are not our thoughts, and his ways are higher.\n\nRead Purpose in the light of that verse, without turning it into a performance for other people. Let Purpose sound like a softer answer where the house has been sharp, with Isaiah 55:8 still in mind.\n\nNo one else has to share your creed for you to practise Purpose in the sight of God. In Christ, Purpose is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 9,
     "word": "Receive",
-    "reading": "Receive does not have to be loud to be real. Help can be received without a speech about deserving it. You can start before you feel brave, and receive still counts.\n\nYou might be on a lunch break, and money stress is sitting on the table. Shame can be here too, and receive can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so receive has a real step today. Receive still counts if that is all you do. One money worry named to someone safe gives receive a little extra help.\n\nReceive grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Receive, and the text is John 1:1. For Receive, the sense of John 1:1 is this: in the beginning was the Word, and the Word was with God, and the Word was God.\n\nChrist is gentle with unfinished people, so Receive does not have to arrive already polished. Carry Receive into an ordinary hour by telling the truth kindly, in the spirit of John 1:1.\n\nAsk the Lord to keep Receive honest and gentle until you sleep, and leave the rest in God's care. Australian weather can be hot, wet, or cold, and Receive still fits the actual day."
   },
   {
     "month": 8,
     "day": 10,
     "word": "Reconcile",
-    "reading": "Reconcile can start in an ordinary hour. One honest text, or one changed hour, can begin a repair. You can start before you feel brave, and reconcile still counts.\n\nYou might be in a quiet house with a loud mind, and a secret feels heavy. A craving can be here too, and reconcile can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so reconcile has a real step today. Reconcile still counts if that is all you do. A few minutes of daylight gives reconcile a little extra help.\n\nReconcile can be a value you keep, in a quiet way that fits you."
+    "reading": "Reconcile is the Christian theme here, set beside Philippians 3:13. For Reconcile, the sense of Philippians 3:13 is this: forgetting what is behind, Paul presses on towards what Christ has ahead.\n\nThat verse is a welcome, not a test you pass before God will look at Reconcile. Practise Reconcile at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Reconcile honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Reconcile."
   },
   {
     "month": 8,
     "day": 11,
     "word": "Recover",
-    "reading": "Recover can stay small today. Recovery lives in the kitchen, the meeting, and the bedtime. You can start before you feel brave, and recover still counts.\n\nYou might be avoiding the mirror, and the evening feels risky. Loneliness can be here too, and recover can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so recover has a real step today. Recover still counts if that is all you do. One worry written on paper gives recover a little extra help.\n\nRecover gets easier to hold when you ask for help in a short text.\n\nLate winter can look bare and still be growing, and recover can be quiet too."
+    "reading": "The Christian theme, Recover, is read with Psalm 121:1. For Recover, the sense of Psalm 121:1 is this: the psalmist lifts his eyes and asks where his help comes from.\n\nNothing in Psalm 121:1 asks you to pretend, and Recover can begin while you are still tired. If you were wrong, let Recover include an apology in a single clean sentence, because of Psalm 121:1.\n\nMercy is wider than today's mistakes, and Recover can stand inside that mercy without showing off. If the morning was clumsy, Recover can begin again after lunch in the sight of God."
   },
   {
     "month": 8,
     "day": 12,
     "word": "Redirect",
-    "reading": "Redirect fits a hard morning. A craving can be pointed toward water, a walk, or a safe person. You can start before you feel brave, and redirect still counts.\n\nYou might be at the kitchen table, and money stress is sitting on the table. Anger can be here too, and redirect can stay small. You do not have to fix all of that today.\n\nPut the phone down and drink water, so redirect has a real step today. Redirect still counts if that is all you do. A ten-minute pause before a big choice gives redirect a little extra help.\n\nIf God is part of your life, you can pray about redirect today. If not, a friend can sit with you, and redirect can be shared."
+    "reading": "On this page the Christian theme is Redirect, and the text is Philippians 4:6. For Redirect, the sense of Philippians 4:6 is this: Paul tells believers to bring worries to God in prayer instead of carrying anxiety alone.\n\nRead Redirect in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Philippians 4:6, and let Redirect be unhurried company for someone lonely.\n\nHand the evening to God, and let Redirect be unfinished without being abandoned. Keep Redirect Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 8,
     "day": 13,
     "word": "Refresh",
-    "reading": "Refresh is only for this day. A wash, a drink, and a step outside can refresh a stuck hour. You can start before you feel brave, and refresh still counts.\n\nYou might be at work, trying to look fine, and someone's words are still ringing. Tiredness can be here too, and refresh can stay small. You do not have to fix all of that today.\n\nEat something simple, so refresh has a real step today. Refresh still counts if that is all you do. A text to someone safe gives refresh a little extra help.\n\nRefresh can be a short prayer, or a few quiet words to a friend."
+    "reading": "Refresh is the Christian theme here, set beside Lamentations 3:23. For Refresh, the sense of Lamentations 3:23 is this: the writer says the Lord's mercies are new every morning.\n\nChrist is gentle with unfinished people, so Refresh does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Refresh shows up this afternoon.\n\nYou can begin Refresh before you feel holy, because the Father already knows the day. Keep Refresh Christian and specific: one verse, one prayer, one person. In Christ, Refresh is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 14,
     "word": "Refuge",
-    "reading": "Refuge is allowed to be imperfect. Refuge can be a safe room, a safe person, or Get help if the day is dark. You can start before you feel brave, and refuge still counts.\n\nYou might be outside a meeting, and being alone is pretending to be strength. Fear can be here too, and refuge can stay small. You do not have to fix all of that today.\n\nWash face and hands, so refuge has a real step today. Refuge still counts if that is all you do. Lights dimmed at a decent hour gives refuge a little extra help.\n\nRefuge can begin again today, and mercy means you do not have to earn that start.\n\nIf refuge sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about refuge is not a crisis plan."
+    "reading": "The Christian theme, Refuge, is read with Micah 6:8. For Refuge, the sense of Micah 6:8 is this: what the Lord asks is justice, mercy, and a humble walk with him.\n\nThat verse is a welcome, not a test you pass before God will look at Refuge. To live Refuge, read Micah 6:8 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Micah 6:8, for Refuge, is trust, not a performance. In Christ, Refuge is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 15,
     "word": "Relax",
-    "reading": "Relax does not have to be loud to be real. Shoulders can drop on purpose, so the body knows it can stand down. You can start before you feel brave, and relax still counts.\n\nYou might be staring at an unanswered message, and comparison has crept in. Sadness can be here too, and relax can stay small. You do not have to fix all of that today.\n\nPut the phone in another room for twenty minutes, so relax has a real step today. Relax still counts if that is all you do. Quiet company gives relax a little extra help.\n\nRelax can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Relax, and the text is John 14:27. For Relax, the sense of John 14:27 is this: Jesus gives his own peace, a peace the world does not supply.\n\nNothing in John 14:27 asks you to pretend, and Relax can begin while you are still tired. Give Relax a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Relax is allowed to be slow. Australian weather can be hot, wet, or cold, and Relax still fits the actual day."
   },
   {
     "month": 8,
     "day": 16,
     "word": "Rely",
-    "reading": "Rely can start in an ordinary hour. The supports that have helped before can be used again. You can start before you feel brave, and rely still counts.\n\nYou might be scrolling, and feeling alone, and a slip is on the mind. The urge to hide can be here too, and rely can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so rely has a real step today. Rely still counts if that is all you do. A simple meal gives rely a little extra help.\n\nRely belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Rely is the Christian theme here, set beside Ephesians 2:8. For Rely, the sense of Ephesians 2:8 is this: salvation is a gift of grace through faith, not a wage that is earned.\n\nRead Rely in the light of that verse, without turning it into a performance for other people. Let Rely sound like a softer answer where the house has been sharp, with Ephesians 2:8 still in mind.\n\nNo one else has to share your creed for you to practise Rely in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Rely."
   },
   {
     "month": 8,
     "day": 17,
     "word": "Remember",
-    "reading": "Remember can stay small today. Hard hours have been got through before, one hour at a time. You can start before you feel brave, and remember still counts.\n\nYou might be on the floor by the cupboard, and a sharp sentence already landed. Money stress can be here too, and remember can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so remember has a real step today. Remember still counts if that is all you do. The phone in another room gives remember a little extra help.\n\nRemember grows more easily with a kind tone than with shame.\n\nLate winter can look bare and still be growing, and remember can be quiet too."
+    "reading": "The Christian theme, Remember, is read with James 1:19. For Remember, the sense of James 1:19 is this: be quick to listen, slow to speak, and slow to anger.\n\nChrist is gentle with unfinished people, so Remember does not have to arrive already polished. Practise Remember at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Remember where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Remember can begin again after lunch in the sight of God."
   },
   {
     "month": 8,
     "day": 18,
     "word": "Respect",
-    "reading": "Respect fits a hard morning. A limit, a body, and kind people are worth respect. You can start before you feel brave, and respect still counts.\n\nYou might be staring at an unanswered message, and a slip is on the mind. Grief can be here too, and respect can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so respect has a real step today. Respect still counts if that is all you do. Quiet company gives respect a little extra help.\n\nRespect can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Respect, and the text is Romans 12:18. For Respect, the sense of Romans 12:18 is this: as far as it depends on you, live at peace with people.\n\nThat verse is a welcome, not a test you pass before God will look at Respect. Practise Respect at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Respect honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Respect, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 19,
     "word": "Respond",
-    "reading": "Respond is only for this day. A reply can be slower than the feeling, with softer words. You can start before you feel brave, and respond still counts.\n\nYou might be in bed, not sleeping, and hunger and irritation are easy to mix up. The wish to give up can be here too, and respond can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so respond has a real step today. Respond still counts if that is all you do. A glass of water gives respond a little extra help.\n\nRespond gets easier to hold when you ask for help in a short text."
+    "reading": "Respond is the Christian theme here, set beside Proverbs 3:5. For Respond, the sense of Proverbs 3:5 is this: trust the Lord with your whole heart rather than leaning only on your own understanding.\n\nNothing in Proverbs 3:5 asks you to pretend, and Respond can begin while you are still tired. If you were wrong, let Respond include an apology in a single clean sentence, because of Proverbs 3:5.\n\nMercy is wider than today's mistakes, and Respond can stand inside that mercy without showing off. Keep Respond Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 8,
     "day": 20,
     "word": "Restore",
-    "reading": "Restore is allowed to be imperfect. One repaired sentence, or one decent meal, can restore a bit of the day. You can start before you feel brave, and restore still counts.\n\nYou might be in a room where a sharp sentence still hangs, and a drink, a drug, or a numbing scroll looks tempting. Comparison can be here too, and restore can stay small. You do not have to fix all of that today.\n\nLeave worries on paper before bed, so restore has a real step today. Restore still counts if that is all you do. A short walk gives restore a little extra help.\n\nIf God is part of your life, you can pray about restore today. If not, a friend can sit with you, and restore can be shared."
+    "reading": "The Christian theme, Restore, is read with Luke 15:20. For Restore, the sense of Luke 15:20 is this: in Jesus' story the father runs to meet the son who comes home.\n\nRead Restore in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Luke 15:20, and let Restore be unhurried company for someone lonely.\n\nYou can begin Restore before you feel holy, because the Father already knows the day. In Christ, Restore is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 21,
     "word": "Reverence",
-    "reading": "Reverence does not have to be loud to be real. A life can be treated as worth care, and that is a quiet reverence. You can start before you feel brave, and reverence still counts.\n\nYou might be in bed, not sleeping, and the day feels very dark. The urge to go numb can be here too, and reverence can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so reverence has a real step today. Reverence still counts if that is all you do. A kind sentence, spoken as to a friend gives reverence a little extra help.\n\nReverence can be a short prayer, or a few quiet words to a friend.\n\nIf reverence sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about reverence is not a crisis plan."
+    "reading": "On this page the Christian theme is Reverence, and the text is 1 John 1:9. For Reverence, the sense of 1 John 1:9 is this: if we confess our sins, God is faithful and just to forgive.\n\nChrist is gentle with unfinished people, so Reverence does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Reverence shows up this afternoon.\n\nYou can begin Reverence before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Reverence still fits the actual day."
   },
   {
     "month": 8,
     "day": 22,
     "word": "Rhythm",
-    "reading": "Rhythm can start in an ordinary hour. Food, movement, and sleep in a simple rhythm can steady the mind. You can start before you feel brave, and rhythm still counts.\n\nYou might be on the edge of the bed, and a big decision is trying to happen while feelings are hot. Hunger can be here too, and rhythm can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so rhythm has a real step today. Rhythm still counts if that is all you do. A stretch and a drink of water gives rhythm a little extra help.\n\nRhythm can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Rhythm is the Christian theme here, set beside Romans 5:8. For Rhythm, the sense of Romans 5:8 is this: Christ died for us while we were still sinners, which is how God shows his love.\n\nThat verse is a welcome, not a test you pass before God will look at Rhythm. To live Rhythm, read Romans 5:8 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 5:8, for Rhythm, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Rhythm."
   },
   {
     "month": 8,
     "day": 23,
     "word": "Right-size",
-    "reading": "Right-size can stay small today. The job can be made small enough to fit in the next hour. You can start before you feel brave, and right-size still counts.\n\nYou might be halfway up the stairs, and a sharp sentence already landed. A heavy secret can be here too, and right-size can stay small. You do not have to fix all of that today.\n\nText one safe person, so right-size has a real step today. Right-size still counts if that is all you do. A washed face gives right-size a little extra help.\n\nRight-size can stay small while you borrow hope from someone safe.\n\nLate winter can look bare and still be growing, and right-size can be quiet too."
+    "reading": "The Christian theme, Right-size, is read with Psalm 56:3. For Right-size, the sense of Psalm 56:3 is this: when the psalmist is afraid, he puts his trust in God.\n\nNothing in Psalm 56:3 asks you to pretend, and Right-size can begin while you are still tired. Give Right-size a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Right-size is allowed to be slow. If the morning was clumsy, Right-size can begin again after lunch in the sight of God. God's kindness towards you is the ground under Right-size, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 24,
     "word": "Risk",
-    "reading": "Risk fits a hard morning. The honest text is a safer risk than the old hiding place. You can start before you feel brave, and risk still counts.\n\nYou might be at the kitchen table, and hunger and irritation are easy to mix up. Worry about the future can be here too, and risk can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so risk has a real step today. Risk still counts if that is all you do. A slower breath gives risk a little extra help.\n\nRisk belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Risk, and the text is Matthew 6:11. For Risk, the sense of Matthew 6:11 is this: Jesus teaches us to ask for this day's bread.\n\nRead Risk in the light of that verse, without turning it into a performance for other people. Let Risk sound like a softer answer where the house has been sharp, with Matthew 6:11 still in mind.\n\nNo one else has to share your creed for you to practise Risk in the sight of God. God's kindness towards you is the ground under Risk, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 25,
     "word": "Ritual",
-    "reading": "Ritual is only for this day. Tea, a walk, or a short quiet can mark a return to safety. You can start before you feel brave, and ritual still counts.\n\nYou might be in a supermarket aisle, and shame got there first. Numbness can be here too, and ritual can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so ritual has a real step today. Ritual still counts if that is all you do. One money worry named to someone safe gives ritual a little extra help.\n\nRitual grows more easily with a kind tone than with shame."
+    "reading": "Ritual is the Christian theme here, set beside Ecclesiastes 4:9. For Ritual, the sense of Ecclesiastes 4:9 is this: two are better than one, because they can lift each other.\n\nChrist is gentle with unfinished people, so Ritual does not have to arrive already polished. Carry Ritual into an ordinary hour by telling the truth kindly, in the spirit of Ecclesiastes 4:9.\n\nPut Ritual where your hands are, and let the text stay a lamp rather than a weapon. Keep Ritual Christian and specific: one verse, one prayer, one person. In Christ, Ritual is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 26,
     "word": "Routine",
-    "reading": "Routine is allowed to be imperfect. A routine is a friend on days when motivation is late. You can start before you feel brave, and routine still counts.\n\nYou might be alone with a craving, and a big decision is trying to happen while feelings are hot. The thought that the day is already ruined can be here too, and routine can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so routine has a real step today. Routine still counts if that is all you do. A few minutes of daylight gives routine a little extra help.\n\nRoutine can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Routine, is read with Zephaniah 3:17. For Routine, the sense of Zephaniah 3:17 is this: the Lord rejoices over his people and quiets them with his love.\n\nThat verse is a welcome, not a test you pass before God will look at Routine. Practise Routine at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Routine honest and gentle until you sleep, and leave the rest in God's care. In Christ, Routine is worth attention even when the calendar is full."
   },
   {
     "month": 8,
     "day": 27,
     "word": "Sanctuary",
-    "reading": "Sanctuary does not have to be loud to be real. A quiet corner, a meeting, or a safe voice can be a sanctuary. You can start before you feel brave, and sanctuary still counts.\n\nYou might be in the shower, and comparison has crept in. Irritation can be here too, and sanctuary can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so sanctuary has a real step today. Sanctuary still counts if that is all you do. One worry written on paper gives sanctuary a little extra help.\n\nSanctuary gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Sanctuary, and the text is John 10:11. For Sanctuary, the sense of John 10:11 is this: Jesus calls himself the good shepherd who lays down his life for the sheep.\n\nNothing in John 10:11 asks you to pretend, and Sanctuary can begin while you are still tired. If you were wrong, let Sanctuary include an apology in a single clean sentence, because of John 10:11.\n\nMercy is wider than today's mistakes, and Sanctuary can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Sanctuary still fits the actual day."
   },
   {
     "month": 8,
     "day": 28,
     "word": "Satisfy",
-    "reading": "Satisfy can start in an ordinary hour. Food, water, rest, and truth can satisfy the simple needs first. You can start before you feel brave, and satisfy still counts.\n\nYou might be in the doorway, keys still in hand, and a sharp sentence already landed. The pull to be alone can be here too, and satisfy can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so satisfy has a real step today. Satisfy still counts if that is all you do. A ten-minute pause before a big choice gives satisfy a little extra help.\n\nIf God is part of your life, you can pray about satisfy today. If not, a friend can sit with you, and satisfy can be shared."
+    "reading": "Satisfy is the Christian theme here, set beside Ephesians 4:32. For Satisfy, the sense of Ephesians 4:32 is this: be kind and tender-hearted, forgiving as God in Christ forgave you.\n\nRead Satisfy in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Ephesians 4:32, and let Satisfy be unhurried company for someone lonely.\n\nHand the evening to God, and let Satisfy be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Satisfy."
   },
   {
     "month": 8,
     "day": 29,
     "word": "Season",
-    "reading": "Season can stay small today. This stretch of life can be slow, and slow is allowed. You can start before you feel brave, and season still counts.\n\nYou might be holding a bill that is hard to open, and money stress is sitting on the table. Shame can be here too, and season can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so season has a real step today. Season still counts if that is all you do. A text to someone safe gives season a little extra help.\n\nSeason can be a short prayer, or a few quiet words to a friend.\n\nLate winter can look bare and still be growing, and season can be quiet too."
+    "reading": "The Christian theme, Season, is read with Philippians 4:7. For Season, the sense of Philippians 4:7 is this: the peace of God guards hearts and minds in Christ.\n\nChrist is gentle with unfinished people, so Season does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Season shows up this afternoon.\n\nYou can begin Season before you feel holy, because the Father already knows the day. If the morning was clumsy, Season can begin again after lunch in the sight of God. God's kindness towards you is the ground under Season, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 30,
     "word": "Self-kindness",
-    "reading": "Self-kindness fits a hard morning. A factual kind sentence is care, not an excuse to drop the next right thing. You can start before you feel brave, and self-kindness still counts.\n\nYou might be on the edge of the bed, and sleep was short. A craving can be here too, and self-kindness can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so self-kindness has a real step today. Self-kindness still counts if that is all you do. Lights dimmed at a decent hour gives self-kindness a little extra help.\n\nSelf-kindness can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Self-kindness, and the text is Hebrews 4:16. For Self-kindness, the sense of Hebrews 4:16 is this: approach God's throne of grace for mercy and timely help.\n\nThat verse is a welcome, not a test you pass before God will look at Self-kindness. To live Self-kindness, read Hebrews 4:16 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Hebrews 4:16, for Self-kindness, is trust, not a performance. God's kindness towards you is the ground under Self-kindness, not a prize withheld until you improve."
   },
   {
     "month": 8,
     "day": 31,
     "word": "Separate",
-    "reading": "Separate is only for this day. What is yours to tend can be separated from other people's choices. You can start before you feel brave, and separate still counts.\n\nYou might be after a hard conversation, and a big decision is trying to happen while feelings are hot. Loneliness can be here too, and separate can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so separate has a real step today. Separate still counts if that is all you do. Quiet company gives separate a little extra help.\n\nSeparate can stay small while you borrow hope from someone safe."
+    "reading": "Separate is the Christian theme here, set beside Revelation 21:4. For Separate, the sense of Revelation 21:4 is this: God will wipe tears away, and mourning will not have the last word.\n\nNothing in Revelation 21:4 asks you to pretend, and Separate can begin while you are still tired. Give Separate a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Separate is allowed to be slow. Keep Separate Christian and specific: one verse, one prayer, one person. In Christ, Separate is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 1,
     "word": "Serene",
-    "reading": "Serene is allowed to be imperfect. A full calm is not required, and a quieter minute is enough. You can start before you feel brave, and serene still counts.\n\nYou might be in bed, not sleeping, and help is on offer and feels hard to take. Anger can be here too, and serene can stay small. You do not have to fix all of that today.\n\nLeave worries on paper before bed, so serene has a real step today. Serene still counts if that is all you do. A simple meal gives serene a little extra help.\n\nSerene belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Serene, is read with Psalm 46:1. For Serene, the sense of Psalm 46:1 is this: God is a refuge and strength, a help found in trouble.\n\nRead Serene in the light of that verse, without turning it into a performance for other people. Let Serene sound like a softer answer where the house has been sharp, with Psalm 46:1 still in mind.\n\nNo one else has to share your creed for you to practise Serene in the sight of God. In Christ, Serene is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 2,
     "word": "Serve",
-    "reading": "Serve does not have to be loud to be real. One useful kindness, including kindness to yourself, can serve the day. You can start before you feel brave, and serve still counts.\n\nYou might be at the kitchen sink, and help is on offer and feels hard to take. Tiredness can be here too, and serve can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so serve has a real step today. Serve still counts if that is all you do. The phone in another room gives serve a little extra help.\n\nServe grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Serve, and the text is Matthew 5:4. For Serve, the sense of Matthew 5:4 is this: Jesus says those who mourn are blessed and will be comforted.\n\nChrist is gentle with unfinished people, so Serve does not have to arrive already polished. Practise Serve at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Serve where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Serve still fits the actual day."
   },
   {
     "month": 9,
     "day": 3,
     "word": "Settle",
-    "reading": "Settle can start in an ordinary hour. A slower breath can settle the body before any hard conversation. You can start before you feel brave, and settle still counts.\n\nYou might be in a waiting room, and a message is waiting and feels hard to open. Fear can be here too, and settle can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so settle has a real step today. Settle still counts if that is all you do. An open window gives settle a little extra help.\n\nSettle can be a value you keep, in a quiet way that fits you."
+    "reading": "Settle is the Christian theme here, set beside Matthew 28:20. For Settle, the sense of Matthew 28:20 is this: Jesus promises to be with his people always.\n\nThat verse is a welcome, not a test you pass before God will look at Settle. Practise Settle at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Settle can stand inside that mercy without showing off. A neighbour does not need a creed explained before they can receive the fruit of Settle. If the morning was clumsy, Settle can begin again after lunch in the sight of God."
   },
   {
     "month": 9,
     "day": 4,
     "word": "Shade",
-    "reading": "Shade can stay small today. Shade, water, and a slower pace are real care when the day is hot. You can start before you feel brave, and shade still counts.\n\nYou might be at the kitchen table, and shame got there first. Sadness can be here too, and shade can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so shade has a real step today. Shade still counts if that is all you do. A glass of water gives shade a little extra help.\n\nShade gets easier to hold when you ask for help in a short text.\n\nSpring is uneven, and shade is allowed to be uneven too."
+    "reading": "The Christian theme, Shade, is read with Luke 6:31. For Shade, the sense of Luke 6:31 is this: treat others as you would want them to treat you.\n\nNothing in Luke 6:31 asks you to pretend, and Shade can begin while you are still tired. If you were wrong, let Shade include an apology in a single clean sentence, because of Luke 6:31.\n\nMercy is wider than today's mistakes, and Shade can stand inside that mercy without showing off. If the morning was clumsy, Shade can begin again after lunch in the sight of God."
   },
   {
     "month": 9,
     "day": 5,
     "word": "Shame",
-    "reading": "Shame fits a hard morning. Shame is not a coach, and it does not get to run the day. You can start before you feel brave, and shame still counts.\n\nYou might be at the clothesline, and the body is tired and the mind is loud. The urge to hide can be here too, and shame can stay small. You do not have to fix all of that today.\n\nTell someone safe about a slip, if there was one, so shame has a real step today. Shame still counts if that is all you do. A short walk gives shame a little extra help.\n\nIf God is part of your life, you can pray about shame today. If not, a friend can sit with you, and shame can be shared.\n\nIf shame sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about shame is not a crisis plan."
+    "reading": "On this page the Christian theme is Shame, and the text is John 16:33. For Shame, the sense of John 16:33 is this: the world brings trouble, and Jesus says to take heart because he has overcome.\n\nRead Shame in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of John 16:33, and let Shame be unhurried company for someone lonely.\n\nHand the evening to God, and let Shame be unfinished without being abandoned. God's kindness towards you is the ground under Shame, not a prize withheld until you improve."
   },
   {
     "month": 9,
     "day": 6,
     "word": "Shape",
-    "reading": "Shape is only for this day. The next hour can be shaped, and the month can stay in the month. You can start before you feel brave, and shape still counts.\n\nYou might be in a quiet car park, and the evening feels risky. Money stress can be here too, and shape can stay small. You do not have to fix all of that today.\n\nWash face and hands, so shape has a real step today. Shape still counts if that is all you do. A kind sentence, spoken as to a friend gives shape a little extra help.\n\nShape can be a short prayer, or a few quiet words to a friend."
+    "reading": "Shape is the Christian theme here, set beside Romans 12:12. For Shape, the sense of Romans 12:12 is this: rejoice in hope, be patient in trouble, and keep praying.\n\nChrist is gentle with unfinished people, so Shape does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Shape shows up this afternoon.\n\nYou can begin Shape before you feel holy, because the Father already knows the day. Keep Shape Christian and specific: one verse, one prayer, one person. In Christ, Shape is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 7,
     "word": "Shift",
-    "reading": "Shift is allowed to be imperfect. A window, a wash, or a change of company can shift a room. You can start before you feel brave, and shift still counts.\n\nYou might be by a window, and help is on offer and feels hard to take. Grief can be here too, and shift can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so shift has a real step today. Shift still counts if that is all you do. A glass of water gives shift a little extra help.\n\nShift can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Shift, is read with 2 Corinthians 1:3. For Shift, the sense of 2 Corinthians 1:3 is this: God is the Father of mercies and the God of all comfort.\n\nThat verse is a welcome, not a test you pass before God will look at Shift. To live Shift, read 2 Corinthians 1:3 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 2 Corinthians 1:3, for Shift, is trust, not a performance. In Christ, Shift is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 8,
     "word": "Shine",
-    "reading": "Shine does not have to be loud to be real. Honesty can be the shine, not a show of having it all together. You can start before you feel brave, and shine still counts.\n\nYou might be on the phone, on hold, and a secret feels heavy. The wish to give up can be here too, and shine can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so shine has a real step today. Shine still counts if that is all you do. A washed face gives shine a little extra help.\n\nShine can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Shine, and the text is Philippians 2:3. For Shine, the sense of Philippians 2:3 is this: in humility count others as significant, not only yourself.\n\nNothing in Philippians 2:3 asks you to pretend, and Shine can begin while you are still tired. Give Shine a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Shine is allowed to be slow. Australian weather can be hot, wet, or cold, and Shine still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Shine."
   },
   {
     "month": 9,
     "day": 9,
     "word": "Shoulder",
-    "reading": "Shoulder can start in an ordinary hour. A friend, a meeting, or a helpline can be a shoulder for this hour. You can start before you feel brave, and shoulder still counts.\n\nYou might be at a family table, and a drink, a drug, or a numbing scroll looks tempting. Comparison can be here too, and shoulder can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so shoulder has a real step today. Shoulder still counts if that is all you do. A slower breath gives shoulder a little extra help.\n\nShoulder belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Shoulder is the Christian theme here, set beside 1 Thessalonians 5:17. For Shoulder, the sense of 1 Thessalonians 5:17 is this: pray and do not give up.\n\nRead Shoulder in the light of that verse, without turning it into a performance for other people. Let Shoulder sound like a softer answer where the house has been sharp, with 1 Thessalonians 5:17 still in mind.\n\nNo one else has to share your creed for you to practise Shoulder in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Shoulder."
   },
   {
     "month": 9,
     "day": 10,
     "word": "Silence",
-    "reading": "Silence can stay small today. Quiet with someone safe is different from quiet that hides a slip. You can start before you feel brave, and silence still counts.\n\nYou might be in a supermarket aisle, and money stress is sitting on the table. The urge to go numb can be here too, and silence can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so silence has a real step today. Silence still counts if that is all you do. One money worry named to someone safe gives silence a little extra help.\n\nSilence grows more easily with a kind tone than with shame.\n\nSpring is uneven, and silence is allowed to be uneven too."
+    "reading": "The Christian theme, Silence, is read with James 4:8. For Silence, the sense of James 4:8 is this: draw near to God, and he will draw near to you.\n\nChrist is gentle with unfinished people, so Silence does not have to arrive already polished. Carry Silence into an ordinary hour by telling the truth kindly, in the spirit of James 4:8.\n\nPut Silence where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Silence can begin again after lunch in the sight of God."
   },
   {
     "month": 9,
     "day": 11,
     "word": "Sincere",
-    "reading": "Sincere fits a hard morning. One true sentence can be sincere, even if it is clumsy. You can start before you feel brave, and sincere still counts.\n\nYou might be avoiding the mirror, and hunger and irritation are easy to mix up. Hunger can be here too, and sincere can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so sincere has a real step today. Sincere still counts if that is all you do. A few minutes of daylight gives sincere a little extra help.\n\nSincere can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Sincere, and the text is Genesis 1:31. For Sincere, the sense of Genesis 1:31 is this: God looked at what he had made and called it very good.\n\nThat verse is a welcome, not a test you pass before God will look at Sincere. Practise Sincere at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Sincere honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Sincere, not a prize withheld until you improve."
   },
   {
     "month": 9,
     "day": 12,
     "word": "Sleep",
-    "reading": "Sleep is only for this day. Sleep is part of staying well, so a decent bedtime is worth protecting. You can start before you feel brave, and sleep still counts.\n\nYou might be alone with a craving, and money stress is sitting on the table. A heavy secret can be here too, and sleep can stay small. You do not have to fix all of that today.\n\nPut the phone in another room for twenty minutes, so sleep has a real step today. Sleep still counts if that is all you do. One worry written on paper gives sleep a little extra help.\n\nSleep gets easier to hold when you ask for help in a short text."
+    "reading": "Sleep is the Christian theme here, set beside Deuteronomy 6:5. For Sleep, the sense of Deuteronomy 6:5 is this: love the Lord your God with all your heart, soul, and strength.\n\nNothing in Deuteronomy 6:5 asks you to pretend, and Sleep can begin while you are still tired. If you were wrong, let Sleep include an apology in a single clean sentence, because of Deuteronomy 6:5.\n\nMercy is wider than today's mistakes, and Sleep can stand inside that mercy without showing off. In Christ, Sleep is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 13,
     "word": "Slip",
-    "reading": "Slip is allowed to be imperfect. A slip can be told to someone safe before it turns into a secret life. You can start before you feel brave, and slip still counts.\n\nYou might be on the floor by the cupboard, and the evening feels risky. Worry about the future can be here too, and slip can stay small. You do not have to fix all of that today.\n\nTell someone safe about a slip, if there was one, so slip has a real step today. Slip still counts if that is all you do. A ten-minute pause before a big choice gives slip a little extra help.\n\nIf God is part of your life, you can pray about slip today. If not, a friend can sit with you, and slip can be shared.\n\nIf slip sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about slip is not a crisis plan."
+    "reading": "The Christian theme, Slip, is read with Job 19:25. For Slip, the sense of Job 19:25 is this: Job says that his Redeemer lives.\n\nRead Slip in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Job 19:25, and let Slip be unhurried company for someone lonely.\n\nHand the evening to God, and let Slip be unfinished without being abandoned. In Christ, Slip is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Slip still fits the actual day."
   },
   {
     "month": 9,
     "day": 14,
     "word": "Smile",
-    "reading": "Smile does not have to be loud to be real. A smile is allowed, and it does not make the hard thing fake. You can start before you feel brave, and smile still counts.\n\nYou might be in the bathroom, putting off the next thing, and someone's words are still ringing. Numbness can be here too, and smile can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so smile has a real step today. Smile still counts if that is all you do. A text to someone safe gives smile a little extra help.\n\nSmile can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Smile, and the text is Psalm 23:6. For Smile, the sense of Psalm 23:6 is this: goodness and mercy follow, and the psalmist will dwell with the Lord.\n\nChrist is gentle with unfinished people, so Smile does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Smile shows up this afternoon.\n\nYou can begin Smile before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Smile still fits the actual day."
   },
   {
     "month": 9,
     "day": 15,
     "word": "Soothe",
-    "reading": "Soothe can start in an ordinary hour. Warmth, water, or a slower breath can soothe a raw body. You can start before you feel brave, and soothe still counts.\n\nYou might be by a window, and comparison has crept in. The thought that the day is already ruined can be here too, and soothe can stay small. You do not have to fix all of that today.\n\nText one safe person, so soothe has a real step today. Soothe still counts if that is all you do. Lights dimmed at a decent hour gives soothe a little extra help.\n\nSoothe can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Soothe is the Christian theme here, set beside Psalm 42:11. For Soothe, the sense of Psalm 42:11 is this: the psalmist tells his own soul to hope in God.\n\nThat verse is a welcome, not a test you pass before God will look at Soothe. To live Soothe, read Psalm 42:11 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 42:11, for Soothe, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Soothe."
   },
   {
     "month": 9,
     "day": 16,
     "word": "Sorry",
-    "reading": "Sorry can stay small today. Sorry can be one clean sentence, then a changed action. You can start before you feel brave, and sorry still counts.\n\nYou might be in the bathroom, putting off the next thing, and quitting looks easier than starting. Irritation can be here too, and sorry can stay small. You do not have to fix all of that today.\n\nName the feeling without an insult, so sorry has a real step today. Sorry still counts if that is all you do. Quiet company gives sorry a little extra help.\n\nSorry can stay small while you borrow hope from someone safe.\n\nSpring is uneven, and sorry is allowed to be uneven too."
+    "reading": "The Christian theme, Sorry, is read with Psalm 91:1. For Sorry, the sense of Psalm 91:1 is this: whoever lives in the shelter of the Most High rests in his shadow.\n\nNothing in Psalm 91:1 asks you to pretend, and Sorry can begin while you are still tired. Give Sorry a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Sorry is allowed to be slow. If the morning was clumsy, Sorry can begin again after lunch in the sight of God. God's kindness towards you is the ground under Sorry, not a prize withheld until you improve."
   },
   {
     "month": 9,
     "day": 17,
     "word": "Soul",
-    "reading": "Soul fits a hard morning. The deepest self needs kindness as much as the body does. You can start before you feel brave, and soul still counts.\n\nYou might be on the phone, on hold, and someone's words are still ringing. The pull to be alone can be here too, and soul can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so soul has a real step today. Soul still counts if that is all you do. A simple meal gives soul a little extra help.\n\nSoul belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Soul, and the text is Psalm 107:1. For Soul, the sense of Psalm 107:1 is this: give thanks to the Lord, for his steadfast love endures.\n\nRead Soul in the light of that verse, without turning it into a performance for other people. Let Soul sound like a softer answer where the house has been sharp, with Psalm 107:1 still in mind.\n\nNo one else has to share your creed for you to practise Soul in the sight of God. God's kindness towards you is the ground under Soul, not a prize withheld until you improve."
   },
   {
     "month": 9,
     "day": 18,
     "word": "Speak",
-    "reading": "Speak is only for this day. The need can be spoken before resentment speaks instead. You can start before you feel brave, and speak still counts.\n\nYou might be in bed, not sleeping, and the urge to hide is strong. Shame can be here too, and speak can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so speak has a real step today. Speak still counts if that is all you do. The phone in another room gives speak a little extra help.\n\nSpeak grows more easily with a kind tone than with shame."
+    "reading": "Speak is the Christian theme here, set beside Psalm 145:18. For Speak, the sense of Psalm 145:18 is this: the Lord is near to all who call on him in truth.\n\nThat verse is a welcome, not a test you pass before God will look at Speak. Carry Speak into an ordinary hour by telling the truth kindly, in the spirit of Psalm 145:18.\n\nPut Speak where your hands are, and let the text stay a lamp rather than a weapon. Keep Speak Christian and specific: one verse, one prayer, one person. In Christ, Speak is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 19,
     "word": "Spirit",
-    "reading": "Spirit is allowed to be imperfect. Spirit can mean the part that still wants to be honest and kind. You can start before you feel brave, and spirit still counts.\n\nYou might be on the couch, and the body is tired and the mind is loud. A craving can be here too, and spirit can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so spirit has a real step today. Spirit still counts if that is all you do. An open window gives spirit a little extra help.\n\nSpirit can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Spirit, is read with Proverbs 27:17. For Spirit, the sense of Proverbs 27:17 is this: as iron sharpens iron, one person sharpens another.\n\nThat verse is a welcome, not a test you pass before God will look at Spirit. Practise Spirit at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Spirit honest and gentle until you sleep, and leave the rest in God's care. Australian weather can be hot, wet, or cold, and Spirit still fits the actual day."
   },
   {
     "month": 9,
     "day": 20,
     "word": "Story",
-    "reading": "Story does not have to be loud to be real. The real story can be told to someone safe, not only the impressive one. You can start before you feel brave, and story still counts.\n\nYou might be on the bus, and grief showed up without warning. Loneliness can be here too, and story can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so story has a real step today. Story still counts if that is all you do. A glass of water gives story a little extra help.\n\nStory gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Story, and the text is Isaiah 40:11. For Story, the sense of Isaiah 40:11 is this: he tends his flock like a shepherd.\n\nNothing in Isaiah 40:11 asks you to pretend, and Story can begin while you are still tired. If you were wrong, let Story include an apology in a single clean sentence, because of Isaiah 40:11.\n\nMercy is wider than today's mistakes, and Story can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Story still fits the actual day."
   },
   {
     "month": 9,
     "day": 21,
     "word": "Stretch",
-    "reading": "Stretch can start in an ordinary hour. A gentle stretch can bring you back when the mind has raced ahead. You can start before you feel brave, and stretch still counts.\n\nYou might be avoiding the mirror, and comparison has crept in. Anger can be here too, and stretch can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so stretch has a real step today. Stretch still counts if that is all you do. A short walk gives stretch a little extra help.\n\nIf God is part of your life, you can pray about stretch today. If not, a friend can sit with you, and stretch can be shared."
+    "reading": "Stretch is the Christian theme here, set beside Lamentations 3:22. For Stretch, the sense of Lamentations 3:22 is this: the steadfast love of the Lord does not cease.\n\nRead Stretch in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Lamentations 3:22, and let Stretch be unhurried company for someone lonely.\n\nHand the evening to God, and let Stretch be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Stretch."
   },
   {
     "month": 9,
     "day": 22,
     "word": "Stumble",
-    "reading": "Stumble can stay small today. A stumble is a moment, and the next step can still be safe. You can start before you feel brave, and stumble still counts.\n\nYou might be by a window, and loneliness is louder than the noise around. Tiredness can be here too, and stumble can stay small. You do not have to fix all of that today.\n\nSpeak kindly, as to a friend, so stumble has a real step today. Stumble still counts if that is all you do. A kind sentence, spoken as to a friend gives stumble a little extra help.\n\nStumble can be a short prayer, or a few quiet words to a friend.\n\nSpring is uneven, and stumble is allowed to be uneven too.\n\nIf stumble sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about stumble is not a crisis plan."
+    "reading": "The Christian theme, Stumble, is read with Matthew 5:5. For Stumble, the sense of Matthew 5:5 is this: Jesus says the meek are blessed.\n\nThat verse is a welcome, not a test you pass before God will look at Stumble. Leave a harsh opinion unsaid, and let that restraint be how Stumble shows up this afternoon.\n\nYou can begin Stumble before you feel holy, because the Father already knows the day. If the morning was clumsy, Stumble can begin again after lunch in the sight of God. God's kindness towards you is the ground under Stumble, not a prize withheld until you improve."
   },
   {
     "month": 9,
     "day": 23,
     "word": "Sufficient",
-    "reading": "Sufficient fits a hard morning. Enough is a fair place to stop. You can start before you feel brave, and sufficient still counts.\n\nYou might be waiting for the kettle, and loneliness is louder than the noise around. Fear can be here too, and sufficient can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so sufficient has a real step today. Sufficient still counts if that is all you do. A stretch and a drink of water gives sufficient a little extra help.\n\nSufficient can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Sufficient, and the text is Matthew 7:7. For Sufficient, the sense of Matthew 7:7 is this: Jesus says to ask, seek, and knock.\n\nThat verse is a welcome, not a test you pass before God will look at Sufficient. Give Sufficient a body: a short prayer, then a practical favour that stays quiet.\n\nThe point of Matthew 7:7, for Sufficient, is trust, not a performance. Keep Sufficient Christian and specific: one verse, one prayer, one person. In Christ, Sufficient is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 24,
     "word": "Sun",
-    "reading": "Sun is only for this day. A minute of sun can remind you the world is larger than the worry. You can start before you feel brave, and sun still counts.\n\nYou might be in a room where a sharp sentence still hangs, and the urge to hide is strong. Sadness can be here too, and sun can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so sun has a real step today. Sun still counts if that is all you do. A washed face gives sun a little extra help.\n\nSun can stay small while you borrow hope from someone safe."
+    "reading": "Sun is the Christian theme here, set beside Mark 1:35. For Sun, the sense of Mark 1:35 is this: Jesus rose early, went to a quiet place, and prayed.\n\nNothing in Mark 1:35 asks you to pretend, and Sun can begin while you are still tired. Give Sun a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Sun is allowed to be slow. Keep Sun Christian and specific: one verse, one prayer, one person. In Christ, Sun is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 25,
     "word": "Surrender",
-    "reading": "Surrender is allowed to be imperfect. The heavy part can be handed to a prayer, a friend, or a written plan. You can start before you feel brave, and surrender still counts.\n\nYou might be walking the long way home, and someone's words are still ringing. The urge to hide can be here too, and surrender can stay small. You do not have to fix all of that today.\n\nSit quietly for a few minutes, so surrender has a real step today. Surrender still counts if that is all you do. A slower breath gives surrender a little extra help.\n\nSurrender belongs to this day only, and tomorrow can keep its own worries.\n\nIf surrender sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about surrender is not a crisis plan."
+    "reading": "The Christian theme, Surrender, is read with Luke 12:32. For Surrender, the sense of Luke 12:32 is this: Jesus says the Father delights to give the kingdom, so his little flock need not fear.\n\nRead Surrender in the light of that verse, without turning it into a performance for other people. Let Surrender sound like a softer answer where the house has been sharp, with Luke 12:32 still in mind.\n\nNo one else has to share your creed for you to practise Surrender in the sight of God. In Christ, Surrender is worth attention even when the calendar is full."
   },
   {
     "month": 9,
     "day": 26,
     "word": "Tears",
-    "reading": "Tears does not have to be loud to be real. Tears are allowed, and they are not a failure of strength. You can start before you feel brave, and tears still counts.\n\nYou might be after a hard conversation, and hunger and irritation are easy to mix up. Money stress can be here too, and tears can stay small. You do not have to fix all of that today.\n\nLet the sad feeling be here for ten minutes, without numbing it, so tears has a real step today. Tears still counts if that is all you do. One money worry named to someone safe gives tears a little extra help.\n\nTears grows more easily with a kind tone than with shame.\n\nIf tears sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about tears is not a crisis plan."
+    "reading": "On this page the Christian theme is Tears, and the text is John 3:17. For Tears, the sense of John 3:17 is this: God sent his Son to save the world, not to condemn it.\n\nChrist is gentle with unfinished people, so Tears does not have to arrive already polished. Carry Tears into an ordinary hour by telling the truth kindly, in the spirit of John 3:17.\n\nPut Tears where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Tears still fits the actual day."
   },
   {
     "month": 9,
     "day": 27,
     "word": "Tend",
-    "reading": "Tend can start in an ordinary hour. What is yours can be tended: body, words, and the next hour. You can start before you feel brave, and tend still counts.\n\nYou might be avoiding the mirror, and a message is waiting and feels hard to open. Grief can be here too, and tend can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so tend has a real step today. Tend still counts if that is all you do. A few minutes of daylight gives tend a little extra help.\n\nTend can be a value you keep, in a quiet way that fits you."
+    "reading": "Tend is the Christian theme here, set beside John 13:34. For Tend, the sense of John 13:34 is this: Jesus gives a new commandment to love one another as he has loved.\n\nThat verse is a welcome, not a test you pass before God will look at Tend. Practise Tend at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Tend honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Tend."
   },
   {
     "month": 9,
     "day": 28,
     "word": "Thanks",
-    "reading": "Thanks can stay small today. A small, specific thanks still matters. You can start before you feel brave, and thanks still counts.\n\nYou might be on the edge of the bed, and money stress is sitting on the table. The wish to give up can be here too, and thanks can stay small. You do not have to fix all of that today.\n\nEat something simple, so thanks has a real step today. Thanks still counts if that is all you do. One worry written on paper gives thanks a little extra help.\n\nThanks gets easier to hold when you ask for help in a short text.\n\nSpring is uneven, and thanks is allowed to be uneven too."
+    "reading": "The Christian theme, Thanks, is read with Romans 8:31. For Thanks, the sense of Romans 8:31 is this: if God is for us, another person's verdict is not the last word.\n\nNothing in Romans 8:31 asks you to pretend, and Thanks can begin while you are still tired. If you were wrong, let Thanks include an apology in a single clean sentence, because of Romans 8:31.\n\nMercy is wider than today's mistakes, and Thanks can stand inside that mercy without showing off. If the morning was clumsy, Thanks can begin again after lunch in the sight of God."
   },
   {
     "month": 9,
     "day": 29,
     "word": "Thirst",
-    "reading": "Thirst fits a hard morning. A thirst for comfort is human, and water, company, or rest can answer first. You can start before you feel brave, and thirst still counts.\n\nYou might be in the kitchen, before any real food, and money stress is sitting on the table. Comparison can be here too, and thirst can stay small. You do not have to fix all of that today.\n\nEat something simple before any big decision, so thirst has a real step today. Thirst still counts if that is all you do. A ten-minute pause before a big choice gives thirst a little extra help.\n\nIf God is part of your life, you can pray about thirst today. If not, a friend can sit with you, and thirst can be shared."
+    "reading": "On this page the Christian theme is Thirst, and the text is 1 Corinthians 1:9. For Thirst, the sense of 1 Corinthians 1:9 is this: God is faithful and calls people into life with his Son.\n\nRead Thirst in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 Corinthians 1:9, and let Thirst be unhurried company for someone lonely.\n\nHand the evening to God, and let Thirst be unfinished without being abandoned. God's kindness towards you is the ground under Thirst, not a prize withheld until you improve."
   },
   {
     "month": 9,
     "day": 30,
     "word": "This hour",
-    "reading": "This hour is only for this day. This hour is the only one that has to be lived right now. You can start before you feel brave, and this hour still counts.\n\nYou might be halfway up the stairs, and the house is quiet and the mind is not. The urge to go numb can be here too, and this hour can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so this hour has a real step today. This hour still counts if that is all you do. A text to someone safe gives this hour a little extra help.\n\nThis hour can be a short prayer, or a few quiet words to a friend."
+    "reading": "This hour is the Christian theme here, set beside Galatians 5:13. For This hour, the sense of Galatians 5:13 is this: freedom in Christ is for serving one another through love.\n\nChrist is gentle with unfinished people, so This hour does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how This hour shows up this afternoon.\n\nYou can begin This hour before you feel holy, because the Father already knows the day. Keep This hour Christian and specific: one verse, one prayer, one person. In Christ, This hour is worth attention even when the calendar is full."
   },
   {
     "month": 10,
     "day": 1,
     "word": "Thought",
-    "reading": "Thought is allowed to be imperfect. A thought is not a fact, and it is not an order. You can start before you feel brave, and thought still counts.\n\nYou might be on the floor by the cupboard, and a secret feels heavy. Hunger can be here too, and thought can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so thought has a real step today. Thought still counts if that is all you do. Lights dimmed at a decent hour gives thought a little extra help.\n\nThought can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Thought, is read with Ephesians 4:2. For Thought, the sense of Ephesians 4:2 is this: live with humility, gentleness, and patience, bearing with one another.\n\nThat verse is a welcome, not a test you pass before God will look at Thought. To live Thought, read Ephesians 4:2 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Ephesians 4:2, for Thought, is trust, not a performance. In Christ, Thought is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Thought still fits the actual day."
   },
   {
     "month": 10,
     "day": 2,
     "word": "Today's page",
-    "reading": "Today's page does not have to be loud to be real. Today's page can stay free of tomorrow's disaster story. You can start before you feel brave, and today's page still counts.\n\nYou might be at the kitchen table, and the urge to hide is strong. A heavy secret can be here too, and today's page can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so today's page has a real step today. Today's page still counts if that is all you do. Quiet company gives today's page a little extra help.\n\nToday's page can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Today's page, and the text is Philippians 4:19. For Today's page, the sense of Philippians 4:19 is this: God supplies every need according to his riches in Christ.\n\nNothing in Philippians 4:19 asks you to pretend, and Today's page can begin while you are still tired. Give Today's page a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Today's page is allowed to be slow. Australian weather can be hot, wet, or cold, and Today's page still fits the actual day."
   },
   {
     "month": 10,
     "day": 3,
     "word": "Tone",
-    "reading": "Tone can start in an ordinary hour. The tone can stay soft while the facts stay clear. You can start before you feel brave, and tone still counts.\n\nYou might be in the bathroom, putting off the next thing, and loneliness is louder than the noise around. Worry about the future can be here too, and tone can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so tone has a real step today. Tone still counts if that is all you do. A simple meal gives tone a little extra help.\n\nTone belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Tone is the Christian theme here, set beside 1 Timothy 6:6. For Tone, the sense of 1 Timothy 6:6 is this: godliness with contentment is great gain.\n\nRead Tone in the light of that verse, without turning it into a performance for other people. Let Tone sound like a softer answer where the house has been sharp, with 1 Timothy 6:6 still in mind.\n\nNo one else has to share your creed for you to practise Tone in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Tone."
   },
   {
     "month": 10,
     "day": 4,
     "word": "Touch",
-    "reading": "Touch can stay small today. A pet, a safe hand, or a hand on the chest can bring you back to now. You can start before you feel brave, and touch still counts.\n\nYou might be on a lunch break, and a secret feels heavy. Numbness can be here too, and touch can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so touch has a real step today. Touch still counts if that is all you do. The phone in another room gives touch a little extra help.\n\nTouch grows more easily with a kind tone than with shame.\n\nWarm days get busy, so save a little time for touch."
+    "reading": "The Christian theme, Touch, is read with Hebrews 10:24. For Touch, the sense of Hebrews 10:24 is this: stir one another up towards love and good works.\n\nChrist is gentle with unfinished people, so Touch does not have to arrive already polished. Carry Touch into an ordinary hour by telling the truth kindly, in the spirit of Hebrews 10:24.\n\nPut Touch where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Touch can begin again after lunch in the sight of God. God's kindness towards you is the ground under Touch, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 5,
     "word": "Tranquil",
-    "reading": "Tranquil fits a hard morning. A less harsh hour is still a win if full calm does not arrive. You can start before you feel brave, and tranquil still counts.\n\nYou might be at the kitchen table, and a drink, a drug, or a numbing scroll looks tempting. The thought that the day is already ruined can be here too, and tranquil can stay small. You do not have to fix all of that today.\n\nMake the evening small: food, a wash, and lights out, so tranquil has a real step today. Tranquil still counts if that is all you do. An open window gives tranquil a little extra help.\n\nTranquil can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Tranquil, and the text is James 1:17. For Tranquil, the sense of James 1:17 is this: every good gift comes from the Father of lights, who does not shift like a shadow.\n\nThat verse is a welcome, not a test you pass before God will look at Tranquil. Practise Tranquil at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Tranquil honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Tranquil, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 6,
     "word": "Treasure",
-    "reading": "Treasure is only for this day. An ordinary good, like a meal or a kind reply, can be treasured. You can start before you feel brave, and treasure still counts.\n\nYou might be on the floor by the cupboard, and a craving is trying to sound like a good idea. Irritation can be here too, and treasure can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so treasure has a real step today. Treasure still counts if that is all you do. A glass of water gives treasure a little extra help.\n\nTreasure gets easier to hold when you ask for help in a short text."
+    "reading": "Treasure is the Christian theme here, set beside James 5:16. For Treasure, the sense of James 5:16 is this: pray for one another.\n\nNothing in James 5:16 asks you to pretend, and Treasure can begin while you are still tired. If you were wrong, let Treasure include an apology in a single clean sentence, because of James 5:16.\n\nMercy is wider than today's mistakes, and Treasure can stand inside that mercy without showing off. Keep Treasure Christian and specific: one verse, one prayer, one person. In Christ, Treasure is worth attention even when the calendar is full."
   },
   {
     "month": 10,
     "day": 7,
     "word": "Trust again",
-    "reading": "Trust again is allowed to be imperfect. Trust can start again with one safe person and one kept promise. You can start before you feel brave, and trust again still counts.\n\nYou might be in the doorway, keys still in hand, and someone's words are still ringing. The pull to be alone can be here too, and trust again can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so trust again has a real step today. Trust again still counts if that is all you do. A short walk gives trust again a little extra help.\n\nIf God is part of your life, you can pray about trust again today. If not, a friend can sit with you, and trust again can be shared."
+    "reading": "The Christian theme, Trust again, is read with 1 John 3:1. For Trust again, the sense of 1 John 3:1 is this: the Father's love calls us his children.\n\nRead Trust again in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 John 3:1, and let Trust again be unhurried company for someone lonely.\n\nHand the evening to God, and let Trust again be unfinished without being abandoned. In Christ, Trust again is worth attention even when the calendar is full."
   },
   {
     "month": 10,
     "day": 8,
     "word": "Turn toward",
-    "reading": "Turn toward does not have to be loud to be real. Help, food, or a friend can be turned toward, instead of an old escape. You can start before you feel brave, and turn toward still counts.\n\nYou might be outside a meeting, and food is being put off. Shame can be here too, and turn toward can stay small. You do not have to fix all of that today.\n\nText one safe person, so turn toward has a real step today. Turn toward still counts if that is all you do. A kind sentence, spoken as to a friend gives turn toward a little extra help.\n\nTurn toward can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Turn toward, and the text is Revelation 21:5. For Turn toward, the sense of Revelation 21:5 is this: God says he is making all things new.\n\nChrist is gentle with unfinished people, so Turn toward does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Turn toward shows up this afternoon.\n\nYou can begin Turn toward before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Turn toward still fits the actual day."
   },
   {
     "month": 10,
     "day": 9,
     "word": "Unburden",
-    "reading": "Unburden can start in an ordinary hour. One safe person can be told what has been carried. You can start before you feel brave, and unburden still counts.\n\nYou might be on the bus, and being alone is pretending to be strength. A craving can be here too, and unburden can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so unburden has a real step today. Unburden still counts if that is all you do. A stretch and a drink of water gives unburden a little extra help.\n\nUnburden can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Unburden is the Christian theme here, set beside Leviticus 19:18. For Unburden, the sense of Leviticus 19:18 is this: love your neighbour as yourself.\n\nThat verse is a welcome, not a test you pass before God will look at Unburden. To live Unburden, read Leviticus 19:18 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Leviticus 19:18, for Unburden, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Unburden. If the morning was clumsy, Unburden can begin again after lunch in the sight of God."
   },
   {
     "month": 10,
     "day": 10,
     "word": "Understand",
-    "reading": "Understand can stay small today. Understanding can wait until after food. You can start before you feel brave, and understand still counts.\n\nYou might be walking the long way home, and comparison has crept in. Loneliness can be here too, and understand can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so understand has a real step today. Understand still counts if that is all you do. A washed face gives understand a little extra help.\n\nUnderstand can stay small while you borrow hope from someone safe.\n\nWarm days get busy, so save a little time for understand."
+    "reading": "The Christian theme, Understand, is read with Psalm 9:10. For Understand, the sense of Psalm 9:10 is this: those who know God's name put their trust in him, and he does not forsake them.\n\nNothing in Psalm 9:10 asks you to pretend, and Understand can begin while you are still tired. Give Understand a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Understand is allowed to be slow. If the morning was clumsy, Understand can begin again after lunch in the sight of God."
   },
   {
     "month": 10,
     "day": 11,
     "word": "Unfold",
-    "reading": "Unfold fits a hard morning. The day can unfold one hour at a time. You can start before you feel brave, and unfold still counts.\n\nYou might be in the doorway, keys still in hand, and the urge to hide is strong. Anger can be here too, and unfold can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so unfold has a real step today. Unfold still counts if that is all you do. A slower breath gives unfold a little extra help.\n\nUnfold belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Unfold, and the text is Psalm 37:7. For Unfold, the sense of Psalm 37:7 is this: be still before the Lord and wait patiently for him.\n\nRead Unfold in the light of that verse, without turning it into a performance for other people. Let Unfold sound like a softer answer where the house has been sharp, with Psalm 37:7 still in mind.\n\nNo one else has to share your creed for you to practise Unfold in the sight of God. God's kindness towards you is the ground under Unfold, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 12,
     "word": "Unite",
-    "reading": "Unite is only for this day. One conversation with people who want good for you is enough unity. You can start before you feel brave, and unite still counts.\n\nYou might be on the bus, and quitting looks easier than starting. Tiredness can be here too, and unite can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so unite has a real step today. Unite still counts if that is all you do. One money worry named to someone safe gives unite a little extra help.\n\nUnite grows more easily with a kind tone than with shame."
+    "reading": "Unite is the Christian theme here, set beside Psalm 86:5. For Unite, the sense of Psalm 86:5 is this: the Lord is good and forgiving, and rich in steadfast love.\n\nChrist is gentle with unfinished people, so Unite does not have to arrive already polished. Carry Unite into an ordinary hour by telling the truth kindly, in the spirit of Psalm 86:5.\n\nPut Unite where your hands are, and let the text stay a lamp rather than a weapon. Keep Unite Christian and specific: one verse, one prayer, one person. In Christ, Unite is worth attention even when the calendar is full."
   },
   {
     "month": 10,
     "day": 13,
     "word": "Unplug",
-    "reading": "Unplug is allowed to be imperfect. The scroll, the argument, or the craving can be unplugged for a while. You can start before you feel brave, and unplug still counts.\n\nYou might be halfway up the stairs, and loneliness is louder than the noise around. Fear can be here too, and unplug can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so unplug has a real step today. Unplug still counts if that is all you do. A few minutes of daylight gives unplug a little extra help.\n\nUnplug can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Unplug, is read with Psalm 119:11. For Unplug, the sense of Psalm 119:11 is this: the psalmist stores God's word in the heart.\n\nThat verse is a welcome, not a test you pass before God will look at Unplug. Practise Unplug at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Unplug honest and gentle until you sleep, and leave the rest in God's care. In Christ, Unplug is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Unplug still fits the actual day."
   },
   {
     "month": 10,
     "day": 14,
     "word": "Unwind",
-    "reading": "Unwind does not have to be loud to be real. A wash, a dimmer light, and one worry on paper can unwind the night. You can start before you feel brave, and unwind still counts.\n\nYou might be awake too late, and help is on offer and feels hard to take. Sadness can be here too, and unwind can stay small. You do not have to fix all of that today.\n\nPut the phone in another room for twenty minutes, so unwind has a real step today. Unwind still counts if that is all you do. One worry written on paper gives unwind a little extra help.\n\nUnwind gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Unwind, and the text is Proverbs 3:6. For Unwind, the sense of Proverbs 3:6 is this: acknowledge the Lord, and he will straighten the path.\n\nNothing in Proverbs 3:6 asks you to pretend, and Unwind can begin while you are still tired. If you were wrong, let Unwind include an apology in a single clean sentence, because of Proverbs 3:6.\n\nHand the evening to God, and let Unwind be unfinished without being abandoned. Australian weather can be hot, wet, or cold, and Unwind still fits the actual day."
   },
   {
     "month": 10,
     "day": 15,
     "word": "Upright",
-    "reading": "Upright can start in an ordinary hour. Getting up and telling the truth is an upright day. You can start before you feel brave, and upright still counts.\n\nYou might be in the doorway, keys still in hand, and hunger and irritation are easy to mix up. The urge to hide can be here too, and upright can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so upright has a real step today. Upright still counts if that is all you do. A ten-minute pause before a big choice gives upright a little extra help.\n\nIf God is part of your life, you can pray about upright today. If not, a friend can sit with you, and upright can be shared."
+    "reading": "Upright is the Christian theme here, set beside Proverbs 18:10. For Upright, the sense of Proverbs 18:10 is this: the name of the Lord is a strong tower.\n\nRead Upright in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Proverbs 18:10, and let Upright be unhurried company for someone lonely.\n\nHand the evening to God, and let Upright be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Upright."
   },
   {
     "month": 10,
     "day": 16,
     "word": "Useful",
-    "reading": "Useful can stay small today. A meal, a text, or an opened bill can be the useful thing. You can start before you feel brave, and useful still counts.\n\nYou might be in the doorway, keys still in hand, and the body is tired and the mind is loud. Money stress can be here too, and useful can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so useful has a real step today. Useful still counts if that is all you do. A text to someone safe gives useful a little extra help.\n\nUseful can be a short prayer, or a few quiet words to a friend.\n\nWarm days get busy, so save a little time for useful."
+    "reading": "The Christian theme, Useful, is read with Isaiah 30:15. For Useful, the sense of Isaiah 30:15 is this: in quietness and in trust is strength.\n\nChrist is gentle with unfinished people, so Useful does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Useful shows up this afternoon.\n\nYou can begin Useful before you feel holy, because the Father already knows the day. If the morning was clumsy, Useful can begin again after lunch in the sight of God. God's kindness towards you is the ground under Useful, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 17,
     "word": "Value",
-    "reading": "Value fits a hard morning. Food, rest, and honesty are ways to treat yourself as valuable. You can start before you feel brave, and value still counts.\n\nYou might be in the doorway, keys still in hand, and the day feels very dark. Grief can be here too, and value can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so value has a real step today. Value still counts if that is all you do. Lights dimmed at a decent hour gives value a little extra help.\n\nValue can begin again today, and mercy means you do not have to earn that start.\n\nIf value sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about value is not a crisis plan."
+    "reading": "On this page the Christian theme is Value, and the text is Isaiah 49:16. For Value, the sense of Isaiah 49:16 is this: God says his people are engraved on the palms of his hands.\n\nThat verse is a welcome, not a test you pass before God will look at Value. To live Value, read Isaiah 49:16 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Isaiah 49:16, for Value, is trust, not a performance. God's kindness towards you is the ground under Value, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 18,
     "word": "Venture",
-    "reading": "Venture is only for this day. A small ask, a short walk, or a meeting can be the venture. You can start before you feel brave, and venture still counts.\n\nYou might be in a quiet car park, and a secret feels heavy. The wish to give up can be here too, and venture can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so venture has a real step today. Venture still counts if that is all you do. Quiet company gives venture a little extra help.\n\nVenture can stay small while you borrow hope from someone safe."
+    "reading": "Venture is the Christian theme here, set beside Lamentations 3:25. For Venture, the sense of Lamentations 3:25 is this: the Lord is good to those who wait for him.\n\nNothing in Lamentations 3:25 asks you to pretend, and Venture can begin while you are still tired. Give Venture a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Venture is allowed to be slow. Keep Venture Christian and specific: one verse, one prayer, one person. In Christ, Venture is worth attention even when the calendar is full."
   },
   {
     "month": 10,
     "day": 19,
     "word": "Voice",
-    "reading": "Voice is allowed to be imperfect. Use a voice you would be glad to hear from someone else. You can start before you feel brave, and voice still counts.\n\nYou might be walking the long way home, and the evening feels risky. Comparison can be here too, and voice can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so voice has a real step today. Voice still counts if that is all you do. A simple meal gives voice a little extra help.\n\nVoice belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Voice, is read with Jonah 2:2. For Voice, the sense of Jonah 2:2 is this: Jonah called to the Lord in distress, and the Lord answered.\n\nThat verse is a welcome, not a test you pass before God will look at Voice. Let Voice sound like a softer answer where the house has been sharp, with Jonah 2:2 still in mind.\n\nNo one else has to share your creed for you to practise Voice in the sight of God. In Christ, Voice is worth attention even when the calendar is full."
   },
   {
     "month": 10,
     "day": 20,
     "word": "Walk",
-    "reading": "Walk does not have to be loud to be real. A walk to the corner can change a stuck hour. You can start before you feel brave, and walk still counts.\n\nYou might be by a window, and someone's words are still ringing. The urge to go numb can be here too, and walk can stay small. You do not have to fix all of that today.\n\nWash face and hands, so walk has a real step today. Walk still counts if that is all you do. The phone in another room gives walk a little extra help.\n\nWalk grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Walk, and the text is Zechariah 4:6. For Walk, the sense of Zechariah 4:6 is this: not by might, nor by power, but by the Spirit of the Lord.\n\nChrist is gentle with unfinished people, so Walk does not have to arrive already polished. Carry Walk into an ordinary hour by telling the truth kindly, in the spirit of Zechariah 4:6.\n\nPut Walk where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Walk still fits the actual day."
   },
   {
     "month": 10,
     "day": 21,
     "word": "Wash",
-    "reading": "Wash can start in an ordinary hour. A wash can end one hard stretch and start the next hour. You can start before you feel brave, and wash still counts.\n\nYou might be on the back step, and food is being put off. Hunger can be here too, and wash can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so wash has a real step today. Wash still counts if that is all you do. An open window gives wash a little extra help.\n\nWash can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Wash, is read with Matthew 5:44. For Wash, the sense of Matthew 5:44 is this: love your enemies and pray for people who hurt you.\n\nThat verse is a welcome, not a test you pass before God will look at Wash. Practise Wash at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Wash honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Wash."
   },
   {
     "month": 10,
     "day": 22,
     "word": "Water",
-    "reading": "Water can stay small today. Water before a big decision is a simple act of care. You can start before you feel brave, and water still counts.\n\nYou might be on a lunch break, and the evening feels risky. A heavy secret can be here too, and water can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so water has a real step today. Water still counts if that is all you do. A glass of water gives water a little extra help.\n\nWater gets easier to hold when you ask for help in a short text.\n\nWarm days get busy, so save a little time for water."
+    "reading": "The Christian theme, Water, is read with Matthew 19:26. For Water, the sense of Matthew 19:26 is this: with God all things are possible.\n\nNothing in Matthew 19:26 asks you to pretend, and Water can begin while you are still tired. If you were wrong, let Water include an apology in a single clean sentence, because of Matthew 19:26.\n\nMercy is wider than today's mistakes, and Water can stand inside that mercy without showing off. If the morning was clumsy, Water can begin again after lunch in the sight of God. God's kindness towards you is the ground under Water, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 23,
     "word": "Weave",
-    "reading": "Weave fits a hard morning. Food, truth, and people can be woven through the day. You can start before you feel brave, and weave still counts.\n\nYou might be by a window, and a secret feels heavy. Worry about the future can be here too, and weave can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so weave has a real step today. Weave still counts if that is all you do. A short walk gives weave a little extra help.\n\nIf God is part of your life, you can pray about weave today. If not, a friend can sit with you, and weave can be shared."
+    "reading": "On this page the Christian theme is Weave, and the text is Luke 15:7. For Weave, the sense of Luke 15:7 is this: heaven rejoices when one sinner turns back.\n\nRead Weave in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Luke 15:7, and let Weave be unhurried company for someone lonely.\n\nHand the evening to God, and let Weave be unfinished without being abandoned. God's kindness towards you is the ground under Weave, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 24,
     "word": "Weep",
-    "reading": "Weep is only for this day. Tears can come, and someone safe can be told if the sadness is too heavy. You can start before you feel brave, and weep still counts.\n\nYou might be in a quiet car park, and a craving is trying to sound like a good idea. Numbness can be here too, and weep can stay small. You do not have to fix all of that today.\n\nLet the sad feeling be here for ten minutes, without numbing it, so weep has a real step today. Weep still counts if that is all you do. A kind sentence, spoken as to a friend gives weep a little extra help.\n\nWeep can be a short prayer, or a few quiet words to a friend.\n\nIf weep sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about weep is not a crisis plan."
+    "reading": "Weep is the Christian theme here, set beside John 15:15. For Weep, the sense of John 15:15 is this: Jesus calls his disciples friends.\n\nChrist is gentle with unfinished people, so Weep does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Weep shows up this afternoon.\n\nYou can begin Weep before you feel holy, because the Father already knows the day. Keep Weep Christian and specific: one verse, one prayer, one person. In Christ, Weep is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Weep still fits the actual day."
   },
   {
     "month": 10,
     "day": 25,
     "word": "Wide",
-    "reading": "Wide is allowed to be imperfect. One hard hour is not a whole life. You can start before you feel brave, and wide still counts.\n\nYou might be on a short walk, and quitting looks easier than starting. The thought that the day is already ruined can be here too, and wide can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so wide has a real step today. Wide still counts if that is all you do. A stretch and a drink of water gives wide a little extra help.\n\nWide can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Wide, is read with Romans 10:13. For Wide, the sense of Romans 10:13 is this: everyone who calls on the name of the Lord will be saved.\n\nThat verse is a welcome, not a test you pass before God will look at Wide. To live Wide, read Romans 10:13 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 10:13, for Wide, is trust, not a performance. In Christ, Wide is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Wide still fits the actual day."
   },
   {
     "month": 10,
     "day": 26,
     "word": "Willing",
-    "reading": "Willing does not have to be loud to be real. Being willing is enough to begin, even when confidence is missing. You can start before you feel brave, and willing still counts.\n\nYou might be at the kitchen sink, and comparison has crept in. Irritation can be here too, and willing can stay small. You do not have to fix all of that today.\n\nDo the next small task only, so willing has a real step today. Willing still counts if that is all you do. A washed face gives willing a little extra help.\n\nWilling can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Willing, and the text is 2 Corinthians 12:10. For Willing, the sense of 2 Corinthians 12:10 is this: when Paul is weak, then he is strong, because of Christ.\n\nNothing in 2 Corinthians 12:10 asks you to pretend, and Willing can begin while you are still tired. Give Willing a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Willing is allowed to be slow. Australian weather can be hot, wet, or cold, and Willing still fits the actual day."
   },
   {
     "month": 10,
     "day": 27,
     "word": "Window",
-    "reading": "Window can start in an ordinary hour. An open window can change the air and the mood of a room. You can start before you feel brave, and window still counts.\n\nYou might be packing a bag and feeling unsure, and a craving is trying to sound like a good idea. The pull to be alone can be here too, and window can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so window has a real step today. Window still counts if that is all you do. A slower breath gives window a little extra help.\n\nWindow belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Window is the Christian theme here, set beside Colossians 1:17. For Window, the sense of Colossians 1:17 is this: in Christ all things hold together.\n\nRead Window in the light of that verse, without turning it into a performance for other people. Let Window sound like a softer answer where the house has been sharp, with Colossians 1:17 still in mind.\n\nNo one else has to share your creed for you to practise Window in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Window."
   },
   {
     "month": 10,
     "day": 28,
     "word": "Wisdom",
-    "reading": "Wisdom can stay small today. The safer choice, made before the upset takes over, is wisdom enough. You can start before you feel brave, and wisdom still counts.\n\nYou might be holding a bill that is hard to open, and the evening feels risky. Shame can be here too, and wisdom can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so wisdom has a real step today. Wisdom still counts if that is all you do. One money worry named to someone safe gives wisdom a little extra help.\n\nWisdom grows more easily with a kind tone than with shame.\n\nWarm days get busy, so save a little time for wisdom."
+    "reading": "The Christian theme, Wisdom, is read with Hebrews 6:19. For Wisdom, the sense of Hebrews 6:19 is this: hope in God is a sure and steadfast anchor.\n\nChrist is gentle with unfinished people, so Wisdom does not have to arrive already polished. Carry Wisdom into an ordinary hour by telling the truth kindly, in the spirit of Hebrews 6:19.\n\nPut Wisdom where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Wisdom can begin again after lunch in the sight of God. God's kindness towards you is the ground under Wisdom, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 29,
     "word": "Within",
-    "reading": "Within fits a hard morning. A kinder inner voice can be practised, even if it feels new. You can start before you feel brave, and within still counts.\n\nYou might be in the car, not ready to go in, and the urge to hide is strong. A craving can be here too, and within can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so within has a real step today. Within still counts if that is all you do. A few minutes of daylight gives within a little extra help.\n\nWithin can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Within, and the text is James 3:17. For Within, the sense of James 3:17 is this: wisdom from above is pure, peaceable, gentle, and full of mercy.\n\nThat verse is a welcome, not a test you pass before God will look at Within. Practise Within at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Within can stand inside that mercy without showing off. God's kindness towards you is the ground under Within, not a prize withheld until you improve."
   },
   {
     "month": 10,
     "day": 30,
     "word": "Witness",
-    "reading": "Witness is only for this day. One safe person who hears the true story can be a witness. You can start before you feel brave, and witness still counts.\n\nYou might be on the floor by the cupboard, and the house is quiet and the mind is not. Loneliness can be here too, and witness can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so witness has a real step today. Witness still counts if that is all you do. One worry written on paper gives witness a little extra help.\n\nWitness gets easier to hold when you ask for help in a short text."
+    "reading": "Witness is the Christian theme here, set beside 1 Peter 5:10. For Witness, the sense of 1 Peter 5:10 is this: after suffering a while, God will restore and strengthen you.\n\nNothing in 1 Peter 5:10 asks you to pretend, and Witness can begin while you are still tired. If you were wrong, let Witness include an apology in a single clean sentence, because of 1 Peter 5:10.\n\nMercy is wider than today's mistakes, and Witness can stand inside that mercy without showing off. Keep Witness Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 10,
     "day": 31,
     "word": "Wonder",
-    "reading": "Wonder is allowed to be imperfect. Wonder can be small: light, a pet, a tree, a good mouthful of food. You can start before you feel brave, and wonder still counts.\n\nYou might be awake too late, and a secret feels heavy. Anger can be here too, and wonder can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so wonder has a real step today. Wonder still counts if that is all you do. A ten-minute pause before a big choice gives wonder a little extra help.\n\nIf God is part of your life, you can pray about wonder today. If not, a friend can sit with you, and wonder can be shared."
+    "reading": "The Christian theme, Wonder, is read with Revelation 3:20. For Wonder, the sense of Revelation 3:20 is this: Jesus stands at the door and knocks, and comes in where he is welcomed.\n\nRead Wonder in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Revelation 3:20, and let Wonder be unhurried company for someone lonely.\n\nHand the evening to God, and let Wonder be unfinished without being abandoned. In Christ, Wonder is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 1,
     "word": "Worth",
-    "reading": "Worth does not have to be loud to be real. Worth does not rise and fall with one hour. You can start before you feel brave, and worth still counts.\n\nYou might be staring at an unanswered message, and sleep was short. Tiredness can be here too, and worth can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so worth has a real step today. Worth still counts if that is all you do. A text to someone safe gives worth a little extra help.\n\nWorth can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Worth, and the text is Exodus 20:8. For Worth, the sense of Exodus 20:8 is this: remember the Sabbath and keep it holy.\n\nChrist is gentle with unfinished people, so Worth does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Worth shows up this afternoon.\n\nYou can begin Worth before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Worth still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Worth."
   },
   {
     "month": 11,
     "day": 2,
     "word": "Wound",
-    "reading": "Wound can start in an ordinary hour. A wound needs care and company, not a lecture. You can start before you feel brave, and wound still counts.\n\nYou might be at the kitchen table, and the evening feels risky. Fear can be here too, and wound can stay small. You do not have to fix all of that today.\n\nLet the sad feeling be here for ten minutes, without numbing it, so wound has a real step today. Wound still counts if that is all you do. Lights dimmed at a decent hour gives wound a little extra help.\n\nWound can begin again today, and mercy means you do not have to earn that start.\n\nIf wound sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about wound is not a crisis plan."
+    "reading": "Wound is the Christian theme here, set beside Psalm 5:3. For Wound, the sense of Psalm 5:3 is this: in the morning the psalmist lays a prayer before God.\n\nThat verse is a welcome, not a test you pass before God will look at Wound. To live Wound, read Psalm 5:3 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 5:3, for Wound, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Wound."
   },
   {
     "month": 11,
     "day": 3,
     "word": "Write it down",
-    "reading": "Write it down can stay small today. The feeling, the need, and the person to tell can be written down. You can start before you feel brave, and write it down still counts.\n\nYou might be on the bus, and money stress is sitting on the table. Sadness can be here too, and write it down can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so write it down has a real step today. Write it down still counts if that is all you do. Quiet company gives write it down a little extra help.\n\nWrite it down can stay small while you borrow hope from someone safe.\n\nThe heat is building, so let write it down include water, shade, and a kind tone."
+    "reading": "The Christian theme, Write it down, is read with Psalm 40:1. For Write it down, the sense of Psalm 40:1 is this: the psalmist waited for the Lord, and the Lord turned towards him.\n\nNothing in Psalm 40:1 asks you to pretend, and Write it down can begin while you are still tired. Give Write it down a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Write it down is allowed to be slow. If the morning was clumsy, Write it down can begin again after lunch in the sight of God."
   },
   {
     "month": 11,
     "day": 4,
     "word": "Yes to help",
-    "reading": "Yes to help fits a hard morning. Yes can be a short reply to help that is already offered. You can start before you feel brave, and yes to help still counts.\n\nYou might be awake too late, and grief showed up without warning. The urge to hide can be here too, and yes to help can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so yes to help has a real step today. Yes to help still counts if that is all you do. A simple meal gives yes to help a little extra help.\n\nYes to help belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Yes to help, and the text is Psalm 107:9. For Yes to help, the sense of Psalm 107:9 is this: he satisfies the longing soul.\n\nRead Yes to help in the light of that verse, without turning it into a performance for other people. Let Yes to help sound like a softer answer where the house has been sharp, with Psalm 107:9 still in mind.\n\nNo one else has to share your creed for you to practise Yes to help in the sight of God. God's kindness towards you is the ground under Yes to help, not a prize withheld until you improve."
   },
   {
     "month": 11,
     "day": 5,
     "word": "Yield",
-    "reading": "Yield is only for this day. The big argument can be yielded, and the protective boundary kept. You can start before you feel brave, and yield still counts.\n\nYou might be outside a meeting, and quitting looks easier than starting. Money stress can be here too, and yield can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so yield has a real step today. Yield still counts if that is all you do. The phone in another room gives yield a little extra help.\n\nYield grows more easily with a kind tone than with shame."
+    "reading": "Yield is the Christian theme here, set beside Proverbs 14:29. For Yield, the sense of Proverbs 14:29 is this: whoever is slow to anger has great understanding.\n\nChrist is gentle with unfinished people, so Yield does not have to arrive already polished. Carry Yield into an ordinary hour by telling the truth kindly, in the spirit of Proverbs 14:29.\n\nPut Yield where your hands are, and let the text stay a lamp rather than a weapon. Keep Yield Christian and specific: one verse, one prayer, one person. In Christ, Yield is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 6,
     "word": "Anchor",
-    "reading": "Anchor is allowed to be imperfect. A routine, a person, or a simple prayer can be an anchor. You can start before you feel brave, and anchor still counts.\n\nYou might be in a quiet car park, and a big decision is trying to happen while feelings are hot. Grief can be here too, and anchor can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so anchor has a real step today. Anchor still counts if that is all you do. An open window gives anchor a little extra help.\n\nAnchor can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Anchor, is read with Isaiah 30:21. For Anchor, the sense of Isaiah 30:21 is this: a voice behind says which way to walk.\n\nThat verse is a welcome, not a test you pass before God will look at Anchor. Practise Anchor at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Anchor can stand inside that mercy without showing off. In Christ, Anchor is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Anchor still fits the actual day."
   },
   {
     "month": 11,
     "day": 7,
     "word": "Arrival",
-    "reading": "Arrival does not have to be loud to be real. Getting to the next safe place counts, even if you feel shaky. You can start before you feel brave, and arrival still counts.\n\nYou might be alone with a craving, and shame got there first. The wish to give up can be here too, and arrival can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so arrival has a real step today. Arrival still counts if that is all you do. A glass of water gives arrival a little extra help.\n\nArrival gets easier to hold when you ask for help in a short text."
+    "reading": "Arrival is the Christian theme here, set beside Isaiah 61:1. For Arrival, the sense of Isaiah 61:1 is this: the Spirit of the Lord brings good news and liberty to captives.\n\nNothing in Isaiah 61:1 asks you to pretend, and Arrival can begin while you are still tired. If you were wrong, let Arrival include an apology in a single clean sentence, because of Isaiah 61:1.\n\nMercy is wider than today's mistakes, and Arrival can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Arrival still fits the actual day."
   },
   {
     "month": 11,
     "day": 8,
     "word": "Blanket",
-    "reading": "Blanket can start in an ordinary hour. A blanket, a warm drink, or a kind voice can settle a raw hour. You can start before you feel brave, and blanket still counts.\n\nYou might be in the bathroom, putting off the next thing, and a secret feels heavy. Comparison can be here too, and blanket can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so blanket has a real step today. Blanket still counts if that is all you do. A short walk gives blanket a little extra help.\n\nIf God is part of your life, you can pray about blanket today. If not, a friend can sit with you, and blanket can be shared."
+    "reading": "Blanket is the Christian theme here, set beside Hosea 6:6. For Blanket, the sense of Hosea 6:6 is this: God desires steadfast love and knowledge of him, not empty ritual.\n\nRead Blanket in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Hosea 6:6, and let Blanket be unhurried company for someone lonely.\n\nHand the evening to God, and let Blanket be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Blanket."
   },
   {
     "month": 11,
     "day": 9,
     "word": "Clearing",
-    "reading": "Clearing can stay small today. One cleared surface, or one worry moved onto paper, can help the mind. You can start before you feel brave, and clearing still counts.\n\nYou might be in the car, not ready to go in, and the evening feels risky. The urge to go numb can be here too, and clearing can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so clearing has a real step today. Clearing still counts if that is all you do. A kind sentence, spoken as to a friend gives clearing a little extra help.\n\nClearing can be a short prayer, or a few quiet words to a friend.\n\nThe heat is building, so let clearing include water, shade, and a kind tone."
+    "reading": "The Christian theme, Clearing, is read with Matthew 6:6. For Clearing, the sense of Matthew 6:6 is this: pray in secret, and the Father who sees in secret answers.\n\nChrist is gentle with unfinished people, so Clearing does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Clearing shows up this afternoon.\n\nYou can begin Clearing before you feel holy, because the Father already knows the day. If the morning was clumsy, Clearing can begin again after lunch in the sight of God. God's kindness towards you is the ground under Clearing, not a prize withheld until you improve."
   },
   {
     "month": 11,
     "day": 10,
     "word": "Ember",
-    "reading": "Ember fits a hard morning. A small remaining willingness is enough to start. You can start before you feel brave, and ember still counts.\n\nYou might be alone with a craving, and everything feels behind. Hunger can be here too, and ember can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so ember has a real step today. Ember still counts if that is all you do. A stretch and a drink of water gives ember a little extra help.\n\nEmber can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Ember, and the text is Matthew 10:31. For Ember, the sense of Matthew 10:31 is this: you are of more value than many sparrows, so do not be afraid.\n\nThat verse is a welcome, not a test you pass before God will look at Ember. To live Ember, read Matthew 10:31 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 10:31, for Ember, is trust, not a performance. God's kindness towards you is the ground under Ember, not a prize withheld until you improve."
   },
   {
     "month": 11,
     "day": 11,
     "word": "Foothold",
-    "reading": "Foothold is only for this day. The next safe step is a foothold, and the whole staircase can wait. You can start before you feel brave, and foothold still counts.\n\nYou might be in the doorway, keys still in hand, and help is on offer and feels hard to take. A heavy secret can be here too, and foothold can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so foothold has a real step today. Foothold still counts if that is all you do. A washed face gives foothold a little extra help.\n\nFoothold can stay small while you borrow hope from someone safe."
+    "reading": "Foothold is the Christian theme here, set beside John 4:14. For Foothold, the sense of John 4:14 is this: Jesus speaks of water that becomes a spring of eternal life.\n\nNothing in John 4:14 asks you to pretend, and Foothold can begin while you are still tired. Give Foothold a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Foothold is allowed to be slow. In Christ, Foothold is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Foothold still fits the actual day."
   },
   {
     "month": 11,
     "day": 12,
     "word": "Harbour",
-    "reading": "Harbour is allowed to be imperfect. A safe place with someone who knows the truth can be a harbour. You can start before you feel brave, and harbour still counts.\n\nYou might be at the kitchen sink, and quitting looks easier than starting. Worry about the future can be here too, and harbour can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so harbour has a real step today. Harbour still counts if that is all you do. A slower breath gives harbour a little extra help.\n\nHarbour belongs to this day only, and tomorrow can keep its own worries.\n\nIf harbour sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about harbour is not a crisis plan."
+    "reading": "The Christian theme, Harbour, is read with John 15:13. For Harbour, the sense of John 15:13 is this: the greatest love lays down its life for friends.\n\nRead Harbour in the light of that verse, without turning it into a performance for other people. Let Harbour sound like a softer answer where the house has been sharp, with John 15:13 still in mind.\n\nNo one else has to share your creed for you to practise Harbour in the sight of God. In Christ, Harbour is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 13,
     "word": "Hearth",
-    "reading": "Hearth does not have to be loud to be real. A kitchen table and a simple meal can be a hearth. You can start before you feel brave, and hearth still counts.\n\nYou might be on the bus, and shame got there first. Numbness can be here too, and hearth can stay small. You do not have to fix all of that today.\n\nEat something simple, so hearth has a real step today. Hearth still counts if that is all you do. One money worry named to someone safe gives hearth a little extra help.\n\nHearth grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Hearth, and the text is Romans 5:5. For Hearth, the sense of Romans 5:5 is this: hope does not put us to shame, because God's love is poured into our hearts.\n\nThat verse is a welcome, not a test you pass before God will look at Hearth. Carry Hearth into an ordinary hour by telling the truth kindly, in the spirit of Romans 5:5.\n\nPut Hearth where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Hearth still fits the actual day."
   },
   {
     "month": 11,
     "day": 14,
     "word": "Lamp",
-    "reading": "Lamp can start in an ordinary hour. Enough light for this step is a real lamp. You can start before you feel brave, and lamp still counts.\n\nYou might be in the car, not ready to go in, and a message is waiting and feels hard to open. The thought that the day is already ruined can be here too, and lamp can stay small. You do not have to fix all of that today.\n\nWash face and hands, so lamp has a real step today. Lamp still counts if that is all you do. A few minutes of daylight gives lamp a little extra help.\n\nLamp can be a value you keep, in a quiet way that fits you."
+    "reading": "Lamp is the Christian theme here, set beside 1 Corinthians 6:19. For Lamp, the sense of 1 Corinthians 6:19 is this: your body is a temple of the Holy Spirit.\n\nThat verse is a welcome, not a test you pass before God will look at Lamp. Practise Lamp at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Lamp honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Lamp."
   },
   {
     "month": 11,
     "day": 15,
     "word": "Loyal",
-    "reading": "Loyal can stay small today. The care chosen this morning can be stayed loyal to. You can start before you feel brave, and loyal still counts.\n\nYou might be outside a meeting, and the room is safe enough, but the chest is tight. Irritation can be here too, and loyal can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so loyal has a real step today. Loyal still counts if that is all you do. One worry written on paper gives loyal a little extra help.\n\nLoyal gets easier to hold when you ask for help in a short text.\n\nThe heat is building, so let loyal include water, shade, and a kind tone."
+    "reading": "The Christian theme, Loyal, is read with Galatians 2:20. For Loyal, the sense of Galatians 2:20 is this: Christ lives in his people, and life is lived by faith in the Son of God.\n\nNothing in Galatians 2:20 asks you to pretend, and Loyal can begin while you are still tired. If you were wrong, let Loyal include an apology in a single clean sentence, because of Galatians 2:20.\n\nMercy is wider than today's mistakes, and Loyal can stand inside that mercy without showing off. If the morning was clumsy, Loyal can begin again after lunch in the sight of God."
   },
   {
     "month": 11,
     "day": 16,
     "word": "Rooted",
-    "reading": "Rooted fits a hard morning. Feet on the floor, and people who know the truth, is a rooted hour. You can start before you feel brave, and rooted still counts.\n\nYou might be staring at an unanswered message, and everything feels behind. The pull to be alone can be here too, and rooted can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so rooted has a real step today. Rooted still counts if that is all you do. A ten-minute pause before a big choice gives rooted a little extra help.\n\nIf God is part of your life, you can pray about rooted today. If not, a friend can sit with you, and rooted can be shared."
+    "reading": "On this page the Christian theme is Rooted, and the text is Ephesians 5:1. For Rooted, the sense of Ephesians 5:1 is this: be imitators of God, as beloved children.\n\nRead Rooted in the light of that verse, without turning it into a performance for other people. Leave a harsh opinion unsaid, and let that restraint be how Rooted shows up this afternoon.\n\nHand the evening to God, and let Rooted be unfinished without being abandoned. God's kindness towards you is the ground under Rooted, not a prize withheld until you improve. Keep Rooted Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 11,
     "day": 17,
     "word": "Steadfast",
-    "reading": "Steadfast is only for this day. Coming back after a wobble is steadfast, and never wobbling is not required. You can start before you feel brave, and steadfast still counts.\n\nYou might be on the couch, and a message is waiting and feels hard to open. Shame can be here too, and steadfast can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so steadfast has a real step today. Steadfast still counts if that is all you do. A text to someone safe gives steadfast a little extra help.\n\nSteadfast can be a short prayer, or a few quiet words to a friend."
+    "reading": "Steadfast is the Christian theme here, set beside Colossians 3:2. For Steadfast, the sense of Colossians 3:2 is this: set your mind on the things of Christ, not only on earthly status.\n\nChrist is gentle with unfinished people, so Steadfast does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Steadfast shows up this afternoon.\n\nYou can begin Steadfast before you feel holy, because the Father already knows the day. Keep Steadfast Christian and specific: one verse, one prayer, one person. In Christ, Steadfast is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 18,
     "word": "Sunrise",
-    "reading": "Sunrise is allowed to be imperfect. After a bad night, a morning can still be a start. You can start before you feel brave, and sunrise still counts.\n\nYou might be avoiding the mirror, and sleep was short. A craving can be here too, and sunrise can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so sunrise has a real step today. Sunrise still counts if that is all you do. Lights dimmed at a decent hour gives sunrise a little extra help.\n\nSunrise can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Sunrise, is read with 1 Timothy 1:15. For Sunrise, the sense of 1 Timothy 1:15 is this: Christ Jesus came into the world to save sinners.\n\nThat verse is a welcome, not a test you pass before God will look at Sunrise. To live Sunrise, read 1 Timothy 1:15 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 1 Timothy 1:15, for Sunrise, is trust, not a performance. In Christ, Sunrise is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 19,
     "word": "Threshold",
-    "reading": "Threshold does not have to be loud to be real. The moment the safer side is chosen is a real threshold. You can start before you feel brave, and threshold still counts.\n\nYou might be at the clothesline, and a message is waiting and feels hard to open. Loneliness can be here too, and threshold can stay small. You do not have to fix all of that today.\n\nTell someone safe one true sentence, so threshold has a real step today. Threshold still counts if that is all you do. Quiet company gives threshold a little extra help.\n\nThreshold can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Threshold, and the text is James 1:2. For Threshold, the sense of James 1:2 is this: when trials come, steadfastness is being grown.\n\nNothing in James 1:2 asks you to pretend, and Threshold can begin while you are still tired. Give Threshold a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Threshold is allowed to be slow. Australian weather can be hot, wet, or cold, and Threshold still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Threshold."
   },
   {
     "month": 11,
     "day": 20,
     "word": "Unhurried",
-    "reading": "Unhurried can start in an ordinary hour. A human pace still gets you there. You can start before you feel brave, and unhurried still counts.\n\nYou might be staring at an unanswered message, and a craving is trying to sound like a good idea. Anger can be here too, and unhurried can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so unhurried has a real step today. Unhurried still counts if that is all you do. A simple meal gives unhurried a little extra help.\n\nUnhurried belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Unhurried, is read with James 4:10. For Unhurried, the sense of James 4:10 is this: humble yourselves before the Lord, and he will lift you up.\n\nRead Unhurried in the light of that verse, without turning it into a performance for other people. Let Unhurried sound like a softer answer where the house has been sharp, with James 4:10 still in mind.\n\nNo one else has to share your creed for you to practise Unhurried in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Unhurried."
   },
   {
     "month": 11,
     "day": 21,
     "word": "Haven",
-    "reading": "Haven can stay small today. A meeting, a friend's voice, or a quiet safe room can be a haven. You can start before you feel brave, and haven still counts.\n\nYou might be in bed, not sleeping, and money stress is sitting on the table. Tiredness can be here too, and haven can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so haven has a real step today. Haven still counts if that is all you do. The phone in another room gives haven a little extra help.\n\nHaven grows more easily with a kind tone than with shame.\n\nThe heat is building, so let haven include water, shade, and a kind tone."
+    "reading": "The Christian theme, Haven, is read with 2 Peter 1:3. For Haven, the sense of 2 Peter 1:3 is this: God's power has given what we need for life and godliness.\n\nThat verse is a welcome, not a test you pass before God will look at Haven. Carry Haven into an ordinary hour by telling the truth kindly, in the spirit of 2 Peter 1:3.\n\nPut Haven where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Haven can begin again after lunch in the sight of God."
   },
   {
     "month": 11,
     "day": 22,
     "word": "Gladness",
-    "reading": "Gladness fits a hard morning. A brief gladness can be allowed to stay. You can start before you feel brave, and gladness still counts.\n\nYou might be at a family table, and the room is safe enough, but the chest is tight. Fear can be here too, and gladness can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so gladness has a real step today. Gladness still counts if that is all you do. An open window gives gladness a little extra help.\n\nGladness can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Gladness, and the text is 1 John 5:14. For Gladness, the sense of 1 John 5:14 is this: if we ask according to his will, he hears us.\n\nThat verse is a welcome, not a test you pass before God will look at Gladness. Practise Gladness at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Gladness honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Gladness, not a prize withheld until you improve."
   },
   {
     "month": 11,
     "day": 23,
     "word": "Solace",
-    "reading": "Solace is only for this day. Company, music, or a simple prayer can be solace. You can start before you feel brave, and solace still counts.\n\nYou might be on the edge of the bed, and hunger and irritation are easy to mix up. Sadness can be here too, and solace can stay small. You do not have to fix all of that today.\n\nText one safe person, so solace has a real step today. Solace still counts if that is all you do. A glass of water gives solace a little extra help.\n\nSolace gets easier to hold when you ask for help in a short text."
+    "reading": "Solace is the Christian theme here, set beside Revelation 22:17. For Solace, the sense of Revelation 22:17 is this: the Spirit and the church say come, and whoever is thirsty may come.\n\nNothing in Revelation 22:17 asks you to pretend, and Solace can begin while you are still tired. If you were wrong, let Solace include an apology in a single clean sentence, because of Revelation 22:17.\n\nMercy is wider than today's mistakes, and Solace can stand inside that mercy without showing off. In Christ, Solace is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 24,
     "word": "Solidarity",
-    "reading": "Solidarity is allowed to be imperfect. Other people are staying too, and their steadiness can be borrowed. You can start before you feel brave, and solidarity still counts.\n\nYou might be in a quiet house with a loud mind, and sleep was short. The urge to hide can be here too, and solidarity can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so solidarity has a real step today. Solidarity still counts if that is all you do. A short walk gives solidarity a little extra help.\n\nIf God is part of your life, you can pray about solidarity today. If not, a friend can sit with you, and solidarity can be shared."
+    "reading": "The Christian theme, Solidarity, is read with Psalm 31:24. For Solidarity, the sense of Psalm 31:24 is this: be strong and let your heart take courage, all who wait for the Lord.\n\nRead Solidarity in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Psalm 31:24, and let Solidarity be unhurried company for someone lonely.\n\nHand the evening to God, and let Solidarity be unfinished without being abandoned. In Christ, Solidarity is worth attention even when the calendar is full."
   },
   {
     "month": 11,
     "day": 25,
     "word": "Spacious",
-    "reading": "Spacious does not have to be loud to be real. The day can have room for rest, not only for tasks. You can start before you feel brave, and spacious still counts.\n\nYou might be in a supermarket aisle, and help is on offer and feels hard to take. Money stress can be here too, and spacious can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so spacious has a real step today. Spacious still counts if that is all you do. A kind sentence, spoken as to a friend gives spacious a little extra help.\n\nSpacious can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Spacious, and the text is Psalm 118:6. For Spacious, the sense of Psalm 118:6 is this: the Lord is on my side, so fear of people need not rule.\n\nChrist is gentle with unfinished people, so Spacious does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Spacious shows up this afternoon.\n\nThe point of Psalm 118:6, for Spacious, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Spacious."
   },
   {
     "month": 11,
     "day": 26,
     "word": "Second wind",
-    "reading": "Second wind can start in an ordinary hour. A little energy can return after food, water, and a short rest. You can start before you feel brave, and second wind still counts.\n\nYou might be in a waiting room, and help is on offer and feels hard to take. Grief can be here too, and second wind can stay small. You do not have to fix all of that today.\n\nBegin again from this hour, so second wind has a real step today. Second wind still counts if that is all you do. A stretch and a drink of water gives second wind a little extra help.\n\nSecond wind can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Second wind is the Christian theme here, set beside Proverbs 2:6. For Second wind, the sense of Proverbs 2:6 is this: the Lord gives wisdom.\n\nThat verse is a welcome, not a test you pass before God will look at Second wind. To live Second wind, read Proverbs 2:6 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Proverbs 2:6, for Second wind, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Second wind."
   },
   {
     "month": 11,
     "day": 27,
     "word": "Soft landing",
-    "reading": "Soft landing can stay small today. A gentle evening can be a soft landing after a hard day. You can start before you feel brave, and soft landing still counts.\n\nYou might be in the doorway, keys still in hand, and a slip is on the mind. The wish to give up can be here too, and soft landing can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so soft landing has a real step today. Soft landing still counts if that is all you do. A washed face gives soft landing a little extra help.\n\nSoft landing can stay small while you borrow hope from someone safe.\n\nThe heat is building, so let soft landing include water, shade, and a kind tone."
+    "reading": "The Christian theme, Soft landing, is read with Ecclesiastes 3:11. For Soft landing, the sense of Ecclesiastes 3:11 is this: God has made everything suitable in its time.\n\nNothing in Ecclesiastes 3:11 asks you to pretend, and Soft landing can begin while you are still tired. Give Soft landing a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Soft landing is allowed to be slow. If the morning was clumsy, Soft landing can begin again after lunch in the sight of God. God's kindness towards you is the ground under Soft landing, not a prize withheld until you improve."
   },
   {
     "month": 11,
     "day": 28,
     "word": "Wholehearted",
-    "reading": "Wholehearted fits a hard morning. Meaning the small thing is enough, and feeling grand is not required. You can start before you feel brave, and wholehearted still counts.\n\nYou might be awake before the alarm, and money stress is sitting on the table. Comparison can be here too, and wholehearted can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so wholehearted has a real step today. Wholehearted still counts if that is all you do. A slower breath gives wholehearted a little extra help.\n\nWholehearted belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Wholehearted, and the text is Luke 11:3. For Wholehearted, the sense of Luke 11:3 is this: Jesus teaches a prayer that asks for each day's bread.\n\nRead Wholehearted in the light of that verse, without turning it into a performance for other people. Let Wholehearted sound like a softer answer where the house has been sharp, with Luke 11:3 still in mind.\n\nNo one else has to share your creed for you to practise Wholehearted in the sight of God. God's kindness towards you is the ground under Wholehearted, not a prize withheld until you improve."
   },
   {
     "month": 11,
     "day": 29,
     "word": "This breath",
-    "reading": "This breath is only for this day. When the mind is racing, this breath is a place to start. You can start before you feel brave, and this breath still counts.\n\nYou might be in the car, not ready to go in, and someone's words are still ringing. The urge to go numb can be here too, and this breath can stay small. You do not have to fix all of that today.\n\nWash face and hands, so this breath has a real step today. This breath still counts if that is all you do. One money worry named to someone safe gives this breath a little extra help.\n\nThis breath grows more easily with a kind tone than with shame."
+    "reading": "This breath is the Christian theme here, set beside 1 Corinthians 10:13. For This breath, the sense of 1 Corinthians 10:13 is this: God is faithful when temptation comes, and he makes a way through it.\n\nChrist is gentle with unfinished people, so This breath does not have to arrive already polished. Carry This breath into an ordinary hour by telling the truth kindly, in the spirit of 1 Corinthians 10:13.\n\nPut This breath where your hands are, and let the text stay a lamp rather than a weapon. Keep This breath Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 11,
     "day": 30,
     "word": "Plain speech",
-    "reading": "Plain speech is allowed to be imperfect. The true sentence, without extra drama, is plain speech. You can start before you feel brave, and plain speech still counts.\n\nYou might be staring at an unanswered message, and loneliness is louder than the noise around. Hunger can be here too, and plain speech can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so plain speech has a real step today. Plain speech still counts if that is all you do. A few minutes of daylight gives plain speech a little extra help.\n\nPlain speech can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Plain speech, is read with 1 Chronicles 16:34. For Plain speech, the sense of 1 Chronicles 16:34 is this: give thanks to the Lord, for he is good and his love endures.\n\nThat verse is a welcome, not a test you pass before God will look at Plain speech. Practise Plain speech at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Plain speech honest and gentle until you sleep, and leave the rest in God's care. In Christ, Plain speech is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 1,
     "word": "No hurry",
-    "reading": "No hurry does not have to be loud to be real. The next care can happen at a human pace. You can start before you feel brave, and no hurry still counts.\n\nYou might be on the back step, and a message is waiting and feels hard to open. A heavy secret can be here too, and no hurry can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so no hurry has a real step today. No hurry still counts if that is all you do. One worry written on paper gives no hurry a little extra help.\n\nNo hurry gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is No hurry, and the text is Psalm 23:1. For No hurry, the sense of Psalm 23:1 is this: the Lord is a shepherd who looks after his people, so they are not left without care.\n\nNothing in Psalm 23:1 asks you to pretend, and No hurry can begin while you are still tired. If you were wrong, let No hurry include an apology in a single clean sentence, because of Psalm 23:1.\n\nMercy is wider than today's mistakes, and No hurry can stand inside that mercy without showing off."
   },
   {
     "month": 12,
     "day": 2,
     "word": "True north",
-    "reading": "True north can start in an ordinary hour. Honesty, safety, and the next kind step can be the direction. You can start before you feel brave, and true north still counts.\n\nYou might be on the back step, and quitting looks easier than starting. Worry about the future can be here too, and true north can stay small. You do not have to fix all of that today.\n\nThank one person for one small thing, so true north has a real step today. True north still counts if that is all you do. A ten-minute pause before a big choice gives true north a little extra help.\n\nIf God is part of your life, you can pray about true north today. If not, a friend can sit with you, and true north can be shared."
+    "reading": "True north is the Christian theme here, set beside Isaiah 41:10. For True north, the sense of Isaiah 41:10 is this: God tells his people not to fear, because he is with them and will strengthen them.\n\nRead True north in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Isaiah 41:10, and let True north be unhurried company for someone lonely.\n\nHand the evening to God, and let True north be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of True north."
   },
   {
     "month": 12,
     "day": 3,
     "word": "Bread",
-    "reading": "Bread can stay small today. Real food is a serious part of getting through the day. You can start before you feel brave, and bread still counts.\n\nYou might be on the back step, and someone's words are still ringing. Numbness can be here too, and bread can stay small. You do not have to fix all of that today.\n\nEat something simple before any big decision, so bread has a real step today. Bread still counts if that is all you do. A text to someone safe gives bread a little extra help.\n\nBread can be a short prayer, or a few quiet words to a friend.\n\nThe year is loud, and bread is only for this day."
+    "reading": "The Christian theme, Bread, is read with Psalm 34:18. For Bread, the sense of Psalm 34:18 is this: the Lord is near to people whose hearts are broken.\n\nChrist is gentle with unfinished people, so Bread does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Bread shows up this afternoon.\n\nYou can begin Bread before you feel holy, because the Father already knows the day. If the morning was clumsy, Bread can begin again after lunch in the sight of God. God's kindness towards you is the ground under Bread, not a prize withheld until you improve."
   },
   {
     "month": 12,
     "day": 4,
     "word": "Door",
-    "reading": "Door fits a hard morning. After a slip, a fight, or a silence, a way back in can still be open. You can start before you feel brave, and door still counts.\n\nYou might be on the back step, and sleep was short. The thought that the day is already ruined can be here too, and door can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so door has a real step today. Door still counts if that is all you do. Lights dimmed at a decent hour gives door a little extra help.\n\nDoor can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Door, and the text is Matthew 6:34. For Door, the sense of Matthew 6:34 is this: Jesus says not to borrow tomorrow's trouble, because this date has enough of its own.\n\nThat verse is a welcome, not a test you pass before God will look at Door. To live Door, read Matthew 6:34 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 6:34, for Door, is trust, not a performance. God's kindness towards you is the ground under Door, not a prize withheld until you improve."
   },
   {
     "month": 12,
     "day": 5,
     "word": "Fireside",
-    "reading": "Fireside is only for this day. Warmth and safety can be a quiet kitchen, not only a grand picture. You can start before you feel brave, and fireside still counts.\n\nYou might be at the kitchen sink, and the evening feels risky. Irritation can be here too, and fireside can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so fireside has a real step today. Fireside still counts if that is all you do. Quiet company gives fireside a little extra help.\n\nFireside can stay small while you borrow hope from someone safe."
+    "reading": "Fireside is the Christian theme here, set beside Psalm 46:10. For Fireside, the sense of Psalm 46:10 is this: God says to be still and know that he is God.\n\nNothing in Psalm 46:10 asks you to pretend, and Fireside can begin while you are still tired. Give Fireside a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Fireside is allowed to be slow. Keep Fireside Christian and specific: one verse, one prayer, one person. In Christ, Fireside is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 6,
     "word": "Footstep",
-    "reading": "Footstep is allowed to be imperfect. One step toward help is a real move. You can start before you feel brave, and footstep still counts.\n\nYou might be at a family table, and grief showed up without warning. The pull to be alone can be here too, and footstep can stay small. You do not have to fix all of that today.\n\nEat something simple, so footstep has a real step today. Footstep still counts if that is all you do. A simple meal gives footstep a little extra help.\n\nFootstep belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Footstep, is read with 1 Peter 5:7. For Footstep, the sense of 1 Peter 5:7 is this: Peter says to cast anxiety on God, because God cares.\n\nRead Footstep in the light of that verse, without turning it into a performance for other people. Let Footstep sound like a softer answer where the house has been sharp, with 1 Peter 5:7 still in mind.\n\nNo one else has to share your creed for you to practise Footstep in the sight of God. In Christ, Footstep is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 7,
     "word": "Good enough",
-    "reading": "Good enough does not have to be loud to be real. A finished small care is good enough, and a perfect day is not required. You can start before you feel brave, and good enough still counts.\n\nYou might be in the car, not ready to go in, and grief showed up without warning. Shame can be here too, and good enough can stay small. You do not have to fix all of that today.\n\nWash face and hands, so good enough has a real step today. Good enough still counts if that is all you do. The phone in another room gives good enough a little extra help.\n\nGood enough grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is Good enough, and the text is Galatians 6:2. For Good enough, the sense of Galatians 6:2 is this: carry one another's burdens.\n\nChrist is gentle with unfinished people, so Good enough does not have to arrive already polished. Carry Good enough into an ordinary hour by telling the truth kindly, in the spirit of Galatians 6:2.\n\nPut Good enough where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Good enough still fits the actual day."
   },
   {
     "month": 12,
     "day": 8,
     "word": "Halfway",
-    "reading": "Halfway can start in an ordinary hour. Halfway through a hard feeling, a safe action can still be chosen. You can start before you feel brave, and halfway still counts.\n\nYou might be alone with a craving, and the house is quiet and the mind is not. A craving can be here too, and halfway can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so halfway has a real step today. Halfway still counts if that is all you do. An open window gives halfway a little extra help.\n\nHalfway can be a value you keep, in a quiet way that fits you."
+    "reading": "Halfway is the Christian theme here, set beside Psalm 121:2. For Halfway, the sense of Psalm 121:2 is this: help comes from the Lord, maker of heaven and earth.\n\nThat verse is a welcome, not a test you pass before God will look at Halfway. Practise Halfway at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Halfway honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Halfway."
   },
   {
     "month": 12,
     "day": 9,
     "word": "Holding",
-    "reading": "Holding can stay small today. Staying near people, and not making a huge decision tonight, is a way to hold on. You can start before you feel brave, and holding still counts.\n\nYou might be alone with a craving, and comparison has crept in. Loneliness can be here too, and holding can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so holding has a real step today. Holding still counts if that is all you do. A glass of water gives holding a little extra help.\n\nHolding gets easier to hold when you ask for help in a short text.\n\nThe year is loud, and holding is only for this day."
+    "reading": "The Christian theme, Holding, is read with Matthew 5:7. For Holding, the sense of Matthew 5:7 is this: Jesus says the merciful are blessed and will receive mercy.\n\nNothing in Matthew 5:7 asks you to pretend, and Holding can begin while you are still tired. If you were wrong, let Holding include an apology in a single clean sentence, because of Matthew 5:7.\n\nHand the evening to God, and let Holding be unfinished without being abandoned. If the morning was clumsy, Holding can begin again after lunch in the sight of God."
   },
   {
     "month": 12,
     "day": 10,
     "word": "Humane",
-    "reading": "Humane fits a hard morning. Cruelty can be refused, including cruelty toward yourself. You can start before you feel brave, and humane still counts.\n\nYou might be on the phone, on hold, and the day feels very dark. Anger can be here too, and humane can stay small. You do not have to fix all of that today.\n\nAsk for help in one short text, so humane has a real step today. Humane still counts if that is all you do. A short walk gives humane a little extra help.\n\nIf God is part of your life, you can pray about humane today. If not, a friend can sit with you, and humane can be shared.\n\nIf humane sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about humane is not a crisis plan."
+    "reading": "On this page the Christian theme is Humane, and the text is Psalm 103:12. For Humane, the sense of Psalm 103:12 is this: God removes sins as far as east is from west.\n\nRead Humane in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Psalm 103:12, and let Humane be unhurried company for someone lonely.\n\nHand the evening to God, and let Humane be unfinished without being abandoned. Keep Humane Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 12,
     "day": 11,
     "word": "Kindred",
-    "reading": "Kindred is only for this day. Kindred are people who know the struggle and want good for you. You can start before you feel brave, and kindred still counts.\n\nYou might be on the floor by the cupboard, and the urge to hide is strong. Tiredness can be here too, and kindred can stay small. You do not have to fix all of that today.\n\nSit with someone kind, even in quiet, so kindred has a real step today. Kindred still counts if that is all you do. A kind sentence, spoken as to a friend gives kindred a little extra help.\n\nKindred can be a short prayer, or a few quiet words to a friend."
+    "reading": "Kindred is the Christian theme here, set beside John 15:12. For Kindred, the sense of John 15:12 is this: Jesus tells his friends to love one another as he has loved them.\n\nChrist is gentle with unfinished people, so Kindred does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Kindred shows up this afternoon.\n\nYou can begin Kindred before you feel holy, because the Father already knows the day. In Christ, Kindred is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Kindred still fits the actual day."
   },
   {
     "month": 12,
     "day": 12,
     "word": "Lighter",
-    "reading": "Lighter is allowed to be imperfect. Telling the truth and eating can make the hour a little lighter. You can start before you feel brave, and lighter still counts.\n\nYou might be alone with a craving, and food is being put off. Fear can be here too, and lighter can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so lighter has a real step today. Lighter still counts if that is all you do. A stretch and a drink of water gives lighter a little extra help.\n\nLighter can begin again today, and mercy means you do not have to earn that start."
+    "reading": "The Christian theme, Lighter, is read with 2 Timothy 1:7. For Lighter, the sense of 2 Timothy 1:7 is this: God gives a spirit of power, love, and self-control, not fear.\n\nThat verse is a welcome, not a test you pass before God will look at Lighter. To live Lighter, read 2 Timothy 1:7 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 2 Timothy 1:7, for Lighter, is trust, not a performance. In Christ, Lighter is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 13,
     "word": "Long view",
-    "reading": "Long view does not have to be loud to be real. The long view can wait, because this day is the short view that matters. You can start before you feel brave, and long view still counts.\n\nYou might be in the car, not ready to go in, and the room is safe enough, but the chest is tight. Sadness can be here too, and long view can stay small. You do not have to fix all of that today.\n\nSend the honest text instead of going silent, so long view has a real step today. Long view still counts if that is all you do. A washed face gives long view a little extra help.\n\nLong view can stay small while you borrow hope from someone safe."
+    "reading": "On this page the Christian theme is Long view, and the text is Deuteronomy 31:8. For Long view, the sense of Deuteronomy 31:8 is this: the Lord goes ahead and does not abandon his people.\n\nNothing in Deuteronomy 31:8 asks you to pretend, and Long view can begin while you are still tired. Let Long view sound like a softer answer where the house has been sharp, with Deuteronomy 31:8 still in mind.\n\nJesus does not rush slow learners, and Long view is allowed to be slow. Australian weather can be hot, wet, or cold, and Long view still fits the actual day."
   },
   {
     "month": 12,
     "day": 14,
     "word": "Measured",
-    "reading": "Measured can start in an ordinary hour. A measured reply is slower, kinder, and clearer. You can start before you feel brave, and measured still counts.\n\nYou might be on the back step, and grief showed up without warning. The urge to hide can be here too, and measured can stay small. You do not have to fix all of that today.\n\nTake a slow walk to the corner and back, so measured has a real step today. Measured still counts if that is all you do. A slower breath gives measured a little extra help.\n\nMeasured belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "Measured is the Christian theme here, set beside Proverbs 15:1. For Measured, the sense of Proverbs 15:1 is this: a soft answer turns anger aside.\n\nRead Measured in the light of that verse, without turning it into a performance for other people. Let Measured sound like a softer answer where the house has been sharp, with Proverbs 15:1 still in mind.\n\nNo one else has to share your creed for you to practise Measured in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Measured."
   },
   {
     "month": 12,
     "day": 15,
     "word": "Nearness",
-    "reading": "Nearness can stay small today. Being near safe people is a protection, not a weakness. You can start before you feel brave, and nearness still counts.\n\nYou might be in the car, not ready to go in, and help is on offer and feels hard to take. Money stress can be here too, and nearness can stay small. You do not have to fix all of that today.\n\nTake three slow breaths, out longer than in, so nearness has a real step today. Nearness still counts if that is all you do. One money worry named to someone safe gives nearness a little extra help.\n\nNearness grows more easily with a kind tone than with shame.\n\nThe year is loud, and nearness is only for this day."
+    "reading": "The Christian theme, Nearness, is read with Jeremiah 29:11. For Nearness, the sense of Jeremiah 29:11 is this: the Lord speaks of a future and a hope, not of plans to harm.\n\nChrist is gentle with unfinished people, so Nearness does not have to arrive already polished. Carry Nearness into an ordinary hour by telling the truth kindly, in the spirit of Jeremiah 29:11.\n\nPut Nearness where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Nearness can begin again after lunch in the sight of God."
   },
   {
     "month": 12,
     "day": 16,
     "word": "Night peace",
-    "reading": "Night peace fits a hard morning. A small evening and a light out can build a more peaceful night. You can start before you feel brave, and night peace still counts.\n\nYou might be on a lunch break, and a big decision is trying to happen while feelings are hot. Grief can be here too, and night peace can stay small. You do not have to fix all of that today.\n\nMake the evening small: food, a wash, and lights out, so night peace has a real step today. Night peace still counts if that is all you do. A few minutes of daylight gives night peace a little extra help.\n\nNight peace can be a value you keep, in a quiet way that fits you."
+    "reading": "On this page the Christian theme is Night peace, and the text is Luke 6:36. For Night peace, the sense of Luke 6:36 is this: Jesus says to be merciful, as your Father is merciful.\n\nThat verse is a welcome, not a test you pass before God will look at Night peace. Practise Night peace at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Night peace honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Night peace, not a prize withheld until you improve."
   },
   {
     "month": 12,
     "day": 17,
     "word": "Open heart",
-    "reading": "Open heart is only for this day. One honest sentence can be an open heart, without telling everything. You can start before you feel brave, and open heart still counts.\n\nYou might be in the bathroom, putting off the next thing, and the day feels very dark. The wish to give up can be here too, and open heart can stay small. You do not have to fix all of that today.\n\nGo to a meeting, even if staying quiet, so open heart has a real step today. Open heart still counts if that is all you do. One worry written on paper gives open heart a little extra help.\n\nOpen heart gets easier to hold when you ask for help in a short text.\n\nIf open heart sits next to thoughts of hurting yourself, open Get help or call 000, and stay near people. A reading about open heart is not a crisis plan."
+    "reading": "Open heart is the Christian theme here, set beside Romans 8:38. For Open heart, the sense of Romans 8:38 is this: nothing can separate us from the love of God in Christ.\n\nNothing in Romans 8:38 asks you to pretend, and Open heart can begin while you are still tired. If you were wrong, let Open heart include an apology in a single clean sentence, because of Romans 8:38.\n\nMercy is wider than today's mistakes, and Open heart can stand inside that mercy without showing off. Keep Open heart Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 12,
     "day": 18,
     "word": "Plain day",
-    "reading": "Plain day is allowed to be imperfect. A plain day, kept safe, is a good day in recovery. You can start before you feel brave, and plain day still counts.\n\nYou might be folding the washing, and the body is tired and the mind is loud. Comparison can be here too, and plain day can stay small. You do not have to fix all of that today.\n\nSay yes to help that is already offered, so plain day has a real step today. Plain day still counts if that is all you do. A ten-minute pause before a big choice gives plain day a little extra help.\n\nIf God is part of your life, you can pray about plain day today. If not, a friend can sit with you, and plain day can be shared."
+    "reading": "The Christian theme, Plain day, is read with Ephesians 4:32. For Plain day, the sense of Ephesians 4:32 is this: be kind and tender-hearted, forgiving as God in Christ forgave you.\n\nRead Plain day in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Ephesians 4:32, and let Plain day be unhurried company for someone lonely.\n\nHand the evening to God, and let Plain day be unfinished without being abandoned. In Christ, Plain day is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 19,
     "word": "Quiet mind",
-    "reading": "Quiet mind does not have to be loud to be real. A tended body and a told truth often quiet the mind a little. You can start before you feel brave, and quiet mind still counts.\n\nYou might be in the shower, and a sharp sentence already landed. The urge to go numb can be here too, and quiet mind can stay small. You do not have to fix all of that today.\n\nDim the lights and aim for a decent bedtime, so quiet mind has a real step today. Quiet mind still counts if that is all you do. A text to someone safe gives quiet mind a little extra help.\n\nQuiet mind can be a short prayer, or a few quiet words to a friend."
+    "reading": "On this page the Christian theme is Quiet mind, and the text is 1 Thessalonians 5:11. For Quiet mind, the sense of 1 Thessalonians 5:11 is this: encourage one another and build each other up.\n\nChrist is gentle with unfinished people, so Quiet mind does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Quiet mind shows up this afternoon.\n\nYou can begin Quiet mind before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Quiet mind still fits the actual day."
   },
   {
     "month": 12,
     "day": 20,
     "word": "Reassurance",
-    "reading": "Reassurance can start in an ordinary hour. Reassurance can be borrowed from someone who wants good for you. You can start before you feel brave, and reassurance still counts.\n\nYou might be on the back step, and a secret feels heavy. Hunger can be here too, and reassurance can stay small. You do not have to fix all of that today.\n\nWrite one true sentence on paper, so reassurance has a real step today. Reassurance still counts if that is all you do. Lights dimmed at a decent hour gives reassurance a little extra help.\n\nReassurance can begin again today, and mercy means you do not have to earn that start."
+    "reading": "Reassurance is the Christian theme here, set beside 1 Peter 4:8. For Reassurance, the sense of 1 Peter 4:8 is this: keep love earnest, because love covers a multitude of sins.\n\nThat verse is a welcome, not a test you pass before God will look at Reassurance. To live Reassurance, read 1 Peter 4:8 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 1 Peter 4:8, for Reassurance, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Reassurance."
   },
   {
     "month": 12,
     "day": 21,
     "word": "Root",
-    "reading": "Root can stay small today. A routine can hold when feelings swing. You can start before you feel brave, and root still counts.\n\nYou might be on the phone, on hold, and comparison has crept in. A heavy secret can be here too, and root can stay small. You do not have to fix all of that today.\n\nDrink a glass of water, so root has a real step today. Root still counts if that is all you do. Quiet company gives root a little extra help.\n\nRoot can stay small while you borrow hope from someone safe.\n\nThe year is loud, and root is only for this day."
+    "reading": "The Christian theme, Root, is read with Psalm 27:1. For Root, the sense of Psalm 27:1 is this: the Lord is light and salvation.\n\nNothing in Psalm 27:1 asks you to pretend, and Root can begin while you are still tired. Give Root a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Root is allowed to be slow. If the morning was clumsy, Root can begin again after lunch in the sight of God. God's kindness towards you is the ground under Root, not a prize withheld until you improve."
   },
   {
     "month": 12,
     "day": 22,
     "word": "Safe harbour",
-    "reading": "Safe harbour fits a hard morning. A person or place where pretending is not required can be a safe harbour. You can start before you feel brave, and safe harbour still counts.\n\nYou might be waiting for the kettle, and the evening feels risky. Worry about the future can be here too, and safe harbour can stay small. You do not have to fix all of that today.\n\nUnclench the jaw and drop the shoulders, so safe harbour has a real step today. Safe harbour still counts if that is all you do. A simple meal gives safe harbour a little extra help.\n\nSafe harbour belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "On this page the Christian theme is Safe harbour, and the text is Psalm 139:14. For Safe harbour, the sense of Psalm 139:14 is this: people are wonderfully made by God.\n\nRead Safe harbour in the light of that verse, without turning it into a performance for other people. Let Safe harbour sound like a softer answer where the house has been sharp, with Psalm 139:14 still in mind.\n\nNo one else has to share your creed for you to practise Safe harbour in the sight of God. God's kindness towards you is the ground under Safe harbour, not a prize withheld until you improve."
   },
   {
     "month": 12,
     "day": 23,
     "word": "Simple care",
-    "reading": "Simple care is only for this day. Water, food, rest, and one true sentence are simple care. You can start before you feel brave, and simple care still counts.\n\nYou might be at the kitchen sink, and the body is tired and the mind is loud. Numbness can be here too, and simple care can stay small. You do not have to fix all of that today.\n\nStep outside for a few minutes of air, so simple care has a real step today. Simple care still counts if that is all you do. The phone in another room gives simple care a little extra help.\n\nSimple care grows more easily with a kind tone than with shame."
+    "reading": "Simple care is the Christian theme here, set beside Matthew 5:16. For Simple care, the sense of Matthew 5:16 is this: let your light shine so that good work points people to the Father.\n\nChrist is gentle with unfinished people, so Simple care does not have to arrive already polished. Practise Simple care at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nPut Simple care where your hands are, and let the text stay a lamp rather than a weapon. Keep Simple care Christian and specific: one verse, one prayer, one person."
   },
   {
     "month": 12,
     "day": 24,
     "word": "Still here",
-    "reading": "Still here is allowed to be imperfect. Still being here this morning is a fact that matters. You can start before you feel brave, and still here still counts.\n\nYou might be on the back step, and money stress is sitting on the table. The thought that the day is already ruined can be here too, and still here can stay small. You do not have to fix all of that today.\n\nAsk for a short call, so still here has a real step today. Still here still counts if that is all you do. An open window gives still here a little extra help.\n\nStill here can be a value you keep, in a quiet way that fits you."
+    "reading": "The Christian theme, Still here, is read with Mark 12:30. For Still here, the sense of Mark 12:30 is this: love the Lord your God with heart, soul, mind, and strength.\n\nThat verse is a welcome, not a test you pass before God will look at Still here. Practise Still here at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Still here honest and gentle until you sleep, and leave the rest in God's care. In Christ, Still here is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 25,
     "word": "Sunlight",
-    "reading": "Sunlight does not have to be loud to be real. A few minutes of sunlight is a free help for a heavy head. You can start before you feel brave, and sunlight still counts.\n\nYou might be on a short walk, and a secret feels heavy. Irritation can be here too, and sunlight can stay small. You do not have to fix all of that today.\n\nName one ordinary thing that is still all right, so sunlight has a real step today. Sunlight still counts if that is all you do. A glass of water gives sunlight a little extra help.\n\nSunlight gets easier to hold when you ask for help in a short text."
+    "reading": "On this page the Christian theme is Sunlight, and the text is John 14:1. For Sunlight, the sense of John 14:1 is this: Jesus tells his friends not to let their hearts be troubled, and to trust God.\n\nNothing in John 14:1 asks you to pretend, and Sunlight can begin while you are still tired. If you were wrong, let Sunlight include an apology in a single clean sentence, because of John 14:1.\n\nMercy is wider than today's mistakes, and Sunlight can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Sunlight still fits the actual day."
   },
   {
     "month": 12,
     "day": 26,
     "word": "Tenderness",
-    "reading": "Tenderness can start in an ordinary hour. A tender tone toward yourself makes the next right thing more possible. You can start before you feel brave, and tenderness still counts.\n\nYou might be on the floor by the cupboard, and the body is tired and the mind is loud. The pull to be alone can be here too, and tenderness can stay small. You do not have to fix all of that today.\n\nTell someone what is too heavy to carry alone, so tenderness has a real step today. Tenderness still counts if that is all you do. A short walk gives tenderness a little extra help.\n\nIf God is part of your life, you can pray about tenderness today. If not, a friend can sit with you, and tenderness can be shared."
+    "reading": "Tenderness is the Christian theme here, set beside Romans 8:28. For Tenderness, the sense of Romans 8:28 is this: for those who love God, he works things towards good.\n\nRead Tenderness in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Romans 8:28, and let Tenderness be unhurried company for someone lonely.\n\nHand the evening to God, and let Tenderness be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Tenderness."
   },
   {
     "month": 12,
     "day": 27,
     "word": "This room",
-    "reading": "This room can stay small today. Naming this room out loud can interrupt a spiral. You can start before you feel brave, and this room still counts.\n\nYou might be on the edge of the bed, and a secret feels heavy. Shame can be here too, and this room can stay small. You do not have to fix all of that today.\n\nWrite the next three tiny steps and ignore the rest, so this room has a real step today. This room still counts if that is all you do. A kind sentence, spoken as to a friend gives this room a little extra help.\n\nThis room can be a short prayer, or a few quiet words to a friend.\n\nThe year is loud, and this room is only for this day."
+    "reading": "The Christian theme, This room, is read with 1 Corinthians 16:14. For This room, the sense of 1 Corinthians 16:14 is this: let everything you do be done in love.\n\nChrist is gentle with unfinished people, so This room does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how This room shows up this afternoon.\n\nYou can begin This room before you feel holy, because the Father already knows the day. If the morning was clumsy, This room can begin again after lunch in the sight of God."
   },
   {
     "month": 12,
     "day": 28,
     "word": "Unforced",
-    "reading": "Unforced fits a hard morning. The care can be done without faking a feeling. You can start before you feel brave, and unforced still counts.\n\nYou might be holding a bill that is hard to open, and a message is waiting and feels hard to open. A craving can be here too, and unforced can stay small. You do not have to fix all of that today.\n\nSay the plain fact out loud, once, so unforced has a real step today. Unforced still counts if that is all you do. A stretch and a drink of water gives unforced a little extra help.\n\nUnforced can begin again today, and mercy means you do not have to earn that start."
+    "reading": "On this page the Christian theme is Unforced, and the text is Ephesians 4:26. For Unforced, the sense of Ephesians 4:26 is this: be angry, and do not let the anger turn into sin.\n\nThat verse is a welcome, not a test you pass before God will look at Unforced. To live Unforced, read Ephesians 4:26 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Ephesians 4:26, for Unforced, is trust, not a performance. God's kindness towards you is the ground under Unforced, not a prize withheld until you improve."
   },
   {
     "month": 12,
     "day": 29,
     "word": "Watchful",
-    "reading": "Watchful is only for this day. A risky hour can be noticed early and told to someone. You can start before you feel brave, and watchful still counts.\n\nYou might be on the phone, on hold, and the house is quiet and the mind is not. Loneliness can be here too, and watchful can stay small. You do not have to fix all of that today.\n\nEat something simple, so watchful has a real step today. Watchful still counts if that is all you do. A washed face gives watchful a little extra help.\n\nWatchful can stay small while you borrow hope from someone safe."
+    "reading": "Watchful is the Christian theme here, set beside 1 Thessalonians 5:16. For Watchful, the sense of 1 Thessalonians 5:16 is this: rejoice always.\n\nNothing in 1 Thessalonians 5:16 asks you to pretend, and Watchful can begin while you are still tired. Give Watchful a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Watchful is allowed to be slow. Keep Watchful Christian and specific: one verse, one prayer, one person. In Christ, Watchful is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Watchful still fits the actual day."
   },
   {
     "month": 12,
     "day": 30,
     "word": "Well enough",
-    "reading": "Well enough is allowed to be imperfect. Well enough is a fair aim for today. You can start before you feel brave, and well enough still counts.\n\nYou might be in bed, not sleeping, and everything feels behind. Anger can be here too, and well enough can stay small. You do not have to fix all of that today.\n\nWash face and hands, so well enough has a real step today. Well enough still counts if that is all you do. A slower breath gives well enough a little extra help.\n\nWell enough belongs to this day only, and tomorrow can keep its own worries."
+    "reading": "The Christian theme, Well enough, is read with Hebrews 11:1. For Well enough, the sense of Hebrews 11:1 is this: faith is confidence in what is hoped for, even when it is not yet seen.\n\nRead Well enough in the light of that verse, without turning it into a performance for other people. Let Well enough sound like a softer answer where the house has been sharp, with Hebrews 11:1 still in mind.\n\nNo one else has to share your creed for you to practise Well enough in the sight of God. In Christ, Well enough is worth attention even when the calendar is full."
   },
   {
     "month": 12,
     "day": 31,
     "word": "With care",
-    "reading": "With care does not have to be loud to be real. The next action can be kind, honest, and small enough to finish. You can start before you feel brave, and with care still counts.\n\nYou might be at a family table, and a secret feels heavy. Tiredness can be here too, and with care can stay small. You do not have to fix all of that today.\n\nStretch gently for one minute, so with care has a real step today. With care still counts if that is all you do. One money worry named to someone safe gives with care a little extra help.\n\nWith care grows more easily with a kind tone than with shame."
+    "reading": "On this page the Christian theme is With care, and the text is 1 John 4:18. For With care, the sense of 1 John 4:18 is this: perfect love drives fear out.\n\nChrist is gentle with unfinished people, so With care does not have to arrive already polished. Carry With care into an ordinary hour by telling the truth kindly, in the spirit of 1 John 4:18.\n\nPut With care where your hands are, and let the text stay a lamp rather than a weapon. A neighbour does not need a creed explained before they can receive the fruit of With care."
   }
 ];

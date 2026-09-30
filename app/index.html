@@ -5084,9 +5084,11 @@ function moodCardEl(opts = {}) {
 /* ---------------------------------------------------------------------------
    Today — full Word for the day + Just for today.
    Readings live in app/data/*.js (365 each), keyed by Australia/Brisbane
-   month and day. Same pair for everyone on that date. Original plain
-   language: not AA/NA literature, and not clinical advice. Faith wording
-   inside a reading is optional. The faith setting does not swap the text.
+   month and day. Same date for everyone, but the two readings are not the
+   same piece. Word for the day is a short Christian reflection with a Bible
+   reference. Just for today is an original NA-style note (one day at a time),
+   not a sermon and not a copyrighted book page. The faith setting does not
+   hide either reading, and it does not make the rest of the app Christian-only.
    --------------------------------------------------------------------------- */
 const NON_LEAP_MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 let todayExpanded = false;
