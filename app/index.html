@@ -1088,6 +1088,12 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .account-status.bad { color: #b42318; }
 .account-status.ok { color: var(--accent-strong); }
 .account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.account-google-host {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 40px; min-width: min(100%, 240px);
+}
+.account-google-host .btn { width: 100%; }
+.account-google-host iframe { border-radius: var(--radius-sm); }
 .my-account-inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 18px; }
 .my-account-view h1 { font-size: clamp(1.35rem, 3.2vw, 1.7rem); margin: 4px 0 0; }
 .my-account-view h2 { font-size: 1.15rem; margin: 0; }
@@ -14705,16 +14711,14 @@ function mountSignInForm(body) {
   forgot.className = 'linkish';
   forgot.id = 'accountForgotBtn';
   forgot.textContent = 'Forgot password?';
-  const google = document.createElement('button');
-  google.type = 'button';
-  google.className = 'btn';
-  google.id = 'accountGoogleBtn';
-  google.textContent = 'Sign in with Google';
+  const googleHost = document.createElement('div');
+  googleHost.className = 'account-google-host';
+  googleHost.id = 'accountGoogleBtn';
   actions.appendChild(magic);
-  actions.appendChild(google);
+  actions.appendChild(googleHost);
   actions.appendChild(forgot);
-  google.addEventListener('click', () => startGoogleSignIn());
   body.appendChild(actions);
+  mountGoogleSignInControl(googleHost);
   const status = document.createElement('p');
   status.className = 'account-status';
   status.id = 'accountStatus';
@@ -14903,12 +14907,69 @@ async function finishGoogleSignIn(credential) {
     accountStatus(err.message || 'Google sign-in didn’t work. Use your email for now.', 'bad');
   }
 }
+function googleSignInHost() {
+  return $('#accountGoogleBtn');
+}
+function mountGoogleFallbackButton(host, message) {
+  if (!host) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn';
+  btn.textContent = 'Sign in with Google';
+  btn.addEventListener('click', () => startGoogleSignIn());
+  host.replaceChildren(btn);
+  if (message) accountStatus(message, 'bad');
+}
+function initGoogleIdentity(clientId) {
+  google.accounts.id.initialize({
+    client_id: clientId,
+    callback: (resp) => { finishGoogleSignIn(resp && resp.credential); },
+    ux_mode: 'popup',
+    auto_select: false,
+    cancel_on_tap_outside: true,
+  });
+}
+function renderGoogleSignInButton(host, clientId) {
+  if (!host || !clientId || !window.google || !google.accounts || !google.accounts.id) return false;
+  initGoogleIdentity(clientId);
+  host.replaceChildren();
+  const width = Math.max(220, Math.min(320, Math.floor(host.getBoundingClientRect().width) || 280));
+  google.accounts.id.renderButton(host, {
+    type: 'standard',
+    theme: 'outline',
+    size: 'large',
+    text: 'signin_with',
+    shape: 'rectangular',
+    logo_alignment: 'left',
+    width: width,
+  });
+  return !!(host.childElementCount || host.querySelector('iframe, div'));
+}
+async function mountGoogleSignInControl(host) {
+  const target = host || googleSignInHost();
+  if (!target) return;
+  const clientId = billingState.googleClientId || '';
+  // Show a calm custom button immediately; replace with Google's chooser button when GSI is ready.
+  mountGoogleFallbackButton(target);
+  if (!clientId) return;
+  try {
+    await loadGoogleIdentity();
+    if (!renderGoogleSignInButton(target, clientId)) {
+      mountGoogleFallbackButton(target, 'Google sign-in didn’t load. Use your email for now.');
+    } else {
+      accountStatus('');
+    }
+  } catch (err) {
+    mountGoogleFallbackButton(target, (err && err.message) || 'Google sign-in didn’t load. Use your email for now.');
+  }
+}
 async function startGoogleSignIn() {
   const clientId = billingState.googleClientId || '';
   if (!clientId) {
     accountStatus('Google sign-in isn’t set up on this server yet. Use your email for now.', 'bad');
     return;
   }
+  const host = googleSignInHost();
   accountStatus('Opening Google…');
   try {
     await loadGoogleIdentity();
@@ -14916,20 +14977,29 @@ async function startGoogleSignIn() {
       accountStatus('Google sign-in didn’t load. Use your email for now.', 'bad');
       return;
     }
-    google.accounts.id.initialize({
-      client_id: clientId,
-      callback: (resp) => { finishGoogleSignIn(resp && resp.credential); },
-      ux_mode: 'popup',
-      auto_select: false,
-      cancel_on_tap_outside: true,
-    });
+    initGoogleIdentity(clientId);
+    let opened = false;
     google.accounts.id.prompt((notification) => {
+      if (opened) return;
       if (notification && (notification.isNotDisplayed() || notification.isSkippedMoment())) {
-        accountStatus('Google didn’t open. Check that this site is allowed for the Google client, or use your email.', 'bad');
+        // Mobile Safari often suppresses One Tap; show a real Google button instead of an origin error.
+        if (host && renderGoogleSignInButton(host, clientId)) {
+          accountStatus('Choose your Google account below.', 'ok');
+        } else {
+          accountStatus('Google didn’t open. Use the Google button below, or your email.', 'bad');
+          if (host) mountGoogleFallbackButton(host);
+        }
+      } else {
+        opened = true;
+        accountStatus('');
       }
     });
   } catch (err) {
-    accountStatus((err && err.message) || 'Google sign-in didn’t open. Use your email for now.', 'bad');
+    if (host && renderGoogleSignInButton(host, clientId)) {
+      accountStatus('Choose your Google account below.', 'ok');
+    } else {
+      accountStatus((err && err.message) || 'Google sign-in didn’t open. Use your email for now.', 'bad');
+    }
   }
 }
 async function startCheckout() {

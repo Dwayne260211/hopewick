@@ -24,7 +24,7 @@ SIGNED_OUT = {
     "phone": "",
     "cancelAtPeriodEnd": False,
 }
-CONFIG = {"checkoutReady": True, "devMagic": False, "hopeHosted": True}
+CONFIG = {"checkoutReady": True, "devMagic": False, "hopeHosted": True, "googleClientId": ""}
 USAGE = {
     "used": 0,
     "limit": 5,
@@ -121,7 +121,7 @@ def test_app_requires_sign_in_and_trial_needs_account():
             assert "Sign in with Google" in gate
             assert "Email me a sign-in link" in gate
             assert state["checkout"] == 0
-            page.click("#accountGoogleBtn")
+            page.click("#accountGoogleBtn .btn, #accountGoogleBtn")
             page.wait_for_function("() => (document.getElementById('accountStatus')?.textContent || '').includes('isn’t set up')")
             assert state["checkout"] == 0
 

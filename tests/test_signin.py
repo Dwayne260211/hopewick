@@ -39,3 +39,7 @@ def test_sign_in_screen_and_build():
     assert "Sign in with Apple" not in app
     assert "apps.googleusercontent.com" not in app
     assert "accounts.google.com/gsi/client" in app
+    assert "google.accounts.id.renderButton" in app
+    assert "mountGoogleSignInControl" in app
+    assert "Choose your Google account below" in app
+    assert "Check that this site is allowed for the Google client" not in app
