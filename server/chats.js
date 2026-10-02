@@ -3,6 +3,12 @@
  * Separate from users.json so a chat write does not rewrite password hashes.
  * Scoped by account id, then profile id. The browser keeps a copy too.
  * Staff have no inbox of these transcripts.
+ *
+ * Adopted retention (do not delete by age): a chat stays until the person
+ * deletes that chat or deletes the account. Free accounts can open the
+ * latest chat (FREE_HISTORY_KEEP). Older chats stay stored. No automatic
+ * expiry. A future maximum, for example 24 months, is not in place.
+ * This module has no deletion job for age.
  */
 import fs from 'node:fs';
 import path from 'node:path';

@@ -29,9 +29,9 @@ def test_sign_in_screen_and_build():
     assert "/api/auth/password" in app
     assert "/api/auth/logout" in app
     assert "/api/auth/magic-link" in app
-    assert "You stay signed in on this device until you sign out." in app
+    assert "You stay signed in on this device until you sign out or you have not used Hopewick for 30 days." in app
     assert "Email me a sign-in link" in land
-    assert "stay signed in on this browser until you sign out" in land
+    assert "stay signed in on this browser until you sign out or you have not used Hopewick for 30 days" in land
     assert "Sign in with Google" in app
     assert "Google sign-in isn’t set up on this server yet." in app
     assert "/api/auth/google" in app

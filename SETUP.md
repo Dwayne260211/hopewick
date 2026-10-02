@@ -22,9 +22,9 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 | Journal | Tab with an upgrade | Write, edit, deepen |
 | Resume builder | Tease only | Builder and PDF, on this device |
 | Education libraries | Names and an upgrade | Nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Free sees the names only |
-| Account and Stripe Customer Portal | Sign-in optional. Email and password, or a one-time link. You stay signed in until you sign out | Manage card, cancel, invoices |
+| Account and Stripe Customer Portal | Sign-in optional. Email and password, or a one-time link. You stay signed in until you sign out or you have not used Hopewick for 30 days | Manage card, cancel, invoices |
 
-Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
+Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. Chats stay until the person deletes that chat or deletes the account. There is no automatic expiry. A future maximum (for example 24 months) is not in place. See `docs/data-retention.md`. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
 
 The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 7-day trial, and complimentary founder emails have no daily message cap. A crisis reply under that cap still uses one daily message and may call the model. When the cap is already used, crisis returns static text, does not call the model, and does not add another count. Get help as a screen does not call the model and is not counted. The crisis card and Get help stay available at the cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
 
@@ -47,7 +47,7 @@ Copy `.env.example` to `.env` in the repo root (gitignored).
 | `MAGIC_LINK_FROM` | With Resend | Verified from-address, e.g. `Hopewick <hello@hopewick.com.au>`. |
 | `BILLING_STORE` | No | JSON file for accounts. Default `server/data/users.json`. On Render: `/var/data/users.json` (the persistent disk). |
 | `CHECKINS_STORE` | No | Check-ins and weekly goals for signed-in accounts. Default `checkins.json` beside the account file (on Render, `/var/data/checkins.json`). |
-| `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. The session cookie is httpOnly, SameSite=Lax, and refreshed on each return visit until sign-out. |
+| `COOKIE_SECURE` | No | `1` forces the `Secure` cookie flag. `0` forces it off. When unset, the cookie is `Secure` if `PUBLIC_BASE_URL` is `https://` or the request is HTTPS. The session cookie is httpOnly, SameSite=Lax, and Secure on HTTPS. It is a 30-day inactivity limit and is refreshed on each return visit (`GET /api/auth/me`) until sign-out or 30 days unused. One session per account. |
 | `FOUNDER_PLUS_EMAILS` | No | Comma-separated emails that receive Hopewick Plus without Checkout. When unset, the only address is `dwaynesimons1990@gmail.com` (Dwayne Stevens). `admin@bridge-bite-co.com` is the organisations and clinics contact and is ignored on this list. Set the variable empty to grant complimentary Plus to nobody. Complimentary Plus is not sent to Stripe Checkout. The same list is the only one that can see Settings → Developer in the companion. |
 | `OPENAI_API_KEY` | Yes, for hosted Hope | Server-only model key. Same secret already configured on the Azure app `hopewick-api`. Never commit it and never send it to the browser. |
 | `OPENAI_MODEL` | No | Default `gpt-4o-mini`. |
@@ -91,7 +91,7 @@ Use this server, not `python3 -m http.server`, when you want sign-in or Stripe. 
 
 ### Sign in
 
-The Hopewick Plus screen leads with **Sign in**: email, password, and **Sign in**. After a magic link or a password sign-in, the browser keeps an httpOnly `hopewick_session` cookie (SameSite=Lax, Secure on https). It lasts 400 days and is refreshed each time you open Hopewick, so you stay signed in on that device until you choose **Sign out**.
+The Hopewick Plus screen leads with **Sign in**: email, password, and **Sign in**. After a magic link or a password sign-in, the browser keeps an httpOnly `hopewick_session` cookie (SameSite=Lax, Secure on https). It is a 30-day inactivity limit and is refreshed each time you open Hopewick, so you stay signed in on that device until you sign out or you have not used Hopewick for 30 days. One session per account.
 
 A one-time email link is still there (**Email me a sign-in link**, or **Forgot password?**). The link expires in 30 minutes and can be used once. First-time and magic-link-only accounts can **Create a password** after they are signed in. They can also choose a password before the link is sent; opening that link saves it. Passwords are hashed with Node’s scrypt. The account file never stores the password you typed.
 
@@ -308,4 +308,4 @@ TODO: a service worker is not included. Do not add one until caching of `app/ind
 
 ## Security
 
-Magic links expire after 30 minutes and work once. Sessions are random tokens stored as SHA-256 hashes, in an `HttpOnly` cookie (`SameSite=Lax`, `Secure` on https). The cookie lasts 400 days and is refreshed on each return visit, until sign-out. Webhooks require a valid `Stripe-Signature`. Do not put secret keys in HTML or in git.
+Magic links expire after 30 minutes and work once. Sessions are random tokens stored as SHA-256 hashes, in an `HttpOnly` cookie (`SameSite=Lax`, `Secure` on https). The cookie is a 30-day inactivity limit and is refreshed on each return visit, until sign-out or 30 days unused. One session per account. Webhooks require a valid `Stripe-Signature`. Do not put secret keys in HTML or in git.

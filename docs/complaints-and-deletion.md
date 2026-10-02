@@ -4,6 +4,10 @@ This is a written procedure for a person. It is not a ticketing system. Nothing 
 
 Mailbox: **admin@bridge-bite-co.com**. Do not invent another address.
 
+## Chat retention
+
+Chats are kept until the person deletes that chat or deletes the account. A free account can open the latest chat; older chats stay stored. There is no automatic expiry. A future maximum (for example 24 months) is **not in place**. There is no job that deletes chats by age. See [data-retention.md](data-retention.md).
+
 ## Complaints
 
 1. Read the email at admin@bridge-bite-co.com.

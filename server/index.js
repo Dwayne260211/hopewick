@@ -16,7 +16,11 @@
  * spends a message. Once the free cap is reached, crisis gets the static
  * numbers (000 and 1800 250 015) and the model is not called.
  * Saved chats for a signed-in account live in chats.json (per profile),
- * beside the account file. The model call itself does not write that file.
+ * beside the account file. They stay until that person deletes the chat
+ * or deletes the account. Free accounts can open the latest chat; older
+ * chats stay stored. There is no automatic expiry and no age-based
+ * deletion job. A future maximum (for example 24 months) is not in place.
+ * The model call itself does not write that file.
  * Check-ins and weekly SMART goals live in checkins.json beside that file,
  * per account and profile. They are free. Deleting an account erases them.
  * A page visit counter lives in visits.json beside that file. It stores a
@@ -25,8 +29,10 @@
  * password hash when one is set, subscription status, and that day's
  * message count. Card numbers, CVV, and full payment details are never
  * stored. Sign-in email cannot be changed from My Account.
- * The session cookie is httpOnly and lasts until sign-out (it slides
- * forward on each return visit). The one-time email link still expires
+ * The session cookie is httpOnly, SameSite=Lax, and Secure on HTTPS.
+ * It is a 30-day inactivity limit: GET /api/auth/me slides it forward
+ * while the person uses Hopewick, and it expires after 30 days unused.
+ * One session per account. The one-time email link still expires
  * in 30 minutes.
  *
  * Invite-code live AI can still use the Azure Functions API from
@@ -67,11 +73,12 @@ export const REPO_ROOT = path.resolve(__dirname, '..');
 
 const SESSION_COOKIE = 'hopewick_session';
 /**
- * Lasting sign-in on this browser. 400 days is the long cookie browsers
- * will keep. Each signed-in return visit slides the expiry forward, so
- * people stay signed in until they choose Sign out.
+ * Inactivity limit for this browser. 30 days, not a fixed 400-day cookie.
+ * GET /api/auth/me slides the same httpOnly cookie forward while the
+ * person uses Hopewick. It expires after 30 days unused, or on sign-out.
+ * One session per account. SameSite=Lax. Secure on HTTPS.
  */
-export const SESSION_MS = 400 * 24 * 60 * 60 * 1000;
+export const SESSION_MS = 30 * 24 * 60 * 60 * 1000;
 const MAGIC_MS = 30 * 60 * 1000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PLUS_OK = new Set(['active', 'trialing']);
@@ -626,8 +633,8 @@ async function sendMagicEmail(email, link, savingPassword = false) {
         link,
         '',
         savingPassword
-          ? 'Opening this link also saves the password you just chose. You can then sign in with that password, and you stay signed in on this device until you sign out.'
-          : 'After you open it you stay signed in on this device until you sign out.',
+          ? 'Opening this link also saves the password you just chose. You can then sign in with that password, and you stay signed in on this device until you sign out or you have not used Hopewick for 30 days.'
+          : 'After you open it you stay signed in on this device until you sign out or you have not used Hopewick for 30 days.',
         '',
         'If you did not ask for this, you can ignore this email. Your password will not change.',
         'Hopewick is an AI recovery companion, not a crisis service. In an emergency call 000.',

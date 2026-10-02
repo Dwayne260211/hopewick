@@ -877,7 +877,7 @@ test('an expired session does not sign anyone in', () => {
   }
 });
 
-test('session cookie lasts until sign-out and refreshes on return', async () => {
+test('session cookie is a 30-day inactivity limit and slides on /api/auth/me', async () => {
   const app = await listen({}, []);
   try {
     const sent = await fetch(`${app.base}/api/auth/magic-link`, {
@@ -890,8 +890,9 @@ test('session cookie lasts until sign-out and refreshes on return', async () => 
     const verified = await fetch(data.devLink, { redirect: 'manual' });
     const setCookie = verified.headers.get('set-cookie') || '';
     assert.equal(verified.status, 302);
+    assert.equal(SESSION_MS, 30 * 24 * 60 * 60 * 1000);
     const maxAge = Math.floor(SESSION_MS / 1000);
-    assert.ok(maxAge >= 180 * 24 * 60 * 60);
+    assert.equal(maxAge, 30 * 24 * 60 * 60);
     assert.match(setCookie, /hopewick_session=/);
     assert.match(setCookie, /HttpOnly/);
     assert.match(setCookie, /SameSite=Lax/);

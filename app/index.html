@@ -2411,12 +2411,12 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
-        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account so they come back. Hopewick staff do not get a live feed of the conversation.</li>
+        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account so they come back. Chats stay until you delete that chat or delete the account. A free account can open the latest chat; older chats stay stored. Nothing is removed automatically. Hopewick staff do not get a live feed of the conversation.</li>
         <li><strong>Hopewick Plus.</strong> 7 days free, then AU$20 a month for one person: SMART goals, the journal, relapse and exit plans, the resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The clean-time tracker, Bible &amp; SOAP, and the 12-step outline stay free. Essential support stays free.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 15 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a protected password, subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. Chats stay until you delete that chat or delete the account. A free account can open the latest chat; older chats stay stored. Nothing is removed automatically, and a 24-month maximum is not in place. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -13843,7 +13843,7 @@ function appendPlusOffer(body) {
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
-  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. Older chats are part of Hopewick Plus.</p>';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. Chats stay until you delete that chat or delete the account. A free account can open the latest chat; older chats stay stored and open with Hopewick Plus. Nothing is removed automatically.</p>';
   body.appendChild(privacy);
 }
 let myAccountSection = 'menu';
@@ -14625,8 +14625,8 @@ function paintAccount() {
   setForm.id = 'accountSetPasswordForm';
   setForm.noValidate = true;
   setForm.innerHTML = billingState.hasPassword
-    ? '<p class="lede">You’re signed in on this device until you sign out. To change your password, enter the current one first. It is never shown.</p><label for="accountCurrentPassword">Current password<input id="accountCurrentPassword" type="password" autocomplete="current-password" maxlength="200"></label><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn" type="submit" id="accountSetPasswordBtn">Update password</button><p class="help">Name, phone, card, and receipts are in My Account.</p>'
-    : '<p class="lede">Create a password so you can come back without a new email. You stay signed in on this device until you sign out.</p><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSetPasswordBtn">Create password</button>';
+    ? '<p class="lede">You’re signed in on this device until you sign out or you have not used Hopewick for 30 days. To change your password, enter the current one first. It is never shown.</p><label for="accountCurrentPassword">Current password<input id="accountCurrentPassword" type="password" autocomplete="current-password" maxlength="200"></label><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn" type="submit" id="accountSetPasswordBtn">Update password</button><p class="help">Name, phone, card, and receipts are in My Account.</p>'
+    : '<p class="lede">Create a password so you can come back without a new email. You stay signed in on this device until you sign out or you have not used Hopewick for 30 days.</p><label for="accountSetPassword">New password<input id="accountSetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><label for="accountSetPasswordConfirm">Confirm password<input id="accountSetPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSetPasswordBtn">Create password</button>';
   body.appendChild(setForm);
   setForm.addEventListener('submit', onSetPassword);
   const actions = document.createElement('div');
@@ -14679,11 +14679,11 @@ function mountSignInForm(body) {
   form.className = 'account-form';
   form.id = 'accountSignInForm';
   form.noValidate = true;
-  form.innerHTML = '<h3 class="account-signin-title">Sign in</h3><p class="lede">Email and password. You stay signed in on this device until you sign out.</p><label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="username" required maxlength="120" placeholder="you@example.com"></label><label for="accountPassword">Password<input id="accountPassword" type="password" autocomplete="current-password" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSignInBtn">Sign in</button>';
+  form.innerHTML = '<h3 class="account-signin-title">Sign in</h3><p class="lede">Email and password. You stay signed in on this device until you sign out or you have not used Hopewick for 30 days.</p><label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="username" required maxlength="120" placeholder="you@example.com"></label><label for="accountPassword">Password<input id="accountPassword" type="password" autocomplete="current-password" maxlength="200"></label><button class="btn btn-primary" type="submit" id="accountSignInBtn">Sign in</button>';
   body.appendChild(form);
   const help = document.createElement('p');
   help.className = 'help';
-  help.textContent = 'New here, or no password yet? We’ll email a one-time link. Create a password when you’re in, and you stay signed in on this device until you sign out.';
+  help.textContent = 'New here, or no password yet? We’ll email a one-time link. Create a password when you’re in, and you stay signed in on this device until you sign out or you have not used Hopewick for 30 days.';
   body.appendChild(help);
   const create = document.createElement('div');
   create.className = 'account-create';
@@ -14779,7 +14779,7 @@ async function onPasswordSignIn(e) {
     });
     if (passwordInput) passwordInput.value = '';
     await refreshBilling();
-    await afterAccountSignIn('You’re signed in. You stay signed in on this device until you sign out.');
+    await afterAccountSignIn('You’re signed in. You stay signed in on this device until you sign out or you have not used Hopewick for 30 days.');
   } catch (err) {
     accountStatus(err.message || 'Could not sign in.', 'bad');
   }
@@ -14843,7 +14843,7 @@ async function onSetPassword(e) {
       body: JSON.stringify(payload),
     });
     await refreshBilling();
-    toast('Password saved. You can use it next time, and you stay signed in here until you sign out.', false, 4000);
+    toast('Password saved. You can use it next time, and you stay signed in here until you sign out or you have not used Hopewick for 30 days.', false, 4000);
   } catch (err) {
     accountStatus(err.message || 'Could not save that password.', 'bad');
   }
@@ -14906,7 +14906,7 @@ async function finishGoogleSignIn(credential) {
       body: JSON.stringify({ credential: credential }),
     });
     await refreshBilling();
-    await afterAccountSignIn('You’re signed in with Google. You stay signed in on this device until you sign out.');
+    await afterAccountSignIn('You’re signed in with Google. You stay signed in on this device until you sign out or you have not used Hopewick for 30 days.');
   } catch (err) {
     accountStatus(err.message || 'Google sign-in didn’t work. Use your email for now.', 'bad');
   }
