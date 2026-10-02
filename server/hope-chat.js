@@ -12,7 +12,8 @@ const MAX_MESSAGES = 40;
 const MAX_CONTENT = 12000;
 const MAX_TOKENS = 600;
 
-const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|about to (use|relapse|drink|score)|going to (use|relapse|drink|score)|can'?t stop myself (from )?(using|drinking|scoring)|extreme craving|domestic violence|family violence|not safe|unsafe|in danger|1800respect|he'?s hurting me|she'?s hurting me|partner (is )?(hurting|hitting|abusing) me)\b/i;
+/** Same pattern as CRISIS_RE in app/index.html. Server must be at least this broad. */
+export const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|od'?d|od'?ing|about to (use|relapse|drink|score)|going to (use|relapse|drink|score)|can'?t stop myself (from )?(using|drinking|scoring)|extreme craving|craving is (so )?(bad|extreme|out of control)|not safe|unsafe|in danger|going to hurt|hurt (someone|them|him|her|my kids?)|someone (else )?(is |in )?danger|partner (is )?(hurting|hitting|abusing) (me|us)|my (partner|husband|wife|boyfriend|girlfriend|ex) (hurt|hit|hits|hurting|hitting|abused|abusing)|domestic violence|family violence|he'?s hurting me|she'?s hurting me|no reason to live)\b/i;
 
 export function dailyCap(name, fallback) {
   const raw = process.env[name];

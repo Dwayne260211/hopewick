@@ -2210,7 +2210,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
             <div class="account-session-actions">
               <button class="btn" type="button" id="myAccountSignOut">Sign out</button>
               <button class="btn btn-danger" type="button" id="myAccountDelete">Delete account</button>
-              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in and the saved chats for this account on our server. Check-ins and weekly goals for this account are removed from the server too. This browser may still keep a copy until you clear it in Settings.</p>
+              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in and the saved chats for this account on our server. Check-ins and weekly goals for this account are removed from the server too. This browser may still keep a copy until you clear it in Settings. Stripe invoices can remain. A host disk snapshot, if one already exists, is not wiped by this button.</p>
+              <p class="account-session-note">Complaints, and a deletion request if you cannot use this screen, go to the address on the Hopewick website. We aim to acknowledge a written complaint within 2 business days and to resolve it within 10 business days. Those are targets, not a guarantee.</p>
             </div>
           </div>
         </div>
@@ -2335,7 +2336,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 <dialog id="plusChoiceDlg" aria-labelledby="plusChoiceTitle">
   <div class="onboard-body">
     <h2 id="plusChoiceTitle">Hopewick Plus</h2>
-    <p class="lead">7 days free, then AU$20/month. A card is required to start the trial. You won’t be charged until the trial ends. Cancel anytime.</p>
+    <p class="lead">7 days free, then AU$20/month. A card is required to start the trial and is collected by Stripe. You won’t be charged the monthly price until the trial ends. Cancel anytime means Plus continues until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it.</p>
     <p>Or stay on the free account. That is 15 Hope messages a day, with no card and no charge. Today’s Readings and Get help stay free either way.</p>
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="plusChoiceTrial">Start 7-day free trial</button>
@@ -2550,7 +2551,8 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   <form class="dlg-body account-form" id="deleteAccountForm">
     <h2 id="deleteAccountTitle">Delete account</h2>
     <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. Saved chats for this account on the server are erased. Check-ins and weekly goals saved for this account on the server are erased too. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
-    <p>This browser may still keep a copy of those chats, along with your journal, check-ins, weekly goals, and profiles, until you clear them in Settings. Stripe may keep invoices for receipts. Hopewick never stores your card number.</p>
+    <p>This browser may still keep a copy of those chats, along with your journal, check-ins, weekly goals, and profiles, until you clear them in Settings. Stripe may keep invoices for receipts. Hopewick never stores your card number. If the host already has a disk snapshot, that copy can remain until the snapshot expires. A snapshot is not confirmed, and this delete does not promise to wipe one the same day.</p>
+    <p>If you cannot use this screen, email the address on the Hopewick website from the account’s email address and ask for the account to be deleted. A person handles that request. It deletes the same server account, server chats, and server check-ins. It does not delete Stripe invoices or what is only in this browser.</p>
     <label for="deleteAccountConfirm">Type DELETE to confirm
       <input id="deleteAccountConfirm" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" aria-describedby="deleteAccountHint">
     </label>

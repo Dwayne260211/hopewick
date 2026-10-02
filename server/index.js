@@ -213,8 +213,14 @@ function requestIsHttps(req) {
 }
 
 /**
- * Last address in X-Forwarded-For is the one a single reverse proxy appends.
- * A caller-supplied list cannot hide behind a fake first address.
+ * Rate-limit address. The last X-Forwarded-For value is the one the nearest
+ * proxy appends, so a caller cannot hide behind a fake first address.
+ *
+ * Not changed for Cloudflare-then-Render. Cloudflare's HTTP headers docs
+ * (updated 5 May 2026) say to prefer CF-Connecting-IP, and that X-Forwarded-For
+ * is appended, not replaced. Render's public docs do not say how many
+ * addresses Render adds after Cloudflare. CF-Connecting-IP can be set by a
+ * client who reaches the origin directly, so it is not used here.
  */
 function clientIp(req) {
   const parts = String(req.headers['x-forwarded-for'] || '')
@@ -243,7 +249,15 @@ function originAllowed(req) {
 }
 
 function contentSecurityPolicy(req) {
-  const connect = ["'self'", 'https:', 'http://127.0.0.1:7071', 'http://localhost:7071'];
+  // Production drops the old local Azure Functions ports. They are not needed
+  // for Google sign-in, Stripe Checkout (a redirect), or hosted Hope.
+  // 'unsafe-inline' stays: the app and the marketing page run inline scripts.
+  // Removing it would blank those pages. That is recorded debt, not a claim
+  // that inline scripts are safe.
+  const connect = ["'self'", 'https:'];
+  if (process.env.NODE_ENV !== 'production') {
+    connect.push('http://127.0.0.1:7071', 'http://localhost:7071');
+  }
   const parts = [
     "default-src 'self'",
     "base-uri 'self'",
@@ -1526,6 +1540,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       kept: [
         'Journal, profiles, check-ins, weekly goals, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
         'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
+        'Any disk snapshot the host already took, if one exists. A snapshot is not confirmed for this service, and this delete does not promise to wipe one the same day.',
       ],
     }, { 'Set-Cookie': clearCookie(req) });
     return;

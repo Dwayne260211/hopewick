@@ -30,6 +30,11 @@ def test_my_account_page_and_nav():
     assert "saved chats for this account on our server" in app
     assert "Saved chats for this account on the server are erased." in app
     assert "This browser may still keep a copy of those chats" in app
+    assert "disk snapshot" in app
+    assert "Stripe may keep invoices" in app
+    assert "except where the Australian Consumer Law requires it" in app
+    assert "targets, not a guarantee" in app
+    assert "address on the Hopewick website" in app
     assert "Saved chats on the server are gone." in app
     assert "Chats in this browser stay until you clear them in Settings." not in app
     assert "Chats in this browser are still here" not in app

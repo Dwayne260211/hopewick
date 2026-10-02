@@ -4,9 +4,11 @@
 The marketing site and companion are static HTML (no build step, no external CDNs). **Hopewick Plus** (AU$20/month) adds a small Node account server for email sign-in and Stripe — see [SETUP.md](SETUP.md). Chats stay in the browser.
 
 **Live:**
-- Website (landing page): https://dwayne260211.github.io/hopewick/
-- App: https://dwayne260211.github.io/hopewick/app/
-- Demo (no API key needed, nothing saved): https://dwayne260211.github.io/hopewick/app/?demo=1
+- Website: https://hopewick.com.au/
+- App: https://hopewick.com.au/app/
+- Demo (no API key needed, nothing saved): https://hopewick.com.au/app/?demo=1
+
+`https://dwayne260211.github.io/hopewick/` redirects to https://hopewick.com.au/. GitHub Pages is not a second copy of the app.
 
 ## Project layout
 
@@ -51,7 +53,7 @@ The landing page has a "Pilot with us" section for services. Organisation and cl
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. A signed-out visitor with no profile sees **Sign in** first. After that session, profile setup is Welcome, what brings you here, a faith preference, then the profile name. Someone already signed in with a profile goes straight to Home. `?demo=1` still skips account sign-in. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. All numbers were verified against official sites in September 2026.
+The **Get help now** button is always at the top of the screen. A signed-out visitor with no profile sees **Sign in** first. After that session, profile setup is Welcome, what brings you here, a faith preference, then the profile name. Someone already signed in with a profile goes straight to Home. `?demo=1` still skips account sign-in. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. The national numbers in the table below were checked again on 3 October 2026 against the services’ own sites and were unchanged. The Queensland domestic-violence and legal-information numbers in the next paragraph were not re-checked on that date.
 
 | Service | Number |
 |---|---|
@@ -67,15 +69,15 @@ The **Get help now** button is always at the top of the screen. A signed-out vis
 
 ## Hopewick Plus (AU$20/month)
 
-**Hopewick Plus — 7 days free, then AU$20/month** unlocks the full Hopewick experience: SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper study tracks (Christian, Islamic, Hindu, Buddhist, and a values path), 12 Steps practice, the full year of readings, and saved chat history. Education libraries stay with Plus: nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Cancel anytime. One subscription per person.
+**Hopewick Plus — 7 days free, then AU$20/month** unlocks the full Hopewick experience: SMART goals, the journal, the resume builder, nutrition notes, relapse and exit plans, clean time tracker, SOAP reflections, Going Deeper study tracks (Christian, Islamic, Hindu, Buddhist, and a values path), 12 Steps practice, the full year of readings, and saved chat history. Education libraries stay with Plus: nutrition, gut health, neuroplasticity, and ice baths and recovery spas. Cancel anytime means access continues until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it. One subscription per person.
 
-Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and Hope chat. **Daily message limits:** Free is 15 messages/day. Hopewick Plus, including a 7-day trial and complimentary founder access, has no daily message limit. The account server enforces the free cap on hosted Hope (`POST /api/hope/chat`). The browser never sees the model key. Organisation plans are coming soon (the pilot sheet is still the conversation for services). New Plus Checkout sessions send `subscription_data[trial_period_days]=7` with the existing monthly price. See [SETUP.md](SETUP.md).
+Essential support stays free: Today’s Readings, crisis support, domestic and family violence resources, Get Help, and Hope chat. **Daily message limits:** Free is 15 messages/day. Hopewick Plus, including a 7-day trial and complimentary founder access, has no daily message limit. The account server enforces the free cap on hosted Hope (`POST /api/hope/chat`). A crisis reply that still calls the model under that cap uses one of the 15 messages. At the cap, crisis text is static, does not call the model, and does not add another count. Get help as a screen is not a model call. The browser never sees the model key. Organisation plans are coming soon (the pilot sheet is still the conversation for services). New Plus Checkout sessions send `subscription_data[trial_period_days]=7` with the existing monthly price. See [SETUP.md](SETUP.md).
 
 Sign-in is email and password. You stay signed in on that browser until you sign out. A one-time email link is still there for a first visit or a forgotten password (the screen says “Email me a sign-in link”). In the companion the screen is **Hopewick Plus**. Checkout needs a signed-in account. Signed-in chats are saved on the account per profile (`chats.json` next to the account file) and still kept in the browser. Check-ins and weekly goals are saved the same way in `checkins.json` (still free) and removed from the server when the account is deleted. A copy can remain in the browser. The account also stores email, a scrypt password hash when you set one, and subscription status. Complimentary Plus for the founder uses `FOUNDER_PLUS_EMAILS` (see [SETUP.md](SETUP.md)); when that variable is unset, the only address is the founder’s Plus email, not the organisations inbox.
 
 Configure Stripe and run the account server with [SETUP.md](SETUP.md) (`STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, and in production `RESEND_API_KEY` plus `MAGIC_LINK_FROM`). Locally: `npm start`, then open http://127.0.0.1:8787/ .
 
-GitHub Pages cannot run that server, so `https://hopewick.com.au/api/billing/*` 404s until DNS points at it. Production is one Render web service (`render.yaml`, `Dockerfile`) that serves the site and `/api` on `https://hopewick.com.au`. The cutover steps, the test price `price_1UKDd4PoYudRr3bcBe7IIdTH`, and the webhook URL are in [SETUP.md](SETUP.md). Hosted Hope uses `OPENAI_API_KEY` on that service. The older invite-code proxy remains at `https://hopewick-api.azurewebsites.net/api` for Developer / pilot use.
+The live site is that Render service at `https://hopewick.com.au`, with Cloudflare in front. GitHub Pages does not serve the API. `https://dwayne260211.github.io/hopewick/` redirects to the apex. The test price `price_1UKDd4PoYudRr3bcBe7IIdTH` and the webhook URL are in [SETUP.md](SETUP.md). Hosted Hope uses `OPENAI_API_KEY` on that service. The older invite-code proxy remains at `https://hopewick-api.azurewebsites.net/api` for Developer / pilot use.
 
 Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` and the icons in `app/`). The Play Store app isn’t ready yet. A service worker is still not included — see [SETUP.md](SETUP.md).
 

@@ -26,7 +26,7 @@ Organisation and clinic seat plans are **not** for sale here. They remain “com
 
 Signing in is required before Checkout. A free account does not delete older chats; it only keeps the latest one open until Plus is active. People who never sign in keep Today’s Readings, crisis support, Get help, and Hope chat when the account service is reachable. Scripted sample conversations stay at `app/?demo=1` for organisation trials. The demo is not Plus, so SMART goals, the journal, and the resume builder show the trial screen there too.
 
-The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 7-day trial, and complimentary founder emails have no daily message cap. Crisis and Get help replies are not counted and are not refused for the free cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
+The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 7-day trial, and complimentary founder emails have no daily message cap. A crisis reply under that cap still uses one daily message and may call the model. When the cap is already used, crisis returns static text, does not call the model, and does not add another count. Get help as a screen does not call the model and is not counted. The crisis card and Get help stay available at the cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
 
 ## Environment variables
 
@@ -105,7 +105,7 @@ The person icon in the top bar, and **More → My Account**, open My Account. It
 - **Payment Method** shows brand, last four, and expiry from Stripe. Adding or changing a card happens on Stripe (Customer Portal, or Checkout in setup mode when there is no Stripe customer yet). Hopewick does not store the card number or CVV.
 - **Billing History** lists Stripe invoices, with the hosted invoice and PDF when Stripe provides them.
 - **Notifications** is labelled coming soon and does not save anything.
-- **Delete account** asks you to type DELETE, cancels a live Stripe subscription immediately, deletes that person’s row in the account file, erases that account’s saved chats on the server, and signs them out. A copy of the chats in the browser can stay, with the journal and profiles, until they are cleared in Settings. Stripe keeps invoices it already has.
+- **Delete account** asks you to type DELETE, cancels a live Stripe subscription immediately, deletes that person’s row in the account file, erases that account’s saved chats on the server, erases that account’s check-ins and weekly goals on the server, and signs them out. A copy in the browser can stay, with the journal and profiles, until they are cleared in Settings. Stripe keeps invoices it already has. A host disk snapshot, if one already exists, is not deleted by this call. A person who cannot use the screen can email admin@bridge-bite-co.com. The manual steps are in `docs/complaints-and-deletion.md`.
 
 No new environment variables. Use the existing `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_PUBLISHABLE_KEY`, and `STRIPE_WEBHOOK_SECRET`. Webhook events stay `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, and `customer.subscription.deleted`. A setup-mode Checkout (add a card before subscribing) does not turn Plus on.
 
@@ -146,6 +146,16 @@ curl -s -X POST http://127.0.0.1:8787/api/billing/dev-set \
 - **Plus active:** any day in the reading library, and the full conversation list.
 - Get help and the crisis card are never blocked.
 
+## Security notes that are easy to get wrong
+
+Production `Content-Security-Policy` does not allow `http://127.0.0.1:7071` or `http://localhost:7071`. Those ports were the old local Azure Functions proxy. Non-production still allows them. `script-src` and `style-src` still include `'unsafe-inline'` because the marketing page and the app run inline scripts. Taking that out would break the pages. It is debt, not a finished control.
+
+Google sign-in still allows `https://accounts.google.com`. Hosted Hope and Stripe stay on `connect-src 'self' https:`. Stripe Checkout is a redirect, not a script on this origin.
+
+Rate limits still use the last `X-Forwarded-For` address. That is the nearest proxy’s append, which a browser cannot replace. With Cloudflare and then Render, that last address may be a Cloudflare edge address. `CF-Connecting-IP` is not trusted, because a client who reaches Render directly can set it. Do not change the hop until a live request shows the header chain.
+
+There is no backup job in this repo. Do not write that snapshots are on for this service. Render’s disk documentation describes automatic daily snapshots as a platform feature and a dashboard restore. Checking and restoring them is a dashboard task. It is not a tested restore for Hopewick.
+
 ## Tests
 
 ```bash
@@ -156,7 +166,7 @@ That checks magic-link sign-in, setting a password, password sign-in, the lastin
 
 ## Production
 
-GitHub Pages serves https://hopewick.com.au today (apex `A` records to GitHub’s IPs, `www` `CNAME` to `dwayne260211.github.io`). Pages is static, so `https://hopewick.com.au/api/billing/*` returns a GitHub **404** page. The companion calls `/api/...` on the same origin (`SameSite=Lax`, host-only cookie). The process in `server/index.js` already serves the HTML and `/api` together. Production is that one process, on [Render](https://render.com), in Singapore.
+`https://hopewick.com.au` is the live site. The Node process on [Render](https://render.com) serves the HTML and `/api` together. Cloudflare is in front of that origin (seen on live responses; not named in `render.yaml`). The blueprint region is Singapore. `https://dwayne260211.github.io/hopewick/` redirects to the apex and does not run the API. The companion calls `/api/...` on the same origin (`SameSite=Lax`, host-only cookie).
 
 Hosted Hope for signed-in Free and Plus accounts runs on this same service: `POST /api/hope/chat`. Set `OPENAI_API_KEY` on the server (the key already used by `hopewick-api` is the one to copy). Do not put that key in the browser or in git. Free is 15 messages a day. Plus, a 7-day trial, and complimentary founder emails have no daily message limit. The count is the Australia/Brisbane calendar day and is stored beside the account, not the conversation.
 
@@ -238,6 +248,10 @@ curl -sS https://hopewick.com.au/api/billing/config
 Both must be JSON. A GitHub HTML 404 means DNS still points at Pages.
 
 `www.hopewick.com.au` should land on `https://hopewick.com.au`. The app also redirects `www` with HTTP 308 if a request reaches the process, so the session cookie stays on the apex.
+
+### GitHub Pages
+
+As of 3 October 2026 the `github.io` project URL redirects to `https://hopewick.com.au`. Do not point the apex back at GitHub Pages. `/api` would stop. The old cutover checklist is below only if DNS has been moved away from Render.
 
 ### Turn off GitHub Pages for this domain
 
