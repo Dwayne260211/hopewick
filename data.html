@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3f8f5f">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="legal.css">
+<title>Data storage and deletion · Hopewick</title>
+<meta name="description" content="How Hopewick stores chats, check-ins and goals, and what account deletion does and does not remove.">
+<link rel="canonical" href="https://hopewick.com.au/data.html">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="logo" href="./"><span class="orb" aria-hidden="true"></span>Hopewick</a>
+    <a class="quiet" href="./#safety">Safety</a>
+    <a class="quiet" href="./">Home</a>
+  </nav>
+</header>
+<main id="main" class="wrap">
+
+<h1>Data storage and deletion</h1>
+<p class="lede">This is what the live server does today. It matches the app, not a future policy.</p>
+<h2>What is stored with an account</h2>
+<p>Email, a scrypt password hash when you set a password (not the password itself), your name and phone if you add them, whether Plus is active, today’s Hope message count, saved chats for each profile, check-ins, and weekly goals. Card numbers are not stored by Hopewick.</p>
+<p>Memories, the journal, recovery plans, and the resume draft stay on this device. Signed-in check-ins and weekly goals are also saved to the account.</p>
+<h2>How long chats stay</h2>
+<p>A chat on the live server is kept until you delete that chat, you delete the account, or the chat has not been updated for 24 months. 24 months is 730 days of 24 hours, counted from the conversation’s updated time. A missing updated time is treated as expired. The check runs when that account’s chats are read or saved. There is no separate nightly job.</p>
+<p>Free and Plus use the same retention rule. A free account can open only the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there.</p>
+<p>This rule does not clear the copy in your browser, and it does not wipe a disk snapshot.</p>
+<h2>Deleting one chat</h2>
+<p>Deleting one chat removes that chat from the account save. It does not delete the rest of the account, and it does not, by itself, clear a copy that is only in this browser.</p>
+<h2>Deleting the account</h2>
+<p>Delete account, in the app, removes the live server sign-in, that account’s server chats, check-ins, and weekly goals, and signs you out. It does this straight away. It does not wait 24 months.</p>
+<p>If Plus is current, deletion cancels that subscription straight away. If the subscription cannot be cancelled, the account is not deleted.</p>
+<p>What can remain:</p>
+<ul>
+  <li>A copy in this browser, including chats, journal, check-ins, weekly goals, and profiles, until you clear it in Settings.</li>
+  <li>Stripe may keep invoices. Hopewick does not store your card number.</li>
+  <li>Existing Render disk snapshots can still hold older data. Deleting an account does not wipe them, and this page does not promise they disappear at once. It also does not say how long a snapshot is kept.</li>
+</ul>
+<p class="note warn">On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.</p>
+<h2>If you cannot delete the account in the app</h2>
+<p>Email <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a> from the account’s sign-in address and ask for the account to be deleted. A person handles that request. It is not automatic. The aim is to delete the same server account, server chats, check-ins, and weekly goals, and to cancel a current subscription. It still does not wipe a browser copy, Stripe invoices, or a disk snapshot.</p>
+<p>More on how to write, and what we aim to reply, is on the <a href="complaints.html">complaints</a> page.</p>
+
+</main>
+<footer>
+  <div class="wrap">
+    <p>Hopewick is operated by BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792).</p>
+    <ul class="links">
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="data.html">Data storage and deletion</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="complaints.html">Complaints</a></li>
+      <li><a href="./#safety">Safety</a></li>
+      <li><a href="./#plans">Plans</a></li>
+    </ul>
+    <p>Email <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a>. Not a crisis service. In an emergency call <a href="tel:000">000</a>.</p>
+  </div>
+</footer>
+</body>
+</html>
