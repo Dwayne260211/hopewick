@@ -4,11 +4,14 @@
  * Scoped by account id, then profile id. The browser keeps a copy too.
  * Staff have no inbox of these transcripts.
  *
- * Adopted retention (do not delete by age): a chat stays until the person
- * deletes that chat or deletes the account. Free accounts can open the
- * latest chat (FREE_HISTORY_KEEP). Older chats stay stored. No automatic
- * expiry. A future maximum, for example 24 months, is not in place.
- * This module has no deletion job for age.
+ * Live-disk retention: a chat stays until the person deletes that chat,
+ * deletes the account, or its `updated` time (epoch ms) is 24 months or
+ * older. 24 months is CHAT_RETENTION_MS (730 days, not calendar months).
+ * Expired rows are removed on read and on merge/save. There is no separate
+ * cron. This does not delete browser localStorage and does not touch
+ * snapshots. Free accounts can open the latest chat (FREE_HISTORY_KEEP).
+ * Older chats stay stored until this rule or a user delete. Account delete
+ * still removes that account's chats immediately.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,6 +19,21 @@ import path from 'node:path';
 const MAX_PROFILES = 12;
 /** Free accounts may open this many recent chats. Older ones stay stored. */
 export const FREE_HISTORY_KEEP = 1;
+/** 24 months on the live disk. 730 days of 24 hours, not a calendar-month count. */
+export const CHAT_RETENTION_DAYS = 730;
+export const CHAT_RETENTION_MS = CHAT_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+
+/** True when `updated` is missing or is CHAT_RETENTION_MS or older than `now`. */
+export function isChatExpired(convo, now = Date.now()) {
+  const updated = Number(convo && convo.updated);
+  if (!Number.isFinite(updated)) return true;
+  return updated <= now - CHAT_RETENTION_MS;
+}
+
+export function withoutExpiredChats(list, now = Date.now()) {
+  if (!Array.isArray(list)) return [];
+  return list.filter((row) => row && !isChatExpired(row, now));
+}
 
 /** What a client may see. Plus gets the stored list. Free gets the recent openable chats only. */
 export function conversationsForViewer(conversations, plus) {
@@ -110,7 +128,9 @@ export function mergeConversations(localList, remoteList) {
   };
   take(remoteList);
   take(localList);
-  return [...map.values()].sort((a, b) => (b.updated || 0) - (a.updated || 0)).slice(0, MAX_CONVOS);
+  return withoutExpiredChats([...map.values()])
+    .sort((a, b) => (b.updated || 0) - (a.updated || 0))
+    .slice(0, MAX_CONVOS);
 }
 
 function publicProfile(id, row, plus) {
@@ -157,6 +177,19 @@ export function createChatStore(filePath) {
     list(userId, options) {
       const row = data.users[userId];
       if (!row || !row.profiles) return [];
+      let changed = false;
+      for (const profile of Object.values(row.profiles)) {
+        const before = Array.isArray(profile.conversations) ? profile.conversations : [];
+        const kept = withoutExpiredChats(before);
+        if (kept.length !== before.length) {
+          profile.conversations = kept;
+          if (profile.activeId && !kept.some((c) => c.id === profile.activeId)) {
+            profile.activeId = kept[0] ? kept[0].id : null;
+          }
+          changed = true;
+        }
+      }
+      if (changed) persist();
       const plus = !!(options && options.plus);
       return Object.entries(row.profiles)
         .map(([id, profile]) => publicProfile(id, profile, plus))

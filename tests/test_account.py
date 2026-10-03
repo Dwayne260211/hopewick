@@ -31,7 +31,7 @@ def test_my_account_page_and_nav():
     assert "Saved chats for this account on the server are erased." in app
     assert "This browser may still keep a copy of those chats" in app
     assert "disk snapshot" in app
-    assert "Stripe may keep invoices" in app
+    assert "Stripe can keep invoices" in app
     assert "except where the Australian Consumer Law requires it" in app
     assert "targets, not a guarantee" in app
     assert "address on the Hopewick website" in app
@@ -72,3 +72,11 @@ def test_my_account_page_and_nav():
     assert "confirm !== 'DELETE'" in account
     assert "cancel_at_period_end" in account
     assert "hasRawCardFields" in account
+    assert "not been updated for 24 months" in app
+    assert "Not seeing them is not deletion" in app
+    assert "Enter your current password to continue." in app
+    assert "fresh email sign-in link or Google sign-in" in app
+    assert "does not promise they disappear at once" in app
+    assert "requireReauth" in account
+    assert "MFA" not in app
+    assert "multi-factor" not in app.lower()

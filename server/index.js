@@ -16,11 +16,12 @@
  * spends a message. Once the free cap is reached, crisis gets the static
  * numbers (000 and 1800 250 015) and the model is not called.
  * Saved chats for a signed-in account live in chats.json (per profile),
- * beside the account file. They stay until that person deletes the chat
- * or deletes the account. Free accounts can open the latest chat; older
- * chats stay stored. There is no automatic expiry and no age-based
- * deletion job. A future maximum (for example 24 months) is not in place.
- * The model call itself does not write that file.
+ * beside the account file. They stay until that person deletes the chat,
+ * deletes the account, or the conversation `updated` time is 24 months
+ * (730 days) or older. Expired rows are removed on read and on save.
+ * Free accounts can open the latest chat; older chats stay stored until
+ * that rule or a user delete. The model call itself does not write that file.
+ * This server does not clear browser localStorage and does not touch snapshots.
  * Check-ins and weekly SMART goals live in checkins.json beside that file,
  * per account and profile. They are free. Deleting an account erases them.
  * A page visit counter lives in visits.json beside that file. It stores a
@@ -33,7 +34,11 @@
  * It is a 30-day inactivity limit: GET /api/auth/me slides it forward
  * while the person uses Hopewick, and it expires after 30 days unused.
  * One session per account. The one-time email link still expires
- * in 30 minutes.
+ * in 30 minutes and is still single-use.
+ * Delete, cancel, the billing portal, and card setup ask again:
+ * current password when one is set, otherwise a magic-link verify
+ * or Google sign-in in the last 10 minutes (REAUTH_MS). Ordinary
+ * chat does not ask again. That check is not MFA.
  *
  * Invite-code live AI can still use the Azure Functions API from
  * Developer settings in the companion. It is not the default path.
@@ -44,7 +49,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
-import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail } from './store.js';
+import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, REAUTH_MS } from './store.js';
 import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
@@ -409,7 +414,10 @@ function currentUser(req, store) {
 
 function startSession(user, req, store) {
   const session = crypto.randomBytes(32).toString('hex');
-  user.session = { hash: hashToken(session), expiresAt: Date.now() + SESSION_MS };
+  const now = Date.now();
+  // reauthAt is the fresh-check flag for passwordless sensitive actions.
+  // Replacing the hash ends the previous cookie. The raw token is not stored.
+  user.session = { hash: hashToken(session), expiresAt: now + SESSION_MS, reauthAt: now };
   store.save(user);
   return sessionCookie(session, req, sessionMaxAgeSec());
 }
@@ -483,6 +491,50 @@ async function passwordMatches(password, user) {
   if (user && user.passwordHash) return verifyPassword(password, user.passwordHash);
   await verifyPassword(password, await dummyPasswordHash());
   return false;
+}
+
+/**
+ * Reauth before account delete, cancel, the Stripe billing portal, and
+ * card setup. Ordinary chat and subscription checkout do not use this.
+ * Not MFA, and no new sign-in method.
+ *
+ * Password on the account: currentPassword, checked with verifyPassword,
+ * the same verifier as a password change. A recent sign-in is not enough.
+ * No password: session.reauthAt must be within REAUTH_MS (10 minutes),
+ * which startSession sets after a magic-link verify, Google sign-in, or
+ * password sign-in. The magic link stays 30 minutes and single-use.
+ * The token is not returned and is not reused.
+ */
+async function requireReauth(user, body, res) {
+  if (user.passwordHash) {
+    if (tooManyHits(passwordChangeFailures, user.id)) {
+      json(res, 429, { error: 'Too many password attempts. Try again in a little while, or use the email sign-in link.' });
+      return false;
+    }
+    const current = body && typeof body.currentPassword === 'string' ? body.currentPassword : '';
+    if (!current) {
+      json(res, 401, { error: 'Enter your current password to continue.', code: 'reauth' });
+      return false;
+    }
+    const matches = await verifyPassword(current, user.passwordHash);
+    if (!matches) {
+      noteHit(passwordChangeFailures, user.id);
+      json(res, 401, { error: 'That current password isn’t right.', code: 'reauth' });
+      return false;
+    }
+    return true;
+  }
+  const at = user.session && Number(user.session.reauthAt);
+  const now = Date.now();
+  const fresh = Number.isFinite(at) && now >= at && now - at <= REAUTH_MS;
+  if (!fresh) {
+    json(res, 401, {
+      error: 'Use a fresh email sign-in link or Google sign-in, then try again. That check lasts 10 minutes.',
+      code: 'reauth',
+    });
+    return false;
+  }
+  return true;
 }
 
 const RAW_CARD_KEYS = new Set(['card', 'cardnumber', 'card_number', 'pan', 'cvc', 'cvv', 'securitycode', 'expiry']);
@@ -1031,10 +1083,13 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
         return;
       }
     }
+    const hadPassword = Boolean(user.passwordHash);
     user.passwordHash = await hashPassword(password);
     passwordChangeFailures.delete(user.id);
     user.pendingPassword = null;
-    const cookie = touchSession(user, req, store);
+    // A change replaces the session so the previous cookie no longer matches.
+    // The first password on this account keeps the current session.
+    const cookie = hadPassword ? startSession(user, req, store) : touchSession(user, req, store);
     json(res, 200, { ok: true, hasPassword: true }, cookie ? { 'Set-Cookie': cookie } : undefined);
     return;
   }
@@ -1245,6 +1300,21 @@ async function verifyGoogleCredential(credential) {
       json(res, 401, { error: 'Sign in before opening the billing portal.' });
       return;
     }
+    let returnTo = '';
+    let body = {};
+    const raw = await readBody(req);
+    if (raw.length) {
+      try { body = JSON.parse(raw.toString('utf8')); } catch {
+        json(res, 400, { error: 'Send JSON.' });
+        return;
+      }
+      if (!body || typeof body !== 'object' || Array.isArray(body)) {
+        json(res, 400, { error: 'Send JSON.' });
+        return;
+      }
+      if (body.returnTo === 'account') returnTo = 'account';
+    }
+    if (!(await requireReauth(user, body, res))) return;
     if (!process.env.STRIPE_SECRET_KEY) {
       json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY.' });
       return;
@@ -1252,16 +1322,6 @@ async function verifyGoogleCredential(credential) {
     if (!user.stripeCustomerId) {
       json(res, 400, { error: 'Subscribe first, then you can manage billing here.' });
       return;
-    }
-    let returnTo = '';
-    const raw = await readBody(req);
-    if (raw.length) {
-      let body = {};
-      try { body = JSON.parse(raw.toString('utf8')); } catch {
-        json(res, 400, { error: 'Send JSON.' });
-        return;
-      }
-      if (body && body.returnTo === 'account') returnTo = 'account';
     }
     const returnUrl = returnTo === 'account'
       ? `${publicBase(req)}/app/?myaccount=1&section=payment`
@@ -1407,6 +1467,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       json(res, 400, { error: 'Card details are not stored here. You’ll enter them on Stripe’s secure page.' });
       return;
     }
+    if (!(await requireReauth(user, body, res))) return;
     if (!process.env.STRIPE_SECRET_KEY) {
       json(res, 503, { error: 'Stripe is not configured. Set STRIPE_SECRET_KEY.' });
       return;
@@ -1463,6 +1524,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       json(res, 400, { error: 'Confirm cancellation first.', code: 'confirm' });
       return;
     }
+    if (!(await requireReauth(user, body, res))) return;
     if (isFounderPlusEmail(user.email) && !isPlusStatus(user.subscriptionStatus) && !user.stripeSubscriptionId) {
       json(res, 409, { error: 'Founder access doesn’t have a paid subscription to cancel.' });
       return;
@@ -1506,6 +1568,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       json(res, 400, { error: 'Type DELETE to confirm account deletion.', code: 'confirm' });
       return;
     }
+    if (!(await requireReauth(user, body, res))) return;
     const status = user.subscriptionStatus || 'none';
     const live = ['active', 'trialing', 'past_due', 'unpaid', 'paused', 'incomplete'].includes(status);
     let subscriptionCanceled = false;
@@ -1545,8 +1608,8 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       ],
       kept: [
         'Journal, profiles, check-ins, weekly goals, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
-        'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
-        'Existing Render disk snapshots may temporarily contain older data. This delete does not wipe a disk snapshot. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.',
+        'Stripe can keep invoices it already has, so a receipt can still be found. Hopewick never stored your card number.',
+        'Existing Render disk snapshots can still hold older data. This delete does not wipe a disk snapshot, and this does not promise they disappear at once. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.',
       ],
     }, { 'Set-Cookie': clearCookie(req) });
     return;

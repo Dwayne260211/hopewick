@@ -2210,7 +2210,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
             <div class="account-session-actions">
               <button class="btn" type="button" id="myAccountSignOut">Sign out</button>
               <button class="btn btn-danger" type="button" id="myAccountDelete">Delete account</button>
-              <p class="account-session-note">Sign out stays on this device only. Delete account removes your Hopewick sign-in and the saved chats for this account on our server. Check-ins and weekly goals for this account are removed from the server too. This browser may still keep a copy until you clear it in Settings. Stripe invoices can remain. Existing Render disk snapshots may temporarily contain older data. This button does not wipe a disk snapshot. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.</p>
+              <p class="account-session-note">Sign out stays on this device only. You stay signed in until you sign out or you have not used Hopewick for 30 days. Delete account removes the sign-in, the saved chats for this account on our server, check-ins, and weekly goals, and signs you out. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. This browser may still keep a copy until you clear it in Settings. Stripe can keep invoices. Existing Render disk snapshots can still hold older data. This button does not wipe a disk snapshot, and this does not promise they disappear at once. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.</p>
               <p class="account-session-note">Complaints, and a deletion request if you cannot use this screen, go to the address on the Hopewick website. We aim to acknowledge a written complaint within 2 business days and to resolve it within 10 business days. Those are targets, not a guarantee.</p>
             </div>
           </div>
@@ -2411,12 +2411,12 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
-        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account so they come back. Chats stay until you delete that chat or delete the account. A free account can open the latest chat; older chats stay stored. Nothing is removed automatically. Hopewick staff do not get a live feed of the conversation.</li>
+        <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account so they come back. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Hopewick staff do not get a live feed of the conversation.</li>
         <li><strong>Hopewick Plus.</strong> 7 days free, then AU$20 a month for one person: SMART goals, the journal, relapse and exit plans, the resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The clean-time tracker, Bible &amp; SOAP, and the 12-step outline stay free. Essential support stays free.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 15 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a password hash when you set a password (not the password itself), subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. Chats stay until you delete that chat or delete the account. A free account can open the latest chat; older chats stay stored. Nothing is removed automatically, and a 24-month maximum is not in place. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a password hash when you set a password (not the password itself), subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, and weekly goals, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -2539,6 +2539,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </form>
   <div class="dlg-body">
     <p>Plus stays on until the end of the current period, including a trial. You won’t be charged again after that. You can keep using Plus until then.</p>
+    <label for="cancelSubPassword" id="cancelSubPasswordLabel" hidden>Current password
+      <input id="cancelSubPassword" type="password" autocomplete="current-password" maxlength="200">
+    </label>
+    <p class="help" id="cancelSubReauthNote" hidden>This account has no password. Use a fresh email sign-in link or Google sign-in, then try again. That check lasts 10 minutes.</p>
     <p class="account-status" id="cancelSubStatus" role="status" aria-live="polite"></p>
   </div>
   <div class="dlg-foot">
@@ -2550,17 +2554,36 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 <dialog id="deleteAccountDlg" aria-labelledby="deleteAccountTitle">
   <form class="dlg-body account-form" id="deleteAccountForm">
     <h2 id="deleteAccountTitle">Delete account</h2>
-    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. Saved chats for this account on the server are erased. Check-ins and weekly goals saved for this account on the server are erased too. If Hopewick Plus is active, it is cancelled straight away so you are not billed again.</p>
-    <p>This browser may still keep a copy of those chats, along with your journal, check-ins, weekly goals, and profiles, until you clear them in Settings. Stripe may keep invoices for receipts. Hopewick never stores your card number. Existing Render disk snapshots may temporarily contain older data. This delete does not wipe a disk snapshot. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.</p>
+    <p>This removes your Hopewick sign-in on our server: email, name, phone, password, and today’s Hope message count. Saved chats for this account on the server are erased. Check-ins and weekly goals saved for this account on the server are erased too. If Hopewick Plus is active, it is cancelled straight away so you are not billed again. Deleting the account also signs you out.</p>
+    <p>This browser may still keep a copy of those chats, along with your journal, check-ins, weekly goals, and profiles, until you clear them in Settings. Stripe can keep invoices. Hopewick never stores your card number. Existing Render disk snapshots can still hold older data. This delete does not wipe a disk snapshot, and this does not promise they disappear at once. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.</p>
     <p>If you cannot use this screen, email the address on the Hopewick website from the account’s email address and ask for the account to be deleted. A person handles that request. It deletes the same server account, server chats, and server check-ins. It does not delete Stripe invoices or what is only in this browser.</p>
     <label for="deleteAccountConfirm">Type DELETE to confirm
       <input id="deleteAccountConfirm" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" aria-describedby="deleteAccountHint">
     </label>
     <p class="help" id="deleteAccountHint">The delete button turns on only when DELETE is typed in capitals.</p>
+    <label for="deleteAccountPassword" id="deleteAccountPasswordLabel" hidden>Current password
+      <input id="deleteAccountPassword" type="password" autocomplete="current-password" maxlength="200">
+    </label>
+    <p class="help" id="deleteAccountReauthNote" hidden>This account has no password. Use a fresh email sign-in link or Google sign-in, then try again. That check lasts 10 minutes.</p>
     <p class="account-status" id="deleteAccountStatus" role="status" aria-live="polite"></p>
     <div class="dlg-foot" style="padding-left:0;padding-right:0">
       <button class="btn" type="button" id="deleteAccountCancel">Keep my account</button>
       <button class="btn btn-danger" type="submit" id="deleteAccountSubmit" disabled>Delete my account</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="sensitiveReauthDlg" aria-labelledby="sensitiveReauthTitle">
+  <form class="dlg-body account-form" id="sensitiveReauthForm">
+    <h2 id="sensitiveReauthTitle">Confirm it’s you</h2>
+    <p>Enter your current password to open billing or change the card. Ordinary chat does not ask again.</p>
+    <label for="sensitiveReauthPassword">Current password
+      <input id="sensitiveReauthPassword" type="password" autocomplete="current-password" maxlength="200">
+    </label>
+    <p class="account-status" id="sensitiveReauthStatus" role="status" aria-live="polite"></p>
+    <div class="dlg-foot" style="padding-left:0;padding-right:0">
+      <button class="btn" type="button" id="sensitiveReauthCancel">Cancel</button>
+      <button class="btn btn-primary" type="submit">Continue</button>
     </div>
   </form>
 </dialog>
@@ -13365,6 +13388,7 @@ const billingState = {
   hopeHosted: false,
   hopeUsage: null,
   hasPassword: false,
+  reauthFresh: false,
   name: '',
   phone: '',
   cancelAtPeriodEnd: false,
@@ -13588,6 +13612,7 @@ async function refreshBilling() {
     billingState.complimentary = !!user.complimentary;
     billingState.founder = !!user.founder;
     billingState.hasPassword = !!user.hasPassword;
+    billingState.reauthFresh = !!user.reauthFresh;
     billingState.name = user.name || '';
     billingState.phone = user.phone || '';
     billingState.cancelAtPeriodEnd = !!user.cancelAtPeriodEnd;
@@ -13606,6 +13631,7 @@ async function refreshBilling() {
     billingState.complimentary = false;
     billingState.founder = false;
     billingState.hasPassword = false;
+    billingState.reauthFresh = false;
     billingState.name = '';
     billingState.phone = '';
     billingState.cancelAtPeriodEnd = false;
@@ -13830,7 +13856,7 @@ function appendPlusOffer(body) {
     'Going Deeper study tracks — your tradition, or a values path',
     'The full year of readings',
     'Add another profile on this device',
-    'Older chats stay open with Hopewick Plus. The latest chat stays free.',
+    'Hopewick Plus can open stored history that is still there. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion.',
   ].forEach(text => {
     const li = document.createElement('li');
     li.textContent = text;
@@ -13843,7 +13869,7 @@ function appendPlusOffer(body) {
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
-  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. Chats stay until you delete that chat or delete the account. A free account can open the latest chat; older chats stay stored and open with Hopewick Plus. Nothing is removed automatically.</p>';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, and weekly goals, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices.</p>';
   body.appendChild(privacy);
 }
 let myAccountSection = 'menu';
@@ -13967,6 +13993,7 @@ function applyAccountSummary(summary) {
   billingState.phone = summary.phone || '';
   billingState.email = summary.email || billingState.email;
   billingState.hasPassword = !!summary.hasPassword;
+  if (Object.prototype.hasOwnProperty.call(summary, 'reauthFresh')) billingState.reauthFresh = !!summary.reauthFresh;
   billingState.cancelAtPeriodEnd = !!summary.cancelAtPeriodEnd;
   billingState.plan = summary.plan || 'Free';
   billingState.priceLabel = summary.priceLabel || '';
@@ -14330,12 +14357,87 @@ async function renderAccountPayment(body, token) {
   }
   if (actions.childElementCount) body.appendChild(actions);
 }
+const REAUTH_LINK_NOTE = 'This account has no password. Use a fresh email sign-in link or Google sign-in, then try again. That check lasts 10 minutes.';
+const REAUTH_FRESH_NOTE = 'You signed in with an email link or Google in the last 10 minutes, so you can continue.';
+async function refreshReauthBits() {
+  try {
+    const user = await billingFetch('/api/auth/me');
+    billingState.hasPassword = !!user.hasPassword;
+    billingState.reauthFresh = !!user.reauthFresh;
+    billingState.signedIn = !!user.signedIn;
+  } catch (_) { /* the action itself will fail if the session is gone */ }
+}
+function showReauthChoice(label, note) {
+  if (billingState.hasPassword) {
+    if (label) label.hidden = false;
+    if (note) note.hidden = true;
+    return;
+  }
+  if (label) label.hidden = true;
+  if (note) {
+    note.hidden = false;
+    note.textContent = billingState.reauthFresh ? REAUTH_FRESH_NOTE : REAUTH_LINK_NOTE;
+  }
+}
+function askCurrentPassword() {
+  return new Promise((resolve) => {
+    const dlg = $('#sensitiveReauthDlg');
+    const form = $('#sensitiveReauthForm');
+    const input = $('#sensitiveReauthPassword');
+    const status = $('#sensitiveReauthStatus');
+    const cancel = $('#sensitiveReauthCancel');
+    if (!dlg || !form || !input) { resolve(''); return; }
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      form.removeEventListener('submit', onSubmit);
+      if (cancel) cancel.removeEventListener('click', onCancel);
+      dlg.removeEventListener('close', onClose);
+      if (dlg.open) dlg.close();
+      resolve(value || '');
+    };
+    const onSubmit = (e) => {
+      e.preventDefault();
+      const value = input.value || '';
+      if (!value) {
+        if (status) { status.className = 'account-status bad'; status.textContent = 'Enter your current password to continue.'; }
+        input.focus();
+        return;
+      }
+      finish(value);
+    };
+    const onCancel = () => finish('');
+    const onClose = () => finish('');
+    form.addEventListener('submit', onSubmit);
+    if (cancel) cancel.addEventListener('click', onCancel);
+    dlg.addEventListener('close', onClose);
+    input.value = '';
+    if (status) { status.className = 'account-status'; status.textContent = ''; }
+    if (!dlg.open) dlg.showModal();
+    input.focus();
+  });
+}
+async function currentPasswordForSensitiveAction(statusEl) {
+  await refreshReauthBits();
+  if (!billingState.hasPassword) {
+    if (billingState.reauthFresh) return { ok: true, currentPassword: '' };
+    if (statusEl) { statusEl.className = 'account-status bad'; statusEl.textContent = REAUTH_LINK_NOTE; }
+    else toast(REAUTH_LINK_NOTE, true, 6000);
+    return { ok: false, currentPassword: '' };
+  }
+  const currentPassword = await askCurrentPassword();
+  if (!currentPassword) return { ok: false, currentPassword: '' };
+  return { ok: true, currentPassword };
+}
 async function startCardSetup() {
+  const gate = await currentPasswordForSensitiveAction(null);
+  if (!gate.ok) return;
   try {
     const data = await billingFetch('/api/account/setup-card', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: '{}',
+      body: JSON.stringify({ currentPassword: gate.currentPassword }),
     });
     if (data.url) location.href = data.url;
   } catch (err) {
@@ -14443,9 +14545,13 @@ function renderAccountNotifications(body) {
   body.appendChild(product);
   body.appendChild(billing);
 }
-function openCancelSubscription() {
+async function openCancelSubscription() {
   const status = $('#cancelSubStatus');
+  const password = $('#cancelSubPassword');
+  if (password) password.value = '';
   if (status) { status.className = 'account-status'; status.textContent = ''; }
+  await refreshReauthBits();
+  showReauthChoice($('#cancelSubPasswordLabel'), $('#cancelSubReauthNote'));
   const dlg = $('#cancelSubDlg');
   if (dlg && !dlg.open) dlg.showModal();
   const keep = $('#cancelSubKeep');
@@ -14457,12 +14563,25 @@ function closeCancelSubscription() {
 }
 async function confirmCancelSubscription() {
   const status = $('#cancelSubStatus');
+  await refreshReauthBits();
+  showReauthChoice($('#cancelSubPasswordLabel'), $('#cancelSubReauthNote'));
+  if (!billingState.hasPassword && !billingState.reauthFresh) {
+    if (status) { status.className = 'account-status bad'; status.textContent = REAUTH_LINK_NOTE; }
+    return;
+  }
+  const currentPassword = ($('#cancelSubPassword') && $('#cancelSubPassword').value) || '';
+  if (billingState.hasPassword && !currentPassword) {
+    if (status) { status.className = 'account-status bad'; status.textContent = 'Enter your current password to continue.'; }
+    const input = $('#cancelSubPassword');
+    if (input) input.focus();
+    return;
+  }
   if (status) { status.className = 'account-status'; status.textContent = 'Cancelling at the end of this period…'; }
   try {
     await billingFetch('/api/account/cancel', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ confirm: true }),
+      body: JSON.stringify({ confirm: true, currentPassword: currentPassword }),
     });
     closeCancelSubscription();
     toast('Plus stays on until the end of this period. You won’t be charged again.', false, 4500);
@@ -14473,13 +14592,17 @@ async function confirmCancelSubscription() {
     if (status) { status.className = 'account-status bad'; status.textContent = err.message || 'Could not cancel.'; }
   }
 }
-function openDeleteAccount() {
+async function openDeleteAccount() {
   const input = $('#deleteAccountConfirm');
   const status = $('#deleteAccountStatus');
   const submit = $('#deleteAccountSubmit');
+  const password = $('#deleteAccountPassword');
   if (input) input.value = '';
+  if (password) password.value = '';
   if (status) { status.className = 'account-status'; status.textContent = ''; }
   if (submit) submit.disabled = true;
+  await refreshReauthBits();
+  showReauthChoice($('#deleteAccountPasswordLabel'), $('#deleteAccountReauthNote'));
   const dlg = $('#deleteAccountDlg');
   if (dlg && !dlg.open) dlg.showModal();
   if (input) input.focus();
@@ -14498,12 +14621,25 @@ async function submitDeleteAccount(e) {
     if (input) input.focus();
     return;
   }
+  await refreshReauthBits();
+  showReauthChoice($('#deleteAccountPasswordLabel'), $('#deleteAccountReauthNote'));
+  if (!billingState.hasPassword && !billingState.reauthFresh) {
+    if (status) { status.className = 'account-status bad'; status.textContent = REAUTH_LINK_NOTE; }
+    return;
+  }
+  const currentPassword = ($('#deleteAccountPassword') && $('#deleteAccountPassword').value) || '';
+  if (billingState.hasPassword && !currentPassword) {
+    if (status) { status.className = 'account-status bad'; status.textContent = 'Enter your current password to continue.'; }
+    const password = $('#deleteAccountPassword');
+    if (password) password.focus();
+    return;
+  }
   if (status) { status.className = 'account-status'; status.textContent = 'Deleting your account…'; }
   try {
     const result = await billingFetch('/api/account/delete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ confirm: 'DELETE' }),
+      body: JSON.stringify({ confirm: 'DELETE', currentPassword: currentPassword }),
     });
     closeDeleteAccount();
     myAccountSection = 'menu';
@@ -14837,13 +14973,16 @@ async function onSetPassword(e) {
     payload.confirmPassword = b;
   }
   try {
+    const changing = billingState.hasPassword;
     await billingFetch('/api/auth/password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
     await refreshBilling();
-    toast('Password saved. You can use it next time, and you stay signed in here until you sign out or you have not used Hopewick for 30 days.', false, 4000);
+    toast(changing
+      ? 'Password updated. You stay signed in on this device. The previous sign-in for this account has ended.'
+      : 'Password saved. You can use it next time, and you stay signed in here until you sign out or you have not used Hopewick for 30 days.', false, 4000);
   } catch (err) {
     accountStatus(err.message || 'Could not save that password.', 'bad');
   }
@@ -15025,13 +15164,18 @@ async function startCheckout() {
 }
 async function startPortal(returnTo) {
   const status = $('#accountStatus');
+  const gate = await currentPasswordForSensitiveAction(status);
+  if (!gate.ok) return;
   if (status) status.textContent = 'Opening billing…';
   try {
-    const opts = { method: 'POST' };
-    if (returnTo) {
-      opts.headers = { 'Content-Type': 'application/json' };
-      opts.body = JSON.stringify({ returnTo: returnTo });
-    }
+    const payload = {};
+    if (returnTo) payload.returnTo = returnTo;
+    if (gate.currentPassword) payload.currentPassword = gate.currentPassword;
+    const opts = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    };
     const data = await billingFetch('/api/billing/portal', opts);
     if (data.url) location.href = data.url;
   } catch (err) {
@@ -15050,6 +15194,7 @@ async function signOutBilling() {
   billingState.complimentary = false;
   billingState.founder = false;
   billingState.hasPassword = false;
+  billingState.reauthFresh = false;
   billingState.name = '';
   billingState.phone = '';
   billingState.cancelAtPeriodEnd = false;

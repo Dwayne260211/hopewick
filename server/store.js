@@ -14,6 +14,23 @@ export function hashToken(token) {
   return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
 
+/**
+ * How long a sign-in counts as a fresh check for a passwordless account.
+ * 10 minutes. Set on the one session by startSession after a password
+ * sign-in, a magic-link verify, or Google sign-in. Not a second factor.
+ * The magic-link token itself stays single-use and is not stored here.
+ * Accounts that have a password still send currentPassword on the
+ * sensitive request. This window does not replace that check.
+ */
+export const REAUTH_MS = 10 * 60 * 1000;
+
+export function sessionReauthFresh(user, now = Date.now()) {
+  if (!user || !user.session) return false;
+  const at = Number(user.session.reauthAt);
+  if (!Number.isFinite(at)) return false;
+  return now >= at && now - at <= REAUTH_MS;
+}
+
 export function newId() {
   return crypto.randomBytes(16).toString('hex');
 }
@@ -145,6 +162,7 @@ export function publicUser(user) {
       founder: false,
       hasPassword: false,
       emailChangeSupported: false,
+      reauthFresh: false,
     };
   }
   const storedStatus = user.subscriptionStatus || 'none';
@@ -165,5 +183,6 @@ export function publicUser(user) {
     founder,
     hasPassword: Boolean(user.passwordHash),
     emailChangeSupported: false,
+    reauthFresh: sessionReauthFresh(user),
   };
 }

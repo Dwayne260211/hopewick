@@ -6,7 +6,7 @@ Mailbox: **admin@bridge-bite-co.com**. Do not invent another address.
 
 ## Chat retention
 
-Chats are kept until the person deletes that chat or deletes the account. A free account can open the latest chat; older chats stay stored. There is no automatic expiry. A future maximum (for example 24 months) is **not in place**. There is no job that deletes chats by age. See [data-retention.md](data-retention.md).
+A chat is kept on the live server until the person deletes that chat, deletes the account, or it has not been updated for 24 months, and then it is removed. 24 months is 730 days, measured from the conversation `updated` time. Free and Plus are the same. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Plus can open stored history that is still there. The browser copy is not deleted from here. See [data-retention.md](data-retention.md).
 
 ## Complaints
 
@@ -28,8 +28,8 @@ Use this when the person cannot use My Account → Delete account.
    - remove that account’s chats
    - remove that account’s check-ins and weekly goals
 4. Reply to the person and say what was deleted and what remains.
-   - Deleted: the server account (email, name, phone, password), server chats, and server check-ins and weekly goals. A current subscription is cancelled.
-   - Remains: anything still in their browser until they clear it in Settings; Stripe invoices; a host disk snapshot if one already exists. A snapshot is not confirmed for this service. Do not say it was wiped.
+   - Deleted: the sign-in (email, name, phone, password), server chats, and server check-ins and weekly goals. The person is signed out. A current subscription is cancelled.
+   - Remains: a copy in the browser until they clear it in Settings; Stripe can keep invoices; existing Render disk snapshots can still hold older data. This request does not wipe a disk snapshot, and this does not promise they disappear at once. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one. Do not say a snapshot was wiped, and do not say how long one is kept.
 5. Do not delete the Stripe Customer object unless a later decision says to. Do not store or ask for the card number.
 
-In-app deletion already does the server part when the person types DELETE. This email path is only for people who cannot do that.
+In-app deletion already does the server part when the person types DELETE and confirms it is them (current password if they have one, otherwise a fresh email sign-in link or Google sign-in). This email path is only for people who cannot do that.

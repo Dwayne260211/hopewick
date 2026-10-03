@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { startServer } from './index.js';
-import { createChatStore, mergeConversations } from './chats.js';
+import { createChatStore, mergeConversations, CHAT_RETENTION_MS } from './chats.js';
 
 function convo(id, updated, text) {
   return {
@@ -18,8 +18,9 @@ function convo(id, updated, text) {
 }
 
 test('merge keeps both sides and prefers the newer transcript', () => {
-  const local = [convo('a', 2, 'local newer'), convo('b', 1, 'only local')];
-  const remote = [convo('a', 1, 'remote older'), convo('c', 3, 'only remote')];
+  const fresh = Date.now();
+  const local = [convo('a', fresh + 2, 'local newer'), convo('b', fresh + 1, 'only local')];
+  const remote = [convo('a', fresh + 1, 'remote older'), convo('c', fresh + 3, 'only remote')];
   const merged = mergeConversations(local, remote);
   const byId = Object.fromEntries(merged.map((c) => [c.id, c.messages[0].content]));
   assert.deepEqual(byId, {
@@ -80,7 +81,7 @@ test('signed-in chats survive a fresh read and stay on that account', async () =
         profileId: 'sam1',
         name: 'Sam',
         activeId: 'c1',
-        conversations: [convo('c1', 10, 'hello from yesterday'), convo('c2', 11, 'second chat')],
+        conversations: [convo('c1', Date.now() - 20_000, 'hello from yesterday'), convo('c2', Date.now() - 10_000, 'second chat')],
       }),
     });
     assert.equal(put.status, 200);
@@ -94,7 +95,7 @@ test('signed-in chats survive a fresh read and stay on that account', async () =
       body: JSON.stringify({
         profileId: 'sam1',
         name: 'Sam',
-        conversations: [convo('c1', 12, 'hello from yesterday, edited')],
+        conversations: [convo('c1', Date.now() - 5_000, 'hello from yesterday, edited')],
       }),
     });
     const merged = await again.json();
@@ -144,8 +145,8 @@ test('forget drops only that account and ignores a missing user', () => {
   try {
     const file = path.join(dir, 'chats.json');
     const chats = createChatStore(file);
-    chats.merge('user-a', 'p1', { name: 'A', conversations: [convo('c1', 1, 'from A')] });
-    chats.merge('user-b', 'p2', { name: 'B', conversations: [convo('c1', 2, 'from B')] });
+    chats.merge('user-a', 'p1', { name: 'A', conversations: [convo('c1', Date.now() - 2_000, 'from A')] });
+    chats.merge('user-b', 'p2', { name: 'B', conversations: [convo('c1', Date.now() - 1_000, 'from B')] });
     assert.equal(chats.forget(''), false);
     assert.equal(chats.forget('missing'), false);
     assert.equal(chats.forget('user-a'), true);
@@ -175,7 +176,7 @@ test('deleting an account erases that account’s saved chats and leaves the oth
         body: JSON.stringify({
           profileId,
           name: profileId,
-          conversations: [convo('c1', 20, text)],
+          conversations: [convo('c1', Date.now(), text)],
         }),
       });
       assert.equal(res.status, 200);
@@ -217,6 +218,85 @@ test('deleting an account erases that account’s saved chats and leaves the oth
     assert.deepEqual(texts, ['chat from Beau']);
     const gone = await fetch(`${app.base}/api/chats`, { headers: { cookie: cookieA } });
     assert.equal(gone.status, 401);
+  } finally {
+    await app.close();
+  }
+});
+
+test('a chat at 24 months is dropped and a newer one stays', () => {
+  const now = Date.now();
+  const old = convo('old', now - CHAT_RETENTION_MS, 'stale');
+  const keep = convo('keep', now - CHAT_RETENTION_MS + 1, 'still here');
+  const merged = mergeConversations([old], [keep]);
+  assert.deepEqual(merged.map((c) => c.id), ['keep']);
+});
+
+test('reading the store drops an expired chat and still stores a hidden newer one', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hopewick-retain-'));
+  try {
+    const file = path.join(dir, 'chats.json');
+    const now = Date.now();
+    const seeded = {
+      users: {
+        'user-a': {
+          profiles: {
+            p1: {
+              name: 'A',
+              activeId: 'old',
+              updated: now,
+              conversations: [
+                convo('old', now - CHAT_RETENTION_MS - 1, 'gone'),
+                convo('mid', now - 5_000, 'stored but hidden on free'),
+                convo('new', now - 1_000, 'visible'),
+              ],
+            },
+          },
+        },
+      },
+    };
+    fs.writeFileSync(file, JSON.stringify(seeded));
+    const chats = createChatStore(file);
+    const free = chats.list('user-a', { plus: false });
+    assert.deepEqual(free[0].conversations.map((c) => c.id), ['new']);
+    const disk = JSON.parse(fs.readFileSync(file, 'utf8'));
+    assert.deepEqual(
+      disk.users['user-a'].profiles.p1.conversations.map((c) => c.id).sort(),
+      ['mid', 'new'],
+    );
+    const plus = chats.list('user-a', { plus: true });
+    assert.deepEqual(plus[0].conversations.map((c) => c.id).sort(), ['mid', 'new']);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('saving drops a chat older than 24 months and free still stores the newer hidden chat', async () => {
+  const app = await boot();
+  try {
+    const sam = await signIn(app.base, 'retain@example.com');
+    const now = Date.now();
+    const put = await fetch(`${app.base}/api/chats`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', cookie: sam },
+      body: JSON.stringify({
+        profileId: 'sam1',
+        name: 'Sam',
+        conversations: [
+          convo('old', now - CHAT_RETENTION_MS, 'too old'),
+          convo('mid', now - 8_000, 'kept on the server'),
+          convo('new', now - 1_000, 'the one free can open'),
+        ],
+      }),
+    });
+    assert.equal(put.status, 200);
+    const saved = await put.json();
+    assert.deepEqual(saved.profile.conversations.map((c) => c.id), ['new']);
+    const disk = JSON.parse(fs.readFileSync(app.chatsPath, 'utf8'));
+    const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: sam } })).json();
+    const stored = disk.users[me.id].profiles.sam1.conversations.map((c) => c.id).sort();
+    assert.deepEqual(stored, ['mid', 'new']);
+    const again = await (await fetch(`${app.base}/api/chats`, { headers: { cookie: sam } })).json();
+    assert.deepEqual(again.profiles[0].conversations.map((c) => c.id), ['new']);
   } finally {
     await app.close();
   }

@@ -1,4 +1,4 @@
-import test from 'node:test';
+import test, { mock } from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -7,7 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { startServer, REPO_ROOT, SESSION_MS } from './index.js';
-import { createStore, hashToken } from './store.js';
+import { createStore, hashToken, REAUTH_MS } from './store.js';
 import { verifyPassword } from './password.js';
 
 const realFetch = globalThis.fetch;
@@ -961,6 +961,7 @@ test('set password, password login, magic link still works, and sign-out clears 
     });
     assert.equal(set.status, 200);
     assert.equal((await set.json()).hasPassword, true);
+    assert.equal((set.headers.get('set-cookie') || '').split(';')[0], session);
     const disk = fs.readFileSync(app.storePath, 'utf8');
     assert.equal(disk.includes(secret), false);
     assert.match(disk, /scrypt\$/);
@@ -1315,6 +1316,14 @@ test('password change requires the current password and never stores it', async 
       body: JSON.stringify({ currentPassword: current, password: next, confirmPassword: next }),
     });
     assert.equal(changed.status, 200);
+    const rotated = (changed.headers.get('set-cookie') || '').split(';')[0];
+    assert.notEqual(rotated, session);
+    assert.match(changed.headers.get('set-cookie') || '', /HttpOnly/);
+    const oldSession = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(oldSession.signedIn, false);
+    const newSession = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: rotated } })).json();
+    assert.equal(newSession.signedIn, true);
+    assert.equal(newSession.email, 'pat@example.com');
     const disk = fs.readFileSync(app.storePath, 'utf8');
     assert.equal(disk.includes(current), false);
     assert.equal(disk.includes(next), false);
@@ -1696,6 +1705,101 @@ test('google sign-in is refused until GOOGLE_CLIENT_ID is set', async () => {
     assert.equal(body.code, 'google_unconfigured');
     assert.match(body.error, /not configured/i);
   } finally {
+    await app.close();
+  }
+});
+
+test('delete and cancel without reauth fail, and a password still works after the fresh window', async () => {
+  const app = await listen({}, []);
+  const secret = 'harbour-light-42';
+  try {
+    const cookie = await signIn(app.base, 'reauth@example.com');
+    const fresh = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie } })).json();
+    assert.equal(fresh.reauthFresh, true);
+    assert.equal(fresh.hasPassword, false);
+
+    const set = await fetch(`${app.base}/api/auth/password`, {
+      method: 'POST',
+      headers: { cookie, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: secret }),
+    });
+    assert.equal(set.status, 200);
+    assert.equal((set.headers.get('set-cookie') || '').split(';')[0], cookie);
+
+    const noPasswordDelete = await fetch(`${app.base}/api/account/delete`, {
+      method: 'POST',
+      headers: { cookie, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE' }),
+    });
+    assert.equal(noPasswordDelete.status, 401);
+    assert.equal((await noPasswordDelete.json()).code, 'reauth');
+
+    const noPasswordCancel = await fetch(`${app.base}/api/account/cancel`, {
+      method: 'POST',
+      headers: { cookie, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: true }),
+    });
+    assert.equal(noPasswordCancel.status, 401);
+    assert.equal((await noPasswordCancel.json()).code, 'reauth');
+
+    const portal = await fetch(`${app.base}/api/billing/portal`, {
+      method: 'POST',
+      headers: { cookie, 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    assert.equal(portal.status, 401);
+    assert.equal((await portal.json()).code, 'reauth');
+
+    const setup = await fetch(`${app.base}/api/account/setup-card`, {
+      method: 'POST',
+      headers: { cookie, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    assert.equal(setup.status, 401);
+    assert.equal((await setup.json()).code, 'reauth');
+
+    const still = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie } })).json();
+    assert.equal(still.signedIn, true);
+    assert.equal(still.email, 'reauth@example.com');
+
+    const wrong = await fetch(`${app.base}/api/account/delete`, {
+      method: 'POST',
+      headers: { cookie, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: 'DELETE', currentPassword: 'not-the-password' }),
+    });
+    assert.equal(wrong.status, 401);
+    assert.equal((await wrong.json()).code, 'reauth');
+    const stillThere = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie } })).json();
+    assert.equal(stillThere.signedIn, true);
+
+    const link = await signIn(app.base, 'fresh-link@example.com');
+    const linkMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: link } })).json();
+    assert.equal(linkMe.reauthFresh, true);
+    mock.timers.enable({ apis: ['Date'], now: Date.now() });
+    try {
+      mock.timers.tick(REAUTH_MS + 1000);
+      const staleDelete = await fetch(`${app.base}/api/account/delete`, {
+        method: 'POST',
+        headers: { cookie: link, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirm: 'DELETE' }),
+      });
+      assert.equal(staleDelete.status, 401);
+      assert.equal((await staleDelete.json()).code, 'reauth');
+      const staleCancel = await fetch(`${app.base}/api/account/cancel`, {
+        method: 'POST',
+        headers: { cookie: link, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirm: true }),
+      });
+      assert.equal(staleCancel.status, 401);
+      assert.equal((await staleCancel.json()).code, 'reauth');
+      const alive = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: link } })).json();
+      assert.equal(alive.signedIn, true);
+      assert.equal(alive.reauthFresh, false);
+    } finally {
+      mock.timers.reset();
+    }
+  } finally {
+    mock.timers.reset();
     await app.close();
   }
 });
