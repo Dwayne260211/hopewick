@@ -205,7 +205,7 @@ test('deleting an account erases that account’s saved chats and leaves the oth
     assert.equal(body.deleted.some((line) => /sign-in/i.test(line)), true);
     assert.equal(body.kept.some((line) => /browser/i.test(line)), true);
     assert.equal(body.kept.some((line) => /invoice/i.test(line)), true);
-    assert.equal(body.kept.some((line) => /snapshot/i.test(line) && /not confirmed/i.test(line)), true);
+    assert.equal(body.kept.some((line) => /disk snapshot/i.test(line) && /not been tested/i.test(line) && !/not confirmed/i.test(line)), true);
     assert.equal(body.kept.some((line) => /chat/i.test(line) && /server/i.test(line)), false);
 
     disk = JSON.parse(fs.readFileSync(app.chatsPath, 'utf8'));

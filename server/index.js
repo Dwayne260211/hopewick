@@ -223,11 +223,10 @@ function requestIsHttps(req) {
  * Rate-limit address. The last X-Forwarded-For value is the one the nearest
  * proxy appends, so a caller cannot hide behind a fake first address.
  *
- * Not changed for Cloudflare-then-Render. Cloudflare's HTTP headers docs
- * (updated 5 May 2026) say to prefer CF-Connecting-IP, and that X-Forwarded-For
- * is appended, not replaced. Render's public docs do not say how many
- * addresses Render adds after Cloudflare. CF-Connecting-IP can be set by a
- * client who reaches the origin directly, so it is not used here.
+ * Hopewick does not operate a Cloudflare zone. DNS is at GoDaddy.
+ * Public Cloudflare headers are Render's edge, not a Hopewick-controlled
+ * zone. CF-Connecting-IP is not used: a client who reaches the origin
+ * directly can set it. This function is unchanged.
  */
 function clientIp(req) {
   const parts = String(req.headers['x-forwarded-for'] || '')
@@ -1547,7 +1546,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       kept: [
         'Journal, profiles, check-ins, weekly goals, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
         'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
-        'Any disk snapshot the host already took, if one exists. A snapshot is not confirmed for this service, and this delete does not promise to wipe one the same day.',
+        'Existing Render disk snapshots may temporarily contain older data. This delete does not wipe a disk snapshot. A restore has not been tested.',
       ],
     }, { 'Set-Cookie': clearCookie(req) });
     return;
