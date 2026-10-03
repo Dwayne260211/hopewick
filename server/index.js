@@ -1546,7 +1546,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
       kept: [
         'Journal, profiles, check-ins, weekly goals, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
         'Invoices Stripe already has, so a receipt can still be found. Hopewick never stored your card number.',
-        'Existing Render disk snapshots may temporarily contain older data. This delete does not wipe a disk snapshot. A restore has not been tested.',
+        'Existing Render disk snapshots may temporarily contain older data. This delete does not wipe a disk snapshot. On 3 October 2026 the newest snapshot was restored onto the live disk. Files were not compared one by one.',
       ],
     }, { 'Set-Cookie': clearCookie(req) });
     return;
