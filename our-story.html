@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our story · Why I built Hopewick</title>
+<meta name="description" content="Why Dwayne built Hopewick: lived experience of recovery, the gap between sessions, and using AI to find the words to reach people. Not a medical or crisis service.">
+<meta name="theme-color" content="#3f8f5f">
+<link rel="icon" href="favicon.ico">
+<style>
+:root {
+  --bg: #f3f7f1; --surface: #fff; --surface-2: #edf4ea; --text: #1d2b22; --muted: #3e5348;
+  --accent: #3b8a5a; --accent-strong: #1f5c38; --accent-soft: #d6ecdc; --accent-contrast: #fff;
+  --border: #d8e5d9; --danger: #8f2f28; --danger-soft: #f8e1dd; --gold: #f2c94c;
+  --shadow: 0 10px 30px rgba(35,70,45,.10), 0 2px 6px rgba(35,70,45,.06);
+  --focus: 0 0 0 3px rgba(59,138,90,.45);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0e1612; --surface: #151f19; --surface-2: #1b2821; --text: #e3eee6; --muted: #c5d5cb;
+    --accent: #6cc190; --accent-strong: #b7ebcd; --accent-soft: #1f3a2a; --accent-contrast: #0c1a12;
+    --border: #26372d; --danger: #ffb4ab; --danger-soft: #3a1f1c; --shadow: 0 10px 30px rgba(0,0,0,.35); color-scheme: dark; }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--font); line-height: 1.6; color: var(--text); font-size: 17px;
+  background: radial-gradient(1000px 600px at 0% 0%, rgba(124,196,154,.22), transparent 60%),
+              radial-gradient(900px 600px at 100% 30%, rgba(232,214,150,.18), transparent 60%), var(--bg);
+  overflow-wrap: break-word; }
+img, svg, video { max-width: 100%; height: auto; }
+a { color: var(--accent-strong); }
+:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 8px; }
+.skip-link { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--accent-contrast); padding: 8px 14px; border-radius: 10px; z-index: 100; text-decoration: none; }
+.skip-link:focus { top: 12px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.site-header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: color-mix(in srgb, var(--bg) 88%, transparent); border-bottom: 1px solid var(--border); }
+.nav { display: flex; align-items: center; gap: 14px; min-height: 64px; position: relative; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); flex: 0 0 auto; white-space: nowrap; }
+.orb { width: 30px; height: 30px; border-radius: 50%; flex: none; background: radial-gradient(circle at 34% 28%, #eafbe0 0%, #a5dcb6 28%, #4fa373 62%, #256a43 100%); box-shadow: 0 0 16px rgba(124,196,154,.55), inset -3px -5px 10px rgba(20,60,35,.35); }
+.orb-lg { width: 44px; height: 44px; }
+.nav-links { display: flex; gap: 14px; margin-left: auto; list-style: none; padding: 0; flex-wrap: nowrap; align-items: center; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: .92rem; white-space: nowrap; }
+.nav-links a:hover { color: var(--text); }
+.nav-safety { display: none; color: var(--text); font-weight: 700; text-decoration: none; font-size: .95rem; white-space: nowrap; padding: 8px 4px; }
+.nav-toggle { display: none; margin-left: auto; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 12px; min-height: 44px; padding: 8px 14px; font: inherit; font-weight: 700; cursor: pointer; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 14px; font-weight: 650; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: transform .12s, background .15s; font-size: 1rem; text-align: center; max-width: 100%; min-height: 44px; }
+.btn:hover { transform: translateY(-1px); background: var(--surface-2); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.btn-primary:hover { background: var(--accent-strong); color: var(--accent-contrast); }
+.btn-sm { padding: 8px 14px; font-size: .92rem; border-radius: 12px; min-height: 40px; }
+
+.welcome-back { display: none; background: var(--accent-soft); border-bottom: 1px solid var(--border); }
+.welcome-back.show { display: block; }
+.welcome-back .wrap { display: flex; align-items: center; gap: 14px; padding-top: 10px; padding-bottom: 10px; flex-wrap: wrap; }
+.welcome-back p { margin: 0; flex: 1; min-width: 0; }
+
+.hero { padding: 36px 0 8px; }
+.hero-intro { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.hero h1 { font-size: clamp(2.3rem, 7vw, 3.3rem); line-height: 1.05; margin: 0; letter-spacing: -.02em; }
+.hero h1 .name { color: var(--accent-strong); }
+.hero-promise { font-size: clamp(1.2rem, 3vw, 1.45rem); font-weight: 650; line-height: 1.3; margin: 0 0 14px; max-width: 18em; }
+.lede { font-size: 1.05rem; max-width: 38em; margin: 0 0 8px; }
+.lede-tight { margin-bottom: 16px; }
+.hero-limit { color: var(--muted); }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.cta-note { font-size: .95rem; color: var(--muted); margin: 12px 0 0; }
+.trust-line { font-size: .95rem; margin: 8px 0 0; max-width: 40em; }
+.fine { font-size: .95rem; color: var(--muted); max-width: 42em; margin: 10px 0 0; }
+
+.mock { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; box-shadow: var(--shadow); padding: 16px; min-width: 0; }
+.example-label { margin: 0 0 8px; font-size: .82rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-strong); }
+.mock-head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; font-weight: 700; }
+.bubble { padding: 10px 14px; border-radius: 16px; margin: 8px 0; max-width: 100%; font-size: .92rem; }
+.bubble.u { margin-left: auto; width: fit-content; max-width: 92%; background: var(--accent); color: var(--accent-contrast); border-bottom-right-radius: 5px; }
+.bubble.a { background: var(--surface-2); border: 1px solid var(--border); border-bottom-left-radius: 5px; }
+.mock-note { font-size: .8rem; color: var(--muted); margin: 10px 0 0; }
+.preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+.demo-kicker { margin: 0 0 8px; font-size: .92rem; color: var(--muted); }
+.plan-line { margin: 0 0 8px; font-size: .95rem; }
+.plan-line strong { color: var(--text); }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
+.chip { border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; font-size: .82rem; background: var(--surface-2); color: var(--text); }
+.chip.on { background: var(--accent-soft); border-color: var(--accent); font-weight: 750; }
+.mood-demo { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
+.mood-demo span { min-width: 64px; text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 6px 4px; font-size: .78rem; background: var(--surface-2); }
+.mood-demo span.on { background: var(--accent-soft); border-color: var(--accent); font-weight: 750; }
+.plus-tag { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent-strong); border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+
+section { padding: 48px 0; }
+section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-spacing: -.01em; }
+.section-lede { color: var(--muted); max-width: 42em; margin: 0 0 22px; }
+.grid { display: grid; gap: 16px; }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g2 { grid-template-columns: repeat(2, 1fr); }
+.benefits { grid-template-columns: 1fr 1fr; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px; box-shadow: 0 1px 2px rgba(0,0,0,.03); min-width: 0; }
+.card h3 { margin: 6px 0 6px; font-size: 1.12rem; }
+.card p { margin: 0 0 8px; color: var(--muted); font-size: .97rem; }
+.card p:last-child { margin-bottom: 0; }
+.icon { font-size: 1.4rem; }
+.alt { background: color-mix(in srgb, var(--surface) 55%, transparent); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.checklist li { padding-left: 30px; position: relative; }
+.checklist li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; font-size: .8rem; display: grid; place-items: center; }
+.hotlines { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+.hotlines li { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; }
+.hotlines li span { flex: 1 1 12rem; min-width: 0; }
+.hotlines li.urgent { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
+.hotlines a { font-weight: 800; text-decoration: none; font-size: 1.05rem; }
+.hotlines li.urgent a { color: var(--danger); }
+.callout { border-left: 4px solid var(--accent); background: var(--surface); padding: 14px 18px; border-radius: 0 14px 14px 0; margin-top: 18px; color: var(--muted); }
+.callout.warn { border-left-color: var(--danger); }
+.more, .faq-item { margin-top: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 18px 0; }
+.more summary, .faq-item summary { cursor: pointer; font-weight: 750; padding: 14px 0; }
+.more summary:focus-visible, .faq-item summary:focus-visible { border-radius: 8px; }
+.faq-item p { margin: 0 0 14px; color: var(--muted); }
+.more .grid { margin: 4px 0 16px; }
+.safety-card p { margin-bottom: 8px; }
+.plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
+.plan { display: flex; flex-direction: column; gap: 8px; }
+.plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.plan .price { margin: 4px 0 0; font-size: 2rem; font-weight: 800; letter-spacing: -.03em; color: var(--text); }
+.plan .price span { font-size: 1rem; font-weight: 650; color: var(--muted); }
+.plan .who { margin: 0; color: var(--muted); font-size: .92rem; }
+.plan ul { margin: 8px 0 12px; }
+.plan .plan-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+.doc-links { display: flex; flex-wrap: wrap; gap: 10px 16px; list-style: none; padding: 0; margin: 8px 0 0; }
+.doc-links a { font-weight: 700; }
+.site-footer { border-top: 1px solid var(--border); padding: 30px 0 40px; font-size: .9rem; color: var(--muted); }
+.foot-grid { display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+.foot-links { display: flex; gap: 14px 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 10px; }
+.site-footer p { margin: 6px 0; }
+.founder-credit { font-size: .92rem; margin-top: 4px !important; }
+.founder-credit strong { color: var(--text); font-weight: 700; }
+.founder-story { max-width: 40em; }
+.founder-story p { margin: 0 0 14px; color: var(--text); }
+.founder-short { max-width: 40em; margin: 0 0 14px; }
+.founder-credential { max-width: 40em; margin-top: 14px; }
+.founder-credential .founder-name { margin: 0 0 2px; color: var(--text); font-weight: 750; font-size: 1.12rem; }
+.founder-credential p { color: var(--muted); }
+.mobile-note { margin: 0; max-width: 40em; }
+
+@media (max-width: 1280px) {
+  .nav { flex-wrap: wrap; row-gap: 8px; }
+  .nav-toggle { display: inline-flex; flex: none; }
+  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; margin: 0; flex-direction: column; align-items: stretch; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 6px 12px 12px; box-shadow: var(--shadow); }
+  .nav-links a { display: flex; align-items: center; min-height: 44px; padding: 8px 8px; color: var(--text); }
+  .site-header.nav-open .nav-links { display: flex; }
+  .nav-safety { display: inline; }
+  .nav .btn-sm { margin-left: 0; }
+}
+@media (max-width: 900px) {
+  .g2, .plans-grid, .preview-grid { grid-template-columns: 1fr; }
+  .g3 { grid-template-columns: 1fr 1fr; }
+  .hero { padding: 24px 0 4px; }
+}
+@media (max-width: 600px) {
+  .g3, .benefits { grid-template-columns: 1fr; }
+  body { font-size: 16px; }
+  section { padding: 36px 0; }
+  .cta-row .btn { flex: 1 1 100%; }
+  .card, .more, .faq-item { padding-left: 16px; padding-right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}
+.not-service { margin-top: 18px; border-left: 4px solid #b45309; background: #fffbeb; }
+.not-service p { color: inherit; margin: 0; }
+</style>
+<style>.story p{font-size:1.06rem;line-height:1.65;max-width:40em;color:inherit}.story blockquote{margin:22px 0;padding:6px 18px;border-left:4px solid var(--accent-strong);font-size:1.2rem;font-weight:600;max-width:34em}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span>Hopewick</span></a>
+    <a class="nav-safety" href="#not-service">Safety</a>
+    <a class="btn btn-primary btn-sm" href="app/">Open Hopewick</a>
+  </nav>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="storyTitle">
+    <div class="wrap">
+      <h1 id="storyTitle">Why I built Hopewick</h1>
+      <p class="hero-promise">Keeping hope lit between sessions.</p>
+      <div class="card not-service" role="note" id="not-service" aria-label="Important">
+        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment, and I’m not a medical professional. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>.</p>
+      </div>
+    </div>
+  </section>
+  <section aria-label="Dwayne's story">
+    <div class="wrap story">
+      <p>I grew up in foster care. By 17 I was in jail. For years after that, trauma and addiction ran my life.</p>
+      <p>Rehab is where things started to turn. Around Easter last year, for about 10 days, all the caseworkers were on leave. New people kept getting admitted. The ones detoxing had nothing to do.</p>
+      <p>The smoke pit was all about using. People reminiscing about the old days. I stayed away from it, because hanging around that put me at risk of relapse.</p>
+      <p>I was the quietest person in the room. I thought I had to carry everything on my own. A lot of us coming out of addiction are like that. We carry so much guilt, and we worry about what people will think. So we hold back.</p>
+      <p>I had AI with me. It gave me the courage to walk up to the staff on site and say, “I’m really struggling.”</p>
+      <p>The foundations of my recovery came from getting the right information for where I was at. How trauma and addiction work together. I’d go straight to what the research says and ask, “What do I need to do to apply this to my life?”</p>
+      <p>I did gratitudes every day for 9 months. It changed my mindset.</p>
+      <p>Now I’m doing a TAFE dual diploma in Mental Health and AOD. I graduate in January 2027. I’ve just finished a placement at QuIHN.</p>
+      <p>That’s where Hopewick comes from. I want to fill the gap for when the workers aren’t there. Somewhere you can journal, reflect and write your gratitudes.</p>
+      <blockquote>AI doesn’t replace people. It helps you find the words to reach them.</blockquote>
+      <p>There’s a lot of lonely people out there. I’m tired of seeing empty chairs in NA rooms.</p>
+      <p>Hopewick is built on harm minimisation and trauma-informed care. It won’t suit everybody. But if it helps one in five people, that could be a life saved.</p>
+      <p>I’m not a medical professional. Hopewick isn’t treatment and it isn’t a crisis service. It’s just something to help keep hope lit between sessions.</p>
+      <p class="fine">Dwayne Stevens · Founder, Hopewick · TAFE Dual Diploma in Mental Health &amp; Alcohol and Other Drugs (graduating January 2027) · Recently completed a placement at QuIHN. Not a doctor, psychologist or registered counsellor.</p>
+      <div class="cta-row"><a class="btn btn-primary" href="app/">Try Hopewick free</a><a class="btn" href="./">Back to home</a></div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p><strong>Not a crisis service.</strong> In an emergency call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>.</p>
+    <p class="copyright">© 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). Email <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a></p>
+  </div>
+</footer>
+</body>
+</html>

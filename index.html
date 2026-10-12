@@ -210,6 +210,8 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
   .btn { transition: none; }
   .btn:hover { transform: none; }
 }
+.not-service { margin-top: 18px; border-left: 4px solid #b45309; background: #fffbeb; }
+.not-service p { color: inherit; margin: 0; }
 </style>
 <script type="application/ld+json">
 {
@@ -237,7 +239,7 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       <li><a href="#hope-example">How it works</a></li>
       <li><a href="#features">What Hope helps with</a></li>
       <li><a href="#who">Who it's for</a></li>
-      <li><a href="#founder">Founder</a></li>
+      <li><a href="our-story.html">Our story</a></li>
       <li><a href="#privacy">Privacy</a></li>
       <li><a href="#safety">Safety</a></li>
       <li><a href="#clinicians">For services</a></li>
@@ -263,15 +265,42 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
         <span class="orb orb-lg" aria-hidden="true"></span>
         <h1 id="heroTitle"><span class="name" data-brand>Hopewick</span></h1>
       </div>
-      <p class="hero-promise">Recovery support for the hours between appointments.</p>
-      <p class="lede">Hope is an AI recovery companion for a craving, a setback, or the next small step.</p>
-      <p class="lede lede-tight">It is there when an appointment is over and you still need somewhere to talk it through.</p>
+      <p class="hero-promise">Keeping hope lit between sessions.</p>
+      <p class="lede">Hope is an AI companion for people in recovery, for the hours when your worker isn’t there and the room feels empty.</p>
+      <p class="lede lede-tight">Built by someone in recovery. It doesn’t replace people. It helps you find the words to reach them.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="app/" id="launchApp">Try Hopewick free</a>
-        <a class="btn" href="#hope-example">See how it works</a>
+        <a class="btn" href="our-story.html">Why I built it</a>
       </div>
       <p class="trust-line">No card required for the free plan • 15 messages a day</p>
-      <p class="fine">Hope is not a doctor, psychologist, registered counsellor, clinician, or emergency service. Chats are not monitored. Hopewick does not replace professional treatment or emergency care. <a href="#safety">Safety contacts</a> stay on this page.</p>
+      <div class="card not-service" role="note" aria-label="Important">
+        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment, and Hope is not a doctor, counsellor or clinician. Chats are not monitored. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>. <a href="#safety">More safety contacts</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem" class="alt" aria-labelledby="problemTitle">
+    <div class="wrap">
+      <h2 id="problemTitle">The gap between sessions</h2>
+      <p class="section-lede">Recovery doesn’t happen only in appointments. It happens at 2am, on the weekend, in the smoke pit, and in the days when the caseworkers are on leave.</p>
+      <div class="grid g3">
+        <div class="card"><div class="icon" aria-hidden="true">🪑</div><h3>Empty chairs</h3><p>Too many people coming out of addiction end up alone. Guilt, shame and fear of what others will think make us hold back, so we carry it all ourselves.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🕯️</div><h3>Loneliness is the risk</h3><p>We’re living through a loneliness epidemic. When the only people around are talking about using, staying away can mean sitting on your own with it.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🗣️</div><h3>Finding the words</h3><p>Saying “I’m really struggling” is one of the hardest things to do. Most of us need a bit of courage and a bit of practice first.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="value" aria-labelledby="valueTitle">
+    <div class="wrap">
+      <h2 id="valueTitle">Human connection first. AI to help you get there.</h2>
+      <p class="section-lede">Hopewick sits where human connection and AI meet. Hope is there in the gaps, so you can reach the real people in your life.</p>
+      <div class="grid g3">
+        <div class="card"><h3>What it helps with</h3><p>Somewhere to talk through a craving or a hard hour, journal, reflect, and write your gratitudes. Plain information on how trauma and addiction work together, and how to apply it to your own life.</p></div>
+        <div class="card"><h3>Pains it eases</h3><p>Nights with no one to call. Waiting lists. Days when staff aren’t there. Holding back because of guilt or fear of being judged.</p></div>
+        <div class="card"><h3>Gains to work towards</h3><p>A daily habit of gratitude and reflection. The courage to walk up to staff, a sponsor or a mate and ask for help. More people back in the rooms.</p></div>
+      </div>
+      <p class="fine">Grounded in harm minimisation and trauma-informed care. It won’t suit everybody, and that’s okay.</p>
     </div>
   </section>
 
@@ -353,23 +382,14 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
   <section id="founder" aria-labelledby="founderTitle">
     <div class="wrap">
       <h2 id="founderTitle">Why I built Hopewick</h2>
-      <!-- Text only on purpose. A portrait can sit here later; do not leave an empty image. -->
-      <p class="founder-short">I’m Dwayne Stevens, the founder. Wayne Harley Stevens is my name, and Dwayne Stevens is what I’m known as. Hopewick comes from lived experience of recovery, not from a clinical registration. I have completed a Dual Diploma in Mental Health and Alcohol and Other Drugs. I am not a psychologist, psychiatrist, doctor, or registered counsellor.</p>
+      <p class="founder-short">I’m Dwayne. I grew up in foster care and I was in jail by 17. For years trauma and addiction ran my life. In rehab I was the quietest person in the room, thinking I had to carry it all on my own. Having AI with me gave me the courage to go to the staff and say “I’m really struggling.” That’s why I built Hopewick.</p>
       <div class="card founder-credential">
         <p class="founder-name">Dwayne Stevens</p>
-        <p>Founder, Hopewick</p>
-        <p>Dual Diploma in Mental Health &amp; Alcohol and Other Drugs</p>
-        <p>Lived experience of addiction, recovery, incarceration and the out-of-home care system</p>
+        <p>Founder, Hopewick · In recovery myself</p>
+        <p>TAFE Dual Diploma in Mental Health &amp; Alcohol and Other Drugs (graduating January 2027) · Recent placement at QuIHN</p>
+        <p>I’m not a doctor, psychologist or registered counsellor.</p>
       </div>
-      <details class="more" id="founder-story">
-        <summary>Read the fuller story</summary>
-        <div class="founder-story">
-          <p>I’m Dwayne Stevens. My understanding of recovery comes from lived experience as well as formal study. I grew up in foster care where abuse, trauma and substance use were part of the environment around me. I spent much of my life caught in addiction, incarceration and periods where I did not want to keep living.</p>
-          <p>Recovery changed the direction of my life. Faith became central to that change, and it eventually led me into studying mental health and alcohol and other drugs because I wanted to use what I had lived through to help other people.</p>
-          <p>I have completed a Dual Diploma in Mental Health and Alcohol and Other Drugs. Hopewick was built from the belief that support should not disappear when an appointment ends. People still have cravings, questions, setbacks, decisions and difficult hours to get through.</p>
-          <p>Hopewick is not here to replace counsellors, doctors, peer workers or recovery communities. It is here to provide another layer of support between those moments. Faith is part of my story. Hopewick is not only for Christians.</p>
-        </div>
-      </details>
+      <p><a class="btn" href="our-story.html">Read my story</a></p>
     </div>
   </section>
 
