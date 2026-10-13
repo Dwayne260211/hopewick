@@ -8,7 +8,7 @@
    copyright owner are defined for the landing page. (Static <meta> tags below
    are fallbacks for crawlers; they are updated from this config at runtime.)
    ============================================================================ */
-const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Recovery support for the hours between appointments', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, siteUrl: 'https://hopewick.com.au/', founder: 'Dwayne Stevens' };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Keeping hope lit between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, siteUrl: 'https://hopewick.com.au/', founder: 'Dwayne Stevens' };
 </script>
 <script>
 /* First-party visit count. One landing per tab session. The number is not shown. */
@@ -24,8 +24,8 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Recovery support 
 })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hopewick · Recovery support for the hours between appointments</title>
-<meta name="description" content="Hopewick is recovery support for the hours between appointments. Hope is an AI recovery companion for cravings, setbacks and the next step. Not a clinician, and not an emergency service.">
+<title>Hopewick · Keeping hope lit between sessions</title>
+<meta name="description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
 <meta name="build" content="hopewick-v5.27">
 <meta name="theme-color" content="#3f8f5f">
 <meta name="mobile-web-app-capable" content="yes">
@@ -36,16 +36,16 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Recovery support 
 <link rel="canonical" href="https://hopewick.com.au/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hopewick">
-<meta property="og:title" content="Hopewick · Recovery support for the hours between appointments">
-<meta property="og:description" content="Recovery support between appointments. Hope is an AI companion for cravings, setbacks and the next step. Not a clinician or an emergency service.">
+<meta property="og:title" content="Hopewick · Keeping hope lit between sessions">
+<meta property="og:description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
 <meta property="og:url" content="https://hopewick.com.au/">
 <meta property="og:image" content="https://hopewick.com.au/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_AU">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hopewick · Recovery support for the hours between appointments">
-<meta name="twitter:description" content="Recovery support between appointments. Hope is an AI companion, not a clinician or an emergency service.">
+<meta name="twitter:title" content="Hopewick · Keeping hope lit between sessions">
+<meta name="twitter:description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
 <meta name="twitter:image" content="https://hopewick.com.au/og-image.png">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <style>
@@ -212,6 +212,22 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
 }
 .not-service { margin-top: 18px; border-left: 4px solid #b45309; background: #fffbeb; }
 .not-service p { color: inherit; margin: 0; }
+
+/* v2 human tone */
+:root { --bg:#fbf7f1; --surface:#fffdf9; --surface-2:#f5efe6; --accent:#4f8a68; --accent-strong:#2f5f45; --accent-soft:#e3efe5; --border:#ece3d6; }
+@media (prefers-color-scheme: dark) { :root { --bg:#14120f; --surface:#1c1915; --surface-2:#221e19; --border:#332c24; } }
+body { background: radial-gradient(900px 600px at 0% 0%, rgba(242,201,140,.22), transparent 60%), radial-gradient(900px 600px at 100% 30%, rgba(160,200,170,.18), transparent 60%), var(--bg); }
+section { padding-top: 64px !important; padding-bottom: 64px !important; }
+.hero { padding-top: 56px !important; }
+.hero-brand { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--accent-strong); }
+.hero-big { font-size: clamp(2rem, 6vw, 3.1rem) !important; line-height: 1.12 !important; max-width: 14em !important; letter-spacing: -.01em; margin: 6px 0 18px !important; }
+.narrow { max-width: 760px; }
+.big-quote { font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.4; font-weight: 600; color: var(--accent-strong); margin: 0 0 20px; }
+.founder-grid { display: grid; grid-template-columns: 260px 1fr; gap: 36px; align-items: center; }
+.photo-spot { margin: 0; aspect-ratio: 4/5; border-radius: 28px; background: linear-gradient(160deg, #f6e3c6, #e3efe5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--muted); font-size: .9rem; }
+.orb-xl { width: 96px !important; height: 96px !important; }
+.founder-meta { color: var(--muted); font-size: .95rem; }
+@media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr; } .photo-spot { max-width: 220px; } section { padding-top: 44px !important; padding-bottom: 44px !important; } }
 </style>
 <script type="application/ld+json">
 {
@@ -236,7 +252,7 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
     <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span data-brand>Hopewick</span></a>
     <button class="nav-toggle" type="button" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#hope-example">How it works</a></li>
+      <li><a href="#journal">Journal</a></li><li><a href="#about-hope">About Hope</a></li>
       <li><a href="#features">What Hope helps with</a></li>
       <li><a href="#who">Who it's for</a></li>
       <li><a href="our-story.html">Our story</a></li>
@@ -247,7 +263,7 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       <li><a href="#faq">Questions</a></li>
     </ul>
     <a class="nav-safety" href="#safety">Safety</a>
-    <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Open Hopewick</a>
+    <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Start talking</a>
   </nav>
 </header>
 
@@ -263,47 +279,67 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
     <div class="wrap">
       <div class="hero-intro">
         <span class="orb orb-lg" aria-hidden="true"></span>
-        <h1 id="heroTitle"><span class="name" data-brand>Hopewick</span></h1>
+        <p class="name hero-brand" data-brand>Hopewick</p>
       </div>
-      <p class="hero-promise">Keeping hope lit between sessions.</p>
-      <p class="lede">Hope is an AI companion for people in recovery, for the hours when your worker isn’t there and the room feels empty.</p>
-      <p class="lede lede-tight">Built by someone in recovery. It doesn’t replace people. It helps you find the words to reach them.</p>
+      <h1 id="heroTitle" class="hero-promise hero-big">We can find hope by learning how to start again.</h1>
+      <p class="lede">We all need somewhere to say what’s on our mind without worrying how the other person will react. Hopewick is that space.</p>
+      <p class="lede lede-tight">A place to practise finding the words, so you can take them to the people in your life.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="app/" id="launchApp">Try Hopewick free</a>
-        <a class="btn" href="our-story.html">Why I built it</a>
+        <a class="btn btn-primary" href="app/" id="launchApp">Start talking</a>
+        <a class="btn" href="our-story.html">Read my story</a>
       </div>
-      <p class="trust-line">No card required for the free plan • 15 messages a day</p>
+      <p class="trust-line">Free to start • No card needed</p>
       <div class="card not-service" role="note" aria-label="Important">
-        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment, and Hope is not a doctor, counsellor or clinician. Chats are not monitored. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>. <a href="#safety">More safety contacts</a></p>
+        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>. <a href="#safety">More safety contacts</a></p>
       </div>
     </div>
   </section>
-
-  <section id="problem" class="alt" aria-labelledby="problemTitle">
+  <section id="founder" class="alt" aria-labelledby="founderTitle">
+    <div class="wrap founder-grid">
+      <figure class="photo-spot" aria-label="Photo of Dwayne coming soon">
+        <span class="orb orb-xl" aria-hidden="true"></span>
+        <figcaption>Photo of Dwayne coming soon</figcaption>
+      </figure>
+      <div>
+        <h2 id="founderTitle">Why I built Hopewick</h2>
+        <p class="founder-short">I’m Dwayne. I grew up in foster care and I was in jail by 17. For years trauma and addiction ran my life. In rehab I was the quietest person in the room, thinking I had to carry it all on my own. Having AI with me gave me the courage to go to the staff and say “I’m really struggling.” That’s why I built Hopewick.</p>
+        <p class="founder-meta">Dwayne Stevens, founder. In recovery myself. TAFE Dual Diploma in Mental Health &amp; AOD (graduating January 2027). Recent placement at QuIHN. I’m not a doctor, psychologist or registered counsellor.</p>
+        <p><a class="btn" href="our-story.html">Read the whole story</a></p>
+      </div>
+    </div>
+  </section>
+  <section id="purpose" aria-labelledby="purposeTitle">
+    <div class="wrap narrow">
+      <h2 id="purposeTitle">What it’s for</h2>
+      <p class="big-quote">We all need guidance, and we all need a space where we can learn how to trust and talk to people again after the carnage of addiction.</p>
+      <p>A lot of us come out of addiction carrying guilt and shame. We worry about what people will think, so we hold back. Hopewick is somewhere to practise. Then you take it to a worker, a sponsor, a mate or your family.</p>
+      <p>It won’t suit everybody. But if it helps one in five people, that could be a life saved.</p>
+    </div>
+  </section>
+  <section id="journal" class="alt" aria-labelledby="journalTitle">
+    <div class="wrap narrow">
+      <h2 id="journalTitle">Journal with Hope</h2>
+      <p class="big-quote">Journal with Hope, and it helps you put a name to what you’re feeling.</p>
+      <p>Sometimes you just feel rubbish and can’t say why. Writing it down helps. Hope asks a gentle question or two, so you can work out what’s really going on. Angry, lonely, tired, scared. Once it has a name, it’s easier to talk about.</p>
+      <p>You can also do your gratitudes and daily reflection. I did gratitudes every day for 9 months, and it changed my mindset.</p>
+      <p>When you want to understand something, like how trauma and addiction work together, Hope points you to the most relevant information for where you’re at.</p>
+      <div class="cta-row"><a class="btn btn-primary" href="app/">Start journalling</a></div>
+    </div>
+  </section>
+  <section id="about-hope" aria-labelledby="aboutHopeTitle">
     <div class="wrap">
-      <h2 id="problemTitle">The gap between sessions</h2>
-      <p class="section-lede">Recovery doesn’t happen only in appointments. It happens at 2am, on the weekend, in the smoke pit, and in the days when the caseworkers are on leave.</p>
+      <h2 id="aboutHopeTitle">About Hope, the tool behind this</h2>
+      <p class="section-lede">Hope is an AI companion. I want to be upfront about that. It’s there for the times when no one else is around. It doesn’t replace people. It helps you find the words to reach them.</p>
       <div class="grid g3">
-        <div class="card"><div class="icon" aria-hidden="true">🪑</div><h3>Empty chairs</h3><p>Too many people coming out of addiction end up alone. Guilt, shame and fear of what others will think make us hold back, so we carry it all ourselves.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🕯️</div><h3>Loneliness is the risk</h3><p>We’re living through a loneliness epidemic. When the only people around are talking about using, staying away can mean sitting on your own with it.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🗣️</div><h3>Finding the words</h3><p>Saying “I’m really struggling” is one of the hardest things to do. Most of us need a bit of courage and a bit of practice first.</p></div>
+        <div class="card"><h3>What it does</h3><p>Listens without judging. Helps you name what you’re feeling. Talks through a craving or a hard hour. Helps with journalling, gratitudes and plans. Points you to meetings and services.</p></div>
+        <div class="card"><h3>What it doesn’t do</h3><p>It isn’t a doctor, psychologist, counsellor or clinician. It isn’t treatment. Chats aren’t monitored, so no one is watching to step in. If things get serious, it shows Australian crisis numbers straight away.</p></div>
+        <div class="card"><h3>Your privacy</h3><p>Your chats are yours. To write a reply, what you say is sent to OpenAI. Training and data sharing for model improvement are off. You can see, edit or delete what Hope remembers. <a href="#privacy">More on privacy</a></p></div>
+      </div>
+      <div class="card not-service" role="note" aria-label="Important">
+        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>. <a href="#safety">More safety contacts</a></p>
       </div>
     </div>
   </section>
-
-  <section id="value" aria-labelledby="valueTitle">
-    <div class="wrap">
-      <h2 id="valueTitle">Human connection first. AI to help you get there.</h2>
-      <p class="section-lede">Hopewick sits where human connection and AI meet. Hope is there in the gaps, so you can reach the real people in your life.</p>
-      <div class="grid g3">
-        <div class="card"><h3>What it helps with</h3><p>Somewhere to talk through a craving or a hard hour, journal, reflect, and write your gratitudes. Plain information on how trauma and addiction work together, and how to apply it to your own life.</p></div>
-        <div class="card"><h3>Pains it eases</h3><p>Nights with no one to call. Waiting lists. Days when staff aren’t there. Holding back because of guilt or fear of being judged.</p></div>
-        <div class="card"><h3>Gains to work towards</h3><p>A daily habit of gratitude and reflection. The courage to walk up to staff, a sponsor or a mate and ask for help. More people back in the rooms.</p></div>
-      </div>
-      <p class="fine">Grounded in harm minimisation and trauma-informed care. It won’t suit everybody, and that’s okay.</p>
-    </div>
-  </section>
-
   <section id="hope-example" aria-labelledby="exampleTitle">
     <div class="wrap">
       <h2 id="exampleTitle">See how it works</h2>
@@ -346,7 +382,6 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       </div>
     </div>
   </section>
-
   <section id="features" aria-labelledby="featTitle">
     <div class="wrap">
       <h2 id="featTitle">What Hope can help you do</h2>
@@ -378,21 +413,6 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       </details>
     </div>
   </section>
-
-  <section id="founder" aria-labelledby="founderTitle">
-    <div class="wrap">
-      <h2 id="founderTitle">Why I built Hopewick</h2>
-      <p class="founder-short">I’m Dwayne. I grew up in foster care and I was in jail by 17. For years trauma and addiction ran my life. In rehab I was the quietest person in the room, thinking I had to carry it all on my own. Having AI with me gave me the courage to go to the staff and say “I’m really struggling.” That’s why I built Hopewick.</p>
-      <div class="card founder-credential">
-        <p class="founder-name">Dwayne Stevens</p>
-        <p>Founder, Hopewick · In recovery myself</p>
-        <p>TAFE Dual Diploma in Mental Health &amp; Alcohol and Other Drugs (graduating January 2027) · Recent placement at QuIHN</p>
-        <p>I’m not a doctor, psychologist or registered counsellor.</p>
-      </div>
-      <p><a class="btn" href="our-story.html">Read my story</a></p>
-    </div>
-  </section>
-
   <section id="who" class="alt" aria-labelledby="whoTitle">
     <div class="wrap">
       <h2 id="whoTitle">Who it's for</h2>
@@ -404,7 +424,6 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       </div>
     </div>
   </section>
-
   <section id="privacy" aria-labelledby="privTitle">
     <div class="wrap">
       <h2 id="privTitle">Your information, in short</h2>
@@ -422,7 +441,6 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       <p class="fine">Complaints and privacy questions: <a href="mailto:admin@bridge-bite-co.com">admin@bridge-bite-co.com</a>. We aim to acknowledge a written complaint within 2 business days and to resolve it within 10 business days. Those are targets, not a guarantee.</p>
     </div>
   </section>
-
   <section id="safety" class="alt" aria-labelledby="safetyTitle">
     <div class="wrap">
       <h2 id="safetyTitle">Safety built in</h2>
@@ -445,14 +463,12 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       </div>
     </div>
   </section>
-
   <section id="faith" aria-labelledby="faithTitle">
     <div class="wrap">
       <h2 id="faithTitle">Faith, if you want it</h2>
       <p class="section-lede">Faith content is optional. Word for the day is a short Christian reading, and it is separate from Just for today. You can choose Christian, another tradition, general spirituality, or no faith content for how Hope talks with you. Hopewick is not only for Christians. Faith is never used to shame, and a lapse is not treated as a moral failing.</p>
     </div>
   </section>
-
   <section id="clinicians" class="alt" aria-labelledby="clinTitle">
     <div class="wrap grid g2">
       <div>
@@ -471,7 +487,6 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       </div>
     </div>
   </section>
-
   <section id="faq" aria-labelledby="faqTitle">
     <div class="wrap">
       <h2 id="faqTitle">Questions</h2>
@@ -510,7 +525,6 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       </details>
     </div>
   </section>
-
   <section id="plans" class="alt" aria-labelledby="plansTitle">
     <div class="wrap">
       <h2 id="plansTitle">Hopewick Plus — AU$20/month</h2>
@@ -585,13 +599,13 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
       <p class="callout">The first subscription is a 7-day trial. A card is collected by Stripe at the start. The monthly charge is the AU$20 price when the trial ends. A second checkout has no trial. Cancel in My Account stops the next renewal and leaves Plus in place until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it. Deleting the account cancels Plus straight away.</p>
     </div>
   </section>
-
   <section id="mobile" aria-labelledby="mobileTitle">
     <div class="wrap">
       <h2 id="mobileTitle" class="sr-only">Hopewick on your phone</h2>
       <p class="mobile-note">Use Hopewick now in your browser or add it to your home screen. iPhone and Android store apps are coming soon.</p>
     </div>
   </section>
+
 </main>
 
 <footer class="site-footer">
@@ -626,13 +640,13 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
   const title = `${BRAND.name} · ${BRAND.tagline}`;
   document.title = title;
   const setMeta = (sel, val) => { const m = document.querySelector(sel); if (m) m.setAttribute('content', val); };
-  const description = 'Hopewick is recovery support for the hours between appointments. Hope is an AI recovery companion for cravings, setbacks and the next step. Not a clinician, and not an emergency service.';
+  const description = 'Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.';
   setMeta('meta[property="og:title"]', title);
   setMeta('meta[name="twitter:title"]', title);
   setMeta('meta[property="og:site_name"]', BRAND.name);
   setMeta('meta[name="description"]', description);
-  setMeta('meta[property="og:description"]', 'Recovery support between appointments. Hope is an AI companion for cravings, setbacks and the next step. Not a clinician or an emergency service.');
-  setMeta('meta[name="twitter:description"]', 'Recovery support between appointments. Hope is an AI companion, not a clinician or an emergency service.');
+  setMeta('meta[property="og:description"]', description);
+  setMeta('meta[name="twitter:description"]', description);
   document.querySelectorAll('[data-brand]').forEach(e => { e.textContent = BRAND.name; });
   document.querySelectorAll('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   document.querySelectorAll('[data-tagline]').forEach(e => { e.textContent = BRAND.tagline; });

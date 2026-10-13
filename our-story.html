@@ -171,6 +171,22 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
 }
 .not-service { margin-top: 18px; border-left: 4px solid #b45309; background: #fffbeb; }
 .not-service p { color: inherit; margin: 0; }
+
+/* v2 human tone */
+:root { --bg:#fbf7f1; --surface:#fffdf9; --surface-2:#f5efe6; --accent:#4f8a68; --accent-strong:#2f5f45; --accent-soft:#e3efe5; --border:#ece3d6; }
+@media (prefers-color-scheme: dark) { :root { --bg:#14120f; --surface:#1c1915; --surface-2:#221e19; --border:#332c24; } }
+body { background: radial-gradient(900px 600px at 0% 0%, rgba(242,201,140,.22), transparent 60%), radial-gradient(900px 600px at 100% 30%, rgba(160,200,170,.18), transparent 60%), var(--bg); }
+section { padding-top: 64px !important; padding-bottom: 64px !important; }
+.hero { padding-top: 56px !important; }
+.hero-brand { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--accent-strong); }
+.hero-big { font-size: clamp(2rem, 6vw, 3.1rem) !important; line-height: 1.12 !important; max-width: 14em !important; letter-spacing: -.01em; margin: 6px 0 18px !important; }
+.narrow { max-width: 760px; }
+.big-quote { font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.4; font-weight: 600; color: var(--accent-strong); margin: 0 0 20px; }
+.founder-grid { display: grid; grid-template-columns: 260px 1fr; gap: 36px; align-items: center; }
+.photo-spot { margin: 0; aspect-ratio: 4/5; border-radius: 28px; background: linear-gradient(160deg, #f6e3c6, #e3efe5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--muted); font-size: .9rem; }
+.orb-xl { width: 96px !important; height: 96px !important; }
+.founder-meta { color: var(--muted); font-size: .95rem; }
+@media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr; } .photo-spot { max-width: 220px; } section { padding-top: 44px !important; padding-bottom: 44px !important; } }
 </style>
 <style>.story p{font-size:1.06rem;line-height:1.65;max-width:40em;color:inherit}.story blockquote{margin:22px 0;padding:6px 18px;border-left:4px solid var(--accent-strong);font-size:1.2rem;font-weight:600;max-width:34em}</style>
 </head>
@@ -180,7 +196,7 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
   <nav class="wrap nav" aria-label="Main">
     <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span>Hopewick</span></a>
     <a class="nav-safety" href="#not-service">Safety</a>
-    <a class="btn btn-primary btn-sm" href="app/">Open Hopewick</a>
+    <a class="btn btn-primary btn-sm" href="app/">Start talking</a>
   </nav>
 </header>
 <main id="main">
