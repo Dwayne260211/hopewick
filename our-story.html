@@ -173,7 +173,7 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
 .not-service p { color: inherit; margin: 0; }
 
 /* v2 human tone */
-:root { --bg:#fbf7f1; --surface:#fffdf9; --surface-2:#f5efe6; --accent:#4f8a68; --accent-strong:#2f5f45; --accent-soft:#e3efe5; --border:#ece3d6; }
+@media (prefers-color-scheme: light) { :root { --bg:#fbf7f1; --surface:#fffdf9; --surface-2:#f5efe6; --accent:#3d7656; --accent-strong:#2f5f45; --accent-soft:#e3efe5; --border:#ece3d6; } }
 @media (prefers-color-scheme: dark) { :root { --bg:#14120f; --surface:#1c1915; --surface-2:#221e19; --border:#332c24; } }
 body { background: radial-gradient(900px 600px at 0% 0%, rgba(242,201,140,.22), transparent 60%), radial-gradient(900px 600px at 100% 30%, rgba(160,200,170,.18), transparent 60%), var(--bg); }
 section { padding-top: 64px !important; padding-bottom: 64px !important; }
@@ -187,6 +187,14 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
 .orb-xl { width: 96px !important; height: 96px !important; }
 .founder-meta { color: var(--muted); font-size: .95rem; }
 @media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr; } .photo-spot { max-width: 220px; } section { padding-top: 44px !important; padding-bottom: 44px !important; } }
+.not-service, .not-service p, .not-service strong { color: #2b2b2b !important; }
+.not-service a { color: #7c2d12 !important; }
+.photo-spot { aspect-ratio: 4/3 !important; overflow: hidden; padding: 0; color: #2b2b2b; }
+.photo-spot picture, .photo-spot img { display: block; width: 100%; height: 100%; }
+.photo-spot img { object-fit: cover; object-position: 22% 45%; border-radius: inherit; }
+.founder-grid { grid-template-columns: minmax(280px, 420px) 1fr !important; }
+.story-photo { max-width: 560px; margin: 0 0 28px; border-radius: 28px; }
+@media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr !important; } .photo-spot { max-width: none !important; } }
 </style>
 <style>.story p{font-size:1.06rem;line-height:1.65;max-width:40em;color:inherit}.story blockquote{margin:22px 0;padding:6px 18px;border-left:4px solid var(--accent-strong);font-size:1.2rem;font-weight:600;max-width:34em}</style>
 </head>
@@ -211,6 +219,12 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
   </section>
   <section aria-label="Dwayne's story">
     <div class="wrap story">
+      <figure class="photo-spot story-photo">
+        <picture>
+          <source srcset="img/dwayne-wheel-of-brisbane.webp" type="image/webp">
+          <img src="img/dwayne-wheel-of-brisbane.jpg" alt="Dwayne and his partner on the Wheel of Brisbane" width="1200" height="900" loading="lazy" decoding="async">
+        </picture>
+      </figure>
       <p>I grew up in foster care. By 17 I was in jail. For years after that, trauma and addiction ran my life.</p>
       <p>Rehab is where things started to turn. Around Easter last year, for about 10 days, all the caseworkers were on leave. New people kept getting admitted. The ones detoxing had nothing to do.</p>
       <p>The smoke pit was all about using. People reminiscing about the old days. I stayed away from it, because hanging around that put me at risk of relapse.</p>
