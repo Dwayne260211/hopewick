@@ -735,13 +735,42 @@ function findUserForStripeObject(store, object) {
   return null;
 }
 
+// The Stripe account is shared with Real Time Traders (RTT). Only act on Hopewick objects:
+// anything tagged metadata.app=rtt is ignored, and subscriptions must use an allowlisted
+// Hopewick price (STRIPE_PRICE_ID plus optional comma-separated HOPEWICK_EXTRA_PRICE_IDS).
+export function hopewickPriceIds() {
+  return new Set([process.env.STRIPE_PRICE_ID, ...String(process.env.HOPEWICK_EXTRA_PRICE_IDS || '').split(',')]
+    .map((v) => String(v || '').trim()).filter(Boolean));
+}
+
+export function isForeignStripeObject(object) {
+  if (!object || typeof object !== 'object') return true;
+  if (object.metadata && object.metadata.app && object.metadata.app !== 'hopewick') return true;
+  const items = object.items && Array.isArray(object.items.data) ? object.items.data : null;
+  if (items && items.length) {
+    const allowed = hopewickPriceIds();
+    const ok = items.some((item) => {
+      const price = item && item.price;
+      const id = typeof price === 'string' ? price : price && price.id;
+      return id && allowed.has(id);
+    });
+    if (!ok) return true;
+  }
+  return false;
+}
+
 async function handleWebhook(store, raw) {
   const event = verifyStripeEvent(raw.body, raw.signature, process.env.STRIPE_WEBHOOK_SECRET);
   const type = event.type;
   const object = event.data && event.data.object;
   if (!object) return { received: true, ignored: true };
+  if (isForeignStripeObject(object)) return { received: true, ignored: true, reason: 'not_hopewick' };
 
   if (type === 'checkout.session.completed') {
+    // Hopewick sessions always carry the user id; never match a checkout by email alone.
+    if (!(object.metadata && object.metadata.userId) && !object.client_reference_id) {
+      return { received: true, ignored: true, reason: 'not_hopewick' };
+    }
     const user = findUserForStripeObject(store, object);
     if (!user) return { received: true, matched: false };
     if (object.customer) user.stripeCustomerId = String(object.customer);
@@ -751,7 +780,11 @@ async function handleWebhook(store, raw) {
     }
     if (object.subscription) {
       const sub = await stripeRequest('GET', `/subscriptions/${object.subscription}`);
+      if (isForeignStripeObject(sub)) return { received: true, ignored: true, reason: 'not_hopewick' };
       applySubscription(user, sub);
+    } else if (object.mode !== 'subscription') {
+      // Hopewick only creates subscription and setup sessions; other payments belong to another app.
+      return { received: true, ignored: true, reason: 'not_hopewick' };
     } else if (object.payment_status === 'paid') {
       user.subscriptionStatus = 'active';
     }

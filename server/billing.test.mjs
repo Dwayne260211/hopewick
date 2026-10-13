@@ -1803,3 +1803,54 @@ test('delete and cancel without reauth fail, and a password still works after th
     await app.close();
   }
 });
+
+test('webhook ignores Real Time Traders objects on the shared Stripe account', async () => {
+  const app = await listen({
+    STRIPE_SECRET_KEY: 'sk_test_placeholder',
+    STRIPE_PRICE_ID: 'price_test_placeholder',
+  }, []);
+  try {
+    const session = await signIn(app.base, 'rtt-overlap@example.com');
+    const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    const send = async (type, object) => {
+      const payload = JSON.stringify({ id: `evt_${type}_${Math.random()}`, type, data: { object } });
+      const r = await fetch(`${app.base}/api/billing/webhook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Stripe-Signature': stripeSignature(payload, 'whsec_test_secret') },
+        body: payload,
+      });
+      assert.equal(r.status, 200);
+      return r.json();
+    };
+    // RTT subscription for a customer whose email matches a Hopewick user: must not grant Plus.
+    let r = await send('customer.subscription.created', {
+      id: 'sub_rtt', customer: 'cus_rtt', status: 'active', customer_email: 'rtt-overlap@example.com',
+      metadata: { app: 'rtt', supabase_user_id: 'x', tier: 'silver' },
+      items: { data: [{ price: { id: 'price_rtt_silver', lookup_key: 'rtt_silver_monthly' } }] },
+    });
+    assert.equal(r.ignored, true);
+    // Subscription on a price that isn't Hopewick's, even without app metadata and with a Hopewick userId.
+    r = await send('customer.subscription.updated', {
+      id: 'sub_other', customer: 'cus_other', status: 'active', metadata: { userId: me.id },
+      items: { data: [{ price: { id: 'price_someone_else' } }] },
+    });
+    assert.equal(r.ignored, true);
+    // RTT checkout (subscription and one-off hire payment).
+    r = await send('checkout.session.completed', { id: 'cs_rtt', mode: 'subscription', subscription: 'sub_rtt', client_reference_id: 'rtt-user', metadata: { app: 'rtt' } });
+    assert.equal(r.ignored, true);
+    r = await send('checkout.session.completed', { id: 'cs_hire', mode: 'payment', payment_status: 'paid', customer_email: 'rtt-overlap@example.com', metadata: { booking_id: 'b' } });
+    assert.equal(r.ignored, true);
+    const after = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(after.plus, false);
+    // A genuine Hopewick price still works.
+    r = await send('customer.subscription.updated', {
+      id: 'sub_hw', customer: 'cus_hw', status: 'active', metadata: { userId: me.id },
+      items: { data: [{ price: { id: 'price_test_placeholder' } }] },
+    });
+    assert.equal(r.matched, true);
+    const hw = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
+    assert.equal(hw.plus, true);
+  } finally {
+    await app.close();
+  }
+});
