@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our story · Why I built Hopewick</title>
-<meta name="description" content="Why Dwayne built Hopewick: lived experience of recovery, the gap between sessions, and using AI to find the words to reach people. Not a medical or crisis service.">
+<meta name="description" content="Dwayne Stevens on growing up in care, addiction, recovery and why he built Hopewick. Not a medical or crisis service.">
 <meta name="theme-color" content="#3f8f5f">
 <link rel="icon" href="favicon.ico">
 <style>
@@ -196,9 +196,31 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
 .story-photo { max-width: 560px; margin: 0 0 28px; border-radius: 28px; }
 @media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr !important; } .photo-spot { max-width: none !important; } }
 </style>
-<style>.story p{font-size:1.06rem;line-height:1.65;max-width:40em;color:inherit}.story blockquote{margin:22px 0;padding:6px 18px;border-left:4px solid var(--accent-strong);font-size:1.2rem;font-weight:600;max-width:34em}.story .story-turn { font-size: 1.2rem; font-weight: 600; color: var(--accent-strong); margin: 22px 0; }
-.story-heading { margin-top: 0; }
-.story-break { border: 0; border-top: 1px solid var(--border); margin: 36px 0; max-width: 40em; }
+<style>
+.story-hero { padding-bottom: 24px !important; }
+.story-hero h1 { font-size: clamp(2.1rem, 6vw, 3.2rem); line-height: 1.1; margin: 0 0 14px; letter-spacing: -.01em; }
+.story-hero .lede { font-size: clamp(1.1rem, 2.6vw, 1.3rem); max-width: 34em; }
+.story { max-width: 1120px; margin: 0 auto; padding: 8px 20px 24px; position: relative; }
+.story::before { content: ""; position: absolute; left: 31px; top: 30px; bottom: 60px; width: 2px; background: linear-gradient(var(--accent-soft), var(--border)); }
+.chapter { position: relative; padding: 18px 0 28px 46px !important; }
+.chapter > *:not(.wick), .creds { max-width: 680px; }
+.story-photo { max-width: 600px !important; }
+.chapter .wick { position: absolute; left: 3px; top: 26px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 50% 60%, #f6c76b 0 35%, #e9a23b 36% 55%, transparent 56%), var(--surface); border: 2px solid var(--accent); box-shadow: 0 0 12px rgba(242,180,80,.45); }
+.chapter h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); margin: 0 0 14px; color: var(--accent-strong); }
+.chapter p { font-size: 1.07rem; line-height: 1.75; margin: 0 0 16px; }
+.chapter .turn { font-size: 1.22rem; font-weight: 650; color: var(--accent-strong); margin: 24px 0; }
+.pull { margin: 30px 0; padding: 0; border: 0; }
+.pull p { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: clamp(1.35rem, 3.4vw, 1.75rem) !important; line-height: 1.4 !important; color: var(--accent-strong); margin: 0 !important; padding-left: 22px; border-left: 3px solid #e9a23b; }
+.story-photo { margin: 6px 0 24px; }
+.story-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; object-position: 22% 45%; border-radius: 24px; box-shadow: var(--shadow); }
+.story-photo figcaption { font-size: .92rem; color: var(--muted); margin-top: 8px; }
+.creds { margin: 8px 0 0 46px; padding: 16px 18px; font-size: .95rem; }
+.creds p { margin: 0 0 4px; color: var(--muted); }
+.story-cta { text-align: center; padding: 48px 20px 64px !important; }
+.story-cta h2 { margin-bottom: 8px; }
+.story-cta p { color: var(--muted); max-width: 32em; margin: 0 auto 20px; }
+.story-cta .cta-row { justify-content: center; }
+@media (max-width: 600px) { .story::before { left: 27px; } .chapter { padding-left: 34px !important; } .chapter .wick { left: -1px; } .creds { margin-left: 0; } }
 </style>
 </head>
 <body>
@@ -211,56 +233,83 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
   </nav>
 </header>
 <main id="main">
-  <section class="hero" aria-labelledby="storyTitle">
+  <section class="hero story-hero" aria-labelledby="storyTitle">
     <div class="wrap">
-      <h1 id="storyTitle">Why I built Hopewick</h1>
-      <p class="hero-promise">Keeping hope lit between sessions.</p>
+      <p class="hero-brand">Our story</p>
+      <h1 id="storyTitle">My story didn’t start with addiction</h1>
+      <p class="lede">Hopewick didn’t start as a business idea. It started with my life, and with the gaps I fell through when I needed help the most.</p>
       <div class="card not-service" role="note" id="not-service" aria-label="Important">
         <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment, and I’m not a medical professional. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>.</p>
       </div>
     </div>
   </section>
-  <section aria-label="Dwayne's story">
-    <div class="wrap story">
-      <h2 id="my-story" class="story-heading">My Story Didn’t Start With Addiction</h2>
-      <figure class="photo-spot story-photo">
-        <picture>
-          <source srcset="img/dwayne-wheel-of-brisbane.webp" type="image/webp">
-          <img src="img/dwayne-wheel-of-brisbane.jpg" alt="Dwayne and his partner on the Wheel of Brisbane" width="1200" height="900" loading="lazy" decoding="async">
-        </picture>
-      </figure>
-      <p>My name is Dwayne Stevens, and long before Hopewick existed, my life was shaped by childhood trauma, the foster care system, incarceration and addiction.</p>
-      <p>I became a ward of the state at seven years old, moving through more than ten placements throughout my childhood. For much of that time, I never really experienced the stability, security or sense of belonging that every child deserves.</p>
-      <p class="story-turn">By seventeen, I was in jail.</p>
-      <p>I turned eighteen behind bars, along with spending other significant birthdays in custody. While most young people were beginning their adult lives with some form of family support or guidance, I was transitioning out of state care while incarcerated.</p>
-      <p>Think about what that means for a young person. I had spent much of my childhood in a system responsible for my care, and when I officially became an adult, I was sitting inside a prison.</p>
-      <p>I share this not to excuse the choices I’ve made throughout my life, but because I believe it’s important to understand how childhood experiences, trauma and the absence of consistent support can affect someone’s journey into adulthood.</p>
-      <p>For years, I carried things I didn’t know how to process. Shame, anger, abandonment and a belief that my future had already been decided by my past.</p>
-      <p>Addiction became part of that story, but it wasn’t where the story began.</p>
-      <p class="story-turn">And thankfully, it wasn’t where my story ended either.</p>
-      <p>Today, I’m a husband, a father, a person in recovery, and someone who is currently completing studies in Mental Health and Alcohol and Other Drugs.</p>
-      <p>My Christian faith has played a significant role in that transformation. It has helped me understand forgiveness, accountability and the possibility of becoming someone different from who I once was.</p>
-      <p>But Hopewick isn’t about asking people to believe what I believe.</p>
-      <p>It’s about recognising that behind every person struggling with addiction, mental health or trauma is a human being with a story that deserves to be heard.</p>
-      <p>And sometimes, before someone can begin changing their life, they simply need to know that change is possible.</p>
-      <hr class="story-break">
-      <p>I grew up in foster care. By 17 I was in jail. For years after that, trauma and addiction ran my life.</p>
-      <p>Rehab is where things started to turn. Around Easter last year, for about 10 days, all the caseworkers were on leave. New people kept getting admitted. The ones detoxing had nothing to do.</p>
-      <p>The smoke pit was all about using. People reminiscing about the old days. I stayed away from it, because hanging around that put me at risk of relapse.</p>
-      <p>I was the quietest person in the room. I thought I had to carry everything on my own. A lot of us coming out of addiction are like that. We carry so much guilt, and we worry about what people will think. So we hold back.</p>
-      <p>I had AI with me. It gave me the courage to walk up to the staff on site and say, “I’m really struggling.”</p>
-      <p>The foundations of my recovery came from getting the right information for where I was at. How trauma and addiction work together. I’d go straight to what the research says and ask, “What do I need to do to apply this to my life?”</p>
-      <p>I did gratitudes every day for 9 months. It changed my mindset.</p>
-      <p>Now I’m doing a TAFE dual diploma in Mental Health and AOD. I graduate in January 2027. I’ve just finished a placement at QuIHN.</p>
-      <p>That’s where Hopewick comes from. I want to fill the gap for when the workers aren’t there. Somewhere you can journal, reflect and write your gratitudes.</p>
-      <blockquote>AI doesn’t replace people. It helps you find the words to reach them.</blockquote>
-      <p>When I was celebrating two years clean, I heard a member say that if we set out a chair for every person who was once in that room but lost the fight to this disease, there’d be no seats left for anyone new to sit in. That stayed with me. It’s not that the program doesn’t work. NA is anonymous, so there’s no data to say whether it works or doesn’t. It comes down to opinion, not evidence. But I know what relapse looks like: most of us hide, isolate and sit alone with the shame. Sometimes that shame is the reason a person never makes it back to their seat in the room.</p>
-      <p>In that moment, having something you can actually talk to can help. It can help you process what’s happened, work out what you’re feeling, build a plan, and connect you with support right when you need it, so the way back doesn’t feel so far.</p>
-      <p>Hopewick is built on harm minimisation and trauma-informed care. It won’t suit everybody. But if it helps one in five people, that could be a life saved.</p>
-      <p>I’m not a medical professional. Hopewick isn’t treatment and it isn’t a crisis service. It’s just something to help keep hope lit between sessions.</p>
-      <p class="fine">Dwayne Stevens · Founder, Hopewick · TAFE Dual Diploma in Mental Health &amp; Alcohol and Other Drugs (graduating January 2027) · Recently completed a placement at QuIHN. Not a doctor, psychologist or registered counsellor.</p>
-      <div class="cta-row"><a class="btn btn-primary" href="app/">Try Hopewick free</a><a class="btn" href="./">Back to home</a></div>
-    </div>
+  <div class="story">
+      <section class="chapter" id="where" aria-labelledby="where-h">
+        <span class="wick" aria-hidden="true"></span>
+        <h2 id="where-h">Where I came from</h2>
+        <p>My name is Dwayne Stevens, and long before Hopewick existed, my life was shaped by childhood trauma, the foster care system, incarceration and addiction.</p>
+        <p>I became a ward of the state at seven years old, moving through more than ten placements throughout my childhood. There was abuse. For much of that time, I never really experienced the stability, security or sense of belonging that every child deserves.</p>
+        <p class="turn">By seventeen, I was in jail.</p>
+        <p>I turned eighteen behind bars, along with spending other significant birthdays in custody. While most young people were beginning their adult lives with some form of family support or guidance, I was transitioning out of state care while incarcerated.</p>
+        <p>Think about what that means for a young person. I had spent much of my childhood in a system responsible for my care, and when I officially became an adult, I was sitting inside a prison.</p>
+        <p>I share this not to excuse the choices I’ve made throughout my life, but because it shaped me. When you move that many times as a kid, you learn not to trust people. You learn not to get too close, because it won’t last. And you learn not to ask for help, because asking never seemed to change much.</p>
+        <p>For years, I carried things I didn’t know how to process. Shame, anger, abandonment and a belief that my future had already been decided by my past.</p>
+        <blockquote class="pull"><p>Addiction became part of that story, but it wasn’t where the story began.</p></blockquote>
+      </section>
+      <section class="chapter" id="changed" aria-labelledby="changed-h">
+        <span class="wick" aria-hidden="true"></span>
+        <h2 id="changed-h">Where things changed</h2>
+        <p>For years, trauma and addiction ran my life. Rehab is where things started to turn, but even that wasn’t simple.</p>
+        <p>My first rehab was meant to be six weeks. I didn’t meet my caseworker, or even know who they were, until about week four. I’d finally put my hand up and asked for help, and it was still hard to get.</p>
+        <p>In rehab around Easter last year, all the caseworkers were on leave for about ten days while new people kept getting admitted. The ones detoxing had nothing to do. The talk in the smoke pit was all about using and the old days, so I stayed away from it. Being around that put me at risk of relapse.</p>
+        <p>I was the quietest person in the room. I thought I had to carry everything on my own. A lot of us coming out of addiction are like that. We carry so much guilt, and we worry about what people will think, so we hold back.</p>
+        <p>That’s when I started using AI. It gave me somewhere to get my thoughts out, ask questions and work out what I was feeling when there was nobody around to talk to. I went straight to what the research says about how trauma and addiction work together, and asked myself what I needed to do to apply it to my life.</p>
+        <p>It never replaced counselling, treatment or people. What it did was give me the courage to walk up to the staff on site and say, “I’m really struggling.”</p>
+        <p>I also started writing gratitudes every day. I kept that up for nine months, and it changed the way I think.</p>
+        <p>My faith in Jesus Christ has played a significant role in my recovery. It gave me hope, purpose and a reason to keep going. It has helped me understand forgiveness, accountability and the possibility of becoming someone different from who I once was. But Hopewick isn’t about asking people to believe what I believe. Whatever you believe, you’re welcome here.</p>
+      </section>
+      <section class="chapter" id="rebuilding" aria-labelledby="rebuilding-h">
+        <span class="wick" aria-hidden="true"></span>
+        <h2 id="rebuilding-h">Rebuilding my life</h2>
+        <figure class="story-photo">
+          <picture>
+            <source srcset="img/dwayne-wheel-of-brisbane.webp" type="image/webp">
+            <img src="img/dwayne-wheel-of-brisbane.jpg" alt="Dwayne and his partner on the Wheel of Brisbane" width="1200" height="900" loading="lazy">
+          </picture>
+          <figcaption>Me and my partner on the Wheel of Brisbane.</figcaption>
+        </figure>
+        <p class="turn">And thankfully, addiction wasn’t where my story ended either.</p>
+        <p>I don’t see recovery as something I’ve finished. It’s something I keep working on.</p>
+        <p>When I was celebrating two years clean, I heard a member say that if we set out a chair for every person who was once in that room but lost the fight to this disease, there’d be no seats left for anyone new to sit in. That stayed with me. I know what relapse looks like. Most of us hide, isolate and sit alone with the shame. Sometimes that shame is the reason a person never makes it back to their seat in the room.</p>
+        <p>I wanted to put what I’d been through to good use, so I went back to study. I’ve completed the Dual Diploma of Mental Health and Alcohol and Other Drugs through TAFE Queensland, and I’m expecting to graduate in January 2027. I did my practical placement with QuIHN, in the alcohol and other drugs sector.</p>
+        <p>Living it taught me what it feels like. Studying it helped me understand why it happens and what can help. I need both. But I want to be clear about this: I’m not a psychologist, a counsellor or a clinician.</p>
+      </section>
+      <section class="chapter" id="why" aria-labelledby="why-h">
+        <span class="wick" aria-hidden="true"></span>
+        <h2 id="why-h">Why Hopewick exists</h2>
+        <p>I know what it’s like to need support and not know where to turn. I know how hard it is to ask. And I know what it’s like to finally ask and then wait. Waiting for an appointment. Waiting for a caseworker. Getting through the nights and weekends when nobody is there.</p>
+        <p>Hopewick is for those gaps. It’s somewhere you can talk things through, reflect, journal and find some guidance when you need it. It’s built on harm minimisation, and it meets you where you’re at.</p>
+        <p>It doesn’t replace your psychologist, counsellor, caseworker, rehab or the people in your life. It’s meant to sit alongside them. A lot of the time, the most useful thing it can do is help you find the words, then point you back to the right person to say them to.</p>
+        <blockquote class="pull"><p>AI doesn’t replace people. It helps you find the words to reach them.</p></blockquote>
+      </section>
+      <section class="chapter" id="close" aria-labelledby="close-h">
+        <span class="wick" aria-hidden="true"></span>
+        <h2 id="close-h">Why it matters to me</h2>
+        <p>Hopewick didn’t come out of a business plan. It came out of a quiet bloke in rehab who thought he had to carry it all alone, and out of the gaps I fell through along the way.</p>
+        <p>Today, I’m a husband, a father and a person in recovery.</p>
+        <p>Behind every person struggling with addiction, mental health or trauma is a human being with a story that deserves to be heard. You deserve to be listened to without being judged. And sometimes, before you can start changing your life, you just need to know that change is possible.</p>
+        <p>That’s what I want Hopewick to be. A small light that stays on between sessions, until you can get to the people who can help.</p>
+      </section>
+      <div class="card creds">
+        <p><strong>Dwayne Stevens</strong>, founder of Hopewick</p>
+        <p>Dual Diploma of Mental Health and Alcohol and Other Drugs, TAFE Queensland (graduation expected January 2027). Practical placement with QuIHN.</p>
+        <p>Not a psychologist, counsellor or clinician.</p>
+      </div>
+  </div>
+  <section class="story-cta alt" aria-labelledby="ctaTitle">
+    <h2 id="ctaTitle">If you need somewhere to start</h2>
+    <p>Say what’s on your mind, without worrying how anyone will react. Then take it to the people who can help.</p>
+    <div class="cta-row"><a class="btn btn-primary" href="app/">Try Hopewick free</a><a class="btn" href="./">Back to home</a></div>
   </section>
 </main>
 <footer class="site-footer">
