@@ -51,7 +51,7 @@ import { fileURLToPath } from 'node:url';
 
 import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, isReviewerEmail, REAUTH_MS } from './store.js';
 import { hashPassword, verifyPassword, passwordError } from './password.js';
-import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
+import { stripeConfigured, stripeKeyHealth, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import {
   playBillingConfigured, playProductId, getPlaySubscription, acknowledgePlaySubscription,
   mapPlaySubscription, applyPlayState, refreshPlayIfStale,
@@ -945,6 +945,7 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
   if (req.method === 'GET' && route === '/api/billing/config') {
     json(res, 200, {
       checkoutReady: stripeConfigured(),
+      stripeKey: stripeKeyHealth(),
       publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
       priceConfigured: Boolean(process.env.STRIPE_PRICE_ID),
       devMagic: devMode(),
@@ -1382,7 +1383,7 @@ async function verifyGoogleCredential(credential) {
       mode: 'subscription',
       customer: user.stripeCustomerId,
       client_reference_id: user.id,
-      'line_items[0][price]': process.env.STRIPE_PRICE_ID,
+      'line_items[0][price]': String(process.env.STRIPE_PRICE_ID || '').trim(),
       'line_items[0][quantity]': '1',
       success_url: `${base}/app/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/app/?checkout=cancel`,

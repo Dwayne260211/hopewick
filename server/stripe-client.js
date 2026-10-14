@@ -6,12 +6,24 @@ import crypto from 'node:crypto';
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 
+/** STRIPE_SECRET_KEY with stray whitespace or wrapping quotes removed (common paste errors). */
+export function stripeSecretKey() {
+  return String(process.env.STRIPE_SECRET_KEY || '').trim().replace(/^['"]+|['"]+$/g, '').trim();
+}
+
+/** Non-secret health of the secret key: 'ok', 'missing' or 'unexpected_format'. Never returns the key. */
+export function stripeKeyHealth() {
+  const key = stripeSecretKey();
+  if (!key) return 'missing';
+  return /^(sk|rk)_(live|test)_[A-Za-z0-9]+$/.test(key) ? 'ok' : 'unexpected_format';
+}
+
 export function stripeConfigured() {
-  return Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_PRICE_ID);
+  return Boolean(stripeSecretKey() && String(process.env.STRIPE_PRICE_ID || '').trim());
 }
 
 export async function stripeRequest(method, apiPath, params) {
-  const key = process.env.STRIPE_SECRET_KEY;
+  const key = stripeSecretKey();
   if (!key) {
     const err = new Error('Stripe is not configured. Set STRIPE_SECRET_KEY and STRIPE_PRICE_ID.');
     err.status = 503;
