@@ -15,7 +15,15 @@ export function stripeSecretKey() {
 export function stripeKeyHealth() {
   const key = stripeSecretKey();
   if (!key) return 'missing';
-  return /^(sk|rk)_(live|test)_[A-Za-z0-9]+$/.test(key) ? 'ok' : 'unexpected_format';
+  if (/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/.test(key)) return 'ok';
+  // Hints only; the key itself is never returned.
+  if (/^pk_(live|test)_/.test(key)) return 'publishable_key_in_secret_slot';
+  if (/^whsec_/.test(key)) return 'webhook_secret_in_secret_slot';
+  if (/^bearer\s/i.test(key)) return 'has_bearer_prefix';
+  if (/^[A-Z_]+=/.test(key)) return 'has_variable_name_prefix';
+  if (/\s/.test(key)) return 'contains_whitespace';
+  if (/(sk|rk)_(live|test)_/.test(key)) return 'extra_characters_around_key';
+  return 'unexpected_format';
 }
 
 export function stripeConfigured() {
