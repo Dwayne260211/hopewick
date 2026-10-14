@@ -142,7 +142,26 @@ export function founderPlusEmails() {
   return new Set(emails);
 }
 
+/**
+ * Google Play review account. Off unless REVIEWER_EMAIL and REVIEWER_PASSWORD
+ * are both set and the password is at least 16 characters. Returns the
+ * lower-cased email, or '' when disabled. Never the organisations inbox.
+ */
+export function reviewerEmail() {
+  const email = String(process.env.REVIEWER_EMAIL || '').trim().toLowerCase();
+  const password = String(process.env.REVIEWER_PASSWORD || '');
+  if (!email.includes('@') || email === ORGANISATION_CONTACT) return '';
+  if (password.length < 16) return '';
+  return email;
+}
+
+export function isReviewerEmail(email) {
+  const reviewer = reviewerEmail();
+  return Boolean(reviewer) && String(email || '').trim().toLowerCase() === reviewer;
+}
+
 export function isFounderPlusEmail(email) {
+  if (isReviewerEmail(email)) return true;
   return founderPlusEmails().has(String(email || '').trim().toLowerCase());
 }
 

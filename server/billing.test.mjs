@@ -42,6 +42,8 @@ async function listen(env, stripeCalls) {
     HOPEWICK_MAGIC_EMAIL_LIMIT: process.env.HOPEWICK_MAGIC_EMAIL_LIMIT,
     HOPEWICK_LOGIN_IP_LIMIT: process.env.HOPEWICK_LOGIN_IP_LIMIT,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    REVIEWER_EMAIL: process.env.REVIEWER_EMAIL,
+    REVIEWER_PASSWORD: process.env.REVIEWER_PASSWORD,
   };
   process.env.HOPEWICK_DEV = '1';
   process.env.NODE_ENV = 'test';
@@ -61,6 +63,8 @@ async function listen(env, stripeCalls) {
   delete process.env.HOPEWICK_MAGIC_EMAIL_LIMIT;
   delete process.env.HOPEWICK_LOGIN_IP_LIMIT;
   delete process.env.GOOGLE_CLIENT_ID;
+  delete process.env.REVIEWER_EMAIL;
+  delete process.env.REVIEWER_PASSWORD;
   Object.assign(process.env, env);
 
   const openaiCalls = [];
@@ -1850,6 +1854,64 @@ test('webhook ignores Real Time Traders objects on the shared Stripe account', a
     assert.equal(r.matched, true);
     const hw = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
     assert.equal(hw.plus, true);
+  } finally {
+    await app.close();
+  }
+});
+
+
+async function reviewerLogin(base, email, password) {
+  return fetch(`${base}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+test('reviewer login is off unless REVIEWER_EMAIL and REVIEWER_PASSWORD are set', async () => {
+  const app = await listen({ REVIEWER_EMAIL: 'play-review@example.com' }, []);
+  try {
+    const res = await reviewerLogin(app.base, 'play-review@example.com', 'anything-long-enough-123');
+    assert.equal(res.status, 401);
+  } finally {
+    await app.close();
+  }
+});
+
+test('reviewer signs in with the env password, gets Plus, and only that account does', async () => {
+  const pw = 'Reviewer-Test-Password-0123456789';
+  const app = await listen({ REVIEWER_EMAIL: 'Play-Review@example.com', REVIEWER_PASSWORD: pw }, []);
+  try {
+    const bad = await reviewerLogin(app.base, 'play-review@example.com', 'wrong-password-wrong');
+    assert.equal(bad.status, 401);
+    const ok = await reviewerLogin(app.base, 'play-review@example.com', pw);
+    assert.equal(ok.status, 200);
+    const cookie = ok.headers.get('set-cookie') || '';
+    assert.match(cookie, /hopewick_session=/);
+    const me = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: cookie.split(';')[0] } })).json();
+    assert.equal(me.signedIn, true);
+    assert.equal(me.plus, true);
+    assert.equal(me.email, 'play-review@example.com');
+
+    const other = await reviewerLogin(app.base, 'someone@example.com', pw);
+    assert.equal(other.status, 401);
+    const alex = await signIn(app.base, 'alex@example.com');
+    const alexMe = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: alex } })).json();
+    assert.equal(alexMe.plus, false);
+  } finally {
+    await app.close();
+  }
+});
+
+test('reviewer login is rate-limited on failures', async () => {
+  const pw = 'Reviewer-Test-Password-0123456789';
+  const app = await listen({ REVIEWER_EMAIL: 'play-review@example.com', REVIEWER_PASSWORD: pw }, []);
+  try {
+    let last;
+    for (let i = 0; i < 9; i += 1) last = await reviewerLogin(app.base, 'play-review@example.com', 'wrong-password-wrong');
+    assert.equal(last.status, 429);
+    const blocked = await reviewerLogin(app.base, 'play-review@example.com', pw);
+    assert.equal(blocked.status, 429);
   } finally {
     await app.close();
   }

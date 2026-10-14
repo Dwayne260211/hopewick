@@ -49,7 +49,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
-import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, REAUTH_MS } from './store.js';
+import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, isReviewerEmail, REAUTH_MS } from './store.js';
 import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
@@ -488,6 +488,13 @@ function dummyPasswordHash() {
 }
 
 /** Always runs scrypt, including when the email has no account, so timing does not reveal that. */
+/** Constant-time compare against REVIEWER_PASSWORD. Only called when the reviewer account is enabled. */
+function reviewerPasswordMatches(password) {
+  const expected = crypto.createHash('sha256').update(String(process.env.REVIEWER_PASSWORD || '')).digest();
+  const given = crypto.createHash('sha256').update(String(password || '')).digest();
+  return crypto.timingSafeEqual(expected, given);
+}
+
 async function passwordMatches(password, user) {
   if (user && user.passwordHash) return verifyPassword(password, user.passwordHash);
   await verifyPassword(password, await dummyPasswordHash());
@@ -1058,6 +1065,19 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
     }
     if (!allowLoginIp(req) || passwordBlocked(email)) {
       json(res, 429, { error: 'Too many sign-in attempts. Try again in a little while, or email yourself a sign-in link.' });
+      return;
+    }
+    if (isReviewerEmail(email)) {
+      // Google Play review account: env-configured password, no email needed.
+      // Shares the IP and per-email failure limits above.
+      if (!reviewerPasswordMatches(password)) {
+        notePasswordFailure(email);
+        json(res, 401, { error: 'That email or password is not right.', code: 'password' });
+        return;
+      }
+      const reviewer = store.findByEmail(email) || store.createUser(email);
+      const cookie = startSession(reviewer, req, store);
+      json(res, 200, publicUser(reviewer), { 'Set-Cookie': cookie });
       return;
     }
     const user = store.findByEmail(email);
