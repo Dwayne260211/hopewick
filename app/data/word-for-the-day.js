@@ -1727,91 +1727,91 @@ var WORD_FOR_THE_DAY = [
     "month": 10,
     "day": 14,
     "word": "Unwind",
-    "reading": "On this page the Christian theme is Unwind, and the text is Proverbs 3:6. For Unwind, the sense of Proverbs 3:6 is this: acknowledge the Lord, and he will straighten the path.\n\nNothing in Proverbs 3:6 asks you to pretend, and Unwind can begin while you are still tired. If you were wrong, let Unwind include an apology in a single clean sentence, because of Proverbs 3:6.\n\nHand the evening to God, and let Unwind be unfinished without being abandoned. Australian weather can be hot, wet, or cold, and Unwind still fits the actual day."
+    "reading": "Unwind. Proverbs 3:6 is the verse today. It says if you acknowledge the Lord in what you do, he'll straighten the path out.\n\nI like that it doesn't say you have to straighten it yourself first. You don't need to be calm or sorted to start. You can be tired and wound up and still turn it over. If you got something wrong today, say sorry in one plain sentence and leave it there. No big speech.\n\nTonight, hand the day back to God, even the bits you didn't finish. Unfinished isn't the same as given up. Let your shoulders drop a bit. That's allowed."
   },
   {
     "month": 10,
     "day": 15,
     "word": "Upright",
-    "reading": "Upright is the Christian theme here, set beside Proverbs 18:10. For Upright, the sense of Proverbs 18:10 is this: the name of the Lord is a strong tower.\n\nRead Upright in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Proverbs 18:10, and let Upright be unhurried company for someone lonely.\n\nHand the evening to God, and let Upright be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Upright."
+    "reading": "Upright. The verse is Proverbs 18:10. It says the name of the Lord is a strong tower, and people run into it and they're safe.\n\nStanding up straight isn't about looking good for anyone. Some days it just means not caving in to the old stuff. And when you can't stand up on your own, you run to the tower. That's the whole point of a tower.\n\nMake someone a cuppa today and actually sit with them. No fixing, no advice. Just company. Then let the evening be slow. You don't have to have it all worked out by bedtime. Nobody does."
   },
   {
     "month": 10,
     "day": 16,
     "word": "Useful",
-    "reading": "The Christian theme, Useful, is read with Isaiah 30:15. For Useful, the sense of Isaiah 30:15 is this: in quietness and in trust is strength.\n\nChrist is gentle with unfinished people, so Useful does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Useful shows up this afternoon.\n\nYou can begin Useful before you feel holy, because the Father already knows the day. If the morning was clumsy, Useful can begin again after lunch in the sight of God. God's kindness towards you is the ground under Useful, not a prize withheld until you improve."
+    "reading": "Useful. Isaiah 30:15 says there's strength in being quiet and trusting. Not in rushing about trying to prove yourself.\n\nThat one hits me. A lot of us spent years feeling like we were no good to anyone. So when we get a bit better we try to be useful to everyone, all at once. Slow down. Being useful can look like turning up, keeping your word, and shutting up when someone needs to talk.\n\nPick one small job today and do it properly. Wash the cup. Ring your mum back. Then sit for a minute and be still. Quiet's not lazy. Sometimes it's the strong bit."
   },
   {
     "month": 10,
     "day": 17,
     "word": "Value",
-    "reading": "On this page the Christian theme is Value, and the text is Isaiah 49:16. For Value, the sense of Isaiah 49:16 is this: God says his people are engraved on the palms of his hands.\n\nThat verse is a welcome, not a test you pass before God will look at Value. To live Value, read Isaiah 49:16 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Isaiah 49:16, for Value, is trust, not a performance. God's kindness towards you is the ground under Value, not a prize withheld until you improve."
+    "reading": "Value. Isaiah 49:16 has God saying his people are written on the palms of his hands. Think about that for a sec. You're not a name he scribbled on a sticky note and lost.\n\nIf you've spent years feeling worth nothing, that's hard to believe. Fair enough. You don't have to feel it today. You just have to stop arguing with it for a minute.\n\nTreat yourself like you're worth looking after. Eat something decent. Have a shower. Answer the text from the person who actually cares. Small stuff. It counts more than you'd think."
   },
   {
     "month": 10,
     "day": 18,
     "word": "Venture",
-    "reading": "Venture is the Christian theme here, set beside Lamentations 3:25. For Venture, the sense of Lamentations 3:25 is this: the Lord is good to those who wait for him.\n\nNothing in Lamentations 3:25 asks you to pretend, and Venture can begin while you are still tired. Give Venture a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Venture is allowed to be slow. Keep Venture Christian and specific: one verse, one prayer, one person. In Christ, Venture is worth attention even when the calendar is full."
+    "reading": "Venture. Lamentations 3:25 says the Lord is good to people who wait for him and go looking for him.\n\nWaiting and having a go sound like opposites, but they're not. Sometimes the brave thing is to try something new. Sometimes it's sitting tight and not grabbing at the quick fix. Both take guts.\n\nIf there's one small thing you've been putting off, have a crack at it today. A phone call. A form. A walk round the block. If it goes badly, that's alright. You tried. God's still good on the days it goes sideways, and that's not nothing."
   },
   {
     "month": 10,
     "day": 19,
     "word": "Voice",
-    "reading": "The Christian theme, Voice, is read with Jonah 2:2. For Voice, the sense of Jonah 2:2 is this: Jonah called to the Lord in distress, and the Lord answered.\n\nThat verse is a welcome, not a test you pass before God will look at Voice. Let Voice sound like a softer answer where the house has been sharp, with Jonah 2:2 still in mind.\n\nNo one else has to share your creed for you to practise Voice in the sight of God. In Christ, Voice is worth attention even when the calendar is full."
+    "reading": "Voice. Jonah 2:2. Jonah's in the belly of a fish, which is about as stuck as you can get, and he calls out to God. And God answers him.\n\nI reckon a lot of us know what it's like to feel swallowed up. Like no one can hear you. The thing is, Jonah didn't have a nice prayer ready. He just yelled from where he was.\n\nSo say it out loud today, whatever it is. To God, to a mate, to the steering wheel if that's all you've got. You don't need the right words. Being honest is enough to start with. Someone's listening."
   },
   {
     "month": 10,
     "day": 20,
     "word": "Walk",
-    "reading": "On this page the Christian theme is Walk, and the text is Zechariah 4:6. For Walk, the sense of Zechariah 4:6 is this: not by might, nor by power, but by the Spirit of the Lord.\n\nChrist is gentle with unfinished people, so Walk does not have to arrive already polished. Carry Walk into an ordinary hour by telling the truth kindly, in the spirit of Zechariah 4:6.\n\nPut Walk where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Walk still fits the actual day."
+    "reading": "Walk. Zechariah 4:6 says it's not by might or by power, but by God's Spirit.\n\nThat takes some pressure off. You don't have to muscle your way through today. White-knuckling it gets old fast. Most of us tried that for years and it didn't end well.\n\nGo for an actual walk if you can, even ten minutes. Leave the phone in your pocket. Notice the birds, the heat, the bloke mowing his lawn. Let your head clear a bit. You're not carrying all of it by yourself. You never were, even when it felt like it."
   },
   {
     "month": 10,
     "day": 21,
     "word": "Wash",
-    "reading": "The Christian theme, Wash, is read with Matthew 5:44. For Wash, the sense of Matthew 5:44 is this: love your enemies and pray for people who hurt you.\n\nThat verse is a welcome, not a test you pass before God will look at Wash. Practise Wash at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Wash honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Wash."
+    "reading": "Wash. Matthew 5:44 is a tough one. Jesus says love your enemies and pray for the people who hurt you.\n\nI won't pretend that's easy. Some people did real damage. Loving them doesn't mean letting them back in or saying it was fine. It might just mean you stop replaying it at 2am, and you ask God to deal with them so you don't have to.\n\nHave a long shower tonight and let some of it go down the drain. Not all of it. Just what you can. Tomorrow you can let go of a bit more. That's how it goes for most of us."
   },
   {
     "month": 10,
     "day": 22,
     "word": "Water",
-    "reading": "The Christian theme, Water, is read with Matthew 19:26. For Water, the sense of Matthew 19:26 is this: with God all things are possible.\n\nNothing in Matthew 19:26 asks you to pretend, and Water can begin while you are still tired. If you were wrong, let Water include an apology in a single clean sentence, because of Matthew 19:26.\n\nMercy is wider than today's mistakes, and Water can stand inside that mercy without showing off. If the morning was clumsy, Water can begin again after lunch in the sight of God. God's kindness towards you is the ground under Water, not a prize withheld until you improve."
+    "reading": "Water. Matthew 19:26 says with God all things are possible.\n\nI used to hear that and roll my eyes. Easy for you to say, mate. But when I look at where some people have come from, I can't argue with it. Stuff that looked impossible happened. Slowly. Usually without anyone noticing at the time.\n\nDrink some water today. Seriously. Look after the basics. Big changes are mostly a pile of small ones stacked up. You don't need to believe the whole thing is possible. Just that today is. That'll do for now."
   },
   {
     "month": 10,
     "day": 23,
     "word": "Weave",
-    "reading": "On this page the Christian theme is Weave, and the text is Luke 15:7. For Weave, the sense of Luke 15:7 is this: heaven rejoices when one sinner turns back.\n\nRead Weave in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Luke 15:7, and let Weave be unhurried company for someone lonely.\n\nHand the evening to God, and let Weave be unfinished without being abandoned. God's kindness towards you is the ground under Weave, not a prize withheld until you improve."
+    "reading": "Weave. Luke 15:7 says there's more celebrating in heaven over one person who turns back than over a crowd who reckon they never strayed.\n\nI love that. Coming back isn't something to be ashamed of. Heaven throws a party for it. Every time.\n\nThink of your life as something being woven together. Some threads are messy. Some got pulled out and put back. It still turns into something. If you need to come back today, from a slip or a bad week or just drifting off, come back. No one up there is keeping score."
   },
   {
     "month": 10,
     "day": 24,
     "word": "Weep",
-    "reading": "Weep is the Christian theme here, set beside John 15:15. For Weep, the sense of John 15:15 is this: Jesus calls his disciples friends.\n\nChrist is gentle with unfinished people, so Weep does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Weep shows up this afternoon.\n\nYou can begin Weep before you feel holy, because the Father already knows the day. Keep Weep Christian and specific: one verse, one prayer, one person. In Christ, Weep is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Weep still fits the actual day."
+    "reading": "Weep. John 15:15. Jesus tells his mates he doesn't call them servants anymore. He calls them friends.\n\nFriends are allowed to cry in front of each other. You don't have to keep it together all the time. A lot of us learned to bottle it up, or numb it, because crying felt weak or unsafe. It isn't weak.\n\nIf it comes up today, let it. In the car, in the shower, with someone you trust. Tears aren't a sign you're going backwards. Sometimes they're a sign you're finally feeling things again. That's a good sign, even if it doesn't feel like one."
   },
   {
     "month": 10,
     "day": 25,
     "word": "Wide",
-    "reading": "The Christian theme, Wide, is read with Romans 10:13. For Wide, the sense of Romans 10:13 is this: everyone who calls on the name of the Lord will be saved.\n\nThat verse is a welcome, not a test you pass before God will look at Wide. To live Wide, read Romans 10:13 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 10:13, for Wide, is trust, not a performance. In Christ, Wide is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Wide still fits the actual day."
+    "reading": "Wide. Romans 10:13 says everyone who calls on the name of the Lord will be saved. Everyone. Not the tidy ones. Not the ones with a clean record.\n\nThat door's wider than most of us were ever told. I know people who thought they'd gone too far. They hadn't. Nobody has.\n\nIf you feel like you're outside looking in today, you're not. Make a bit of room for someone else too. Say g'day to the new person. Don't judge the bloke who looks rough. You probably looked rough once as well. Grace is meant to be shared round."
   },
   {
     "month": 10,
     "day": 26,
     "word": "Willing",
-    "reading": "On this page the Christian theme is Willing, and the text is 2 Corinthians 12:10. For Willing, the sense of 2 Corinthians 12:10 is this: when Paul is weak, then he is strong, because of Christ.\n\nNothing in 2 Corinthians 12:10 asks you to pretend, and Willing can begin while you are still tired. Give Willing a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Willing is allowed to be slow. Australian weather can be hot, wet, or cold, and Willing still fits the actual day."
+    "reading": "Willing. 2 Corinthians 12:10. Paul says when he's weak, that's when he's strong, because Christ's strength shows up in the gaps.\n\nThat flips the whole thing. We spent years trying to look strong. Hiding stuff. Pretending. Turns out the honest, weak bit is where help actually gets in.\n\nYou don't have to feel strong today. Just willing. Willing to ask. Willing to try. Willing to admit you're struggling. That's plenty. If all you can manage is being willing to be willing, that's still a start, and it still counts."
   },
   {
     "month": 10,
     "day": 27,
     "word": "Window",
-    "reading": "Window is the Christian theme here, set beside Colossians 1:17. For Window, the sense of Colossians 1:17 is this: in Christ all things hold together.\n\nRead Window in the light of that verse, without turning it into a performance for other people. Let Window sound like a softer answer where the house has been sharp, with Colossians 1:17 still in mind.\n\nNo one else has to share your creed for you to practise Window in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Window."
+    "reading": "Window. Colossians 1:17 says in Christ all things hold together.\n\nSome days it feels like everything's falling apart. Bills, family, your own head. It's good to know something's holding it together when you can't.\n\nOpen a window today, literally. Let some air in. Look out for a minute. Things look a bit different with fresh air and a bit of sky. You don't need to fix everything you see out there. Just notice it's bigger than the room you're stuck in. And you're held, even on the days you feel like you're coming apart."
   },
   {
     "month": 10,
     "day": 28,
     "word": "Wisdom",
-    "reading": "The Christian theme, Wisdom, is read with Hebrews 6:19. For Wisdom, the sense of Hebrews 6:19 is this: hope in God is a sure and steadfast anchor.\n\nChrist is gentle with unfinished people, so Wisdom does not have to arrive already polished. Carry Wisdom into an ordinary hour by telling the truth kindly, in the spirit of Hebrews 6:19.\n\nPut Wisdom where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Wisdom can begin again after lunch in the sight of God. God's kindness towards you is the ground under Wisdom, not a prize withheld until you improve."
+    "reading": "Wisdom. Hebrews 6:19 says hope in God is an anchor for the soul, firm and secure.\n\nAn anchor doesn't stop the storm. The boat still gets thrown about. It just doesn't drift off and smash on the rocks. That's a pretty honest picture of how faith works on a bad day.\n\nWisdom isn't knowing all the answers. Often it's knowing when to hold on and when to shut up. If you're not sure what to do today, don't do anything big. Hang onto the anchor. Ask someone with a bit more time up than you. Then wait it out."
   },
   {
     "month": 10,
