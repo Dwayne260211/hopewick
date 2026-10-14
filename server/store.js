@@ -82,6 +82,10 @@ export function createStore(filePath) {
       if (!customerId) return null;
       return data.users.find((u) => u.stripeCustomerId === customerId) || null;
     },
+    findByPlayToken(purchaseToken) {
+      if (!purchaseToken) return null;
+      return data.users.find((u) => u.playPurchaseToken === purchaseToken) || null;
+    },
     findByMagic(token) {
       if (!token) return null;
       const h = hashToken(token);
@@ -182,6 +186,7 @@ export function publicUser(user) {
       hasPassword: false,
       emailChangeSupported: false,
       reauthFresh: false,
+      billingProvider: null,
     };
   }
   const storedStatus = user.subscriptionStatus || 'none';
@@ -203,5 +208,6 @@ export function publicUser(user) {
     hasPassword: Boolean(user.passwordHash),
     emailChangeSupported: false,
     reauthFresh: sessionReauthFresh(user),
+    billingProvider: user.billingProvider === 'google_play' ? 'google_play' : (user.stripeCustomerId ? 'stripe' : null),
   };
 }

@@ -52,6 +52,10 @@ import { fileURLToPath } from 'node:url';
 import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, isReviewerEmail, REAUTH_MS } from './store.js';
 import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeRequest, verifyStripeEvent } from './stripe-client.js';
+import {
+  playBillingConfigured, playProductId, getPlaySubscription, acknowledgePlaySubscription,
+  mapPlaySubscription, applyPlayState, refreshPlayIfStale,
+} from './play-billing.js';
 import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
 import { createChatStore, validProfileId } from './chats.js';
 import { createCheckinStore } from './checkins.js';
@@ -571,6 +575,50 @@ function cleanAccountPhone(value) {
   return { ok: true, value: phone };
 }
 
+async function handlePlayVerify(store, req, res) {
+  if (!playBillingConfigured()) {
+    req.resume();
+    json(res, 503, { error: 'Google Play billing is not configured.' });
+    return;
+  }
+  const user = currentUser(req, store);
+  if (!user) {
+    req.resume();
+    json(res, 401, { error: 'Sign in before subscribing.' });
+    return;
+  }
+  const raw = await readBody(req);
+  let body;
+  try { body = JSON.parse(raw.toString('utf8')); } catch { body = null; }
+  const purchaseToken = body && typeof body.purchaseToken === 'string' ? body.purchaseToken.trim() : '';
+  const productId = body && typeof body.productId === 'string' ? body.productId : playProductId();
+  if (!purchaseToken || purchaseToken.length > 4096) {
+    json(res, 400, { error: 'Send a purchaseToken.' });
+    return;
+  }
+  if (productId !== playProductId()) {
+    json(res, 400, { error: 'Unknown product.' });
+    return;
+  }
+  const owner = store.findByPlayToken(purchaseToken);
+  if (owner && owner.id !== user.id) {
+    json(res, 409, { error: 'That Google Play purchase belongs to another Hopewick account.' });
+    return;
+  }
+  const sub = await getPlaySubscription(purchaseToken);
+  const mapped = mapPlaySubscription(sub, productId);
+  if (!mapped.matchesProduct) {
+    json(res, 400, { error: 'That purchase is not Hopewick Plus.' });
+    return;
+  }
+  if (mapped.needsAck && (mapped.status === 'active' || mapped.status === 'trialing')) {
+    await acknowledgePlaySubscription(productId, purchaseToken);
+  }
+  applyPlayState(user, purchaseToken, mapped);
+  store.save(user);
+  json(res, 200, publicUser(user));
+}
+
 function accountSummary(user) {
   const pub = publicUser(user);
   const stored = user.subscriptionStatus || 'none';
@@ -596,7 +644,11 @@ function accountSummary(user) {
     priceLabel,
     billingStatus,
     nextBillingDate: founderAccess ? null : (user.currentPeriodEnd || null),
-    canManageBilling: Boolean(user.stripeCustomerId),
+    canManageBilling: Boolean(user.stripeCustomerId) && user.billingProvider !== 'google_play',
+    billingProvider: user.billingProvider === 'google_play' ? 'google_play' : (user.stripeCustomerId ? 'stripe' : null),
+    playManageUrl: user.billingProvider === 'google_play'
+      ? `https://play.google.com/store/account/subscriptions?sku=${encodeURIComponent(playProductId())}&package=com.bridgebite.hopewick`
+      : null,
     canCancel: cancelable,
     canUpgrade: !pub.plus,
     emailChangeSupported: false,
@@ -903,6 +955,8 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
       freeDailyMessages: freeDailyCap(),
       plusDailyMessages: null,
       googleClientId: googleClientId(),
+      playBillingReady: playBillingConfigured(),
+      playProductId: playProductId(),
     });
     return;
   }
@@ -1029,6 +1083,7 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
     const user = currentUser(req, store);
     const headers = {};
     if (user) {
+      await refreshPlayIfStale(user, store);
       const cookie = touchSession(user, req, store);
       if (cookie) headers['Set-Cookie'] = cookie;
     }
@@ -1395,6 +1450,11 @@ async function verifyGoogleCredential(credential) {
       signature: req.headers['stripe-signature'] || '',
     });
     json(res, 200, result);
+    return;
+  }
+
+  if (req.method === 'POST' && route === '/api/billing/play/verify') {
+    await handlePlayVerify(store, req, res);
     return;
   }
 

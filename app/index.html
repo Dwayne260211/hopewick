@@ -2191,7 +2191,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
                 <span class="account-menu-copy"><span class="title">Subscription</span><span class="desc" id="accountMenuSubDesc">Plan, price, status, and billing date</span></span>
                 <span class="account-menu-chevron" aria-hidden="true">›</span>
               </button>
-              <button class="account-menu-card" type="button" data-account-section="payment" aria-describedby="accountMenuPayDesc">
+              <button class="account-menu-card" type="button" data-account-section="payment" data-web-billing aria-describedby="accountMenuPayDesc">
                 <span class="account-menu-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
                 <span class="account-menu-copy"><span class="title">Payment Method</span><span class="desc" id="accountMenuPayDesc">Add or change the card Stripe has on file</span></span>
                 <span class="account-menu-chevron" aria-hidden="true">›</span>
@@ -2336,7 +2336,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 <dialog id="plusChoiceDlg" aria-labelledby="plusChoiceTitle">
   <div class="onboard-body">
     <h2 id="plusChoiceTitle">Hopewick Plus</h2>
-    <p class="lead">7 days free, then AU$20/month. A card is required to start the trial and is collected by Stripe. You won’t be charged the monthly price until the trial ends. Cancel anytime means Plus continues until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it.</p>
+    <p class="lead" id="plusChoiceLead">7 days free, then AU$20/month. A card is required to start the trial and is collected by Stripe. You won’t be charged the monthly price until the trial ends. Cancel anytime means Plus continues until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it.</p>
     <p>Or stay on the free account. That is 15 Hope messages a day, with no card and no charge. Today’s Readings and Get help stay free either way.</p>
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="plusChoiceTrial">Start 7-day free trial</button>
@@ -13592,6 +13592,90 @@ async function billingFetch(path, options) {
   }
   return data;
 }
+/* Google Play Billing inside the Android app (Trusted Web Activity).
+   Play policy: digital subscriptions bought inside the Android app must use
+   Play Billing, so Stripe checkout, the Stripe portal and card setup are
+   hidden there. Web users keep Stripe. */
+const PLAY_BILLING_METHOD = 'https://play.google.com/billing';
+const PLAY_PACKAGE = 'com.bridgebite.hopewick';
+const playBilling = { inApp: false, service: null, productId: 'hopewick_plus_monthly', ready: false, restored: false };
+const playBillingInit = (async () => {
+  try {
+    if (document.referrer && document.referrer.indexOf('android-app://' + PLAY_PACKAGE) === 0) {
+      playBilling.inApp = true;
+      try { sessionStorage.setItem('hopewickInPlayApp', '1'); } catch (_) {}
+    }
+    try { if (sessionStorage.getItem('hopewickInPlayApp') === '1') playBilling.inApp = true; } catch (_) {}
+    if (typeof window.getDigitalGoodsService === 'function') {
+      const service = await window.getDigitalGoodsService(PLAY_BILLING_METHOD);
+      if (service) { playBilling.service = service; playBilling.inApp = true; }
+    }
+  } catch (_) { /* not in the Play app, or Play Billing unavailable */ }
+  if (playBilling.inApp) applyPlayAppChrome();
+})();
+function inPlayApp() { return playBilling.inApp; }
+function applyPlayAppChrome() {
+  document.querySelectorAll('[data-web-billing]').forEach((el) => { el.hidden = true; });
+  const lead = document.getElementById('plusChoiceLead');
+  if (lead) lead.textContent = '7 days free, then AU$20/month, billed through Google Play. You won’t be charged until the trial ends. Cancel anytime in Google Play and Plus continues until the end of the current period. Refunds follow Google Play’s policy and the Australian Consumer Law.';
+}
+async function sendPlayPurchase(purchaseToken) {
+  return billingFetch('/api/billing/play/verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ purchaseToken, productId: playBilling.productId }),
+  });
+}
+async function restorePlayPurchases() {
+  if (playBilling.restored || !playBilling.service || !playBilling.ready || !realSession() || billingState.plus) return false;
+  playBilling.restored = true;
+  try {
+    const purchases = await playBilling.service.listPurchases();
+    const mine = (purchases || []).find((p) => p.itemId === playBilling.productId);
+    if (!mine) return false;
+    await sendPlayPurchase(mine.purchaseToken);
+    return true;
+  } catch (_) { return false; }
+}
+async function startPlayCheckout() {
+  const status = $('#accountStatus');
+  if (!playBilling.service || !playBilling.ready) {
+    toast('Subscriptions in the Android app aren’t available yet. Please try again later.', true, 5000);
+    return;
+  }
+  if (typeof PaymentRequest !== 'function') {
+    toast('Google Play billing isn’t available on this device.', true, 5000);
+    return;
+  }
+  if (status) status.textContent = 'Opening Google Play…';
+  try {
+    const request = new PaymentRequest(
+      [{ supportedMethods: PLAY_BILLING_METHOD, data: { sku: playBilling.productId } }],
+      { total: { label: 'Total', amount: { currency: 'AUD', value: '0' } } },
+    );
+    const response = await request.show();
+    const token = response.details && response.details.purchaseToken;
+    if (!token) { await response.complete('fail'); throw new Error('Google Play did not return a purchase.'); }
+    try {
+      await sendPlayPurchase(token);
+      await response.complete('success');
+    } catch (err) {
+      await response.complete('fail');
+      throw err;
+    }
+    toast('Welcome to Hopewick Plus.', false, 4000);
+    if (status) status.textContent = '';
+    await refreshBilling();
+  } catch (err) {
+    if (err && err.name === 'AbortError') { if (status) status.textContent = ''; return; }
+    const msg = (err && err.message) || 'Google Play purchase did not finish.';
+    if (status) { status.className = 'account-status bad'; status.textContent = msg; }
+    toast(msg, true, 5000);
+  }
+}
+function openPlaySubscriptions() {
+  location.href = 'https://play.google.com/store/account/subscriptions?sku=' + encodeURIComponent(playBilling.productId) + '&package=' + PLAY_PACKAGE;
+}
 async function refreshBilling() {
   const plusBefore = sessionGate.plus();
   try {
@@ -13606,7 +13690,15 @@ async function refreshBilling() {
     billingState.subscriptionStatus = user.subscriptionStatus || 'none';
     billingState.currentPeriodEnd = user.currentPeriodEnd || null;
     billingState.plus = !!user.plus;
+    billingState.billingProvider = user.billingProvider || null;
     billingState.checkoutReady = !!config.checkoutReady;
+    await playBillingInit;
+    if (inPlayApp()) {
+      if (config.playProductId) playBilling.productId = config.playProductId;
+      playBilling.ready = !!config.playBillingReady && !!playBilling.service;
+      billingState.checkoutReady = playBilling.ready;
+      if (await restorePlayPurchases()) return refreshBilling();
+    }
     billingState.googleClientId = config.googleClientId || '';
     billingState.devMagic = !!config.devMagic;
     billingState.complimentary = !!user.complimentary;
@@ -14251,7 +14343,14 @@ async function renderAccountSubscription(body, token) {
     if (!billingState.checkoutReady) upgrade.disabled = true;
     actions.appendChild(upgrade);
   }
-  if (summary.canManageBilling) {
+  if (summary.billingProvider === 'google_play') {
+    const manage = document.createElement('button');
+    manage.type = 'button';
+    manage.className = 'btn';
+    manage.textContent = 'Manage in Google Play';
+    manage.addEventListener('click', () => openPlaySubscriptions());
+    actions.appendChild(manage);
+  } else if (summary.canManageBilling && !inPlayApp()) {
     const manage = document.createElement('button');
     manage.type = 'button';
     manage.className = 'btn';
@@ -14259,7 +14358,7 @@ async function renderAccountSubscription(body, token) {
     manage.addEventListener('click', () => startPortal('account'));
     actions.appendChild(manage);
   }
-  if (summary.canCancel) {
+  if (summary.canCancel && !inPlayApp()) {
     const cancel = document.createElement('button');
     cancel.type = 'button';
     cancel.className = 'btn btn-danger';
@@ -14331,7 +14430,15 @@ async function renderAccountPayment(body, token) {
   }
   const actions = document.createElement('div');
   actions.className = 'account-actions';
-  if (billingState.canManageBilling) {
+  if (inPlayApp()) {
+    intro.textContent = 'In the Android app, Hopewick Plus is billed through Google Play. Manage your payment method and subscription in Google Play.';
+    const play = document.createElement('button');
+    play.type = 'button';
+    play.className = 'btn btn-primary';
+    play.textContent = 'Open Google Play subscriptions';
+    play.addEventListener('click', () => openPlaySubscriptions());
+    actions.appendChild(play);
+  } else if (billingState.canManageBilling) {
     const change = document.createElement('button');
     change.type = 'button';
     change.className = 'btn btn-primary';
@@ -14431,6 +14538,7 @@ async function currentPasswordForSensitiveAction(statusEl) {
   return { ok: true, currentPassword };
 }
 async function startCardSetup() {
+  if (inPlayApp()) return;
   const gate = await currentPasswordForSensitiveAction(null);
   if (!gate.ok) return;
   try {
@@ -15146,6 +15254,7 @@ async function startGoogleSignIn() {
   }
 }
 async function startCheckout() {
+  if (inPlayApp() && realSession()) return startPlayCheckout();
   const status = $('#accountStatus');
   if (!realSession()) {
     pendingTrialCheckout = true;
@@ -15163,6 +15272,11 @@ async function startCheckout() {
   }
 }
 async function startPortal(returnTo) {
+  if (inPlayApp()) {
+    if (billingState.billingProvider === 'google_play') return openPlaySubscriptions();
+    toast('This subscription was started on the Hopewick website. Manage it there from a web browser.', false, 5500);
+    return;
+  }
   const status = $('#accountStatus');
   const gate = await currentPasswordForSensitiveAction(status);
   if (!gate.ok) return;
