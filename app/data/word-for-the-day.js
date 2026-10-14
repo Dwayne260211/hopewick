@@ -1817,199 +1817,199 @@ var WORD_FOR_THE_DAY = [
     "month": 10,
     "day": 29,
     "word": "Within",
-    "reading": "On this page the Christian theme is Within, and the text is James 3:17. For Within, the sense of James 3:17 is this: wisdom from above is pure, peaceable, gentle, and full of mercy.\n\nThat verse is a welcome, not a test you pass before God will look at Within. Practise Within at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Within can stand inside that mercy without showing off. God's kindness towards you is the ground under Within, not a prize withheld until you improve."
+    "reading": "Within. James 3:17 says the wisdom that comes from God is pure, peaceful, gentle and full of mercy.\n\nThat's a good test for what's going on inside your own head. If the voice in there is harsh and nasty and never lets up, it's probably not coming from God. His kind of wisdom is gentle.\n\nHave a listen to how you talk to yourself today. When it gets mean, try answering it the way you'd talk to a mate who's doing it tough. Peace on the inside usually starts with a bit less yelling at yourself."
   },
   {
     "month": 10,
     "day": 30,
     "word": "Witness",
-    "reading": "Witness is the Christian theme here, set beside 1 Peter 5:10. For Witness, the sense of 1 Peter 5:10 is this: after suffering a while, God will restore and strengthen you.\n\nNothing in 1 Peter 5:10 asks you to pretend, and Witness can begin while you are still tired. If you were wrong, let Witness include an apology in a single clean sentence, because of 1 Peter 5:10.\n\nMercy is wider than today's mistakes, and Witness can stand inside that mercy without showing off. Keep Witness Christian and specific: one verse, one prayer, one person."
+    "reading": "Witness. 1 Peter 5:10 says after you've suffered a while, God will restore you and make you strong again.\n\nA while. Not forever. That's worth hanging onto when things are rough. It doesn't promise it won't hurt, but it does promise the hurting isn't the end of the story.\n\nAnd when you come out the other side, your story becomes something useful. Someone else will need to hear that you got through. You don't have to dress it up. Just tell it straight when the time comes. Being a witness is mostly just being honest about where you've been."
   },
   {
     "month": 10,
     "day": 31,
     "word": "Wonder",
-    "reading": "The Christian theme, Wonder, is read with Revelation 3:20. For Wonder, the sense of Revelation 3:20 is this: Jesus stands at the door and knocks, and comes in where he is welcomed.\n\nRead Wonder in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Revelation 3:20, and let Wonder be unhurried company for someone lonely.\n\nHand the evening to God, and let Wonder be unfinished without being abandoned. In Christ, Wonder is worth attention even when the calendar is full."
+    "reading": "Wonder. Revelation 3:20. Jesus says he's standing at the door knocking, and if anyone opens it, he'll come in and share a meal with them.\n\nHe knocks. He doesn't kick the door in. And the picture isn't a lecture, it's dinner together. That's a pretty decent way to think about God if you grew up with the scary version.\n\nTake a minute today to just be amazed at something small. A sunset. A kid laughing. The fact you're still here. Wonder sneaks back in once your head's a bit clearer. Leave the door open a crack and see what happens."
   },
   {
     "month": 11,
     "day": 1,
     "word": "Worth",
-    "reading": "On this page the Christian theme is Worth, and the text is Exodus 20:8. For Worth, the sense of Exodus 20:8 is this: remember the Sabbath and keep it holy.\n\nChrist is gentle with unfinished people, so Worth does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Worth shows up this afternoon.\n\nYou can begin Worth before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Worth still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Worth."
+    "reading": "Worth. Exodus 20:8 says to remember the Sabbath and keep it holy. A day off, basically, set apart.\n\nGod built rest into the week before anyone earned it. That says something about your worth. You're not just a machine for getting stuff done. You're allowed to stop.\n\nA lot of us swing from doing nothing to doing way too much once we get clean. Find a bit of rest this week that isn't scrolling or collapsing. A proper break. Sit in the sun, go to church if that's you, have a long lunch. You don't have to earn it."
   },
   {
     "month": 11,
     "day": 2,
     "word": "Wound",
-    "reading": "Wound is the Christian theme here, set beside Psalm 5:3. For Wound, the sense of Psalm 5:3 is this: in the morning the psalmist lays a prayer before God.\n\nThat verse is a welcome, not a test you pass before God will look at Wound. To live Wound, read Psalm 5:3 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 5:3, for Wound, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Wound."
+    "reading": "Wound. Psalm 5:3. In the morning the psalmist lays his requests before God and waits to see what happens.\n\nMornings can be the worst bit when you're hurting. You wake up and it all lands on you again. This verse gives you somewhere to put it. Just lay it out. Here's where it hurts. Then wait.\n\nYou don't need a proper prayer. Tell God what's sore before you check your phone. Then get up and do the next thing. Wounds heal slower than we'd like, but they do heal. Most of us are carrying a few. You're not the only one."
   },
   {
     "month": 11,
     "day": 3,
     "word": "Write it down",
-    "reading": "The Christian theme, Write it down, is read with Psalm 40:1. For Write it down, the sense of Psalm 40:1 is this: the psalmist waited for the Lord, and the Lord turned towards him.\n\nNothing in Psalm 40:1 asks you to pretend, and Write it down can begin while you are still tired. Give Write it down a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Write it down is allowed to be slow. If the morning was clumsy, Write it down can begin again after lunch in the sight of God."
+    "reading": "Write it down. Psalm 40:1 says the psalmist waited patiently for the Lord, and God turned towards him and heard his cry.\n\nWaiting's hard. Writing helps. When stuff is just swirling in your head it feels huge. On paper it usually looks smaller and more manageable.\n\nGrab a notebook or the notes app tonight. Write what you're waiting on. Write what's bugging you. Write one thing you're thankful for, even if it's only hot water. Then close it. You've handed it over for the night. God heard the psalmist. He hears you too."
   },
   {
     "month": 11,
     "day": 4,
     "word": "Yes to help",
-    "reading": "On this page the Christian theme is Yes to help, and the text is Psalm 107:9. For Yes to help, the sense of Psalm 107:9 is this: he satisfies the longing soul.\n\nRead Yes to help in the light of that verse, without turning it into a performance for other people. Let Yes to help sound like a softer answer where the house has been sharp, with Psalm 107:9 still in mind.\n\nNo one else has to share your creed for you to practise Yes to help in the sight of God. God's kindness towards you is the ground under Yes to help, not a prize withheld until you improve."
+    "reading": "Yes to help. Psalm 107:9 says God satisfies the thirsty and fills the hungry with good things.\n\nMost of us tried to fill the empty bit with stuff that didn't work. It just made us hungrier. This verse says there's real food for that hunger.\n\nSaying yes to help is hard when you're used to doing it all yourself. Practise today. If someone offers a lift, take it. If someone asks how you're going, tell them. If you need to see someone, book it. Letting people help you isn't weak. It's how the empty bit starts filling up properly."
   },
   {
     "month": 11,
     "day": 5,
     "word": "Yield",
-    "reading": "Yield is the Christian theme here, set beside Proverbs 14:29. For Yield, the sense of Proverbs 14:29 is this: whoever is slow to anger has great understanding.\n\nChrist is gentle with unfinished people, so Yield does not have to arrive already polished. Carry Yield into an ordinary hour by telling the truth kindly, in the spirit of Proverbs 14:29.\n\nPut Yield where your hands are, and let the text stay a lamp rather than a weapon. Keep Yield Christian and specific: one verse, one prayer, one person. In Christ, Yield is worth attention even when the calendar is full."
+    "reading": "Yield. Proverbs 14:29 says someone who's slow to get angry has a lot of understanding.\n\nI was never slow to get angry. Quick fuse. Recovery's slowly teaching me to give way a bit. Not to be a doormat. Just to not have to win every single argument.\n\nWhen someone cuts you off today, in traffic or in conversation, see if you can let it go. Give way. Count to five. Most things aren't worth the blow-up. And if you do lose it, say sorry and move on. Understanding grows a bit every time you choose to yield."
   },
   {
     "month": 11,
     "day": 6,
     "word": "Anchor",
-    "reading": "The Christian theme, Anchor, is read with Isaiah 30:21. For Anchor, the sense of Isaiah 30:21 is this: a voice behind says which way to walk.\n\nThat verse is a welcome, not a test you pass before God will look at Anchor. Practise Anchor at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nMercy is wider than today's mistakes, and Anchor can stand inside that mercy without showing off. In Christ, Anchor is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Anchor still fits the actual day."
+    "reading": "Anchor. Isaiah 30:21 says you'll hear a voice behind you saying this is the way, walk in it, whether you turn left or right.\n\nI like that it's behind you. Like someone who's got your back. You don't always know which way to go, but you're not guessing alone.\n\nWhen you're stuck today, slow down and listen. Sometimes the right way is pretty obvious once the noise settles. Sometimes it's the boring option. Usually it's the one that keeps you safe and honest. That quiet voice is worth more than the loud ones in your head."
   },
   {
     "month": 11,
     "day": 7,
     "word": "Arrival",
-    "reading": "Arrival is the Christian theme here, set beside Isaiah 61:1. For Arrival, the sense of Isaiah 61:1 is this: the Spirit of the Lord brings good news and liberty to captives.\n\nNothing in Isaiah 61:1 asks you to pretend, and Arrival can begin while you are still tired. If you were wrong, let Arrival include an apology in a single clean sentence, because of Isaiah 61:1.\n\nMercy is wider than today's mistakes, and Arrival can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Arrival still fits the actual day."
+    "reading": "Arrival. Isaiah 61:1. God's Spirit is on the one who brings good news to the poor, binds up the broken-hearted and sets captives free.\n\nCaptives free. A lot of us know what it's like to be locked in, even without bars. Stuck in the same patterns over and over. This verse says freedom's part of the plan.\n\nYou might not feel like you've arrived anywhere yet. That's alright. Every clean day is a bit of freedom turning up. Notice one thing today you can do now that you couldn't before. Doesn't have to be big. Small freedoms count."
   },
   {
     "month": 11,
     "day": 8,
     "word": "Blanket",
-    "reading": "Blanket is the Christian theme here, set beside Hosea 6:6. For Blanket, the sense of Hosea 6:6 is this: God desires steadfast love and knowledge of him, not empty ritual.\n\nRead Blanket in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Hosea 6:6, and let Blanket be unhurried company for someone lonely.\n\nHand the evening to God, and let Blanket be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Blanket."
+    "reading": "Blanket. Hosea 6:6 says God wants steadfast love and knowing him, more than empty rituals.\n\nThat's a relief if you've ever felt like faith was all rules and performing. God's more interested in the real you than in you getting it all right.\n\nThink of his love like a warm blanket on a cold night. You don't earn a blanket. You just get under it. Today, try being honest with God instead of polite. Tell him how it actually is. Then do something kind for someone, because love's the thing he's after."
   },
   {
     "month": 11,
     "day": 9,
     "word": "Clearing",
-    "reading": "The Christian theme, Clearing, is read with Matthew 6:6. For Clearing, the sense of Matthew 6:6 is this: pray in secret, and the Father who sees in secret answers.\n\nChrist is gentle with unfinished people, so Clearing does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Clearing shows up this afternoon.\n\nYou can begin Clearing before you feel holy, because the Father already knows the day. If the morning was clumsy, Clearing can begin again after lunch in the sight of God. God's kindness towards you is the ground under Clearing, not a prize withheld until you improve."
+    "reading": "Clearing. Matthew 6:6. Jesus says go into your room, shut the door and pray in private, and your Father who sees in secret will answer.\n\nNo audience needed. No fancy words. Just you and God in a quiet spot. That's a good thing for people like us who spent a lot of time performing.\n\nFind a clear bit of space today. Could be your car, could be the back step. Sit there for a few minutes. Say what's on your mind or just sit. It's a bit like clearing a patch in a messy room. You can breathe in that patch."
   },
   {
     "month": 11,
     "day": 10,
     "word": "Ember",
-    "reading": "On this page the Christian theme is Ember, and the text is Matthew 10:31. For Ember, the sense of Matthew 10:31 is this: you are of more value than many sparrows, so do not be afraid.\n\nThat verse is a welcome, not a test you pass before God will look at Ember. To live Ember, read Matthew 10:31 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 10:31, for Ember, is trust, not a performance. God's kindness towards you is the ground under Ember, not a prize withheld until you improve."
+    "reading": "Ember. Matthew 10:31 says you're worth more than many sparrows, so don't be afraid.\n\nGod notices sparrows. Little brown birds no one looks at twice. And he says you matter more than heaps of them. That's hard to believe when you're feeling like nothing.\n\nSome days your hope's just an ember. A tiny glow, barely there. That's alright. Embers can start a fire again. Protect it today. Stay away from people and places that would stamp it out. Feed it with something good. It's still burning, even if it's small."
   },
   {
     "month": 11,
     "day": 11,
     "word": "Foothold",
-    "reading": "Foothold is the Christian theme here, set beside John 4:14. For Foothold, the sense of John 4:14 is this: Jesus speaks of water that becomes a spring of eternal life.\n\nNothing in John 4:14 asks you to pretend, and Foothold can begin while you are still tired. Give Foothold a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Foothold is allowed to be slow. In Christ, Foothold is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Foothold still fits the actual day."
+    "reading": "Foothold. John 4:14. Jesus tells the woman at the well that the water he gives becomes a spring inside, welling up to eternal life.\n\nShe'd had a rough life, and everyone knew it. He didn't lecture her. He offered her something that would actually fill her up.\n\nWhen you're on a slippery slope, you need a foothold. Something solid to put your weight on. Today, find one. A verse, a person, a routine that works. Stand on it. Let that spring inside do its thing, even if it's just a trickle right now."
   },
   {
     "month": 11,
     "day": 12,
     "word": "Harbour",
-    "reading": "The Christian theme, Harbour, is read with John 15:13. For Harbour, the sense of John 15:13 is this: the greatest love lays down its life for friends.\n\nRead Harbour in the light of that verse, without turning it into a performance for other people. Let Harbour sound like a softer answer where the house has been sharp, with John 15:13 still in mind.\n\nNo one else has to share your creed for you to practise Harbour in the sight of God. In Christ, Harbour is worth attention even when the calendar is full."
+    "reading": "Harbour. John 15:13 says there's no greater love than laying down your life for your friends.\n\nThat's the love Jesus showed. Not just nice words, but actually giving himself up. It's a big thing to get your head around.\n\nA harbour's where boats go when the weather turns. You can be that for someone. Not by being a hero. Just by being steady and around. And you can let someone else be that for you. Today, check in on a mate. Put yourself out a bit for them. Small sacrifices count."
   },
   {
     "month": 11,
     "day": 13,
     "word": "Hearth",
-    "reading": "On this page the Christian theme is Hearth, and the text is Romans 5:5. For Hearth, the sense of Romans 5:5 is this: hope does not put us to shame, because God's love is poured into our hearts.\n\nThat verse is a welcome, not a test you pass before God will look at Hearth. Carry Hearth into an ordinary hour by telling the truth kindly, in the spirit of Romans 5:5.\n\nPut Hearth where your hands are, and let the text stay a lamp rather than a weapon. Australian weather can be hot, wet, or cold, and Hearth still fits the actual day."
+    "reading": "Hearth. Romans 5:5 says hope doesn't let us down, because God's love has been poured into our hearts.\n\nPoured in. Not dripped. Not rationed out to people who behave. That's a lot of love for people who reckon they don't deserve any.\n\nA hearth is the warm spot in a house, where people gather. Your heart can be that, even with all its cracks. Let somebody in today. Have someone over, share a feed, keep the kettle on. Warmth spreads. Hope that's shared tends to grow."
   },
   {
     "month": 11,
     "day": 14,
     "word": "Lamp",
-    "reading": "Lamp is the Christian theme here, set beside 1 Corinthians 6:19. For Lamp, the sense of 1 Corinthians 6:19 is this: your body is a temple of the Holy Spirit.\n\nThat verse is a welcome, not a test you pass before God will look at Lamp. Practise Lamp at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Lamp honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Lamp."
+    "reading": "Lamp. 1 Corinthians 6:19 says your body is a temple of the Holy Spirit.\n\nThat one's confronting for a lot of us. We didn't treat our bodies like temples. More like a rubbish tip. But the verse isn't there to shame you. It's saying you're worth looking after.\n\nA lamp gives off light because someone keeps it filled and trimmed. Look after yours today. Food, water, sleep, a bit of movement. Nothing extreme. Just the basics, done with a bit of respect. God thinks you're worth living in. That's something."
   },
   {
     "month": 11,
     "day": 15,
     "word": "Loyal",
-    "reading": "The Christian theme, Loyal, is read with Galatians 2:20. For Loyal, the sense of Galatians 2:20 is this: Christ lives in his people, and life is lived by faith in the Son of God.\n\nNothing in Galatians 2:20 asks you to pretend, and Loyal can begin while you are still tired. If you were wrong, let Loyal include an apology in a single clean sentence, because of Galatians 2:20.\n\nMercy is wider than today's mistakes, and Loyal can stand inside that mercy without showing off. If the morning was clumsy, Loyal can begin again after lunch in the sight of God."
+    "reading": "Loyal. Galatians 2:20 says Christ lives in me, and the life I live now I live by faith in him, who loved me and gave himself for me.\n\nLoved me. Personally. That's what gets me. Not just people in general, but me, with all my history.\n\nBeing loyal to that kind of love doesn't mean being perfect. It means coming back to it. Again and again. When you stuff up today, come back. When you forget, come back. Loyalty is mostly just not walking away for good."
   },
   {
     "month": 11,
     "day": 16,
     "word": "Rooted",
-    "reading": "On this page the Christian theme is Rooted, and the text is Ephesians 5:1. For Rooted, the sense of Ephesians 5:1 is this: be imitators of God, as beloved children.\n\nRead Rooted in the light of that verse, without turning it into a performance for other people. Leave a harsh opinion unsaid, and let that restraint be how Rooted shows up this afternoon.\n\nHand the evening to God, and let Rooted be unfinished without being abandoned. God's kindness towards you is the ground under Rooted, not a prize withheld until you improve. Keep Rooted Christian and specific: one verse, one prayer, one person."
+    "reading": "Rooted. Ephesians 5:1 says be imitators of God, like children who are loved.\n\nKids copy whoever they're around. That's how they learn. This says copy God, not because you're scared, but because you're loved.\n\nRoots grow slowly underground where no one sees. Most of the good stuff in recovery is like that. Today, do something kind no one will notice. Be patient with someone annoying. Forgive a small thing. That's how roots go deeper. You won't see it happening, but it holds you when the wind picks up."
   },
   {
     "month": 11,
     "day": 17,
     "word": "Steadfast",
-    "reading": "Steadfast is the Christian theme here, set beside Colossians 3:2. For Steadfast, the sense of Colossians 3:2 is this: set your mind on the things of Christ, not only on earthly status.\n\nChrist is gentle with unfinished people, so Steadfast does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Steadfast shows up this afternoon.\n\nYou can begin Steadfast before you feel holy, because the Father already knows the day. Keep Steadfast Christian and specific: one verse, one prayer, one person. In Christ, Steadfast is worth attention even when the calendar is full."
+    "reading": "Steadfast. Colossians 3:2 says set your mind on things above, not just on earthly stuff.\n\nIt's easy to get caught up comparing. Who's got the better car, the better job, the better life. That stuff eats you up.\n\nBeing steadfast means staying put when it'd be easier to chase something shiny. Today, when you catch yourself comparing, pull your head back. Think about what actually matters. Being honest. Being kind. Being clean. Staying close to God. That stuff lasts longer than anything you can buy."
   },
   {
     "month": 11,
     "day": 18,
     "word": "Sunrise",
-    "reading": "The Christian theme, Sunrise, is read with 1 Timothy 1:15. For Sunrise, the sense of 1 Timothy 1:15 is this: Christ Jesus came into the world to save sinners.\n\nThat verse is a welcome, not a test you pass before God will look at Sunrise. To live Sunrise, read 1 Timothy 1:15 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of 1 Timothy 1:15, for Sunrise, is trust, not a performance. In Christ, Sunrise is worth attention even when the calendar is full."
+    "reading": "Sunrise. 1 Timothy 1:15 says Christ Jesus came into the world to save sinners, and Paul says he's the worst of them.\n\nPaul had done some bad stuff. Really bad. And he says that's exactly the kind of person Jesus came for. Not the tidy ones. The ones who know they need it.\n\nEvery sunrise is another go. Whatever you did yesterday, the sun still came up. If you can, get up early enough to see it one day this week. Let it remind you that grace keeps showing up, even for people like us."
   },
   {
     "month": 11,
     "day": 19,
     "word": "Threshold",
-    "reading": "On this page the Christian theme is Threshold, and the text is James 1:2. For Threshold, the sense of James 1:2 is this: when trials come, steadfastness is being grown.\n\nNothing in James 1:2 asks you to pretend, and Threshold can begin while you are still tired. Give Threshold a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Threshold is allowed to be slow. Australian weather can be hot, wet, or cold, and Threshold still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Threshold."
+    "reading": "Threshold. James 1:2 says when trials come, consider it joy, because they're building something in you.\n\nJoy might be a stretch some days. I get that. But there's truth in it. The hard stuff is where you find out what you're made of.\n\nA threshold is a doorway. You're standing at one when things are tough. You can go back to what you know, or step through into something new. Today, if something's hard, don't run from it. Take the step. You'll come out stronger, even if it doesn't feel like it right now."
   },
   {
     "month": 11,
     "day": 20,
     "word": "Unhurried",
-    "reading": "The Christian theme, Unhurried, is read with James 4:10. For Unhurried, the sense of James 4:10 is this: humble yourselves before the Lord, and he will lift you up.\n\nRead Unhurried in the light of that verse, without turning it into a performance for other people. Let Unhurried sound like a softer answer where the house has been sharp, with James 4:10 still in mind.\n\nNo one else has to share your creed for you to practise Unhurried in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Unhurried."
+    "reading": "Unhurried. James 4:10 says humble yourselves before the Lord, and he'll lift you up.\n\nWe spend so much energy trying to lift ourselves up. Prove we're okay. Look like we've got it together. It's exhausting.\n\nYou don't have to rush to be better. Slow down today. Take your time. Let God do some of the lifting. Admitting you need help isn't failing. It's where things start to change. And there's no deadline on getting better. You're allowed to go at your own pace."
   },
   {
     "month": 11,
     "day": 21,
     "word": "Haven",
-    "reading": "The Christian theme, Haven, is read with 2 Peter 1:3. For Haven, the sense of 2 Peter 1:3 is this: God's power has given what we need for life and godliness.\n\nThat verse is a welcome, not a test you pass before God will look at Haven. Carry Haven into an ordinary hour by telling the truth kindly, in the spirit of 2 Peter 1:3.\n\nPut Haven where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Haven can begin again after lunch in the sight of God."
+    "reading": "Haven. 2 Peter 1:3 says God's power has given us everything we need for life and godliness.\n\nEverything we need. Not everything we want, but what we need. That's a different thing.\n\nMost days I feel like I'm missing something. Like if I just had more money, more time, more confidence, I'd be fine. This verse says you've already got what you need for today. Find your safe spot today and rest in that. You're not as short as you think. God's already given you enough to get through."
   },
   {
     "month": 11,
     "day": 22,
     "word": "Gladness",
-    "reading": "On this page the Christian theme is Gladness, and the text is 1 John 5:14. For Gladness, the sense of 1 John 5:14 is this: if we ask according to his will, he hears us.\n\nThat verse is a welcome, not a test you pass before God will look at Gladness. Practise Gladness at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Gladness honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Gladness, not a prize withheld until you improve."
+    "reading": "Gladness. 1 John 5:14 says if we ask anything according to his will, he hears us.\n\nHe hears. That's the bit I hang onto. Not every prayer gets the answer I want, but none of them go unheard.\n\nGladness can be hard to find in early recovery. Everything feels a bit grey. But it comes back slowly. Ask God for something today. Then keep an eye out for little bits of gladness. A good song. A laugh. Someone being kind. Notice them. They're there more often than you think."
   },
   {
     "month": 11,
     "day": 23,
     "word": "Solace",
-    "reading": "Solace is the Christian theme here, set beside Revelation 22:17. For Solace, the sense of Revelation 22:17 is this: the Spirit and the church say come, and whoever is thirsty may come.\n\nNothing in Revelation 22:17 asks you to pretend, and Solace can begin while you are still tired. If you were wrong, let Solace include an apology in a single clean sentence, because of Revelation 22:17.\n\nMercy is wider than today's mistakes, and Solace can stand inside that mercy without showing off. In Christ, Solace is worth attention even when the calendar is full."
+    "reading": "Solace. Revelation 22:17 says the Spirit and the bride say come, and let whoever is thirsty come and drink for free.\n\nFor free. No catch. You don't have to clean yourself up first or pay anything off. If you're thirsty, come.\n\nSolace is comfort when you're hurting. Today, if you need it, go looking for it. Sit in a quiet church. Read a psalm. Talk to someone who gets it. Comfort isn't just for people who've got their act together. The invitation's open to everyone, and it includes you."
   },
   {
     "month": 11,
     "day": 24,
     "word": "Solidarity",
-    "reading": "The Christian theme, Solidarity, is read with Psalm 31:24. For Solidarity, the sense of Psalm 31:24 is this: be strong and let your heart take courage, all who wait for the Lord.\n\nRead Solidarity in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of Psalm 31:24, and let Solidarity be unhurried company for someone lonely.\n\nHand the evening to God, and let Solidarity be unfinished without being abandoned. In Christ, Solidarity is worth attention even when the calendar is full."
+    "reading": "Solidarity. Psalm 31:24 says be strong and take heart, all of you who wait for the Lord.\n\nAll of you. That's a group. Waiting's easier when you're not doing it by yourself.\n\nSolidarity means sticking together. Recovery's like that. One person's having a good day, another's having a shocker, and you hold each other up. Today, check in on someone who's waiting on something hard. Results, court, a phone call. Let them know you're with them. Strength grows when it's shared."
   },
   {
     "month": 11,
     "day": 25,
     "word": "Spacious",
-    "reading": "On this page the Christian theme is Spacious, and the text is Psalm 118:6. For Spacious, the sense of Psalm 118:6 is this: the Lord is on my side, so fear of people need not rule.\n\nChrist is gentle with unfinished people, so Spacious does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Spacious shows up this afternoon.\n\nThe point of Psalm 118:6, for Spacious, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Spacious."
+    "reading": "Spacious. Psalm 118:6 says the Lord is with me, I won't be afraid. What can people do to me?\n\nA lot of us lived scared of what people thought. Scared of being judged, found out, rejected. That fear takes up a lot of room in your head.\n\nWhen God's on your side, there's more space to breathe. People's opinions matter less. Today, do one thing you've been too worried about what others think to do. Speak up. Say no. Wear the thing. Go to the meeting. You've got more room than you think."
   },
   {
     "month": 11,
     "day": 26,
     "word": "Second wind",
-    "reading": "Second wind is the Christian theme here, set beside Proverbs 2:6. For Second wind, the sense of Proverbs 2:6 is this: the Lord gives wisdom.\n\nThat verse is a welcome, not a test you pass before God will look at Second wind. To live Second wind, read Proverbs 2:6 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Proverbs 2:6, for Second wind, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Second wind."
+    "reading": "Second wind. Proverbs 2:6 says the Lord gives wisdom, and knowledge and understanding come from him.\n\nThere are times you hit a wall. You've been trying hard and you just run out. That's when a second wind comes, often from somewhere you didn't expect.\n\nAsk for wisdom today. Not just for what to do, but for how to keep going. Then rest a bit. Have a feed. Talk to someone. Energy comes back. Wisdom often looks like knowing when to push and when to stop for a minute."
   },
   {
     "month": 11,
     "day": 27,
     "word": "Soft landing",
-    "reading": "The Christian theme, Soft landing, is read with Ecclesiastes 3:11. For Soft landing, the sense of Ecclesiastes 3:11 is this: God has made everything suitable in its time.\n\nNothing in Ecclesiastes 3:11 asks you to pretend, and Soft landing can begin while you are still tired. Give Soft landing a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Soft landing is allowed to be slow. If the morning was clumsy, Soft landing can begin again after lunch in the sight of God. God's kindness towards you is the ground under Soft landing, not a prize withheld until you improve."
+    "reading": "Soft landing. Ecclesiastes 3:11 says God has made everything beautiful in its time.\n\nIn its time. Not on my schedule. I want things fixed now. God seems to work slower than I'd like.\n\nSome days you'll fall. Slip up, lose your temper, have a bad night. It helps to know there's a soft landing. Grace catches you. It doesn't mean it doesn't hurt, but you don't smash. Today, if you fall, get back up gently. Things get beautiful in their own time. Even messy bits."
   },
   {
     "month": 11,
     "day": 28,
     "word": "Wholehearted",
-    "reading": "On this page the Christian theme is Wholehearted, and the text is Luke 11:3. For Wholehearted, the sense of Luke 11:3 is this: Jesus teaches a prayer that asks for each day's bread.\n\nRead Wholehearted in the light of that verse, without turning it into a performance for other people. Let Wholehearted sound like a softer answer where the house has been sharp, with Luke 11:3 still in mind.\n\nNo one else has to share your creed for you to practise Wholehearted in the sight of God. God's kindness towards you is the ground under Wholehearted, not a prize withheld until you improve."
+    "reading": "Wholehearted. Luke 11:3. Jesus teaches his friends to pray, give us each day our daily bread.\n\nDaily. Not weekly, not yearly. Just enough for today. That's a good way to live in recovery.\n\nBeing wholehearted means putting all of you into today. Not half here and half stressing about next week. Ask for today's bread. Do today's stuff. Love today's people. Tomorrow will have its own bread when it comes. It's simpler that way, and a lot less tiring."
   },
   {
     "month": 11,
     "day": 29,
     "word": "This breath",
-    "reading": "This breath is the Christian theme here, set beside 1 Corinthians 10:13. For This breath, the sense of 1 Corinthians 10:13 is this: God is faithful when temptation comes, and he makes a way through it.\n\nChrist is gentle with unfinished people, so This breath does not have to arrive already polished. Carry This breath into an ordinary hour by telling the truth kindly, in the spirit of 1 Corinthians 10:13.\n\nPut This breath where your hands are, and let the text stay a lamp rather than a weapon. Keep This breath Christian and specific: one verse, one prayer, one person."
+    "reading": "This breath. 1 Corinthians 10:13 says God is faithful, he won't let you be tempted beyond what you can bear, and he'll give you a way out.\n\nA way out. There's always one. Even when it doesn't feel like it.\n\nWhen a craving hits today, focus on this breath. Just this one. Then the next one. You don't have to get through the whole day. Just this breath. Look for the way out. Ring someone, leave the room, get outside. God's faithful even when you're shaky. The temptation is real, but so is the exit."
   },
   {
     "month": 11,
     "day": 30,
     "word": "Plain speech",
-    "reading": "The Christian theme, Plain speech, is read with 1 Chronicles 16:34. For Plain speech, the sense of 1 Chronicles 16:34 is this: give thanks to the Lord, for he is good and his love endures.\n\nThat verse is a welcome, not a test you pass before God will look at Plain speech. Practise Plain speech at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Plain speech honest and gentle until you sleep, and leave the rest in God's care. In Christ, Plain speech is worth attention even when the calendar is full."
+    "reading": "Plain speech. 1 Chronicles 16:34 says give thanks to the Lord, for he is good, his love lasts forever.\n\nPretty plain. Give thanks. He's good. His love lasts. No fancy words needed.\n\nToday, say thanks in plain language. To God, to people. Thanks for the lift. Thanks for listening. Thanks for another clean day. You don't need a speech. Gratitude doesn't have to be polished to be real. And it's hard to stay bitter when you're busy saying thanks."
   },
   {
     "month": 12,

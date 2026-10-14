@@ -1817,199 +1817,199 @@ var JUST_FOR_TODAY = [
     "month": 10,
     "day": 29,
     "title": "Keep close to a hope borrowed honestly",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: keep close to a hope borrowed honestly. It can be avoiding the mirror, and a secret feels heavy, while you keep close to a hope borrowed honestly. Let a craving rise and fall while you keep close to a hope borrowed honestly, and tell a sponsor what it felt like. The NA way here is concrete: people, a meeting, no pickup, and the willingness to keep close to a hope borrowed honestly. Staying clean for this date is the promise inside the choice to keep close to a hope borrowed honestly, not a speech about next year.\n\nJust for today, I will keep close to a hope borrowed honestly."
+    "reading": "Keep close to a hope borrowed honestly. Early days in Narcotics Anonymous, I didn't have any hope of my own. I borrowed it off other people. That's allowed.\n\nSomeone with five years tells you it gets better. You don't believe it yet, but you can see they believe it. So you hang onto that until yours turns up. It's not fake. It's just on loan for a while.\n\nSit near someone today who's been around a bit longer. Listen to how they talk. Take what you need. They got theirs the same way.\n\nJust for today, I'll lean on someone else's hope until mine grows back."
   },
   {
     "month": 10,
     "day": 30,
     "title": "A kinder reason to try",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to choose a kinder reason than shame. A member trying to choose a kinder reason than shame might be by a window, while being alone is pretending to be strength. A small service for a newcomer can sit beside the choice to choose a kinder reason than shame. Staying clean for this date is the promise inside the choice to choose a kinder reason than shame, not a speech about next year. Secrecy would feed a using plan, and Narcotics Anonymous would rather you choose a kinder reason than shame where a member can hear it.\n\nJust for today, I will choose a kinder reason than shame."
+    "reading": "A kinder reason to try. For years I only tried things because I was scared or ashamed. Narcotics Anonymous gave me a better reason. Because I'm worth it, and because people care.\n\nFear gets you moving for a bit, then it burns out. Shame does the same. But trying because you actually want a decent life, that lasts longer.\n\nNext time you push yourself today, check why. If it's to stop feeling like rubbish, see if you can swap it. Do it because you deserve a good day. That's reason enough.\n\nJust for today, I'll try for kinder reasons."
   },
   {
     "month": 10,
     "day": 31,
     "title": "Make room for one plain task",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to make room for one plain task. You might be on the floor by the cupboard, and shame got there first, on a date whose real work is to make room for one plain task. Remain for the meeting, then make room for one plain task, and leave tomorrow's using ideas outside this date. Secrecy would feed a using plan, and Narcotics Anonymous would rather you make room for one plain task where a member can hear it.\n\nJust for today, I will make room for one plain task."
+    "reading": "Make room for one plain task. When my head's a mess, I try to do everything at once and end up doing nothing. Narcotics Anonymous taught me to keep it small.\n\nOne thing. Hang the washing out. Pay that bill. Reply to that message. Just one, done properly, start to finish. It sounds too simple to matter but it gives your brain a win.\n\nIf today's feeling like too much, pick your one plain task and do it before you think about anything else. The rest can wait its turn.\n\nJust for today, I'll do one plain task and finish it."
   },
   {
     "month": 11,
     "day": 1,
     "title": "Pause for one song",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: pause for the length of one song before answering an urge. It can be in a group, smiling more than the feeling matches, and loneliness is louder than the noise around, while you pause for the length of one song before answering an urge. Phone a sponsor or sit in an NA meeting so you can actually pause for the length of one song before answering an urge. A sponsor does not need a polished report, only the facts, and then you can pause for the length of one song before answering an urge.\n\nJust for today, I will pause for the length of one song before answering an urge."
+    "reading": "Pause for one song. Sometimes the best thing I can do is stop for three minutes. Narcotics Anonymous has plenty of slogans, but this one's mine. One song.\n\nPut on something you like and don't do anything else while it plays. No phone, no planning. Just listen. It's amazing how much can settle in three or four minutes.\n\nWhen the day gets loud, try it. One song in the car before you go in. One song before you ring that person back. It's a small gap, but small gaps are where we get our heads straight.\n\nJust for today, I'll stop for one song."
   },
   {
     "month": 11,
     "day": 2,
     "title": "Be kind to one true sentence",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to be kind to one true sentence. A member trying to be kind to one true sentence might be alone with a craving, while the body is tired and the mind is loud. Tell another member the plain facts, then be kind to one true sentence, before a using idea gets a vote. Higher Power, as each member understands that Power, is not impressed by performance while you be kind to one true sentence.\n\nJust for today, I will be kind to one true sentence."
+    "reading": "Be kind to one true sentence. In Narcotics Anonymous I learned honesty doesn't have to be a big confession. It can be one sentence.\n\nI'm not okay today. I nearly used last night. I'm angry and I don't know why. One true sentence said out loud to another member can change the whole day.\n\nIf that's all you can manage, that's enough. Don't pick it apart afterwards. Don't feel stupid for saying it. Be kind to the bit of you that was brave enough to get it out.\n\nJust for today, I'll say one true sentence and go easy on myself for it."
   },
   {
     "month": 11,
     "day": 3,
     "title": "Stay with a feeling that can pass",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to stay with a feeling that can pass. You might be after a hard conversation, and the evening feels risky, on a date whose real work is to stay with a feeling that can pass. A Higher Power, as you understand that Power, can be asked for willingness while you stay with a feeling that can pass. The NA way here is concrete: people, a meeting, no pickup, and the willingness to stay with a feeling that can pass.\n\nJust for today, I will stay with a feeling that can pass."
+    "reading": "Stay with a feeling that can pass. I used to think if I felt something bad, I'd feel it forever. Narcotics Anonymous showed me that's not how feelings work.\n\nThey peak and then they drop. Like a wave. The trick is not doing anything stupid while it's at the top. Ring someone. Go for a walk. Have a shower. Just ride it out.\n\nNext time it hits today, look at the clock. Notice when it starts easing off. It will. Every time you sit through one, it gets a bit easier to sit through the next.\n\nJust for today, I'll stay with a feeling until it starts to pass."
   },
   {
     "month": 11,
     "day": 4,
     "title": "Return to the body that got this far",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: return to the body that got this far. It can be in the kitchen, before any real food, and a message is waiting and feels hard to open, while you return to the body that got this far. The home group has room for hard truth, so let a member hear you as you return to the body that got this far. Staying clean for this date is the promise inside the choice to return to the body that got this far, not a speech about next year.\n\nJust for today, I will return to the body that got this far."
+    "reading": "Return to the body that got this far. My body copped a lot when I was using. Narcotics Anonymous got me clean, but my body's still catching up.\n\nSome days I forget about it completely. Skip meals, sleep badly, sit inside all day. Then I wonder why I feel flat. The body's part of recovery too.\n\nCheck in with yours today. Are you hungry? Thirsty? Tense? Do one thing for it. A feed, a stretch, a walk, an early night. It got you here when you weren't looking after it at all.\n\nJust for today, I'll come back to looking after my body."
   },
   {
     "month": 11,
     "day": 5,
     "title": "Unclench and continue",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to unclench the jaw, drop the shoulders, and continue. A member trying to unclench the jaw, drop the shoulders, and continue might be in a room where a sharp sentence still hangs, while a drink, a drug, or a numbing scroll looks tempting. Use the phone list, decline the old contact, and unclench the jaw, drop the shoulders, and continue with someone else in the loop. Secrecy would feed a using plan, and Narcotics Anonymous would rather you unclench the jaw, drop the shoulders, and continue where a member can hear it.\n\nJust for today, I will unclench the jaw, drop the shoulders, and continue."
+    "reading": "Unclench and continue. I catch myself with my jaw tight, fists balled up, shoulders round my ears. Narcotics Anonymous helped me notice it.\n\nTension builds without us realising. Then one little thing tips us over. If you notice it early, you can let some of it go before it turns into something worse.\n\nDo a quick check right now. Drop your shoulders. Unclench your jaw. Loosen your hands. Take a breath. Then keep going with your day. You don't have to stop everything, just let go of the grip a bit.\n\nJust for today, I'll unclench and keep going."
   },
   {
     "month": 11,
     "day": 6,
     "title": "Keep close to a silence that counts as care",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to keep close to a silence that counts as care. You might be in a quiet house with a loud mind, and food is being put off, on a date whose real work is to keep close to a silence that counts as care. Let a craving rise and fall while you keep close to a silence that counts as care, and tell a sponsor what it felt like. A sponsor does not need a polished report, only the facts, and then you can keep close to a silence that counts as care.\n\nJust for today, I will keep close to a silence that counts as care."
+    "reading": "Keep close to a silence that counts as care. Narcotics Anonymous isn't all talking. Some of the best moments I've had were just sitting next to someone who got it.\n\nYou don't need clever words. Someone's going through a rough patch and you sit with them. Maybe have a smoke out the back together, maybe a coffee. Nobody says much. They still know you care.\n\nIf someone near you is struggling, try just being there. Don't fix. Don't preach. Quiet company says a lot more than people think.\n\nJust for today, I'll offer quiet company."
   },
   {
     "month": 11,
     "day": 7,
     "title": "Willingness the size of a text",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: let willingness be as small as a text. It can be scrolling, and feeling alone, and a big decision is trying to happen while feelings are hot, while you let willingness be as small as a text. A small service for a newcomer can sit beside the choice to let willingness be as small as a text. Higher Power, as each member understands that Power, is not impressed by performance while you let willingness be as small as a text.\n\nJust for today, I will let willingness be as small as a text."
+    "reading": "Willingness the size of a text. Sometimes the whole of my recovery comes down to a text message. Narcotics Anonymous doesn't ask for more than I can do.\n\nHey, rough day. Can you talk? That's it. That's the willingness. You don't need to feel brave or have it all figured out. Just send the text.\n\nIf you've been staring at your phone today, thinking about reaching out, do it now. Even if they don't reply straight away, you did the thing. That's what counts.\n\nJust for today, I'll be willing enough to send the text."
   },
   {
     "month": 11,
     "day": 8,
     "title": "Be kind to a walk long enough to breathe",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to be kind to a walk long enough to breathe. A member trying to be kind to a walk long enough to breathe might be holding a bill that is hard to open, while the day feels very dark. Remain for the meeting, then be kind to a walk long enough to breathe, and leave tomorrow's using ideas outside this date. The NA way here is concrete: people, a meeting, no pickup, and the willingness to be kind to a walk long enough to breathe.\n\nJust for today, I will be kind to a walk long enough to breathe."
+    "reading": "Be kind to a stroll long enough to breathe. When my head gets busy, getting outside helps. Narcotics Anonymous friends told me that early on and they were right.\n\nDoesn't have to be exercise. Just long enough to get some proper breaths in. Round the block. Down to the shop. To the end of the street and back.\n\nIf you're stuck inside today feeling tight, get out for ten minutes. Don't make it a chore. Look at people's gardens. Feel the air. Come back a bit lighter.\n\nJust for today, I'll get outside long enough to breathe properly."
   },
   {
     "month": 11,
     "day": 9,
     "title": "Be kind to today's real page",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to be kind to today's real page. You might be halfway up the stairs, and sleep was short, on a date whose real work is to be kind to today's real page. Phone a sponsor or sit in an NA meeting so you can actually be kind to today's real page. Staying clean for this date is the promise inside the choice to be kind to today's real page, not a speech about next year.\n\nJust for today, I will be kind to today's real page."
+    "reading": "Be kind to today's real page. In Narcotics Anonymous we talk about one day at a time. I picture it like a page in a book. Today's page.\n\nI keep trying to read ahead. Worry about next month. Or flip back and stew on last year. But the only page I can actually write on is today.\n\nLook at your real page today. What's on it? Who do you need to see? What needs doing? Be kind to it even if it's a boring page. Boring and clean is a good page.\n\nJust for today, I'll live on today's page."
   },
   {
     "month": 11,
     "day": 10,
     "title": "Stay with a small repair",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: stay with a small repair. It can be in the bathroom, putting off the next thing, and someone's words are still ringing, while you stay with a small repair. Tell another member the plain facts, then stay with a small repair, before a using idea gets a vote. Secrecy would feed a using plan, and Narcotics Anonymous would rather you stay with a small repair where a member can hear it. A sponsor does not need a polished report, only the facts, and then you can stay with a small repair.\n\nJust for today, I will stay with a small repair."
+    "reading": "Stay with a small repair. Narcotics Anonymous talks about making amends. I used to think that meant big dramatic apologies. A lot of it is small repairs.\n\nPaying back twenty bucks. Turning up when you said you would. Saying sorry for snapping at someone yesterday. Fixing the thing you broke.\n\nPick one small repair today and do it. Don't make a production of it. Just fix it and leave it. Bit by bit, the damage gets smaller and you start trusting yourself again.\n\nJust for today, I'll make one small repair."
   },
   {
     "month": 11,
     "day": 11,
     "title": "Honour one safe person",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to honour one safe person. A member trying to honour one safe person might be packing a bag and feeling unsure, while a slip is on the mind. A Higher Power, as you understand that Power, can be asked for willingness while you honour one safe person. A sponsor does not need a polished report, only the facts, and then you can honour one safe person. Higher Power, as each member understands that Power, is not impressed by performance while you honour one safe person.\n\nJust for today, I will honour one safe person."
+    "reading": "Honour one safe person. Not everyone is safe. Narcotics Anonymous helped me work out who actually is.\n\nA safe person doesn't judge you. Doesn't gossip about your stuff. Tells you the truth but kindly. Doesn't want anything off you. Most of us only have one or two at first.\n\nThink of yours today. Let them know they matter. Send a message, buy them a coffee, say thanks. Safe people are rare, and they're worth looking after.\n\nJust for today, I'll honour one safe person in my life."
   },
   {
     "month": 11,
     "day": 12,
     "title": "Return to one safe person",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to return to one safe person. You might be at work, trying to look fine, and comparison has crept in, on a date whose real work is to return to one safe person. The home group has room for hard truth, so let a member hear you as you return to one safe person. Higher Power, as each member understands that Power, is not impressed by performance while you return to one safe person. The NA way here is concrete: people, a meeting, no pickup, and the willingness to return to one safe person.\n\nJust for today, I will return to one safe person."
+    "reading": "Return to one safe person. When things go wrong, I tend to scatter. Ring everyone, or no one. Narcotics Anonymous taught me to come back to the safe ones.\n\nThere's usually one person who gets you. Who won't freak out when you tell them what's going on. Go back to them. You don't need a crowd.\n\nIf today's falling apart a bit, ring that person. Tell them straight. Let them help. That's what they signed up for.\n\nJust for today, I'll go back to one safe person."
   },
   {
     "month": 11,
     "day": 13,
     "title": "Be gentle with the body that got this far",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: be gentle with the body that got this far. It can be in bed, not sleeping, and the room is safe enough, but the chest is tight, while you be gentle with the body that got this far. Use the phone list, decline the old contact, and be gentle with the body that got this far with someone else in the loop. The NA way here is concrete: people, a meeting, no pickup, and the willingness to be gentle with the body that got this far.\n\nJust for today, I will be gentle with the body that got this far."
+    "reading": "Be gentle with the body that got this far. In Narcotics Anonymous I hear people talk about their bodies like enemies. I get it. But it's the only one we've got.\n\nIt carried us through some awful stuff. It's still recovering. Aches, bad sleep, cravings, whatever. Being harsh with it doesn't help.\n\nToday, be gentle. Rest when you're tired. Eat something decent. Book that check-up you've been putting off. Thank your body for hanging in there.\n\nJust for today, I'll be gentle with my body."
   },
   {
     "month": 11,
     "day": 14,
     "title": "Honour the true story",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to honour the true story. A member trying to honour the true story might be at the clothesline, while a sharp sentence already landed. Let a craving rise and fall while you honour the true story, and tell a sponsor what it felt like. Staying clean for this date is the promise inside the choice to honour the true story, not a speech about next year. Secrecy would feed a using plan, and Narcotics Anonymous would rather you honour the true story where a member can hear it.\n\nJust for today, I will honour the true story."
+    "reading": "Honour the true story. I used to tell stories about myself that weren't true. That I was fine. That I had it under control. Narcotics Anonymous wanted the real story.\n\nThe real story has messy bits. Bits that make you cringe. But it's yours, and it's how you got here. Pretending it didn't happen only keeps you stuck.\n\nWhen you share today, tell it straight. Not worse than it was, not better. Just how it was. The true story's the one that helps people.\n\nJust for today, I'll honour my true story."
   },
   {
     "month": 11,
     "day": 15,
     "title": "A softer inner voice",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to replace the inner insult with one factual sentence. You might be staring at an unanswered message, and everything feels behind, on a date whose real work is to replace the inner insult with one factual sentence. A small service for a newcomer can sit beside the choice to replace the inner insult with one factual sentence. Secrecy would feed a using plan, and Narcotics Anonymous would rather you replace the inner insult with one factual sentence where a member can hear it.\n\nJust for today, I will replace the inner insult with one factual sentence."
+    "reading": "A softer inner voice. The voice in my head used to be pretty brutal. Narcotics Anonymous is slowly turning down the volume.\n\nYou're useless. You'll never change. Everyone can see what a mess you are. Sound familiar? That voice lies. It's been running the show too long.\n\nTry talking back to it today. Not with fake positivity. Just something like, hang on, that's not fair. You're doing your best. A softer voice inside takes practice, but it does get louder.\n\nJust for today, I'll talk to myself a bit more kindly."
   },
   {
     "month": 11,
     "day": 16,
     "title": "Stay with company instead of a secret",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: stay with company instead of a secret. It can be at the kitchen sink, and help is on offer and feels hard to take, while you stay with company instead of a secret. Remain for the meeting, then stay with company instead of a secret, and leave tomorrow's using ideas outside this date. A sponsor does not need a polished report, only the facts, and then you can stay with company instead of a secret.\n\nIf trying to stay with company instead of a secret includes thoughts of hurting yourself, call 000 and let another person remain nearby.\n\nJust for today, I will stay with company instead of a secret."
+    "reading": "Stay with company instead of a secret. My using lived in secrets. Narcotics Anonymous is the opposite. It lives out in the open with other people.\n\nWhen I start keeping things to myself again, that's a warning sign. Small secrets turn into bigger ones. Then I'm back in my head, alone, and that's dangerous.\n\nIf you've got something you're hiding today, tell one person. Stay in company. Go to a meeting. Get it out before it gets bigger.\n\nJust for today, I'll stay in company instead of keeping secrets."
   },
   {
     "month": 11,
     "day": 17,
     "title": "Stay with today's real page",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to stay with today's real page. A member trying to stay with today's real page might be on the bus, while a craving is trying to sound like a good idea. Phone a sponsor or sit in an NA meeting so you can actually stay with today's real page. Higher Power, as each member understands that Power, is not impressed by performance while you stay with today's real page. The NA way here is concrete: people, a meeting, no pickup, and the willingness to stay with today's real page.\n\nJust for today, I will stay with today's real page."
+    "reading": "Stay with today's real page. In Narcotics Anonymous we keep it to today. Not because tomorrow doesn't matter, but because today's the only bit we can actually do.\n\nMy head keeps flipping ahead to worries, or back to regrets. Both make me anxious. Neither changes anything.\n\nBring yourself back to now. What's in front of you? Do that. If your mind wanders, gently drag it back. Today's page is plenty.\n\nJust for today, I'll stay with today."
   },
   {
     "month": 11,
     "day": 18,
     "title": "Be kind to company instead of a secret",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to be kind to company instead of a secret. You might be in a quiet car park, and money stress is sitting on the table, on a date whose real work is to be kind to company instead of a secret. Tell another member the plain facts, then be kind to company instead of a secret, before a using idea gets a vote. The NA way here is concrete: people, a meeting, no pickup, and the willingness to be kind to company instead of a secret.\n\nIf trying to be kind to company instead of a secret includes thoughts of hurting yourself, call 000 and let another person remain nearby.\n\nJust for today, I will be kind to company instead of a secret."
+    "reading": "Be kind to company instead of a secret. Sometimes I go to Narcotics Anonymous and feel like a fraud. Like everyone else is doing better. That's when I'm tempted to hide.\n\nBut the room's full of people who've felt exactly the same. When you say it out loud, you find out you're not the only one. That's the whole point.\n\nGo easy on yourself today. Show up, even if you feel like a mess. Let people see a bit of you. Company is kinder than secrets, every time.\n\nJust for today, I'll choose people over hiding."
   },
   {
     "month": 11,
     "day": 19,
     "title": "Let good be good",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: let one good moment stay good for a full minute. It can be on a short walk, and the urge to hide is strong, while you let one good moment stay good for a full minute. A Higher Power, as you understand that Power, can be asked for willingness while you let one good moment stay good for a full minute. Staying clean for this date is the promise inside the choice to let one good moment stay good for a full minute, not a speech about next year.\n\nJust for today, I will let one good moment stay good for a full minute."
+    "reading": "Let good be good. I've got a habit of ruining good moments by waiting for them to go wrong. Narcotics Anonymous friends call me on it.\n\nSomething nice happens and straight away my head goes, yeah but. It won't last. You don't deserve it. Something bad's coming.\n\nIf something good happens today, just let it be good. Enjoy it. Tell someone. You don't have to earn it or brace for the fall. Good things happen to people in recovery too.\n\nJust for today, I'll let good things be good."
   },
   {
     "month": 11,
     "day": 20,
     "title": "Be kind to the help already here",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to be kind to the help already here. A member trying to be kind to the help already here might be on the edge of the bed, while hunger and irritation are easy to mix up. The home group has room for hard truth, so let a member hear you as you be kind to the help already here. Secrecy would feed a using plan, and Narcotics Anonymous would rather you be kind to the help already here where a member can hear it.\n\nJust for today, I will be kind to the help already here."
+    "reading": "Be kind to the help already here. Sometimes I'm waiting for some big answer. Narcotics Anonymous keeps reminding me the help's already around.\n\nThe meeting down the road. The person who gave you their number. The doctor. The counsellor. The friend who checks in. It's all there. We just forget to use it.\n\nToday, use one bit of help you've already got. Don't wait for the perfect option. Ordinary help works if you actually take it.\n\nJust for today, I'll use the help that's already here."
   },
   {
     "month": 11,
     "day": 21,
     "title": "Be gentle with the true story",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to be gentle with the true story. You might be waiting for the kettle, and quitting looks easier than starting, on a date whose real work is to be gentle with the true story. Use the phone list, decline the old contact, and be gentle with the true story with someone else in the loop. A sponsor does not need a polished report, only the facts, and then you can be gentle with the true story.\n\nJust for today, I will be gentle with the true story."
+    "reading": "Be gentle with the true story. Telling the truth about my past can stir up a lot. Narcotics Anonymous taught me to do it but also to look after myself while I do.\n\nYou don't have to tell everyone everything at once. You don't have to relive every awful bit to be honest. Go at a pace that's safe.\n\nIf you're sharing your story today, be gentle with yourself. Take breaks. Have someone to talk to afterwards. Honesty doesn't have to hurt more than it needs to.\n\nJust for today, I'll tell my story gently."
   },
   {
     "month": 11,
     "day": 22,
     "title": "Stay with a simple prayer or a quiet hope",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: stay with a simple prayer or a quiet hope. It can be in a supermarket aisle, and grief showed up without warning, while you stay with a simple prayer or a quiet hope. Let a craving rise and fall while you stay with a simple prayer or a quiet hope, and tell a sponsor what it felt like. Higher Power, as each member understands that Power, is not impressed by performance while you stay with a simple prayer or a quiet hope.\n\nJust for today, I will stay with a simple prayer or a quiet hope."
+    "reading": "Stay with a simple hope. Some days, a simple hope is all I've got. Narcotics Anonymous says that's enough to keep going.\n\nMaybe it's just hoping tonight's easier than last night. Or hoping you'll sleep. Or hoping you'll make it to the meeting. It doesn't need to be big.\n\nHold onto your simple hope today. Say it out loud if that helps. Write it down. Share it with someone. Small hopes carry us further than we expect.\n\nJust for today, I'll stay with a simple hope."
   },
   {
     "month": 11,
     "day": 23,
     "title": "Keep close to an honest ask",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to keep close to an honest ask. A member trying to keep close to an honest ask might be outside a meeting, while the house is quiet and the mind is not. A small service for a newcomer can sit beside the choice to keep close to an honest ask. The NA way here is concrete: people, a meeting, no pickup, and the willingness to keep close to an honest ask. Staying clean for this date is the promise inside the choice to keep close to an honest ask, not a speech about next year.\n\nJust for today, I will keep close to an honest ask."
+    "reading": "Keep close to an honest ask. Asking for help used to feel like failure. Narcotics Anonymous turned that around for me.\n\nCan you give me a lift? Can I ring you tonight? I'm struggling, can we talk? Simple asks. Honest ones. Most people are happy to help if they know what you need.\n\nPractise one honest ask today. Be clear. Don't apologise ten times. Just ask. You'd be surprised how often people say yes.\n\nJust for today, I'll make one honest ask."
   },
   {
     "month": 11,
     "day": 24,
     "title": "Stay with a kinder pace",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to stay with a kinder pace. You might be in the shower, and a secret feels heavy, on a date whose real work is to stay with a kinder pace. Remain for the meeting, then stay with a kinder pace, and leave tomorrow's using ideas outside this date. Staying clean for this date is the promise inside the choice to stay with a kinder pace, not a speech about next year. Secrecy would feed a using plan, and Narcotics Anonymous would rather you stay with a kinder pace where a member can hear it.\n\nJust for today, I will stay with a kinder pace."
+    "reading": "Stay with a kinder pace. I used to go flat out or not at all. Narcotics Anonymous is teaching me there's a middle speed.\n\nYou don't have to do everything today. You don't have to fix your whole life this week. A kinder pace means doing enough, then resting.\n\nSlow down a notch today. Leave five minutes early. Eat sitting down. Say no to one thing you don't have room for. Steady wins out over sprinting.\n\nJust for today, I'll go at a kinder pace."
   },
   {
     "month": 11,
     "day": 25,
     "title": "A day you do not abandon",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: do not abandon the day, and do one more care. It can be at the kitchen table, and being alone is pretending to be strength, while you do not abandon the day, and do one more care. Phone a sponsor or sit in an NA meeting so you can actually do not abandon the day, and do one more care. Secrecy would feed a using plan, and Narcotics Anonymous would rather you do not abandon the day, and do one more care where a member can hear it.\n\nJust for today, I will do not abandon the day, and do one more care."
+    "reading": "A day you do not abandon. Some days are rubbish from the start. Narcotics Anonymous taught me not to write them off.\n\nThe old me would decide by ten in the morning that the day was ruined, so I might as well use. Now I try to turn it around. Even a bad day can be saved in the arvo.\n\nIf today started rough, don't give up on it. Take a break, ring someone, start again after lunch. A bad morning doesn't have to mean a bad night.\n\nJust for today, I won't give up on the day."
   },
   {
     "month": 11,
     "day": 26,
     "title": "Make room for an honest ask",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to make room for an honest ask. A member trying to make room for an honest ask might be on the couch, while shame got there first. Tell another member the plain facts, then make room for an honest ask, before a using idea gets a vote. A sponsor does not need a polished report, only the facts, and then you can make room for an honest ask. Higher Power, as each member understands that Power, is not impressed by performance while you make room for an honest ask.\n\nJust for today, I will make room for an honest ask."
+    "reading": "Make room for an honest ask. I used to think needing help meant I was weak. Narcotics Anonymous showed me everyone needs help.\n\nThe people with long clean time ask for help all the time. That's probably why they've got long clean time.\n\nToday, leave space in your day for asking. Ring someone and actually say what you need. Ask that question at the meeting. Let people in on it.\n\nJust for today, I'll make room to ask for what I need."
   },
   {
     "month": 11,
     "day": 27,
     "title": "Keep close to the way back",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to keep close to the way back. You might be in the doorway, keys still in hand, and loneliness is louder than the noise around, on a date whose real work is to keep close to the way back. A Higher Power, as you understand that Power, can be asked for willingness while you keep close to the way back. Higher Power, as each member understands that Power, is not impressed by performance while you keep close to the way back.\n\nJust for today, I will keep close to the way back."
+    "reading": "Keep close to the way back. If I slip, Narcotics Anonymous doesn't shut the door on me. The way back is always there.\n\nA lot of us have relapsed. It's not the end. What matters is coming back. Turning up, being honest, starting again.\n\nIf you've drifted today, or this week, or this year, come back. The meeting's still on. People will be glad to see you. Keep the way back close and well-worn.\n\nJust for today, I'll stay close to the way back."
   },
   {
     "month": 11,
     "day": 28,
     "title": "Be kind to the true story",
-    "reading": "Narcotics Anonymous keeps the work the size of this date: be kind to the true story. It can be in the car, not ready to go in, and the body is tired and the mind is loud, while you be kind to the true story. The home group has room for hard truth, so let a member hear you as you be kind to the true story. The NA way here is concrete: people, a meeting, no pickup, and the willingness to be kind to the true story.\n\nJust for today, I will be kind to the true story."
+    "reading": "Be kind to the true story. My story's got some ugly bits. Narcotics Anonymous taught me I don't have to hide them, but I also don't have to beat myself up with them.\n\nThe truth is the truth. Pretending only makes it heavier. But you can tell it kindly, the way you'd tell a mate's story.\n\nWhen you think about your past today, try to be kind. That person was struggling. They didn't have the tools you've got now.\n\nJust for today, I'll be kind to my own story."
   },
   {
     "month": 11,
     "day": 29,
     "title": "Recovery in the kitchen",
-    "reading": "Narcotics Anonymous moves one day at a time, so the job is to practise recovery in the kitchen with a simple meal. A member trying to practise recovery in the kitchen with a simple meal might be on the phone, on hold, while the evening feels risky. Use the phone list, decline the old contact, and practise recovery in the kitchen with a simple meal with someone else in the loop. Staying clean for this date is the promise inside the choice to practise recovery in the kitchen with a simple meal, not a speech about next year.\n\nJust for today, I will practise recovery in the kitchen with a simple meal."
+    "reading": "Recovery in the kitchen. Not all of my recovery happens at Narcotics Anonymous meetings. A lot of it happens at home, in the kitchen.\n\nCooking a proper meal. Doing the dishes. Making a cuppa for someone. Ordinary stuff, done clean. It's where life actually happens.\n\nSpend some time in your kitchen today. Make something simple. Eat it sitting down. It might not feel like recovery work, but it is. Looking after yourself is the work.\n\nJust for today, I'll let my kitchen be part of my recovery."
   },
   {
     "month": 11,
     "day": 30,
     "title": "Come back to the way back",
-    "reading": "Narcotics Anonymous asks only for this date, and the task is to come back to the way back. You might be folding the washing, and a message is waiting and feels hard to open, on a date whose real work is to come back to the way back. Let a craving rise and fall while you come back to the way back, and tell a sponsor what it felt like. Secrecy would feed a using plan, and Narcotics Anonymous would rather you come back to the way back where a member can hear it.\n\nJust for today, I will come back to the way back."
+    "reading": "Come back to the way back. I've had to come back more than once. Narcotics Anonymous has always let me.\n\nIt's embarrassing walking back in after a slip. You feel like everyone's watching. But mostly people are just glad you're alive and back.\n\nIf you need to come back today, do it. Pick up a white keytag if that's your thing. Say I'm back. It's brave. Plenty of people in the room have done the same.\n\nJust for today, I'll come back."
   },
   {
     "month": 12,
