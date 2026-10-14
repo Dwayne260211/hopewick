@@ -731,187 +731,187 @@ var WORD_FOR_THE_DAY = [
     "month": 5,
     "day": 1,
     "word": "Detach",
-    "reading": "The Christian theme, Detach, is read with John 11:35. For Detach, the sense of John 11:35 is this: the gospel records that Jesus wept with grieving friends.\n\nChrist is gentle with unfinished people, so Detach does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Detach shows up this afternoon.\n\nYou can begin Detach before you feel holy, because the Father already knows the day. If the morning was clumsy, Detach can begin again after lunch in the sight of God. God's kindness towards you is the ground under Detach, not a prize withheld until you improve."
+    "reading": "Detach. John 11:35. Jesus wept.\n\nShortest verse in the Bible. His mate Lazarus had died, and Jesus stood there with the family and cried. Even though he knew what he was about to do.\n\nDetaching doesn't mean not caring. It means you stop trying to control things you can't control. You can love someone and still let go of fixing them. Jesus cared enough to cry. Today, if you're worried about someone, care for them, cry if you need to, and then hand them over. You're not their saviour. That job's taken."
   },
   {
     "month": 5,
     "day": 2,
     "word": "Direction",
-    "reading": "On this page the Christian theme is Direction, and the text is Matthew 22:39. For Direction, the sense of Matthew 22:39 is this: Jesus says to love your neighbour as yourself.\n\nThat verse is a welcome, not a test you pass before God will look at Direction. To live Direction, read Matthew 22:39 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Matthew 22:39, for Direction, is trust, not a performance. God's kindness towards you is the ground under Direction, not a prize withheld until you improve."
+    "reading": "Direction. Matthew 22:39. Jesus says love your neighbour as yourself.\n\nAs yourself. That bit gets skipped a lot. You can't love your neighbour well if you treat yourself like rubbish.\n\nIf you're not sure which way to head today, this is a pretty good compass. Is this loving to the people around me? Is it loving to me? If the answer's yes to both, you're probably on track. Today, do one kind thing for someone else and one kind thing for yourself. Both count. Both point the right way."
   },
   {
     "month": 5,
     "day": 3,
     "word": "Doorway",
-    "reading": "Doorway is the Christian theme here, set beside Philippians 4:13. For Doorway, the sense of Philippians 4:13 is this: Paul says he can face what comes through Christ who strengthens him.\n\nNothing in Philippians 4:13 asks you to pretend, and Doorway can begin while you are still tired. Give Doorway a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Doorway is allowed to be slow. Keep Doorway Christian and specific: one verse, one prayer, one person. In Christ, Doorway is worth attention even when the calendar is full."
+    "reading": "Doorway. Philippians 4:13 says I can do all things through Christ who gives me strength.\n\nPeople put that on gym shirts. But Paul wrote it about being content whether he had plenty or nothing. It's about getting through, not winning.\n\nSome days you're standing in a doorway. Something new on the other side. A job interview. A hard conversation. A first meeting. Your knees are knocking. That's fine. You don't need to feel strong. Christ gives the strength. Just step through. One foot, then the other."
   },
   {
     "month": 5,
     "day": 4,
     "word": "Early",
-    "reading": "The Christian theme, Early, is read with Joshua 1:9. For Early, the sense of Joshua 1:9 is this: God tells Joshua to be strong and courageous, because the Lord is with him.\n\nRead Early in the light of that verse, without turning it into a performance for other people. Let Early sound like a softer answer where the house has been sharp, with Joshua 1:9 still in mind.\n\nNo one else has to share your creed for you to practise Early in the sight of God. In Christ, Early is worth attention even when the calendar is full."
+    "reading": "Early. Joshua 1:9. God tells Joshua be strong and courageous, don't be afraid, because I'm with you wherever you go.\n\nJoshua had big shoes to fill. Moses was gone and now he was in charge. He was probably terrified. God doesn't say don't feel scared. He says I'm with you.\n\nIf you're early in recovery, or early in anything, it's scary. You don't know what you're doing yet. That's normal. Get up early if you can and sit with that verse before the day starts. Wherever you go today, he's going too."
   },
   {
     "month": 5,
     "day": 5,
     "word": "Earnest",
-    "reading": "On this page the Christian theme is Earnest, and the text is Proverbs 15:1. For Earnest, the sense of Proverbs 15:1 is this: a soft answer turns anger aside.\n\nChrist is gentle with unfinished people, so Earnest does not have to arrive already polished. Practise Earnest at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Earnest honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Earnest."
+    "reading": "Earnest. Proverbs 15:1 says a gentle answer turns away anger, but harsh words stir it up.\n\nBeing earnest means meaning it. Not putting on a show. And when you really mean to make peace, a gentle answer is usually the way.\n\nWe're often earnest about the wrong things. Earnest about being right. Earnest about getting the last word. Today, be earnest about keeping the peace. When someone comes at you, answer softly. Not fake. Just calm. Mean it. It takes more strength than yelling back."
   },
   {
     "month": 5,
     "day": 6,
     "word": "Effort",
-    "reading": "Effort is the Christian theme here, set beside Isaiah 43:1. For Effort, the sense of Isaiah 43:1 is this: God says he has called his people by name, and they are his.\n\nThat verse is a welcome, not a test you pass before God will look at Effort. Practise Effort at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Effort honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Effort."
+    "reading": "Effort. Isaiah 43:1 says don't be afraid, I've redeemed you, I've called you by name, you're mine.\n\nBy name. Not a number. Not a case file. Your name.\n\nRecovery takes effort. Real effort. Some days it's exhausting. But it's not effort to earn God's love. He's already called you his. The effort is just living like it's true. Today, put in some effort. Go to the thing. Make the call. And remember the effort isn't to get God on your side. He already is."
   },
   {
     "month": 5,
     "day": 7,
     "word": "Embrace",
-    "reading": "The Christian theme, Embrace, is read with Mark 4:39. For Embrace, the sense of Mark 4:39 is this: Jesus speaks peace to a storm.\n\nNothing in Mark 4:39 asks you to pretend, and Embrace can begin while you are still tired. If you were wrong, let Embrace include an apology in a single clean sentence, because of Mark 4:39.\n\nMercy is wider than today's mistakes, and Embrace can stand inside that mercy without showing off. If the morning was clumsy, Embrace can begin again after lunch in the sight of God. God's kindness towards you is the ground under Embrace, not a prize withheld until you improve."
+    "reading": "Mark 4:39. Jesus is asleep in the boat during a massive storm. The disciples wake him up, panicking. He gets up and says to the wind, quiet, be still. And it stops.\n\nSome storms are outside you. Some are inside your head. Either way, he can speak to them.\n\nHold onto that today. If the storm's raging, wake him up. Tell him you're scared. He doesn't mind being woken. You're not bothering him. He's in the boat with you, and the wind still listens to him."
   },
   {
     "month": 5,
     "day": 8,
     "word": "Emerge",
-    "reading": "On this page the Christian theme is Emerge, and the text is Acts 2:42. For Emerge, the sense of Acts 2:42 is this: the early church stayed with teaching, shared life, meals, and prayers.\n\nRead Emerge in the light of that verse, without turning it into a performance for other people. Leave a harsh opinion unsaid, and let that restraint be how Emerge shows up this afternoon.\n\nHand the evening to God, and let Emerge be unfinished without being abandoned. God's kindness towards you is the ground under Emerge, not a prize withheld until you improve."
+    "reading": "Emerge. Acts 2:42 says the early believers devoted themselves to teaching, to fellowship, to sharing meals and to prayer.\n\nTeaching, people, food, prayer. Pretty simple recipe.\n\nWhen you're coming out of a dark time, you need those basics. Something to learn. People to be with. Meals together. Time with God. Today, pick one of those. Have a feed with someone. Read a bit. Pray a bit. You emerge slowly, bit by bit, with other people around you. Nobody comes out of the cave alone."
   },
   {
     "month": 5,
     "day": 9,
     "word": "Empty",
-    "reading": "Empty is the Christian theme here, set beside Galatians 5:22. For Empty, the sense of Galatians 5:22 is this: the Spirit grows love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control.\n\nThat verse is a welcome, not a test you pass before God will look at Empty. Leave a harsh opinion unsaid, and let that restraint be how Empty shows up this afternoon.\n\nYou can begin Empty before you feel holy, because the Father already knows the day. Keep Empty Christian and specific: one verse, one prayer, one person. In Christ, Empty is worth attention even when the calendar is full."
+    "reading": "Empty. Galatians 5:22 lists what the Spirit grows in people. Love, joy, peace, patience, kindness, goodness, faithfulness, gentleness and self-control.\n\nThat's a long list. Nobody's got all of it all the time.\n\nSome days you feel empty. Nothing in the tank. That's when this matters. You don't have to manufacture these things yourself. They grow. Like fruit on a tree. Today, if you're empty, ask God to fill you up. Then notice if any bit of that list shows up. A bit of patience. A moment of peace. That's growth."
   },
   {
     "month": 5,
     "day": 10,
     "word": "Encourage",
-    "reading": "The Christian theme, Encourage, is read with Colossians 3:15. For Encourage, the sense of Colossians 3:15 is this: let the peace of Christ rule in your hearts.\n\nThat verse is a welcome, not a test you pass before God will look at Encourage. To live Encourage, read Colossians 3:15 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Colossians 3:15, for Encourage, is trust, not a performance. In Christ, Encourage is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Encourage still fits the actual day."
+    "reading": "Encourage. Colossians 3:15 says let the peace of Christ rule in your hearts, and be thankful.\n\nRule. Peace in charge. Not anxiety, not anger. Peace.\n\nWhen peace is running things inside you, it's easier to encourage other people. You're not so caught up in your own stuff. Today, let peace rule for a bit. Take a breath. Say thanks for something. Then encourage someone. Tell them they're doing well. Point out something good about them. People need it more than you'd think."
   },
   {
     "month": 5,
     "day": 11,
     "word": "Endurance",
-    "reading": "On this page the Christian theme is Endurance, and the text is James 1:5. For Endurance, the sense of James 1:5 is this: if you lack wisdom, ask God, who gives generously.\n\nNothing in James 1:5 asks you to pretend, and Endurance can begin while you are still tired. Give Endurance a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Endurance is allowed to be slow. Australian weather can be hot, wet, or cold, and Endurance still fits the actual day. A neighbour does not need a creed explained before they can receive the fruit of Endurance."
+    "reading": "Endurance. James 1:5 says if any of you lacks wisdom, ask God, who gives generously without finding fault.\n\nWithout finding fault. He doesn't make you feel stupid for asking.\n\nEndurance needs wisdom. Knowing when to push and when to rest. When to speak and when to shut up. When to stay and when to leave. Today, if you're not sure, ask God. He gives generously. Then ask someone wise. You don't have to work it all out yourself. Going the distance is easier with good advice."
   },
   {
     "month": 5,
     "day": 12,
     "word": "Energy",
-    "reading": "Energy is the Christian theme here, set beside Psalm 23:4. For Energy, the sense of Psalm 23:4 is this: even in a dark valley the psalmist is not abandoned, because the Lord is with him.\n\nRead Energy in the light of that verse, without turning it into a performance for other people. Let Energy sound like a softer answer where the house has been sharp, with Psalm 23:4 still in mind.\n\nNo one else has to share your creed for you to practise Energy in the sight of God. A neighbour does not need a creed explained before they can receive the fruit of Energy."
+    "reading": "Energy. Psalm 23:4 says even though I walk through the darkest valley, I won't fear, because you're with me.\n\nWalk through. Not stay in. You're passing through.\n\nDark valleys drain your energy. Everything feels heavy. Getting out of bed is hard. That's normal. You're still walking. God's with you. Today, if your energy's low, do the minimum. Eat. Drink water. Ring someone. Go to bed. You're still moving through the valley. That counts."
   },
   {
     "month": 5,
     "day": 13,
     "word": "Evening",
-    "reading": "The Christian theme, Evening, is read with Psalm 51:10. For Evening, the sense of Psalm 51:10 is this: the psalmist asks God for a clean heart and a steady spirit within.\n\nChrist is gentle with unfinished people, so Evening does not have to arrive already polished. Carry Evening into an ordinary hour by telling the truth kindly, in the spirit of Psalm 51:10.\n\nPut Evening where your hands are, and let the text stay a lamp rather than a weapon. If the morning was clumsy, Evening can begin again after lunch in the sight of God."
+    "reading": "Evening. Psalm 51:10 says create in me a clean heart, O God, and renew a right spirit within me.\n\nDavid wrote that after he'd really stuffed up. Adultery, murder. Big stuff. And he still asked for a clean heart.\n\nEvenings can bring up regret. Things you said, things you did. This is a good prayer for then. Not a long list of excuses. Just ask for a clean heart. Tonight, before bed, say it. Clean me up. Give me a right spirit. Then let it go and sleep."
   },
   {
     "month": 5,
     "day": 14,
     "word": "Faith",
-    "reading": "On this page the Christian theme is Faith, and the text is Matthew 5:9. For Faith, the sense of Matthew 5:9 is this: Jesus says peacemakers are blessed and called children of God.\n\nThat verse is a welcome, not a test you pass before God will look at Faith. Practise Faith at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Faith honest and gentle until you sleep, and leave the rest in God's care. God's kindness towards you is the ground under Faith, not a prize withheld until you improve."
+    "reading": "Faith. Matthew 5:9. Jesus says blessed are the peacemakers, they'll be called children of God.\n\nPeacemakers. Not peacekeepers who avoid trouble. Makers. People who actively build peace.\n\nFaith shows up in how you treat people. Today, make some peace. Patch up a small argument. Be the one who calms things down instead of stirring them up. Let someone else be right. That's faith in action. Children of God make peace because that's what their Father does."
   },
   {
     "month": 5,
     "day": 15,
     "word": "Family",
-    "reading": "Family is the Christian theme here, set beside Mark 12:30. For Family, the sense of Mark 12:30 is this: love the Lord your God with heart, soul, mind, and strength.\n\nNothing in Mark 12:30 asks you to pretend, and Family can begin while you are still tired. If you were wrong, let Family include an apology in a single clean sentence, because of Mark 12:30.\n\nMercy is wider than today's mistakes, and Family can stand inside that mercy without showing off. Keep Family Christian and specific: one verse, one prayer, one person."
+    "reading": "Family. Mark 12:30 says love the Lord your God with all your heart, soul, mind and strength.\n\nAll of you. Not just the good bits.\n\nFamily can be complicated. Some of us have great families. Some have broken ones. Some have built new families from people who weren't related. God's family takes everyone. Today, love the family you've got, whatever that looks like. And give God all of you, the messy family stuff included. He can handle it."
   },
   {
     "month": 5,
     "day": 16,
     "word": "Fear",
-    "reading": "The Christian theme, Fear, is read with John 1:5. For Fear, the sense of John 1:5 is this: the light shines in the darkness, and the darkness has not overcome it.\n\nRead Fear in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of John 1:5, and let Fear be unhurried company for someone lonely.\n\nHand the evening to God, and let Fear be unfinished without being abandoned. In Christ, Fear is worth attention even when the calendar is full."
+    "reading": "Fear. John 1:5 says the light shines in the darkness, and the darkness hasn't overcome it.\n\nHasn't overcome it. The dark's still there, but the light's winning.\n\nFear lives in the dark. What's going to happen? What if I fail? What if they find out? But light keeps shining. Today, when fear's loud, bring it into the light. Tell someone. Pray about it. Write it down. Fear shrinks when it's out in the open. The dark hasn't won, and it's not going to."
   },
   {
     "month": 5,
     "day": 17,
     "word": "Fellowship",
-    "reading": "On this page the Christian theme is Fellowship, and the text is Romans 8:26. For Fellowship, the sense of Romans 8:26 is this: the Spirit helps when we are weak and do not know how to pray.\n\nNothing in Romans 8:26 asks you to pretend, and Fellowship can begin while you are still tired. Leave a harsh opinion unsaid, and let that restraint be how Fellowship shows up this afternoon.\n\nYou can begin Fellowship before you feel holy, because the Father already knows the day. Australian weather can be hot, wet, or cold, and Fellowship still fits the actual day."
+    "reading": "Fellowship. Romans 8:26 says the Spirit helps us in our weakness, when we don't know what to pray.\n\nDon't know what to pray. Some days that's all of us.\n\nYou don't have to have the words. The Spirit helps. And other people help too. That's fellowship. Being with people who can pray when you can't, believe when you're struggling, hope when you've got none. Today, spend time with your people. Let them carry you a bit if you need it."
   },
   {
     "month": 5,
     "day": 18,
     "word": "Flourish",
-    "reading": "Flourish is the Christian theme here, set beside Romans 12:21. For Flourish, the sense of Romans 12:21 is this: do not be overcome by evil, but overcome evil with good.\n\nNothing in Romans 12:21 asks you to pretend, and Flourish can begin while you are still tired. To live Flourish, read Romans 12:21 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Romans 12:21, for Flourish, is trust, not a performance. A neighbour does not need a creed explained before they can receive the fruit of Flourish."
+    "reading": "Flourish. Romans 12:21 says don't be overcome by evil, but overcome evil with good.\n\nGood wins by doing good. Not by fighting dirty.\n\nSome of us grew up around a lot of bad stuff. Some of us did a lot of bad stuff. It's easy to think that's all there is. But good can grow even in rough soil. Today, do something good. Answer meanness with kindness. Answer a mess with help. You'll start to flourish in the places you thought nothing could grow."
   },
   {
     "month": 5,
     "day": 19,
     "word": "Focus",
-    "reading": "The Christian theme, Focus, is read with 2 Corinthians 5:17. For Focus, the sense of 2 Corinthians 5:17 is this: anyone in Christ is a new creation.\n\nNothing in 2 Corinthians 5:17 asks you to pretend, and Focus can begin while you are still tired. Give Focus a body: a short prayer, then a practical favour that stays quiet.\n\nJesus does not rush slow learners, and Focus is allowed to be slow. If the morning was clumsy, Focus can begin again after lunch in the sight of God. God's kindness towards you is the ground under Focus, not a prize withheld until you improve."
+    "reading": "Focus. 2 Corinthians 5:17 says if anyone is in Christ, they're a new creation, the old has gone, the new has come.\n\nNew creation. Not a patched-up version of the old one. New.\n\nIt's easy to focus on the old stuff. The mistakes. The damage. The person you used to be. Today, try focusing on the new. What's different now? What are you doing that you couldn't before? Who are you becoming? The old's gone. You don't have to keep staring at it."
   },
   {
     "month": 5,
     "day": 20,
     "word": "Food",
-    "reading": "On this page the Christian theme is Food, and the text is Philippians 4:8. For Food, the sense of Philippians 4:8 is this: think on what is true, honourable, just, pure, and lovely.\n\nRead Food in the light of that verse, without turning it into a performance for other people. Let Food sound like a softer answer where the house has been sharp, with Philippians 4:8 still in mind.\n\nNo one else has to share your creed for you to practise Food in the sight of God. God's kindness towards you is the ground under Food, not a prize withheld until you improve."
+    "reading": "Food. Philippians 4:8 says think about whatever is true, noble, right, pure, lovely and admirable.\n\nYour mind eats whatever you feed it. Junk in, junk out.\n\nWe spent years feeding our heads rubbish. Anxiety, shame, anger, using thoughts. Today, feed it something better. Read something good. Listen to something uplifting. Think about what's going right. Notice what's lovely. It won't fix everything, but over time, your head gets healthier. Like eating well, it adds up."
   },
   {
     "month": 5,
     "day": 21,
     "word": "Footing",
-    "reading": "Footing is the Christian theme here, set beside 1 Thessalonians 5:18. For Footing, the sense of 1 Thessalonians 5:18 is this: give thanks in all circumstances, for this is God's will in Christ.\n\nChrist is gentle with unfinished people, so Footing does not have to arrive already polished. Carry Footing into an ordinary hour by telling the truth kindly, in the spirit of 1 Thessalonians 5:18.\n\nAsk the Lord to keep Footing honest and gentle until you sleep, and leave the rest in God's care. Keep Footing Christian and specific: one verse, one prayer, one person."
+    "reading": "Footing. 1 Thessalonians 5:18 says give thanks in all circumstances.\n\nAll circumstances. Not just the good ones.\n\nThat's hard when things are rough. But thankfulness gives you footing. Somewhere solid to stand. Even on a bad day, there's usually something. A roof. A meal. A friend. Another clean day. Today, find your footing by saying thanks. Write down three things. They don't need to be big. Gratitude keeps you from slipping."
   },
   {
     "month": 5,
     "day": 22,
     "word": "Forgive",
-    "reading": "The Christian theme, Forgive, is read with 1 John 4:7. For Forgive, the sense of 1 John 4:7 is this: love is from God.\n\nThat verse is a welcome, not a test you pass before God will look at Forgive. Practise Forgive at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Forgive honest and gentle until you sleep, and leave the rest in God's care. In Christ, Forgive is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Forgive still fits the actual day."
+    "reading": "Forgive. 1 John 4:7 says love comes from God.\n\nLove's not something you have to manufacture. It comes from somewhere bigger.\n\nForgiving people is hard. Some of them did real damage. You can't make yourself feel loving. But you can ask God for it. Today, ask for some of that love. Then see if there's one small thing you can forgive. Not the biggest hurt. Just something small. Forgiveness grows. It starts with the little ones."
   },
   {
     "month": 5,
     "day": 23,
     "word": "Foundation",
-    "reading": "On this page the Christian theme is Foundation, and the text is Exodus 14:14. For Foundation, the sense of Exodus 14:14 is this: the Lord fights for his people, and they are told to be still.\n\nNothing in Exodus 14:14 asks you to pretend, and Foundation can begin while you are still tired. If you were wrong, let Foundation include an apology in a single clean sentence, because of Exodus 14:14.\n\nMercy is wider than today's mistakes, and Foundation can stand inside that mercy without showing off. Australian weather can be hot, wet, or cold, and Foundation still fits the actual day."
+    "reading": "Foundation. Exodus 14:14 says the Lord will fight for you, you only need to be still.\n\nBe still. The Israelites had an army chasing them and the sea in front. Stuck. And God says, I've got this.\n\nSome battles aren't yours to fight. Today, if you're facing something you can't win on your own, let God take it. Be still. That's not giving up. That's building on the right foundation. He fights for you. Your job is to trust and keep putting one foot in front of the other."
   },
   {
     "month": 5,
     "day": 24,
     "word": "Fragile",
-    "reading": "Fragile is the Christian theme here, set beside 1 Samuel 16:7. For Fragile, the sense of 1 Samuel 16:7 is this: people look at the outside, and the Lord looks at the heart.\n\nRead Fragile in the light of that verse, without turning it into a performance for other people. Set a cup of tea beside the thought of 1 Samuel 16:7, and let Fragile be unhurried company for someone lonely.\n\nHand the evening to God, and let Fragile be unfinished without being abandoned. A neighbour does not need a creed explained before they can receive the fruit of Fragile."
+    "reading": "Fragile. 1 Samuel 16:7 says people look at the outside, but the Lord looks at the heart.\n\nHe sees past the tough exterior. Past the tattoos, the record, the reputation.\n\nA lot of us put up walls because we're fragile underneath. We act tough so nobody sees how breakable we are. God sees it anyway. And he's gentle with it. Today, let someone safe see a bit of the fragile part. You don't have to be tough all the time. God looks at the heart, and he's kind with what he finds."
   },
   {
     "month": 5,
     "day": 25,
     "word": "Freedom",
-    "reading": "The Christian theme, Freedom, is read with Psalm 4:8. For Freedom, the sense of Psalm 4:8 is this: the psalmist lies down in peace because the Lord makes him dwell in safety.\n\nChrist is gentle with unfinished people, so Freedom does not have to arrive already polished. Leave a harsh opinion unsaid, and let that restraint be how Freedom shows up this afternoon.\n\nYou can begin Freedom before you feel holy, because the Father already knows the day. If the morning was clumsy, Freedom can begin again after lunch in the sight of God."
+    "reading": "Freedom. Psalm 4:8 says I'll lie down and sleep in peace, because you alone, Lord, make me safe.\n\nSleep in peace. That's freedom for some of us. Not lying awake scared. Not passing out. Just sleeping.\n\nWhen you're free from the old stuff, sleep gets better. Not straight away, but it comes. Tonight, before bed, say this verse. Hand the day over. Let God keep watch. You don't have to stay on guard all night. That's his job now."
   },
   {
     "month": 5,
     "day": 26,
     "word": "Friend",
-    "reading": "Friend is the Christian theme here, set beside Psalm 30:5. For Friend, the sense of Psalm 30:5 is this: weeping may last for a night, and joy comes with the morning.\n\nThat verse is a welcome, not a test you pass before God will look at Friend. To live Friend, read Psalm 30:5 once, pray in your own words, and then do one kindness a neighbour could feel.\n\nThe point of Psalm 30:5, for Friend, is trust, not a performance. God's kindness towards you is the ground under Friend, not a prize withheld until you improve."
+    "reading": "Friend. Psalm 30:5 says weeping may last through the night, but joy comes in the morning.\n\nThe night can be long. But morning comes.\n\nA good friend sits with you through the night. They don't try to rush you to the morning. They just stay. God's like that. And the people he puts in your life can be too. Today, if it's night for you, find a friend to sit with. And if you're in the morning, be that friend for someone else. Joy's coming."
   },
   {
     "month": 5,
     "day": 27,
     "word": "Fruit",
-    "reading": "Fruit is the Christian theme here, set beside Psalm 55:22. For Fruit, the sense of Psalm 55:22 is this: cast your burden on the Lord, and he will sustain you.\n\nNothing in Psalm 55:22 asks you to pretend, and Fruit can begin while you are still tired. Let Fruit sound like a softer answer where the house has been sharp, with Psalm 55:22 still in mind.\n\nJesus does not rush slow learners, and Fruit is allowed to be slow. Keep Fruit Christian and specific: one verse, one prayer, one person. In Christ, Fruit is worth attention even when the calendar is full."
+    "reading": "Fruit. Psalm 55:22 says cast your cares on the Lord and he'll sustain you, he'll never let the righteous be shaken.\n\nCast. Throw. Don't just set them down carefully. Chuck them.\n\nFruit grows when the tree's not stressed. When it's got water and sun and time. Today, throw your cares onto God. All of them. Then rest a bit. Let him sustain you. Good things grow in people who aren't carrying everything alone."
   },
   {
     "month": 5,
     "day": 28,
     "word": "Gather",
-    "reading": "The Christian theme, Gather, is read with Psalm 100:4. For Gather, the sense of Psalm 100:4 is this: enter God's gates with thanksgiving.\n\nThat verse is a welcome, not a test you pass before God will look at Gather. Let Gather sound like a softer answer where the house has been sharp, with Psalm 100:4 still in mind.\n\nNo one else has to share your creed for you to practise Gather in the sight of God. In Christ, Gather is worth attention even when the calendar is full. Australian weather can be hot, wet, or cold, and Gather still fits the actual day."
+    "reading": "Gather. Psalm 100:4 says enter his gates with thanksgiving and his courts with praise.\n\nThanksgiving first. Not complaints first.\n\nGathering with other people to say thanks does something to you. Whether it's church, a group, or just friends round a table. Today, gather with someone. Say thanks together. For food, for friends, for another day. It shifts the mood. Hard to stay bitter in a room full of grateful people."
   },
   {
     "month": 5,
     "day": 29,
     "word": "Generous",
-    "reading": "On this page the Christian theme is Generous, and the text is Psalm 119:105. For Generous, the sense of Psalm 119:105 is this: God's word is a lamp for the feet and a light for the path.\n\nChrist is gentle with unfinished people, so Generous does not have to arrive already polished. Carry Generous into an ordinary hour by telling the truth kindly, in the spirit of Psalm 119:105.\n\nAsk the Lord to keep Generous honest and gentle until you sleep, and leave the rest in God's care. Australian weather can be hot, wet, or cold, and Generous still fits the actual day."
+    "reading": "Generous. Psalm 119:105 says your word is a lamp to my feet and a light to my path.\n\nA lamp to your feet. Not a floodlight showing the whole road. Just enough to see the next step.\n\nGod's generous with light. Not always as much as we'd like, but enough. Today, be generous with what you've got. Your time, your story, your help. And trust that God's giving you enough light for today. You don't need to see the whole path. Just the next bit."
   },
   {
     "month": 5,
     "day": 30,
     "word": "Gift",
-    "reading": "Gift is the Christian theme here, set beside Psalm 147:3. For Gift, the sense of Psalm 147:3 is this: he heals the brokenhearted and binds up their wounds.\n\nThat verse is a welcome, not a test you pass before God will look at Gift. Practise Gift at the sink or on the footpath: thank God for one mercy, and notice one person.\n\nAsk the Lord to keep Gift honest and gentle until you sleep, and leave the rest in God's care. A neighbour does not need a creed explained before they can receive the fruit of Gift."
+    "reading": "Gift. Psalm 147:3 says he heals the broken-hearted and binds up their wounds.\n\nBinds up. Like a nurse wrapping a bandage. Careful. Gentle.\n\nHealing's a gift. You can't force it. You can't rush it. But you can let it happen. Today, let God tend to your wounds. Pray. Rest. Be gentle with yourself. And if you're healed enough, be a gift to someone else who's hurting. Wrap their wounds. Pass on the care."
   },
   {
     "month": 5,
     "day": 31,
     "word": "Go gently",
-    "reading": "The Christian theme, Go gently, is read with Ecclesiastes 3:1. For Go gently, the sense of Ecclesiastes 3:1 is this: there is a season for everything.\n\nNothing in Ecclesiastes 3:1 asks you to pretend, and Go gently can begin while you are still tired. If you were wrong, let Go gently include an apology in a single clean sentence, because of Ecclesiastes 3:1.\n\nMercy is wider than today's mistakes, and Go gently can stand inside that mercy without showing off. If the morning was clumsy, Go gently can begin again after lunch in the sight of God."
+    "reading": "Go gently. Ecclesiastes 3:1 says there's a time for everything, a season for every activity under heaven.\n\nA season. Not forever. Things change.\n\nSome seasons are hard. Some are easy. Some are just slow. Whatever season you're in, go gently. Don't rush yourself into the next one. Don't beat yourself up for not being further along. There's a time for everything, including healing, including rest. It's okay to be where you are."
   },
   {
     "month": 6,
