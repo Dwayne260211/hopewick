@@ -413,16 +413,40 @@ function clearCookie(req) {
   return sessionCookie('', req, 0);
 }
 
-function currentUser(req, store) {
-  return store.findBySession(cookies(req)[SESSION_COOKIE]);
+/**
+ * Session epoch. Every session records the epoch it was started under.
+ * A session from an older epoch (or from before epochs existed) is not
+ * accepted, so changing this value signs every device out once.
+ * Override with HOPEWICK_SESSION_EPOCH on Render to force another sign-out later.
+ * No account data is removed; people sign in again with email or Google.
+ */
+export const DEFAULT_SESSION_EPOCH = '2026-10-15';
+export function sessionEpoch() {
+  return String(process.env.HOPEWICK_SESSION_EPOCH || '').trim() || DEFAULT_SESSION_EPOCH;
 }
+
+function currentUser(req, store) {
+  const user = store.findBySession(cookies(req)[SESSION_COOKIE]);
+  if (!user || !user.session || user.session.epoch !== sessionEpoch()) return null;
+  return user;
+}
+
+/** Free accounts keep the profile(s) already on the server; another profile is Plus. */
+function profileAllowed(user, profileId, chats, checkins) {
+  if (publicUser(user).plus === true) return true;
+  const ids = new Set();
+  for (const p of chats.list(user.id, { plus: false }) || []) if (p && p.id) ids.add(p.id);
+  for (const p of checkins.list(user.id) || []) if (p && p.id) ids.add(p.id);
+  return ids.size === 0 || ids.has(profileId);
+}
+const PROFILE_PLUS_ERROR = 'Adding another profile is part of Hopewick Plus. Your first profile stays free. Start a 7-day free trial to add more.';
 
 function startSession(user, req, store) {
   const session = crypto.randomBytes(32).toString('hex');
   const now = Date.now();
   // reauthAt is the fresh-check flag for passwordless sensitive actions.
   // Replacing the hash ends the previous cookie. The raw token is not stored.
-  user.session = { hash: hashToken(session), expiresAt: now + SESSION_MS, reauthAt: now };
+  user.session = { hash: hashToken(session), expiresAt: now + SESSION_MS, reauthAt: now, epoch: sessionEpoch() };
   store.save(user);
   return sessionCookie(session, req, sessionMaxAgeSec());
 }
@@ -1009,6 +1033,10 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
       json(res, 400, { error: 'Choose a profile before saving chats.' });
       return;
     }
+    if (!profileAllowed(user, profileId, chats, checkins)) {
+      json(res, 403, { error: PROFILE_PLUS_ERROR, code: 'plus' });
+      return;
+    }
     const profile = chats.merge(user.id, profileId, {
       name: body.name,
       conversations: body.conversations,
@@ -1054,11 +1082,18 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
       json(res, 400, { error: 'Choose a profile before saving check-ins.' });
       return;
     }
+    if (!profileAllowed(user, profileId, chats, checkins)) {
+      json(res, 403, { error: PROFILE_PLUS_ERROR, code: 'plus' });
+      return;
+    }
+    // SMART goals are Hopewick Plus. A free account's goal writes are ignored;
+    // goals already stored are kept, not deleted.
+    const plusGoals = publicUser(user).plus === true;
     const profile = checkins.merge(user.id, profileId, {
       name: body.name,
       moods: body.moods,
       gratitude: body.gratitude,
-      goals: body.goals,
+      goals: plusGoals ? body.goals : undefined,
       clearedAt: body.clearedAt,
     });
     json(res, 200, { profile });

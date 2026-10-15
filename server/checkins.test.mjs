@@ -157,7 +157,7 @@ async function boot() {
   };
 }
 
-async function signIn(base, email) {
+async function signIn(base, email, { plus = true } = {}) {
   const sent = await fetch(`${base}/api/auth/magic-link`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -167,7 +167,16 @@ async function signIn(base, email) {
   assert.equal(sent.status, 200);
   const verified = await fetch(data.devLink, { redirect: 'manual' });
   assert.equal(verified.status, 302);
-  return (verified.headers.get('set-cookie') || '').split(';')[0];
+  const cookie = (verified.headers.get('set-cookie') || '').split(';')[0];
+  if (plus) {
+    const set = await fetch(`${base}/api/billing/dev-set`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', cookie },
+      body: JSON.stringify({ status: 'trialing' }),
+    });
+    assert.equal(set.status, 200);
+  }
+  return cookie;
 }
 
 const sampleGoals = {
@@ -354,6 +363,85 @@ test('deleting an account erases that account’s check-ins and goals and leaves
     assert.ok(texts.includes('gratitude from Beau'));
     const gone = await fetch(`${app.base}/api/checkins`, { headers: { cookie: cookieA } });
     assert.equal(gone.status, 401);
+  } finally {
+    await app.close();
+  }
+});
+
+test('free accounts: goal writes are ignored, a second profile is Plus, stored goals are kept', async () => {
+  const app = await boot();
+  try {
+    const free = await signIn(app.base, 'free@example.com', { plus: false });
+    const put = (profileId, goals) => fetch(`${app.base}/api/checkins`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', cookie: free },
+      body: JSON.stringify({ profileId, name: 'Free', moods: [mood('2026-10-01', 'Okay', 'None', 5)], gratitude: [], goals }),
+    });
+    const first = await put('free1', sampleGoals);
+    assert.equal(first.status, 200);
+    const firstBody = await first.json();
+    assert.deepEqual(firstBody.profile.goals.weeks, {});
+    assert.equal(firstBody.profile.moods.length, 1);
+
+    const second = await put('free2', { weeks: {} });
+    assert.equal(second.status, 403);
+    assert.equal((await second.json()).code, 'plus');
+
+    const chat2 = await fetch(`${app.base}/api/chats`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', cookie: free },
+      body: JSON.stringify({ profileId: 'free2', name: 'Second', conversations: [] }),
+    });
+    assert.equal(chat2.status, 403);
+
+    // Upgrade: goals save and a second profile opens.
+    await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', cookie: free }, body: JSON.stringify({ status: 'active' }),
+    });
+    const plusGoals = await put('free1', sampleGoals);
+    assert.equal((await plusGoals.json()).profile.goals.weeks['2026-09-27'].goals[0].specific, 'Walk after dinner');
+    assert.equal((await put('free2', { weeks: {} })).status, 200);
+
+    // Lapse back to free: stored goals stay, new goal writes are ignored.
+    await fetch(`${app.base}/api/billing/dev-set`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', cookie: free }, body: JSON.stringify({ status: 'canceled' }),
+    });
+    const lapsed = await put('free1', { weeks: { '2026-10-04': { goals: [goal('new free goal'), goal('')], updated: 99 } } });
+    const lapsedBody = await lapsed.json();
+    assert.equal(lapsedBody.profile.goals.weeks['2026-09-27'].goals[0].specific, 'Walk after dinner');
+    assert.equal(lapsedBody.profile.goals.weeks['2026-10-04'], undefined);
+    assert.equal((await put('free2', { weeks: {} })).status, 200, 'existing profiles stay available on Free');
+  } finally {
+    await app.close();
+  }
+});
+
+test('one-time sign-out: a session from before the epoch is refused and account data stays', async () => {
+  const app = await boot();
+  try {
+    const cookie = await signIn(app.base, 'old@example.com', { plus: false });
+    const ok = await fetch(`${app.base}/api/checkins`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', cookie },
+      body: JSON.stringify({ profileId: 'old1', name: 'Old', moods: [mood('2026-10-02', 'Okay', 'None', 3)], gratitude: [] }),
+    });
+    assert.equal(ok.status, 200);
+    // Simulate a session issued before epochs existed.
+    const disk = JSON.parse(fs.readFileSync(app.storePath, 'utf8'));
+    const user = disk.users.find((u) => u.email === 'old@example.com');
+    delete user.session.epoch;
+    fs.writeFileSync(app.storePath, JSON.stringify(disk));
+    const fresh = await startServer({ port: 0, host: '127.0.0.1', storePath: app.storePath, chatsPath: app.storePath.replace('users.json', 'chats.json'), checkinsPath: app.checkinsPath });
+    try {
+      const base = `http://127.0.0.1:${fresh.address().port}`;
+      const me = await (await fetch(`${base}/api/auth/me`, { headers: { cookie } })).json();
+      assert.equal(me.signedIn, false);
+      const again = await signIn(base, 'old@example.com', { plus: false });
+      const list = await (await fetch(`${base}/api/checkins`, { headers: { cookie: again } })).json();
+      assert.equal(list.profiles[0].moods.length, 1, 'check-ins kept after the forced sign-out');
+    } finally {
+      await new Promise((r) => fresh.close(r));
+    }
   } finally {
     await app.close();
   }

@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { startServer } from './index.js';
+import { startServer, sessionEpoch } from './index.js';
 import { createStore, hashToken } from './store.js';
 import { mapPlaySubscription, resetPlayTokenCache } from './play-billing.js';
 
@@ -30,7 +30,7 @@ async function setup({ configured = true, play, seedAlice } = {}) {
   const seed = createStore(storePath);
   const mk = (email, token) => {
     const u = seed.createUser(email);
-    u.session = { hash: hashToken(token), expiresAt: Date.now() + 864e5, reauthAt: Date.now() };
+    u.session = { hash: hashToken(token), expiresAt: Date.now() + 864e5, reauthAt: Date.now(), epoch: sessionEpoch() };
     return seed.save(u);
   };
   const alice = mk('alice@example.com', 'sess-alice');

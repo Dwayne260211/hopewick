@@ -2333,9 +2333,21 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   </div>
 </dialog>
 
+<dialog id="plusUpgradeDlg" aria-labelledby="plusUpgradeTitle">
+  <div class="onboard-body">
+    <h2 id="plusUpgradeTitle">This is part of Hopewick Plus</h2>
+    <p class="lead" id="plusUpgradeLead">This feature is part of Hopewick Plus.</p>
+    <p>7 days free, then AU$20/month. Cancel anytime. Today’s Readings, crisis support, and Get help stay free.</p>
+    <div class="onboard-actions">
+      <button class="btn btn-primary" type="button" id="plusUpgradeTrial">Start 7-day free trial</button>
+      <button class="btn" type="button" id="plusUpgradeClose">Not now</button>
+    </div>
+  </div>
+</dialog>
+
 <dialog id="plusChoiceDlg" aria-labelledby="plusChoiceTitle">
   <div class="onboard-body">
-    <h2 id="plusChoiceTitle">Hopewick Plus</h2>
+    <h2 id="plusChoiceTitle">Start your 7-day free trial</h2>
     <p class="lead" id="plusChoiceLead">7 days free, then AU$20/month. A card is required to start the trial and is collected by Stripe. You won’t be charged the monthly price until the trial ends. Cancel anytime means Plus continues until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it.</p>
     <p>Or stay on the free account. That is 15 Hope messages a day, with no card and no charge. Today’s Readings and Get help stay free either way.</p>
     <div class="onboard-actions">
@@ -4064,7 +4076,7 @@ function persistConvos() {
 function scheduleChatSync() {
   if (isDemo || !profile || !billingState.signedIn) return;
   clearTimeout(chatSyncTimer);
-  chatSyncTimer = setTimeout(() => { pushAccountChats().catch(() => {}); }, 450);
+  chatSyncTimer = setTimeout(() => { pushAccountChats().catch(handlePlusBlocked); }, 450);
 }
 function chatProfileId() {
   return (profile && (profile.chatKey || profile.id)) || '';
@@ -4229,7 +4241,7 @@ function writeCheckinsLocal() {
 function scheduleCheckinSync() {
   if (isDemo || !profile || !billingState.signedIn) return;
   clearTimeout(checkinSyncTimer);
-  checkinSyncTimer = setTimeout(() => { pushAccountCheckins().catch(() => {}); }, 450);
+  checkinSyncTimer = setTimeout(() => { pushAccountCheckins().catch(handlePlusBlocked); }, 450);
 }
 function checkinTime(row) {
   return Number(row && (row.updated || row.ts)) || 0;
@@ -15099,13 +15111,30 @@ function realSession() {
   return !!(sessionGate.signedIn() && billingState.signedIn && billingState.id);
 }
 let pendingTrialCheckout = false;
+// v2 (Oct 2026): after the one-time sign-out, every free account sees the trial prompt once.
+const PLUS_PROMPT_KEY = 'hopewick.plusDeclined.v2';
+let plusBlockedShown = false;
+function showUpgradePrompt(message) {
+  if (subscriptionPlus()) return;
+  const dlg = $('#plusUpgradeDlg');
+  if (!dlg || dlg.open) return;
+  const lead = $('#plusUpgradeLead');
+  if (lead) lead.textContent = message || 'This feature is part of Hopewick Plus.';
+  dlg.showModal();
+}
+function handlePlusBlocked(err) {
+  if (!err || err.status !== 403 || err.code !== 'plus') return;
+  if (plusBlockedShown) return;
+  plusBlockedShown = true;
+  showUpgradePrompt(err.message);
+}
 let demoFromUrlHandled = false;
 function declinedPlusForThisAccount() {
-  try { return localStorage.getItem('hopewick.plusDeclined.v1') === billingState.id; }
+  try { return localStorage.getItem(PLUS_PROMPT_KEY) === billingState.id; }
   catch (_) { return false; }
 }
 function declinePlusOffer() {
-  try { if (billingState.id) localStorage.setItem('hopewick.plusDeclined.v1', billingState.id); } catch (_) {}
+  try { if (billingState.id) localStorage.setItem(PLUS_PROMPT_KEY, billingState.id); } catch (_) {}
   pendingTrialCheckout = false;
   const dlg = $('#plusChoiceDlg');
   if (dlg && dlg.open) dlg.close();
@@ -15114,6 +15143,8 @@ function showPlusChoice() {
   if (!realSession() || isDemo || subscriptionPlus() || pendingTrialCheckout || declinedPlusForThisAccount()) return;
   const dlg = $('#plusChoiceDlg');
   if (!dlg || dlg.open) return;
+  // Once per account per device: mark it shown as it opens.
+  try { if (billingState.id) localStorage.setItem(PLUS_PROMPT_KEY, billingState.id); } catch (_) {}
   dlg.showModal();
 }
 async function afterAccountSignIn(message) {
@@ -15339,6 +15370,14 @@ if (plusChoiceTrial) plusChoiceTrial.addEventListener('click', () => {
   if (dlg && dlg.open) dlg.close();
   startCheckout();
 });
+const plusUpgradeTrial = $('#plusUpgradeTrial');
+if (plusUpgradeTrial) plusUpgradeTrial.addEventListener('click', () => {
+  const dlg = $('#plusUpgradeDlg');
+  if (dlg && dlg.open) dlg.close();
+  startCheckout();
+});
+const plusUpgradeClose = $('#plusUpgradeClose');
+if (plusUpgradeClose) plusUpgradeClose.addEventListener('click', () => { const dlg = $('#plusUpgradeDlg'); if (dlg && dlg.open) dlg.close(); });
 const plusChoiceFree = $('#plusChoiceFree');
 if (plusChoiceFree) plusChoiceFree.addEventListener('click', () => declinePlusOffer());
 const plusChoiceDlg = $('#plusChoiceDlg');
