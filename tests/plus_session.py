@@ -76,7 +76,7 @@ def install_member_session(page, plus=False, founder=False, declined=True, user_
     """Signed-in /api/auth/me before navigation. Local leftovers are not a session."""
     if declined:
         page.add_init_script(
-            "try { localStorage.setItem('hopewick.plusDeclined.v1', %s); } catch (e) {}" % json.dumps(user_id)
+            "try { localStorage.setItem('hopewick.plusDeclined.v2', %s); } catch (e) {}" % json.dumps(user_id)
         )
     me_plus = bool(plus or founder)
     me = {
