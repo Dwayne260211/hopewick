@@ -36,7 +36,7 @@ def test_marketing_plans_copy():
     assert "Phone app coming soon" not in page
     assert "app/?demo=1" not in page
     # Organisations inbox only, never as the founder address.
-    assert "admin@bridge-bite-co.com" in page
+    assert "hello@hopewick.com.au" in page
     assert "dwaynesimons1990@gmail.com" not in page
     assert "Founded by" in page
     founder_bits = page.lower().split("founded by")
