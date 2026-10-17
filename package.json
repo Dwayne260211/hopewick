@@ -13,6 +13,7 @@
     "test:visits": "node --test server/visits.test.mjs",
     "test:resume": "node --test tests/resume-pdf.test.mjs",
     "test:hope": "node --test --test-concurrency=1 server/hope-safety.test.mjs",
-    "test:store": "node --test --test-concurrency=1 server/store-safety.test.mjs"
+    "test:store": "node --test --test-concurrency=1 server/store-safety.test.mjs",
+    "test:brand": "node --test tests/brand-assets.test.mjs"
   }
 }

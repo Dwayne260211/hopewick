@@ -43,12 +43,15 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Keeping hope lit 
 <meta property="og:image" content="https://hopewick.com.au/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hopewick logo: a heart held by a blue hand and a red hand, with a sunrise and a river. Support for your next step.">
 <meta property="og:locale" content="en_AU">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hopewick · Keeping hope lit between sessions">
 <meta name="twitter:description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
 <meta name="twitter:image" content="https://hopewick.com.au/og-image.png">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" type="image/png" sizes="32x32" href="app/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="app/icon-16.png">
 <style>
 :root {
   --bg: #f3f7f1; --surface: #fff; --surface-2: #edf4ea; --text: #1d2b22; --muted: #3e5348;
@@ -83,6 +86,8 @@ a { color: var(--accent-strong); }
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); flex: 0 0 auto; white-space: nowrap; }
 .orb { width: 30px; height: 30px; border-radius: 50%; flex: none; background: radial-gradient(circle at 34% 28%, #eafbe0 0%, #a5dcb6 28%, #4fa373 62%, #256a43 100%); box-shadow: 0 0 16px rgba(124,196,154,.55), inset -3px -5px 10px rgba(20,60,35,.35); }
 .orb-lg { width: 44px; height: 44px; }
+.logo-mark { width: 36px; height: auto; flex: none; display: block; }
+.logo-mark-lg { width: 54px; }
 .nav-links { display: flex; gap: 14px; margin-left: auto; list-style: none; padding: 0; flex-wrap: nowrap; align-items: center; }
 .nav-links a { color: var(--muted); text-decoration: none; font-size: .92rem; white-space: nowrap; }
 .nav-links a:hover { color: var(--text); }
@@ -245,7 +250,7 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
   "name": "Hopewick",
   "legalName": "BRIDGE&BITE.CO PTY LTD",
   "url": "https://hopewick.com.au/",
-  "logo": "https://hopewick.com.au/og-image.png",
+  "logo": "https://hopewick.com.au/brand/hopewick-lockup-600.png",
   "description": "Addiction recovery support between appointments for people in recovery, families, and Australian rehabs and AOD services. Not a crisis service. Not affiliated with the cancelled HOPEWICK PTY. LTD. (ABN 98 010 417 124).",
   "taxID": "83 692 080 792",
   "address": { "@type": "PostalAddress", "addressCountry": "AU", "addressRegion": "QLD" },
@@ -258,7 +263,7 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
 
 <header class="site-header">
   <nav class="wrap nav" aria-label="Main">
-    <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span data-brand>Hopewick</span></a>
+    <a class="logo" href="./"><img class="logo-mark" src="brand/hopewick-mark-96.png" alt="" width="36" height="30" aria-hidden="true"><span data-brand>Hopewick</span></a>
     <button class="nav-toggle" type="button" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#journal">Journal</a></li><li><a href="#about-hope">About Hope</a></li>
@@ -287,7 +292,7 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
   <section class="hero" aria-labelledby="heroTitle">
     <div class="wrap">
       <div class="hero-intro">
-        <span class="orb orb-lg" aria-hidden="true"></span>
+        <img class="logo-mark logo-mark-lg" src="brand/hopewick-mark-96.png" alt="" width="54" height="45" aria-hidden="true">
         <p class="name hero-brand" data-brand>Hopewick</p>
       </div>
       <h1 id="heroTitle" class="hero-promise hero-big">We can find hope by learning how to start again.</h1>
@@ -622,7 +627,7 @@ section { padding-top: 64px !important; padding-bottom: 64px !important; }
 <footer class="site-footer">
   <div class="wrap foot-grid">
     <div>
-      <a class="logo" href="./"><span class="orb" aria-hidden="true"></span><span data-brand>Hopewick</span></a>
+      <a class="logo" href="./"><img class="logo-mark" src="brand/hopewick-mark-96.png" alt="" width="36" height="30" aria-hidden="true"><span data-brand>Hopewick</span></a>
       <p data-tagline>Recovery support for the hours between appointments</p>
       <p>Hopewick is operated by BRIDGE&amp;BITE.CO PTY LTD.</p>
       <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
