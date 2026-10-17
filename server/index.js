@@ -1947,11 +1947,25 @@ async function handleHopeChat(store, req, res) {
   }
 }
 
+/**
+ * Store files that failed to load (exist but do not parse). Empty when all
+ * are fine. A failed store never writes, so the original stays untouched.
+ */
+export function unavailableStores(...stores) {
+  return stores
+    .map((s) => (s && typeof s.health === 'function' ? s.health() : { ok: true }))
+    .filter((h) => !h.ok)
+    .map((h) => h.label || 'store');
+}
+
+const STORE_UNAVAILABLE_MESSAGE = 'Hopewick accounts are paused for maintenance. Nothing has been lost. Get help and the crisis numbers still work. In an emergency call 000, or Lifeline on 13 11 14.';
+
 export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   const checkinStore = checkins || createCheckinStore(path.join(REPO_ROOT, 'server', 'data', 'checkins.json'));
   const visitCounter = visits || createVisitCounter(path.join(REPO_ROOT, 'server', 'data', 'visits.json'));
+  const broken = unavailableStores(store, chatStore, checkinStore, visitCounter);
   return async function onRequest(req, res) {
     installSecurityHeaders(req, res);
     try {
@@ -1961,6 +1975,17 @@ export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } =
       if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
         res.writeHead(204, { 'Cache-Control': 'no-store' });
         res.end();
+        return;
+      }
+      if (url.pathname.startsWith('/api/') && broken.length) {
+        // Fail loudly: health check and the account API answer 503 rather
+        // than run on an empty store. Static pages (Get help) still load.
+        req.resume();
+        if (url.pathname === '/api/health') {
+          json(res, 503, { ok: false, error: 'store_unavailable', stores: broken });
+        } else {
+          json(res, 503, { error: STORE_UNAVAILABLE_MESSAGE, code: 'store_unavailable' });
+        }
         return;
       }
       if (url.pathname.startsWith('/api/')) {
@@ -2000,6 +2025,10 @@ export function startServer({
   const chats = createChatStore(chatFile);
   const checkins = createCheckinStore(checkinFile);
   const visits = createVisitCounter(visitFile);
+  const broken = unavailableStores(store, chats, checkins, visits);
+  if (broken.length) {
+    console.error(`HOPEWICK STORE ERROR: ${broken.join(', ')} could not be loaded. The files were not changed. /api/health and the account API return 503 until they are fixed. See server/json-file.js for recovery steps.`);
+  }
   const server = http.createServer(createApp({ store, chats, checkins, visits, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));

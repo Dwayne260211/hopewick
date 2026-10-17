@@ -12,6 +12,7 @@
     "test:play": "node --test --test-concurrency=1 server/play-billing.test.mjs",
     "test:visits": "node --test server/visits.test.mjs",
     "test:resume": "node --test tests/resume-pdf.test.mjs",
-    "test:hope": "node --test --test-concurrency=1 server/hope-safety.test.mjs"
+    "test:hope": "node --test --test-concurrency=1 server/hope-safety.test.mjs",
+    "test:store": "node --test --test-concurrency=1 server/store-safety.test.mjs"
   }
 }

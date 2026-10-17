@@ -5,36 +5,33 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createJsonFile } from './json-file.js';
 
 export function visitsPathBeside(storePath) {
   return path.join(path.dirname(storePath), 'visits.json');
 }
 
 export function createVisitCounter(filePath) {
-  let visits = 0;
-
-  function load() {
-    try {
-      const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      const n = parsed && typeof parsed === 'object' ? Number(parsed.visits) : NaN;
-      visits = Number.isSafeInteger(n) && n >= 0 ? n : 0;
-    } catch {
-      visits = 0;
-    }
-  }
+  const file = createJsonFile(filePath, {
+    label: 'visits.json',
+    // Valid JSON with a missing or odd count reads as 0, as before.
+    // JSON that does not parse makes the counter unavailable (never overwritten).
+    isValid: (parsed) => Boolean(parsed) && typeof parsed === 'object' && !Array.isArray(parsed),
+    empty: () => ({ visits: 0 }),
+    serialize: (value) => `${JSON.stringify(value, null, 2)}\n`,
+  });
+  const start = Number(file.initial.visits);
+  let visits = Number.isSafeInteger(start) && start >= 0 ? start : 0;
 
   function persist() {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    const tmp = `${filePath}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, `${JSON.stringify({ visits }, null, 2)}\n`, { mode: 0o600 });
-    fs.renameSync(tmp, filePath);
+    file.write({ visits });
   }
 
-  load();
-  if (!fs.existsSync(filePath)) persist();
+  if (!file.failed && !fs.existsSync(filePath)) persist();
 
   return {
     filePath,
+    health: () => file.health(),
     count() {
       return visits;
     },

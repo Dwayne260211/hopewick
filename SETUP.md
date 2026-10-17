@@ -36,7 +36,18 @@ Request limits (constants in `server/hope-chat.js`, `HOPE_LIMITS`): at most 40 t
 
 **Plus fair use.** Plus, trial and complimentary accounts still have no daily message limit in the app and on the marketing site. As an anti-abuse guard (for example a stolen session or a script), the server pauses new replies after `PLUS_FAIR_USE_DAILY_DEFAULT` = **300** model calls in one Brisbane day (`HOPEWICK_PLUS_FAIR_USE_DAILY` overrides it). Normal use is nowhere near this. Over the ceiling a crisis message still gets the static crisis reply, and the response code is `fair_use` (HTTP 429). The 15/day free allowance and billing are unchanged.
 
-## Environment variables
+### Store files fail loudly
+
+`users.json`, `chats.json`, `checkins.json` and `visits.json` (on the Render disk at `/var/data`) are loaded by `server/json-file.js`:
+
+- A missing file starts empty (first run), as before.
+- A file that exists but cannot be read, is not valid JSON, or does not have the expected shape is **never** treated as empty and **never** written to. The server logs `HOPEWICK STORE ERROR: ...`, leaves the original exactly as it was, saves a copy beside it as `<file>.corrupt-<UTC time>`, and answers **503** on `/api/health` and every `/api/*` route. Static pages (including Get help and the crisis numbers) still load. On Render a failing health check stops the new deploy from taking traffic.
+- Writes are atomic: temp file, `fsync`, rename, folder `fsync` (mode 0600).
+- `<file>.bak` is a rolling last-known-good copy on the same disk, refreshed at start-up after a clean load and before a write when the last refresh is more than 10 minutes old (`BACKUP_INTERVAL_MS`). It is not an off-site backup; Render disk snapshots remain the main backup.
+
+To recover: look at the `.corrupt-*` copy, then fix the file or copy `<file>.bak` over it, and restart. Do not delete the original until it is understood.
+
+
 
 Copy `.env.example` to `.env` in the repo root (gitignored).
 
