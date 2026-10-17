@@ -101,6 +101,17 @@ export function normalizeConversation(raw) {
   if (raw.craving) convo.craving = clip(raw.craving, 24);
   if (raw.kind) convo.kind = clip(raw.kind, 40);
   if (raw.systemExtra) convo.systemExtra = clip(raw.systemExtra, MAX_EXTRA);
+  // Study-focus ids. Hosted Hope rebuilds the focus prompt on the server from
+  // these, so they must survive a sync. Optional and additive.
+  const step = Number(raw.step);
+  if (Number.isInteger(step) && step >= 1 && step <= 12) convo.step = step;
+  const planDay = Number(raw.planDay);
+  if (Number.isInteger(planDay) && planDay >= 1 && planDay <= 400) convo.planDay = planDay;
+  if (raw.soap === true) convo.soap = true;
+  if (raw.divingDeeper === true) convo.divingDeeper = true;
+  for (const key of ['lessonId', 'ddDayId', 'deeperTrackId', 'deeperDayId', 'passage']) {
+    if (typeof raw[key] === 'string' && raw[key]) convo[key] = clip(raw[key], 80);
+  }
   if (raw.accountId && validProfileId(raw.accountId)) convo.accountId = String(raw.accountId);
   return convo;
 }

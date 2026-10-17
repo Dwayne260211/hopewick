@@ -8,6 +8,11 @@
  * Hosted Hope chat is POST /api/hope/chat. The OpenAI key stays in
  * OPENAI_API_KEY on this server (the same key can already exist on the
  * Azure invite proxy). The browser never receives it.
+ * The server builds every system prompt itself (server/hope-prompts.js),
+ * including the safety and crisis instructions. The browser sends only
+ * user/assistant turns and structured options; any client system message is
+ * dropped. Plus has a hidden fair-use ceiling (PLUS_FAIR_USE_DAILY_DEFAULT,
+ * 300 a day) that normal use never reaches.
  *
  * Plus Checkout includes a 7-day trial, then the existing monthly price.
  * Daily caps: Free is 15 messages. Hopewick Plus, a 7-day trial, and
@@ -67,15 +72,17 @@ import {
   lastUserText,
   isCrisisText,
   CRISIS_FALLBACK,
-  sanitizeMessages,
+  sanitizeTurns,
   completionBody,
   openAiEndpoint,
   admitHopeCall,
   commitSpend,
   rollbackSpend,
   capMessage,
+  FAIR_USE_MESSAGE,
   HOPE_RESET_LABEL,
 } from './hope-chat.js';
+import { buildHopeMessages } from './hope-prompts.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(__dirname, '..');
@@ -1822,15 +1829,19 @@ async function handleHopeChat(store, req, res) {
     return;
   }
 
-  let messages;
-  try { messages = sanitizeMessages(body.messages); } catch (err) {
-    json(res, err.status || 400, { error: { message: err.message } });
+  // Journal "deepen reflection" is 'refine' and spends a message like chat.
+  const purpose = body.purpose === 'memory' ? 'memory' : (body.purpose === 'refine' ? 'refine' : 'chat');
+  let turns;
+  try { ({ turns } = sanitizeTurns(body.messages, { purpose })); } catch (err) {
+    json(res, err.status || 400, { error: err.code ? { message: err.message, code: err.code } : { message: err.message } });
     return;
   }
 
-  const purpose = body.purpose === 'memory' ? 'memory' : 'chat';
   const stream = body.stream === true && purpose === 'chat';
-  const crisis = purpose === 'chat' && isCrisisText(lastUserText(messages));
+  const crisis = purpose !== 'memory' && isCrisisText(lastUserText(turns));
+  // The server writes every system instruction. The client only sends turns
+  // and structured options (body.context); see server/hope-prompts.js.
+  const messages = buildHopeMessages({ purpose, turns, context: body.context, crisis });
   if (crisis && !hopeConfigured()) {
     if (stream) writeSse(res, CRISIS_FALLBACK);
     else json(res, 200, completionJson(CRISIS_FALLBACK));
@@ -1849,13 +1860,15 @@ async function handleHopeChat(store, req, res) {
   if (!admission.ok) {
     const message = admission.code === 'daily_cap'
       ? capMessage(user, admission.limit)
-      : 'Hope can only note memories for messages you have already sent today.';
+      : admission.code === 'fair_use'
+        ? FAIR_USE_MESSAGE
+        : 'Hope can only note memories for messages you have already sent today.';
     json(res, admission.status, {
       error: { message, code: admission.code },
       limit: admission.limit,
       used: admission.usage.count,
       remaining: admission.limit == null ? null : Math.max(0, admission.limit - admission.usage.count),
-      resetLabel: admission.code === 'daily_cap' ? HOPE_RESET_LABEL : null,
+      resetLabel: admission.code === 'daily_cap' || admission.code === 'fair_use' ? HOPE_RESET_LABEL : null,
     });
     return;
   }

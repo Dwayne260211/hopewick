@@ -5495,6 +5495,8 @@ function startDeeperChat(track, day) {
   setAppTab('chat', { skipFocus: true });
   const c = newConversation();
   c.kind = 'deeper';
+  c.deeperTrackId = track.id;
+  c.deeperDayId = day.id;
   c.title = 'Going Deeper · ' + track.title;
   c.systemExtra = [
     `You are sitting with ${userName()} after an optional Going Deeper study day. This is not clinical care.`,
@@ -6228,6 +6230,43 @@ function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(con
 
 const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. End with exactly one line: TOOLS: help — or TOOLS: help, dv if this is domestic or family violence. Do not offer Plus, resume, journal, Bible, nutrition, gut health, or brain-habit notes in that moment.';
 
+/**
+ * Structured options for hosted Hope. The server owns every instruction
+ * (server/hope-prompts.js) and only reads these ids and short personal
+ * details; it never accepts system text from the browser.
+ */
+function hopeFocus(convo) {
+  if (!convo) return null;
+  if (convo.kind === 'steps' && convo.step) return { kind: 'steps', step: convo.step };
+  if (convo.lessonId) return { kind: 'lesson', id: convo.lessonId };
+  if (convo.soap) return { kind: 'soap', planDay: convo.planDay || 1 };
+  if (convo.divingDeeper && convo.ddDayId) return { kind: 'finding-jesus', dayId: convo.ddDayId };
+  if (convo.kind === 'deeper' && convo.deeperTrackId) return { kind: 'deeper', trackId: convo.deeperTrackId, dayId: convo.deeperDayId || '' };
+  return null;
+}
+function hopeContext(convo) {
+  const grat = todaysGratitude();
+  return {
+    mode: isCounsellor() ? 'counsellor' : 'friend',
+    faith: settings.faith,
+    faithLevel: settings.faithLevel,
+    style: settings.style,
+    hereFor: settings.hereFor || '',
+    traits: Array.isArray(settings.traits) ? settings.traits : [],
+    traitsCustom: settings.traitsCustom || '',
+    custom: settings.custom || '',
+    userName: userName(),
+    companionName: companionName(),
+    soberStart: soberDaysCount() !== null ? settings.soberStart : '',
+    soberWhat: settings.soberWhat || '',
+    memories: memories.slice(-80).map(m => m.text),
+    gratitude: grat && Array.isArray(grat.items) ? grat.items : [],
+    mood: convo && convo.mood ? { l: convo.mood.l } : null,
+    craving: convo && convo.craving ? convo.craving : '',
+    focus: hopeFocus(convo),
+  };
+}
+
 function buildMessages(convo) {
   const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({
     role: m.role,
@@ -6309,10 +6348,13 @@ async function providerChatCompletion(messages, opts = {}) {
 async function hostedChatCompletion(messages, opts = {}) {
   const { onToken, signal } = opts;
   const wantStream = !!opts.stream;
+  // Hosted Hope: the server writes the system prompt. Send only the
+  // conversation turns and structured options, never system text.
   const body = {
-    messages,
+    messages: messages.filter(m => m && (m.role === 'user' || m.role === 'assistant')),
     temperature: opts.temperature ?? 0.7,
-    purpose: opts.purpose === 'memory' ? 'memory' : 'chat',
+    purpose: opts.purpose === 'memory' || opts.purpose === 'refine' ? opts.purpose : 'chat',
+    context: opts.context || hopeContext(activeConvo()),
   };
   if (opts.max_tokens) body.max_tokens = opts.max_tokens;
   if (wantStream) body.stream = true;
@@ -6467,6 +6509,7 @@ async function generateReply(c) {
 
   try {
     const reply = await chatCompletion(buildMessages(c), {
+      context: hopeContext(c),
       stream: settings.stream,
       signal: abortCtrl.signal,
       onToken: (t) => { acc += t; if (!raf) raf = requestAnimationFrame(paint); },
@@ -6551,7 +6594,7 @@ async function extractMemories(pid, userText, assistantText, crisis) {
     { role: 'user', content: `Already known:\n${known}\n\nLatest exchange:\nUser: ${userText}\nAssistant: ${assistantText.slice(0, 1500)}` },
   ];
   try {
-    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300, purpose: 'memory' });
+    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300, purpose: 'memory', context: { mode: isCounsellor() ? 'counsellor' : 'friend', crisis: !!crisis } });
     const match = raw.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
     if (!match) return;
     const parsed = JSON.parse(match[0]);
@@ -6983,7 +7026,7 @@ async function refineJournalEntry(entry, showInCompose) {
       const raw = await chatCompletion([
         { role: 'system', content: journalRefineSystemPrompt(crisis) },
         { role: 'user', content: `Title: ${entry.title || '(none)'}\n\nEntry:\n${entry.body}` },
-      ], { stream: false, temperature: 0.6, max_tokens: 500 });
+      ], { stream: false, temperature: 0.6, max_tokens: 500, purpose: 'refine', context: { userName: userName(), companionName: companionName(), crisis } });
       parsed = parseRefineResponse(raw);
     } catch (e) {
       toast('Couldn’t deepen right now: ' + (e.message || 'error'), true);
