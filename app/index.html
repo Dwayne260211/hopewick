@@ -41,6 +41,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <link rel="stylesheet" href="hw-stage3.css">
 <link rel="stylesheet" href="hw-stage4.css">
 <link rel="stylesheet" href="hw-fitness.css">
+<link rel="stylesheet" href="hw-stage5.css">
 <script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
@@ -2503,12 +2504,12 @@ h1, h2, h3 { font-family: var(--font-display); }
       </div>
     </div>
     <div id="onboardStepFaith" hidden>
-      <p>How should <span data-companion>Hope</span> handle faith? Theme, voice, model, PIN, and export stay in Settings.</p>
+      <p>Faith content is off unless you choose it. You can change this any time in Settings. Theme, voice, model, PIN, and export stay in Settings.</p>
       <div class="onboard-choices" role="radiogroup" aria-label="Faith preference">
-        <label><input type="radio" name="onboardFaith" value="none"> None</label>
-        <label><input type="radio" name="onboardFaith" value="ask"> Only when asked</label>
-        <label><input type="radio" name="onboardFaith" value="woven" checked> Gently</label>
-        <label><input type="radio" name="onboardFaith" value="central"> Central</label>
+        <label><input type="radio" name="onboardFaith" value="none" checked> No faith content</label>
+        <label><input type="radio" name="onboardFaith" value="ask"> Christian faith, only when I ask</label>
+        <label><input type="radio" name="onboardFaith" value="woven"> Christian faith, gently woven in</label>
+        <label><input type="radio" name="onboardFaith" value="central"> Christian faith, central</label>
       </div>
       <div class="onboard-actions">
         <button class="btn btn-primary" type="button" id="onboardStartBtn">Start talking to Hope</button>
@@ -2572,7 +2573,8 @@ h1, h2, h3 { font-family: var(--font-display); }
     <p style="margin:12px 0 0"><strong>Here’s what you can do now.</strong> If you or someone else is in immediate danger, <strong>call 000 now</strong>. Then use a free, confidential Australian line below:</p>
     <ul class="help-list" id="helpList"></ul>
     <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-primary" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
+      <button class="btn btn-primary" type="button" id="helpSafetyPlanBtn">My safety plan</button>
+      <button class="btn" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
@@ -3621,6 +3623,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 <script src="hw-stage3.js"></script>
 <script src="hw-stage4.js"></script>
 <script src="hw-fitness.js"></script>
+<script src="hw-stage5.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -3724,7 +3727,8 @@ const HOPEWICK_INVITE_API = resolveHopewickInviteApi();
 const DEFAULT_PROFILE_SETTINGS = {
   settingsVersion: SETTINGS_VERSION,
   mode: 'counsellor',
-  faith: 'general',
+  // Stage 5: faith content is OFF unless the person switches it on (server preferences decide when signed in).
+  faith: 'none',
   faithLevel: 'woven',
   disclaimerAck: false,
   name: BRAND.companion,
@@ -4980,6 +4984,13 @@ function messageEl(msg) {
     help.textContent = 'Open Get help';
     help.addEventListener('click', () => openHelp());
     opens.appendChild(help);
+    const plan = document.createElement('button');
+    plan.type = 'button';
+    plan.className = 'btn btn-sm';
+    plan.textContent = 'My safety plan';
+    plan.dataset.crisisSafety = '1';
+    plan.addEventListener('click', () => setAppTab('safety'));
+    opens.appendChild(plan);
     if ((msg.crisisKind || '') === 'dv') {
       const dv = document.createElement('button');
       dv.type = 'button';
@@ -5068,7 +5079,7 @@ function populateLaunchPrefs() {
   if (!mode) return;
   mode.value = settings.mode === 'friend' ? 'friend' : 'counsellor';
   const faith = $('#launchFaith');
-  if (faith) faith.value = settings.faith || 'general';
+  if (faith) faith.value = settings.faith || 'none';
   $$('input[name="launchFaithLevel"]').forEach(r => { r.checked = r.value === (settings.faithLevel || 'woven'); });
   syncLaunchFaith();
   const theme = $('#launchTheme');
@@ -5114,7 +5125,7 @@ function applyLaunchPrefs(opts = {}) {
     const theme = $('#launchTheme');
     const mood = $('#launchMoodCheck');
     if (mode) settings.mode = mode.value === 'friend' ? 'friend' : 'counsellor';
-    if (faith) settings.faith = faith.value || 'general';
+    if (faith) settings.faith = faith.value || 'none';
     const lvl = $$('input[name="launchFaithLevel"]').find(r => r.checked);
     if (lvl) settings.faithLevel = lvl.value;
     if (theme) settings.theme = theme.value || 'system';
@@ -5159,8 +5170,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move'];
-  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move', 'preferences'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move', 'preferences'];
   // Move & Recover only exists while the server flag is on for this person (FEATURE_FITNESS_PROTOCOLS).
   if (tab === 'move' && !(window.HWFIT && HWFIT.enabled())) tab = 'home';
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
@@ -5180,7 +5191,7 @@ function setAppTab(tab, opts = {}) {
   const hwView = document.getElementById('hwFeatureView');
   if (hwView) {
     hwView.hidden = !HW3_TAB.includes(next);
-    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules', move: 'Move and Recover' }[next] || 'Wellbeing tools');
+    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules', preferences: 'About you', move: 'Move and Recover' }[next] || 'Wellbeing tools');
   }
   if (window.HW3 && next !== 'coping') HW3.stopTimers();
   if (window.HWFIT && next !== 'move') HWFIT.stop();
@@ -5273,7 +5284,7 @@ function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
   if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety' || tab === 'recovery' || tab === 'move') return 'tools';
   if (tab === 'learn' || tab === 'info' || tab === 'modules') return 'learn';
-  if (tab === 'home' || tab === 'checkin') return 'home';
+  if (tab === 'home' || tab === 'checkin' || tab === 'preferences') return 'home';
   return '';
 }
 
@@ -5449,9 +5460,20 @@ function todayCardEl(d = new Date()) {
   } else {
     $('.today-date', card).textContent = brisbaneDateLabel(d) + ' · Brisbane';
   }
-  $('.today-word', card).textContent = t.word;
+  if (settings.faith === 'none') {
+    // Stage 5: the Word for the day is a Christian reflection, so it only shows with faith content on.
+    card.classList.add('today-card--nofaith');
+    ['.today-word', '.today-word-reading'].forEach((sel) => { const n = $(sel, card); if (n) n.remove(); });
+    const lbl = $$('.today-label', card).find((n) => n.textContent === 'Word for the day');
+    if (lbl) lbl.remove();
+    const kick = $('.today-kicker', card);
+    if (kick) kick.textContent = 'Optional fellowship-style reflection, not clinical advice.';
+    const ex = $('#todayExpand', card);
+    if (ex) ex.setAttribute('aria-controls', 'todayJftReading');
+  }
+  if ($('.today-word', card)) $('.today-word', card).textContent = t.word;
   $('.today-jft-title', card).textContent = t.title;
-  fillReading($('.today-word-reading', card), t.wordReading);
+  if ($('.today-word-reading', card)) fillReading($('.today-word-reading', card), t.wordReading);
   fillReading($('.today-jft-reading', card), t.jftReading);
   const btn = $('#todayExpand', card);
   const syncBtn = () => {
@@ -5936,7 +5958,7 @@ function needNowEl() {
     { id: 'dv', label: 'Not safe at home', title: 'Domestic and family violence support. Always free.', urgent: true, action: () => setAppTab('dv') },
     { id: 'craving', label: 'A craving', title: 'Open circuit breakers', action: () => openBreakers() },
     { id: 'chat', label: 'Talk to ' + companionName(), title: 'Open chat', action: () => setAppTab('chat') },
-    { id: 'today', label: 'Today’s reading', title: 'Word for the day and Just for today', action: () => openTodayReading() },
+    { id: 'today', label: 'Today’s reading', title: settings.faith === 'none' ? 'Just for today' : 'Word for the day and Just for today', action: () => openTodayReading() },
     { id: 'journal', label: 'Journal', title: 'Write in your journal (free)', action: () => openJournal() },
   ];
   if (settings.faith !== 'none') {
@@ -6304,6 +6326,7 @@ function renderHome() {
   ));
   // Hopewick 2.0: account-backed check-in, next step, trends, goals, journal and coping cards.
   if (window.HW3) { try { HW3.paintDashSlots(); } catch (err) { console.error(err); } HW3.sync(false); }
+  if (window.HW5) { try { HW5.paintHome(box, grid); } catch (err) { console.error(err); } }
 }
 
 /** Tools and Learn hubs: link cards to features that already work. */
@@ -6386,7 +6409,7 @@ function renderLearnHub() {
   box.innerHTML = '';
   const faith = settings.faith !== 'none';
   hubSection(box, 'Daily', [
-    { id: 'today', title: 'Today’s readings', desc: 'Word for the day and Just for today.', icon: 'sun', tone: 'gold', action: () => openTodayReading() },
+    { id: 'today', title: 'Today’s readings', desc: settings.faith === 'none' ? 'Just for today.' : 'Word for the day and Just for today.', icon: 'sun', tone: 'gold', action: () => openTodayReading() },
     { id: 'news', title: 'News and resources', desc: 'Drug alerts, naloxone and trusted sources.', icon: 'news', action: () => setAppTab('info') },
   ]);
   hubSection(box, 'Learning modules', [
@@ -10546,9 +10569,10 @@ function openPlans() {
 }
 
 /* Hope names a tool; the app opens it. Crisis keeps Get help (and DV) first. */
-const HOPE_TOOL_ORDER = ['help', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'cold', 'deeper', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
+const HOPE_TOOL_ORDER = ['help', 'safety', 'dv', 'breakers', 'meetings', 'treatment', 'aod', 'nearby', 'today', 'journal', 'goals', 'plans', 'nutrition', 'gut', 'brain', 'cold', 'deeper', 'bible', 'resume', 'church', 'selfcare', 'steps', 'plus'];
 const HOPE_TOOLS = {
   help: { label: 'Open Get help', open: () => openHelp() },
+  safety: { label: 'Open my safety plan', open: () => setAppTab('safety') },
   dv: { label: 'Open domestic & family violence', open: () => setAppTab('dv') },
   breakers: { label: 'Try a circuit breaker', open: () => openBreakers() },
   meetings: { label: 'Find a meeting', open: () => openMeetings() },
@@ -10595,6 +10619,7 @@ function textMatchesHopeTool(id, text) {
   if (id === 'help') return HELP_LANG_RE.test(t);
   if (id === 'dv') return DV_LANG_RE.test(t);
   if (id === 'breakers') return CRAVING_LANG_RE.test(t);
+  if (id === 'safety') return /\bsafety plan\b/i.test(t);
   if (id === 'meetings') return MEETING_LANG_RE.test(t);
   if (id === 'treatment') return TREATMENT_LANG_RE.test(t);
   if (id === 'aod') return AOD_SERVICES_LANG_RE.test(t);
@@ -10639,6 +10664,7 @@ function hopeGatewayIds(convo) {
   };
   if (crisis) {
     add('help');
+    add('safety');
     if (kind === 'dv' || textMatchesHopeTool('dv', userText)) add('dv');
     return ids;
   }
@@ -11833,6 +11859,7 @@ $('#helpMeetingBtn').addEventListener('click', () => { el.helpDlg.close(); openM
 $('#helpTreatmentBtn').addEventListener('click', () => { el.helpDlg.close(); openTreatment(); });
 $('#helpAodBtn').addEventListener('click', () => { el.helpDlg.close(); openAodServices(); });
 $('#helpChurchBtn').addEventListener('click', () => { el.helpDlg.close(); openChurch(); });
+$('#helpSafetyPlanBtn').addEventListener('click', () => { el.helpDlg.close(); setAppTab('safety'); });
 $('#treatmentBackBtn').addEventListener('click', showTreatmentHome);
 $('#aodOpenTreatmentBtn').addEventListener('click', () => { if (el.aodDlg.open) el.aodDlg.close(); openTreatment(); });
 
@@ -12034,6 +12061,7 @@ $('#settingsSave').addEventListener('click', () => {
   if (pin && !/^\d{4}$/.test(pin)) { toast('The PIN needs to be exactly 4 digits.', true); $('#setPin').focus(); return; }
   const wasCounsellor = isCounsellor();
   settings = readSettingsForm();
+  if (window.HW5) { try { HW5.faithFromSettings(settings.faith); } catch (_) { /* */ } }
   // Choosing "System" in Settings also clears the device-wide light/dark choice.
   if (settings.theme === 'system') { try { localStorage.removeItem('hopewick.theme'); } catch (e) {} }
   settingsThemeBefore = settings.theme;
@@ -12314,6 +12342,7 @@ function enterProfile(pid) {
     pullAccountCheckins(true).catch(() => {});
   }
   if (window.HW3) { HW3.reset(); HW3.sync(true); }
+  if (window.HW5) { try { HW5.applyFaith(); HW5.load(true); } catch (_) { /* */ } }
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -13497,15 +13526,17 @@ function applyOnboardingChoices() {
     settings.faith = 'none';
     settings.faithLevel = 'ask';
   } else if (o.faithChoice === 'ask') {
-    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'christian';
     settings.faithLevel = 'ask';
   } else if (o.faithChoice === 'central') {
-    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'christian';
     settings.faithLevel = 'central';
   } else {
-    if (!settings.faith || settings.faith === 'none') settings.faith = 'general';
+    if (!settings.faith || settings.faith === 'none') settings.faith = 'christian';
     settings.faithLevel = 'woven';
   }
+  // Stage 5: an explicit onboarding choice is the person's opt-in (or not). The account keeps it.
+  if (window.HW5) { try { HW5.faithFromSettings(settings.faith, { onboarding: true }); } catch (_) { /* */ } }
   applied[profile.id] = true;
   save(K.onboarding, Object.assign({}, o, { appliedTo: applied }));
   saveSettings();
@@ -13535,7 +13566,7 @@ $('#onboardStartBtn')?.addEventListener('click', () => {
     continued: true,
     startChat: true,
     hereFor: reason ? reason.value : 'myself',
-    faithChoice: faith ? faith.value : 'woven',
+    faithChoice: faith ? faith.value : 'none',
   });
 });
 el.onboardingDlg.addEventListener('cancel', (e) => {
