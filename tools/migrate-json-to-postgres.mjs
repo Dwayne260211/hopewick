@@ -35,6 +35,10 @@
  *     the Render disk whether or not DATABASE_URL is set, so they stay authoritative and untouched. Only
  *     the account id and created time go into app_users. The report fingerprints the entitlement fields
  *     so the cut-over can prove they did not change.
+ *   - Chats: chats.json is not copied and is never rewritten by this tool. The server seals chat text
+ *     (AES-256-GCM, "<user>:chat.<field>") on each account's next chat write. The report counts how many
+ *     stored chats still hold plain text, and verify checks the Postgres chat tables (ai_conversations,
+ *     ai_messages) per account under RLS: any plain-text title or message there makes the run NOT CLEAN.
  *   - Output is counts, checksums and account counts only. No content, no emails, no keys, no URL.
  */
 import fs from 'node:fs';
@@ -49,6 +53,7 @@ import { encryptText, encryptionEnabled, encryptionStatus, ENC_SCHEME, isEncrypt
 import { LIMITS, SETTINGS, isUuid } from '../server/wellbeing/validate.js';
 import { helpfulToScore } from '../server/wellbeing/model.js';
 import { listMigrations } from '../server/db/migrate.js';
+import { conversationHasPlaintext } from '../server/chats.js';
 
 /* ------------------------------- options ------------------------------- */
 const argv = process.argv.slice(2);
@@ -321,11 +326,22 @@ async function writeAccount(u, snap) {
   return added;
 }
 
+const CHAT_CHECKS = [
+  ['chat:conversations', 'ai_conversations WHERE user_id = $1'],
+  ['chat:messages', 'ai_messages WHERE user_id = $1'],
+  ['chat:plainTitles', `ai_conversations WHERE user_id = $1 AND title IS NOT NULL AND title <> '' AND title NOT LIKE 'hwenc:v1:%'`],
+  ['chat:plainMessages', `ai_messages WHERE user_id = $1 AND content NOT LIKE 'hwenc:v1:%'`],
+];
+
 async function targetCounts(u) {
   return withUser(u, async (c) => {
     // One round trip per account: Neon latency dominates otherwise.
-    const sql = TABLES.map((t) => `SELECT '${t}' AS t, count(*)::int AS n FROM ${t} WHERE ${t === 'app_users' ? 'id' : 'user_id'} = $1`).join(' UNION ALL ');
-    const out = Object.fromEntries(TABLES.map((t) => [t, 0]));
+    const sql = [
+      ...TABLES.map((t) => `SELECT '${t}' AS t, count(*)::int AS n FROM ${t} WHERE ${t === 'app_users' ? 'id' : 'user_id'} = $1`),
+      // Chats are not migrated. These must stay 0, or hold only sealed (hwenc:v1) text.
+      ...CHAT_CHECKS.map(([k, q]) => `SELECT '${k}' AS t, count(*)::int AS n FROM ${q}`),
+    ].join(' UNION ALL ');
+    const out = Object.fromEntries([...TABLES, ...CHAT_CHECKS.map(([k]) => k)].map((t) => [t, 0]));
     for (const r of (await c.query(sql, [u])).rows) out[r.t] = Number(r.n);
     return out;
   }, env);
@@ -427,6 +443,9 @@ async function main() {
       report.verify = { accounts: userIds.length, mismatchedAccounts: mismatched };
       if (mismatched) problems.push(`${mismatched} account(s) read back differently from the JSON store.`);
     }
+    const n = (k) => actualCounts[`chat:${k}`] || 0;
+    report.chatsInPostgres = { conversations: n('conversations'), messages: n('messages'), plainTextTitles: n('plainTitles'), plainTextMessages: n('plainMessages') };
+    if (n('plainTitles') || n('plainMessages')) problems.push(`Plain-text chat content found in Postgres (${n('plainTitles')} title(s), ${n('plainMessages')} message(s)). Chats must never land there unsealed.`);
   }
 
   // 4. Report.
@@ -455,12 +474,16 @@ async function main() {
     'checkins.json': { accounts: Object.keys(rawCheckins.users || {}).length, note: 'legacy Hopewick 1 check-ins, stays on disk' },
     'visits.json': { note: 'page counter, no personal data, stays on disk', keys: Object.keys(rawVisits || {}).length },
   };
+  const plainChats = conv.filter((c) => conversationHasPlaintext(c)).length;
+  report.chatsJson = { conversations: conv.length, withPlainText: plainChats, sealed: conv.length - plainChats, note: 'not copied or rewritten here; the server seals each account\'s chats on its next chat write' };
   report.normalised = normalised;
   if (Object.keys(normalised).length) log(`\nNormalised while copying (the app already treats these the same way): ${JSON.stringify(normalised)}.`);
   log('');
   log(`Accounts in users.json: ${report.accounts.usersJson} (by status ${JSON.stringify(byStatus)}); Stripe customers ${report.accounts.withStripeCustomer}, subscriptions ${report.accounts.withStripeSubscription}.`);
   log(`Entitlement fingerprint (users.json, not migrated): ${short(report.accounts.entitlementFingerprint)}…  Orphan data accounts: ${orphans.length}${includeOrphans ? ' (included)' : ' (skipped)'}.`);
   log(`Not migrated, stay on disk: chats.json ${report.notMigrated['chats.json'].accounts} accounts / ${conv.length} chats; checkins.json ${report.notMigrated['checkins.json'].accounts} accounts; visits.json.`);
+  log(`Chat encryption: chats.json ${conv.length - plainChats} of ${conv.length} chats sealed, ${plainChats} still plain text (sealed on that account's next chat write${report.encryption === 'on' ? '' : '; NO KEY SET, so they would stay plain'}).`);
+  if (report.chatsInPostgres) log(`Chats in Postgres: ${report.chatsInPostgres.conversations} conversations, ${report.chatsInPostgres.messages} messages, plain-text fields ${report.chatsInPostgres.plainTextTitles + report.chatsInPostgres.plainTextMessages} (must be 0).`);
 }
 
 try {

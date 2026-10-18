@@ -21,7 +21,8 @@
  * spends a message. Once the free cap is reached, crisis gets the static
  * numbers (000 and 1800 250 015) and the model is not called.
  * Saved chats for a signed-in account live in chats.json (per profile),
- * beside the account file. They stay until that person deletes the chat,
+ * beside the account file. Titles, message text and other free text in them are
+ * AES-256-GCM encrypted with HOPEWICK_DATA_KEY (server/chats.js, server/db/crypto.js). They stay until that person deletes the chat,
  * deletes the account, or the conversation `updated` time is 24 months
  * (730 days) or older. Expired rows are removed on read and on save.
  * Free accounts can open the latest chat; older chats stay stored until
