@@ -24,7 +24,9 @@
     var btns = document.querySelectorAll('[data-theme-toggle]');
     for (var i = 0; i < btns.length; i++) {
       var b = btns[i];
-      b.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
+      // The name starts with the visible word (Light / Dark) so voice control and WCAG 2.5.3 match.
+      b.removeAttribute('aria-pressed');
+      b.setAttribute('aria-label', t === 'dark' ? 'Dark mode. Switch to light mode' : 'Light mode. Switch to dark mode');
       var label = b.querySelector('[data-theme-label]');
       if (label) label.textContent = t === 'dark' ? 'Dark' : 'Light';
       b.setAttribute('title', t === 'dark' ? 'Dark mode is on. Switch to light mode.' : 'Light mode is on. Switch to dark mode.');
