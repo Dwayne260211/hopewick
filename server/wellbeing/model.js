@@ -31,7 +31,8 @@ export function scoreToHelpful(n) {
 
 /** Goal: completing sets completedAt (and progress 100); reopening or archiving clears it. */
 export function applyGoalPatch(prev, patch, now = nowIso()) {
-  const next = { ...prev, ...patch };
+  // An undefined field in the patch must not wipe the previous value (a goal created without a status stays 'active').
+  const next = { ...prev, ...Object.fromEntries(Object.entries(patch || {}).filter(([, v]) => v !== undefined)) };
   if (patch.status && patch.status !== prev.status) {
     if (patch.status === 'completed') { next.completedAt = now; next.progress = 100; }
     else next.completedAt = null;
