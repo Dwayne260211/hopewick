@@ -493,3 +493,19 @@ def test_existing_user_earlier_device_choice_is_preselected_then_confirmed(serve
     assert got["preferences"]["faithOptIn"] is on and got["faithPromptDue"] is False
     assert page.evaluate("() => settings.faith") == ("christian" if on else "none")
     assert _quiet(errors) == []
+
+
+@pytest.mark.parametrize("width", [390, 1280])
+def test_signed_out_shows_no_faith_buttons(server, browser, width):
+    """Signed out there is no profile, so nothing has run the faith sync: the markup itself must hide them."""
+    base, _ = server
+    page, errors = _page(browser, width=width)
+    page.goto(f"{base}/app/", wait_until="domcontentloaded")
+    page.wait_for_selector("#signInDlg[open]", timeout=20000)
+    page.evaluate("() => document.querySelectorAll('dialog[open]').forEach((d) => d.close())")
+    for sel in ["#sideBibleBtn", "#sideChurchBtn"]:
+        assert not page.is_visible(sel), sel
+    page.evaluate("() => openHelp()")
+    page.wait_for_selector("#helpDlg[open]")
+    assert not page.is_visible("#helpChurchBtn")
+    assert _faith_hits(page) == []
