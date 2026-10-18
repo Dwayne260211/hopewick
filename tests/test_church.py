@@ -142,7 +142,7 @@ def test_church_chat_chip():
             page.goto(f"{base}/app/?demo=1&demospeed=30", wait_until="domcontentloaded")
             page.wait_for_selector("#launchPrefs:not([hidden])", timeout=20000)
             page.click("#launchPrefsContinue")
-            page.click("#appTabChat")
+            page.click("#sideNavChat")
             page.wait_for_selector("#input", state="visible", timeout=20000)
             page.fill("#input", "Can you help me find a church near me?")
             page.click("#sendBtn")

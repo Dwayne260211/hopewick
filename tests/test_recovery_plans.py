@@ -55,7 +55,7 @@ def test_static_plans_hub():
     assert "Relapse and exit plans — private on this device" in text
     assert "Relapse and exit plans — private on this device" in landing
     # Still under More. Not a new primary tab.
-    assert 'id="appTabJournal"' in text
+    assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="appTabHome"' in text
     assert 'data-tab="plans"' not in text
     assert 'data-need="plans"' not in text
@@ -110,8 +110,8 @@ def test_plans_free_gate_and_plus_builders():
             _enter_demo(page, base)
 
             nav = " ".join(page.inner_text("#bottomNav").split())
-            assert "Home" in nav and "Chat" in nav and "Chats" in nav and "Journal" in nav and "More" in nav
-            assert page.locator("#bottomNav .bottom-nav-btn").count() == 6
+            assert all(t in nav for t in ("Home", "Chat", "Tools", "Learn", "More"))  # Hopewick 2.0 bottom bar
+            assert page.locator("#bottomNav .bottom-nav-btn").count() == 5
             assert page.locator('#bottomNav [data-tab="plans"]').count() == 0
             assert page.locator('#needNow [data-need="plans"]').count() == 0
             assert page.is_visible("#helpBtn")

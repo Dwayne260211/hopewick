@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 """Build Hopewick icon and logo files from the founder-approved artwork.
 
-Usage: python tools/brand/build_logo_assets.py path/to/founder-logo-hands.png
+Usage: python tools/brand/build_logo_assets.py [path/to/variant-F-mockup-navy.png]
 Needs: pip install pillow numpy scipy
 
+Source (Hopewick 2.0, approved by the founder 18 Oct 2026): variant F
+"mockup navy", a pixel recolour of the founder's hands artwork (navy hands,
+light-blue river, gold sunrise, all-navy wordmark, no red). A copy is kept at
+brand/source/hopewick-logo-source.png and is the default input.
+
 No redesign: the icon mark is the heart + hands + sunrise + river cut out of
-the founder PNG (the wordmark and taglines are excluded), resized only.
+the artwork (the wordmark and taglines are excluded), resized only.
+The dark-mode lockup is the same artwork with only the wordmark and tagline
+text pixels recoloured to near-white (masks); gold divider and separators stay gold.
 Writes app/icon-*.png, app/icon-maskable-*.png, favicon.ico, og-image.png,
 apple-touch-icon.png and brand/*.png in this repo.
 """
@@ -14,8 +21,8 @@ from PIL import Image
 import numpy as np
 from scipy import ndimage
 
-SRC = sys.argv[1] if len(sys.argv) > 1 else 'founder-logo-hands.png'
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(REPO, 'brand', 'source', 'hopewick-logo-source.png')
 WORK = tempfile.mkdtemp(prefix='hopewick-logo-')
 
 src = Image.open(SRC).convert('RGBA')
@@ -48,6 +55,19 @@ m.save(os.path.join(WORK, 'mark-master.png'))
 lb = Image.fromarray((alpha > 6).astype(np.uint8)*255).getbbox()
 print('lockup bbox', lb)
 src.crop(lb).save(os.path.join(WORK, 'lockup-master.png'))
+
+# Dark-mode lockup: recolour only the text (wordmark, tagline, bottom line) to
+# near-white. Text = the non-heart components below the heart; gold pixels
+# (divider line, | separators) are left untouched.
+NEAR_WHITE = np.array([244, 247, 251])
+text_zone = ndimage.binary_dilation(others, iterations=2) & ~region
+r_, g_, b_ = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+goldish = (r_ > b_ + 40) & (r_ > 120)          # warm divider / separators
+text_px = text_zone & ~goldish & (alpha > 0)
+dark = a.copy()
+dark[..., :3][text_px] = NEAR_WHITE
+print('dark lockup recoloured px', int(text_px.sum()), 'gold kept px', int((text_zone & goldish & (alpha > 0)).sum()))
+Image.fromarray(dark).crop(lb).save(os.path.join(WORK, 'lockup-dark-master.png'))
 # check what heart_mask x extent at the i-dot rows looks like
 print('heart x range', np.where(heart_mask.any(axis=0))[0][[0,-1]])
 
@@ -68,6 +88,7 @@ Image.fromarray(mk).save(os.path.join(WORK, 'mark-master.png'))
 
 mark = Image.open(os.path.join(WORK, 'mark-master.png')).convert('RGBA')
 lock = Image.open(os.path.join(WORK, 'lockup-master.png')).convert('RGBA')
+lock_dark = Image.open(os.path.join(WORK, 'lockup-dark-master.png')).convert('RGBA')
 WHITE = (255, 255, 255, 255)
 
 def fit(img, box_w, box_h):
@@ -105,9 +126,11 @@ out['app/icon-32.png'] = small(32)
 out['app/icon-16.png'] = small(16)
 out['app/icon-maskable-512.png'] = maskable(512)
 out['app/icon-maskable-192.png'] = maskable(192)
-out['brand/hopewick-mark.png'] = mark  # full-resolution icon mark (737x608)
-out['brand/hopewick-lockup.png'] = lock  # full lockup, transparent (1350x950)
+out['brand/hopewick-mark.png'] = mark  # full-resolution icon mark
+out['brand/hopewick-lockup.png'] = lock  # full lockup, transparent
 out['brand/hopewick-lockup-600.png'] = fit(lock, 600, 600)
+out['brand/hopewick-lockup-dark.png'] = lock_dark  # same artwork, text near-white, for dark theme
+out['brand/hopewick-lockup-dark-600.png'] = fit(lock_dark, 600, 600)
 # og-image: lockup centred on white, 1200x630
 og = Image.new('RGBA', (1200, 630), WHITE)
 l = fit(lock, 1100, 580)

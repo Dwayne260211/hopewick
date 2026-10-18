@@ -184,7 +184,7 @@ def test_free_hope_limit_screen_keeps_crisis_tools():
             assert page.evaluate("() => window.__hopeCalls.length") == 1
             assert page.locator("#helpBtn").is_visible()
             assert page.locator("#bottomNav").is_visible()
-            assert page.locator("#appTabDv").is_visible()
+            assert page.locator("#appTabTools").is_visible()  # Tools holds DV support (Hopewick 2.0)
             overflow = page.evaluate(
                 """() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"""
             )

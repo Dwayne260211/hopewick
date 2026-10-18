@@ -103,7 +103,7 @@ def test_companion_gates_premium_not_crisis():
     assert "What brings you here" in app
     assert "saved to your account" in app
     assert "do not get a dashboard of what you told Hope" in app
-    assert 'id="appTabChats"' in app
+    assert 'id="sideNavChats"' in app  # saved chats: sidebar, Home and Tools (Hopewick 2.0)
     assert "Recovery myself" in app
     assert "Only when asked" in app
     enter = app.split("function enterProfile", 1)[1].split("function ", 1)[0]

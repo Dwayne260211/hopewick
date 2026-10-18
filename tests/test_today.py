@@ -181,9 +181,10 @@ def test_today_card_on_home():
             # Existing destinations stay put.
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert "Home" in nav
-            assert "Journal" in nav
+            assert "Tools" in nav  # Journal lives under Tools (Hopewick 2.0)
             assert "News" not in nav
-            assert "Safety" in nav
+            assert page.locator("#helpBtn").is_visible()  # crisis entry always on screen (Hopewick 2.0)
+            assert page.locator('#needNow [data-need="dv"]').count() == 1  # DV one tap from Home
             assert page.is_visible("#helpBtn")
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")
@@ -191,7 +192,8 @@ def test_today_card_on_home():
             page.wait_for_selector("#infoView:not([hidden])")
             assert page.is_hidden("#todayCard")
             assert "News & resources" in page.inner_text("#infoView")
-            page.click("#appTabDv")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="dv"]')
             page.wait_for_selector("#dvView:not([hidden])")
             assert "1800 737 732" in page.inner_text("#dvView")
             page.click("#appTabHome")
