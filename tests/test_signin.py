@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Sign-in screen: email and password, lasting session copy, magic link still offered."""
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_pages import public_copy  # noqa: E402  (homepage copy moved, 2026-10)
 
 
 def test_sign_in_screen_and_build():
     app = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
-    land = (ROOT / "index.html").read_text(encoding="utf-8")
+    land = public_copy()
     assert "EDEN_BUILD = 'hopewick-v5.27'" in app
     assert 'content="hopewick-v5.27"' in land
     assert "accountSignInForm" in app

@@ -108,7 +108,8 @@ test('filename uses the name', () => {
 
 test('companion gates the resume builder on Hopewick Plus', () => {
   const app = readFileSync(new URL('../app/index.html', import.meta.url), 'utf8');
-  const plans = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  // Full plan comparison moved from the homepage to pricing.html (homepage redesign, 2026-10).
+  const plans = readFileSync(new URL('../pricing.html', import.meta.url), 'utf8');
   assert.match(app, /src="resume\.js"/);
   assert.match(app, /id="resumeView"/);
   assert.match(app, /data-open="resume"/);

@@ -270,7 +270,8 @@ def test_relapse_and_exit_plans_free_in_the_app_and_saved_to_the_account(server,
 def test_landing_comparison_is_collapsible(server, browser):
     base, _ = server
     page, errors = _page(browser)
-    page.goto(f"{base}/", wait_until="domcontentloaded")
+    # The full comparison moved from the homepage to pricing.html (homepage redesign, 2026-10).
+    page.goto(f"{base}/pricing.html", wait_until="domcontentloaded")
     secs = page.locator("#plan-compare details.cmp-sec")
     assert secs.count() == 6
     assert page.evaluate("() => [...document.querySelectorAll('#plan-compare details')].every((d) => !d.open)")

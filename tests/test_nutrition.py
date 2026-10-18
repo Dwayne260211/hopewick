@@ -11,6 +11,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_pages import public_copy  # noqa: E402  (homepage copy moved, 2026-10)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
@@ -114,7 +116,7 @@ def test_static_nutrition_copy_and_gate():
     assert "cures addiction" not in library.lower()
     assert "treats addiction" not in library.lower()
     assert "dwaynesimons1990@gmail.com" not in text
-    landing = (ROOT / "index.html").read_text(encoding="utf-8")
+    landing = public_copy()
     assert "Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence" in landing
     assert "Essential support stays free" in landing
 

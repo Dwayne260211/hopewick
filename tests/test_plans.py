@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Hopewick Plus pricing copy and account wiring stay visible and conservative."""
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_pages import public_copy  # noqa: E402  (homepage copy moved, 2026-10)
 
 
 def test_marketing_plans_copy():
-    page = (ROOT / "index.html").read_text(encoding="utf-8")
+    page = public_copy()
     assert 'id="plans"' in page
     assert "Hopewick Plus — AU$20/month" in page
     assert "AU$20" in page
@@ -46,7 +49,7 @@ def test_marketing_plans_copy():
 
 def test_marketing_mobile_coming_soon():
     """One calm mention. No store links, and no second copy of the same line."""
-    page = (ROOT / "index.html").read_text(encoding="utf-8")
+    page = public_copy()
     assert 'id="mobile"' in page
     assert 'id="practices"' not in page
     section = page.split('id="mobile"', 1)[1].split("</section>", 1)[0]

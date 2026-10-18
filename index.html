@@ -26,7 +26,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hopewick — Support for your next step</title>
-<meta name="description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
+<meta name="description" content="Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a private support chat. Built in Australia. Not a medical or crisis service.">
 <meta name="build" content="hopewick-v5.27">
 <meta name="theme-color" content="#0b1b37">
 <meta name="mobile-web-app-capable" content="yes">
@@ -38,7 +38,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hopewick">
 <meta property="og:title" content="Hopewick — Support for your next step">
-<meta property="og:description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
+<meta property="og:description" content="Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a private support chat. Built in Australia. Not a medical or crisis service.">
 <meta property="og:url" content="https://hopewick.com.au/">
 <meta property="og:image" content="https://hopewick.com.au/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -47,228 +47,152 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 <meta property="og:locale" content="en_AU">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hopewick — Support for your next step">
-<meta name="twitter:description" content="Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.">
+<meta name="twitter:description" content="Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a private support chat. Built in Australia. Not a medical or crisis service.">
 <meta name="twitter:image" content="https://hopewick.com.au/og-image.png">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="icon" type="image/png" sizes="32x32" href="app/icon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="app/icon-16.png">
-<link rel="stylesheet" href="/assets/hopewick-tokens.css">
-<link rel="stylesheet" href="/assets/hopewick-ui.css">
-<script src="/assets/theme.js"></script>
+<link rel="icon" type="image/png" sizes="48x48" href="app/icon-48.png">
+<link rel="preload" as="image" href="/brand/hopewick-hero-480.webp" type="image/webp">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; font-family: var(--font); line-height: 1.6; color: var(--text); font-size: 17px; background: var(--bg); -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
-img, svg, video { max-width: 100%; height: auto; }
-a { color: var(--accent-strong); }
-:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 8px; }
-.skip-link { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--accent-contrast); padding: 8px 14px; border-radius: 10px; z-index: 100; text-decoration: none; }
-.skip-link:focus { top: 12px; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: var(--hw-ink); background: var(--hw-off); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--hw-royal); text-underline-offset: 3px; }
+h1, h2, h3 { color: var(--hw-navy); line-height: 1.15; letter-spacing: -.02em; margin: 0; }
+h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
+.section { padding: 72px 0; }
+.section--white { background: #fff; }
+.section--soft { background: linear-gradient(180deg, #EEF5FA, var(--hw-off)); }
+.eyebrow { display: inline-block; margin: 0 0 10px; font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--hw-gold-text); }
+.section-head { max-width: 40em; margin: 0 0 32px; }
+.section-head p { color: var(--hw-muted); margin: 12px 0 0; font-size: 1.08rem; }
 
-.site-header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); background: color-mix(in srgb, var(--bg) 88%, transparent); border-bottom: 1px solid var(--border); }
-.nav { display: flex; align-items: center; gap: 14px; min-height: 64px; position: relative; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; text-decoration: none; color: var(--text); flex: 0 0 auto; white-space: nowrap; }
-.orb { width: 36px; height: 30px; flex: none; background: url("/brand/hopewick-mark-96.png") center / contain no-repeat; }
-.orb-lg { width: 44px; height: 44px; }
-.logo-mark { width: 36px; height: auto; flex: none; display: block; }
-.logo-mark-lg { width: 54px; }
-.nav-links { display: flex; gap: 14px; margin-left: auto; list-style: none; padding: 0; flex-wrap: nowrap; align-items: center; }
-.nav-links a { color: var(--muted); text-decoration: none; font-size: .92rem; white-space: nowrap; }
-.nav-links a:hover { color: var(--text); }
-.nav-safety { display: none; color: var(--text); font-weight: 700; text-decoration: none; font-size: .95rem; white-space: nowrap; padding: 8px 4px; }
-.nav-toggle { display: none; margin-left: auto; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 12px; min-height: 44px; padding: 8px 14px; font: inherit; font-weight: 700; cursor: pointer; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; border-radius: 14px; font-weight: 650; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: transform .12s, background .15s; font-size: 1rem; text-align: center; max-width: 100%; min-height: 44px; }
-.btn:hover { transform: translateY(-1px); background: var(--surface-2); }
-.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
-.btn-primary:hover { background: var(--accent-strong); color: var(--accent-contrast); }
-.btn-sm { padding: 8px 14px; font-size: .92rem; border-radius: 12px; min-height: 40px; }
-
-.welcome-back { display: none; background: var(--accent-soft); border-bottom: 1px solid var(--border); }
+.welcome-back { display: none; background: var(--hw-soft); }
 .welcome-back.show { display: block; }
-.welcome-back .wrap { display: flex; align-items: center; gap: 14px; padding-top: 10px; padding-bottom: 10px; flex-wrap: wrap; }
-.welcome-back p { margin: 0; flex: 1; min-width: 0; }
+.welcome-back .wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+.welcome-back p { margin: 0; flex: 1 1 16rem; }
 
-.hero { padding: 36px 0 8px; }
-.hero-intro { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-.hero-lockup { width: min(340px, 82vw); margin: 0 0 18px -8px; }
-@media (min-width: 900px) { .hero-lockup { width: 380px; } }
-.hero h1 { font-size: clamp(2.3rem, 7vw, 3.3rem); line-height: 1.05; margin: 0; letter-spacing: -.02em; }
-.hero h1 .name { color: var(--accent-strong); }
-.hero-promise { font-size: clamp(1.2rem, 3vw, 1.45rem); font-weight: 650; line-height: 1.3; margin: 0 0 14px; max-width: 18em; }
-.lede { font-size: 1.05rem; max-width: 38em; margin: 0 0 8px; }
-.lede-tight { margin-bottom: 16px; }
-.hero-limit { color: var(--muted); }
-.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
-.cta-note { font-size: .95rem; color: var(--muted); margin: 12px 0 0; }
-.trust-line { font-size: .95rem; margin: 8px 0 0; max-width: 40em; }
-.fine { font-size: .95rem; color: var(--muted); max-width: 42em; margin: 10px 0 0; }
+/* 1 Hero */
+.hero { position: relative; overflow: hidden; background: radial-gradient(700px 480px at 8% 10%, #D6E7F3 0%, transparent 70%), radial-gradient(640px 420px at 92% 0%, #F7E9CF 0%, transparent 70%), linear-gradient(180deg, #F3F7FB, #F6F9FC); padding: 56px 0 40px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 48px; align-items: center; }
+.hero-logo { margin: 0 auto; width: min(100%, 480px); }
+.hero-copy h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.02; }
+.hero-copy h1 .gold { color: var(--hw-gold); }
+.hero-sub { font-size: clamp(1.08rem, 2vw, 1.3rem); color: #2E4467; margin: 16px 0 0; max-width: 30em; line-height: 1.5; }
+.hero-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; margin-top: 28px; }
+.hero-actions { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.hero-actions .hw-btn { min-height: 54px; font-size: 1.08rem; padding: 14px 28px; }
+.free-pill { display: inline-flex; align-items: center; gap: 8px; align-self: center; padding: 8px 16px; border-radius: 999px; background: var(--hw-gold-soft); border: 1px solid #E7CF9C; color: var(--hw-gold-text); font-weight: 700; font-size: .95rem; }
+.free-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--hw-gold); }
 
-.mock { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; box-shadow: var(--shadow); padding: 16px; min-width: 0; }
-.example-label { margin: 0 0 8px; font-size: .82rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-strong); }
-.mock-head { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; font-weight: 700; }
-.bubble { padding: 10px 14px; border-radius: 16px; margin: 8px 0; max-width: 100%; font-size: .92rem; }
-.bubble.u { margin-left: auto; width: fit-content; max-width: 92%; background: var(--accent); color: var(--accent-contrast); border-bottom-right-radius: 5px; }
-.bubble.a { background: var(--surface-2); border: 1px solid var(--border); border-bottom-left-radius: 5px; }
-.mock-note { font-size: .8rem; color: var(--muted); margin: 10px 0 0; }
-.preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
-.demo-kicker { margin: 0 0 8px; font-size: .92rem; color: var(--muted); }
-.plan-line { margin: 0 0 8px; font-size: .95rem; }
-.plan-line strong { color: var(--text); }
-.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
-.chip { border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; font-size: .82rem; background: var(--surface-2); color: var(--text); }
-.chip.on { background: var(--accent-soft); border-color: var(--accent); font-weight: 750; }
-.mood-demo { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
-.mood-demo span { min-width: 64px; text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 6px 4px; font-size: .78rem; background: var(--surface-2); }
-.mood-demo span.on { background: var(--accent-soft); border-color: var(--accent); font-weight: 750; }
-.plus-tag { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent-strong); border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+.breath { background: #fff; border: 1px solid var(--hw-line); border-radius: 20px; box-shadow: var(--hw-shadow); padding: 18px 20px; min-width: 0; }
+.breath-top { display: flex; gap: 12px; align-items: flex-start; }
+.breath-icon { flex: none; width: 44px; height: 44px; border-radius: 12px; background: #E8F1F8; display: grid; place-items: center; color: var(--hw-navy); }
+.breath h2 { font-size: 1.15rem; letter-spacing: -.01em; }
+.breath-time { margin: 0; color: var(--hw-muted); font-size: .9rem; }
+.breath-text { margin: 10px 0 12px; }
+.breath-run[hidden] { display: none; }
+.breath-run { display: grid; grid-template-columns: 76px 1fr; gap: 14px; align-items: center; margin: 4px 0 12px; }
+.breath-box { width: 76px; height: 76px; border-radius: 14px; border: 3px solid var(--hw-royal); display: grid; place-items: center; font-weight: 800; font-size: 1.4rem; color: var(--hw-navy); background: #F1F6FB; transform: scale(.82); transition: transform 4s linear; }
+.breath-box[data-phase="in"] { transform: scale(1); }
+.breath-box[data-phase="hold-in"] { transform: scale(1); transition: none; }
+.breath-box[data-phase="out"] { transform: scale(.82); }
+.breath-box[data-phase="hold-out"] { transform: scale(.82); transition: none; }
+.breath-phase { margin: 0; font-weight: 800; font-size: 1.15rem; color: var(--hw-navy); }
+.breath-round { margin: 2px 0 0; color: var(--hw-muted); font-size: .9rem; }
+.breath-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.breath-controls .hw-btn { min-height: 44px; padding: 8px 18px; font-size: .95rem; }
+.breath-note { margin: 10px 0 0; font-size: .85rem; color: var(--hw-muted); }
+@media (prefers-reduced-motion: reduce) { .breath-box { transition: none !important; transform: none !important; } }
 
-section { padding: 48px 0; }
-section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-spacing: -.01em; }
-.section-lede { color: var(--muted); max-width: 42em; margin: 0 0 22px; }
-.grid { display: grid; gap: 16px; }
-.g3 { grid-template-columns: repeat(3, 1fr); }
-.g2 { grid-template-columns: repeat(2, 1fr); }
-.benefits { grid-template-columns: 1fr 1fr; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px; box-shadow: 0 1px 2px rgba(0,0,0,.03); min-width: 0; }
-.card h3 { margin: 6px 0 6px; font-size: 1.12rem; }
-.card p { margin: 0 0 8px; color: var(--muted); font-size: .97rem; }
-.card p:last-child { margin-bottom: 0; }
-.icon { font-size: 1.4rem; }
-.alt { background: color-mix(in srgb, var(--surface) 55%, transparent); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-.checklist li { padding-left: 30px; position: relative; }
-.checklist li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; font-size: .8rem; display: grid; place-items: center; }
-.hotlines { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
-.hotlines li { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; }
-.hotlines li span { flex: 1 1 12rem; min-width: 0; }
-.hotlines li.urgent { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
-.hotlines a { font-weight: 800; text-decoration: none; font-size: 1.05rem; }
-.hotlines li.urgent a { color: var(--danger); }
-.callout { border-left: 4px solid var(--accent); background: var(--surface); padding: 14px 18px; border-radius: 0 14px 14px 0; margin-top: 18px; color: var(--muted); }
-.callout.warn { border-left-color: var(--danger); }
-.more, .faq-item { margin-top: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 18px 0; }
-.more summary, .faq-item summary { cursor: pointer; font-weight: 750; padding: 14px 0; }
-.more summary:focus-visible, .faq-item summary:focus-visible { border-radius: 8px; }
-.faq-item p { margin: 0 0 14px; color: var(--muted); }
-.more .grid { margin: 4px 0 16px; }
-.cmp { margin-top: 18px; }
-.cmp-head { margin: 0; }
-.cmp-sec { margin-top: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 18px; }
-.cmp-sec summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; column-gap: 10px; padding: 14px 0; min-height: 44px; }
-.cmp-sec summary::-webkit-details-marker { display: none; }
-.cmp-sec summary::after { content: ""; grid-column: 2; grid-row: 1 / span 2; align-self: center; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); }
-.cmp-sec[open] summary::after { transform: rotate(-135deg); }
-.cmp-sec summary:focus-visible { border-radius: 8px; }
-.cmp-title { font-weight: 750; }
-.cmp-line { grid-column: 1; color: var(--muted); font-size: .95rem; }
-.cmp-table { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: .95rem; }
-.cmp-table th, .cmp-table td { text-align: left; vertical-align: top; padding: 8px 6px; border-top: 1px solid var(--border); }
-.cmp-table th[scope="row"] { font-weight: 400; }
-.cmp-table thead th { color: var(--muted); font-size: .85rem; }
-.cmp-table td { width: 24%; }
-.safety-card p { margin-bottom: 8px; }
-.plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
-.plan { display: flex; flex-direction: column; gap: 8px; }
-.plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-.plan .price { margin: 4px 0 0; font-size: 2rem; font-weight: 800; letter-spacing: -.03em; color: var(--text); }
-.plan .price span { font-size: 1rem; font-weight: 650; color: var(--muted); }
-.plan .who { margin: 0; color: var(--muted); font-size: .92rem; }
-.plan ul { margin: 8px 0 12px; }
-.plan .plan-actions { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
-.doc-links { display: flex; flex-wrap: wrap; gap: 10px 16px; list-style: none; padding: 0; margin: 8px 0 0; }
-.doc-links a { font-weight: 700; }
-.site-footer { border-top: 1px solid var(--border); padding: 30px 0 40px; font-size: .9rem; color: var(--muted); }
-.foot-grid { display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
-.foot-links { display: flex; gap: 14px 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 10px; }
-.site-footer p { margin: 6px 0; }
-.founder-credit { font-size: .92rem; margin-top: 4px !important; }
-.founder-credit strong { color: var(--text); font-weight: 700; }
-.founder-story { max-width: 40em; }
-.founder-story p { margin: 0 0 14px; color: var(--text); }
-.founder-short { max-width: 40em; margin: 0 0 14px; }
-.founder-credential { max-width: 40em; margin-top: 14px; }
-.founder-credential .founder-name { margin: 0 0 2px; color: var(--text); font-weight: 750; font-size: 1.12rem; }
-.founder-credential p { color: var(--muted); }
-.mobile-note { margin: 0; max-width: 40em; }
+.crisis-strip { background: #fff; border-top: 1px solid var(--hw-line); border-bottom: 1px solid var(--hw-line); }
+.crisis-strip p { margin: 0 auto; padding: 10px 20px; text-align: center; font-size: 1.02rem; color: var(--hw-navy); }
+.crisis-strip a { color: var(--hw-navy); font-weight: 800; display: inline-block; padding: 8px 4px; min-height: 44px; line-height: 28px; }
 
-@media (max-width: 1280px) {
-  .nav { flex-wrap: wrap; row-gap: 8px; }
-  .nav-toggle { display: inline-flex; flex: none; }
-  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; margin: 0; flex-direction: column; align-items: stretch; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 6px 12px 12px; box-shadow: var(--shadow); }
-  .nav-links a { display: flex; align-items: center; min-height: 44px; padding: 8px 8px; color: var(--text); }
-  .site-header.nav-open .nav-links { display: flex; }
-  .nav-safety { display: inline; }
-  .nav .btn-sm { margin-left: 0; }
+/* 2 Helps */
+.help-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.help-card { background: #fff; border: 1px solid var(--hw-line); border-radius: var(--hw-radius); padding: 24px 22px; }
+.help-card h3 { font-size: 1.2rem; margin: 14px 0 8px; }
+.help-card p { margin: 0; color: var(--hw-muted); }
+.help-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: #E8F1F8; color: var(--hw-royal); }
+.help-icon svg { width: 26px; height: 26px; }
+
+/* 3 In action */
+.shots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin: 0; padding: 0; list-style: none; }
+.shot figure { margin: 0; }
+.phone { background: var(--hw-navy); border-radius: 34px; padding: 9px; box-shadow: 0 18px 40px rgba(16,33,63,.18); }
+.phone img { border-radius: 26px; width: 100%; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; background: #fff; }
+.shot figcaption { margin-top: 14px; }
+.shot figcaption strong { display: block; color: var(--hw-navy); font-size: 1.05rem; }
+.shot figcaption span { color: var(--hw-muted); font-size: .95rem; }
+.shots-note { color: var(--hw-muted); font-size: .92rem; margin: 22px 0 0; }
+.center-cta { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* 4 Story */
+.story-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: center; }
+.story-photo { margin: 0; border-radius: 26px; overflow: hidden; box-shadow: var(--hw-shadow); }
+.story-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 22% 45%; }
+.story-quote { margin: 18px 0 0; padding: 0 0 0 18px; border-left: 4px solid var(--hw-gold); }
+.story-quote p { margin: 0 0 12px; font-size: 1.06rem; }
+.founder-meta { color: var(--hw-muted); font-size: .92rem; margin: 14px 0 20px; }
+
+/* 5 Pricing */
+.plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; max-width: 980px; }
+.plan { background: #fff; border: 1px solid var(--hw-line); border-radius: 22px; padding: 28px; display: flex; flex-direction: column; }
+.plan--plus { border: 2px solid var(--hw-royal); box-shadow: var(--hw-shadow); }
+.plan h3 { font-size: 1.35rem; }
+.price { font-size: 2.4rem; font-weight: 800; color: var(--hw-navy); margin: 8px 0 2px; letter-spacing: -.03em; }
+.price span { font-size: 1rem; font-weight: 600; color: var(--hw-muted); letter-spacing: 0; }
+.plan-who { margin: 0 0 14px; color: var(--hw-muted); }
+.ticks { list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 9px; }
+.ticks li { position: relative; padding-left: 30px; }
+.ticks li::before { content: ""; position: absolute; left: 2px; top: .35em; width: 18px; height: 18px; border-radius: 50%; background: #E3EDF7 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232356A8' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat; }
+.plan .hw-btn { margin-top: auto; }
+.plan-fine { color: var(--hw-muted); font-size: .9rem; margin: 12px 0 0; }
+.pricing-more { margin: 22px 0 0; color: var(--hw-muted); }
+
+/* 6 Final CTA */
+.final { background: linear-gradient(135deg, #10213F, #1B3A72); color: #fff; text-align: center; padding: 72px 0; }
+.final h2 { color: #fff; }
+.final p { font-size: 1.15rem; margin: 12px auto 26px; max-width: 30em; color: #E1E8F3; }
+.final .hw-btn--primary { background: #fff; color: var(--hw-navy); border-color: #fff; min-height: 54px; padding: 14px 32px; font-size: 1.1rem; }
+.final .hw-btn--primary:hover { background: var(--hw-soft); color: var(--hw-navy); }
+.final .hw-btn--primary:focus-visible { outline-color: #fff; }
+
+@media (max-width: 1080px) {
+  .help-grid, .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
-  .g2, .plans-grid, .preview-grid { grid-template-columns: 1fr; }
-  .g3 { grid-template-columns: 1fr 1fr; }
-  .hero { padding: 24px 0 4px; }
+  .hero { padding: 20px 0 28px; }
+  .hero-grid, .story-grid { grid-template-columns: 1fr; gap: 18px; }
+  .hero-logo { width: min(62vw, 250px); }
+  .hero-copy { text-align: center; }
+  .hero-sub { margin-left: auto; margin-right: auto; }
+  .hero-tools { grid-template-columns: 1fr; text-align: left; gap: 16px; margin-top: 20px; }
+  .free-pill { justify-self: center; }
+  .story-photo { max-width: 560px; }
 }
-@media (max-width: 600px) {
-  .g3, .benefits { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
   body { font-size: 16px; }
-  section { padding: 36px 0; }
-  .cta-row .btn { flex: 1 1 100%; }
-  .card, .more, .faq-item { padding-left: 16px; padding-right: 16px; }
+  .section { padding: 52px 0; }
+  .plans { grid-template-columns: 1fr; }
+  .shots { gap: 16px; }
+  .phone { border-radius: 24px; padding: 6px; }
+  .phone img { border-radius: 19px; }
+  .hero-copy h1 { font-size: clamp(2.3rem, 11vw, 3rem); }
+  .plan { padding: 22px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .btn { transition: none; }
-  .btn:hover { transform: none; }
+@media (max-width: 420px) {
+  .hero-sub { font-size: 1.02rem; }
+  .help-grid { grid-template-columns: 1fr; }
+  .hero-logo { width: min(52vw, 200px); }
 }
-.not-service { margin-top: 18px; border-left: 4px solid #b45309; background: #fffbeb; }
-.not-service p { color: inherit; margin: 0; }
-
-/* v2 human tone */
-section { padding-top: 64px !important; padding-bottom: 64px !important; }
-.hero { padding-top: 56px !important; }
-.hero-brand { font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--accent-strong); }
-.hero-big { font-size: clamp(2rem, 6vw, 3.1rem) !important; line-height: 1.12 !important; max-width: 14em !important; letter-spacing: -.01em; margin: 6px 0 18px !important; }
-.narrow { max-width: 760px; }
-.big-quote { font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.4; font-weight: 600; color: var(--accent-strong); margin: 0 0 20px; }
-.founder-grid { display: grid; grid-template-columns: 260px 1fr; gap: 36px; align-items: center; }
-.photo-spot { margin: 0; aspect-ratio: 4/5; border-radius: 28px; background: linear-gradient(160deg, #f6e3c6, #e3efe5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--muted); font-size: .9rem; }
-.orb-xl { width: 96px !important; height: 96px !important; }
-.founder-meta { color: var(--muted); font-size: .95rem; }
-@media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr; } .photo-spot { max-width: 220px; } section { padding-top: 44px !important; padding-bottom: 44px !important; } }
-.not-service, .not-service p, .not-service strong { color: #2b2b2b !important; }
-.not-service a { color: #7c2d12 !important; }
-.photo-spot { aspect-ratio: 4/3 !important; overflow: hidden; padding: 0; color: #2b2b2b; }
-.photo-spot picture, .photo-spot img { display: block; width: 100%; height: 100%; }
-.photo-spot img { object-fit: cover; object-position: 22% 45%; border-radius: inherit; }
-.founder-grid { grid-template-columns: minmax(280px, 420px) 1fr !important; }
-.story-photo { max-width: 560px; margin: 0 0 28px; border-radius: 28px; }
-@media (max-width: 720px) { .founder-grid { grid-template-columns: 1fr !important; } .photo-spot { max-width: none !important; } }
-
-/* Hopewick 2.0 design system: colours/type from /assets/hopewick-tokens.css */
-body { background: radial-gradient(900px 600px at 0% 0%, var(--bg-glow-1), transparent 60%), radial-gradient(900px 600px at 100% 30%, var(--bg-glow-2), transparent 60%), var(--bg); }
-h1, h2, h3, .hero-brand { font-family: var(--font-display); }
-a { color: var(--accent); text-underline-offset: 2px; }
-a:hover { color: var(--accent-strong); }
-:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; box-shadow: none; border-radius: 8px; }
-.btn { border-radius: var(--radius-sm); }
-.card { border-radius: var(--radius-lg); }
-.not-service { margin-top: 18px; border-left: 4px solid var(--accent-gold-bright); background: var(--accent-gold-soft); }
-.not-service, .not-service p, .not-service strong { color: var(--text) !important; }
-.not-service a { color: var(--accent) !important; }
-.photo-spot { background: linear-gradient(160deg, var(--accent-gold-soft), var(--accent-soft)); color: var(--muted); }
-.hero-tagline { margin: 0 0 4px; font-size: var(--text-md); font-weight: var(--weight-semibold); color: var(--muted); letter-spacing: .01em; }
-.nav-tools { display: flex; align-items: center; gap: 8px; flex: none; }
-.nav-crisis { min-height: 40px; }
-@media (max-width: 1280px) { .nav-tools { margin-left: auto; } .nav-toggle { margin-left: 0; order: 3; } }
-@media (max-width: 600px) {
-  .nav-crisis-long, .nav .hw-theme-toggle [data-theme-label] { display: none; }
-  .nav { gap: 6px; flex-wrap: nowrap; }
-  .nav .logo { font-size: 1.05rem; gap: 6px; }
-  .nav-safety { display: none !important; }   /* the Get help button is the safety entry on phones */
-  .nav-tools { gap: 6px; }
-  .nav-tools .btn-primary { display: none; }   /* the page has its own Start talking button */
-  .nav-toggle { padding: 8px 10px; }
-  .nav .hw-crisis-btn { padding: 8px 10px; }
-}
+@media (max-height: 700px) and (max-width: 640px) { .hero-logo { width: 170px; } }
+.breath [hidden] { display: none !important; }
+@media (min-width: 901px) { .hero-copy h1 { font-size: clamp(3rem, 4.5vw, 4.1rem); white-space: nowrap; } }
 </style>
 <script type="application/ld+json">
 {
@@ -285,478 +209,263 @@ a:hover { color: var(--accent-strong); }
 }
 </script>
 </head>
-<body>
+<body class="hw-home">
 <a class="skip-link" href="#main">Skip to content</a>
-
-<header class="site-header">
-  <nav class="wrap nav" aria-label="Main">
-    <a class="logo" href="./"><img class="logo-mark" src="brand/hopewick-mark-96.png" alt="" width="36" height="30" aria-hidden="true"><span data-brand>Hopewick</span></a>
-    <button class="nav-toggle" type="button" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#journal">Journal</a></li><li><a href="#about-hope">About Hope</a></li>
-      <li><a href="#features">What Hope helps with</a></li>
-      <li><a href="#who">Who it's for</a></li>
-      <li><a href="our-story.html">Our story</a></li>
-      <li><a href="#privacy">Privacy</a></li>
-      <li><a href="#safety">Safety</a></li>
-      <li><a href="#clinicians">For services</a></li>
-      <li><a href="#plans">Plans</a></li>
-      <li><a href="#faq">Questions</a></li>
+<header class="hw-header">
+  <nav class="hw-nav wrap" aria-label="Main">
+    <a class="hw-brand" href="/" aria-label="Hopewick home"><img class="hw-brand__mark" src="/brand/hopewick-mark-96.png" alt="" width="40" height="33"><span class="hw-brand__word">Hopewick</span></a>
+    <a class="hw-crisis-btn hw-help-mobile" href="/#get-help">Get help</a>
+    <button class="hw-menu-btn" type="button" id="navToggle" aria-expanded="false" aria-controls="navLinks"><span class="hw-menu-icon" aria-hidden="true"></span><span class="hw-menu-label">Menu</span></button>
+    <ul class="hw-links" id="navLinks">
+      <li><a href="/" aria-current="page">Home</a></li>
+      <li><a href="/how-it-works.html">How It Works</a></li>
+      <li><a href="/our-story.html">Our Story</a></li>
+      <li><a href="/pricing.html">Pricing</a></li>
+      <li><a class="hw-crisis-btn" href="/#get-help">Get Help</a></li>
+      <li><a href="/app/">Sign In</a></li>
+      <li class="hw-links__cta"><a class="hw-btn hw-btn--primary" href="/app/">Start Free</a></li>
     </ul>
-    <a class="nav-safety" href="#safety">Safety</a>
-    <div class="nav-tools">
-      <a class="hw-crisis-btn nav-crisis" href="#safety" aria-label="Get help now: crisis lines, always free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg><span>Get help<span class="nav-crisis-long"> now</span></span></a>
-      <button class="hw-theme-toggle" type="button" data-theme-toggle aria-label="Light mode. Switch to dark mode"><svg class="hw-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="hw-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span data-theme-label>Light</span></button>
-      <a class="btn btn-primary btn-sm" href="app/" id="navLaunch">Start talking</a>
-    </div>
   </nav>
 </header>
-
 <div class="welcome-back" id="welcomeBack" role="region" aria-label="Welcome back">
   <div class="wrap">
-    <p><strong>Welcome back.</strong> Settings on this device are still here. If you are signed in, saved chats are with your account as well.</p>
-    <a class="btn btn-primary btn-sm" href="app/" id="continueApp">Continue in Hopewick</a>
+    <p><strong>Welcome back.</strong> Settings on this device are still here.</p>
+    <a class="hw-btn hw-btn--navy hw-btn--sm" href="app/" id="continueApp">Continue in Hopewick</a>
   </div>
 </div>
 
 <main id="main">
+  <!-- 1. Hero -->
   <section class="hero" aria-labelledby="heroTitle">
-    <div class="wrap">
-      <div class="hw-lockup hero-lockup">
-        <picture><source srcset="brand/hopewick-lockup-600.webp" type="image/webp"><img class="hw-lockup__light" src="brand/hopewick-lockup-600.png" alt="Hopewick. Support for your next step." width="600" height="422" fetchpriority="high"></picture>
-        <picture><source srcset="brand/hopewick-lockup-dark-600.webp" type="image/webp"><img class="hw-lockup__dark" src="brand/hopewick-lockup-dark-600.png" alt="Hopewick. Support for your next step." width="600" height="422" loading="lazy"></picture>
+    <div class="wrap hero-grid">
+      <div class="hero-brand">
+        <picture>
+          <source type="image/webp" srcset="/brand/hopewick-hero-480.webp 480w, /brand/hopewick-hero-960.webp 960w" sizes="(max-width: 900px) 250px, 480px">
+          <img class="hero-logo" src="/brand/hopewick-hero-480.png" alt="Hopewick. Support for your next step. Mental health, addiction recovery, personal growth." width="480" height="338" fetchpriority="high">
+        </picture>
       </div>
-      <p class="sr-only"><span data-brand>Hopewick</span>: <span class="hero-tagline">Support for your next step.</span></p>
-      <h1 id="heroTitle" class="hero-promise hero-big">We can find hope by learning how to start again.</h1>
-      <p class="lede">We all need somewhere to say what’s on our mind without worrying how the other person will react. Hopewick is that space.</p>
-      <p class="lede lede-tight">A place to practise finding the words, so you can take them to the people in your life.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="app/" id="launchApp">Start talking</a>
-        <a class="btn" href="our-story.html">Read my story</a>
-      </div>
-      <p class="trust-line">Free to start • No card needed</p>
-      <div class="card not-service" role="note" aria-label="Important">
-        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>. <a href="#safety">More safety contacts</a></p>
+      <div class="hero-copy">
+        <h1 id="heroTitle">Small steps <span class="gold">count.</span></h1>
+        <p class="hero-sub">Daily check-ins, coping tools and Hope, your private support chat. Built in Australia to support recovery, wellbeing and personal growth.</p>
+        <div class="hero-tools">
+          <section class="breath" id="breathCard" aria-labelledby="breathTitle">
+            <div class="breath-top">
+              <span class="breath-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12h8M12 8v8" opacity=".35"/></svg></span>
+              <div>
+                <h2 id="breathTitle">Box Breathing</h2>
+                <p class="breath-time">About 3 minutes</p>
+              </div>
+            </div>
+            <p class="breath-text">Breathe in a steady square: in, hold, out, hold.</p>
+            <div class="breath-run" id="breathRun" hidden>
+              <div class="breath-box" id="breathBox" aria-hidden="true"><span id="breathCount"></span></div>
+              <div>
+                <p class="breath-phase" id="breathPhase" aria-live="polite">Press Start when you are ready</p>
+                <p class="breath-round" id="breathRound">11 rounds of 4-4-4-4</p>
+              </div>
+            </div>
+            <div class="breath-controls">
+              <button class="hw-btn hw-btn--navy" type="button" id="breathStart">Start</button>
+              <button class="hw-btn" type="button" id="breathReset" hidden>Reset</button>
+              <button class="hw-btn" type="button" id="breathExit" hidden>Exit</button>
+            </div>
+            <p class="breath-note" id="breathNote" hidden>Breathe through your nose if that is comfortable. Stop if you feel dizzy and go back to normal breathing.</p>
+          </section>
+          <div class="hero-actions">
+            <p class="free-pill">Free plan · No card needed</p>
+            <a class="hw-btn hw-btn--primary" href="app/" id="launchApp">Start Free</a>
+            <a class="hw-btn" href="#see-hopewick">See How It Works</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-  <section id="founder" class="alt" aria-labelledby="founderTitle">
-    <div class="wrap founder-grid">
-      <figure class="photo-spot">
+  <div class="crisis-strip" role="note" aria-label="Crisis information">
+    <p class="wrap">Not a crisis service. In crisis? Call <a href="tel:000">000</a> or Lifeline <a href="tel:131114">13 11 14</a>.</p>
+  </div>
+
+  <!-- 2. How Hopewick helps -->
+  <section class="section section--white" id="how-it-helps" aria-labelledby="helpsTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How Hopewick helps</p>
+        <h2 id="helpsTitle">Support for the hours in between</h2>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
+          <h3>Talk to Hope</h3>
+          <p>A supportive AI companion to help you reflect, explore challenges and identify practical next steps.</p>
+        </article>
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg></span>
+          <h3>Track Your Progress</h3>
+          <p>Daily check-ins, journalling and recovery milestones. Personal goals come with Plus.</p>
+        </article>
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4l-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/></svg></span>
+          <h3>Build Practical Skills</h3>
+          <p>Guided coping exercises, recovery resources and personal growth tools.</p>
+        </article>
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c2-6 5-4 7-9s5-6 7-7"/><circle cx="5" cy="20" r="1.5"/><path d="M15 4h4v4"/></svg></span>
+          <h3>Find Your Next Step</h3>
+          <p>Turn reflection into achievable actions and connect with real-world support.</p>
+        </article>
+      </div>
+      <p class="center-cta"><a class="hw-btn" href="how-it-works.html">More on how it works</a></p>
+    </div>
+  </section>
+
+  <!-- 3. See Hopewick in action -->
+  <section class="section section--soft" id="see-hopewick" aria-labelledby="actionTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">See Hopewick in action</p>
+        <h2 id="actionTitle">The real app, on your phone</h2>
+        <p>Screens from the Hopewick app in its built-in demo mode. Demo replies are pre-written examples, and “Alex” is the demo name, not a real person.</p>
+      </div>
+      <ul class="shots">
+        <li class="shot"><figure><div class="phone"><img src="/img/app/home-300.webp" srcset="/img/app/home-300.webp 300w, /img/app/home-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="Hopewick home screen: a What do you need right now panel with Get help, Talk to Hope, Journal and other shortcuts, and Today’s reflections." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Home</strong><span>Shortcuts to help, Hope, the journal and today’s readings.</span></figcaption></figure></li>
+        <li class="shot"><figure><div class="phone"><img src="/img/app/chat-300.webp" srcset="/img/app/chat-300.webp 300w, /img/app/chat-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="A demo chat with Hope about a craving. Hope suggests texting a support person and lists the National Alcohol and Other Drug Hotline." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Talk to Hope</strong><span>Work through a hard moment and find a next step.</span></figcaption></figure></li>
+        <li class="shot"><figure><div class="phone"><img src="/img/app/tools-300.webp" srcset="/img/app/tools-300.webp 300w, /img/app/tools-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="Tools screen: Get help now, domestic and family violence support, My safety plan, circuit breakers and the coping toolkit." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Tools</strong><span>Crisis lines, your safety plan and coping tools. Always free.</span></figcaption></figure></li>
+        <li class="shot"><figure><div class="phone"><img src="/img/app/learn-300.webp" srcset="/img/app/learn-300.webp 300w, /img/app/learn-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="Learn and grow screen: today’s readings, news and resources, learning modules, 12 Steps and Going Deeper." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Learn and grow</strong><span>Short lessons, daily readings and recovery pathways.</span></figcaption></figure></li>
+      </ul>
+      <p class="center-cta"><a class="hw-btn hw-btn--primary" href="app/">Explore the app</a></p>
+    </div>
+  </section>
+
+  <!-- 4. Why Hopewick exists -->
+  <section class="section section--white" id="founder" aria-labelledby="founderTitle">
+    <div class="wrap story-grid">
+      <figure class="story-photo">
         <picture>
           <source srcset="img/dwayne-wheel-of-brisbane.webp" type="image/webp">
           <img src="img/dwayne-wheel-of-brisbane.jpg" alt="Dwayne and his wife on the Wheel of Brisbane" width="1200" height="900" loading="lazy" decoding="async">
         </picture>
       </figure>
       <div>
-        <h2 id="founderTitle">Why I built Hopewick</h2>
-        <p class="founder-short">I’m Dwayne. I grew up in foster care and I was in jail by 17. For years trauma and addiction ran my life. In rehab I was the quietest person in the room, thinking I had to carry it all on my own. Having AI with me gave me the courage to go to the staff and say “I’m really struggling.” That’s why I built Hopewick.</p>
-        <p class="founder-meta">Dwayne Stevens, founder. In recovery myself. Completed the coursework and practical placement for the TAFE Queensland Dual Diploma of Mental Health and Alcohol and Other Drugs, graduation expected January 2027. Placement with QuIHN. I’m not a doctor, psychologist or registered counsellor.</p>
-        <p><a class="btn" href="our-story.html">Read the whole story</a></p>
+        <p class="eyebrow">Why Hopewick exists</p>
+        <h2 id="founderTitle">Built from lived experience. Created with purpose.</h2>
+        <blockquote class="story-quote">
+          <p>For years, trauma and addiction ran my life. I was the quietest person in the room. I thought I had to carry everything on my own.</p>
+          <p>That’s when I started using AI. It gave me somewhere to get my thoughts out, ask questions and work out what I was feeling when there was nobody around to talk to. It never replaced counselling, treatment or people. What it did was give me the courage to walk up to the staff on site and say, “I’m really struggling.”</p>
+          <p>My faith in Jesus Christ has played a significant role in my recovery. It gave me hope, purpose and a reason to keep going. But Hopewick isn’t about asking people to believe what I believe. Whatever you believe, you’re welcome here.</p>
+        </blockquote>
+        <p class="founder-meta">Dwayne Stevens, founder. In recovery myself. Completed the coursework and practical placement for the TAFE Queensland Dual Diploma of Mental Health and Alcohol and Other Drugs, graduation expected January 2027. I’m not a doctor, psychologist or registered counsellor.</p>
+        <a class="hw-btn hw-btn--navy" href="our-story.html">Read Our Story</a>
       </div>
     </div>
   </section>
-  <section id="purpose" aria-labelledby="purposeTitle">
-    <div class="wrap narrow">
-      <h2 id="purposeTitle">What it’s for</h2>
-      <p class="big-quote">We all need guidance, and we all need a space where we can learn how to trust and talk to people again after the carnage of addiction.</p>
-      <p>A lot of us come out of addiction carrying guilt and shame. We worry about what people will think, so we hold back. Hopewick is somewhere to practise. Then you take it to a worker, a sponsor, a mate or your family.</p>
-      <p>It won’t suit everybody. But if it helps someone reach out when they need it, that matters.</p>
-    </div>
-  </section>
-  <section id="journal" class="alt" aria-labelledby="journalTitle">
-    <div class="wrap narrow">
-      <h2 id="journalTitle">Journal with Hope</h2>
-      <p class="big-quote">Journal with Hope, and it helps you put a name to what you’re feeling.</p>
-      <p>Sometimes you just feel rubbish and can’t say why. Writing it down helps. Hope asks a gentle question or two, so you can work out what’s really going on. Angry, lonely, tired, scared. Once it has a name, it’s easier to talk about.</p>
-      <p>You can also do your gratitudes and daily reflection. I did gratitudes every day for 9 months, and it changed my mindset.</p>
-      <p>When you want to understand something, like how trauma and addiction work together, Hope points you to the most relevant information for where you’re at.</p>
-      <div class="cta-row"><a class="btn btn-primary" href="app/">Start journalling</a></div>
-    </div>
-  </section>
-  <section id="about-hope" aria-labelledby="aboutHopeTitle">
-    <div class="wrap">
-      <h2 id="aboutHopeTitle">About Hope, the tool behind this</h2>
-      <p class="section-lede">Hope is an AI companion. I want to be upfront about that. It’s there for the times when no one else is around. It doesn’t replace people. It helps you find the words to reach them.</p>
-      <div class="grid g3">
-        <div class="card"><h3>What it does</h3><p>Listens without judging. Helps you name what you’re feeling. Talks through a craving or a hard hour. Helps with journalling, gratitudes and plans. Points you to meetings and services.</p></div>
-        <div class="card"><h3>What it doesn’t do</h3><p>It isn’t a doctor, psychologist, counsellor or clinician. It isn’t treatment. Chats aren’t monitored, so no one is watching to step in. If things get serious, it shows Australian crisis numbers straight away.</p></div>
-        <div class="card"><h3>Your privacy</h3><p>Your chats are yours. To write a reply, what you say is sent to OpenAI. Training and data sharing for model improvement are off. You can see, edit or delete what Hope remembers. <a href="#privacy">More on privacy</a></p></div>
-      </div>
-      <div class="card not-service" role="note" aria-label="Important">
-        <p><strong>Hopewick is not a medical or crisis service.</strong> It isn’t treatment. If you’re in danger call <a href="tel:000"><strong>000</strong></a>. For crisis support call Lifeline on <a href="tel:131114"><strong>13 11 14</strong></a>. <a href="#safety">More safety contacts</a></p>
-      </div>
-    </div>
-  </section>
-  <section id="hope-example" aria-labelledby="exampleTitle">
-    <div class="wrap">
-      <h2 id="exampleTitle">See how it works</h2>
-      <p class="section-lede">Three made-up screens, in the same greens as the app. Example, not a real person. Nothing here is a saved chat, plan, or check-in.</p>
-      <div class="preview-grid">
-        <article class="mock" aria-label="Example chat, not a real person">
-          <p class="example-label">Chat · Example, not a real person</p>
-          <div class="mock-head"><img class="logo-mark" src="brand/hopewick-mark-96.png" alt="" width="36" height="30" aria-hidden="true"><span data-companion>Hope</span></div>
-          <div class="bubble u">It’s late and the urge to drink is loud.</div>
-          <div class="bubble a">You reached out while it was loud. Cravings often rise and fall. Quick check: hungry, angry, lonely, or tired?</div>
-          <div class="bubble u">Tired, and on my own.</div>
-          <div class="bubble a">We can sit with this for a few minutes, or pick one small thing that gets you through the next little while.</div>
-          <p class="mock-note">Free includes 15 Hope messages a day. Plus has no daily message cap. A real safety concern in the app shows Australian crisis contacts straight away.</p>
-        </article>
-        <article class="mock" aria-label="Example recovery plan, not a real person">
-          <p class="example-label">Recovery plan · Example, not a real person <span class="plus-tag">Plus</span></p>
-          <p class="plan-line"><strong>Relapse / lapse prevention plan</strong></p>
-          <p class="plan-line">Early warning: the house is quiet, and it is late.</p>
-          <p class="demo-kicker">First 10 minutes</p>
-          <div class="chip-row" aria-hidden="true">
-            <span class="chip on">HALT check</span>
-            <span class="chip on">Urge surfing</span>
-            <span class="chip">Water or something to eat</span>
-          </div>
-          <p class="plan-line"><strong>My exits</strong> — Alone at night: text a safe person, then step outside for a minute.</p>
-          <p class="mock-note">Relapse prevention and exit plans are free, along with your safety plan essentials. A lapse is not a failure. The clean-time tracker is separate, and a slip does not wipe it.</p>
-        </article>
-        <article class="mock" aria-label="Example daily check-in, not a real person">
-          <p class="example-label">Daily check-in · Example, not a real person</p>
-          <p class="plan-line"><strong>How are you feeling right now?</strong> <span class="demo-kicker">(optional)</span></p>
-          <div class="mood-demo" aria-hidden="true">
-            <span>Great</span><span>Good</span><span>Okay</span><span>Low</span><span>Stressed</span><span class="on">Tired</span>
-          </div>
-          <p class="demo-kicker">Cravings today</p>
-          <div class="chip-row" aria-hidden="true">
-            <span class="chip">None</span><span class="chip">Mild</span><span class="chip on">Moderate</span><span class="chip">Strong</span>
-          </div>
-          <p class="mock-note">The daily check-in and clean-time tracker stay free. This sample is not saved anywhere.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section id="features" aria-labelledby="featTitle">
-    <div class="wrap">
-      <h2 id="featTitle">What Hope can help you do</h2>
-      <p class="section-lede">Practical support for the hours when a counsellor is not beside you. A slip is something to learn from, not the end of the work.</p>
-      <div class="grid benefits">
-        <div class="card"><div class="icon" aria-hidden="true">🌊</div><h3>Talk through cravings and setbacks</h3><p>Hope can sit with an urge, a slip, or a hard hour and help you name a next step. Free is 15 Hope messages a day. Unlimited Hope messages are part of Plus.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Make a recovery plan</h3><p>Your safety plan essentials, relapse prevention and exit plans, and My next step are free. SMART goals and weekly plans are part of Hopewick Plus.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">📅</div><h3>Track your progress</h3><p>The daily check-in, clean time, and milestones stay free. A slip is not shown as if the days you already kept never happened.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">📍</div><h3>Find practical support</h3><p>Meetings, AOD services, treatment, food, shelter, and crisis lines. These stay free. Hopewick links out. It does not run those services.</p></div>
-      </div>
-      <p class="fine">Opening older stored chats is part of Plus. A free account can open only the latest chat. Older chats can still be stored. Hidden is not the same as deleted.</p>
 
-      <details class="more" id="everything">
-        <summary>Explore more</summary>
-        <div class="grid g2">
-          <div class="card"><h3>Journal and reflect</h3><p>Private writing, in your own voice, with daily prompts. Writing in the journal is free. Hopewick Plus adds gratitude and recovery entries, guided series and prompt packs, and Deepen with Hope.</p></div>
-          <div class="card"><h3>Voice</h3><p>Talk instead of type, hear replies read aloud, or use hands-free conversation where the browser supports it.</p></div>
-          <div class="card"><h3>Shared-device profiles</h3><p>Separate private profiles on one device, with an optional PIN. Adding another profile is part of Hopewick Plus. The profile you already have stays available. A PIN is a light lock, not strong security.</p></div>
-          <div class="card"><h3>Remembers what matters</h3><p>Goals, triggers, supports and what helps can be kept on this device so conversations build over time. You can view, edit or delete every memory. Crisis details are not stored as memories.</p></div>
-          <div class="card"><h3>Nutrition &amp; rebuilding</h3><p>Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence. These notes are part of Hopewick Plus.</p><p>Hopewick separates established evidence, emerging or limited evidence, individual experience, and possible risks or interactions. No supplement, diet or lifestyle practice here is a cure for addiction.</p></div>
-          <div class="card"><h3>Gut health &amp; recovery</h3><p>The gut–brain connection, fermented foods, fibre, sleep and the habits that change them while you rebuild. Education only. It does not treat addiction. Gut health and neuroplasticity notes are part of Plus.</p></div>
-          <div class="card"><h3>Building new brain habits</h3><p>How habits, thoughts and recovery actually work. A thought is not an instruction. Not a treatment, and not a claim that mindset is enough. These notes are part of Plus.</p></div>
-          <div class="card"><h3>Ice baths &amp; recovery spas</h3><p>You spent years training yourself to escape discomfort. Recovery gives you opportunities to practise meeting discomfort differently. It is practising meeting discomfort on purpose: commitment, staying present, and following through safely. Cold is not a cure for addiction. The notes are part of Hopewick Plus.</p><p>Cold stresses the heart and breathing. It is not for cardiovascular or respiratory conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, circulation problems, pregnancy, or other significant medical conditions. Talk with a GP or treating clinician first if any of those apply. Never while intoxicated. Not alone. Stop for chest pain, severe shortness of breath, faintness, confusion, or anything that feels medically wrong.</p></div>
-          <div class="card"><h3>Faith tools, when you want them</h3><p>Word for the day is an optional Christian reading. It is separate from Just for today. A 12-step outline and daily SOAP stay free. Going Deeper study tracks are part of Hopewick Plus. Find a church opens official Australian directories, and stays hidden if you choose no faith content. Hopewick does not host a church list, and it is not only for Christians.</p></div>
-          <div class="card"><h3>Find a meeting</h3><p>Opens official Australian AA, NA and SMART Recovery finders, plus Celebrate Recovery locations. Hopewick does not host meeting lists. SMART goals in the app are your own plan, not a SMART Recovery meeting.</p></div>
-          <div class="card"><h3>Find treatment and AOD services</h3><p>Official Australian AOD helplines and state service finders, plus a curated list of community services such as QuIHN and Drug ARM. Hopewick links out so contacts stay current. It does not run these services.</p></div>
-          <div class="card"><h3>Food, shelter and practical help</h3><p>Opt-in links to Ask Izzy for free meals, shelter, showers and practical support. Location is used only if you choose it.</p></div>
-        </div>
-      </details>
-    </div>
-  </section>
-  <section id="who" class="alt" aria-labelledby="whoTitle">
+  <!-- 5. Simple pricing -->
+  <section class="section section--soft" id="plans" aria-labelledby="plansTitle">
     <div class="wrap">
-      <h2 id="whoTitle">Who it's for</h2>
-      <p class="section-lede">Hopewick is first for the person in it. It sits beside treatment. It does not replace a counsellor, a doctor, or emergency care.</p>
-      <div class="grid g3">
-        <div class="card"><div class="icon" aria-hidden="true">💚</div><h3>People in recovery</h3><p>A place for cravings, slips, goals, routines and the next step. You can start on your own. You do not need a service to try Hope.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🤝</div><h3>Families and support people</h3><p>Somewhere calm to think things through, and a way to find practical help when food, shelter or a service is the need.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🏡</div><h3>Rehabs and AOD services</h3><p>A consistent tool between sessions, after discharge, or while someone is waiting for a place. Care stays with your service.</p></div>
+      <div class="section-head">
+        <p class="eyebrow">Simple pricing</p>
+        <h2 id="plansTitle">Start free. Upgrade if it helps.</h2>
+        <p>Essential support stays free. Crisis help and your safety plan are never behind a paywall.</p>
       </div>
-    </div>
-  </section>
-  <section id="privacy" aria-labelledby="privTitle">
-    <div class="wrap">
-      <h2 id="privTitle">Your information, in short</h2>
-      <p class="section-lede">Chats are not shared with a counsellor, an employer, or a service, and Hopewick staff do not get a feed of them. Chats are not monitored. That is not the same as a clinical duty of confidentiality, and this page does not promise one.</p>
-      <div id="privacy-details">
-        <p>Sign in with email and password, or with Google. Email me a sign-in link is there if you are new or you have forgotten the password. You stay signed in on this browser until you sign out or you have not used Hopewick for 30 days. Apple sign-in is not offered.</p>
-        <p>With an account, saved chats, check-ins, and weekly goals are stored with that account and kept in this browser. To write a reply, the conversation content needed for that reply is sent to OpenAI. Training and data sharing for model improvement are off. Zero Data Retention is not available.</p>
-      </div>
-      <ul class="doc-links">
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="data.html">Data storage and deletion</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="complaints.html" id="complaints">Complaints</a></li>
-      </ul>
-      <p class="fine">Complaints and privacy questions: <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a>. We aim to acknowledge a written complaint within 2 business days and to resolve it within 10 business days. Those are targets, not a guarantee.</p>
-    </div>
-  </section>
-  <section id="safety" class="alt" aria-labelledby="safetyTitle">
-    <div class="wrap">
-      <h2 id="safetyTitle">Safety built in</h2>
-      <div class="card safety-card">
-        <p>When serious safety concerns appear, Hopewick shows verified Australian crisis and emergency contacts. If the AI cannot be reached, those contacts are still in the app. Hopewick is support between sessions. It is not a doctor, counsellor, or emergency service.</p>
-        <p><a href="#safety-lines">View safety information</a></p>
-      </div>
-      <div id="safety-lines">
-        <h3>Verified Australian contacts</h3>
-        <p class="section-lede">These numbers were checked again on 3 October 2026 against the services’ own sites and were unchanged. If someone may be in withdrawal from alcohol or benzodiazepines, stopping suddenly can be dangerous and needs a doctor.</p>
-        <ul class="hotlines">
-          <li class="urgent"><span>Emergency</span><a href="tel:000">000</a></li>
-          <li><span>Lifeline</span><a href="tel:131114">13 11 14</a></li>
-          <li><span>Suicide Call Back Service</span><a href="tel:1300659467">1300 659 467</a></li>
-          <li><span>National Alcohol &amp; Other Drug Hotline</span><a href="tel:1800250015">1800 250 015</a></li>
-          <li><span>Adis 24/7 Alcohol &amp; Drug Support (QLD)</span><a href="tel:1800177833">1800 177 833</a></li>
-          <li><span>1800RESPECT (domestic, family and sexual violence)</span><a href="tel:1800737732">1800 737 732</a></li>
-          <li><span>13YARN (Aboriginal and Torres Strait Islander)</span><a href="tel:139276">13 92 76</a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-  <section id="faith" aria-labelledby="faithTitle">
-    <div class="wrap">
-      <h2 id="faithTitle">Faith, if you want it</h2>
-      <p class="section-lede">Faith content is optional. Word for the day is a short Christian reading, and it is separate from Just for today. You can choose Christian, another tradition, general spirituality, or no faith content for how Hope talks with you. Hopewick is not only for Christians. Faith is never used to shame, and a lapse is not treated as a moral failing.</p>
-    </div>
-  </section>
-  <section id="clinicians" class="alt" aria-labelledby="clinTitle">
-    <div class="wrap grid g2">
-      <div>
-        <h2 id="clinTitle">For rehabs and AOD services</h2>
-        <p class="section-lede">Your service stays in charge of care. Hopewick is for the quiet hours. It echoes approaches used in Australian AOD work — motivational interviewing, harm reduction, relapse prevention and CBT-style skills — so people hear a consistent message. It is not a clinical decision-making tool.</p>
-        <p>Hope regularly points people back to their GP, counsellor, AOD service, peer meetings and, if they want it, a faith community. Staff do not receive a feed of conversations.</p>
-        <p>Seat plans for rehabs, AOD services and clinics are not on sale yet. A pilot is a short brief for selected clients and a mid-pilot check. Read <a href="how-it-fits.html">how Hope fits in a service</a> or the <a href="pilot-pricing.html">pilot price sheet</a>.</p>
-      </div>
-      <div class="card" id="pilot">
-        <h3 id="pilotTitle">Talk about a pilot</h3>
-        <p>Individual Hopewick Plus is available now. Organisations and clinics can email <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a>.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="app/">Open Hopewick</a>
-          <a class="btn" href="mailto:hello@hopewick.com.au">Email us about a pilot</a>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section id="faq" aria-labelledby="faqTitle">
-    <div class="wrap">
-      <h2 id="faqTitle">Questions</h2>
-      <p class="section-lede">Short answers. The privacy, data, terms, and complaints pages carry the fuller detail.</p>
-      <details class="faq-item">
-        <summary>Is Hope a counsellor or a crisis service?</summary>
-        <p>No. Hope is an AI recovery companion. Hope is not a doctor, psychologist, registered counsellor, clinician, or emergency service. Chats are not monitored. Hopewick does not replace professional treatment or emergency care. If you need help now, call <a href="tel:000">000</a> or use the <a href="#safety">safety contacts</a>.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Do I need a card for the free plan?</summary>
-        <p>No. No card required for the free plan. Free is 15 Hope messages a day, plus crisis support, your safety plan, relapse prevention and exit plans, practical finders, today’s readings, the daily check-in, the 12 core coping tools, My next step, the journal, and the clean-time tracker. The app shows the last 7 days of your history on the free plan, and you can export or delete everything you saved at any time.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How does the 7-day trial work?</summary>
-        <p>The first subscription only is a 7-day trial. A card is required. Stripe collects it at the start. The AU$20 monthly charge starts when the 7 days end. A second checkout has no trial. Cancel anytime. One subscription per person.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How do I cancel Plus?</summary>
-        <p>Cancel in My Account. That stops the next renewal. Plus stays until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it.</p>
-      </details>
-      <details class="faq-item">
-        <summary>What does deleting my account do?</summary>
-        <p>Delete account removes the live server sign-in, chats, check-ins, goals, journal, safety plan, relapse and exit plans, coping history, next steps and weekly plans, signs you out, and cancels Plus straight away. A copy in this browser can remain until you clear it in Settings. Stripe may keep invoices. Older Render snapshots are not wiped. The detail is on the <a href="data.html">data storage and deletion</a> page.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How do I sign in?</summary>
-        <p>Google sign-in works. Apple sign-in is not offered. Magic link is the email login: on the sign-in screen it says Email me a sign-in link. You can also set a password. You stay signed in on this browser until you sign out or you have not used Hopewick for 30 days.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is Hopewick only for Christians?</summary>
-        <p>No. Faith content is optional. Word for the day is separate from Just for today. You can choose no faith content. People in recovery, families, and AOD services can use Hopewick without a faith setting.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How long are chats kept?</summary>
-        <p>On the live server, a chat stays until you delete that chat, you delete the account, or the chat has not been updated for 24 months (730 days). A free account can open only the latest chat. Older chats can still be stored. Not seeing them is not deletion. Plus can open older stored chats that are still there.</p>
-      </details>
-    </div>
-  </section>
-  <section id="plans" class="alt" aria-labelledby="plansTitle">
-    <div class="wrap">
-      <h2 id="plansTitle">Hopewick Plus — AU$20/month</h2>
-      <p class="section-lede">Start free, or try Plus. Essential support stays free. Cancel anytime. One subscription per person.</p>
-      <p class="section-lede">Daily message limits: Free is 15 messages/day. Hopewick Plus has no daily message limit. No daily limit on Plus.</p>
-      <div class="plans-grid">
-        <article class="card plan">
-          <h3>Start free</h3>
+      <div class="plans">
+        <article class="plan">
+          <h3>Hopewick Free</h3>
           <p class="price">AU$0</p>
-          <p class="who">No card. No payment required.</p>
-          <ul class="checklist">
+          <p class="plan-who">No card needed.</p>
+          <ul class="ticks">
             <li>15 Hope messages a day</li>
-            <li>Crisis and practical support</li>
-            <li>Today’s readings, including Word for the day and Just for today</li>
-            <li>Daily check-in, the last 7 days of trends, and the clean-time tracker</li>
-            <li>Your safety plan, relapse prevention and exit plans, 12 core coping tools, and My next step</li>
-            <li>The journal, with daily reflection prompts</li>
-            <li>Export or delete everything you save, any time</li>
-            <li>The latest saved chat when you are signed in</li>
+            <li>Daily check-in, clean-time tracker and milestones</li>
+            <li>Journal with daily reflection prompts</li>
+            <li>Your safety plan, relapse prevention and exit plans</li>
+            <li>12 core coping tools, core learning modules and My next step</li>
+            <li>Find meetings, treatment, AOD services and practical help</li>
+            <li>The last 7 days of history, and your latest saved chat</li>
+            <li>Safety and crisis information, always available</li>
           </ul>
-          <div class="plan-actions">
-            <a class="btn btn-primary" href="app/">Start free</a>
-          </div>
+          <a class="hw-btn hw-btn--navy" href="app/">Start Free</a>
         </article>
-        <article class="card plan featured">
+        <article class="plan plan--plus">
           <h3>Hopewick Plus</h3>
-          <p class="price">AU$20<span>/month</span></p>
-          <p class="who">7 days free on the first subscription, then AU$20/month. A card is collected at the start. Cancel anytime. One subscription per person.</p>
-          <ul class="checklist">
-            <li>Unlimited Hope messages</li>
-            <li>Full history, monthly insights and a printable report</li>
-            <li>New coping tools and journal packs first</li>
-            <li>Opening older stored chats</li>
-            <li>SMART goals and weekly plans</li>
+          <p class="price">AU$20<span> /month</span></p>
+          <p class="plan-who">7-day free trial on your first subscription, subject to eligibility. Cancel anytime.</p>
+          <ul class="ticks">
+            <li>Everything in Free</li>
+            <li>No daily message limit with Hope</li>
+            <li>Full history, older saved chats, monthly insights and a printable report</li>
+            <li>SMART goals, personal goals and weekly plans</li>
+            <li>Extra private profiles on a shared device</li>
             <li>Journal extras, including Deepen with Hope</li>
-            <li>Resume builder</li>
-            <li>Recovery learning library</li>
-            <li>Going Deeper study tracks and the full year of readings</li>
+            <li>New coping tools and learning modules first</li>
+            <li>Recovery learning library, resume builder, Going Deeper and the full year of readings</li>
           </ul>
-          <div class="plan-actions">
-            <a class="btn btn-primary" href="app/?trial=1">Start 7-day free trial</a>
-          </div>
+          <a class="hw-btn hw-btn--primary" href="app/?trial=1">Start 7-day free trial</a>
+          <p class="plan-fine">A card is collected by Stripe at the start. The AU$20 monthly charge begins when the trial ends. See the <a href="terms.html">terms</a>.</p>
         </article>
       </div>
-      <div class="cmp" id="plan-compare">
-        <h3 class="cmp-head">See everything included</h3>
-        <p class="fine">Tap a section to open it.</p>
-        <details class="cmp-sec" id="plan-compare-free">
-          <summary><span class="cmp-title">Always free</span><span class="cmp-line">Crisis help, your safety plan, relapse and exit plans, and your data. Never capped.</span></summary>
-          <table class="cmp-table">
-            <caption class="sr-only">Always free: Start free and Hopewick Plus</caption>
-            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">Crisis support, domestic and family violence resources, and Get help</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Your safety plan essentials: warning signs, people to contact, what helps</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Relapse prevention and exit plans — private on this device, or with your account when you choose</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Clean-time tracker and milestones. A slip does not wipe the days you have already kept</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Recovery tracker: your goals, day counts, milestones, and cravings and lapses logged gently</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Core learning modules: about 5 minutes each, on cravings, sleep, stress, harm reduction, support, CBT and ACT basics</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Find meetings, treatment, AOD services, practical help and a church directory</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Today’s Readings, the 12-step outline and SOAP</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Export or delete everything you save, at any time. Nothing is deleted because of your plan</th><td>Yes</td><td>Yes</td></tr>
-            </tbody>
-          </table>
-        </details>
-        <details class="cmp-sec" id="plan-compare-history">
-          <summary><span class="cmp-title">Check-ins and history</span><span class="cmp-line">Check in every day, free. Free shows the last 7 days; Plus shows it all.</span></summary>
-          <table class="cmp-table">
-            <caption class="sr-only">Check-ins and history: Start free and Hopewick Plus</caption>
-            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">The daily check-in</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">History and trends in the app</th><td>Last 7 days</td><td>Full history</td></tr>
-                <tr><th scope="row">Recovery tracker history, and 30 and 90 day trends (not an assessment)</th><td>Last 7 days</td><td>Full history and trends</td></tr>
-                <tr><th scope="row">Saved chats</th><td>The latest chat</td><td>Stored history that is still there</td></tr>
-            </tbody>
-          </table>
-        </details>
-        <details class="cmp-sec" id="plan-compare-journal">
-          <summary><span class="cmp-title">Journal</span><span class="cmp-line">Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.</span></summary>
-          <table class="cmp-table">
-            <caption class="sr-only">Journal: Start free and Hopewick Plus</caption>
-            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">Free writing and daily reflection prompts</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Gratitude and recovery entries, and Deepen with Hope</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">Guided series and prompt packs</th><td>6 to 12 months later</td><td>First</td></tr>
-            </tbody>
-          </table>
-        </details>
-        <details class="cmp-sec" id="plan-compare-tools">
-          <summary><span class="cmp-title">Tools and new releases</span><span class="cmp-line">The 12 core coping tools are free. Plus gets new tools first.</span></summary>
-          <table class="cmp-table">
-            <caption class="sr-only">Tools and new releases: Start free and Hopewick Plus</caption>
-            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">The coping toolkit: 12 core tools, including breathing, grounding and urge surfing</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">New coping tools and journal packs</th><td>6 to 12 months later</td><td>From release day</td></tr>
-                <tr><th scope="row">New learning modules each week, such as DBT skills and more ACT</th><td>6 months later</td><td>From release day</td></tr>
-                <tr><th scope="row">Messages with Hope</th><td>15 a day</td><td>No daily message limit</td></tr>
-                <tr><th scope="row">The resume builder, kept on this device</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">Gut health and neuroplasticity notes — plain language, Plus only</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">Ice baths and recovery spa notes — plain language, Plus only</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">Going Deeper study tracks, and the full year of readings</th><td>—</td><td>Yes</td></tr>
-            </tbody>
-          </table>
-        </details>
-        <details class="cmp-sec" id="plan-compare-plans">
-          <summary><span class="cmp-title">Plans and reports</span><span class="cmp-line">My next step is free. Plus adds weekly plans, goals, insights and a report.</span></summary>
-          <table class="cmp-table">
-            <caption class="sr-only">Plans and reports: Start free and Hopewick Plus</caption>
-            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">My next step: one small step you choose</th><td>Yes</td><td>Yes</td></tr>
-                <tr><th scope="row">Weekly plans in My next step (no reminders are sent)</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">SMART goals for the week, and personal goals</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">Monthly insights (descriptive, not a diagnosis)</th><td>—</td><td>Yes</td></tr>
-                <tr><th scope="row">A printable mood and recovery report</th><td>—</td><td>Yes</td></tr>
-            </tbody>
-          </table>
-        </details>
-        <details class="cmp-sec" id="plan-compare-soon">
-          <summary><span class="cmp-title">Coming soon</span><span class="cmp-line">Extras we are working on. Not available yet.</span></summary>
-          <table class="cmp-table">
-            <caption class="sr-only">Coming soon: Start free and Hopewick Plus</caption>
-            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
-            <tbody>
-                <tr><th scope="row">Recovery tracker extras: milestone calendar, habits, meeting log, printable milestone certificates</th><td>—</td><td>Coming soon</td></tr>
-                <tr><th scope="row">Faith plans, devotionals and a prayer journal</th><td>—</td><td>Coming soon</td></tr>
-                <tr><th scope="row">Guided audio, meditations and sleep stories</th><td>—</td><td>Coming soon</td></tr>
-                <tr><th scope="row">Themes and a custom dashboard</th><td>—</td><td>Coming soon</td></tr>
-                <tr><th scope="row">Photo and voice journal attachments</th><td>—</td><td>Coming soon</td></tr>
-            </tbody>
-          </table>
-        </details>
-      </div>
-      <p class="callout">If Plus ends, nothing you saved is deleted. The app shows your last 7 days, and you can still export or delete everything.</p>
-      <p class="callout">Hopewick Plus is an individual subscription. It is not counselling and not a crisis service. In an emergency call <a href="tel:000">000</a>.</p>
-      <p class="callout">The first subscription is a 7-day trial. A card is collected by Stripe at the start. The monthly charge is the AU$20 price when the trial ends. A second checkout has no trial. Cancel in My Account stops the next renewal and leaves Plus in place until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it. Deleting the account cancels Plus straight away.</p>
-    </div>
-  </section>
-  <section id="mobile" aria-labelledby="mobileTitle">
-    <div class="wrap">
-      <h2 id="mobileTitle" class="sr-only">Hopewick on your phone</h2>
-      <p class="mobile-note">Use Hopewick now in your browser or add it to your home screen. iPhone and Android store apps are coming soon.</p>
+      <p class="pricing-more"><a href="pricing.html">Compare everything included, and how the trial and cancelling work</a></p>
     </div>
   </section>
 
+  <!-- 6. Final CTA -->
+  <section class="final" aria-labelledby="finalTitle">
+    <div class="wrap">
+      <h2 id="finalTitle">Your next step starts here.</h2>
+      <p>You don’t need to have everything figured out to begin.</p>
+      <a class="hw-btn hw-btn--primary" href="app/">Get Started Free</a>
+    </div>
+  </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap foot-grid">
-    <div>
-      <a class="logo" href="./"><img class="logo-mark" src="brand/hopewick-mark-96.png" alt="" width="36" height="30" aria-hidden="true"><span data-brand>Hopewick</span></a>
-      <p data-tagline>Recovery support for the hours between appointments</p>
-      <p>Hopewick is operated by BRIDGE&amp;BITE.CO PTY LTD.</p>
-      <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
-      <p><strong>Not a crisis service.</strong> In an emergency call <a href="tel:000">000</a>. See <a href="#safety">safety contacts</a>.</p>
-    </div>
-    <div>
-      <ul class="foot-links">
-        <li><a href="#safety">Safety</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="data.html">Data</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="complaints.html">Complaints</a></li>
-        <li><a href="#plans">Plans</a></li>
-        <li><a href="app/">App</a></li>
-        <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
+<footer class="hw-footer" id="get-help" aria-labelledby="getHelpTitle">
+  <div class="wrap">
+    <section class="hw-help" aria-labelledby="getHelpTitle">
+      <span id="safety" aria-hidden="true"></span><span id="safety-lines" aria-hidden="true"></span>
+      <h2 id="getHelpTitle">Get help now</h2>
+      <p>Hopewick is not a crisis service. If you or someone else is in immediate danger, call <a href="tel:000">000</a>.</p>
+      <ul class="hw-hotlines">
+        <li class="urgent"><span>Emergency</span><a href="tel:000">000</a></li>
+        <li><span>Lifeline</span><a href="tel:131114">13 11 14</a></li>
+        <li><span>Suicide Call Back Service</span><a href="tel:1300659467">1300 659 467</a></li>
+        <li><span>National Alcohol &amp; Other Drug Hotline</span><a href="tel:1800250015">1800 250 015</a></li>
+        <li><span>Adis 24/7 Alcohol &amp; Drug Support (QLD)</span><a href="tel:1800177833">1800 177 833</a></li>
+        <li><span>1800RESPECT (domestic, family and sexual violence)</span><a href="tel:1800737732">1800 737 732</a></li>
+        <li><span>13YARN (Aboriginal and Torres Strait Islander)</span><a href="tel:139276">13 92 76</a></li>
       </ul>
-      <p class="copyright" data-copyright>© 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.</p>
-      <p>Email <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a></p>
+      <p class="hw-small">Numbers checked on 3 October 2026 against the services’ own sites.</p>
+    </section>
+    <div class="hw-foot-grid">
+      <div>
+        <a class="hw-brand" href="/"><img class="hw-brand__mark" src="/brand/hopewick-mark-96.png" alt="" width="40" height="33" loading="lazy"><span class="hw-brand__word">Hopewick</span></a>
+        <p class="hw-disclaimer"><strong>Hopewick is AI-assisted support.</strong> It is not an emergency service or a clinical treatment service, and it does not replace professional care.</p>
+        <p class="founder-credit" data-founder>Founded by <strong>Dwayne Stevens</strong> (BRIDGE&amp;BITE.CO / Hopewick).</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="hw-foot-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/how-it-works.html">How It Works</a></li>
+          <li><a href="/our-story.html">Our Story</a></li>
+          <li><a href="/pricing.html">Pricing</a></li>
+          <li><a href="/app/">App</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+          <li><a href="/complaints.html">Complaints</a></li>
+          <li><a href="/data.html">Data</a></li>
+          <li><a href="/how-it-fits.html">For services</a></li>
+          <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
+        </ul>
+        <p>Contact <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a></p>
+        <p class="copyright">Hopewick is operated by BRIDGE&amp;BITE.CO PTY LTD. © 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.</p>
+      </nav>
     </div>
   </div>
 </footer>
-
+<script src="/assets/site.js" defer></script>
 <script>
 'use strict';
 (function applyBrand() {
   const title = `${BRAND.name} — ${BRAND.tagline}`;
   document.title = title;
   const setMeta = (sel, val) => { const m = document.querySelector(sel); if (m) m.setAttribute('content', val); };
-  const description = 'Hopewick is a space for people in recovery to say what’s on their mind, journal, and practise finding the words to reach the people in their life. Built by someone in recovery. Not a medical or crisis service.';
+  const description = 'Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a private support chat. Built in Australia. Not a medical or crisis service.';
   setMeta('meta[property="og:title"]', title);
   setMeta('meta[name="twitter:title"]', title);
   setMeta('meta[property="og:site_name"]', BRAND.name);
@@ -781,27 +490,76 @@ a:hover { color: var(--accent-strong); }
   if (returning) document.getElementById('welcomeBack').classList.add('show');
 })();
 
-(function mobileNav() {
-  var header = document.querySelector('.site-header');
-  var btn = document.getElementById('navToggle');
-  var links = document.getElementById('navLinks');
-  if (!header || !btn || !links) return;
-  function setOpen(open) {
-    header.classList.toggle('nav-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    btn.textContent = open ? 'Close' : 'Menu';
+/* Box breathing: same pattern as the app's coping tool "breathing-box" (app/data/coping-tools.js): 4-4-4-4. */
+(function boxBreathing() {
+  const PHASES = [['Breathe in', 'in'], ['Hold', 'hold-in'], ['Breathe out', 'out'], ['Hold', 'hold-out']];
+  const SECS = 4, ROUNDS = 11;
+  const $ = (id) => document.getElementById(id);
+  const start = $('breathStart'), reset = $('breathReset'), exit = $('breathExit');
+  const run = $('breathRun'), box = $('breathBox'), count = $('breathCount'), phase = $('breathPhase'), round = $('breathRound'), note = $('breathNote');
+  if (!start) return;
+  let timer = null, i = 0, left = SECS, r = 0, state = 'idle';
+  function show(p) {
+    box.dataset.phase = PHASES[p][1];
+    phase.textContent = PHASES[p][0];
+    count.textContent = String(left);
+    round.textContent = 'Round ' + (r + 1) + ' of ' + ROUNDS;
   }
-  btn.setAttribute('aria-label', 'Open menu');
-  btn.addEventListener('click', function () {
-    setOpen(btn.getAttribute('aria-expanded') !== 'true');
-  });
-  links.addEventListener('click', function (e) {
-    if (e.target.closest('a')) setOpen(false);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') setOpen(false);
-  });
+  function tick() {
+    left -= 1;
+    if (left > 0) { count.textContent = String(left); return; }
+    i += 1;
+    if (i >= PHASES.length) { i = 0; r += 1; }
+    if (r >= ROUNDS) { finish(); return; }
+    left = SECS; show(i);
+  }
+  function play() {
+    state = 'running';
+    start.textContent = 'Pause';
+    run.hidden = false; note.hidden = false; reset.hidden = false; exit.hidden = false;
+    show(i);
+    timer = setInterval(tick, 1000);
+  }
+  function pause() {
+    clearInterval(timer); timer = null; state = 'paused';
+    start.textContent = 'Resume';
+    phase.textContent = 'Paused. Press Resume when you are ready.';
+  }
+  function finish() {
+    clearInterval(timer); timer = null; state = 'idle';
+    i = 0; left = SECS; r = 0; delete box.dataset.phase; count.textContent = '';
+    phase.textContent = 'All rounds done. Breathe normally.';
+    start.textContent = 'Start again';
+  }
+  function doReset() {
+    clearInterval(timer); timer = null; state = 'idle';
+    i = 0; left = SECS; r = 0; delete box.dataset.phase; count.textContent = '';
+    phase.textContent = 'Press Start when you are ready';
+    round.textContent = ROUNDS + ' rounds of 4-4-4-4';
+    start.textContent = 'Start';
+  }
+  function doExit() {
+    doReset();
+    run.hidden = true; note.hidden = true; reset.hidden = true; exit.hidden = true;
+    start.focus();
+  }
+  start.addEventListener('click', () => { if (state === 'running') pause(); else play(); });
+  reset.addEventListener('click', () => { doReset(); start.focus(); });
+  exit.addEventListener('click', doExit);
+  document.addEventListener('visibilitychange', () => { if (document.hidden && state === 'running') pause(); });
+})();
+
+/* Old homepage anchors moved to other pages in the 2026-10 redesign. Keep old links working. */
+(function movedAnchors() {
+  var moved = {
+    faq: '/pricing.html#faq', 'plan-compare': '/pricing.html#plan-compare', mobile: '/pricing.html#mobile',
+    privacy: '/how-it-works.html#privacy', 'privacy-details': '/how-it-works.html#privacy-details', complaints: '/how-it-works.html#complaints',
+    features: '/how-it-works.html#features', everything: '/how-it-works.html#everything', journal: '/how-it-works.html#journal',
+    'about-hope': '/how-it-works.html#about-hope', 'hope-example': '/how-it-works.html#hope-example', who: '/how-it-works.html#who',
+    purpose: '/how-it-works.html#purpose', faith: '/how-it-works.html#faith', clinicians: '/how-it-works.html#clinicians', pilot: '/how-it-works.html#pilot'
+  };
+  var id = decodeURIComponent((location.hash || '').slice(1));
+  if (id && moved[id] && !document.getElementById(id)) location.replace(moved[id]);
 })();
 </script>
 </body>

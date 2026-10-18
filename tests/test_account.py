@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """My Account page: real sections, nav entry, and no extra bottom tab."""
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_pages import public_copy  # noqa: E402  (homepage copy moved, 2026-10)
 
 
 def test_my_account_page_and_nav():
     app = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
-    land = (ROOT / "index.html").read_text(encoding="utf-8")
+    land = public_copy()
     assert "EDEN_BUILD = 'hopewick-v5.27'" in app
     assert 'content="hopewick-v5.27"' in land
     assert 'id="myAccountView"' in app

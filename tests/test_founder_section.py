@@ -6,16 +6,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_founder_section_before_pricing():
-    """Heading and credential lines sit right after the hero and before features and pricing (human-first home, b054ccf)."""
+    """Homepage redesign (2026-10): hero, how it helps, see it in action, founder (Why Hopewick exists), then pricing.
+    The founder section keeps the photo, the credential line and a link to the full story on our-story.html."""
     page = (ROOT / "index.html").read_text(encoding="utf-8")
     hero_at = page.index('class="hero"')
-    features_at = page.index('id="features"')
+    helps_at = page.index('id="how-it-helps"')
+    action_at = page.index('id="see-hopewick"')
     founder_at = page.index('id="founder"')
     plans_at = page.index('id="plans"')
-    assert hero_at < founder_at < features_at < plans_at
+    assert hero_at < helps_at < action_at < founder_at < plans_at
     section = page.split('id="founder"', 1)[1].split("</section>", 1)[0]
-    assert "Why I built Hopewick" in section
-    # Short human-first version with a photo (b054ccf); the full story is on our-story.html.
+    assert "Built from lived experience. Created with purpose." in section
+    assert "wife" in section and "partner" not in section.lower()
+    # Short excerpt quoted from our-story.html, with the photo; the full story is on our-story.html.
     assert "Dwayne Stevens, founder" in section
     assert "Dual Diploma of Mental Health and Alcohol and Other Drugs" in section
     assert "I’m not a doctor, psychologist or registered counsellor." in section

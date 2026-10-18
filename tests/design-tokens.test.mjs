@@ -42,8 +42,23 @@ test('reduced motion is respected', () => {
   assert.match(read('assets/hopewick-ui.css'), /prefers-reduced-motion:\s*reduce/);
 });
 
+// The public homepage (index.html) was redesigned in 2026-10 with its own light-only stylesheet (assets/site.css)
+// in the approved brand colours; it is checked separately below. Every other page keeps the shared design system.
+const DS_PAGES = PAGES.filter((p) => p !== 'index.html');
+
+test('homepage: brand stylesheet, navy theme colour, logo mark, crisis link and no old green', () => {
+  const html = read('index.html');
+  assert.match(html, /assets\/site\.css/);
+  assert.match(html, /name="theme-color" content="#0b1b37"/);
+  assert.match(html, /hopewick-mark/);
+  assert.match(html, /hw-crisis-btn/);
+  assert.match(html, /tel:000/);
+  assert.match(html, /tel:131114/);
+  assert.doesNotMatch(html, /#3f8f5f|#2f6f4f|#1f4a38/i);
+});
+
 test('all main pages load the tokens, components and theme script, and drop the old green theme', () => {
-  for (const page of PAGES) {
+  for (const page of DS_PAGES) {
     const html = read(page);
     assert.match(html, /hopewick-tokens\.css/, `${page} tokens`);
     assert.match(html, /hopewick-ui\.css/, `${page} components`);
@@ -55,7 +70,7 @@ test('all main pages load the tokens, components and theme script, and drop the 
 });
 
 test('every page shows the logo, a theme toggle and a crisis link without the AI chat', () => {
-  for (const page of PAGES.filter((p) => p !== 'app/index.html')) {
+  for (const page of DS_PAGES.filter((p) => p !== 'app/index.html')) {
     const html = read(page);
     assert.match(html, /hopewick-mark/, `${page} logo`);
     assert.match(html, /data-theme-toggle/, `${page} theme toggle`);
@@ -82,9 +97,10 @@ test('approved logo: source artwork kept, dark-mode lockup exists and is used in
   for (const f of ['brand/source/hopewick-logo-source.png', 'brand/hopewick-lockup-dark.png', 'brand/hopewick-lockup-dark-600.png']) {
     assert.ok(fs.existsSync(path.join(root, f)), f);
   }
+  // The homepage hero uses the approved full lockup, resized from brand/hopewick-lockup.png (light-only page).
   const html = read('index.html');
-  assert.match(html, /class="hw-lockup__light" src="brand\/hopewick-lockup-600\.png"/);
-  assert.match(html, /class="hw-lockup__dark" src="brand\/hopewick-lockup-dark-600\.png"/);
+  assert.match(html, /src="\/brand\/hopewick-hero-480\.png"/);
+  assert.ok(fs.existsSync(path.join(root, 'brand/hopewick-hero-480.png')));
   const ui = read('assets/hopewick-ui.css');
   assert.match(ui, /:root\[data-theme="dark"\] \.hw-lockup__dark \{ display: block/);
   assert.match(read('tools/brand/build_logo_assets.py'), /hopewick-logo-source\.png/);

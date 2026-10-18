@@ -59,8 +59,9 @@ test('landing page and app use the new favicon, header mark and og-image', () =>
   assert.match(land, /og:image" content="https:\/\/hopewick\.com\.au\/og-image\.png"/);
   assert.match(land, /og:image:alt/);
   assert.match(land, /"logo": "https:\/\/hopewick\.com\.au\/brand\/hopewick-lockup-600\.png"/);
-  // Header, footer, hero and (Hopewick 2.0) the chat preview all use the stage2a mark; no old orb left.
-  assert.ok((land.match(/class="logo-mark/g) || []).length >= 3);
+  // Header and footer use the approved mark (homepage redesign: hw-brand__mark); the hero uses the full lockup; no old orb left.
+  assert.ok((land.match(/class="hw-brand__mark"[^>]*hopewick-mark-96|hopewick-mark-96\.png"[^>]*/g) || []).length >= 2);
+  assert.match(land, /hopewick-hero-480\.(png|webp)/);
   assert.equal(/<span class="orb\b/.test(land), false);
   assert.equal(land.includes('<a class="logo" href="./"><span class="orb"'), false);
   const app = fs.readFileSync(path.join(ROOT, 'app/index.html'), 'utf8');

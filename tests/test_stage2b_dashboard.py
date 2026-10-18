@@ -236,15 +236,18 @@ def test_public_pages_light_dark_and_crisis_link():
                 page.on("pageerror", lambda exc: errors.append(str(exc)))
                 for path in ("/", "/our-story.html", "/privacy.html", "/terms.html", "/data.html", "/complaints.html"):
                     page.goto(base + path, wait_until="domcontentloaded")
-                    assert page.evaluate("() => HopewickTheme.resolved()") == scheme, path
                     crisis = page.locator(".hw-crisis-btn").first
                     assert crisis.is_visible(), path
-                    assert page.locator("[data-theme-toggle]").first.is_visible(), path
+                    # The redesigned homepage (2026-10) is light-only in the approved brand colours; other pages keep the theme toggle.
+                    if path != "/":
+                        assert page.evaluate("() => HopewickTheme.resolved()") == scheme, path
+                        assert page.locator("[data-theme-toggle]").first.is_visible(), path
                     assert page.locator('img[src*="hopewick-mark"]').count() >= 1, path
                     fits = page.evaluate("() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1")
                     assert fits, f"{path} scrolls sideways at 390px ({scheme})"
                 page.goto(base + "/", wait_until="domcontentloaded")
-                assert "Support for your next step" in page.inner_text("body")
+                assert "Support for your next step" in page.inner_text("body") or page.locator('img[alt*="Support for your next step"]').count() == 1
+                page.goto(base + "/our-story.html", wait_until="domcontentloaded")
                 page.locator("[data-theme-toggle]").first.click()
                 flipped = "dark" if scheme == "light" else "light"
                 assert page.evaluate("() => document.documentElement.dataset.theme") == flipped
