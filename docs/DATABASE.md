@@ -101,6 +101,12 @@ copied to another system without consent.
   * Trade-off: encrypted columns cannot be searched in SQL. That is intended.
   * Length limits on encrypted columns are checked on the plain text in
     `server/db/repo.js`; the SQL caps are sized for ciphertext.
+  * **Startup check (Stage 4):** at startup the server logs one line, for
+    example `Wellbeing encryption: on (aes-256-gcm-v1, key id k1). Sensitive
+    wellbeing text is sealed before it reaches the Postgres store.` It can also say `OFF` when no key is set, or
+    `MISCONFIGURED (<reason>)` when the key is malformed. The line never
+    includes key material (`encryptionStartupLine` in `server/db/crypto.js`).
+    After a deploy, check the Render logs for this line.
 
 ## Stage 3 wellbeing data (migrations/003_stage3_core_features.sql)
 
@@ -155,6 +161,30 @@ by the import.
 
 Migration 004 was applied to the Neon **dev** branch only, on 2026-10-18 AEST, by the db test run. Production needs it
 when `DATABASE_URL` is set there, and that needs founder approval.
+
+## Stage 4: recovery tracker and learning modules (migrations/005_recovery_education.sql)
+
+| Table | What it holds | Encrypted columns |
+| --- | --- | --- |
+| `recovery_goals` | One row per goal: kind (`abstain`, `reduce`, `other`), optional label, target, why, start date, status (`active`, `paused`, `archived`). `UNIQUE (user_id, profile_id, id)`. | `label`, `target`, `why` |
+| `recovery_logs` | Craving and lapse logs: goal, date, kind (`craving`, `lapse`), intensity 0 to 10, outcome (`passed`, `used`, `unsure`), triggers, what helped, note. Has a composite FK to `recovery_goals` with `ON DELETE CASCADE`, so deleting a goal deletes its logs. | `triggers`, `helped`, `note` |
+| `module_progress` | Learning module progress: PK `(user_id, profile_id, module_id)`, step (0 to 40), completed time, quiz result, and private notes (reflection, values, thought record) as one sealed JSON field. | `notes` (AAD `module_progress.notes`) |
+
+`learning_progress` already exists from 001 (the older pathways), so the new
+table is called `module_progress`. All three tables have RLS `ENABLE` and
+`FORCE`, owner-only policies on `app.user_id`, and grants to `hopewick_rls`, the
+same as 003 and 004. The JSON store (`server/wellbeing/json-store.js`) has the
+same methods and seals the same fields. Older JSON files without these fields
+load cleanly. Deleting by area (`recovery`, `learning`) and the full export
+(`recoveryTracker`, `learning`) cover both backends.
+
+Day counts are kind by design. "Day N" counts from the start date and never
+resets. "Days that went to plan" leaves out days with a lapse. A milestone
+counts days that went to plan, and once reached it stays reached.
+
+Migration 005 was applied to the Neon **dev** branch only, on 2026-10-18 AEST.
+It has not been applied to production. That needs founder approval with the
+other production steps below.
 
 ## Before production uses this (needs founder approval)
 

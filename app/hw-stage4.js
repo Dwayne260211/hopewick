@@ -495,7 +495,19 @@
       h('strong', { text: 'Pending clinical review. ' }),
       'These modules are general information in Hopewick\'s own words, drawn from Australian public health sources. They are not medical advice or therapy, and they work best alongside support from a GP, counsellor or AOD worker.'));
     const all = modules();
-    if (!all.length) { root.appendChild(h('p', { class: 'hw-hint', role: 'status', text: 'Loading modules…' })); HW3.loadReleases().then(() => rerender()); return; }
+    if (!all.length) {
+      // Fetch once; if the schedule is still empty, say so plainly (no retry loop).
+      if (!ui.relTried) {
+        ui.relTried = true;
+        root.appendChild(h('p', { class: 'hw-hint', role: 'status', text: 'Loading modules…' }));
+        HW3.loadReleases().then(() => rerender(), () => rerender());
+        return;
+      }
+      root.appendChild(h('div', { class: 'hw3-note hw3-note--warn', role: 'status', id: 'hw4ModsErr' }, 'Hopewick could not load the learning modules just now. ',
+        btn('Try again', () => { ui.relTried = false; try { HW3.state.releasesFor = null; } catch (_) { /* */ } rerender(); }, { attrs: { id: 'hw4ModsRetry' } })));
+      return;
+    }
+    ui.relTried = false;
     const core = all.filter((r) => r.core);
     const extra = all.filter((r) => !r.core);
     root.appendChild(h('section', { class: 'hw4-mods', 'aria-labelledby': 'hw4CoreT' },

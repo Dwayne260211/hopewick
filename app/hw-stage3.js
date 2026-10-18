@@ -1964,12 +1964,16 @@
       ['Relapse prevention and exit plans', 'Yes', 'Yes'],
       ['Read, export and delete everything you save', 'Yes', 'Yes'],
       ['Account and privacy controls', 'Yes', 'Yes'],
+      ['Recovery tracker: goals, day counts, milestones, cravings and lapses', 'Yes', 'Yes'],
+      ['Core learning modules (7 short ones, including CBT and ACT basics)', 'Yes', 'Yes'],
       ['Clean time tracker, Bible & SOAP, 12-step outline', 'Yes', 'Yes'],
     ] },
     { id: 'history', title: 'Check-ins and history', summary: `Check in every day, free. Free shows ${HISTORY_WINDOW_DAYS} days; Plus shows it all.`, rows: [
       ['Daily check-in', 'Yes', 'Yes'],
       ['History and trends in the app', `Last ${HISTORY_WINDOW_DAYS} days`, 'Full history'],
       ['Month view', '—', 'Yes'],
+      ['Recovery tracker log history', `Last ${HISTORY_WINDOW_DAYS} days`, 'Full history'],
+      ['Recovery trends over 30 and 90 days (not an assessment)', '—', 'Yes'],
       ['Nothing deleted because of your plan', 'Yes', 'Yes'],
     ] },
     { id: 'journal', title: 'Journal', summary: 'Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.', rows: [
@@ -1981,6 +1985,7 @@
     { id: 'tools', title: 'Tools and new releases', summary: 'The 12 core coping tools are free. Plus gets new tools first.', rows: [
       ['Coping toolkit (12 core tools)', 'Yes', 'Yes'],
       ['New coping tools and journal packs', '6 to 12 months later', 'From release day'],
+      ['New learning modules, weekly', '6 months later', 'From release day'],
       ['Chat with Hope', '15 a day', 'No daily limit'],
       ['Resume builder, nutrition, gut and brain-habit notes, Going Deeper', '—', 'Yes'],
       ['More than one profile', '—', 'Yes'],
@@ -1993,7 +1998,6 @@
       ['Printable mood and recovery report', '—', 'Yes'],
     ] },
     { id: 'soon', title: 'Coming soon', summary: 'Extras we are working on. Not available yet.', rows: [
-      ['Learning courses (first lesson free)', 'Coming soon', 'Coming soon'],
       ['Recovery tracker extras: milestone calendar, habits, meeting log, certificates', '—', 'Coming soon'],
       ['Faith plans, devotionals and prayer journal', '—', 'Coming soon'],
       ['Guided audio, meditations and sleep stories', '—', 'Coming soon'],

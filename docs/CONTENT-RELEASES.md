@@ -71,6 +71,17 @@ free.
    date without another deploy, because dates are checked when each request is
    made.
 
+   **Learning module (`kind: "module"`):** the item's `key` must match a module
+   `id` in `server/library/learning-modules.json` (loaded by `server/learning.js`,
+   path override `MODULES_PATH`). The module body comes from that file. The
+   release item holds only the schedule, title and teaser. A module validates
+   only when it is 2 to 8 minutes long and has 3 to 8 steps with exactly one
+   practical "try" step. Quizzes need 2 or 3 questions, each with kind feedback
+   for both answers. Timers must be under 3 minutes, and every source needs an
+   https link. Each module is marked `review: "pending"` (clinical review) and
+   says so in the app. `PUT /api/me/learning/:id` returns `404` when the module
+   is not out yet for this account and `403` (code `plus`) when it is locked.
+
 ## Current schedule (October 2026)
 
 | Item | Kind | Plus | Free |
@@ -79,3 +90,9 @@ free.
 | Self-compassion break | coping | 2026-10-18 | 2027-04-18 |
 | First 30 days (series, 7 prompts) | journal-pack | 2026-10-18 | 2027-04-18 |
 | Steady evenings (5 prompts) | journal-pack | 2026-10-18 | 2027-04-18 |
+| 7 core learning modules: cravings and triggers, sleep, stress and anxiety, harm reduction, support in Australia, CBT basics, ACT unhooking | module (core) | 2026-10-18 | 2026-10-18 |
+| DBT skills: TIPP, STOP, opposite action, wise mind | module | 2026-10-18 | 2027-04-18 |
+| Your thought record (CBT) | module | 2026-10-25 | 2027-04-25 |
+| ACT: what matters to you (values card sort, committed action) | module | 2026-11-01 | 2027-05-01 |
+| Behavioural activation (CBT) | module | 2026-11-08 | 2027-05-08 |
+| ACT: making room (acceptance and expansion) | module | 2026-11-15 | 2027-05-15 |
