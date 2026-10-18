@@ -81,7 +81,7 @@
 <h3>Payments</h3>
 <ul>
 <li>If you pay by card, Stripe handles it. We keep your Stripe customer and subscription numbers and your plan status. We never see or keep your card number.</li>
-<li>If you subscribe through Google Play, we keep the Google Play purchase reference so we can check your plan.</li>
+<li>Our Android app is still being reviewed by Google Play, and we don't take any payments through Google Play yet. Once the app launches there, Google Play billing will apply to subscriptions bought in that app, and we'll update this page first.</li>
 </ul>
 <h3>Sign-in and technical information</h3>
 <ul>
@@ -124,11 +124,11 @@
 <p>We only share what each service needs to do its job:</p>
 <ul>
 <li><strong>OpenAI</strong> (USA). Writes Hope's replies. See above.</li>
-<li><strong>Render</strong> (hosting). Runs our app server and stores your information on servers in <strong>Singapore</strong>.</li>
-<li><strong>Neon</strong> (database). Once we finish moving our database, it will store your saved wellbeing and Move &amp; Recover records in <strong>Sydney, Australia</strong>, on Amazon Web Services. See "Where your information is kept".</li>
+<li><strong>Render</strong> (hosting). Runs our app server in <strong>Singapore</strong> and stores your account, payment status, chats and older check-ins there. See "Where your information is kept".</li>
+<li><strong>Neon</strong> (database). Stores your saved wellbeing and Move &amp; Recover records in <strong>Sydney, Australia</strong>, on Amazon Web Services.</li>
 <li><strong>Cloudflare</strong>. Delivers the website to your browser on behalf of our host.</li>
 <li><strong>Stripe</strong> (payments). Gets your email and payment details if you buy Plus by card.</li>
-<li><strong>Google</strong>. Only if you choose "Sign in with Google" or pay through Google Play. Google doesn't see your chats.</li>
+<li><strong>Google</strong>. Only if you choose "Sign in with Google". Google doesn't see your chats.</li>
 <li><strong>Resend</strong> (email). Sends your sign-in links. It gets your email address and the link.</li>
 <li><strong>The law.</strong> We may share information if the law says we must, or to lessen a serious threat to someone's life, health or safety.</li>
 </ul>
@@ -136,7 +136,8 @@
 <h2>Sending information overseas</h2>
 <ul>
 <li>Some of these services handle your information outside Australia. Under APP 8 we have to tell you where.</li>
-<li><strong>Singapore:</strong> Render, which stores your account, chats and saved records today.</li>
+<li><strong>Singapore:</strong> Render, which stores your account, payment status, chats and the older check-ins from earlier app versions.</li>
+<li>Your saved wellbeing and Move &amp; Recover records stay in Australia, with Neon in Sydney.</li>
 <li><strong>USA:</strong> OpenAI (your Hope messages), Stripe, Google and Resend. They may also use other countries.</li>
 <li><strong>Many countries:</strong> Cloudflare's network.</li>
 <li>We choose services that have strong privacy and security commitments, and we only send them what they need.</li>
@@ -144,15 +145,17 @@
 
 <h2>Where your information is kept</h2>
 <ul>
-<li><strong>Today:</strong> your account, chats and everything you save are kept on our private server with Render in <strong>Singapore</strong>.</li>
-<li><strong>After our database move:</strong> your saved wellbeing records (check-ins, journal, safety plan and its history, relapse and exit plans, recovery tracker, learning, coping tools, next steps, weekly plans, preferences including your faith answer, and your choices) and your Move &amp; Recover records will be kept with <strong>Neon in Sydney, Australia</strong>. Your account details, payment status and chats stay with Render in Singapore. We'll update this page when the move is done.</li>
+<li><strong>Neon in Sydney, Australia:</strong> your saved wellbeing records (check-ins, journal, safety plan and its history, relapse and exit plans, recovery tracker, learning, coping tools, next steps, weekly plans, preferences including your faith answer, and your choices) and your Move &amp; Recover records.</li>
+<li><strong>Render in Singapore:</strong> your account details (email, name, phone if you add it, and sign-in), your payment status, your saved chats with Hope, and the older check-ins and weekly goals from earlier app versions.</li>
+<li>When we moved to the Sydney database, we kept a locked copy of the records we moved on our Render server in Singapore for at least 30 days, in case we needed to undo the move.</li>
 </ul>
 
 <h2>How we protect it</h2>
 <ul>
 <li>Your connection to Hopewick is encrypted (HTTPS).</li>
-<li><strong>Encryption at rest:</strong> the words you write in your check-ins, journal, plans, safety plan and its history, recovery tracker, learning reflections, coping notes, next steps, weekly plans and goals, your preferences (including your faith answer), and your Move &amp; Recover safety results and session details are encrypted with AES-256-GCM before they're stored. The key is kept separately from the stored data.</li>
-<li>Your chats, account details and the older check-ins from earlier app versions are not encrypted this way yet. They're protected by the security of our private server.</li>
+<li><strong>Encryption at rest:</strong> the words you write in your check-ins, journal, plans, safety plan and its history, recovery tracker, learning reflections, coping notes, next steps, weekly plans and goals, your preferences (including your faith answer), and your Move &amp; Recover safety results and session details are encrypted with AES-256-GCM before they're stored. Your saved chats with Hope (the chat titles and every message) are encrypted the same way. The key is kept separately from the stored data.</li>
+<li>Chats saved before we turned this on are encrypted the next time your chats are saved, for example when you next chat with Hope while signed in.</li>
+<li>Your account details and the older check-ins from earlier app versions aren't encrypted this way. They're protected by the security of our private server.</li>
 <li>Passwords and sign-in links are stored only as scrambled hashes.</li>
 <li>Each account can only reach its own information. Only we can get into the server and database.</li>
 <li>No system is 100% safe. If there's a data breach that's likely to cause serious harm, we'll tell you and the Office of the Australian Information Commissioner (OAIC).</li>
@@ -174,7 +177,7 @@
 <li><strong>Fix:</strong> change your name and phone in <strong>My Account</strong>, edit what you've saved in the app, and change your preferences in <strong>About you</strong>.</li>
 <li><strong>Delete one area:</strong> in <strong>Your data</strong>, delete all your check-ins, journal entries, coping history, next steps, weekly plans, personal goals, recovery tracker goals and logs, or learning progress and notes. You can also delete a single chat, entry or log.</li>
 <li><strong>Delete everything for a profile:</strong> in <strong>Your data</strong>. This includes your safety plan and its history, your relapse and exit plans, your preferences and faith answer, and Move &amp; Recover. Your account and plan stay as they are.</li>
-<li><strong>Delete your account:</strong> in <strong>My Account</strong>. This removes your sign-in, chats and everything you've saved on our server, and cancels a card subscription. If you pay through Google Play, cancel that in Google Play as well.</li>
+<li><strong>Delete your account:</strong> in <strong>My Account</strong>. This removes your sign-in, chats and everything you've saved on our server, and cancels your subscription.</li>
 <li>Deleting on our server doesn't clear the copy in your browser. Clear it in Settings on each device.</li>
 <li>Want a copy of something not in the export (like your saved chats), or want us to fix or delete something for you? Email <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a>. We'll check it's you first, reply within 30 days, and it's free.</li>
 </ul>
