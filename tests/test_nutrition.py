@@ -177,6 +177,7 @@ def test_nutrition_plus_free_and_crisis():
                 page.click("#nutritionPlusBtn")
             page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+            page.evaluate("() => document.querySelectorAll('#accountDlg details').forEach((d) => { d.open = true; })")  # sections start collapsed
             assert "Hopewick Plus" in page.inner_text("#accountDlg")
             assert "Nutrition notes" in page.inner_text("#accountDlg")
             page.keyboard.press("Escape")

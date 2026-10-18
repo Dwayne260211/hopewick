@@ -244,6 +244,7 @@ def test_add_extra_profile_requires_plus():
             page.click("#addPersonPlusBtn")
             page.wait_for_selector("#accountDlg[open]")
             assert "Hopewick Plus" in page.inner_text("#accountTitle")
+            page.evaluate("() => document.querySelectorAll('#accountDlg details').forEach((d) => { d.open = true; })")  # sections start collapsed
             assert "Add another profile" in page.inner_text("#accountDlg")
             page.click("#accountCloseBtn")
             page.wait_for_function("() => document.getElementById('accountDlg').open !== true")

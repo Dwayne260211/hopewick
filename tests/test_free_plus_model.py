@@ -87,12 +87,47 @@ def test_free_history_window_export_delete_and_compare(server, browser):
     page.click("#hw3DelBtn")
     page.wait_for_function("() => HW3.state.checkins.length === 0 && !document.getElementById('hw3CheckinWindow')")
     assert _api(page, "GET", "/api/me/export")["body"]["checkins"] == []
-    # Comparison view: always-free list and honest "coming soon".
+    # Comparison view: one collapsible section per category, all collapsed at first.
     go(page, "compare")
+    secs = page.locator("#hw3CompareSections > details")
+    assert secs.count() == 6
+    assert page.evaluate("() => [...document.querySelectorAll('#hw3CompareSections > details')].every((d) => !d.open)")
+    titles = page.locator("#hw3CompareSections summary .hw3-cmp__title").all_inner_texts()
+    assert titles == ["Always free", "Check-ins and history", "Journal", "Tools and new releases", "Plans and reports", "Coming soon"]
     text = page.inner_text("#hw3Inner")
-    for must in ["Always free, never capped", "My safety plan essentials", "Daily check-in", "Coming soon", "AU$20 a month, with a 7-day free trial", "15 messages a day"]:
-        assert must in text, must
+    # Each header's one-line summary shows while collapsed; the detail rows do not.
+    assert "relapse and exit plans" in text and "Never capped" in text
+    assert "My safety plan essentials" not in text
+    assert "AU$20 a month, with a 7-day free trial" in text
+    # Keyboard: focus a summary and press Enter / Space to open and close it.
+    page.focus("#hw3Compare-free > summary")
+    page.keyboard.press("Enter")
+    assert page.evaluate("() => document.getElementById('hw3Compare-free').open") is True
+    free_rows = page.inner_text("#hw3Compare-free")
+    assert "My safety plan essentials" in free_rows and "Relapse prevention and exit plans" in free_rows
+    row = page.locator("#hw3Compare-free tr", has_text="Relapse prevention and exit plans").inner_text()
+    assert row.split("\t")[1:] == ["Yes", "Yes"], row
+    page.keyboard.press("Space")
+    assert page.evaluate("() => document.getElementById('hw3Compare-free').open") is False
+    # Screen readers: native summary is a button with an expanded state; the table has a caption.
+    snap = page.locator("#hw3Compare-plans").aria_snapshot()
+    assert "Plans and reports" in snap
+    page.click("#hw3Compare-soon > summary")
+    assert "Coming soon" in page.inner_text("#hw3Compare-soon table")
     assert page.locator("#hw3CompareUpgrade").is_visible()
+    # Short on mobile: collapsed sections fit in about one screen with no sideways scroll.
+    page.click("#hw3Compare-soon > summary")
+    h = page.evaluate("() => document.getElementById('hw3CompareSections').getBoundingClientRect().height")
+    assert h < 700, h
+    assert page.evaluate("() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1")
+    # The account dialog uses the same collapsed sections.
+    page.evaluate("() => openAccountDlg()")
+    page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+    acct = page.locator("#accountCompare > details")
+    assert acct.count() == 5
+    assert page.evaluate("() => [...document.querySelectorAll('#accountCompare > details')].every((d) => !d.open)")
+    assert "Essential support stays free" in page.inner_text("#accountDlg")
+    page.keyboard.press("Escape")
     assert not _quiet(errors), errors
 
 
@@ -207,3 +242,41 @@ def test_safety_plan_is_free_and_lapsed_plus_keeps_everything(server, browser):
     page.wait_for_function("() => HW3.state.safety && HW3.state.safety.people.length === 1")
     assert _api(page, "GET", "/api/me/safety-plan")["body"]["safety"]["warningSigns"] == ["Not sleeping", "Skipping meals"]
     assert not _quiet(errors), errors
+
+
+def test_relapse_and_exit_plans_free_in_the_app_and_saved_to_the_account(server, browser):
+    base, _ = server
+    page, errors = _page(browser)
+    sign_in(page, base, email="fp-plans@example.test")
+    assert page.evaluate("() => subscriptionPlus()") is False
+    page.evaluate("() => openPlans()")
+    page.wait_for_function("() => document.getElementById('plansDlg')?.open === true")
+    assert page.locator("#plansWorkspace").is_visible()
+    assert page.locator("#plansGate").is_hidden()
+    assert "part of Hopewick Plus" not in page.inner_text("#plansDlg")
+    page.locator("#plansDlg button.plans-card", has_text="Relapse / lapse prevention plan").click()
+    page.fill("#planWarnings", "Payday and old mates")
+    page.click("#planNext")
+    page.wait_for_function("""async () => { const r = await fetch('/api/me/plans?profileId=' + chatProfileId(), { credentials: 'include' }); const j = await r.json(); return j.plans && j.plans.relapse && j.plans.relapse.warnings === 'Payday and old mates'; }""", timeout=10000)
+    # Lapsed Plus: still free to edit.
+    assert _api(page, "POST", "/api/billing/dev-set", {"status": "canceled"})["status"] == 200
+    assert _api(page, "PUT", "/api/me/plans", {"plans": {"relapse": {"warnings": "still mine"}, "exits": {}, "custom": []}})["status"] == 200
+    assert not _quiet(errors), errors
+
+
+def test_landing_comparison_is_collapsible(server, browser):
+    base, _ = server
+    page, errors = _page(browser)
+    page.goto(f"{base}/", wait_until="domcontentloaded")
+    secs = page.locator("#plan-compare details.cmp-sec")
+    assert secs.count() == 6
+    assert page.evaluate("() => [...document.querySelectorAll('#plan-compare details')].every((d) => !d.open)")
+    text = page.inner_text("#plan-compare")
+    assert "Crisis help, your safety plan, relapse and exit plans, and your data" in text
+    assert "Relapse prevention and exit plans — private" not in text
+    page.focus("#plan-compare-free > summary")
+    page.keyboard.press("Enter")
+    assert "Relapse prevention and exit plans — private on this device" in page.inner_text("#plan-compare-free")
+    assert "SMART goals and weekly plans" in page.inner_text(".plan.featured")
+    assert "relapse prevention and exit plans" in page.inner_text(".plans-grid .plan:not(.featured)").lower()
+    assert page.evaluate("() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1")

@@ -214,6 +214,7 @@ def test_education_plus_gate_phone():
                 page.click("#gutPlusBtn")
             page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+            page.evaluate("() => document.querySelectorAll('#accountDlg details').forEach((d) => { d.open = true; })")  # sections start collapsed
             account = page.inner_text("#accountDlg")
             assert "gut health and neuroplasticity" in account.lower()
             assert "Nutrition notes" in account

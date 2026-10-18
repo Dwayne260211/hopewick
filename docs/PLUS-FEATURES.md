@@ -12,6 +12,7 @@ saved stays, can be exported, and can be deleted at any time.
 | --- | --- |
 | Crisis contacts and Get help | On every screen. Never gated or rate limited. |
 | My safety plan essentials | Warning signs, things that help, people, safe places, reasons. `/api/me/safety-plan`. |
+| Relapse prevention and exit plans | Free forever on every plan: free, trial, Plus and lapsed (founder decision, 18 Oct 2026). `/api/me/plans`. |
 | Basic coping tools | The 12 core tools, plus every scheduled tool once its free date arrives. |
 | Daily check-in | Unlimited. In-app history shows the last 7 days (see below). |
 | My next step | One step at a time, unlimited. |
@@ -40,7 +41,7 @@ in-progress activity, the active weekly plan) always show.
 | Journal: guided series and prompt packs | Available | Plus first, free later (see `CONTENT-RELEASES.md`). |
 | New coping tools first | Available | Weekly drops, free 6 to 12 months later. |
 | Unlimited Hope | Available | |
-| Personal goals, relapse and exit plans, resume builder, nutrition library | Available | Unchanged from earlier stages. |
+| Personal goals, resume builder, nutrition library | Available | Unchanged from earlier stages. |
 
 ## Plus: later extras (coming soon, not built)
 
@@ -53,9 +54,12 @@ in-progress activity, the active weekly plan) always show.
 | Themes and a custom dashboard | Coming soon | |
 | Photo and voice journal attachments | Coming soon | Needs storage, encryption and retention design first. |
 
-The pricing copy in the app (`#hw3CompareTable`, account dialog) and on the
-landing page marks only the built features as available. Everything in the last
-table is labelled "coming soon".
+The pricing copy in the app (Tools → Free and Plus, `#hw3CompareSections`; the
+account dialog, `#accountCompare`) and on the landing page (`#plan-compare`)
+marks only the built features as available. Everything in the last table is
+labelled "coming soon". Each comparison is a set of collapsible `<details>`
+sections, one per category, all collapsed at first, with a one-line summary
+visible on each header.
 
 ## Tests
 

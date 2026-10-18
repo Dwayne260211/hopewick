@@ -81,6 +81,7 @@ def test_phone_gates_free_then_plus():
             assert checkout_req.value.method == "POST"
             page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+            page.evaluate("() => document.querySelectorAll('#accountDlg details').forEach((d) => { d.open = true; })")  # sections start collapsed
             account = page.inner_text("#accountDlg")
             assert "7 days free, then AU$20" in account
             assert "15 messages/day" in account
