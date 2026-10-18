@@ -132,7 +132,7 @@ test('Hope prompt: faith off by default, server preferences win over the browser
 test('migration 007: new tables keyed by user, RLS forced, sensitive columns sealed', () => {
   const m = listMigrations().find((x) => x.version === 7);
   assert.ok(m, '007 present');
-  assert.equal(listMigrations().some((x) => x.version === 6), false, '006 stays reserved for the fitness branch');
+  assert.ok(listMigrations().some((x) => x.version === 6 && /fitness/.test(x.file)), '006 is Move & Recover (fitness); Stage 5 is 007');
   for (const t of ['safety_plan_versions', 'user_preferences']) {
     assert.match(m.sql, new RegExp(`CREATE TABLE ${t} \\(`));
     assert.match(m.sql, new RegExp(`ALTER TABLE ${t} FORCE ROW LEVEL SECURITY`));
@@ -264,6 +264,20 @@ async function httpSuite(t, backend) {
   const fresh = async (name) => { const e = `s5-${name}-${tag}@example.com`; emails.push(e); return api(app.base, await signIn(app.base, e)); };
   try {
     const anon = api(app.base, null);
+
+    await t.test(`${backend} http: /app redirects to /app/ (301) and keeps the query string`, async () => {
+      for (const [from, to] of [['/app', '/app/'], ['/app?tab=safety&demo=1', '/app/?tab=safety&demo=1']]) {
+        const r = await realFetch(`${app.base}${from}`, { redirect: 'manual' });
+        assert.equal(r.status, 301, from);
+        assert.equal(r.headers.get('location'), to);
+      }
+      const head = await realFetch(`${app.base}/app`, { method: 'HEAD', redirect: 'manual' });
+      assert.equal(head.status, 301);
+      const page = await realFetch(`${app.base}/app/`, { redirect: 'manual' });
+      assert.equal(page.status, 200);
+      assert.match(await page.text(), /hw-stage5\.js/);
+      assert.equal((await realFetch(`${app.base}/appx`, { redirect: 'manual' })).status, 404, 'only /app itself');
+    });
 
     await t.test(`${backend} http: signed out gets 401 for preferences, faith and history`, async () => {
       for (const r of ['/api/me/preferences?profileId=main', '/api/me/faith?profileId=main', '/api/me/safety-plan/versions?profileId=main']) assert.equal((await anon('GET', r)).status, 401, r);

@@ -105,7 +105,7 @@ def test_companion_gates_premium_not_crisis():
     assert "do not get a dashboard of what you told Hope" in app
     assert 'id="sideNavChats"' in app  # saved chats: sidebar, Home and Tools (Hopewick 2.0)
     assert "Recovery myself" in app
-    assert "Only when asked" in app
+    assert "Christian faith, only when I ask" in app  # Stage 5: faith is opt-in; "No faith content" is the default
     enter = app.split("function enterProfile", 1)[1].split("function ", 1)[0]
     assert "showLaunchPrefs()" not in enter
     assert "dwaynesimons1990@gmail.com" not in app

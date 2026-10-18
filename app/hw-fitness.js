@@ -8,7 +8,7 @@
  * screen outcome, the 24-hour pause, the pre-session check). This file only
  * shows what the server returns. Screen answers are sent once and never kept here.
  *
- * Content is PENDING clinical and exercise physiologist review.
+ * Content has been clinically reviewed (founder confirmed, 18 Oct 2026).
  */
 (function () {
   'use strict';
@@ -149,8 +149,8 @@
     r.appendChild(h('div', { class: 'home-hero hw3-hero' },
       h('h1', { id: 'hwfTitle', tabindex: '-1', text: 'Move & Recover' }),
       h('p', { text: '30 minutes a day of movement you can do at home, plus sauna and cold water done safely. Movement is tracked on its own and never touches your clean time.' })));
-    if (s && s.preview) r.appendChild(h('p', { class: 'hw3-note hw3-note--warn', role: 'note', id: 'hwfPreview', text: 'Founder preview for Dwayne: members cannot see this yet. Content is pending clinical and exercise physiologist review.' }));
-    else r.appendChild(h('p', { class: 'hw3-note', role: 'note', text: 'Draft content: pending clinical and exercise physiologist review.' }));
+    if (s && s.preview) r.appendChild(h('p', { class: 'hw3-note hw3-note--warn', role: 'note', id: 'hwfPreview', text: 'Founder preview for Dwayne: members cannot see this yet. Content has been clinically reviewed.' }));
+    else r.appendChild(h('p', { class: 'hw3-note', role: 'note', text: 'Clinically reviewed. General information, not personal medical advice. If you are unsure, check with your GP.' }));
     if (!s || !s.plus) renderFree(r);
     else renderPlus(r);
     r.appendChild(h('p', { class: 'hw3-crisis-line' }, 'Chest pain or fainting? Call ', h('a', { href: 'tel:000', text: '000' }), '. Need to talk? Lifeline ', h('a', { href: 'tel:131114', text: '13 11 14' }), '.'));

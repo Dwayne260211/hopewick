@@ -5546,7 +5546,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free, with the clean-time tracker, Bible & SOAP, and the 12-step outline. Hopewick Plus — 7 days free, then AU$20/month adds no daily limit with Hope, full history and monthly insights, a printable mood and recovery report, weekly plans in My next step, SMART and personal goals, journal extras (gratitude and recovery entries, guided series and prompt packs, Deepen with Hope), new coping tools and journal packs first, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The journal, check-ins, coping tools, your safety plan, relapse prevention and exit plans, and My next step stay free. Your conversations are not shared with a counsellor, employer, or service. With an account, saved chats, check-ins, coping history, goals, journal entries, plans and your next step are stored privately with that account. Memories and the resume draft stay on this device. ');
+  note.append((settings.faith === 'none' ? 'Today’s Readings stay free, with the clean-time tracker and the 12-step outline.' : 'Today’s Readings stay free, with the clean-time tracker, Bible & SOAP, and the 12-step outline.') + ' Hopewick Plus — 7 days free, then AU$20/month adds no daily limit with Hope, full history and monthly insights, a printable mood and recovery report, weekly plans in My next step, SMART and personal goals, journal extras (gratitude and recovery entries, guided series and prompt packs, Deepen with Hope), new coping tools and journal packs first, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The journal, check-ins, coping tools, your safety plan, relapse prevention and exit plans, and My next step stay free. Your conversations are not shared with a counsellor, employer, or service. With an account, saved chats, check-ins, coping history, goals, journal entries, plans and your next step are stored privately with that account. Memories and the resume draft stay on this device. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -6323,6 +6323,7 @@ function renderHome() {
   acct.appendChild(dashActions(
     dashBtn('My Account', () => openMyAccount(), { dataset: { dash: 'account' } }),
     dashBtn('Preferences', () => showLaunchPrefs()),
+    window.HW5 ? dashBtn('About you', () => HW5.openPreferences(), { dataset: { dash: 'aboutyou' } }) : null,
   ));
   // Hopewick 2.0: account-backed check-in, next step, trends, goals, journal and coping cards.
   if (window.HW3) { try { HW3.paintDashSlots(); } catch (err) { console.error(err); } HW3.sync(false); }
@@ -6440,7 +6441,7 @@ function renderWelcome() {
   box.innerHTML = '<div class="orb lg" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
   $('h1', box).textContent = greeting() + ' 🌿';
   $('p', box).textContent = counsellor
-    ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups, faith and hope — whatever's on your mind, at your own pace.`
+    ? `This is a safe, non-judgemental space. We can talk about alcohol or other drugs, cravings, slip-ups${settings.faith === 'none' ? ', hope' : ', faith and hope'} — whatever's on your mind, at your own pace.`
     : `I'm ${companionName()}. I'm here to listen, chat, brainstorm, or just keep you company.`;
 
   // Daily check-in lives on Home; chat only nudges if not done yet.
@@ -7486,6 +7487,7 @@ function renderJournalList() {
   if (!list) return;
   const plus = subscriptionPlus();
   if (window.HW3) HW3.paintJournalTools($('#hw3JournalTools'), () => renderJournalListItems());
+  if (window.HW5) { try { HW5.paintJournal(); } catch (_) { /* */ } }
   renderJournalListItems();
 }
 function renderJournalListItems() {
@@ -16198,7 +16200,9 @@ function showSignInGate() {
   if (lead) {
     lead.textContent = pendingTrialCheckout
       ? 'Sign in or create an account to start the 7-day trial. Checkout then asks for a card. You won’t be charged until the trial ends, then AU$20/month.'
-      : 'Sign in or create an account to use Hopewick. You can stay on the free account afterwards. Hope on Free is 15 messages a day.';
+      : (new URLSearchParams(location.search).get('demo') === '1'
+        ? 'Sign in to open the demo. The demo needs an account, and nothing you do in it is saved.'
+        : 'Sign in or create an account to use Hopewick. You can stay on the free account afterwards. Hope on Free is 15 messages a day.');
   }
   if (!body.childElementCount) mountSignInForm(body);
   if (!billingState.reachable && billingState.loaded) {

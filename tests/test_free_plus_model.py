@@ -236,9 +236,12 @@ def test_safety_plan_is_free_and_lapsed_plus_keeps_everything(server, browser):
     # Safety plan essentials: free, saved to the account.
     go(page, "safety")
     assert "Call 000" in page.inner_text("#hw3Inner")
-    page.fill("#hw3Safe-people", "Sam 0400 000 000")
-    page.fill("#hw3Safe-warningSigns", "Not sleeping\nSkipping meals")
-    page.click("#hw3SafetySave")
+    # Stage 5 builder: step 1 is warning signs, step 4 is people.
+    page.fill("#hw5Step-warningSigns", "Not sleeping\nSkipping meals")
+    for _ in range(3):
+        page.click("#hw5Next")
+    page.fill("#hw5Step-people", "Sam 0400 000 000")
+    page.click("#hw5Save")
     page.wait_for_function("() => HW3.state.safety && HW3.state.safety.people.length === 1")
     assert _api(page, "GET", "/api/me/safety-plan")["body"]["safety"]["warningSigns"] == ["Not sleeping", "Skipping meals"]
     assert not _quiet(errors), errors

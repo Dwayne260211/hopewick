@@ -11,7 +11,9 @@ saved stays, can be exported, and can be deleted at any time.
 | Feature | Notes |
 | --- | --- |
 | Crisis contacts and Get help | On every screen. Never gated or rate limited. |
-| My safety plan essentials | Warning signs, things that help, people, safe places, reasons. `/api/me/safety-plan`. |
+| My safety plan | Stage 5: seven guided steps (warning signs, things I can do on my own, people and places for distraction, people to ask for help, professionals and services, making surroundings safer, reasons for living), tap-to-call services, print, offline copy, share (only when the person taps it) and version history (last 20). `/api/me/safety-plan`, `/api/me/safety-plan/versions`. Signed out, it is saved in the browser. |
+| About you (preferences) | Preferred name, focus areas, tone, faith opt-in. Used by Hope on the server. `/api/me/preferences`. |
+| Faith reflections and prayers | Only when the person turns faith on (off by default). `/api/me/faith`. The faith core module is free; later faith modules follow the Plus schedule. |
 | Relapse prevention and exit plans | Free forever on every plan: free, trial, Plus and lapsed (founder decision, 18 Oct 2026). `/api/me/plans`. |
 | Basic coping tools | The 12 core tools, plus every scheduled tool once its free date arrives. |
 | Daily check-in | Unlimited. In-app history shows the last 7 days (see below). |

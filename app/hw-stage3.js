@@ -236,10 +236,12 @@
   HW3.sync = (force) => sync(force).catch(() => st);
   /** Content release schedule for this account (Plus early access). Public endpoint; signed out counts as free. */
   async function loadReleases() {
-    const who = `${signedIn() && !demo() ? (billingState.id || '') : 'anon'}:${plus() ? 'plus' : 'free'}`;
+    // Stage 5: faith modules are listed only for a profile that switched faith on, so the cache key includes it.
+    const faithKey = (window.HW5 && HW5.faithOn && HW5.faithOn()) ? 'faith' : 'nofaith';
+    const who = `${signedIn() && !demo() ? (billingState.id || '') : 'anon'}:${plus() ? 'plus' : 'free'}:${pid()}:${faithKey}`;
     if (st.releasesFor === who) return st.releases;
     try {
-      const res = await fetch('/api/content/releases', { credentials: 'include', headers: { Accept: 'application/json' } });
+      const res = await fetch(`/api/content/releases?profileId=${encodeURIComponent(pid())}`, { credentials: 'include', headers: { Accept: 'application/json' } });
       const data = res.ok ? await res.json() : { items: [] };
       st.releases = Array.isArray(data.items) ? data.items : [];
       st.releasesFor = who;
@@ -419,13 +421,20 @@
     const focusedId = ext && document.activeElement && root.contains(document.activeElement) ? document.activeElement.id : '';
     root.dataset.tab = tab;
     root.replaceChildren();
+    // Stage 5: account-only forms ask for sign-in BEFORE anything is typed (HW3.signInFirst, app/hw-stage5.js).
+    if (HW3.ACCOUNT_ONLY.includes(tab) && !demo() && !online() && HW3.signInFirst) {
+      HW3.signInFirst(root, tab);
+      root.appendChild(crisisLine());
+      return;
+    }
     if (tab === 'checkin') renderCheckin(root);
     else if (tab === 'coping') renderCoping(root);
     else if (tab === 'mygoals') renderGoals(root);
     else if (tab === 'nextstep') renderSteps(root);
     else if (tab === 'compare') renderCompare(root);
-    else if (tab === 'safety') renderSafety(root);
+    else if (tab === 'safety' && !ext) renderSafety(root);
     else if (ext) ext.render(root);
+    if (HW3.afterRender) { try { HW3.afterRender(root, tab); } catch (_) { /* */ } }
     root.appendChild(crisisLine());
     if (scroller) scroller.scrollTop = keepScroll;
     // Stage 4 screens: a background repaint keeps keyboard focus where it was.
@@ -434,6 +443,8 @@
   HW3.render = render;
   /** Extension screens: HW3.ext[tab] = { render(root), busy() }. */
   HW3.ext = {};
+  /** Screens whose forms only save to an account. The safety plan and coping tools still work signed out. */
+  HW3.ACCOUNT_ONLY = ['checkin', 'mygoals', 'nextstep', 'recovery', 'preferences'];
 
   /* ------------------------------------------------------------------ */
   /* 1. Daily check-in                                                   */
@@ -2032,5 +2043,5 @@
   HW3.renderCompare = renderCompare;
 
   /* Shared helpers for later stages (app/hw-stage4.js). */
-  HW3.kit = { h, btn, say, announce, icon, todayIso, addDays, dayLabel, whenLabel, header, stateNote, crisisLine, demo, signedIn, online, plus, pid, api, failMessage, focusId, reducedMotion, chipToggle, plusInfo, windowNote, releaseBadges, upgrade, myDataCard, scrollTop };
+  HW3.kit = { readSafety, saveSafety, SAFETY_PARTS, h, btn, say, announce, icon, todayIso, addDays, dayLabel, whenLabel, header, stateNote, crisisLine, demo, signedIn, online, plus, pid, api, failMessage, focusId, reducedMotion, chipToggle, plusInfo, windowNote, releaseBadges, upgrade, myDataCard, scrollTop };
 })();

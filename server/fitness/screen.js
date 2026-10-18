@@ -1,7 +1,7 @@
 /**
  * Move & Recover safety screen and pre-session check.
  *
- * PENDING CLINICAL REVIEW. Part A (Move) follows the principles of the
+ * Clinically reviewed (founder confirmed, 18 Oct 2026). Part A (Move) follows the principles of the
  * ESSA / Fitness Australia / SMA Adult Pre-Exercise Screening System (2019),
  * paraphrased, not copied. Part B (Heat and cold) covers the contraindications
  * in docs/FITNESS-PROTOCOLS.md.

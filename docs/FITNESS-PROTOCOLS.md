@@ -73,7 +73,7 @@ safety questions; wk6 sauna; wk7 cold; wk8 contrast. Safety info is never schedu
 Export (`GET /api/me/export`) adds `moveAndRecover` when the flag is on for that person.
 "Delete all" (`DELETE /api/me/data/all`) and account deletion always clear it.
 
-## Defaults pending founder and clinical sign-off
+## Defaults (founder and clinical sign-off complete, 18 Oct 2026)
 
 Each is one value in `server/fitness/rules.js`. The server, the screen, the check
 and the app copy all read from there.
@@ -86,7 +86,7 @@ and the app copy all read from there.
 | D4 | Sauna and cold are **not suggested** (a warning, not a block) on a "Struggling" (mood 1) or "Strong" craving check-in day. | `notSuggestedOnStruggling: true` |
 | D5 | A stable, managed heart condition gives **amber**: unlock only after the doctor's-OK tick. | `stableHeartOutcome: 'amber'` (set `'red'` to lock) |
 
-Other limits (also pending review): cold up to 5 min; sauna up to 20 min a round,
+Other limits (also reviewed): cold up to 5 min; sauna up to 20 min a round,
 2 rounds; contrast up to 3 rounds, 45 min of sauna; cold kept 6 h away from strength
 sessions (warning); re-screen every 6 months; other temporary reds (surgery,
 wounds) re-check after 42 days; a just-finished screen can be corrected within 15
@@ -137,7 +137,7 @@ polite live region; start/pause is a toggle button with `aria-pressed`; progress
 bars have values; the bar animation is off under `prefers-reduced-motion`. Stop
 ("something doesn't feel right") is always on screen during a session.
 
-## Review needed before switching on
+## Review completed before switching on (confirmed by the founder, 18 Oct 2026)
 
 - **Clinician (GP or AOD medical officer):** the whole screen, outcomes D1–D5, the
   pre-session check, the protocols and the support-person script.

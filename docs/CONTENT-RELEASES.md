@@ -96,3 +96,11 @@ free.
 | ACT: what matters to you (values card sort, committed action) | module | 2026-11-01 | 2027-05-01 |
 | Behavioural activation (CBT) | module | 2026-11-08 | 2027-05-08 |
 | ACT: making room (acceptance and expansion) | module | 2026-11-15 | 2027-05-15 |
+| Faith on hard days (optional faith layer) | module (core, faith) | 2026-10-18 | 2026-10-18 |
+| Grace after a lapse (optional faith layer) | module (faith) | 2026-11-22 | 6 months later (default) |
+
+Faith items (`"faith": true` on the module) are **never listed, locked or unlocked**, unless the
+profile switched the faith layer on (`/api/me/preferences` → `faithOptIn`). The catalog takes
+`{ plus, faith }`; `/api/content/releases?profileId=` reads the signed-in person's preference on the
+server. Weekly faith content joins the Plus schedule like any module; the small free core is one
+module plus the daily reflections and prayers. All faith content is pending founder and pastoral review.

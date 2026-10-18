@@ -2208,6 +2208,14 @@ export function createApp({ store, chats, checkins, visits, wellbeing, fitness, 
         await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url, wellbeingStore, fitnessStore);
         return;
       }
+      // /app without the trailing slash would load, but its relative CSS and JS would not.
+      // Send people to /app/ and keep the query string (?tab=, ?demo=, ?signedin=).
+      if (url.pathname === '/app' && (req.method === 'GET' || req.method === 'HEAD')) {
+        req.resume();
+        res.writeHead(301, { Location: `/app/${url.search || ''}`, 'Cache-Control': 'public, max-age=3600' });
+        res.end();
+        return;
+      }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
       serveStatic(root, req, res, pathname);
     } catch (err) {
@@ -2270,7 +2278,7 @@ if (isMain) {
     console.log(encryptionStartupLine(process.env, { backend: String(process.env.DATABASE_URL || '').trim() ? 'Postgres' : 'JSON file' }));
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
-    if (fitnessFlagMode() !== 'off') console.log(`Move & Recover (FEATURE_FITNESS_PROTOCOLS) is ${fitnessFlagMode() === 'founder' ? 'on for founder accounts only' : 'ON'}. Content is pending clinical review.`);
+    if (fitnessFlagMode() !== 'off') console.log(`Move & Recover (FEATURE_FITNESS_PROTOCOLS) is ${fitnessFlagMode() === 'founder' ? 'on for founder accounts only' : 'ON'}. Content has been clinically reviewed.`);
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
       console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');
     }
