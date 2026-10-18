@@ -33,7 +33,7 @@ def test_static_plans_hub():
     assert 'id="plansWorkspace"' not in text
     editors = json.loads((ROOT / "server" / "library" / "plus-editors.json").read_text(encoding="utf-8"))
     assert 'id="plansWorkspace"' in editors["plans"]
-    assert 'id="journalWorkspace"' not in text
+    assert 'id="journalWorkspace"' in text  # basic journal entries are free (founder model)
     assert 'id="resumeBuilder"' not in text
     assert 'id="goalsEditor"' not in text
     assert 'id="sidePlansBtn"' in text
@@ -52,8 +52,8 @@ def test_static_plans_hub():
     assert "Code-word call someone" in text
     assert "Limit money or keys" in text
     assert "My exits" in text
-    assert "Relapse and exit plans — private on this device" in text
-    assert "Relapse and exit plans — private on this device" in landing
+    assert "Relapse and exit plans — private, on this device or your account" in text
+    assert "Relapse and exit plans — private on this device, or with your account when you choose" in landing
     # Still under More. Not a new primary tab.
     assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="appTabHome"' in text
@@ -133,7 +133,7 @@ def test_plans_free_gate_and_plus_builders():
                 page.click("#plansPlusBtn")
             page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
-            assert "Relapse and exit plans — private on this device" in page.inner_text("#accountDlg")
+            assert "Relapse and exit plans — private, on this device or your account" in page.inner_text("#accountDlg")
             assert "15 messages/day" in page.inner_text("#accountDlg")
             page.keyboard.press("Escape")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
