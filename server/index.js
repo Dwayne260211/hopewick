@@ -965,6 +965,8 @@ function resolveStatic(root, urlPath) {
   return full;
 }
 
+const STATIC_LONG_CACHE = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf']);
+
 function serveStatic(root, req, res, urlPath) {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     json(res, 405, { error: 'Method not allowed.' });
@@ -977,13 +979,28 @@ function serveStatic(root, req, res, urlPath) {
   }
   const ext = path.extname(file).toLowerCase();
   const type = MIME[ext] || 'application/octet-stream';
-  const body = fs.readFileSync(file);
-  res.writeHead(200, {
+  const stat = fs.statSync(file);
+  // Stage 6: validators so a revisit costs a 304, not the full page. File names are not hashed, so
+  // HTML revalidates every time and CSS/JS keep a short life; images, icons and fonts change rarely.
+  const etag = `W/"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}"`;
+  const cacheControl = ext === '.html' || ext === '.webmanifest' ? 'no-cache'
+    : STATIC_LONG_CACHE.has(ext) ? 'public, max-age=86400, stale-while-revalidate=604800'
+      : 'public, max-age=300, stale-while-revalidate=86400';
+  const headers = {
     'Content-Type': type,
-    'Content-Length': body.length,
-    'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=300',
+    'Cache-Control': cacheControl,
+    ETag: etag,
+    'Last-Modified': stat.mtime.toUTCString(),
     'X-Content-Type-Options': 'nosniff',
-  });
+  };
+  const inm = String(req.headers['if-none-match'] || '');
+  if (inm && inm.split(',').map((t) => t.trim()).includes(etag)) {
+    res.writeHead(304, headers);
+    res.end();
+    return;
+  }
+  const body = fs.readFileSync(file);
+  res.writeHead(200, { ...headers, 'Content-Length': body.length });
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 

@@ -323,8 +323,8 @@ a:hover { color: var(--accent-strong); }
   <section class="hero" aria-labelledby="heroTitle">
     <div class="wrap">
       <div class="hw-lockup hero-lockup">
-        <img class="hw-lockup__light" src="brand/hopewick-lockup-600.png" alt="Hopewick. Support for your next step." width="600" height="422">
-        <img class="hw-lockup__dark" src="brand/hopewick-lockup-dark-600.png" alt="Hopewick. Support for your next step." width="600" height="422">
+        <picture><source srcset="brand/hopewick-lockup-600.webp" type="image/webp"><img class="hw-lockup__light" src="brand/hopewick-lockup-600.png" alt="Hopewick. Support for your next step." width="600" height="422" fetchpriority="high"></picture>
+        <picture><source srcset="brand/hopewick-lockup-dark-600.webp" type="image/webp"><img class="hw-lockup__dark" src="brand/hopewick-lockup-dark-600.png" alt="Hopewick. Support for your next step." width="600" height="422" loading="lazy"></picture>
       </div>
       <p class="sr-only"><span data-brand>Hopewick</span>: <span class="hero-tagline">Support for your next step.</span></p>
       <h1 id="heroTitle" class="hero-promise hero-big">We can find hope by learning how to start again.</h1>
