@@ -42,7 +42,7 @@ test('reduced motion is respected', () => {
   assert.match(read('assets/hopewick-ui.css'), /prefers-reduced-motion:\s*reduce/);
 });
 
-// The public homepage (index.html) was redesigned in 2026-10 with its own light-only stylesheet (assets/site.css)
+// The public homepage (index.html) was redesigned in 2026-10 with its own stylesheet (assets/site.css, light + dark)
 // in the approved brand colours; it is checked separately below. Every other page keeps the shared design system.
 const DS_PAGES = PAGES.filter((p) => p !== 'index.html');
 
@@ -97,11 +97,25 @@ test('approved logo: source artwork kept, dark-mode lockup exists and is used in
   for (const f of ['brand/source/hopewick-logo-source.png', 'brand/hopewick-lockup-dark.png', 'brand/hopewick-lockup-dark-600.png']) {
     assert.ok(fs.existsSync(path.join(root, f)), f);
   }
-  // The homepage hero uses the approved full lockup, resized from brand/hopewick-lockup.png (light-only page).
+  // The homepage hero uses the approved full lockup, resized from brand/hopewick-lockup.png (the dark theme swaps in brand/hopewick-lockup-dark-600).
   const html = read('index.html');
   assert.match(html, /src="\/brand\/hopewick-hero-480\.png"/);
   assert.ok(fs.existsSync(path.join(root, 'brand/hopewick-hero-480.png')));
   const ui = read('assets/hopewick-ui.css');
   assert.match(ui, /:root\[data-theme="dark"\] \.hw-lockup__dark \{ display: block/);
   assert.match(read('tools/brand/build_logo_assets.py'), /hopewick-logo-source\.png/);
+});
+
+test('new public pages use the shared theme script and toggle, and the hero copy is accurate', () => {
+  for (const page of ['index.html', 'how-it-works.html', 'pricing.html']) {
+    const html = read(page);
+    assert.match(html, /<script src="\/assets\/theme\.js"><\/script>/, `${page} theme script`);
+    assert.match(html, /data-theme-toggle/, `${page} theme toggle`);
+  }
+  const home = read('index.html');
+  assert.match(home, /Hope, your support chat\./);
+  assert.doesNotMatch(home, /private support chat/);
+  const css = read('assets/site.css');
+  assert.match(css, /:root\[data-theme="dark"\] \.hw-home/);
+  assert.match(css, /prefers-color-scheme: dark/);
 });
