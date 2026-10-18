@@ -17,6 +17,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { brisbaneToday, validDate, COPING_TOOLS } from './wellbeing/validate.js';
+import { loadModules } from './learning.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const RELEASES_PATH = path.join(HERE, 'library', 'content-releases.json');
@@ -25,7 +26,7 @@ export const MIN_FREE_DELAY_MONTHS = 6;
 export const MAX_FREE_DELAY_MONTHS = 12;
 /** "New for Plus this week": within this many days of the Plus date. */
 export const NEW_FOR_PLUS_DAYS = 7;
-export const RELEASE_KINDS = Object.freeze(['coping', 'journal-pack']);
+export const RELEASE_KINDS = Object.freeze(['coping', 'journal-pack', 'module']);
 const ID_RE = /^[a-z0-9][a-z0-9-]{1,63}$/;
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -45,7 +46,7 @@ export function monthLabel(iso) {
 }
 
 /** Validates the whole schedule. Throws with a clear message naming the item, so a bad edit fails tests and startup, not users. */
-export function normalizeReleases(doc) {
+export function normalizeReleases(doc, { modules = null } = {}) {
   if (!doc || !Array.isArray(doc.items)) throw new Error('content-releases.json needs an "items" list.');
   const seen = new Set();
   return doc.items.map((raw, i) => {
@@ -57,6 +58,17 @@ export function normalizeReleases(doc) {
     seen.add(id);
     if (!RELEASE_KINDS.includes(kind)) throw new Error(`${where}: kind must be one of ${RELEASE_KINDS.join(', ')}.`);
     if (kind === 'coping' && !Object.prototype.hasOwnProperty.call(COPING_TOOLS, key)) throw new Error(`${where}: coping key "${key}" is not in COPING_TOOLS (server/wellbeing/validate.js).`);
+    let content = raw.content || null;
+    let meta = null;
+    if (kind === 'module') {
+      // Module text comes from learning-modules.json; the schedule only says when it opens.
+      if (!modules) throw new Error(`${where}: learning modules were not loaded.`);
+      const mod = modules[key];
+      if (!mod) throw new Error(`${where}: module "${key}" is not in learning-modules.json.`);
+      if (raw.content) throw new Error(`${where}: module text belongs in learning-modules.json, not the schedule.`);
+      content = mod;
+      meta = { minutes: mod.minutes, topic: mod.topic, approach: mod.approach, review: mod.review };
+    }
     if (!title || typeof title !== 'string' || title.length > 120) throw new Error(`${where}: title is required (up to 120 characters).`);
     if (!teaser || typeof teaser !== 'string' || teaser.length > 280) throw new Error(`${where}: teaser is required (up to 280 characters).`);
     if (!validDate(raw.plusReleaseDate)) throw new Error(`${where}: plusReleaseDate must be YYYY-MM-DD.`);
@@ -74,15 +86,15 @@ export function normalizeReleases(doc) {
         throw new Error(`${where}: freeReleaseDate must be 6 to 12 months after the Plus date (${min} to ${max}).`);
       }
     }
-    if (!core && (!raw.content || typeof raw.content !== 'object')) throw new Error(`${where}: content is required.`);
+    if (!core && (!content || typeof content !== 'object')) throw new Error(`${where}: content is required.`);
     if (kind === 'journal-pack' && raw.content && !(Array.isArray(raw.content.prompts) && raw.content.prompts.length)) throw new Error(`${where}: a journal pack needs content.prompts.`);
     if (kind === 'coping' && raw.content && !(Array.isArray(raw.content.steps) && raw.content.steps.length >= 2)) throw new Error(`${where}: a coping tool needs at least two steps.`);
-    return { id, kind, key: key || id, title, teaser, plusReleaseDate: raw.plusReleaseDate, freeReleaseDate, core, content: raw.content || null };
+    return { id, kind, key: key || id, title, teaser, plusReleaseDate: raw.plusReleaseDate, freeReleaseDate, core, content, meta };
   });
 }
 
-export function loadReleases(file = process.env.HOPEWICK_RELEASES_PATH || RELEASES_PATH) {
-  return normalizeReleases(JSON.parse(fs.readFileSync(file, 'utf8')));
+export function loadReleases(file = process.env.HOPEWICK_RELEASES_PATH || RELEASES_PATH, { modules = loadModules() } = {}) {
+  return normalizeReleases(JSON.parse(fs.readFileSync(file, 'utf8')), { modules });
 }
 
 /** Where an item stands for one account on one day. */
@@ -109,12 +121,13 @@ export function publicItem(item, opts) {
     badges: { newForPlus: s.newForPlus, comingToFree: s.comingToFree },
   };
   if (!item.core) out.freeReleaseDate = item.freeReleaseDate;
+  if (item.meta) out.meta = item.meta;
   if (s.available && item.content) out.content = item.content;
   return out;
 }
 
-export function createReleaseCatalog({ file, items } = {}) {
-  let cache = items ? normalizeReleases({ items }) : null;
+export function createReleaseCatalog({ file, items, modules } = {}) {
+  let cache = items ? normalizeReleases({ items }, { modules: modules || null }) : null;
   const all = () => {
     if (!cache) cache = loadReleases(file);
     return cache;
@@ -123,7 +136,7 @@ export function createReleaseCatalog({ file, items } = {}) {
     all,
     list(opts) { return all().map((it) => publicItem(it, opts)).filter(Boolean); },
     find(id) { return all().find((it) => it.id === id) || null; },
-    /** For server gates: can this account use a coping tool / journal pack? Tools not in the schedule are core. */
+    /** For server gates: can this account use a coping tool / journal pack / module? Coping tools not in the schedule are core; unknown packs and modules are not. */
     allows(kind, key, opts) {
       const it = all().find((x) => x.kind === kind && x.key === key);
       if (!it) return kind === 'coping';

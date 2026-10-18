@@ -226,6 +226,109 @@
           }
         ]
       }
+    },
+    {
+      "id": "module-cravings-triggers",
+      "kind": "module",
+      "key": "cravings-triggers",
+      "title": "Cravings and triggers",
+      "teaser": "What a craving is, what sets one off, and a few ways to ride one out.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-sleep-basics",
+      "kind": "module",
+      "key": "sleep-basics",
+      "title": "Sleep basics",
+      "teaser": "Simple habits that help sleep, and why sleep matters in recovery.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-stress-anxiety",
+      "kind": "module",
+      "key": "stress-anxiety",
+      "title": "Stress and anxiety basics",
+      "teaser": "What stress and anxiety feel like in the body, and small things that can help.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-harm-reduction",
+      "kind": "module",
+      "key": "harm-reduction",
+      "title": "Staying safer: harm reduction basics",
+      "teaser": "Practical ways to lower risk, whether or not you're cutting down or stopping.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-support-australia",
+      "kind": "module",
+      "key": "support-australia",
+      "title": "Getting support in Australia",
+      "teaser": "Free and low-cost places to turn, by phone, online or in person.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-cbt-basics",
+      "kind": "module",
+      "key": "cbt-basics",
+      "title": "Thoughts, feelings and actions (CBT basics)",
+      "teaser": "How thoughts, feelings and actions link up, and how to spot common thinking traps.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-act-unhooking",
+      "kind": "module",
+      "key": "act-unhooking",
+      "title": "Unhooking from difficult thoughts (ACT basics)",
+      "teaser": "Step back from sticky thoughts and steady yourself when feelings run high.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-dbt-skills",
+      "kind": "module",
+      "key": "dbt-skills",
+      "title": "Riding out intense moments (DBT skills basics)",
+      "teaser": "STOP, TIPP, opposite action and wise mind, in plain words.",
+      "plusReleaseDate": "2026-10-18"
+    },
+    {
+      "id": "module-thought-record",
+      "kind": "module",
+      "key": "thought-record",
+      "title": "Your thought record (CBT)",
+      "teaser": "Slow a hard moment down on paper and find a more balanced view.",
+      "plusReleaseDate": "2026-10-25"
+    },
+    {
+      "id": "module-act-values",
+      "kind": "module",
+      "key": "act-values",
+      "title": "What matters to you (ACT values and committed action)",
+      "teaser": "Sort your values, then choose one small step guided by them.",
+      "plusReleaseDate": "2026-11-01"
+    },
+    {
+      "id": "module-behavioural-activation",
+      "kind": "module",
+      "key": "behavioural-activation",
+      "title": "Doing more of what helps (behavioural activation)",
+      "teaser": "Break the low-mood cycle with small, planned activities.",
+      "plusReleaseDate": "2026-11-08"
+    },
+    {
+      "id": "module-act-acceptance",
+      "kind": "module",
+      "key": "act-acceptance",
+      "title": "Making room for feelings (ACT acceptance)",
+      "teaser": "Practise letting hard feelings be there, without a fight.",
+      "plusReleaseDate": "2026-11-15"
     }
   ]
 }

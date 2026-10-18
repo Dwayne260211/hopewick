@@ -28,6 +28,9 @@ import {
   FREE_JOURNAL_KINDS, applyWindow, checkinDate, journalDate, activityDate, stepDate, brisbaneDateOf,
 } from './plan-rules.js';
 import { addIsoDays } from '../checkins.js';
+import {
+  normalizeRecoveryGoal, normalizeRecoveryLog, normalizeLearning, assertModuleId, goalStats, recoveryInsights, MILESTONES,
+} from './recovery.js';
 
 const PLUS_MESSAGES = {
   journal: 'Writing in the journal stays free. Gratitude and recovery entry types, guided series and prompt packs, and Deepen with Hope are part of Hopewick Plus.',
@@ -37,6 +40,8 @@ const PLUS_MESSAGES = {
   insights: 'Monthly insights are part of Hopewick Plus. Your check-ins, export and the last 7 days of history stay free.',
   report: 'The printable mood and recovery report is part of Hopewick Plus. You can always export all of your data for free.',
   goals: 'Personal goals are part of Hopewick Plus, like SMART goals. You can still see and delete goals you already saved.',
+  recoveryInsights: 'Tracker trends and insights are part of Hopewick Plus. Your goals, day counts, milestones and logging stay free.',
+  module: 'This learning module is in Hopewick Plus first. It comes to the free plan later. The core modules are always free.',
 };
 
 async function readJsonBody(req, readBody, limit) {
@@ -91,13 +96,14 @@ function legacyDays(checkins, userId, profileId, haveDates) {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-const DELETE_AREAS = Object.freeze(['checkins', 'journal', 'activities', 'goals', 'steps', 'weekly-plans', 'plans', 'all']);
+const DELETE_AREAS = Object.freeze(['checkins', 'journal', 'activities', 'goals', 'steps', 'weekly-plans', 'plans', 'recovery', 'learning', 'all']);
 
 async function exportAll(ctx, uid, profileId) {
   const w = ctx.wellbeing;
-  const [settings, checkins, activities, goals, journal, plans, steps, weeklyPlans] = await Promise.all([
+  const [settings, checkins, activities, goals, journal, plans, steps, weeklyPlans, recoveryGoals, recoveryLogs, learning] = await Promise.all([
     w.getSettings(uid), w.listCheckins(uid, profileId, {}), w.listActivities(uid, profileId, { limit: LIMITS.activities }), w.listGoals(uid, profileId),
     w.listJournal(uid, profileId), w.getPlans(uid, profileId), w.listSteps(uid, profileId), w.listWeeklyPlans(uid, profileId),
+    w.listRecoveryGoals(uid, profileId), w.listRecoveryLogs(uid, profileId), w.listLearning(uid, profileId),
   ]);
   const have = new Set(checkins.map((c) => c.date));
   return {
@@ -105,6 +111,7 @@ async function exportAll(ctx, uid, profileId) {
     note: 'Everything Hopewick has saved for this profile. Private: keep this file somewhere safe.',
     settings, checkins, olderCheckins: legacyDays(ctx.checkins, uid, profileId, have),
     activities, goals, journal, plans: plans || null, nextSteps: steps, weeklyPlans,
+    recoveryTracker: { goals: recoveryGoals, logs: recoveryLogs }, learning,
   };
 }
 
@@ -442,6 +449,60 @@ export async function handleWellbeingApi(ctx, req, res, url) {
       if (method === 'POST' && !sub) { if (needPlus('weekly')) return true; json(res, 201, { plan: await wellbeing.createWeeklyPlan(uid, profileId, normalizeWeeklyPlan(body)) }); return true; }
       if (sub && method === 'PATCH') { if (needPlus('weekly')) return true; json(res, 200, { plan: await wellbeing.updateWeeklyPlan(uid, profileId, assertId(sub), normalizeWeeklyPlan(body, { partial: true })) }); return true; }
       if (sub && method === 'DELETE') { await wellbeing.deleteWeeklyPlan(uid, profileId, assertId(sub)); json(res, 200, { ok: true }); return true; }
+    }
+
+    /*
+     * Stage 4 recovery tracker. Free: goals, day counts, milestones, lapse and
+     * craving logging, and the last 7 days of logs in the app. Day counts always
+     * use every log, so a free account's numbers are never wrong. Plus: full log
+     * history and trends. Export and delete are free.
+     */
+    if (area === 'recovery') {
+      const third = parts[2];
+      if (method === 'GET' && !sub) {
+        const [goals, logs] = await Promise.all([wellbeing.listRecoveryGoals(uid, profileId), wellbeing.listRecoveryLogs(uid, profileId)]);
+        const today = brisbaneToday();
+        const w = applyWindow(logs, { plus, dateOf: (x) => x.date });
+        json(res, 200, { goals: goals.map((g) => ({ ...g, stats: goalStats(g, logs, today) })), logs: w.items, window: w.window, milestones: MILESTONES, today, plus });
+        return true;
+      }
+      if (sub === 'insights' && method === 'GET' && !third) {
+        if (needPlus('recoveryInsights')) return true;
+        const days = Number(q.get('days') || 30);
+        if (![30, 90, 365].includes(days)) throw new ValidationError('days must be 30, 90 or 365.', 'days');
+        const [goals, logs] = await Promise.all([wellbeing.listRecoveryGoals(uid, profileId), wellbeing.listRecoveryLogs(uid, profileId)]);
+        json(res, 200, { insights: recoveryInsights(goals, logs, { days }) });
+        return true;
+      }
+      if (sub === 'goals') {
+        if (method === 'POST' && !third) { json(res, 201, { goal: await wellbeing.createRecoveryGoal(uid, profileId, normalizeRecoveryGoal(body)) }); return true; }
+        if (third && method === 'PATCH') { json(res, 200, { goal: await wellbeing.updateRecoveryGoal(uid, profileId, assertId(third), normalizeRecoveryGoal(body, { partial: true })) }); return true; }
+        if (third && method === 'DELETE') { await wellbeing.deleteRecoveryGoal(uid, profileId, assertId(third)); json(res, 200, { ok: true }); return true; }
+      }
+      if (sub === 'logs') {
+        if (method === 'POST' && !third) { json(res, 201, { log: await wellbeing.createRecoveryLog(uid, profileId, normalizeRecoveryLog(body)) }); return true; }
+        if (third && method === 'PATCH') { json(res, 200, { log: await wellbeing.updateRecoveryLog(uid, profileId, assertId(third), normalizeRecoveryLog(body, { partial: true })) }); return true; }
+        if (third && method === 'DELETE') { await wellbeing.deleteRecoveryLog(uid, profileId, assertId(third)); json(res, 200, { ok: true }); return true; }
+      }
+    }
+
+    /*
+     * Stage 4 learning progress. Core modules are free; Plus-first modules
+     * follow the content release schedule. Reading, exporting and deleting your
+     * own progress and notes is always free.
+     */
+    if (area === 'learning') {
+      if (method === 'GET' && !sub) { json(res, 200, { progress: await wellbeing.listLearning(uid, profileId), plus }); return true; }
+      if (sub && method === 'PUT') {
+        const moduleId = assertModuleId(sub);
+        // Nobody hears about a module before its Plus date; free accounts wait for its free date.
+        const item = ctx.releases ? ctx.releases.list({ plus }).find((x) => x.kind === 'module' && x.key === moduleId) : null;
+        if (!item) throw new NotFoundError('That learning module was not found.');
+        if (!item.available) { json(res, 403, { error: PLUS_MESSAGES.module, code: 'plus' }); return true; }
+        json(res, 200, { progress: await wellbeing.saveLearning(uid, profileId, moduleId, normalizeLearning(body)) });
+        return true;
+      }
+      if (sub && method === 'DELETE') { await wellbeing.deleteLearning(uid, profileId, assertModuleId(sub)); json(res, 200, { ok: true }); return true; }
     }
 
     if (area === 'insights' && method === 'GET' && !sub) {
