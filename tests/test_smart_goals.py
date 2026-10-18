@@ -53,13 +53,13 @@ def test_static_goals_and_journal_nav():
     assert 'id="sideGoalsBtn"' in text
     assert "Open SMART goals" in text
     assert "not a SMART Recovery meeting" in text
-    assert 'id="appTabJournal"' in text
+    assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="journalView"' in text
     assert 'id="sideInfoBtn"' in text
-    assert 'id="appTabDv"' in text
+    assert "{ id: 'dv', title: 'Domestic and family violence'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="helpBtn"' in text
     # SMART goals are not a Home chip. Today's reading stays.
-    home_chips = text.split("function needNowEl", 1)[1].split("function renderHome", 1)[0]
+    home_chips = text.split("function needNowEl", 1)[1].split("\nfunction ", 1)[0].split("\n/*", 1)[0]
     assert "goals" not in home_chips
     assert "Today’s reading" in home_chips
     assert "data-need=\"bible\"" in text or "id: 'bible'" in text
@@ -109,9 +109,9 @@ def test_smart_goals_journal_nav_and_guards():
             page.wait_for_selector("#needNow", timeout=10000)
 
             nav = " ".join(page.inner_text("#bottomNav").split())
-            assert nav.split()[0:5] == ["Home", "Chat", "Domestic", "&", "family"] or "Journal" in nav
-            assert "Home" in nav and "Chat" in nav and "Journal" in nav and "More" in nav
-            assert "Safety" in nav
+            assert all(t in nav for t in ("Home", "Chat", "Tools", "Learn", "More"))  # Hopewick 2.0 bottom bar
+            assert page.locator("#helpBtn").is_visible()  # crisis entry always on screen (Hopewick 2.0)
+            assert page.locator('#needNow [data-need="dv"]').count() == 1  # DV one tap from Home
             assert "News" not in nav
             assert page.is_visible("#helpBtn")
             assert page.locator('#needNow [data-need="goals"]').count() == 0
@@ -119,9 +119,10 @@ def test_smart_goals_journal_nav_and_guards():
                 assert page.locator(f'#needNow [data-need="{need}"]').count() == 1, need
 
             # Journal tab stays. Free sees the trial screen, not the editor.
-            page.click("#appTabJournal")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert page.locator("#homeView").is_hidden()
             assert "Journal" in page.inner_text("#journalTitle")
             assert page.locator("#journalWorkspace").is_hidden()
@@ -138,9 +139,10 @@ def test_smart_goals_journal_nav_and_guards():
             assert page.locator("#journalView").is_hidden()
             assert page.locator("#sideInfoBtn").get_attribute("aria-current") == "page"
 
-            page.click("#appTabDv")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="dv"]')
             page.wait_for_selector("#dvView:not([hidden])")
-            assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert "1800 737 732" in page.inner_text("#dvView")
             assert page.is_hidden("#infoView")
 

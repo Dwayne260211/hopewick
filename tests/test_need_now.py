@@ -37,8 +37,8 @@ def test_static_need_and_gateway():
     assert "function syncHopeGateway" in text
     assert "function splitToolLine" in text
     assert "IN-APP TOOLS" in text
-    assert 'id="appTabDv"' in text
-    assert 'id="appTabJournal"' in text
+    assert "{ id: 'dv', title: 'Domestic and family violence'" in text  # Tools hub (Hopewick 2.0)
+    assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="sideInfoBtn"' in text
     assert 'id="sideGoalsBtn"' in text
     assert "Open SMART goals" in text
@@ -84,8 +84,9 @@ def test_need_now_and_hope_gateway():
 
             nav = " ".join(page.inner_text("#bottomNav").split())
             assert "Home" in nav and "Chat" in nav
-            assert "Safety" in nav
-            assert "Journal" in nav
+            assert page.locator("#helpBtn").is_visible()  # crisis entry always on screen (Hopewick 2.0)
+            assert page.locator('#needNow [data-need="dv"]').count() == 1  # DV one tap from Home
+            assert "Tools" in nav  # Journal lives under Tools (Hopewick 2.0)
             assert "News" not in nav
             assert page.locator("#sideDeveloperBtn").is_hidden()
             assert page.locator("#keyBannerInvite").is_hidden()
@@ -106,7 +107,7 @@ def test_need_now_and_hope_gateway():
             page.click('#needNow [data-need="dv"]')
             page.wait_for_selector("#dvView:not([hidden])")
             assert "1800 737 732" in page.inner_text("#dvView")
-            assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
 
             page.click("#appTabHome")
             page.wait_for_selector("#todayCard")
@@ -136,7 +137,7 @@ def test_need_now_and_hope_gateway():
 
             page.click('#needNow [data-need="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert page.locator("#homeView").is_hidden()
             page.click("#appTabHome")
             page.wait_for_selector("#needNow")
@@ -167,7 +168,7 @@ def test_need_now_and_hope_gateway():
             assert "TOOLS:" not in page.inner_text("#messagesInner")
             page.click('#hopeGateway button[data-hope-tool="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             page.click("#appTabChat")
             page.wait_for_selector("#input", state="visible")
             page.wait_for_function("() => !busy", timeout=20000)
@@ -311,7 +312,7 @@ def test_every_need_now_chip_click():
                 click_chip("dv", "Not safe at home")
                 _wait_view_on_top(page, "dvView")
                 assert page.locator("#homeView").is_hidden()
-                assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+                assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
                 assert page.locator("#appTabHome").get_attribute("aria-current") == "false"
                 assert "1800 737 732" in page.inner_text("#dvView")
 
@@ -346,7 +347,7 @@ def test_every_need_now_chip_click():
                 _wait_view_on_top(page, "journalView")
                 assert "Journal" in page.inner_text("#journalTitle")
                 assert page.locator("#homeView").is_hidden()
-                assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+                assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
                 assert page.locator("#appTabHome").get_attribute("aria-current") == "false"
 
             def bible_chip():

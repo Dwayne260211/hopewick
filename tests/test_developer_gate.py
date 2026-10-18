@@ -72,7 +72,7 @@ def test_developer_chrome_is_hidden_until_founder_account():
 
     # Crisis and domestic violence stay in the companion.
     assert 'id="helpBtn"' in app
-    assert 'id="appTabDv"' in app
+    assert "{ id: 'dv', title: 'Domestic and family violence'" in app  # Tools hub (Hopewick 2.0)
     assert 'id="sideDvBtn"' in app
     assert "1800 737 732" in app
     assert "1800RESPECT" in app

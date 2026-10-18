@@ -103,7 +103,10 @@ def test_static_nutrition_copy_and_gate():
     for marker in PLUS_ONLY:
         assert marker in library
     assert "nutrition: { label: 'Open nutrition'" in text
-    assert "id: 'nutrition'" not in text  # Home chips stay as they are; today’s reading stays up
+    # Home chips stay as they are; today’s reading stays up. Nutrition lives in the Learn hub (Hopewick 2.0).
+    need_now = text.split("function needNowEl", 1)[1].split("\nfunction ", 1)[0].split("\n/*", 1)[0]
+    assert "id: 'nutrition'" not in need_now
+    assert "{ id: 'nutrition'" in text.split("function renderLearnHub", 1)[1]
     assert "Do not add plus, resume, bible, or nutrition on a crisis reply." in text
     assert "methylene blue" in text.lower()
     assert not re.search(r"\b\d+\s*mg\b", library, re.I)
