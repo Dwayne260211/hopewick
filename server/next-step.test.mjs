@@ -162,6 +162,11 @@ test('journal deepen needs consent per use or the setting; nothing is sent other
   const app = await listen('REFINED:\nok\nEMOTIONS:\ncalm\nQUESTION:\nwhat helped?');
   try {
     const body = { purpose: 'refine', messages: [{ role: 'user', content: 'Entry:\nprivate words' }] };
+    const free = await app.call('/api/hope/chat', 'POST', { ...body, aiConsent: 'once' });
+    assert.equal(free.status, 403, 'Deepen with Hope is Plus');
+    assert.equal((await free.json()).error.code, 'plus');
+    assert.equal(app.calls.length, 0, 'the model was not called');
+    await app.call('/api/billing/dev-set', 'POST', { status: 'active' });
     const no = await app.call('/api/hope/chat', 'POST', body);
     assert.equal(no.status, 403);
     assert.equal((await no.json()).error.code, 'consent');

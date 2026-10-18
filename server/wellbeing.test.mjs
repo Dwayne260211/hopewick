@@ -19,7 +19,7 @@ import path from 'node:path';
 import { loadLocalEnv } from './db/migrate.js';
 import { createJsonWellbeingStore } from './wellbeing/json-store.js';
 import { createWellbeingStore } from './wellbeing/index.js';
-import { normalizeCheckin, normalizeJournal, normalizeGoal, normalizeStep, normalizeActivityStart, normalizeActivityPatch, normalizeLegacyJournal, normalizePlans, ValidationError } from './wellbeing/validate.js';
+import { normalizeCheckin, normalizeJournal, normalizeGoal, normalizeStep, normalizeActivityStart, normalizeActivityPatch, normalizeLegacyJournal, normalizePlans, normalizeWeeklyPlan, ValidationError } from './wellbeing/validate.js';
 import { StoreUnavailableError } from './json-file.js';
 
 loadLocalEnv();
@@ -28,9 +28,33 @@ const pgSkip = PG_URL ? false : 'DATABASE_URL not set; Postgres backend tests sk
 const run = crypto.randomBytes(4).toString('hex');
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'hopewick-wb-'));
 const KEY = crypto.randomBytes(32).toString('base64');
+const TODAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Brisbane' }).format(new Date());
+const daysAgo = (n) => { const d = new Date(`${TODAY}T00:00:00Z`); d.setUTCDate(d.getUTCDate() - n); return d.toISOString().slice(0, 10); };
 
 async function contract(t, store, { A, B, rawText }) {
   const P = 'main';
+  await t.test(`${store.backend}: weekly plans create, tick, list, delete; clearArea removes only what was asked; journal keeps packId`, async () => {
+    const W = 'wk';
+    const w = await store.createWeeklyPlan(A, W, normalizeWeeklyPlan({ title: 'Steady week', weekStart: '2026-10-18', steps: ['Call Sam', { title: 'Meeting', day: 4 }] }));
+    assert.equal(w.status, 'active');
+    assert.deepEqual(w.steps.map((x) => x.title), ['Call Sam', 'Meeting']);
+    const ticked = await store.updateWeeklyPlan(A, W, w.id, normalizeWeeklyPlan({ steps: w.steps.map((x) => ({ ...x, done: true })), status: 'done' }, { partial: true }));
+    assert.equal(ticked.status, 'done');
+    assert.ok(ticked.completedAt && ticked.steps.every((x) => x.done && x.doneAt));
+    assert.equal((await store.listWeeklyPlans(A, W)).length, 1);
+    assert.equal((await store.listWeeklyPlans(B, W)).length, 0, 'other users see nothing');
+    const j = await store.createJournal(A, W, normalizeJournal({ body: 'pack entry', kind: 'prompt', packId: 'first-30-days' }));
+    assert.equal(j.packId, 'first-30-days');
+    await store.putCheckin(A, W, normalizeCheckin({ mood: 3 }, { date: '2026-10-11' }));
+    assert.equal(await store.clearArea(A, W, 'journal'), 1);
+    assert.equal((await store.listJournal(A, W)).length, 0);
+    assert.equal((await store.listCheckins(A, W, {})).length, 1, 'check-ins untouched');
+    assert.equal((await store.listWeeklyPlans(A, W)).length, 1, 'weekly plans untouched');
+    await store.clearArea(A, W, 'all');
+    assert.equal((await store.listCheckins(A, W, {})).length + (await store.listWeeklyPlans(A, W)).length, 0);
+    assert.ok((await store.listCheckins(A, P, {})).length >= 0);
+  });
+
   await t.test(`${store.backend}: check-in save, edit, list by range, delete; one per day`, async () => {
     const c1 = await store.putCheckin(A, P, normalizeCheckin({ mood: 2, feelings: 'tight chest before work', triggers: ['Work', 'work', 'Tired'], intensity: 7, craving: 'Mild', notes: 'walked after' }, { date: '2026-10-10' }));
     assert.equal(c1.moodLabel, 'Low');
@@ -320,13 +344,13 @@ async function httpSuite(t, backend) {
     });
 
     await t.test(`${backend} http: free account can check in, use coping tools and save a next step`, async () => {
-      const put = await free('PUT', '/api/me/checkins/2026-10-10', { profileId: 'main', mood: 2, feelings: 'flat', triggers: ['Money'], intensity: 6 });
+      const put = await free('PUT', `/api/me/checkins/${daysAgo(1)}`, { profileId: 'main', mood: 2, feelings: 'flat', triggers: ['Money'], intensity: 6 });
       assert.equal(put.status, 200, JSON.stringify(put.body));
       assert.equal(put.body.checkin.moodLabel, 'Low');
       const list = await free('GET', '/api/me/checkins?profileId=main');
       assert.equal(list.body.checkins.length, 1);
       assert.deepEqual(list.body.legacy, []);
-      const bad = await free('PUT', '/api/me/checkins/2026-10-10', { profileId: 'main', mood: 9 });
+      const bad = await free('PUT', `/api/me/checkins/${daysAgo(1)}`, { profileId: 'main', mood: 9 });
       assert.equal(bad.status, 400);
       const act = await free('POST', '/api/me/activities', { profileId: 'main', toolKey: 'breathing-box' });
       assert.equal(act.status, 201);
@@ -336,19 +360,25 @@ async function httpSuite(t, backend) {
       assert.equal(step.status, 201);
       const sum = await free('GET', '/api/me/summary?profileId=main');
       assert.equal(sum.body.currentStep.title, 'Make a cup of tea and sit outside');
-      assert.equal(sum.body.latestCheckin.date, '2026-10-10');
+      assert.equal(sum.body.latestCheckin.date, daysAgo(1));
     });
 
-    await t.test(`${backend} http: Plus gates are enforced on the server (journal, goals, plans writes)`, async () => {
-      const j = await free('POST', '/api/me/journal', { profileId: 'main', body: 'free tries' });
-      assert.equal(j.status, 403);
-      assert.equal(j.body.code, 'plus');
+    await t.test(`${backend} http: Plus gates are enforced on the server (journal refinements, goals, plans writes)`, async () => {
+      for (const kind of ['gratitude', 'recovery']) {
+        const j = await free('POST', '/api/me/journal', { profileId: 'main', kind, body: 'free tries a rich kind' });
+        assert.equal(j.status, 403, kind);
+        assert.equal(j.body.code, 'plus');
+      }
+      assert.equal((await free('POST', '/api/me/journal', { profileId: 'main', body: 'x', refined: 'a deepened reflection' })).status, 403, 'deepened text is Plus');
+      assert.equal((await free('POST', '/api/me/journal', { profileId: 'main', kind: 'prompt', packId: 'first-30-days', prompt: 'Day 1', body: 'x' })).status, 403, 'packs are Plus first');
       assert.equal((await free('POST', '/api/me/goals', { profileId: 'main', title: 'x' })).status, 403);
       assert.equal((await free('PUT', '/api/me/plans', { profileId: 'main', plans: { relapse: {} } })).status, 403);
       assert.equal((await free('GET', '/api/me/journal?profileId=main')).status, 200, 'reading stays free');
+      assert.equal((await free('GET', '/api/me/journal?profileId=main')).body.total, 0, 'nothing was saved by refused writes');
     });
 
     await t.test(`${backend} http: free account keeps its browser journal via one-time import (consent required)`, async () => {
+      // (Runs before any free journal writes so the counts below are only the import.)
       const no = await free('POST', '/api/me/journal/import', { profileId: 'main', consent: false, entries: [{ id: 'l1', body: 'old' }] });
       assert.equal(no.body.status, 'declined');
       assert.equal((await free('GET', '/api/me/journal?profileId=main')).body.total, 0, 'declined uploads nothing');
@@ -405,6 +435,195 @@ async function httpSuite(t, backend) {
       const on = await free('PATCH', '/api/me/settings', { shareCheckinsWithHope: true });
       assert.equal(on.body.settings.shareCheckinsWithHope, true);
       assert.equal((await free('PATCH', '/api/me/settings', { shareCheckinsWithHope: 'yes' })).status, 400);
+    });
+
+    // ----- Free vs Plus model (founder approved, Stage 3) -----
+    const fresh = async (name) => api(app.base, await signIn(app.base, `wb-${name}-${tag}@example.com`));
+    const setPlan = (who, status) => who('POST', '/api/billing/dev-set', { status });
+    const seedHistory = async (who) => {
+      for (const n of [0, 2, 6, 7, 20, 60]) {
+        const r = await who('PUT', `/api/me/checkins/${daysAgo(n)}`, { profileId: 'main', mood: 3, triggers: ['Work'], craving: n === 2 ? 'Strong' : 'None' });
+        assert.equal(r.status, 200, JSON.stringify(r.body));
+      }
+      for (const n of [1, 30]) {
+        const r = await who('POST', '/api/me/journal', { profileId: 'main', body: `entry ${n} days ago`, entryDate: daysAgo(n) });
+        assert.equal(r.status, 201, JSON.stringify(r.body));
+      }
+    };
+
+    await t.test(`${backend} http: free writes basic journal entries (free and prompt kinds) and edits them`, async () => {
+      const u = await fresh('jfree');
+      const a = await u('POST', '/api/me/journal', { profileId: 'main', body: 'a plain entry' });
+      assert.equal(a.status, 201, JSON.stringify(a.body));
+      const b = await u('POST', '/api/me/journal', { profileId: 'main', kind: 'prompt', prompt: 'What helped today?', body: 'a walk' });
+      assert.equal(b.status, 201);
+      const ed = await u('PATCH', `/api/me/journal/${a.body.entry.id}`, { profileId: 'main', body: 'a plain entry, edited', kind: 'free' });
+      assert.equal(ed.status, 200);
+      assert.equal(ed.body.entry.body, 'a plain entry, edited');
+      assert.equal((await u('PATCH', `/api/me/journal/${a.body.entry.id}`, { profileId: 'main', kind: 'gratitude' })).status, 403, 'switching to a Plus kind is Plus');
+      assert.equal((await u('PATCH', `/api/me/journal/${a.body.entry.id}`, { profileId: 'main', refined: 'deeper' })).status, 403);
+    });
+
+    await t.test(`${backend} http: free sees the last 7 days in the app, keeps everything, exports everything`, async () => {
+      const u = await fresh('window');
+      await seedHistory(u);
+      const c = await u('GET', '/api/me/checkins?profileId=main');
+      assert.deepEqual(c.body.checkins.map((x) => x.date), [daysAgo(0), daysAgo(2), daysAgo(6)]);
+      assert.equal(c.body.window.limited, true);
+      assert.equal(c.body.window.days, 7);
+      assert.equal(c.body.window.hiddenCount, 3);
+      const j = await u('GET', '/api/me/journal?profileId=main');
+      assert.equal(j.body.entries.length, 1);
+      assert.equal(j.body.total, 2, 'total counts everything saved');
+      assert.equal(j.body.window.hiddenCount, 1);
+      const ex = await u('GET', '/api/me/export?profileId=main');
+      assert.equal(ex.status, 200);
+      assert.match(ex.disposition, /attachment; filename="hopewick-my-data-.*\.json"/);
+      const data = JSON.parse(typeof ex.body === 'string' ? ex.body : JSON.stringify(ex.body));
+      assert.equal(data.checkins.length, 6, 'export includes history outside the window');
+      assert.equal(data.journal.length, 2);
+      const jx = await u('GET', '/api/me/journal/export?profileId=main&format=json');
+      assert.equal(jx.body.entries.length, 2, 'journal export includes everything');
+    });
+
+    await t.test(`${backend} http: Plus (paid, trial and founder comp) sees full history`, async () => {
+      const paid = await fresh('paid');
+      await seedHistory(paid);
+      await setPlan(paid, 'active');
+      const trial = await fresh('trial');
+      await seedHistory(trial);
+      await setPlan(trial, 'trialing');
+      for (const [name, who] of [['paid', paid], ['trial', trial]]) {
+        const c = await who('GET', '/api/me/checkins?profileId=main');
+        assert.equal(c.body.checkins.length, 6, name);
+        assert.equal(c.body.window.limited, false, name);
+        assert.equal((await who('GET', '/api/me/journal?profileId=main')).body.entries.length, 2, name);
+      }
+      const f = await plus('GET', '/api/me/checkins?profileId=main');
+      assert.equal(f.body.window.limited, false, 'founder comp is Plus');
+    });
+
+    await t.test(`${backend} http: lapsed Plus keeps all data; the app view narrows, export and delete still work`, async () => {
+      const u = await fresh('lapsed');
+      await setPlan(u, 'active');
+      await seedHistory(u);
+      const g = await u('POST', '/api/me/goals', { profileId: 'main', title: 'Walk on Sundays' });
+      assert.equal(g.status, 201);
+      const rich = await u('POST', '/api/me/journal', { profileId: 'main', kind: 'gratitude', body: 'thankful', entryDate: daysAgo(3) });
+      assert.equal(rich.status, 201);
+      const wp = await u('POST', '/api/me/weekly-plans', { profileId: 'main', title: 'This week', steps: ['Call Sam', { title: 'Meeting Thursday', day: 4 }] });
+      assert.equal(wp.status, 201, JSON.stringify(wp.body));
+      await setPlan(u, 'canceled');
+      const c = await u('GET', '/api/me/checkins?profileId=main');
+      assert.equal(c.body.window.limited, true);
+      assert.equal(c.body.checkins.length + c.body.window.hiddenCount, 6, 'nothing deleted');
+      assert.equal((await u('GET', '/api/me/goals?profileId=main')).body.goals.length, 1, 'goals kept and readable');
+      assert.equal((await u('GET', '/api/me/weekly-plans?profileId=main')).body.plans.length, 1, 'weekly plan kept and readable');
+      assert.equal((await u('PATCH', `/api/me/weekly-plans/${wp.body.plan.id}`, { profileId: 'main', title: 'x' })).status, 403, 'editing a weekly plan is Plus');
+      assert.equal((await u('PATCH', `/api/me/journal/${rich.body.entry.id}`, { profileId: 'main', kind: 'gratitude', body: 'thankful, fixed a typo' })).status, 200, 'a lapsed account can still fix its own text');
+      const ex = JSON.parse(JSON.stringify((await u('GET', '/api/me/export?profileId=main')).body));
+      assert.equal(ex.checkins.length, 6);
+      assert.equal(ex.journal.length, 3);
+      assert.equal(ex.goals.length, 1);
+      assert.equal(ex.weeklyPlans.length, 1);
+      assert.equal((await u('GET', '/api/me/insights?profileId=main')).status, 403, 'insights are Plus');
+      assert.equal((await u('GET', '/api/me/report?profileId=main')).status, 403, 'report is Plus');
+      // Coming back to Plus shows everything again.
+      await setPlan(u, 'active');
+      assert.equal((await u('GET', '/api/me/checkins?profileId=main')).body.checkins.length, 6);
+    });
+
+    await t.test(`${backend} http: delete my data works on every plan and needs a matching confirm`, async () => {
+      const u = await fresh('delete');
+      await seedHistory(u);
+      assert.equal((await u('DELETE', '/api/me/data/journal?profileId=main')).status, 400, 'confirm is required');
+      assert.equal((await u('DELETE', '/api/me/data/nope?profileId=main&confirm=nope')).status, 400);
+      const dj = await u('DELETE', '/api/me/data/journal?profileId=main&confirm=journal');
+      assert.equal(dj.status, 200);
+      assert.equal(dj.body.removed, 2);
+      assert.equal((await u('GET', '/api/me/journal?profileId=main')).body.total, 0);
+      assert.equal((await u('GET', '/api/me/export?profileId=main')).body.checkins.length, 6, 'other areas untouched');
+      const all = await u('DELETE', '/api/me/data/all?profileId=main&confirm=all');
+      assert.equal(all.status, 200);
+      const ex = (await u('GET', '/api/me/export?profileId=main')).body;
+      assert.equal(ex.checkins.length + ex.journal.length + ex.activities.length + ex.nextSteps.length, 0);
+    });
+
+    await t.test(`${backend} http: safety plan essentials are free and survive Plus plan edits`, async () => {
+      const u = await fresh('safety');
+      assert.equal((await u('GET', '/api/me/safety-plan?profileId=main')).body.safety, null);
+      const put = await u('PUT', '/api/me/safety-plan', { profileId: 'main', safety: { warningSigns: ['not sleeping'], people: ['Sam 0400 000 000'], reasons: ['my kids'] } });
+      assert.equal(put.status, 200, JSON.stringify(put.body));
+      assert.deepEqual((await u('GET', '/api/me/safety-plan?profileId=main')).body.safety.people, ['Sam 0400 000 000']);
+      assert.equal((await u('PUT', '/api/me/safety-plan', { profileId: 'main', safety: { people: 'not a list' } })).status, 400);
+      await setPlan(u, 'active');
+      assert.equal((await u('PUT', '/api/me/plans', { profileId: 'main', plans: { relapse: { warnings: 'x' }, exits: {}, custom: [] } })).status, 200);
+      assert.deepEqual((await u('GET', '/api/me/safety-plan?profileId=main')).body.safety.warningSigns, ['not sleeping'], 'relapse plan edits keep safety essentials');
+    });
+
+    await t.test(`${backend} http: weekly multi-step plans are Plus to create; free can read and delete`, async () => {
+      const u = await fresh('weekly');
+      assert.equal((await u('POST', '/api/me/weekly-plans', { profileId: 'main', title: 'Week', steps: ['a'] })).status, 403);
+      assert.equal((await u('GET', '/api/me/weekly-plans?profileId=main')).status, 200);
+      const p = await plus('POST', '/api/me/weekly-plans', { profileId: 'main', title: 'Steady week', steps: ['Call Sam', { title: 'Meeting', day: 4 }, 'Cook dinner'] });
+      assert.equal(p.status, 201, JSON.stringify(p.body));
+      assert.equal(p.body.plan.steps.length, 3);
+      const steps = p.body.plan.steps.map((st, i) => ({ ...st, done: i === 0 }));
+      const ed = await plus('PATCH', `/api/me/weekly-plans/${p.body.plan.id}`, { profileId: 'main', steps });
+      assert.equal(ed.body.plan.steps[0].done, true);
+      assert.ok(ed.body.plan.steps[0].doneAt);
+      assert.equal((await plus('POST', '/api/me/weekly-plans', { profileId: 'main', title: 'Too many', steps: Array.from({ length: 11 }, (_, i) => `s${i}`) })).status, 400);
+      assert.equal((await plus('POST', '/api/me/weekly-plans', { profileId: 'main', title: 'Bad week', weekStart: '2026-10-19', steps: ['x'] })).status, 400, 'weeks start on Sunday');
+      assert.equal((await free('DELETE', `/api/me/weekly-plans/${p.body.plan.id}?profileId=main`)).status, 404, 'other accounts cannot touch it');
+      assert.equal((await plus('DELETE', `/api/me/weekly-plans/${p.body.plan.id}?profileId=main`)).status, 200);
+    });
+
+    await t.test(`${backend} http: monthly insights and the report are Plus, descriptive only`, async () => {
+      const u = await fresh('insight');
+      await seedHistory(u);
+      assert.equal((await u('GET', '/api/me/insights?profileId=main')).status, 403);
+      assert.equal((await u('GET', '/api/me/report?profileId=main')).body.code, 'plus');
+      await setPlan(u, 'active');
+      const month = TODAY.slice(0, 7);
+      const ins = await u('GET', `/api/me/insights?profileId=main&month=${month}`);
+      assert.equal(ins.status, 200, JSON.stringify(ins.body));
+      assert.equal(ins.body.insights.month, month);
+      assert.ok(ins.body.insights.checkins.days >= 1);
+      assert.ok(ins.body.insights.lines.length >= 1);
+      assert.doesNotMatch(JSON.stringify(ins.body.insights.lines), /diagnos|disorder|depress|addict|risk|you are/i, 'lines only describe what was saved');
+      assert.equal((await u('GET', '/api/me/insights?profileId=main&month=2026-13')).status, 400);
+      const rep = await u('GET', `/api/me/report?profileId=main&from=${daysAgo(29)}&to=${TODAY}`);
+      assert.equal(rep.status, 200);
+      assert.equal(rep.body.report.days.length, 5, 'check-ins in the last 30 days');
+      assert.equal(rep.body.report.checkins.cravings.Strong, 1);
+      assert.ok(!JSON.stringify(rep.body).includes('entry 1 days ago'), 'journal text is not in the report');
+    });
+
+    await t.test(`${backend} http: content releases: free sees title and teaser only; Plus opens the new drop`, async () => {
+      const u = await fresh('content');
+      const list = await u('GET', '/api/content/releases');
+      assert.equal(list.status, 200);
+      const sc = list.body.items.find((x) => x.id === 'coping-self-compassion');
+      assert.equal(sc.available, false);
+      assert.equal(sc.content, undefined, 'no body for a locked item');
+      assert.ok(sc.title && sc.teaser);
+      assert.ok(list.body.items.filter((x) => x.kind === 'coping' && x.core).every((x) => x.available), 'the 12 launch tools are free');
+      assert.equal((await u('GET', '/api/content/item/coping-self-compassion')).status, 403);
+      assert.equal((await u('GET', '/api/content/item/coping-self-compassion')).body.item.content, undefined);
+      assert.equal((await u('POST', '/api/me/activities', { profileId: 'main', toolKey: 'self-compassion' })).status, 403, 'locked tool cannot be started');
+      assert.equal((await u('POST', '/api/me/activities', { profileId: 'main', toolKey: 'breathing-box' })).status, 201, 'core tools stay free');
+      assert.equal((await u('GET', '/api/content/item/nope')).status, 404);
+      const pl = await plus('GET', '/api/content/item/coping-self-compassion');
+      assert.equal(pl.status, 200);
+      assert.ok(pl.body.item.content.steps.length >= 2);
+      assert.equal(pl.body.item.badges.comingToFree, 'April 2027');
+      assert.equal((await plus('POST', '/api/me/activities', { profileId: 'main', toolKey: 'self-compassion' })).status, 201);
+      const pk = await plus('POST', '/api/me/journal', { profileId: 'main', kind: 'prompt', packId: 'first-30-days', prompt: 'Day 1: Why now', body: 'because' });
+      assert.equal(pk.status, 201);
+      assert.equal(pk.body.entry.packId, 'first-30-days');
+      const anon2 = await anon('GET', '/api/content/releases');
+      assert.equal(anon2.status, 200);
+      assert.ok(anon2.body.items.every((x) => x.core || !x.content), 'signed out is treated as free');
     });
   } finally {
     await app.close();

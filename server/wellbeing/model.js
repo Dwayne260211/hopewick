@@ -47,3 +47,24 @@ export function applyStepPatch(prev, patch, now = nowIso()) {
   next.updatedAt = now;
   return next;
 }
+
+/** Weekly plan: steps carry done/doneAt; a plan is done when every step is done (or when set). */
+export function applyWeeklyPlanPatch(prev, patch, now = nowIso()) {
+  const next = { ...prev };
+  if (patch.title !== undefined) next.title = patch.title;
+  if (patch.weekStart !== undefined) next.weekStart = patch.weekStart;
+  if (patch.steps !== undefined) {
+    const before = new Map((prev.steps || []).map((s) => [s.id, s]));
+    next.steps = patch.steps.map((s) => {
+      const old = before.get(s.id);
+      const doneAt = s.done ? (old && old.done ? old.doneAt : now) : null;
+      return { id: s.id, title: s.title, day: s.day ?? null, done: !!s.done, doneAt };
+    });
+  }
+  if (patch.status !== undefined && patch.status !== prev.status) {
+    next.status = patch.status;
+    next.completedAt = patch.status === 'done' ? now : null;
+  }
+  next.updatedAt = now;
+  return next;
+}

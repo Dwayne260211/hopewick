@@ -1,0 +1,231 @@
+{
+  "_readme": "Hopewick content release schedule. See docs/CONTENT-RELEASES.md. Plus sees an item from plusReleaseDate; free accounts from freeReleaseDate (default: Plus date + 6 months; allowed 6 to 12 months). core: true = part of the always-free set.",
+  "version": 1,
+  "items": [
+    {
+      "id": "coping-breathing-box",
+      "kind": "coping",
+      "key": "breathing-box",
+      "title": "Box breathing",
+      "teaser": "Breathe in a steady square: in, hold, out, hold.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-breathing-calm",
+      "kind": "coping",
+      "key": "breathing-calm",
+      "title": "Calm breathing (longer out-breath)",
+      "teaser": "Breathe in for 4, out for 6. Good for winding down.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-grounding-54321",
+      "kind": "coping",
+      "key": "grounding-54321",
+      "title": "5-4-3-2-1 grounding",
+      "teaser": "Use your senses to come back to the present.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-urge-surfing",
+      "kind": "coping",
+      "key": "urge-surfing",
+      "title": "Urge surfing",
+      "teaser": "Ride a craving like a wave. It rises, peaks and passes.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-muscle-relaxation",
+      "kind": "coping",
+      "key": "muscle-relaxation",
+      "title": "Progressive muscle relaxation",
+      "teaser": "Tense and release, one part of the body at a time.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-mindful-minute",
+      "kind": "coping",
+      "key": "mindful-minute",
+      "title": "A mindful minute",
+      "teaser": "One minute of noticing, without judging.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-thought-reframe",
+      "kind": "coping",
+      "key": "thought-reframe",
+      "title": "Thought reframing",
+      "teaser": "Look at a hard thought from another angle.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-name-it",
+      "kind": "coping",
+      "key": "name-it",
+      "title": "Name it to tame it",
+      "teaser": "Put a name to what you feel.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-tipp",
+      "kind": "coping",
+      "key": "tipp",
+      "title": "TIPP for intense moments",
+      "teaser": "Quick body-based skills for very strong feelings.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-stop-skill",
+      "kind": "coping",
+      "key": "stop-skill",
+      "title": "STOP before you act",
+      "teaser": "Stop, take a step back, observe, proceed mindfully.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-relapse-check",
+      "kind": "coping",
+      "key": "relapse-check",
+      "title": "Relapse prevention check",
+      "teaser": "A short check of warning signs and what helps.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-stress-reset",
+      "kind": "coping",
+      "key": "stress-reset",
+      "title": "Five-minute stress reset",
+      "teaser": "A short reset when the day is a lot.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "coping-self-compassion",
+      "kind": "coping",
+      "key": "self-compassion",
+      "title": "Self-compassion break",
+      "teaser": "A three-step pause for hard moments: notice it is hard, remember you are not alone, offer yourself some kindness.",
+      "plusReleaseDate": "2026-10-18",
+      "freeReleaseDate": "2027-04-18",
+      "content": {
+        "type": "mindfulness",
+        "icon": "heart",
+        "minutes": 3,
+        "tags": [
+          "hard",
+          "stress",
+          "lapse"
+        ],
+        "short": "Notice it is hard, remember you are not alone, be kind to yourself.",
+        "intro": "Recovery has hard days. A self-compassion break is a short pause where you treat yourself the way you would treat a friend who is struggling. It is not about pretending things are fine. If you feel unsafe, use Get help now.",
+        "steps": [
+          {
+            "title": "Notice it is hard",
+            "text": "Name what is happening, quietly or in your head: \"This is a hard moment.\" or \"This hurts.\" You do not need to fix it yet."
+          },
+          {
+            "title": "You are not alone",
+            "text": "Remind yourself: \"Other people feel this too. Struggling is part of being human, and part of recovery.\"",
+            "seconds": 30
+          },
+          {
+            "title": "Offer some kindness",
+            "text": "Put a hand on your chest or another spot that feels comforting. Ask: \"What would I say to a friend right now?\" Say that to yourself.",
+            "seconds": 60
+          },
+          {
+            "title": "One kind next step",
+            "text": "Choose one small, kind thing for the next hour: water, food, rest, a message to someone, a meeting."
+          }
+        ]
+      }
+    },
+    {
+      "id": "pack-first-30-days",
+      "kind": "journal-pack",
+      "key": "first-30-days",
+      "title": "First 30 days: a guided journal series",
+      "teaser": "A short daily series for early recovery: what you are noticing, what helps, and who is in your corner.",
+      "plusReleaseDate": "2026-10-18",
+      "freeReleaseDate": "2027-04-18",
+      "content": {
+        "series": true,
+        "prompts": [
+          {
+            "title": "Day 1: Why now",
+            "text": "What made you want to start this, today? Write it in your own words."
+          },
+          {
+            "title": "Day 2: What a good day looks like",
+            "text": "Describe a simple, ordinary good day in recovery. What is in it?"
+          },
+          {
+            "title": "Day 3: People in my corner",
+            "text": "Who could you reach out to on a hard day? What would you say to them?"
+          },
+          {
+            "title": "Day 4: My early warning signs",
+            "text": "What do you notice in your thoughts, body or routine before things get hard?"
+          },
+          {
+            "title": "Day 5: What helped today",
+            "text": "Name one thing, however small, that helped today."
+          },
+          {
+            "title": "Day 6: Being kind to myself",
+            "text": "What would you say to a friend in your place this week?"
+          },
+          {
+            "title": "Day 7: Looking back on week one",
+            "text": "What surprised you this week? What do you want to keep doing?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pack-steady-evenings",
+      "kind": "journal-pack",
+      "key": "steady-evenings",
+      "title": "Steady evenings prompt pack",
+      "teaser": "Five gentle prompts for winding down when evenings are the hardest part of the day.",
+      "plusReleaseDate": "2026-10-18",
+      "freeReleaseDate": "2027-04-18",
+      "content": {
+        "series": false,
+        "prompts": [
+          {
+            "title": "What I am carrying tonight",
+            "text": "What feels heavy right now? Write it down so you do not have to hold it in your head."
+          },
+          {
+            "title": "Three small wins",
+            "text": "List three small things you did today. Getting through counts."
+          },
+          {
+            "title": "My evening plan",
+            "text": "What will you do in the next hour instead of the old habit?"
+          },
+          {
+            "title": "Tomorrow, one thing",
+            "text": "What is one thing you want to do tomorrow?"
+          },
+          {
+            "title": "Letting the day go",
+            "text": "Finish this sentence: \"Today is done. Tonight I can...\""
+          }
+        ]
+      }
+    }
+  ]
+}

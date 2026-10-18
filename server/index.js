@@ -66,6 +66,10 @@ import { createChatStore, validProfileId } from './chats.js';
 import { createCheckinStore } from './checkins.js';
 import { createWellbeingStore } from './wellbeing/index.js';
 import { handleWellbeingApi } from './wellbeing/routes.js';
+import { createReleaseCatalog } from './content-releases.js';
+
+// Plus early access schedule (server/library/content-releases.json). Read once, on first use.
+const releases = createReleaseCatalog();
 import { createNextStepFilter, extractNextStep } from './next-step.js';
 import { createVisitCounter, visitsPathBeside } from './visits.js';
 import {
@@ -972,6 +976,7 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
       checkins,
       user,
       plus: user ? publicUser(user).plus === true : false,
+      releases,
       readBody,
       json,
       profileAllowed: async (profileId) => {
@@ -1018,6 +1023,33 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
 
   if (req.method === 'GET' && route === '/api/readings/today') {
     json(res, 200, todayReadingPayload());
+    return;
+  }
+
+  if (req.method === 'GET' && (route === '/api/content/releases' || route.startsWith('/api/content/item/'))) {
+    // Plus sees an item from its Plus date, free accounts from its free date.
+    // Until then a free account gets the title and teaser only; nobody gets
+    // anything before the Plus date. Signed out counts as free.
+    const user = currentUser(req, store);
+    const plus = user ? publicUser(user).plus === true : false;
+    let list;
+    try { list = releases.list({ plus }); } catch (err) {
+      console.error('Hopewick content schedule failed to load:', err && err.message ? err.message : 'error');
+      json(res, 503, { error: 'New content could not load just now. Everything else still works.', code: 'content_unavailable' });
+      return;
+    }
+    if (route === '/api/content/releases') {
+      json(res, 200, { plus, items: list });
+      return;
+    }
+    const id = decodeURIComponent(route.slice('/api/content/item/'.length));
+    const item = list.find((x) => x.id === id);
+    if (!item) { json(res, 404, { error: 'Not found.' }); return; }
+    if (!item.available) {
+      json(res, 403, { error: 'This is in Hopewick Plus first. It comes to the free plan later.', code: 'plus', item });
+      return;
+    }
+    json(res, 200, { item });
     return;
   }
 
@@ -1944,6 +1976,11 @@ async function handleHopeChat(store, req, res, wellbeing) {
       console.error('Hopewick settings read failed:', err && err.name ? err.name : 'error');
       settings = null;
     }
+  }
+  // Deepen with Hope is a Plus journal refinement (crisis replies never depend on plan).
+  if (purpose === 'refine' && !crisis && publicUser(user).plus !== true) {
+    json(res, 403, { error: { message: 'Deepen with Hope is part of Hopewick Plus. Your entry is saved as you wrote it.', code: 'plus' } });
+    return;
   }
   if (purpose === 'refine' && !(body.aiConsent === 'once' || (settings && settings.journalAiAlways === true))) {
     json(res, 403, { error: { message: 'Hope only reads a journal entry after you say yes. Nothing was sent.', code: 'consent' } });

@@ -15,7 +15,7 @@ import { encryptText, decryptText } from '../db/crypto.js';
 import {
   LIMITS, NotFoundError, ValidationError, newId, defaultSettings, SETTINGS, POLICY_VERSION,
 } from './validate.js';
-import { applyActivityPatch, applyGoalPatch, applyStepPatch } from './model.js';
+import { applyActivityPatch, applyGoalPatch, applyStepPatch, applyWeeklyPlanPatch } from './model.js';
 
 const MAX_PROFILES = 12;
 
@@ -51,9 +51,11 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
     if (!u.profiles[profileId]) {
       if (!create) return null;
       if (Object.keys(u.profiles).length >= MAX_PROFILES) throw new ValidationError('This account already has the most profiles Hopewick keeps.', 'profileId');
-      u.profiles[profileId] = { checkins: {}, activities: [], goals: [], journal: [], plans: null, nextSteps: [] };
+      u.profiles[profileId] = { checkins: {}, activities: [], goals: [], journal: [], plans: null, nextSteps: [], weeklyPlans: [] };
     }
-    return u.profiles[profileId];
+    const p = u.profiles[profileId];
+    if (!Array.isArray(p.weeklyPlans)) p.weeklyPlans = []; // rows saved before weekly plans existed
+    return p;
   }
   function write(fn) {
     file.assertWritable();
@@ -83,6 +85,8 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
     title: seal(u, 'journal.title', e.title), body: seal(u, 'journal.body', e.body),
     refined: seal(u, 'journal.refined', e.refined), emotions: seal(u, 'journal.emotions', e.emotions),
   });
+  const outWeekly = (u, r) => ({ ...r, title: open(u, 'weekly.title', r.title), steps: openList(u, 'weekly.steps', r.steps) });
+  const sealWeekly = (u, w) => ({ ...w, title: seal(u, 'weekly.title', w.title), steps: sealList(u, 'weekly.steps', w.steps) });
   const outStep = (u, r) => ({
     ...r, title: open(u, 'step.title', r.title), detail: open(u, 'step.detail', r.detail) || '', reflection: open(u, 'step.reflection', r.reflection) || '',
   });
@@ -236,7 +240,7 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
         }
         if (p.journal.length >= LIMITS.journalEntries) throw new ValidationError(`The journal keeps up to ${LIMITS.journalEntries} entries. Export and delete older ones first.`, 'journal');
         const at = iso();
-        const row = { id: newId(), clientId: entry.clientId || null, kind: entry.kind, prompt: entry.prompt || '', entryDate: entry.entryDate,
+        const row = { id: newId(), clientId: entry.clientId || null, kind: entry.kind, prompt: entry.prompt || '', packId: entry.packId || null, entryDate: entry.entryDate,
           title: entry.title, body: entry.body, refined: entry.refined || '', emotions: entry.emotions || '',
           createdAt: entry.createdAt || at, updatedAt: entry.updatedAt || at };
         p.journal.push(sealJournal(userId, row));
@@ -314,6 +318,58 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
       if (!p) throw new NotFoundError();
       const i = findIn(p.nextSteps, id);
       return write(() => { p.nextSteps.splice(i, 1); return true; });
+    },
+
+    async listWeeklyPlans(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p) return [];
+      return p.weeklyPlans.slice().sort((a, b) => (a.weekStart === b.weekStart ? (a.createdAt < b.createdAt ? 1 : -1) : (a.weekStart < b.weekStart ? 1 : -1))).map((r) => outWeekly(userId, r));
+    },
+    async createWeeklyPlan(userId, profileId, plan) {
+      return write(() => {
+        const p = profRow(userId, profileId, true);
+        if (p.weeklyPlans.length >= LIMITS.weeklyPlans) throw new ValidationError(`You can keep up to ${LIMITS.weeklyPlans} weekly plans. Delete an old one first.`, 'weeklyPlans');
+        const at = iso();
+        const row = applyWeeklyPlanPatch({ id: newId(), weekStart: plan.weekStart, title: plan.title, steps: [], status: 'active', createdAt: at, updatedAt: at, completedAt: null }, { steps: plan.steps, status: plan.status }, at);
+        p.weeklyPlans.push(sealWeekly(userId, row));
+        return row;
+      });
+    },
+    async updateWeeklyPlan(userId, profileId, id, patch) {
+      const p = profRow(userId, profileId, false);
+      if (!p) throw new NotFoundError();
+      const i = findIn(p.weeklyPlans, id);
+      const next = applyWeeklyPlanPatch(outWeekly(userId, p.weeklyPlans[i]), patch);
+      return write(() => { p.weeklyPlans[i] = sealWeekly(userId, next); return next; });
+    },
+    async deleteWeeklyPlan(userId, profileId, id) {
+      const p = profRow(userId, profileId, false);
+      if (!p) throw new NotFoundError();
+      const i = findIn(p.weeklyPlans, id);
+      return write(() => { p.weeklyPlans.splice(i, 1); return true; });
+    },
+
+    /** The person asked to delete one kind of data (or all of it) for this profile. Never called because of plan status. */
+    async clearArea(userId, profileId, area) {
+      const p = profRow(userId, profileId, false);
+      if (!p) return 0;
+      const counts = {
+        checkins: () => { const n = Object.keys(p.checkins).length; p.checkins = {}; return n; },
+        activities: () => { const n = p.activities.length; p.activities = []; return n; },
+        goals: () => { const n = p.goals.length; p.goals = []; return n; },
+        journal: () => { const n = p.journal.length; p.journal = []; return n; },
+        plans: () => { const n = p.plans ? 1 : 0; p.plans = null; return n; },
+        steps: () => { const n = p.nextSteps.length; p.nextSteps = []; return n; },
+        'weekly-plans': () => { const n = p.weeklyPlans.length; p.weeklyPlans = []; return n; },
+      };
+      return write(() => {
+        if (area === 'all') {
+          const n = Object.values(counts).reduce((sum, fn) => sum + fn(), 0);
+          delete data.users[userId].profiles[profileId];
+          return n;
+        }
+        return counts[area]();
+      });
     },
 
     async profileIds(userId) {

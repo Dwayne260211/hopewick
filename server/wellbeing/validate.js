@@ -48,7 +48,15 @@ export const LIMITS = Object.freeze({
   checkinDays: 800,
   plansBytes: 100000,
   importItems: 300,
+  packId: 64,
+  weeklyPlans: 60,
+  weeklyTitle: 120,
+  weeklySteps: 10,
+  weeklyStepTitle: 140,
+  safetyItem: 300,
+  safetyItems: 10,
 });
+export const WEEKLY_STATUS = Object.freeze(['active', 'done', 'archived']);
 
 /** 5-point scale from the mockup. Score is the position (1 = Struggling). */
 export const MOOD_SCALE = Object.freeze([
@@ -85,6 +93,8 @@ export const COPING_TOOLS = Object.freeze({
   'stop-skill': 'distress_tolerance',
   'relapse-check': 'relapse_prevention',
   'stress-reset': 'stress_management',
+  // Released through server/library/content-releases.json (Plus first, then free).
+  'self-compassion': 'mindfulness',
 });
 
 /** Settings keys -> consent_preferences keys (Postgres) and their defaults. */
@@ -256,6 +266,11 @@ export function normalizeJournal(raw, { partial = false } = {}) {
   if (!partial || src.entryDate !== undefined) {
     out.entryDate = src.entryDate ? assertNotFuture(assertDate(src.entryDate, 'entryDate')) : (partial ? null : brisbaneToday());
   }
+  if (!partial || src.packId !== undefined) {
+    const pack = src.packId == null || src.packId === '' ? null : String(src.packId);
+    if (pack && !/^[a-z0-9][a-z0-9-]{1,63}$/.test(pack)) throw new ValidationError('packId is not valid.', 'packId');
+    out.packId = pack;
+  }
   if (!partial && src.clientId != null && src.clientId !== '') {
     if (!ID_RE.test(String(src.clientId))) throw new ValidationError('clientId is not valid.', 'clientId');
     out.clientId = String(src.clientId);
@@ -340,3 +355,64 @@ export function normalizeSettingsPatch(raw) {
 }
 
 export { optText };
+
+/* ---------- Weekly multi-step plans (My Next Step, Plus) ---------- */
+function isSunday(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).getUTCDay() === 0;
+}
+/** Sunday that starts this Brisbane week (Sunday to Saturday, like SMART goals). */
+export function brisbaneWeekStart(now = new Date()) {
+  const today = brisbaneToday(now);
+  const [y, m, d] = today.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() - dt.getUTCDay());
+  return dt.toISOString().slice(0, 10);
+}
+export function normalizeWeeklyPlan(raw, { partial = false } = {}) {
+  const src = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  const out = {};
+  if (!partial || src.title !== undefined) out.title = cleanText(src.title, LIMITS.weeklyTitle, { field: 'title', required: true });
+  if (!partial || src.weekStart !== undefined) {
+    const w = src.weekStart ? assertDate(src.weekStart, 'weekStart') : brisbaneWeekStart();
+    if (!isSunday(w)) throw new ValidationError('weekStart must be a Sunday (weeks run Sunday to Saturday).', 'weekStart');
+    out.weekStart = w;
+  }
+  if (!partial || src.steps !== undefined) {
+    const steps = src.steps == null ? [] : src.steps;
+    if (!Array.isArray(steps)) throw new ValidationError('steps must be a list.', 'steps');
+    if (steps.length > LIMITS.weeklySteps) throw new ValidationError(`A weekly plan has up to ${LIMITS.weeklySteps} steps.`, 'steps');
+    const seen = new Set();
+    out.steps = steps.map((st, i) => {
+      const s = st && typeof st === 'object' ? st : { title: st };
+      let id = s.id == null || s.id === '' ? `s${i + 1}` : String(s.id);
+      if (!/^[A-Za-z0-9_-]{1,40}$/.test(id)) throw new ValidationError('A step id is not valid.', 'steps');
+      if (seen.has(id)) id = `${id}-${i + 1}`;
+      seen.add(id);
+      return {
+        id,
+        title: cleanText(s.title, LIMITS.weeklyStepTitle, { field: 'step', required: true }),
+        day: intIn(s.day, 0, 6, 'day'),
+        done: bool(s.done),
+      };
+    });
+    if (!partial && !out.steps.length) throw new ValidationError('Add at least one step.', 'steps');
+  }
+  if (src.status !== undefined) out.status = pick(src.status, WEEKLY_STATUS, 'status');
+  return out;
+}
+
+/* ---------- Safety plan essentials (always free) ---------- */
+export const SAFETY_FIELDS = Object.freeze(['warningSigns', 'copingThings', 'people', 'safePlaces', 'reasons']);
+export function normalizeSafety(raw) {
+  const src = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
+  const out = {};
+  for (const f of SAFETY_FIELDS) {
+    const v = src[f] == null ? [] : src[f];
+    if (!Array.isArray(v)) throw new ValidationError(`${f} must be a list.`, f);
+    if (v.length > LIMITS.safetyItems) throw new ValidationError(`Keep up to ${LIMITS.safetyItems} items in each part.`, f);
+    out[f] = v.map((x) => cleanText(x, LIMITS.safetyItem, { field: f })).filter(Boolean);
+  }
+  out.updatedAt = new Date().toISOString();
+  return out;
+}

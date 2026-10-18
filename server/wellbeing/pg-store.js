@@ -10,7 +10,7 @@
 import { withUser, probeDatabase } from '../db/index.js';
 import { encryptText, decryptText, encryptionEnabled, ENC_SCHEME } from '../db/crypto.js';
 import { NotFoundError, ValidationError, LIMITS, defaultSettings, SETTINGS, POLICY_VERSION, isUuid } from './validate.js';
-import { applyActivityPatch, applyGoalPatch, applyStepPatch, helpfulToScore, scoreToHelpful } from './model.js';
+import { applyActivityPatch, applyGoalPatch, applyStepPatch, applyWeeklyPlanPatch, helpfulToScore, scoreToHelpful } from './model.js';
 
 const iso = (d) => (d == null ? null : new Date(d).toISOString());
 const day = (d) => {
@@ -48,11 +48,19 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
     status: r.status, progress: r.progress, createdAt: iso(r.created_at), updatedAt: iso(r.updated_at), completedAt: iso(r.completed_at),
   });
   const outJournal = (u, r) => ({
-    id: r.id, clientId: r.client_id, kind: r.kind, prompt: r.prompt || '', entryDate: day(r.entry_date),
+    id: r.id, clientId: r.client_id, kind: r.kind, prompt: r.prompt || '', packId: r.pack_id || null, entryDate: day(r.entry_date),
     title: open(u, 'journal_entries.title', r.title), body: open(u, 'journal_entries.body', r.body),
     refined: open(u, 'journal_entries.refined', r.refined), emotions: open(u, 'journal_entries.emotions_text', r.emotions_text),
     createdAt: iso(r.created_at), updatedAt: iso(r.updated_at),
   });
+  const outWeekly = (u, r) => {
+    let steps = [];
+    try { const v = JSON.parse(open(u, 'weekly_step_plans.steps', r.steps) || '[]'); if (Array.isArray(v)) steps = v; } catch { /* keep [] */ }
+    return {
+      id: r.id, weekStart: day(r.week_start), title: open(u, 'weekly_step_plans.title', r.title), steps, status: r.status,
+      createdAt: iso(r.created_at), updatedAt: iso(r.updated_at), completedAt: iso(r.completed_at),
+    };
+  };
   const outStep = (u, r) => ({
     id: r.id, title: open(u, 'next_step_items.title', r.title), detail: open(u, 'next_step_items.detail', r.detail),
     copingKey: r.coping_key, source: r.source, status: r.status, reflection: open(u, 'next_step_items.reflection', r.reflection),
@@ -218,11 +226,11 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
         const count = Number((await c.query('SELECT count(*) AS n FROM journal_entries WHERE user_id = $1 AND profile_id = $2', [userId, profileId])).rows[0].n);
         if (count >= LIMITS.journalEntries) throw new ValidationError(`The journal keeps up to ${LIMITS.journalEntries} entries. Export and delete older ones first.`, 'journal');
         const { rows } = await c.query(
-          `INSERT INTO journal_entries (user_id, profile_id, client_id, title, body, refined, emotions_text, kind, prompt, entry_date, encryption, created_at, updated_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, coalesce($12::timestamptz, now()), coalesce($13::timestamptz, now())) RETURNING *`,
+          `INSERT INTO journal_entries (user_id, profile_id, client_id, title, body, refined, emotions_text, kind, prompt, entry_date, encryption, created_at, updated_at, pack_id)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, coalesce($12::timestamptz, now()), coalesce($13::timestamptz, now()), $14) RETURNING *`,
           [userId, profileId, e.clientId || null, seal(userId, 'journal_entries.title', e.title), seal(userId, 'journal_entries.body', e.body),
             seal(userId, 'journal_entries.refined', e.refined), seal(userId, 'journal_entries.emotions_text', e.emotions), e.kind, e.prompt || null, e.entryDate, enc(),
-            e.createdAt || null, e.updatedAt || null]);
+            e.createdAt || null, e.updatedAt || null, e.packId || null]);
         return outJournal(userId, rows[0]);
       });
     },
@@ -234,10 +242,10 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
         const clean = Object.fromEntries(Object.entries(patch).filter(([k, v]) => v !== undefined && !(k === 'entryDate' && v == null)));
         const n = { ...outJournal(userId, rows[0]), ...clean };
         const out = await c.query(
-          `UPDATE journal_entries SET title = $4, body = $5, refined = $6, emotions_text = $7, kind = $8, prompt = $9, entry_date = $10, encryption = $11, updated_at = now()
+          `UPDATE journal_entries SET title = $4, body = $5, refined = $6, emotions_text = $7, kind = $8, prompt = $9, entry_date = $10, encryption = $11, pack_id = $12, updated_at = now()
            WHERE user_id = $1 AND profile_id = $2 AND id = $3 RETURNING *`,
           [userId, profileId, id, seal(userId, 'journal_entries.title', n.title), seal(userId, 'journal_entries.body', n.body), seal(userId, 'journal_entries.refined', n.refined),
-            seal(userId, 'journal_entries.emotions_text', n.emotions), n.kind, n.prompt || null, n.entryDate, enc()]);
+            seal(userId, 'journal_entries.emotions_text', n.emotions), n.kind, n.prompt || null, n.entryDate, enc(), n.packId || null]);
         return outJournal(userId, out.rows[0]);
       });
     },
@@ -319,11 +327,70 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
       return true;
     },
 
+    async listWeeklyPlans(userId, profileId) {
+      return run(userId, async (c) => (await c.query(
+        `SELECT * FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2 ORDER BY week_start DESC, created_at DESC LIMIT ${LIMITS.weeklyPlans}`, [userId, profileId])).rows.map((r) => outWeekly(userId, r)));
+    },
+    async createWeeklyPlan(userId, profileId, plan) {
+      return run(userId, async (c) => {
+        await ensureUser(c, userId);
+        const count = Number((await c.query('SELECT count(*) AS n FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2', [userId, profileId])).rows[0].n);
+        if (count >= LIMITS.weeklyPlans) throw new ValidationError(`You can keep up to ${LIMITS.weeklyPlans} weekly plans. Delete an old one first.`, 'weeklyPlans');
+        const row = applyWeeklyPlanPatch({ weekStart: plan.weekStart, title: plan.title, steps: [], status: 'active', completedAt: null }, { steps: plan.steps, status: plan.status });
+        const { rows } = await c.query(
+          `INSERT INTO weekly_step_plans (user_id, profile_id, week_start, title, steps, status, completed_at, encryption)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+          [userId, profileId, row.weekStart, seal(userId, 'weekly_step_plans.title', row.title), seal(userId, 'weekly_step_plans.steps', JSON.stringify(row.steps)),
+            row.status, row.completedAt, enc()]);
+        return outWeekly(userId, rows[0]);
+      });
+    },
+    async updateWeeklyPlan(userId, profileId, id, patch) {
+      needUuid(id);
+      return run(userId, async (c) => {
+        const { rows } = await c.query('SELECT * FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2 AND id = $3 FOR UPDATE', [userId, profileId, id]);
+        if (!rows[0]) throw new NotFoundError();
+        const n = applyWeeklyPlanPatch(outWeekly(userId, rows[0]), patch);
+        const out = await c.query(
+          `UPDATE weekly_step_plans SET week_start = $4, title = $5, steps = $6, status = $7, completed_at = $8, encryption = $9, updated_at = now()
+           WHERE user_id = $1 AND profile_id = $2 AND id = $3 RETURNING *`,
+          [userId, profileId, id, n.weekStart, seal(userId, 'weekly_step_plans.title', n.title), seal(userId, 'weekly_step_plans.steps', JSON.stringify(n.steps)),
+            n.status, n.completedAt, enc()]);
+        return outWeekly(userId, out.rows[0]);
+      });
+    },
+    async deleteWeeklyPlan(userId, profileId, id) {
+      needUuid(id);
+      const n = await run(userId, async (c) => (await c.query('DELETE FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2 AND id = $3', [userId, profileId, id])).rowCount);
+      if (!n) throw new NotFoundError();
+      return true;
+    },
+
+    /** The person asked to delete one kind of data (or all of it) for this profile. Never called because of plan status. */
+    async clearArea(userId, profileId, area) {
+      const tables = {
+        checkins: "DELETE FROM mood_entries WHERE user_id = $1 AND profile_id = $2 AND mood_scale = 'v2'",
+        activities: 'DELETE FROM guided_activity_history WHERE user_id = $1 AND profile_id = $2',
+        goals: 'DELETE FROM personal_goals WHERE user_id = $1 AND profile_id = $2',
+        journal: 'DELETE FROM journal_entries WHERE user_id = $1 AND profile_id = $2',
+        plans: 'DELETE FROM safety_plans WHERE user_id = $1 AND profile_id = $2',
+        steps: 'DELETE FROM next_step_items WHERE user_id = $1 AND profile_id = $2',
+        'weekly-plans': 'DELETE FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2',
+      };
+      const list = area === 'all' ? Object.values(tables) : [tables[area]];
+      return run(userId, async (c) => {
+        let n = 0;
+        for (const sql of list) n += (await c.query(sql, [userId, profileId])).rowCount;
+        return n;
+      });
+    },
+
     async profileIds(userId) {
       return run(userId, async (c) => (await c.query(
         `SELECT profile_id FROM mood_entries WHERE user_id = $1 UNION SELECT profile_id FROM guided_activity_history WHERE user_id = $1
          UNION SELECT profile_id FROM personal_goals WHERE user_id = $1 UNION SELECT profile_id FROM journal_entries WHERE user_id = $1
-         UNION SELECT profile_id FROM safety_plans WHERE user_id = $1 UNION SELECT profile_id FROM next_step_items WHERE user_id = $1`, [userId])).rows.map((r) => r.profile_id));
+         UNION SELECT profile_id FROM safety_plans WHERE user_id = $1 UNION SELECT profile_id FROM next_step_items WHERE user_id = $1
+         UNION SELECT profile_id FROM weekly_step_plans WHERE user_id = $1`, [userId])).rows.map((r) => r.profile_id));
     },
     async forget(userId) {
       return run(userId, async (c) => (await c.query('DELETE FROM app_users WHERE id = $1', [userId])).rowCount > 0);
