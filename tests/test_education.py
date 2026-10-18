@@ -11,6 +11,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_pages import public_copy  # noqa: E402  (homepage copy moved, 2026-10)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 
@@ -120,7 +122,7 @@ def test_static_education_copy_and_gate():
     assert side and "hidden" in side.group(0)
     assert "function founderDeveloperVisible" in text
     assert "billingState.founder" in text
-    landing = (ROOT / "index.html").read_text(encoding="utf-8")
+    landing = public_copy()
     assert 'content="hopewick-v5.27"' in landing
     assert "Gut health and neuroplasticity notes — plain language, Plus only" in landing
     assert ">Gut health &amp; recovery</h3>" in landing

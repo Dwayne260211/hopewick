@@ -10,6 +10,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from public_pages import public_copy  # noqa: E402  (homepage copy moved, 2026-10)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from plus_session import grant_server_session, install_member_session
 APP = ROOT / "app" / "index.html"
 LAND = ROOT / "index.html"
@@ -18,7 +20,7 @@ HOPE = ROOT / "server" / "hope-chat.js"
 
 def test_static_hope_limit_copy():
     text = APP.read_text(encoding="utf-8")
-    land = LAND.read_text(encoding="utf-8")
+    land = public_copy()
     server = HOPE.read_text(encoding="utf-8")
     assert "EDEN_BUILD = 'hopewick-v5.27'" in text
     assert 'content="hopewick-v5.27"' in land
