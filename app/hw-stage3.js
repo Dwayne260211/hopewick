@@ -380,6 +380,8 @@
   function render(tab) {
     const root = viewRoot();
     if (!root) return;
+    // A save that finishes after the person moved to another screen must not repaint this one.
+    try { if (appTab !== tab) return; } catch (_) { /* app not booted */ }
     const scroller = document.getElementById('hwFeatureView') || document.scrollingElement;
     const keepScroll = root.dataset.tab === tab && scroller ? scroller.scrollTop : 0;
     root.dataset.tab = tab;
@@ -1461,7 +1463,7 @@
         await patchSettings({ journalAiAlways: on });
       }, 'Off: Hopewick asks every time. Entries are only sent when you press Deepen reflection.'));
     }
-    host.appendChild(h('p', { class: 'hw-hint', id: 'hw3JWhere', text: demo() ? 'Demo mode: nothing is saved.' : serverMode() ? `Saved privately to your account${st.settings.journalImport === 'done' ? '' : '. Entries marked "On this device only" are not on your account yet'}.` : 'Signed out: entries stay in this browser only. Sign in to keep them with your account.' }));
+    host.appendChild(h('p', { class: 'hw-hint', id: 'hw3JWhere', text: demo() ? 'Demo mode: nothing is saved.' : serverMode() ? `Saved privately to your account${Array.isArray(journal) && journal.some((e) => e.localOnly) ? '. Entries marked "On this device only" are not on your account yet' : ''}.` : 'Signed out: entries stay in this browser only. Sign in to keep them with your account.' }));
   };
 
   /* ------------------------------------------------------------------ */
@@ -1536,7 +1538,7 @@
     const what = [n ? `${n} journal ${n === 1 ? 'entry' : 'entries'}` : '', pend.plans ? 'your relapse and exit plans' : ''].filter(Boolean).join(' and ');
     return h('section', { class: 'hw-card hw-card--tinted hw3-card hw3-import', id: where === 'home' ? 'hw3ImportHome' : 'hw3ImportJournal', 'aria-labelledby': `hw3ImportT-${where}` },
       h('h2', { class: 'hw3-h2', id: `hw3ImportT-${where}`, text: 'Keep your writing with your account?' }),
-      h('p', { text: `This browser has ${what} that are not on your account yet. Copy them to your account so they are there on any device? They are stored privately${(() => { try { return billingState && billingState.dataEncrypted ? ' and encrypted' : ''; } catch (_) { return ''; } })()}. The copy in this browser stays where it is.` }),
+      h('p', { text: `This browser has ${what} that are not on your account yet. Copy them to your account so they are there on any device? They are stored privately with your account. The copy in this browser stays where it is.` }),
       h('div', { class: 'hw-card__actions' },
         btn('Yes, copy them', () => runImport(true), { kind: 'primary', attrs: { id: `hw3ImportYes-${where}` } }),
         btn('No, keep them on this device', () => runImport(false), { kind: 'ghost', attrs: { id: `hw3ImportNo-${where}` } })));

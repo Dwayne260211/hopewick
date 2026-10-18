@@ -2497,7 +2497,7 @@ h1, h2, h3 { font-family: var(--font-display); }
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 15 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a password hash when you set a password (not the password itself), subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, and weekly goals, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a password hash when you set a password (not the password itself), subscription status, today’s message count, this profile’s saved chats, check-ins, weekly and personal goals, journal entries, relapse and exit plans, coping history and next steps. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, goals, journal, plans, coping history and next steps, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -5462,7 +5462,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free, with the clean-time tracker, Bible & SOAP, and the 12-step outline. Hopewick Plus — 7 days free, then AU$20/month unlocks SMART goals, the journal, relapse and exit plans, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Your conversations are not shared with a counsellor, employer, or service. With an account, saved chats, check-ins, and weekly goals are stored with that account and in this browser. Memories, the journal, plans, and the resume draft stay on this device. ');
+  note.append('Today’s Readings stay free, with the clean-time tracker, Bible & SOAP, and the 12-step outline. Hopewick Plus — 7 days free, then AU$20/month unlocks SMART goals, the journal, relapse and exit plans, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Your conversations are not shared with a counsellor, employer, or service. With an account, saved chats, check-ins, coping history, goals, journal entries, plans and your next step are stored privately with that account. Memories and the resume draft stay on this device. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -6014,7 +6014,7 @@ function thisWeekGoals() {
 function myNextStep() {
   const today = todaysCheckin();
   if (settings.moodCheck && !(today && today.mood)) {
-    return { text: 'Start with today’s check-in. It takes ten seconds.', label: 'Check in now', action: () => { const c = document.getElementById('homeMoodQ'); if (c) { c.scrollIntoView({ block: 'center' }); const first = c.parentElement && c.parentElement.querySelector('.mood-btn'); if (first) first.focus(); } } };
+    return { text: 'Start with today’s check-in. It takes ten seconds.', label: 'Check in now', action: () => { if (window.HW3 && (isDemo || billingState.signedIn)) { setAppTab('checkin'); return; } const c = document.getElementById('homeMoodQ'); if (c) { c.scrollIntoView({ block: 'center' }); const first = c.parentElement && c.parentElement.querySelector('.mood-btn'); if (first) first.focus(); } } };
   }
   if (soberDaysCount() === null) {
     return { text: 'Set the date your recovery started, so you can see your milestones.', label: 'Set clean time', action: () => openCleanTime() };
@@ -7329,6 +7329,10 @@ function syncJournalGate() {
   const plus = subscriptionPlus();
   const workspace = $('#journalWorkspace');
   if (workspace) workspace.hidden = !plus;
+  const lede = $('#journalLede');
+  if (lede) lede.textContent = plus
+    ? 'A private place for your thoughts. Write freely or pick a prompt. ' + (billingState.signedIn && !isDemo ? 'Entries are saved privately to your account.' : 'Entries stay in this browser.')
+    : 'A private place for your thoughts. Writing, editing, and deepening a reflection are part of Hopewick Plus. You can still read, export and delete entries you already have.';
   const entries = $('#journalEntries');
   // Reading, exporting and deleting your own entries stays free; writing is Plus.
   if (entries) entries.hidden = !(plus || (Array.isArray(journal) && journal.length));
@@ -14624,7 +14628,7 @@ function appendPlusOffer(body) {
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
-  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, and weekly goals, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices.</p>';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins, coping history, personal goals, journal entries, relapse and exit plans, and your next step for this profile are saved to your account as well. Journal entries and plans already in this browser are only copied to your account if you say yes. Hopewick staff do not get a dashboard of what you told Hope. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, goals, journal, plans, coping history and next steps, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices.</p>';
   body.appendChild(privacy);
 }
 let myAccountSection = 'menu';

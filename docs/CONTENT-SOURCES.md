@@ -18,7 +18,7 @@ public guidance. **Before launch, a qualified clinician should review every tool
 | Name it to tame it (`name-it`) | Emotion labelling and regulation | ReachOut Australia, Black Dog Institute |
 | TIPP for intense moments (`tipp`), labelled "DBT-informed" | DBT distress-tolerance skill | Linehan, *DBT Skills Training Manual* (2nd ed., 2015). Includes medical cautions about cold water and exercise |
 | STOP before you act (`stop-skill`), labelled "DBT-informed" | DBT STOP skill | Linehan (2015) |
-| Relapse warning-sign check (`relapse-check`) | Relapse prevention | Marlatt & Gordon, *Relapse Prevention* (1985; Marlatt & Donovan 2nd ed., 2005); Alcohol and Drug Foundation |
+| Relapse prevention check (`relapse-check`) | Relapse prevention | Marlatt & Gordon, *Relapse Prevention* (1985; Marlatt & Donovan 2nd ed., 2005); Alcohol and Drug Foundation |
 | Five-minute stress reset (`stress-reset`) | Stress management basics | Head to Health, NHS Every Mind Matters, Beyond Blue |
 
 Crisis contacts shown with these tools: Lifeline 13 11 14 (lifeline.org.au),
