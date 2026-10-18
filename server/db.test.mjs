@@ -31,7 +31,9 @@ test('database layer', { skip, concurrency: false }, async (t) => {
       assert.ok(status.every((s) => s.applied && !s.drift));
       const probe = await db.probeDatabase();
       assert.equal(probe.ok, true);
-      assert.equal(probe.schemaVersion, status.length);
+      // The shared dev database can be ahead of this checkout while parallel branches land
+      // (e.g. 007 applied from another branch), so require at least this branch's newest migration.
+      assert.ok(probe.schemaVersion >= Math.max(...status.map((s) => s.version)));
     });
 
     await t.test('profiles and mood entries round trip; one check-in per day', async () => {

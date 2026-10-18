@@ -186,6 +186,17 @@ Migration 005 was applied to the Neon **dev** branch only, on 2026-10-18 AEST.
 It has not been applied to production. That needs founder approval with the
 other production steps below.
 
+## Move & Recover (migrations/006_fitness_protocols.sql)
+
+- Behind `FEATURE_FITNESS_PROTOCOLS` (off by default). See `docs/FITNESS-PROTOCOLS.md`.
+- `fitness_profiles` (per user and profile): the safety screen **result only** (never the answers), the pause after a
+  reported alcohol or drug use, and level/track preferences. All three are encrypted text.
+- `fitness_sessions`: workout, sauna, cold and contrast sessions. `detail` (moods, stopped early, water temperature) is encrypted.
+- RLS, `FORCE ROW LEVEL SECURITY`, an owner policy on `app.user_id` and grants to `hopewick_rls`, like 002–004.
+- Numbered 006 because the Stage 4 branch uses 005. 006 does not depend on 005; the runner applies pending versions in order.
+
+Migration 006 was applied to the Neon **dev** branch only (`br-wispy-scene-a71x1uld`), on 2026-10-18 AEST.
+
 ## Before production uses this (needs founder approval)
 
 1. Add `DATABASE_URL` (Neon `main` branch, pooled) and `HOPEWICK_DATA_KEY` to Render
