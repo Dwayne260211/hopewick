@@ -23,6 +23,15 @@ def test_server_prompt_module_has_crisis_contacts():
     text = SERVER_PROMPTS.read_text(encoding="utf-8")
     assert "Lifeline 13 11 14" in text
     assert "num: '000'" in text
+
+
+def test_server_prompt_says_relapse_and_exit_plans_are_free_and_saved_to_the_account():
+    text = SERVER_PROMPTS.read_text(encoding="utf-8")
+    assert "Plans (Hopewick Plus" not in text
+    assert "stays on their device" not in text
+    assert "the journal, relapse and exit plans" not in text
+    assert "plans = Plans (always free, on every plan; on this device, and with the account when signed in)" in text
+    assert "Relapse prevention and exit plans are free on every plan." in text
     assert "FIXED HOPEWICK RULES" in text
     assert "export const CRISIS_INSTRUCTION" in text
 
