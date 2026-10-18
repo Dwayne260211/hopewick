@@ -171,8 +171,10 @@ test('memory and journal refine use server prompts; refine spends like chat, mem
     assert.match(memSent[0].content, /long-term memory/);
     assert.match(memSent[0].content, /only store non-crisis/);
     assert.equal(JSON.stringify(memSent).includes('store everything'), false);
+    // Stage 3: journal text only goes to the model with a yes for this use.
     const refine = await chat(app.base, cookie, {
       purpose: 'refine',
+      aiConsent: 'once',
       context: { userName: 'Kim', companionName: 'Hope' },
       messages: [{ role: 'user', content: 'Title: Today\n\nEntry:\nA hard day but I made it.' }],
     });

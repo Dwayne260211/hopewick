@@ -66,7 +66,10 @@ test('migrations are numbered, contiguous and cover every planned table', () => 
   for (const [, name, body] of tables) {
     if (name === 'app_users') continue;
     assert.match(body, /user_id\s+text (NOT NULL|PRIMARY KEY)/, `${name} must have NOT NULL user_id`);
-    assert.match(sql, new RegExp(`'${name}'`), `${name} must be in the RLS list`);
+    // In the RLS loop of 001 ('name'), or forced explicitly in a later migration.
+    const listed = new RegExp(`'${name}'`).test(sql);
+    const forced = new RegExp(`ALTER TABLE ${name} FORCE ROW LEVEL SECURITY`).test(sql) && new RegExp(`CREATE POLICY \\w+ ON ${name}\\b`).test(sql);
+    assert.ok(listed || forced, `${name} must have row level security forced`);
   }
 });
 

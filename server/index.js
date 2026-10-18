@@ -64,6 +64,9 @@ import {
 import { plusLibraryPayload, todayReadingPayload } from './plus-library.js';
 import { createChatStore, validProfileId } from './chats.js';
 import { createCheckinStore } from './checkins.js';
+import { createWellbeingStore } from './wellbeing/index.js';
+import { handleWellbeingApi } from './wellbeing/routes.js';
+import { createNextStepFilter, extractNextStep } from './next-step.js';
 import { createVisitCounter, visitsPathBeside } from './visits.js';
 import {
   hopeConfigured,
@@ -288,7 +291,7 @@ function contentSecurityPolicy(req) {
     "frame-ancestors 'none'",
     "form-action 'self'",
     "script-src 'self' 'unsafe-inline' https://accounts.google.com",
-    "style-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
     "img-src 'self' data:",
     "frame-src https://accounts.google.com",
     "font-src 'self' data:",
@@ -959,8 +962,28 @@ function serveStatic(root, req, res, urlPath) {
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 
-async function handleApi(store, chats, checkins, visits, req, res, url) {
+async function handleApi(store, chats, checkins, visits, req, res, url, wellbeing) {
   const route = url.pathname;
+
+  if (route.startsWith('/api/me/') && wellbeing) {
+    const user = currentUser(req, store);
+    await handleWellbeingApi({
+      wellbeing,
+      checkins,
+      user,
+      plus: user ? publicUser(user).plus === true : false,
+      readBody,
+      json,
+      profileAllowed: async (profileId) => {
+        if (!user || publicUser(user).plus === true) return true;
+        const ids = new Set(await wellbeing.profileIds(user.id));
+        for (const p of chats.list(user.id, { plus: false }) || []) if (p && p.id) ids.add(p.id);
+        for (const p of checkins.list(user.id) || []) if (p && p.id) ids.add(p.id);
+        return ids.size === 0 || ids.has(profileId);
+      },
+    }, req, res, url);
+    return;
+  }
 
   if (req.method === 'POST' && route === '/api/visit') {
     req.resume();
@@ -1118,7 +1141,7 @@ async function handleApi(store, chats, checkins, visits, req, res, url) {
   }
 
   if (req.method === 'POST' && route === '/api/hope/chat') {
-    await handleHopeChat(store, req, res);
+    await handleHopeChat(store, req, res, wellbeing);
     return;
   }
 
@@ -1536,14 +1559,14 @@ async function verifyGoogleCredential(credential) {
   }
 
   if (url.pathname.startsWith('/api/account')) {
-    await handleAccountApi(store, chats, checkins, req, res, route);
+    await handleAccountApi(store, chats, checkins, req, res, route, wellbeing);
     return;
   }
 
   json(res, 404, { error: 'Not found.' });
 }
 
-async function handleAccountApi(store, chats, checkins, req, res, route) {
+async function handleAccountApi(store, chats, checkins, req, res, route, wellbeing) {
   if (req.method === 'GET' && route === '/api/account') {
     const user = requireSession(req, res, store);
     if (!user) return;
@@ -1750,6 +1773,9 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
     if (removed) {
       chats.forget(user.id);
       checkins.forget(user.id);
+      if (wellbeing) {
+        try { await wellbeing.forget(user.id); } catch (err) { console.error('Hopewick wellbeing delete failed:', err && err.name ? err.name : 'error'); }
+      }
     }
     deleteAttempts.delete(user.id);
     passwordChangeFailures.delete(user.id);
@@ -1762,6 +1788,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route) {
         'Your subscription status and today’s Hope message count on this server',
         'Saved chats on this server for this account',
         'Check-ins and weekly goals on this server for this account',
+        'Daily check-ins, coping activity, personal goals, journal, plans and next steps saved with this account',
       ],
       kept: [
         'Journal, profiles, check-ins, weekly goals, and a copy of chats in this browser — clear them in Settings if you want them gone from this device',
@@ -1793,6 +1820,73 @@ function writeSse(res, text) {
   res.end(`data: ${payload}\n\ndata: [DONE]\n\n`);
 }
 
+/** Non-streaming reply: move a tagged next-step suggestion out of the text. */
+function attachNextStep(data, allowSuggestion) {
+  const choice = data && Array.isArray(data.choices) ? data.choices[0] : null;
+  if (!choice || !choice.message || typeof choice.message.content !== 'string') return data;
+  const { text, suggestion } = extractNextStep(choice.message.content);
+  choice.message.content = text;
+  if (allowSuggestion && suggestion) data.hopewick = { nextStep: suggestion };
+  return data;
+}
+
+/**
+ * Streaming reply (OpenAI-style SSE): pass text through, but cut the
+ * next-step tag out and send the parsed suggestion as one extra event
+ * ({"hopewick":{"nextStep":...}}) just before [DONE].
+ */
+async function pipeUpstreamWithNextStep(res, upstream, { allowSuggestion }) {
+  res.writeHead(upstream.status, {
+    'Content-Type': upstream.headers.get('content-type') || 'text/event-stream; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'X-Accel-Buffering': 'no',
+  });
+  if (!upstream.body) { res.end(); return; }
+  const filter = createNextStepFilter();
+  const decoder = new TextDecoder();
+  const send = (text) => { if (text) res.write(`data: ${JSON.stringify({ choices: [{ index: 0, delta: { content: text } }] })}\n\n`); };
+  let buf = '';
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    const tail = filter.finish();
+    send(tail.text);
+    if (allowSuggestion && tail.suggestion) res.write(`data: ${JSON.stringify({ hopewick: { nextStep: tail.suggestion } })}\n\n`);
+    res.write('data: [DONE]\n\n');
+  };
+  const handleLine = (line) => {
+    const t = line.trim();
+    if (!t.startsWith('data:')) return;
+    const payload = t.slice(5).trim();
+    if (payload === '[DONE]') { finish(); return; }
+    let j;
+    try { j = JSON.parse(payload); } catch { return; }
+    if (j && j.error) { res.write(`data: ${JSON.stringify({ error: j.error })}\n\n`); return; }
+    const choice = j && Array.isArray(j.choices) ? j.choices[0] : null;
+    const delta = choice ? ((choice.delta && choice.delta.content) || '') : '';
+    if (delta) send(filter.push(delta));
+  };
+  const reader = upstream.body.getReader();
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      let idx;
+      while ((idx = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, idx);
+        buf = buf.slice(idx + 1);
+        handleLine(line);
+      }
+    }
+    if (buf) handleLine(buf);
+    finish();
+  } finally {
+    res.end();
+  }
+}
+
 async function pipeUpstream(res, upstream) {
   res.writeHead(upstream.status, {
     'Content-Type': upstream.headers.get('content-type') || 'application/json; charset=utf-8',
@@ -1815,7 +1909,7 @@ async function pipeUpstream(res, upstream) {
   }
 }
 
-async function handleHopeChat(store, req, res) {
+async function handleHopeChat(store, req, res, wellbeing) {
   const user = currentUser(req, store);
   if (!user) {
     json(res, 401, { error: { message: 'Sign in to chat with Hope. Free is 15 messages a day. Hopewick Plus has no daily message limit.', code: 'auth' } });
@@ -1841,7 +1935,32 @@ async function handleHopeChat(store, req, res) {
   const crisis = purpose !== 'memory' && isCrisisText(lastUserText(turns));
   // The server writes every system instruction. The client only sends turns
   // and structured options (body.context); see server/hope-prompts.js.
-  const messages = buildHopeMessages({ purpose, turns, context: body.context, crisis });
+  // Stage 3 consent: journal text goes to the model only with a yes for this
+  // use (aiConsent: 'once') or the "always ask less" setting. Check-ins reach
+  // Hope only when "Share my check-ins with Hope" is on (server-side setting).
+  let settings = null;
+  if (wellbeing) {
+    try { settings = await wellbeing.getSettings(user.id); } catch (err) {
+      console.error('Hopewick settings read failed:', err && err.name ? err.name : 'error');
+      settings = null;
+    }
+  }
+  if (purpose === 'refine' && !(body.aiConsent === 'once' || (settings && settings.journalAiAlways === true))) {
+    json(res, 403, { error: { message: 'Hope only reads a journal entry after you say yes. Nothing was sent.', code: 'consent' } });
+    return;
+  }
+  let shareCheckins = null;
+  if (wellbeing && purpose === 'chat') {
+    shareCheckins = false;
+    if (settings && settings.shareCheckinsWithHope === true) {
+      try {
+        const pid = body.context && /^[A-Za-z0-9_-]{1,64}$/.test(String(body.context.profileId || '')) ? String(body.context.profileId) : 'main';
+        shareCheckins = (await wellbeing.listCheckins(user.id, pid, {})).slice(0, 7);
+      } catch { shareCheckins = []; }
+    }
+  }
+  const offerNextStep = purpose === 'chat' && !crisis && body.nextStep !== false;
+  const messages = buildHopeMessages({ purpose, turns, context: body.context, crisis, shareCheckins, nextStep: offerNextStep });
   if (crisis && !hopeConfigured()) {
     if (stream) writeSse(res, CRISIS_FALLBACK);
     else json(res, 200, completionJson(CRISIS_FALLBACK));
@@ -1930,10 +2049,12 @@ async function handleHopeChat(store, req, res) {
 
   try {
     if (stream) {
-      await pipeUpstream(res, upstream);
+      if (purpose === 'chat') await pipeUpstreamWithNextStep(res, upstream, { allowSuggestion: offerNextStep });
+      else await pipeUpstream(res, upstream);
       return;
     }
     const data = await upstream.json();
+    if (purpose === 'chat') attachNextStep(data, offerNextStep);
     json(res, 200, data);
   } catch (err) {
     console.error('Hosted Hope response failed:', err && err.name ? err.name : 'error');
@@ -1960,12 +2081,13 @@ export function unavailableStores(...stores) {
 
 const STORE_UNAVAILABLE_MESSAGE = 'Hopewick accounts are paused for maintenance. Nothing has been lost. Get help and the crisis numbers still work. In an emergency call 000, or Lifeline on 13 11 14.';
 
-export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } = {}) {
+export function createApp({ store, chats, checkins, visits, wellbeing, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   const checkinStore = checkins || createCheckinStore(path.join(REPO_ROOT, 'server', 'data', 'checkins.json'));
   const visitCounter = visits || createVisitCounter(path.join(REPO_ROOT, 'server', 'data', 'visits.json'));
-  const broken = unavailableStores(store, chatStore, checkinStore, visitCounter);
+  const wellbeingStore = wellbeing || createWellbeingStore({ filePath: path.join(REPO_ROOT, 'server', 'data', 'wellbeing.json') });
+  const broken = unavailableStores(store, chatStore, checkinStore, visitCounter, wellbeingStore);
   return async function onRequest(req, res) {
     installSecurityHeaders(req, res);
     try {
@@ -1989,13 +2111,13 @@ export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } =
         return;
       }
       if (url.pathname.startsWith('/api/')) {
-        const crossSiteWrite = (req.method === 'POST' && url.pathname !== '/api/billing/webhook') || req.method === 'PUT';
+        const crossSiteWrite = (req.method === 'POST' && url.pathname !== '/api/billing/webhook') || req.method === 'PUT' || req.method === 'PATCH' || req.method === 'DELETE';
         if (crossSiteWrite && !originAllowed(req)) {
           req.resume();
           json(res, 403, { error: 'That request was blocked.' });
           return;
         }
-        await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url);
+        await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url, wellbeingStore);
         return;
       }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -2016,6 +2138,7 @@ export function startServer({
   chatsPath,
   checkinsPath,
   visitsPath,
+  wellbeingPath,
   root = REPO_ROOT,
 } = {}) {
   const store = createStore(storePath);
@@ -2025,11 +2148,14 @@ export function startServer({
   const chats = createChatStore(chatFile);
   const checkins = createCheckinStore(checkinFile);
   const visits = createVisitCounter(visitFile);
-  const broken = unavailableStores(store, chats, checkins, visits);
+  // Stage 3: Postgres when DATABASE_URL is set, otherwise wellbeing.json beside users.json.
+  const wellbeingFile = wellbeingPath || process.env.WELLBEING_STORE || path.join(path.dirname(storePath), 'wellbeing.json');
+  const wellbeing = createWellbeingStore({ filePath: wellbeingFile });
+  const broken = unavailableStores(store, chats, checkins, visits, wellbeing);
   if (broken.length) {
     console.error(`HOPEWICK STORE ERROR: ${broken.join(', ')} could not be loaded. The files were not changed. /api/health and the account API return 503 until they are fixed. See server/json-file.js for recovery steps.`);
   }
-  const server = http.createServer(createApp({ store, chats, checkins, visits, root }));
+  const server = http.createServer(createApp({ store, chats, checkins, visits, wellbeing, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));
   });
@@ -2060,7 +2186,7 @@ if (isMain) {
     if (String(process.env.DATABASE_URL || '').trim()) {
       import('./db/index.js').then(async ({ probeDatabase, databaseHost }) => {
         const probe = await probeDatabase();
-        if (probe.ok) console.log(`Postgres reachable at ${databaseHost()} (schema version ${probe.schemaVersion}); not used for requests yet.`);
+        if (probe.ok) console.log(`Postgres reachable at ${databaseHost()} (schema version ${probe.schemaVersion}); used for Stage 3 wellbeing data (check-ins, coping, goals, journal, plans, next steps).`);
         else console.log(`Postgres at ${databaseHost()} not reachable or not migrated (${probe.error}). The JSON store is in use.`);
       }).catch((err) => console.log(`Postgres check skipped: ${err.message}`));
     }
