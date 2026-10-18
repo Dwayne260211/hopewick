@@ -411,8 +411,12 @@
     if (!root) return;
     // A save that finishes after the person moved to another screen must not repaint this one.
     try { if (appTab !== tab) return; } catch (_) { /* app not booted */ }
+    // Stage 4 screens register here (app/hw-stage4.js). busy(): a guided timer is running, so a background repaint must wait.
+    const ext = HW3.ext[tab];
+    if (ext && ext.busy && ext.busy()) return;
     const scroller = document.getElementById('hwFeatureView') || document.scrollingElement;
     const keepScroll = root.dataset.tab === tab && scroller ? scroller.scrollTop : 0;
+    const focusedId = ext && document.activeElement && root.contains(document.activeElement) ? document.activeElement.id : '';
     root.dataset.tab = tab;
     root.replaceChildren();
     if (tab === 'checkin') renderCheckin(root);
@@ -421,10 +425,15 @@
     else if (tab === 'nextstep') renderSteps(root);
     else if (tab === 'compare') renderCompare(root);
     else if (tab === 'safety') renderSafety(root);
+    else if (ext) ext.render(root);
     root.appendChild(crisisLine());
     if (scroller) scroller.scrollTop = keepScroll;
+    // Stage 4 screens: a background repaint keeps keyboard focus where it was.
+    if (ext && focusedId) { const again = document.getElementById(focusedId); if (again && root.contains(again)) again.focus({ preventScroll: true }); }
   }
   HW3.render = render;
+  /** Extension screens: HW3.ext[tab] = { render(root), busy() }. */
+  HW3.ext = {};
 
   /* ------------------------------------------------------------------ */
   /* 1. Daily check-in                                                   */
@@ -1661,6 +1670,7 @@
     } catch (e) { say(failMessage(e), true); }
   }
   HW3.deleteArea = deleteArea;
+  HW3.DELETE_AREAS = DELETE_AREAS; // Stage 4 adds its own areas
   /** Export and delete: free on every plan, never limited. */
   function myDataCard() {
     const sec = h('section', { class: 'hw-card hw3-card', id: 'hw3MyData', 'aria-labelledby': 'hw3MyDataT' },
@@ -2016,4 +2026,7 @@
     root.appendChild(price);
   }
   HW3.renderCompare = renderCompare;
+
+  /* Shared helpers for later stages (app/hw-stage4.js). */
+  HW3.kit = { h, btn, say, announce, icon, todayIso, addDays, dayLabel, whenLabel, header, stateNote, crisisLine, demo, signedIn, online, plus, pid, api, failMessage, focusId, reducedMotion, chipToggle, plusInfo, windowNote, releaseBadges, upgrade, myDataCard, scrollTop };
 })();
