@@ -38,6 +38,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
 <link rel="stylesheet" href="/assets/hopewick-tokens.css">
 <link rel="stylesheet" href="/assets/hopewick-ui.css">
+<link rel="stylesheet" href="hw-stage3.css">
 <script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
@@ -1845,7 +1846,7 @@ h1, h2, h3 { font-family: var(--font-display); }
       </button>
       <button class="btn btn-ghost" type="button" data-open="journal" id="sideJournalBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Journal <span class="plus-pill" id="journalSidePlusPill">Plus</span>
+        Journal
       </button>
       <button class="btn btn-ghost" type="button" data-open="goals" id="sideGoalsBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
@@ -1853,7 +1854,7 @@ h1, h2, h3 { font-family: var(--font-display); }
       </button>
       <button class="btn btn-ghost" type="button" data-open="plans" id="sidePlansBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Plans <span class="plus-pill" id="plansPlusPill">Plus</span>
+        Plans
       </button>
       <button class="btn btn-ghost" type="button" data-open="resume" id="sideResumeBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
@@ -1996,7 +1997,7 @@ h1, h2, h3 { font-family: var(--font-display); }
       <button class="btn btn-sm" type="button" id="exitDemoBtn">Exit demo</button>
     </div>
     <div class="access-banner" id="accessBanner" hidden role="note">
-      <p><strong>Hopewick Plus — 7 days free, then AU$20/month.</strong> SMART goals, the journal, relapse and exit plans, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The clean-time tracker, Bible &amp; SOAP, and the 12-step outline stay free. Essential support stays free.</p>
+      <p><strong>Hopewick Plus — 7 days free, then AU$20/month.</strong> No daily limit with Hope, full history and monthly insights, a printable mood and recovery report, weekly plans in My next step, SMART and personal goals, journal extras (gratitude and recovery entries, guided series and prompt packs, Deepen with Hope), new coping tools and journal packs first, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Always free: Get help, your safety plan, relapse prevention and exit plans, the daily check-in, the 12 core coping tools, My next step, the journal, the clean-time tracker, Bible &amp; SOAP, the 12-step outline, and exporting or deleting your data.</p>
       <button class="btn btn-primary btn-sm" type="button" id="accessBannerBtn">Hopewick Plus</button>
       <button class="btn btn-sm" type="button" id="accessBannerDismiss" aria-label="Dismiss">Not now</button>
     </div>
@@ -2214,14 +2215,73 @@ h1, h2, h3 { font-family: var(--font-display); }
     <section class="journal-view" id="journalView" hidden aria-label="Journal">
       <div class="journal-inner">
         <div class="home-hero">
-          <h1 id="journalTitle" tabindex="-1">Journal <span class="plus-pill" id="journalPlusPill">Plus</span></h1>
-          <p id="journalLede">A private place for your thoughts. Writing, editing, and deepening a reflection are part of Hopewick Plus. This tab stays here so you can see what’s included.</p>
+          <h1 id="journalTitle" tabindex="-1">Journal</h1>
+          <p id="journalLede">A private place for your thoughts. Write freely or pick a prompt.</p>
         </div>
         <div id="journalGate" class="nut-gate plus-feature-gate"></div>
-        <div id="journalEditorMount"></div>
+        <div id="journalEditorMount">
+        <div id="journalWorkspace">
+        <div id="journalCompose">
+          <div class="j-meta-row">
+            <div class="field">
+              <label for="jKind">Kind of entry</label>
+              <select id="jKind">
+                <option value="free">Free writing</option>
+                <option value="prompt">Daily reflection</option>
+                <option value="gratitude" data-plus="1">Gratitude (Plus)</option>
+                <option value="recovery" data-plus="1">Recovery reflection (Plus)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="jDate">Date</label>
+              <input id="jDate" type="date">
+            </div>
+          </div>
+          <div class="field j-pack-row" id="jPackRow" hidden>
+            <label for="jPack">Guided series or prompt pack <span class="help">(optional)</span></label>
+            <select id="jPack"><option value="">None</option></select>
+            <p class="help" id="jPackNote" aria-live="polite"></p>
+          </div>
+          <div class="j-prompt-row">
+            <p class="j-prompt" id="jPromptText" hidden></p>
+            <div class="row" style="gap:8px;flex-wrap:wrap">
+              <button class="btn btn-sm" type="button" id="jPromptBtn">Give me a prompt</button>
+              <button class="btn btn-ghost btn-sm" type="button" id="jPromptClear" hidden>Remove prompt</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="jTitle">Title <span class="help">(optional)</span></label>
+            <input id="jTitle" type="text" maxlength="120" placeholder="What's on your mind?">
+          </div>
+          <div class="field">
+            <label for="jBody">Entry</label>
+            <textarea id="jBody" rows="6" maxlength="20000" placeholder="Write freely…"></textarea>
+          </div>
+          <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" type="button" id="jSaveBtn">Save entry</button>
+            <button class="btn" type="button" id="jRefineBtn">Deepen reflection</button>
+            <button class="btn btn-ghost" type="button" id="jCancelEdit" hidden>Cancel edit</button>
+          </div>
+          <p class="help" id="jRefineHelp">Deepen reflection sends this entry to Hope (an AI) only after you say yes.</p>
+          <p class="help j-plus-note" id="jPlusNote" hidden></p>
+          <div id="jRefineOut" hidden></div>
+        </div>
+        </div>
+        </div>
+        <div id="journalEntries" hidden>
+          <h2 class="journal-entries-title" id="journalEntriesTitle">Your entries</h2>
+          <div id="hw3JournalTools"></div>
+          <p class="help" id="journalCount" aria-live="polite"></p>
+          <ul class="journal-list" id="journalList" aria-labelledby="journalEntriesTitle"></ul>
+        </div>
 
       </div>
     </section>
+
+    <section class="hw3-view" id="hwFeatureView" hidden aria-label="Wellbeing tools">
+      <div class="hw3-inner" id="hw3Inner"></div>
+    </section>
+    <div id="hw3Live" class="hw-sr-only" aria-live="polite" aria-atomic="true"></div>
 
     <section class="my-account-view" id="myAccountView" hidden aria-label="My Account">
       <div class="my-account-inner">
@@ -2406,7 +2466,7 @@ h1, h2, h3 { font-family: var(--font-display); }
   <div class="onboard-body">
     <h2 id="plusChoiceTitle">Start your 7-day free trial</h2>
     <p class="lead" id="plusChoiceLead">7 days free, then AU$20/month. A card is required to start the trial and is collected by Stripe. You won’t be charged the monthly price until the trial ends. Cancel anytime means Plus continues until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it.</p>
-    <p>Or stay on the free account. That is 15 Hope messages a day, with no card and no charge. Today’s Readings and Get help stay free either way.</p>
+    <p>Or stay on the free account. That is 15 Hope messages a day, with no card and no charge. Get help, your safety plan, relapse prevention and exit plans, the daily check-in, the 12 core coping tools, My next step, the journal and exporting or deleting your data stay free either way.</p>
     <div class="onboard-actions">
       <button class="btn btn-primary" type="button" id="plusChoiceTrial">Start 7-day free trial</button>
       <button class="btn" type="button" id="plusChoiceFree">Stay on the free account</button>
@@ -2475,17 +2535,17 @@ h1, h2, h3 { font-family: var(--font-display); }
     </ul>
     <div class="waitlist-cta">
       <button class="btn btn-primary" type="button" id="aboutPlansBtn">Hopewick Plus</button>
-      <p class="help" style="margin:8px 0 0">Hopewick Plus — 7 days free, then AU$20/month. SMART goals, the journal, relapse and exit plans, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Essential support stays free, including Today’s Readings, the clean-time tracker, Bible &amp; SOAP, the 12-step outline, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 15 messages a day. Cancel anytime. One subscription per person. Add Hopewick to your home screen as a web app today.</p>
+      <p class="help" style="margin:8px 0 0">Hopewick Plus — 7 days free, then AU$20/month: no daily limit with Hope, full history and monthly insights, a printable mood and recovery report, weekly plans in My next step, SMART and personal goals, journal extras (gratitude and recovery entries, guided series and prompt packs, Deepen with Hope), new coping tools and journal packs first, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Essential support stays free, including Get Help, crisis support, domestic and family violence resources, your safety plan, relapse prevention and exit plans, the daily check-in, the 12 core coping tools, My next step, the journal, Today’s Readings, the clean-time tracker, Bible &amp; SOAP, the 12-step outline, and exporting or deleting your data. Free shows the last 7 days of history in the app and keeps everything you save. Hope chat on Free is 15 messages a day. Cancel anytime. One subscription per person. Add Hopewick to your home screen as a web app today.</p>
     </div>
     <details class="about-more" id="aboutMore">
       <summary>Learn more · Privacy</summary>
       <ul>
         <li><strong>Privacy.</strong> Profiles, chats and memories stay in your browser. Signed in, this profile’s chats, check-ins, and weekly goals are also saved to your account so they come back. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Hopewick staff do not get a live feed of the conversation.</li>
-        <li><strong>Hopewick Plus.</strong> 7 days free, then AU$20 a month for one person: SMART goals, the journal, relapse and exit plans, the resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The clean-time tracker, Bible &amp; SOAP, and the 12-step outline stay free. Essential support stays free.</li>
+        <li><strong>Hopewick Plus.</strong> 7 days free, then AU$20 a month for one person: no daily limit with Hope, full history and monthly insights, a printable mood and recovery report, weekly plans, SMART and personal goals, journal extras (gratitude and recovery entries, guided series and prompt packs, Deepen with Hope), new coping tools and journal packs first (they come to free 6 to 12 months later), the resume builder, nutrition, gut health, and neuroplasticity notes, ice baths and recovery spa notes, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Always free: Get help, your safety plan, relapse prevention and exit plans, the daily check-in, the 12 core coping tools, My next step, the journal, the clean-time tracker, Bible &amp; SOAP, the 12-step outline, and exporting or deleting everything you saved. If Plus ends, nothing is deleted.</li>
         <!-- Own-key path stays in Settings → Developer for the founder account only. -->
         <li><strong>Hope.</strong> Sign in and chat. Free is 15 messages a day. Hopewick Plus has no daily message limit. Hopewick holds the model connection — you do not need an API key.</li>
         <li id="aboutDeveloperNote" hidden><strong>Developer (optional).</strong> Settings → Developer is only on the founder account. It is not part of Free or Plus.</li>
-        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a password hash when you set a password (not the password itself), subscription status, today’s message count, this profile’s saved chats, check-ins, and weekly goals. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, and weekly goals, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
+        <li><strong>Account.</strong> Sign in with email and password, and stay signed in on this device until you sign out or you have not used Hopewick for 30 days. A one-time email link is there if you need it. We store your email, your name and phone if you add them, a password hash when you set a password (not the password itself), subscription status, today’s message count, this profile’s saved chats, check-ins, weekly and personal goals, journal entries, your safety plan, relapse and exit plans, coping history, next steps and weekly plans. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, goals, journal, safety plan, relapse and exit plans, coping history, next steps and weekly plans, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices. Never your card number. Get help, domestic and family violence support, and today’s readings stay free.</li>
       </ul>
     </details>
     <div class="about-foot">
@@ -3525,10 +3585,10 @@ h1, h2, h3 { font-family: var(--font-display); }
   </div>
 </dialog>
 
-<!-- ============================ Plans hub (Hopewick Plus) ============================ -->
+<!-- ============================ Plans hub (always free) ============================ -->
 <dialog id="plansDlg" aria-labelledby="plansHubTitle">
   <form method="dialog" class="dlg-head">
-    <h2 id="plansHubTitle" tabindex="-1">🌿 Plans <span class="plus-pill" id="plansTitlePill">Plus</span></h2>
+    <h2 id="plansHubTitle" tabindex="-1">🌿 Plans</h2>
     <button class="icon-btn" value="close" aria-label="Close plans">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
@@ -3539,9 +3599,14 @@ h1, h2, h3 { font-family: var(--font-display); }
       <p>These plans are yours to write and edit. Hopewick is not a counsellor, and this screen is not a crisis service. A lapse is not a failure.</p>
       <p>If you are in danger, use <strong>Get help now</strong> or call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>. AOD support: <a href="tel:1800250015">1800 250 015</a>.</p>
     </div>
-    <p class="nut-lead" id="plansIntro">A calm place to write a relapse / lapse prevention plan, and exits for high-risk moments. Private on this device.</p>
+    <p class="nut-lead" id="plansIntro">A calm place to write a relapse / lapse prevention plan, and exits for high-risk moments. Free on every plan, and private to you.</p>
     <div id="plansGate" class="nut-gate plus-feature-gate"></div>
-    <div id="plansEditorMount"></div>
+    <div id="plansEditorMount">    <div id="plansWorkspace">
+      <p class="help plans-note" id="plansSaved" aria-live="polite"></p>
+      <div id="plansHub"></div>
+      <div id="plansRelapse" hidden></div>
+      <div id="plansExit" hidden></div>
+    </div></div>
 
   </div>
 </dialog>
@@ -3550,6 +3615,8 @@ h1, h2, h3 { font-family: var(--font-display); }
 
 <script src="data/going-deeper.js"></script>
 <script src="resume.js"></script>
+<script src="data/coping-tools.js"></script>
+<script src="hw-stage3.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -3568,7 +3635,7 @@ h1, h2, h3 { font-family: var(--font-display); }
      eden.p.<id>.gratitude     per-person morning gratitude entries (device, and the account when signed in)
      eden.p.<id>.journal       per-person journal entries
      eden.p.<id>.goals         per-person weekly SMART goals (Plus editor; not a meeting finder; device, and the account when signed in)
-     eden.p.<id>.plans         per-person relapse / lapse plan and exit plans (Hopewick Plus; this device only)
+     eden.p.<id>.plans         per-person relapse / lapse plan and exit plans (always free; this device, and the account when signed in)
      eden.p.<id>.steps         per-person 12-step progress
      eden.p.<id>.bible         per-person Bible study { entries, planDay, completed, divingDeeper }
      eden.p.<id>.deeper        per-person Going Deeper study progress { completed }
@@ -3591,7 +3658,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'nutrition', 'resume', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'safety', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'nutrition', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 /* Signed-out visits use sessionStorage. localStorage is only for a signed-in account. */
 let accountStorageOn = false;
@@ -4267,7 +4334,12 @@ function saveGratitude() {
   save(pk(profile.id, 'gratitude'), gratitude);
   scheduleCheckinSync();
 }
-function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), journal); }
+function saveJournal() {
+  if (isDemo) return;
+  // Signed in, entries live on the account; only device-only entries are written back here.
+  if (window.HW3 && HW3.journalServerMode()) { HW3.saveLocalJournal(); return; }
+  save(pk(profile.id, 'journal'), journal);
+}
 function goalsSavedLine() {
   if (isDemo) return 'This demo visit only — not saved on this device.';
   if (billingState.signedIn) return 'Saved on this device and your account.';
@@ -4510,6 +4582,7 @@ function savePlans() {
   if (isDemo || !profile) return;
   plansState = normalizePlans(plansState);
   save(pk(profile.id, 'plans'), plansState);
+  if (window.HW3) HW3.pushPlans();
   const note = $('#plansSaved');
   if (note && el.plansDlg && el.plansDlg.open) note.textContent = plansStatusText();
 }
@@ -4945,6 +5018,10 @@ function messageEl(msg) {
   }
   if (msg.error) tools.appendChild(toolBtn(ICON_RETRY, 'Try again', () => retryLast()));
   wrap.appendChild(tools);
+  if (msg.role === 'assistant' && msg.nextStep && window.HW3) {
+    const offer = HW3.nextStepCard(msg, () => { persistConvos(); renderMessages(); });
+    if (offer) wrap.appendChild(offer);
+  }
 
   if (msg.role !== 'user') {
     const orb = document.createElement('div');
@@ -5078,7 +5155,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
   const changed = appTab !== next;
   appTab = next;
@@ -5092,6 +5170,13 @@ function setAppTab(tab, opts = {}) {
   el.app.classList.toggle('tab-account', next === 'account');
   el.app.classList.toggle('tab-tools', next === 'tools');
   el.app.classList.toggle('tab-learn', next === 'learn');
+  el.app.classList.toggle('tab-hw3', HW3_TAB.includes(next));
+  const hwView = document.getElementById('hwFeatureView');
+  if (hwView) {
+    hwView.hidden = !HW3_TAB.includes(next);
+    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step' }[next] || 'Wellbeing tools');
+  }
+  if (window.HW3 && next !== 'coping') HW3.stopTimers();
   if (el.toolsView) el.toolsView.hidden = next !== 'tools';
   if (el.learnView) el.learnView.hidden = next !== 'learn';
   if (el.homeView) el.homeView.hidden = next !== 'home';
@@ -5130,6 +5215,8 @@ function setAppTab(tab, opts = {}) {
   syncMoreTab(el.app.classList.contains('sidebar-open'));
   if (next === 'home') {
     renderHome();
+  } else if (HW3_TAB.includes(next)) {
+    if (window.HW3) HW3.show(next, opts);
   } else if (next === 'tools' || next === 'learn') {
     if (next === 'tools') renderToolsHub(); else renderLearnHub();
     if (!opts.skipFocus) {
@@ -5152,7 +5239,11 @@ function setAppTab(tab, opts = {}) {
       if (changed) prepareJournalCompose();
       renderJournalList();
       if (!opts.skipFocus) setTimeout(() => { const body = $('#jBody'); if (body) body.focus(); }, 60);
-    } else if (!opts.skipFocus) {
+    } else {
+      renderJournalList();
+    }
+    if (window.HW3) HW3.sync(false);
+    if (!subscriptionPlus() && !opts.skipFocus) {
       const title = $('#journalTitle');
       if (title) setTimeout(() => title.focus(), 60);
     }
@@ -5171,9 +5262,9 @@ function setAppTab(tab, opts = {}) {
 /** Which bottom-bar / sidebar section a screen belongs to. */
 function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
-  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume') return 'tools';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety') return 'tools';
   if (tab === 'learn' || tab === 'info') return 'learn';
-  if (tab === 'home') return 'home';
+  if (tab === 'home' || tab === 'checkin') return 'home';
   return '';
 }
 
@@ -5424,7 +5515,7 @@ function todayPlusNoteEl() {
     note.textContent = 'Hopewick Plus is active. You can open any day of the readings, and your earlier chats stay open. Get help is still free.';
     return note;
   }
-  note.append('Today’s Readings stay free, with the clean-time tracker, Bible & SOAP, and the 12-step outline. Hopewick Plus — 7 days free, then AU$20/month unlocks SMART goals, the journal, relapse and exit plans, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. Your conversations are not shared with a counsellor, employer, or service. With an account, saved chats, check-ins, and weekly goals are stored with that account and in this browser. Memories, the journal, plans, and the resume draft stay on this device. ');
+  note.append('Today’s Readings stay free, with the clean-time tracker, Bible & SOAP, and the 12-step outline. Hopewick Plus — 7 days free, then AU$20/month adds no daily limit with Hope, full history and monthly insights, a printable mood and recovery report, weekly plans in My next step, SMART and personal goals, journal extras (gratitude and recovery entries, guided series and prompt packs, Deepen with Hope), new coping tools and journal packs first, the resume builder, the recovery learning library, Going Deeper study tracks, and the full year of readings. Older saved chats open with Plus. The journal, check-ins, coping tools, your safety plan, relapse prevention and exit plans, and My next step stay free. Your conversations are not shared with a counsellor, employer, or service. With an account, saved chats, check-ins, coping history, goals, journal entries, plans and your next step are stored privately with that account. Memories and the resume draft stay on this device. ');
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'linkish';
@@ -5837,7 +5928,7 @@ function needNowEl() {
     { id: 'craving', label: 'A craving', title: 'Open circuit breakers', action: () => openBreakers() },
     { id: 'chat', label: 'Talk to ' + companionName(), title: 'Open chat', action: () => setAppTab('chat') },
     { id: 'today', label: 'Today’s reading', title: 'Word for the day and Just for today', action: () => openTodayReading() },
-    { id: 'journal', label: 'Journal', title: 'Journal is part of Hopewick Plus', action: () => openJournal() },
+    { id: 'journal', label: 'Journal', title: 'Write in your journal (free)', action: () => openJournal() },
   ];
   if (settings.faith !== 'none') {
     items.push({ id: 'bible', label: 'Bible & SOAP', title: 'Optional scripture study', action: () => setAppTab('bible') });
@@ -5874,6 +5965,11 @@ const DASH_ICON = {
   target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
   book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
   leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>',
+  lungs: '<path d="M12 4v8"/><path d="M12 12c-1.5 0-3-1-3-3V7.5C7 8 4 11 4 16c0 2.5 1.5 4 3.5 4S11 18.5 11 16v-3"/><path d="M12 12c1.5 0 3-1 3-3V7.5C17 8 20 11 20 16c0 2.5-1.5 4-3.5 4S13 18.5 13 16v-3"/>',
+  wave: '<path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 6c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>',
+  body: '<circle cx="12" cy="4.5" r="2.5"/><path d="M12 7v7"/><path d="M6 10h12"/><path d="M9 21l3-7 3 7"/>',
+  brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h0a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h0a3 3 0 0 1-3-3"/>',
+  hand: '<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-6-2.4l-3.6-3.6a2 2 0 0 1 2.8-2.8L7 15"/>',
   learn: '<path d="M2 6.5 12 3l10 3.5-10 3.5L2 6.5z"/><path d="M6 8.5V14c0 1.7 2.7 3 6 3s6-1.3 6-3V8.5"/>',
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
@@ -5971,7 +6067,7 @@ function thisWeekGoals() {
 function myNextStep() {
   const today = todaysCheckin();
   if (settings.moodCheck && !(today && today.mood)) {
-    return { text: 'Start with today’s check-in. It takes ten seconds.', label: 'Check in now', action: () => { const c = document.getElementById('homeMoodQ'); if (c) { c.scrollIntoView({ block: 'center' }); const first = c.parentElement && c.parentElement.querySelector('.mood-btn'); if (first) first.focus(); } } };
+    return { text: 'Start with today’s check-in. It takes ten seconds.', label: 'Check in now', action: () => { if (window.HW3 && (isDemo || billingState.signedIn)) { setAppTab('checkin'); return; } const c = document.getElementById('homeMoodQ'); if (c) { c.scrollIntoView({ block: 'center' }); const first = c.parentElement && c.parentElement.querySelector('.mood-btn'); if (first) first.focus(); } } };
   }
   if (soberDaysCount() === null) {
     return { text: 'Set the date your recovery started, so you can see your milestones.', label: 'Set clean time', action: () => openCleanTime() };
@@ -6109,9 +6205,9 @@ function renderHome() {
     const last = Math.max(...journal.map(e => e.updated || e.created || 0));
     jr.appendChild(dashText(`${entries} ${entries === 1 ? 'entry' : 'entries'} on this device. Last written ${relTime(last)}.`));
   } else {
-    jr.appendChild(dashEmpty('No journal entries yet', 'Write whatever is on your mind. Entries stay on this device.'));
+    jr.appendChild(dashEmpty('No journal entries yet', billingState.signedIn ? 'Write whatever is on your mind. Entries are saved privately to your account.' : 'Write whatever is on your mind. Signed out, entries stay in this browser.'));
   }
-  jr.appendChild(dashActions(dashBtn(entries ? 'Open journal' : 'Write an entry', () => openJournal(), { plus: true, dataset: { dash: 'journal' } })));
+  jr.appendChild(dashActions(dashBtn(entries ? 'Open journal' : 'Write an entry', () => openJournal(), { dataset: { dash: 'journal' } })));
 
   // 8. Coping exercises
   const cope = add(dashCard({ id: 'dashCoping', title: 'Coping exercises', icon: 'leaf', meta: 'Practical tools for cravings and hard moments.' }));
@@ -6161,7 +6257,8 @@ function renderHome() {
     : 'You have not started a relapse or exit plan yet. A plan helps when things get hard.', 'help'));
   safe.appendChild(dashActions(
     dashBtn('Get help now', () => openHelp(), { dataset: { dash: 'help' } }),
-    dashBtn('Relapse and exit plans', () => openPlans(), { plus: true, dataset: { dash: 'plans' } }),
+    dashBtn('My safety plan', () => setAppTab('safety'), { dataset: { dash: 'safety' } }),
+    dashBtn('Relapse and exit plans', () => openPlans(), { dataset: { dash: 'plans' } }),
     dashBtn('Not safe at home', () => setAppTab('dv'), { dataset: { dash: 'dv' } }),
   ));
 
@@ -6196,6 +6293,8 @@ function renderHome() {
     dashBtn('My Account', () => openMyAccount(), { dataset: { dash: 'account' } }),
     dashBtn('Preferences', () => showLaunchPrefs()),
   ));
+  // Hopewick 2.0: account-backed check-in, next step, trends, goals, journal and coping cards.
+  if (window.HW3) { try { HW3.paintDashSlots(); } catch (err) { console.error(err); } HW3.sync(false); }
 }
 
 /** Tools and Learn hubs: link cards to features that already work. */
@@ -6238,23 +6337,28 @@ function renderToolsHub() {
   hubSection(box, 'Right now', [
     { id: 'help', title: 'Get help now', desc: 'Crisis lines and AOD support. Always free.', icon: 'phone', tone: 'crisis', action: () => openHelp() },
     { id: 'dv', title: 'Domestic and family violence', desc: 'Not safe at home? Free Australian services. Always free.', icon: 'ring', tone: 'crisis', action: () => setAppTab('dv') },
+    { id: 'safety', title: 'My safety plan', desc: 'Warning signs, people to call, what helps. Always free.', icon: 'shield', tone: 'crisis', action: () => setAppTab('safety') },
     { id: 'breakers', title: 'Circuit breakers', desc: 'Quick things to do when a craving hits.', icon: 'bolt', tone: 'warm', action: () => openBreakers() },
   ]);
   hubSection(box, 'Coping tools', [
+    { id: 'coping', title: 'Coping toolkit', desc: 'Breathing, grounding, urge surfing and more. Always free.', icon: 'leaf', action: () => setAppTab('coping') },
     { id: 'skills', title: 'Skills', desc: 'Grounding, urge surfing, breathing and more.', icon: 'smile', action: () => openSkills() },
     { id: 'selfcare', title: 'Self-care', desc: 'A daily checklist you can make your own.', icon: 'heart', action: () => openSelfCare() },
     { id: 'chat', title: 'Talk to ' + companionName(), desc: 'Talk it through with your AI companion.', icon: 'chat', action: () => setAppTab('chat') },
   ]);
   hubSection(box, 'Track and reflect', [
-    { id: 'checkin', title: 'Daily check-in', desc: 'Mood, cravings and gratitude, on Home.', icon: 'chart', action: () => { setAppTab('home'); setTimeout(() => { const c = document.getElementById('dashCheckin'); if (c) c.scrollIntoView({ block: 'start' }); }, 60); } },
+    { id: 'checkin', title: 'Daily check-in', desc: 'Mood, feelings, triggers and trends. Always free.', icon: 'chart', action: () => setAppTab('checkin') },
+    { id: 'nextstep', title: 'My next step', desc: 'One small step you have chosen. Always free. Plus adds weekly plans.', icon: 'step', action: () => setAppTab('nextstep') },
+    { id: 'mygoals', title: 'Personal goals', desc: 'Wellbeing, recovery and growth goals, at your pace.', icon: 'target', plus: true, action: () => setAppTab('mygoals') },
     { id: 'cleantime', title: 'Clean time', desc: 'Your days and milestones.', icon: 'sprout', action: () => openCleanTime() },
-    { id: 'journal', title: 'Journal', desc: 'Write it down. Entries stay on this device.', icon: 'book', plus: true, action: () => openJournal() },
+    { id: 'journal', title: 'Journal', desc: 'Write it down, with prompts. Free. Plus adds guided series and Deepen with Hope.', icon: 'book', action: () => openJournal() },
     { id: 'goals', title: 'SMART goals', desc: 'One or two small goals for this week.', icon: 'target', plus: true, action: () => openGoals() },
     { id: 'memories', title: 'Memories', desc: 'What ' + companionName() + ' remembers about you.', icon: 'leaf', action: () => openMemories() },
     { id: 'chats', title: 'Your chats', desc: 'Open or delete saved conversations.', icon: 'list', action: () => setAppTab('chats') },
+    { id: 'compare', title: 'Free and Plus', desc: 'What is always free and what Hopewick Plus adds.', icon: 'list', action: () => setAppTab('compare') },
   ]);
   hubSection(box, 'Plans and next steps', [
-    { id: 'plans', title: 'Relapse and exit plans', desc: 'Warning signs, people to call, what helps.', icon: 'check', plus: true, action: () => openPlans() },
+    { id: 'plans', title: 'Relapse and exit plans', desc: 'Warning signs, people to call, what helps.', icon: 'check', action: () => openPlans() },
     { id: 'resume', title: 'Resume builder', desc: 'Build a resume and save it as a PDF.', icon: 'file', plus: true, action: () => setAppTab('resume') },
   ]);
   hubSection(box, 'Find support near you', [
@@ -6577,7 +6681,7 @@ function inAppToolsPrompt() {
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
     'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, deeper, bible, resume, church, selfcare, steps, plus.',
     'The app turns that line into buttons and hides the line. Do not paste hopewick.com.au links, and do not tell the person to hunt through menus.',
-    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal (Hopewick Plus). Free can open the screen; writing and editing need Plus. goals = SMART goals (Hopewick Plus): the weekly editor for two small goals this week (Sunday–Saturday). Free can open the screen; writing and editing need Plus. Saved on this device, and on the account when signed in. Check-ins and the weekly overview stay free. A halfway goal check only appears if goals already exist. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (Hopewick Plus, on this device): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (Hopewick Plus): rebuilding meals, fluids, protein, fruit, vegetables and fibre, plus plain-language notes on higher-protein eating, vitamins, magnesium, omega-3, NAC, ashwagandha, ketogenic and carnivore diets, and methylene blue. Separate established nutrition, limited research, and personal stories. Do not give doses. Do not say these treat or cure addiction or withdrawal. Do not tell them to stop prescribed medicine. Methylene blue is not an ordinary supplement: no dose, and a doctor or pharmacist matters, especially with antidepressants. Alcohol and benzodiazepine withdrawal can need medical care. Paracetamol overdose is 000 or 13 11 26, never a shop supplement. Everyday food and water do not need a medical warning. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (psychological flexibility, defusion, willingness, values, habit learning, cravings and urge surfing, environment, connection, and recovery capital). Educational, not treatment. Do not promise rewiring, positive thinking as a cure, or that thoughts create reality. A thought is not an instruction. Rat Park is animal research, not a full explanation of human addiction. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. It is free. deeper = Going Deeper study tracks (Hopewick Plus). resume = Resume builder (Hopewick Plus). Free can open the screen. The steps, preview, and PDF need Plus. The draft stays on this device. plus = Hopewick Plus (no daily message limit, SMART goals, the journal, relapse and exit plans, resume steps, preview and PDF, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, the full year of readings, older chats). Check-ins and the weekly overview stay free. The clean-time tracker, Bible & SOAP, and the 12-step outline are free. Do not tell a free user that the goal editor, journal, plans, or resume steps are free. Do not promise that Plus changes medical or legal outcomes.',
+    'help = Get help (crisis lines and AOD hotlines, always free). dv = Domestic & family violence screen (always free; information, not legal advice). today = Today’s Word for the day and Just for today on Home. journal = Journal. Writing basic entries (free writing and daily reflection prompts) is free. Gratitude and recovery entries, guided series and prompt packs, and Deepen with Hope are Hopewick Plus. goals = SMART goals (Hopewick Plus): the weekly editor for two small goals this week (Sunday–Saturday). Free can open the screen; writing and editing need Plus. Saved on this device, and on the account when signed in. Check-ins and the weekly overview stay free. A halfway goal check only appears if goals already exist. This is not a SMART Recovery meeting — if they want a meeting, use meetings. plans = Plans (always free, on every plan; on this device, and with the account when signed in): a guided relapse or lapse prevention plan, and exit plans for high-risk moments. Self-help only, not a counsellor. A lapse is not a failure. Do not say their clean time was wiped. nutrition = Nutrition notes (Hopewick Plus): rebuilding meals, fluids, protein, fruit, vegetables and fibre, plus plain-language notes on higher-protein eating, vitamins, magnesium, omega-3, NAC, ashwagandha, ketogenic and carnivore diets, and methylene blue. Separate established nutrition, limited research, and personal stories. Do not give doses. Do not say these treat or cure addiction or withdrawal. Do not tell them to stop prescribed medicine. Methylene blue is not an ordinary supplement: no dose, and a doctor or pharmacist matters, especially with antidepressants. Alcohol and benzodiazepine withdrawal can need medical care. Paracetamol overdose is 000 or 13 11 26, never a shop supplement. Everyday food and water do not need a medical warning. gut = Gut health notes (gut–brain link, fermented foods, fibre, and recovery habits). Educational only. Do not diagnose, prescribe a probiotic, or say food treats mood or addiction. Suggest a GP or dietitian. brain = Brain habits notes (psychological flexibility, defusion, willingness, values, habit learning, cravings and urge surfing, environment, connection, and recovery capital). Educational, not treatment. Do not promise rewiring, positive thinking as a cure, or that thoughts create reality. A thought is not an instruction. Rat Park is animal research, not a full explanation of human addiction. cold = Ice baths and recovery spa notes (optional practice of meeting discomfort on purpose: step in, control your breathing, stay present, follow through). Some people feel alert, refreshed, grounded, or reset afterwards; experiences vary. Do not give a temperature, a time, or a venue. If they ask what it treats, say once that it is not a treatment for substance dependence, withdrawal, trauma, depression, or any medical condition, and it does not detox the body, cure addiction, permanently increase dopamine, heal the nervous system, or replace professional care. It sits alongside meetings, counselling, and medical care. Cold stresses the heart and breathing. Not for heart or cardiovascular conditions, rhythm problems, an implanted cardiac device, uncontrolled blood pressure, respiratory disease, circulation problems, pregnancy, or significant medical conditions — suggest a GP or treating clinician. Never while intoxicated or impaired. Not alone. Enter gradually. Stop for chest pain, severe shortness of breath, faintness, confusion, unusual heart symptoms, or anything that feels medically wrong. bible = Bible & SOAP — skip this if they chose no faith content, unless they ask. It is free. deeper = Going Deeper study tracks (Hopewick Plus). resume = Resume builder (Hopewick Plus). Free can open the screen. The steps, preview, and PDF need Plus. The draft stays on this device. plus = Hopewick Plus (no daily message limit, full history and monthly insights, a printable mood and recovery report, weekly plans, SMART goals, journal extras: gratitude and recovery entries, guided series, prompt packs and Deepen with Hope, new coping tools and packs first, resume steps, preview and PDF, nutrition notes, gut health notes, brain-habit notes, ice-bath and recovery-spa notes, Going Deeper study tracks, the full year of readings, older chats). Always free: Get help, the safety plan, relapse prevention and exit plans, check-ins, the 12 core coping tools, My next step, basic journal entries, exporting and deleting data, the clean-time tracker, Bible & SOAP, and the 12-step outline. Free shows the last 7 days of history in the app; nothing is deleted. Relapse prevention and exit plans are free on every plan. Do not tell a free user that the goal editor, journal extras, or resume steps are free. Do not promise that Plus changes medical or legal outcomes.',
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = the 12-step outline (free). If they chose no faith content, do not mention suggested scripture.',
     'deeper = Going Deeper study tracks (Hopewick Plus): optional reflections in the person’s own tradition, or a values path if they prefer no faith content. Not clinical care and not a sermon. If they chose no faith content, name the values path unless they ask for a tradition.',
     'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply. Do not add deeper on a crisis reply.',
@@ -6604,7 +6708,7 @@ function counsellorPrompt(convo) {
     'HOW YOU WORK (EVIDENCE-BASED)',
     '- Motivational interviewing: use OARS — open questions, affirmations, reflective listening (simple and complex reflections) and summaries. Evoke their own reasons for change; roll with ambivalence and resistance rather than arguing; respect autonomy (it is their choice). Notice the stages of change (precontemplation, contemplation, preparation, action, maintenance, relapse/recycling) and match your approach.',
     '- Harm reduction: meet people where they are. Abstinence, cutting down, safer use and staying safe all count. Share practical safety information when relevant and welcome (e.g. not using alone, free naloxone for opioid overdose, not mixing depressants), without lecturing.',
-    '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure. When they want to write or review a relapse or lapse prevention plan, or an exit for a high-risk moment (payday, old mates, a party, alone at night, a bottle shop), name Plans and include plans on the TOOLS line. That screen is Hopewick Plus and stays on their device. It is self-help, not counselling. Do not tell them the app has wiped their clean time — it has not.',
+    '- Relapse prevention: explore triggers and high-risk situations, HALT (Hungry, Angry, Lonely, Tired), urge surfing (cravings rise, peak and pass, often within 20–30 minutes), delay–distract–decide, coping plans and who to call. A slip or lapse is a learning moment, not a failure. When they want to write or review a relapse or lapse prevention plan, or an exit for a high-risk moment (payday, old mates, a party, alone at night, a bottle shop), name Plans and include plans on the TOOLS line. That screen is free on every plan. It is self-help, not counselling. Do not tell them the app has wiped their clean time — it has not.',
     '- CBT-style skills: gently notice and reframe unhelpful thoughts (e.g. "I\'ve blown it, so I may as well keep going"), link thoughts, feelings and actions, and plan alternatives.',
     '- Goals: help set small SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and review them kindly. When they want to write, edit, or check two goals for this week, name SMART goals and include goals on the TOOLS line. The goal editor is Hopewick Plus. Free can open the screen and see the shape of a goal. Check-ins and the weekly overview stay free. A halfway goal check only appears if goals already exist. Goals stay on their device, and on the account when they are signed in. It is not a SMART Recovery meeting — a meeting request uses meetings. Do not tell a free user the editor is free. Ask permission before building a plan. Do not prescribe drinking schedules or amounts — keep goals collaborative and invite the person to shape them. Before cut-down or stop plans after regular or heavy alcohol use, check whether withdrawal risk may be present and encourage a GP or AOD service before they change how much they drink.',
     '',
@@ -6785,6 +6889,11 @@ async function hostedChatCompletion(messages, opts = {}) {
   };
   if (opts.max_tokens) body.max_tokens = opts.max_tokens;
   if (wantStream) body.stream = true;
+  if (opts.aiConsent) body.aiConsent = opts.aiConsent;
+  if (opts.nextStep === false) body.nextStep = false;
+  if (body.context && typeof body.context === 'object' && !body.context.profileId && profile) {
+    try { body.context = Object.assign({}, body.context, { profileId: chatProfileId() }); } catch (_) { /* profile id unavailable */ }
+  }
   let res;
   try {
     res = await fetch('/api/hope/chat', {
@@ -6824,15 +6933,16 @@ async function hostedChatCompletion(messages, opts = {}) {
     if (typeof used === 'number') err.hopeUsed = used;
     throw err;
   }
-  const text = await readCompletionResponse(res, { onToken, wantStream });
+  const text = await readCompletionResponse(res, { onToken, wantStream, meta: opts.meta });
   refreshHopeUsage().catch(() => {});
   return text;
 }
 
-async function readCompletionResponse(res, { onToken, wantStream }) {
+async function readCompletionResponse(res, { onToken, wantStream, meta }) {
   const ctype = res.headers.get('content-type') || '';
   if (!wantStream || !res.body || !/event-stream/i.test(ctype)) {
     const data = await res.json();
+    if (meta && data && data.hopewick && data.hopewick.nextStep) meta.nextStep = data.hopewick.nextStep;
     const choice = data.choices && data.choices[0];
     const text = (choice && ((choice.message && choice.message.content) ?? choice.text)) || '';
     if (onToken && text) onToken(text);
@@ -6849,6 +6959,8 @@ async function readCompletionResponse(res, { onToken, wantStream }) {
     let j;
     try { j = JSON.parse(payload); } catch (_) { return false; }
     if (j.error) throw new ApiError(j.error.message || 'The provider reported a streaming error.', 500);
+    // Hopewick's own event: a suggested next step the server pulled out of the reply.
+    if (j.hopewick) { if (meta && j.hopewick.nextStep) meta.nextStep = j.hopewick.nextStep; return false; }
     const choice = j.choices && j.choices[0];
     const delta = choice ? ((choice.delta && choice.delta.content) || (choice.message && choice.message.content) || '') : '';
     if (delta) { full += delta; if (onToken) onToken(delta); }
@@ -6934,9 +7046,11 @@ async function generateReply(c) {
   const paint = () => { raf = 0; bubble.innerHTML = renderMarkdown(replyForDisplay(acc)); bubble.classList.add('cursor'); scrollToBottom(); };
   const finish = () => { setBusy(false); abortCtrl = null; if (!speaking) setOrb(listening ? 'listening' : 'idle'); };
 
+  const replyMeta = {};
   try {
     const reply = await chatCompletion(buildMessages(c), {
       context: hopeContext(c),
+      meta: replyMeta,
       stream: settings.stream,
       signal: abortCtrl.signal,
       onToken: (t) => { acc += t; if (!raf) raf = requestAnimationFrame(paint); },
@@ -6978,7 +7092,12 @@ async function generateReply(c) {
   if (raf) cancelAnimationFrame(raf);
   if (!profile || profile.id !== pid) { finish(); return; }
 
-  c.messages.push({ role: 'assistant', content: acc, ts: Date.now() });
+  const replyMsg = { role: 'assistant', content: acc, ts: Date.now() };
+  const lastAsked = [...c.messages].reverse().find(m => m.role === 'user');
+  if (replyMeta.nextStep && replyMeta.nextStep.title && !(lastAsked && lastAsked.crisis)) {
+    replyMsg.nextStep = { title: String(replyMeta.nextStep.title).slice(0, 140), detail: String(replyMeta.nextStep.detail || '').slice(0, 300), copingKey: replyMeta.nextStep.tool || replyMeta.nextStep.copingKey || null, state: 'offered' };
+  }
+  c.messages.push(replyMsg);
   c.updated = Date.now();
   persistConvos();
   finish();
@@ -7217,7 +7336,7 @@ function saveTodaysGratitude(items) {
 }
 
 /* ---------------------------------------------------------------------------
-   Journal + deepen reflection (full journal is Hopewick Plus)
+   Journal + deepen reflection (basic entries are free; Deepen with Hope, rich kinds and packs are Plus)
    --------------------------------------------------------------------------- */
 function renderPlusFeatureGate(host, spec) {
   if (!host || !spec) return;
@@ -7257,22 +7376,45 @@ function renderPlusFeatureGate(host, spec) {
 }
 function syncPlusFeaturePills() {
   const plus = subscriptionPlus();
-  ['nutritionPlusPill', 'journalPlusPill', 'journalSidePlusPill', 'goalsPlusPill', 'goalsTitlePill', 'plansPlusPill', 'plansTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
+  ['nutritionPlusPill', 'goalsPlusPill', 'goalsTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
     const pill = document.getElementById(id);
     if (pill) pill.hidden = plus;
   });
 }
 function syncJournalGate() {
+  // Basic journal entries are free (Hopewick Plus adds gratitude and recovery
+  // entries, guided series and prompt packs, and Deepen with Hope). The server
+  // enforces the same rules.
   const plus = subscriptionPlus();
   const workspace = $('#journalWorkspace');
-  if (workspace) workspace.hidden = !plus;
-  renderPlusFeatureGate($('#journalGate'), {
-    lead: 'The journal is part of Hopewick Plus. This tab stays on Free so you can see what’s here. Writing, editing, and deepening a reflection need Plus.',
-    items: ['Write a private entry', 'Edit or delete what you wrote', 'Deepen a reflection with Hope'],
-    listLabel: 'Journal tools with Hopewick Plus',
-    buttonId: 'journalPlusBtn',
-    help: '7 days free, then AU$20/month. Cancel anytime. Today’s Readings, Get help, and domestic and family violence support stay free.',
-  });
+  if (workspace) workspace.hidden = !profile;
+  const lede = $('#journalLede');
+  if (lede) lede.textContent = 'A private place for your thoughts. Write freely or pick a prompt. ' + (billingState.signedIn && !isDemo ? 'Entries are saved privately to your account.' : (isDemo ? 'Demo: nothing is saved.' : 'Entries stay in this browser until you sign in.'));
+  const entries = $('#journalEntries');
+  if (entries) entries.hidden = false;
+  const gate = $('#journalGate');
+  if (gate) { gate.hidden = true; gate.replaceChildren(); }
+  const kind = $('#jKind');
+  if (kind) {
+    [...kind.options].forEach((o) => { if (o.dataset.plus) { o.disabled = !plus; o.textContent = o.textContent.replace(/ \(Plus\)$/, '') + (plus ? '' : ' (Plus)'); } });
+    if (!plus && kind.selectedOptions[0] && kind.selectedOptions[0].disabled) kind.value = 'free';
+  }
+  const refine = $('#jRefineBtn');
+  if (refine) refine.hidden = !plus;
+  const refineHelp = $('#jRefineHelp');
+  if (refineHelp) refineHelp.hidden = !plus;
+  const note = $('#jPlusNote');
+  if (note) {
+    note.hidden = plus;
+    if (!plus && !note.childElementCount) {
+      note.append('Writing here is free. Hopewick Plus adds gratitude and recovery entries, guided series and prompt packs, and Deepen with Hope. ');
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'hw3-link'; b.id = 'jComparePlus'; b.textContent = 'Compare free and Plus';
+      b.addEventListener('click', () => setAppTab('compare'));
+      note.appendChild(b);
+    }
+  }
+  if (window.HW3 && HW3.paintJournalPacks) HW3.paintJournalPacks();
   syncPlusFeaturePills();
 }
 function prepareJournalCompose() {
@@ -7287,57 +7429,151 @@ function prepareJournalCompose() {
   if (cancel) cancel.hidden = true;
   if (out) { out.hidden = true; out.innerHTML = ''; }
   if (saveBtn) saveBtn.textContent = 'Save entry';
+  setJournalComposeMeta(null);
 }
 function openJournal() {
   if (!profile) return;
   closeSidebar();
   setAppTab('journal');
 }
+function journalEntryDate(e) {
+  return e.entryDate || brisbaneDateISO(new Date(e.created || Date.now()));
+}
+function journalKindLabel(kind) {
+  const k = (window.HW3 && HW3.journalKinds || []).find(x => x.id === kind);
+  return k ? k.label : 'Free writing';
+}
 function renderJournalList() {
   syncJournalGate();
-  if (!subscriptionPlus()) return;
   const list = $('#journalList');
   if (!list) return;
+  const plus = subscriptionPlus();
+  if (window.HW3) HW3.paintJournalTools($('#hw3JournalTools'), () => renderJournalListItems());
+  renderJournalListItems();
+}
+function renderJournalListItems() {
+  const list = $('#journalList');
+  if (!list) return;
+  const plus = subscriptionPlus();
   list.innerHTML = '';
-  const sorted = [...journal].sort((a, b) => (b.updated || b.created) - (a.updated || a.created));
+  const all = [...journal].sort((a, b) => journalEntryDate(b).localeCompare(journalEntryDate(a)) || (b.updated || b.created) - (a.updated || a.created));
+  const sorted = window.HW3 ? HW3.filterJournal(all) : all;
+  const count = $('#journalCount');
+  if (count) count.textContent = all.length ? (sorted.length === all.length ? `${all.length} ${all.length === 1 ? 'entry' : 'entries'}` : `Showing ${sorted.length} of ${all.length} entries`) : '';
+  if (!all.length) {
+    list.innerHTML = '<li class="empty-hint">No entries yet. Write whatever is on your mind, or pick a prompt.</li>';
+    return;
+  }
   if (!sorted.length) {
-    list.innerHTML = '<li class="empty-hint">No entries yet — write whatever is on your mind.</li>';
+    list.innerHTML = '<li class="empty-hint">No entries match. Try a different word or clear the filters.</li>';
     return;
   }
   for (const e of sorted) {
     const li = document.createElement('li');
     li.className = 'j-item';
-    const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(e.updated || e.created));
-    li.innerHTML = `<h3></h3><div class="meta"></div><div class="body"></div>
+    const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(journalEntryDate(e) + 'T00:00:00Z'));
+    li.innerHTML = `<h3></h3><div class="meta"><span class="j-kind"></span><span class="j-when"></span>${e.localOnly ? ' <span class="j-local">On this device only</span>' : ''}</div>${e.prompt ? '<p class="j-prompt"></p>' : ''}<div class="body"></div>
       ${e.refined ? `<div class="refine-box"><h4>Deepened reflection</h4><div class="body refined"></div>${e.emotions ? `<p class="help" style="margin:6px 0 0">Emotions noticed: ${escapeHtml(e.emotions)}</p>` : ''}</div>` : ''}
       <div class="actions">
-        <button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button>
-        <button class="btn btn-sm" type="button" data-act="edit">Edit</button>
+        ${plus ? '<button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button>' : ''}<button class="btn btn-sm" type="button" data-act="edit">Edit</button>
         <button class="btn btn-sm btn-danger" type="button" data-act="del">Delete</button>
       </div>`;
     $('h3', li).textContent = e.title || 'Untitled entry';
-    $('.meta', li).textContent = when;
+    $('.j-kind', li).textContent = journalKindLabel(e.kind);
+    $('.j-when', li).textContent = when;
+    if (e.prompt) $('.j-prompt', li).textContent = e.prompt;
     $('.body', li).textContent = e.body;
     const refEl = $('.refined', li);
     if (refEl) refEl.textContent = e.refined;
-    $('[data-act="refine"]', li).addEventListener('click', () => refineJournalEntry(e));
-    $('[data-act="edit"]', li).addEventListener('click', () => {
-      journalEditId = e.id;
-      $('#jTitle').value = e.title || '';
-      $('#jBody').value = e.body || '';
-      $('#jCancelEdit').hidden = false;
-      $('#jSaveBtn').textContent = 'Update entry';
-      $('#jTitle').focus();
-    });
-    $('[data-act="del"]', li).addEventListener('click', () => {
-      if (!confirm('Delete this journal entry?')) return;
-      journal = journal.filter(x => x.id !== e.id);
-      saveJournal();
+    const label = e.title || `entry from ${when}`;
+    const refineB = $('[data-act="refine"]', li);
+    if (refineB) { refineB.setAttribute('aria-label', `Deepen reflection: ${label}`); refineB.addEventListener('click', () => refineJournalEntry(e)); }
+    const editB = $('[data-act="edit"]', li);
+    if (editB) {
+      editB.setAttribute('aria-label', `Edit ${label}`);
+      editB.addEventListener('click', () => {
+        journalEditId = e.id;
+        $('#jTitle').value = e.title || '';
+        $('#jBody').value = e.body || '';
+        setJournalComposeMeta(e);
+        $('#jCancelEdit').hidden = false;
+        $('#jSaveBtn').textContent = 'Update entry';
+        $('#jTitle').focus();
+      });
+    }
+    const delB = $('[data-act="del"]', li);
+    delB.setAttribute('aria-label', `Delete ${label}`);
+    delB.addEventListener('click', async () => {
+      if (!confirm('Delete this journal entry? This cannot be undone.')) return;
+      try {
+        const done = window.HW3 ? await HW3.journalDelete(e) : false;
+        if (!done) { journal = journal.filter(x => x.id !== e.id); saveJournal(); }
+      } catch (err) { toast('Could not delete that just now. Please try again.', true); return; }
+      if (journalEditId === e.id) prepareJournalCompose();
       renderJournalList();
       toast('Entry deleted');
     });
     list.appendChild(li);
   }
+}
+/** Kind, pack, prompt and date fields in the journal editor. */
+function journalComposeMeta() {
+  const kind = $('#jKind');
+  const date = $('#jDate');
+  const prompt = $('#jPromptText');
+  const pack = $('#jPack');
+  return {
+    kind: kind ? kind.value : 'free',
+    entryDate: date && date.value ? date.value : brisbaneDateISO(),
+    prompt: prompt && !prompt.hidden ? prompt.textContent.trim() : '',
+    packId: pack && pack.value ? pack.value : null,
+  };
+}
+function setJournalComposeMeta(e) {
+  const kind = $('#jKind');
+  const date = $('#jDate');
+  const prompt = $('#jPromptText');
+  if (kind) kind.value = (e && e.kind) || 'free';
+  const pack = $('#jPack');
+  if (pack) { const v = (e && e.packId) || ''; if (v && ![...pack.options].some((o) => o.value === v)) { const o = document.createElement('option'); o.value = v; o.textContent = v; pack.appendChild(o); } pack.value = v; }
+  if (date) { date.max = brisbaneDateISO(); date.value = (e && journalEntryDate(e)) || brisbaneDateISO(); }
+  if (prompt) { prompt.textContent = (e && e.prompt) || ''; prompt.hidden = !(e && e.prompt); }
+  const clear = $('#jPromptClear');
+  if (clear) clear.hidden = !(e && e.prompt);
+}
+let journalPromptTurn = 0;
+function showJournalPrompt(next) {
+  const kind = $('#jKind') ? $('#jKind').value : 'prompt';
+  const prompt = $('#jPromptText');
+  if (!prompt || !window.HW3) return;
+  if (next) journalPromptTurn += 1;
+  const day = Number(brisbaneDateISO().replace(/-/g, '')) || 0;
+  prompt.textContent = HW3.journalPrompt(kind === 'free' ? 'prompt' : kind, day + journalPromptTurn);
+  prompt.hidden = false;
+  const clear = $('#jPromptClear');
+  if (clear) clear.hidden = false;
+}
+/** Save the entry in the editor: to the account when signed in, else this browser. */
+async function persistJournalEntry({ title, body, refined, emotions, existing, meta: givenMeta }) {
+  const meta = givenMeta || journalComposeMeta();
+  if (window.HW3) {
+    const saved = await HW3.journalSave(Object.assign({ title, body }, meta, refined !== undefined ? { refined, emotions } : {}), existing || null);
+    if (saved) return saved;
+  }
+  const now = Date.now();
+  if (existing) {
+    Object.assign(existing, { title, body, updated: now }, meta);
+    if (refined !== undefined) { existing.refined = refined; existing.emotions = emotions; }
+    journal = journal.slice(0, 200);
+    saveJournal();
+    return existing;
+  }
+  const entry = Object.assign({ id: uid(), title, body, created: now, updated: now }, meta);
+  if (window.HW3 && HW3.journalServerMode()) entry.localOnly = true;
+  journal.unshift(entry);
+  journal = journal.slice(0, 200);
+  saveJournal();
+  return entry;
 }
 function bindJournalUi() {
   const root = document.getElementById('journalWorkspace');
@@ -7349,58 +7585,59 @@ function bindJournalUi() {
   root.dataset.bound = '1';
   cancel.addEventListener('click', () => {
   journalEditId = null;
+  setJournalComposeMeta(null);
   $('#jTitle').value = '';
   $('#jBody').value = '';
   $('#jCancelEdit').hidden = true;
   $('#jSaveBtn').textContent = 'Save entry';
   $('#jRefineOut').hidden = true;
 });
-$('#jSaveBtn').addEventListener('click', () => {
-  if (!subscriptionPlus()) { openAccountDlg(); return; }
+$('#jSaveBtn').addEventListener('click', async () => {
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write something first.', true); $('#jBody').focus(); return; }
-  const now = Date.now();
-  if (journalEditId) {
-    const e = journal.find(x => x.id === journalEditId);
-    if (e) { e.title = title; e.body = body; e.updated = now; }
-    journalEditId = null;
-    $('#jCancelEdit').hidden = true;
-    $('#jSaveBtn').textContent = 'Save entry';
-    toast('Entry updated');
-  } else {
-    journal.unshift({ id: uid(), title, body, created: now, updated: now });
-    toast('Entry saved');
+  const saveBtn = $('#jSaveBtn');
+  saveBtn.disabled = true;
+  try {
+    const existing = journalEditId ? journal.find(x => x.id === journalEditId) : null;
+    await persistJournalEntry({ title, body, existing });
+    toast(existing ? 'Entry updated' : 'Entry saved');
+  } catch (err) {
+    saveBtn.disabled = false;
+    toast(err && err.message ? err.message : 'Could not save that just now. Your words are still here.', true);
+    return;
   }
-  journal = journal.slice(0, 200);
-  saveJournal();
-  $('#jTitle').value = '';
-  $('#jBody').value = '';
-  $('#jRefineOut').hidden = true;
+  saveBtn.disabled = false;
+  prepareJournalCompose();
   renderJournalList();
 });
 $('#jRefineBtn').addEventListener('click', async () => {
-  if (!subscriptionPlus()) { openAccountDlg(); return; }
+  if (!subscriptionPlus()) { setAppTab('compare'); return; }
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write an entry first, then deepen it.', true); return; }
-  // Save draft if needed, then refine
+  // Save first, then deepen (only if they agree to send it to Hope).
   let entry;
-  if (journalEditId) entry = journal.find(x => x.id === journalEditId);
-  if (!entry) {
-    const now = Date.now();
-    entry = { id: uid(), title, body, created: now, updated: now };
-    journal.unshift(entry);
-    journalEditId = entry.id;
-    $('#jCancelEdit').hidden = false;
-    $('#jSaveBtn').textContent = 'Update entry';
-    saveJournal();
-  } else {
-    entry.title = title; entry.body = body; entry.updated = Date.now();
-    saveJournal();
+  try {
+    const existing = journalEditId ? journal.find(x => x.id === journalEditId) : null;
+    entry = await persistJournalEntry({ title, body, existing });
+  } catch (err) {
+    toast(err && err.message ? err.message : 'Could not save that just now. Your words are still here.', true);
+    return;
   }
+  journalEditId = entry.id;
+  $('#jCancelEdit').hidden = false;
+  $('#jSaveBtn').textContent = 'Update entry';
+  renderJournalList();
   await refineJournalEntry(entry, true);
 });
+const kindSel = $('#jKind');
+if (kindSel) kindSel.addEventListener('change', () => { if (kindSel.value !== 'free') showJournalPrompt(false); });
+const promptBtn = $('#jPromptBtn');
+if (promptBtn) promptBtn.addEventListener('click', () => showJournalPrompt(!$('#jPromptText').hidden));
+const promptClear = $('#jPromptClear');
+if (promptClear) promptClear.addEventListener('click', () => { const t = $('#jPromptText'); t.textContent = ''; t.hidden = true; promptClear.hidden = true; $('#jPromptBtn').focus(); });
+setJournalComposeMeta(null);
 }
 bindJournalUi();
 
@@ -7448,12 +7685,15 @@ async function refineJournalEntry(entry, showInCompose) {
       : 'Deepen reflection needs Hope. ' + HOSTED_SIGNIN_COPY);
     return;
   } else {
+    // The entry only goes to Hope with a yes for this use, or the journal setting turned on.
+    const consent = window.HW3 ? await HW3.askJournalAi() : 'once';
+    if (!consent) { toast('Okay. Your entry stays private.'); return; }
     try {
       toast('Deepening your reflection…');
       const raw = await chatCompletion([
         { role: 'system', content: journalRefineSystemPrompt(crisis) },
         { role: 'user', content: `Title: ${entry.title || '(none)'}\n\nEntry:\n${entry.body}` },
-      ], { stream: false, temperature: 0.6, max_tokens: 500, purpose: 'refine', context: { userName: userName(), companionName: companionName(), crisis } });
+      ], { stream: false, temperature: 0.6, max_tokens: 500, purpose: 'refine', aiConsent: 'once', context: { userName: userName(), companionName: companionName(), crisis } });
       parsed = parseRefineResponse(raw);
     } catch (e) {
       toast('Couldn’t deepen right now: ' + (e.message || 'error'), true);
@@ -7476,26 +7716,26 @@ async function refineJournalEntry(entry, showInCompose) {
     </div></div>`;
   $('#jOrigPreview').textContent = entry.body;
   $('#jRefPreview').textContent = parsed.refined;
-  $('#jKeepRefined').addEventListener('click', () => {
-    entry.body = parsed.refined;
-    entry.refined = parsed.refined;
-    entry.emotions = parsed.emotions;
-    entry.updated = Date.now();
-    saveJournal();
-    $('#jBody').value = entry.body;
+  const keepRefine = async (replaceBody) => {
+    const current = journal.find(x => x.id === entry.id) || entry;
+    try {
+      const saved = await persistJournalEntry({
+        title: current.title || '', body: replaceBody ? parsed.refined : current.body,
+        refined: parsed.refined, emotions: parsed.emotions, existing: current,
+        meta: { kind: current.kind || 'free', entryDate: journalEntryDate(current), prompt: current.prompt || '' },
+      });
+      if (journalEditId === entry.id) journalEditId = saved.id;
+      if (replaceBody && $('#jBody')) $('#jBody').value = saved.body;
+    } catch (err) {
+      toast(err && err.message ? err.message : 'Could not save that just now.', true);
+      return;
+    }
     out.hidden = true;
     renderJournalList();
-    toast('Kept the deepened version');
-  });
-  $('#jKeepBoth').addEventListener('click', () => {
-    entry.refined = parsed.refined;
-    entry.emotions = parsed.emotions;
-    entry.updated = Date.now();
-    saveJournal();
-    out.hidden = true;
-    renderJournalList();
-    toast('Saved both original and deepened');
-  });
+    toast(replaceBody ? 'Kept the deepened version' : 'Saved both original and deepened');
+  };
+  $('#jKeepRefined').addEventListener('click', () => keepRefine(true));
+  $('#jKeepBoth').addEventListener('click', () => keepRefine(false));
   $('#jDismissRefine').addEventListener('click', () => { out.hidden = true; });
   if (!showInCompose) renderJournalList();
 }
@@ -9304,7 +9544,7 @@ function openGoals() {
 }
 
 /* ---------------------------------------------------------------------------
-   Plans hub — relapse / lapse prevention + exit plans (Hopewick Plus)
+   Plans hub — relapse / lapse prevention + exit plans (always free)
    Private on this device. Self-help only. A lapse is not a failure.
    --------------------------------------------------------------------------- */
 const PLAN_FIRST_TEN = [
@@ -9496,26 +9736,13 @@ function focusPlanHeading() {
 let editingExit = null;
 
 function syncPlansGate() {
-  const plus = subscriptionPlus();
+  // Relapse prevention and exit plans are free forever, on every plan (founder decision 2026-10-18).
   const workspace = $('#plansWorkspace');
-  if (workspace) workspace.hidden = !plus;
+  if (workspace) workspace.hidden = false;
   const intro = $('#plansIntro');
-  if (intro) intro.hidden = plus && plansView !== 'hub';
-  renderPlusFeatureGate($('#plansGate'), {
-    lead: 'Relapse and exit plans are part of Hopewick Plus. Free can see what the hub holds. Writing and saving a plan needs Plus.',
-    items: [
-      'Early warning signs and the first 10 minutes',
-      'People you can call',
-      'What helps, and what to avoid',
-      'If a slip happens — kindness, then the next step',
-      'Exit cards for payday, old mates, a party, and more',
-      'My exits — a short list for a risky moment',
-    ],
-    listLabel: 'Plans with Hopewick Plus',
-    buttonId: 'plansPlusBtn',
-    help: '7 days free, then AU$20/month. Cancel anytime. Today’s Readings, Get help, and domestic and family violence support stay free. A lapse is not a failure.',
-  });
-  syncPlusFeaturePills();
+  if (intro) intro.hidden = plansView !== 'hub';
+  const gate = $('#plansGate');
+  if (gate) { gate.replaceChildren(); gate.hidden = true; }
 }
 function renderPlans() {
   syncPlansGate();
@@ -9524,10 +9751,6 @@ function renderPlans() {
   const hub = $('#plansHub');
   const relapse = $('#plansRelapse');
   const exit = $('#plansExit');
-  if (!subscriptionPlus()) {
-    [hub, relapse, exit].forEach(node => { if (node) node.replaceChildren(); });
-    return;
-  }
   if (hub) hub.hidden = plansView !== 'hub';
   if (relapse) relapse.hidden = plansView !== 'relapse';
   if (exit) {
@@ -9664,7 +9887,6 @@ function commitExitEditor() {
   editingExit.codeWord = row.codeWord;
 }
 function commitPlanFields() {
-  if (!subscriptionPlus()) return;
   if (plansView === 'relapse') commitRelapseStep();
   if ((plansView === 'exit') && exitFocus) commitExitEditor();
 }
@@ -12077,6 +12299,7 @@ function enterProfile(pid) {
     pullAccountChats(true).catch(() => {});
     pullAccountCheckins(true).catch(() => {});
   }
+  if (window.HW3) { HW3.reset(); HW3.sync(true); }
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -12880,6 +13103,7 @@ function enterDemo() {
   [el.pickerDlg, el.signInDlg, el.onboardingDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
+  if (window.HW3) HW3.reset();
   profile = Object.assign({}, DEMO_PERSON);
   const sample = demoSampleData();
   settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, DEFAULT_SHARED, {
@@ -13928,11 +14152,10 @@ const plusAccess = {
   words: null,
   jft: null,
 };
+// The journal and plans editors are in the page for everyone (basic journal entries and relapse/exit plans are free); only Plus editors are mounted.
 const PLUS_EDITOR_MOUNTS = {
-  journal: 'journalEditorMount',
   resume: 'resumeEditorMount',
   goals: 'goalsEditorMount',
-  plans: 'plansEditorMount',
 };
 function unmountPlusEditors() {
   Object.values(PLUS_EDITOR_MOUNTS).forEach((id) => {
@@ -14259,6 +14482,7 @@ async function refreshBilling() {
     chatPullKey = '';
     checkinPullKey = '';
   }
+  if (window.HW3 && profile) HW3.sync(false);
   try {
     if (profile || isDemo) {
       renderHistory();
@@ -14270,7 +14494,7 @@ async function refreshBilling() {
       if (el.deeperDlg && el.deeperDlg.open) renderGoingDeeper();
       if (appTab === 'journal') {
         syncJournalGate();
-        if (subscriptionPlus()) renderJournalList();
+        renderJournalList();
       }
       if (appTab === 'resume') showResume(false);
       if (el.goalsDlg && el.goalsDlg.open) renderGoals();
@@ -14432,34 +14656,72 @@ function appendPlusOffer(body) {
   capsRow.appendChild(capCard('Hopewick Plus', 'No daily limit', true));
   caps.appendChild(capsRow);
   body.appendChild(caps);
-  const list = document.createElement('ul');
-  list.className = 'plus-checklist';
-  [
-    'No daily message limit with Hope',
-    'SMART goals for the week',
-    'Journal — write, edit, and deepen a reflection',
-    'Relapse and exit plans — private on this device',
-    'Resume builder, kept on this device',
-    'Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence',
-    'Gut health and neuroplasticity notes — plain language, Plus only',
-    'Ice baths and recovery spa notes — plain language, Plus only',
-    'Going Deeper study tracks — your tradition, or a values path',
-    'The full year of readings',
-    'Add another profile on this device',
-    'Hopewick Plus can open stored history that is still there. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion.',
-  ].forEach(text => {
-    const li = document.createElement('li');
-    li.textContent = text;
-    list.appendChild(li);
+  // Free vs Plus, one collapsible section per category (all start collapsed; the
+  // summary line stays visible). Native <details>/<summary>: keyboard and screen
+  // reader friendly with no extra script.
+  const PLAN_SECTIONS = [
+    ['free', 'Always free', 'Essential support stays free: crisis help, your safety plan, relapse and exit plans, and your data.', [
+      'Get Help, crisis support, and domestic and family violence resources',
+      'Your safety plan, and relapse prevention and exit plans — private, on this device or your account',
+      'The daily check-in, the 12 core coping tools, My next step and the journal',
+      'Today’s Readings, the clean-time tracker, Bible & SOAP and the 12-step outline',
+      'Exporting or deleting everything you saved. If Plus ends, nothing is deleted',
+      'Hope chat on Free is 15 messages a day',
+    ]],
+    ['history', 'Check-ins and history', 'Free shows the last 7 days in the app. Plus shows your full history.', [
+      'Full history in the app, and the month view',
+      'Hopewick Plus can open stored history that is still there. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion.',
+    ]],
+    ['journal', 'Journal', 'Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.', [
+      'Journal extras — gratitude and recovery entries, guided series and prompt packs, and Deepen with Hope',
+    ]],
+    ['tools', 'Tools and new releases', 'No daily message limit with Hope, new tools first, and the learning library.', [
+      'No daily message limit with Hope',
+      'New coping tools and journal packs first (free 6 to 12 months later)',
+      'Resume builder, kept on this device',
+      'Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence',
+      'Gut health and neuroplasticity notes — plain language, Plus only',
+      'Ice baths and recovery spa notes — plain language, Plus only',
+      'Going Deeper study tracks — your tradition, or a values path',
+      'The full year of readings',
+      'Add another profile on this device',
+    ]],
+    ['plans', 'Plans and reports', 'Plus adds weekly plans, SMART goals, monthly insights and a printable report.', [
+      'Weekly plans in My next step',
+      'SMART goals for the week, and personal goals',
+      'Monthly insights, and a printable mood and recovery report',
+    ]],
+  ];
+  const sections = document.createElement('div');
+  sections.className = 'hw3-cmp';
+  sections.id = 'accountCompare';
+  PLAN_SECTIONS.forEach(([key, title, line, items]) => {
+    const det = document.createElement('details');
+    det.className = 'hw3-cmp__sec';
+    det.id = `accountCompare-${key}`;
+    const sum = document.createElement('summary');
+    sum.className = 'hw3-cmp__sum';
+    const t = document.createElement('span');
+    t.className = 'hw3-cmp__title';
+    t.textContent = title;
+    const l = document.createElement('span');
+    l.className = 'hw3-cmp__line';
+    l.textContent = line;
+    sum.append(t, l);
+    const ul = document.createElement('ul');
+    ul.className = 'plus-checklist';
+    items.forEach((text) => { const li = document.createElement('li'); li.textContent = text; ul.appendChild(li); });
+    det.append(sum, ul);
+    sections.appendChild(det);
   });
-  body.appendChild(list);
+  body.appendChild(sections);
   const crisis = document.createElement('p');
   crisis.className = 'crisis-free-note';
-  crisis.textContent = 'Essential support stays free, including Today’s Readings, crisis support, domestic and family violence resources, and Get Help. Hope chat on Free is 15 messages a day. In danger call 000. Lifeline 13 11 14. 1800RESPECT 1800 737 732.';
+  crisis.textContent = 'In danger call 000. Lifeline 13 11 14. 1800RESPECT 1800 737 732.';
   body.appendChild(crisis);
   const privacy = document.createElement('aside');
   privacy.className = 'privacy-card';
-  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins and weekly goals for this profile are saved to your account as well, and they stay on this device. Hopewick staff do not get a dashboard of what you told Hope. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, and weekly goals, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices.</p>';
+  privacy.innerHTML = '<h3>Your account and your chats</h3><p>Signed in, chats for this profile are saved to your account so they are here when you come back, and they stay on this device too. Check-ins, coping history, personal goals, journal entries, your safety plan, relapse and exit plans, your next step and weekly plans for this profile are saved to your account as well. You can export or delete all of it at any time on any plan (Tools, Daily check-in, Your data). Journal entries and plans already in this browser are only copied to your account if you say yes. Hopewick staff do not get a dashboard of what you told Hope. A chat is kept until you delete that chat, delete the account, or it has not been updated for 24 months, and then it is removed from the live server. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion. Hopewick Plus can open stored history that is still there. Deleting the account removes the sign-in, server chats, check-ins, goals, journal, safety plan, relapse and exit plans, coping history, next steps and weekly plans, and signs you out. A copy in this browser can remain until you clear it in Settings. Stripe can keep invoices.</p>';
   body.appendChild(privacy);
 }
 let myAccountSection = 'menu';

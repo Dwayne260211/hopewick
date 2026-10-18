@@ -171,8 +171,16 @@ test('memory and journal refine use server prompts; refine spends like chat, mem
     assert.match(memSent[0].content, /long-term memory/);
     assert.match(memSent[0].content, /only store non-crisis/);
     assert.equal(JSON.stringify(memSent).includes('store everything'), false);
+    // Deepen with Hope is a Plus journal refinement: a free account is refused before any model call.
+    const freeRefine = await chat(app.base, cookie, { purpose: 'refine', aiConsent: 'once', messages: [{ role: 'user', content: 'Entry:\nfree words' }] });
+    assert.equal(freeRefine.status, 403);
+    assert.equal((await freeRefine.json()).error.code, 'plus');
+    assert.equal(app.calls.length, 2, 'free refine never reaches the model');
+    await fetch(`${app.base}/api/billing/dev-set`, { method: 'POST', headers: { cookie, 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'trialing' }) });
+    // Stage 3: journal text only goes to the model with a yes for this use.
     const refine = await chat(app.base, cookie, {
       purpose: 'refine',
+      aiConsent: 'once',
       context: { userName: 'Kim', companionName: 'Hope' },
       messages: [{ role: 'user', content: 'Title: Today\n\nEntry:\nA hard day but I made it.' }],
     });
@@ -181,7 +189,7 @@ test('memory and journal refine use server prompts; refine spends like chat, mem
     assert.match(app.calls[2].messages[0].content, /helping Kim/);
     const usage = await (await fetch(`${app.base}/api/hope/usage`, { headers: { cookie } })).json();
     assert.equal(usage.used, 2);
-    assert.equal(usage.limit, 5);
+    assert.equal(usage.limit, null, 'the refine ran on a Plus trial (no daily limit)');
   } finally {
     await app.close();
   }

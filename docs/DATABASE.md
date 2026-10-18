@@ -102,6 +102,60 @@ copied to another system without consent.
   * Length limits on encrypted columns are checked on the plain text in
     `server/db/repo.js`; the SQL caps are sized for ciphertext.
 
+## Stage 3 wellbeing data (migrations/003_stage3_core_features.sql)
+
+Stage 3 is the first feature set that **uses** storage for requests. Everything
+goes through one interface, `server/wellbeing/index.js` → `createWellbeingStore()`:
+
+| Backend | When | File |
+| --- | --- | --- |
+| Postgres | `DATABASE_URL` is set | `server/wellbeing/pg-store.js` (uses `withUser()` + RLS) |
+| JSON file | `DATABASE_URL` is not set (production today) | `server/wellbeing/json-store.js` → `wellbeing.json` beside `users.json` (or `WELLBEING_STORE`) |
+
+Both backends pass the same contract tests (`server/wellbeing.test.mjs`). The JSON
+store uses `server/json-file.js`: atomic writes (temp file + rename + `.bak`) and
+fail-loud loading (a corrupt file is never overwritten; `/api/health` returns 503).
+Data is keyed by account id, then profile id. When `HOPEWICK_DATA_KEY` is set,
+sensitive fields (feelings, triggers, notes, journal text, goal and step text,
+plans) are AES-256-GCM encrypted in both backends, bound to the user and field.
+
+Migration 003 (applied to the Neon **dev** branch only, 2026-10-18 14:10 AEST):
+
+* `mood_entries`: feelings, triggers, intensity 0–10, `mood_scale` (v1 = older
+  6-label check-ins, v2 = the 5-point scale), encryption metadata.
+* `guided_activity_history`: more activity types, `status`
+  started/paused/completed, `step_index`, `started_at`, `updated_at`.
+* New `personal_goals` (title, detail, category wellbeing/recovery/emotional/other,
+  status active/completed/archived, progress 0–100) with FORCE RLS + owner policy.
+* `journal_entries`: `kind` (free/prompt/gratitude/recovery), `prompt`, `entry_date`.
+* `next_step_items`: reflection, coping tool key, follow-up opt-in (stored only;
+  nothing is sent).
+* `consent_records`: keys `checkin_ai_share`, `journal_ai`, `next_step_followup`.
+
+API: `/api/me/settings`, `/api/me/checkins`, `/api/me/activities`, `/api/me/goals`,
+`/api/me/journal` (+ `/export?format=json|md`, `/import`), `/api/me/plans`
+(+ `/import`), `/api/me/next-steps`. All need a signed-in session (401 otherwise),
+are scoped to the account and profile, and Plus gates (journal and goal writes,
+plan edits) are enforced on the server. Reading, exporting, deleting and
+importing your own data stay free. Check-ins and coping are free.
+
+One-time import: on first sign-in with Stage 3, journal entries and plans that
+exist only in the browser are offered for upload. Nothing moves without a "Yes";
+"No" keeps them on the device and is remembered. The browser copy is never deleted
+by the import.
+
+## Free vs Plus model (migrations/004_free_plus_model.sql)
+
+- `journal_entries.pack_id`: the guided series or prompt pack an entry came from, if any.
+- `weekly_step_plans`: weekly multi-step plans for Plus members. Each row is per user and per profile, with RLS and a policy
+  on `app.user_id` like the other Stage 3 tables. Steps are sealed with the same per-field encryption.
+- The safety plan essentials are stored in the existing plans document under `safety`. No new table is needed.
+- Plan status never deletes rows. The 7-day free history window is applied when data is read
+  (`server/wellbeing/plan-rules.js`).
+
+Migration 004 was applied to the Neon **dev** branch only, on 2026-10-18 AEST, by the db test run. Production needs it
+when `DATABASE_URL` is set there, and that needs founder approval.
+
 ## Before production uses this (needs founder approval)
 
 1. Add `DATABASE_URL` (Neon `main` branch, pooled) and `HOPEWICK_DATA_KEY` to Render

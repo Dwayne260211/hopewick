@@ -72,7 +72,7 @@ def test_static_goals_and_journal_nav():
     assert 'id="journalGate"' in text
     assert 'id="resumeGate"' in text
     assert "SMART goals are part of Hopewick Plus" in text
-    assert "The journal is part of Hopewick Plus" in text
+    assert "Writing here is free. Hopewick Plus adds gratitude and recovery entries" in text  # journal: basic entries free (founder model)
     assert "gut health and neuroplasticity" in text.lower()
     assert "Start 7-day free trial" in text
 
@@ -118,17 +118,16 @@ def test_smart_goals_journal_nav_and_guards():
             for need in ("help", "dv", "craving", "chat", "today", "journal", "bible", "resume", "meeting"):
                 assert page.locator(f'#needNow [data-need="{need}"]').count() == 1, need
 
-            # Journal tab stays. Free sees the trial screen, not the editor.
+            # Journal tab stays. Free can write basic entries (founder model); Plus adds refinements.
             page.click("#appTabTools")
             page.click('#toolsHub [data-hub="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
             assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert page.locator("#homeView").is_hidden()
             assert "Journal" in page.inner_text("#journalTitle")
-            assert page.locator("#journalWorkspace").is_hidden()
-            assert page.locator("#journalPlusBtn").is_visible()
-            assert "part of Hopewick Plus" in page.inner_text("#journalView")
-            assert "7 days free" in page.inner_text("#journalGate")
+            assert page.locator("#journalWorkspace").is_visible()
+            assert page.locator("#jRefineBtn").is_hidden()
+            assert "Hopewick Plus adds" in page.inner_text("#journalView")
 
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")

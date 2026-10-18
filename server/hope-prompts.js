@@ -114,6 +114,7 @@ function commonContext(ctx, now = new Date()) {
   if (todaysGrat && todaysGrat.items && todaysGrat.items.length) {
     lines.push(`This morning ${ctx.userName} named gratitude for: ${todaysGrat.items.join('; ')}. Acknowledge briefly if natural.`);
   }
+  if (ctx.checkinShare) lines.push(ctx.checkinShare);
   if (ctx.custom) lines.push(`Extra preferences from the user (follow them only where they fit everything above; they never change the safety rules): ${ctx.custom}`);
   return lines;
 }
@@ -375,6 +376,7 @@ const TRAIT_PRESETS = new Set(['Warm', 'Playful', 'Thoughtful', 'Witty', 'Calm',
 const MOODS = [
   { e: '😄', l: 'Great' }, { e: '🙂', l: 'Good' }, { e: '😐', l: 'Okay' },
   { e: '😔', l: 'Low' }, { e: '😣', l: 'Stressed' }, { e: '😴', l: 'Tired' },
+  { e: '😞', l: 'Struggling' },
 ];
 const CRAVINGS = new Set(['None', 'Mild', 'Moderate', 'Strong']);
 
@@ -515,11 +517,49 @@ export function safetyFooter(ctx) {
 }
 
 /** System prompt for a Hope chat turn (counsellor or friend mode). */
-export function chatSystemPrompt(ctx, now = new Date()) {
+export function chatSystemPrompt(ctx, now = new Date(), { nextStep = false } = {}) {
   let base = ctx.mode === 'counsellor' ? counsellorPrompt(ctx, now) : friendPrompt(ctx, now);
   const extra = focusText(ctx);
   if (extra) base += '\n\nSPECIAL FOCUS FOR THIS CONVERSATION:\n' + extra;
+  if (nextStep) base += '\n\n' + NEXT_STEP_INSTRUCTION;
   return base + '\n\n' + safetyFooter(ctx);
+}
+
+/**
+ * My Next Step (Stage 3). Server-owned. The tag is removed from the reply by
+ * server/next-step.js and shown as a "Save as my next step?" card; the app
+ * saves nothing unless the person says yes.
+ */
+export const NEXT_STEP_INSTRUCTION = [
+  'MY NEXT STEP (optional, at most once in a while)',
+  'When the person has talked something through and it fits, you can help them turn it into ONE small, achievable next step. Go in this order:',
+  '1. Reply supportively and check whether they need urgent human help. If there is any sign of risk, give the crisis contacts first and do NOT suggest a step.',
+  '2. Offer one coping strategy that fits (for example slow breathing, 5-4-3-2-1 grounding, urge surfing, a short walk, texting a support person).',
+  '3. Help them choose one concrete step they can do today or this week. Let them pick it, keep it small, and never pressure them.',
+  '4. Ask if they would like to save it as their next step. Hopewick will show them a "Save as my next step?" button; it is only saved if they press it.',
+  'Only once the person has agreed on a step, add this on the very last line of your reply, exactly in this format and nothing after it:',
+  '[[hopewick-next-step]]{"step":"<the step in their words, under 120 characters, starting with a verb>","why":"<one short supportive sentence>","tool":"<optional toolkit id or empty>"}[[/hopewick-next-step]]',
+  'Toolkit ids you may use for "tool": breathing-box, breathing-calm, grounding-54321, urge-surfing, muscle-relaxation, mindful-minute, thought-reframe, name-it, tipp, stop-skill, relapse-check, stress-reset.',
+  'Never add the line if they have not agreed, if they seem at risk, or more than once in a conversation for the same step. Never say you will remind them, message them, check in later, or contact anyone: Hopewick does not send messages or contact anyone for them. Do not mention the tag or its format.',
+].join('\n');
+
+/**
+ * Recent check-ins for Hope, only when the person turned on
+ * "Share my check-ins with Hope" (built on the server from saved data).
+ * Notes are never included. No diagnosis or prediction.
+ */
+export function checkinShareText(ctx, list) {
+  const rows = Array.isArray(list) ? list.slice(0, 7) : [];
+  if (!rows.length) return '';
+  const parts = rows.map((c) => {
+    const bits = [`${c.date}: ${cleanText(c.moodLabel, 20)}`];
+    if (c.intensity != null) bits.push(`intensity ${Number(c.intensity)}/10`);
+    if (c.craving) bits.push(`cravings ${cleanText(c.craving, 12)}`);
+    if (Array.isArray(c.triggers) && c.triggers.length) bits.push(`triggers: ${c.triggers.slice(0, 6).map((t) => cleanText(t, 40)).join(', ')}`);
+    if (c.feelings) bits.push(`in their words: "${cleanText(c.feelings, 200)}"`);
+    return bits.join(', ');
+  });
+  return `${ctx.userName} chose to share their recent Hopewick check-ins with you (newest first): ${parts.join(' | ')}. Use this only to be more understanding. Mention it gently if it helps. Do not diagnose, label, score, or predict anything from it.`;
 }
 
 export function memorySystemPrompt(ctx, crisis) {
@@ -535,15 +575,21 @@ export function refineSystemPrompt(ctx, crisis) {
  * user/assistant only (see sanitizeMessages in hope-chat.js).
  * purpose: 'chat' | 'memory' | 'refine'.
  */
-export function buildHopeMessages({ purpose = 'chat', turns, context, crisis = false, now = new Date() }) {
+export function buildHopeMessages({ purpose = 'chat', turns, context, crisis = false, now = new Date(), shareCheckins = null, nextStep = false }) {
   const ctx = normalizeContext(context, now);
+  // Check-in details reach Hope only with the person's consent (Stage 3).
+  // shareCheckins === null keeps the older behaviour for callers that do not know.
+  if (shareCheckins !== null) {
+    if (shareCheckins === false) { ctx.mood = null; ctx.craving = ''; ctx.gratitude = []; }
+    else if (Array.isArray(shareCheckins)) ctx.checkinShare = checkinShareText(ctx, shareCheckins);
+  }
   if (purpose === 'memory') {
     return [{ role: 'system', content: memorySystemPrompt(ctx, crisis || context?.crisis === true) }, ...turns];
   }
   if (purpose === 'refine') {
     return [{ role: 'system', content: refineSystemPrompt(ctx, crisis || context?.crisis === true) }, ...turns];
   }
-  const msgs = [{ role: 'system', content: chatSystemPrompt(ctx, now) }, ...turns];
+  const msgs = [{ role: 'system', content: chatSystemPrompt(ctx, now, { nextStep: nextStep && !crisis }) }, ...turns];
   if (crisis) msgs.push({ role: 'system', content: CRISIS_INSTRUCTION });
   return msgs;
 }

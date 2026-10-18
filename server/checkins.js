@@ -23,6 +23,8 @@ const MOODS = {
   Low: '😔',
   Stressed: '😣',
   Tired: '😴',
+  // Hopewick 2.0 Stage 3: 5-point check-in (Struggling/Low/Okay/Good/Great) mirrors here.
+  Struggling: '😞',
 };
 const CRAVINGS = new Set(['None', 'Mild', 'Moderate', 'Strong']);
 const MIDWEEK = new Set(['still', 'change', 'letgo']);

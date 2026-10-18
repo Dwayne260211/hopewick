@@ -153,6 +153,21 @@ section h2 { font-size: clamp(1.5rem, 3.2vw, 2.05rem); margin: 0 0 8px; letter-s
 .more summary:focus-visible, .faq-item summary:focus-visible { border-radius: 8px; }
 .faq-item p { margin: 0 0 14px; color: var(--muted); }
 .more .grid { margin: 4px 0 16px; }
+.cmp { margin-top: 18px; }
+.cmp-head { margin: 0; }
+.cmp-sec { margin-top: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 18px; }
+.cmp-sec summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; column-gap: 10px; padding: 14px 0; min-height: 44px; }
+.cmp-sec summary::-webkit-details-marker { display: none; }
+.cmp-sec summary::after { content: ""; grid-column: 2; grid-row: 1 / span 2; align-self: center; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); }
+.cmp-sec[open] summary::after { transform: rotate(-135deg); }
+.cmp-sec summary:focus-visible { border-radius: 8px; }
+.cmp-title { font-weight: 750; }
+.cmp-line { grid-column: 1; color: var(--muted); font-size: .95rem; }
+.cmp-table { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: .95rem; }
+.cmp-table th, .cmp-table td { text-align: left; vertical-align: top; padding: 8px 6px; border-top: 1px solid var(--border); }
+.cmp-table th[scope="row"] { font-weight: 400; }
+.cmp-table thead th { color: var(--muted); font-size: .85rem; }
+.cmp-table td { width: 24%; }
 .safety-card p { margin-bottom: 8px; }
 .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: stretch; }
 .plan { display: flex; flex-direction: column; gap: 8px; }
@@ -398,7 +413,7 @@ a:hover { color: var(--accent-strong); }
             <span class="chip">Water or something to eat</span>
           </div>
           <p class="plan-line"><strong>My exits</strong> — Alone at night: text a safe person, then step outside for a minute.</p>
-          <p class="mock-note">Writing and saving a plan is part of Hopewick Plus. A lapse is not a failure. The clean-time tracker is separate, and a slip does not wipe it.</p>
+          <p class="mock-note">Relapse prevention and exit plans are free, along with your safety plan essentials. A lapse is not a failure. The clean-time tracker is separate, and a slip does not wipe it.</p>
         </article>
         <article class="mock" aria-label="Example daily check-in, not a real person">
           <p class="example-label">Daily check-in · Example, not a real person</p>
@@ -421,7 +436,7 @@ a:hover { color: var(--accent-strong); }
       <p class="section-lede">Practical support for the hours when a counsellor is not beside you. A slip is something to learn from, not the end of the work.</p>
       <div class="grid benefits">
         <div class="card"><div class="icon" aria-hidden="true">🌊</div><h3>Talk through cravings and setbacks</h3><p>Hope can sit with an urge, a slip, or a hard hour and help you name a next step. Free is 15 Hope messages a day. Unlimited Hope messages are part of Plus.</p></div>
-        <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Make a recovery plan</h3><p>SMART goals, and relapse and exit plans, are part of Hopewick Plus. On the free plan, chat can still help you think through a next step.</p></div>
+        <div class="card"><div class="icon" aria-hidden="true">🎯</div><h3>Make a recovery plan</h3><p>Your safety plan essentials, relapse prevention and exit plans, and My next step are free. SMART goals and weekly plans are part of Hopewick Plus.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">📅</div><h3>Track your progress</h3><p>The daily check-in, clean time, and milestones stay free. A slip is not shown as if the days you already kept never happened.</p></div>
         <div class="card"><div class="icon" aria-hidden="true">📍</div><h3>Find practical support</h3><p>Meetings, AOD services, treatment, food, shelter, and crisis lines. These stay free. Hopewick links out. It does not run those services.</p></div>
       </div>
@@ -430,7 +445,7 @@ a:hover { color: var(--accent-strong); }
       <details class="more" id="everything">
         <summary>Explore more</summary>
         <div class="grid g2">
-          <div class="card"><h3>Journal and reflect</h3><p>The journal is part of Hopewick Plus. Private writing, in your own voice. Free can open the screen. Writing and editing need Plus.</p></div>
+          <div class="card"><h3>Journal and reflect</h3><p>Private writing, in your own voice, with daily prompts. Writing in the journal is free. Hopewick Plus adds gratitude and recovery entries, guided series and prompt packs, and Deepen with Hope.</p></div>
           <div class="card"><h3>Voice</h3><p>Talk instead of type, hear replies read aloud, or use hands-free conversation where the browser supports it.</p></div>
           <div class="card"><h3>Shared-device profiles</h3><p>Separate private profiles on one device, with an optional PIN. Adding another profile is part of Hopewick Plus. The profile you already have stays available. A PIN is a light lock, not strong security.</p></div>
           <div class="card"><h3>Remembers what matters</h3><p>Goals, triggers, supports and what helps can be kept on this device so conversations build over time. You can view, edit or delete every memory. Crisis details are not stored as memories.</p></div>
@@ -530,7 +545,7 @@ a:hover { color: var(--accent-strong); }
       </details>
       <details class="faq-item">
         <summary>Do I need a card for the free plan?</summary>
-        <p>No. No card required for the free plan. Free is 15 Hope messages a day, plus crisis support, practical finders, today’s readings, the daily check-in, and the clean-time tracker.</p>
+        <p>No. No card required for the free plan. Free is 15 Hope messages a day, plus crisis support, your safety plan, relapse prevention and exit plans, practical finders, today’s readings, the daily check-in, the 12 core coping tools, My next step, the journal, and the clean-time tracker. The app shows the last 7 days of your history on the free plan, and you can export or delete everything you saved at any time.</p>
       </details>
       <details class="faq-item">
         <summary>How does the 7-day trial work?</summary>
@@ -542,7 +557,7 @@ a:hover { color: var(--accent-strong); }
       </details>
       <details class="faq-item">
         <summary>What does deleting my account do?</summary>
-        <p>Delete account removes the live server sign-in, chats, check-ins, and weekly goals, signs you out, and cancels Plus straight away. A copy in this browser can remain until you clear it in Settings. Stripe may keep invoices. Older Render snapshots are not wiped. The detail is on the <a href="data.html">data storage and deletion</a> page.</p>
+        <p>Delete account removes the live server sign-in, chats, check-ins, goals, journal, safety plan, relapse and exit plans, coping history, next steps and weekly plans, signs you out, and cancels Plus straight away. A copy in this browser can remain until you clear it in Settings. Stripe may keep invoices. Older Render snapshots are not wiped. The detail is on the <a href="data.html">data storage and deletion</a> page.</p>
       </details>
       <details class="faq-item">
         <summary>How do I sign in?</summary>
@@ -572,7 +587,10 @@ a:hover { color: var(--accent-strong); }
             <li>15 Hope messages a day</li>
             <li>Crisis and practical support</li>
             <li>Today’s readings, including Word for the day and Just for today</li>
-            <li>Daily check-in and clean-time tracker</li>
+            <li>Daily check-in, the last 7 days of trends, and the clean-time tracker</li>
+            <li>Your safety plan, relapse prevention and exit plans, 12 core coping tools, and My next step</li>
+            <li>The journal, with daily reflection prompts</li>
+            <li>Export or delete everything you save, any time</li>
             <li>The latest saved chat when you are signed in</li>
           </ul>
           <div class="plan-actions">
@@ -585,8 +603,11 @@ a:hover { color: var(--accent-strong); }
           <p class="who">7 days free on the first subscription, then AU$20/month. A card is collected at the start. Cancel anytime. One subscription per person.</p>
           <ul class="checklist">
             <li>Unlimited Hope messages</li>
+            <li>Full history, monthly insights and a printable report</li>
+            <li>New coping tools and journal packs first</li>
             <li>Opening older stored chats</li>
-            <li>SMART goals, the journal and recovery plans</li>
+            <li>SMART goals and weekly plans</li>
+            <li>Journal extras, including Deepen with Hope</li>
             <li>Resume builder</li>
             <li>Recovery learning library</li>
             <li>Going Deeper study tracks and the full year of readings</li>
@@ -596,38 +617,97 @@ a:hover { color: var(--accent-strong); }
           </div>
         </article>
       </div>
-      <details class="more" id="plan-compare">
-        <summary>See everything included</summary>
-        <div class="grid g2">
-          <div class="card">
-            <h3>On Start free</h3>
-            <ul class="checklist">
-              <li>15 messages/day with Hope. No daily limit on Plus.</li>
-              <li>Today’s Readings — Word for the day and Just for today</li>
-              <li>Crisis support, domestic and family violence resources, and Get help</li>
-              <li>Clean-time tracker, milestones, and a slip that does not wipe the days you have already kept</li>
-              <li>Find meetings, treatment, AOD services, practical help and a church directory</li>
-              <li>The most recent saved chat when you are signed in. Older chats can still be stored. Not seeing them is not deletion. Plus opens stored history that is still there</li>
-              <li>Basic recovery tools, including the 12-step outline and SOAP</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>On Hopewick Plus</h3>
-            <ul class="checklist">
-              <li>No daily message limit</li>
-              <li>SMART goals for the week</li>
-              <li>Journal tools — write, edit, and deepen a reflection in your own voice</li>
-              <li>Relapse and exit plans — private on this device</li>
-              <li>The resume builder, kept on this device</li>
-              <li>Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence</li>
-              <li>Gut health and neuroplasticity notes — plain language, Plus only</li>
-              <li>Ice baths and recovery spa notes — plain language, Plus only</li>
-              <li>Going Deeper study tracks, and the full year of readings</li>
-              <li>Stored chat history that is still there, including older chats</li>
-            </ul>
-          </div>
-        </div>
-      </details>
+      <div class="cmp" id="plan-compare">
+        <h3 class="cmp-head">See everything included</h3>
+        <p class="fine">Tap a section to open it.</p>
+        <details class="cmp-sec" id="plan-compare-free">
+          <summary><span class="cmp-title">Always free</span><span class="cmp-line">Crisis help, your safety plan, relapse and exit plans, and your data. Never capped.</span></summary>
+          <table class="cmp-table">
+            <caption class="sr-only">Always free: Start free and Hopewick Plus</caption>
+            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Crisis support, domestic and family violence resources, and Get help</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Your safety plan essentials: warning signs, people to contact, what helps</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Relapse prevention and exit plans — private on this device, or with your account when you choose</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Clean-time tracker and milestones. A slip does not wipe the days you have already kept</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Find meetings, treatment, AOD services, practical help and a church directory</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Today’s Readings, the 12-step outline and SOAP</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Export or delete everything you save, at any time. Nothing is deleted because of your plan</th><td>Yes</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <details class="cmp-sec" id="plan-compare-history">
+          <summary><span class="cmp-title">Check-ins and history</span><span class="cmp-line">Check in every day, free. Free shows the last 7 days; Plus shows it all.</span></summary>
+          <table class="cmp-table">
+            <caption class="sr-only">Check-ins and history: Start free and Hopewick Plus</caption>
+            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">The daily check-in</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">History and trends in the app</th><td>Last 7 days</td><td>Full history</td></tr>
+                <tr><th scope="row">Saved chats</th><td>The latest chat</td><td>Stored history that is still there</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <details class="cmp-sec" id="plan-compare-journal">
+          <summary><span class="cmp-title">Journal</span><span class="cmp-line">Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.</span></summary>
+          <table class="cmp-table">
+            <caption class="sr-only">Journal: Start free and Hopewick Plus</caption>
+            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Free writing and daily reflection prompts</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Gratitude and recovery entries, and Deepen with Hope</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">Guided series and prompt packs</th><td>6 to 12 months later</td><td>First</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <details class="cmp-sec" id="plan-compare-tools">
+          <summary><span class="cmp-title">Tools and new releases</span><span class="cmp-line">The 12 core coping tools are free. Plus gets new tools first.</span></summary>
+          <table class="cmp-table">
+            <caption class="sr-only">Tools and new releases: Start free and Hopewick Plus</caption>
+            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">The coping toolkit: 12 core tools, including breathing, grounding and urge surfing</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">New coping tools and journal packs</th><td>6 to 12 months later</td><td>From release day</td></tr>
+                <tr><th scope="row">Messages with Hope</th><td>15 a day</td><td>No daily message limit</td></tr>
+                <tr><th scope="row">The resume builder, kept on this device</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">Gut health and neuroplasticity notes — plain language, Plus only</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">Ice baths and recovery spa notes — plain language, Plus only</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">Going Deeper study tracks, and the full year of readings</th><td>—</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <details class="cmp-sec" id="plan-compare-plans">
+          <summary><span class="cmp-title">Plans and reports</span><span class="cmp-line">My next step is free. Plus adds weekly plans, goals, insights and a report.</span></summary>
+          <table class="cmp-table">
+            <caption class="sr-only">Plans and reports: Start free and Hopewick Plus</caption>
+            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">My next step: one small step you choose</th><td>Yes</td><td>Yes</td></tr>
+                <tr><th scope="row">Weekly plans in My next step (no reminders are sent)</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">SMART goals for the week, and personal goals</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">Monthly insights (descriptive, not a diagnosis)</th><td>—</td><td>Yes</td></tr>
+                <tr><th scope="row">A printable mood and recovery report</th><td>—</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </details>
+        <details class="cmp-sec" id="plan-compare-soon">
+          <summary><span class="cmp-title">Coming soon</span><span class="cmp-line">Extras we are working on. Not available yet.</span></summary>
+          <table class="cmp-table">
+            <caption class="sr-only">Coming soon: Start free and Hopewick Plus</caption>
+            <thead><tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Plus</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Learning courses (first lesson free)</th><td>Coming soon</td><td>Coming soon</td></tr>
+                <tr><th scope="row">Recovery tracker extras: milestone calendar, habits, meeting log, printable milestone certificates</th><td>—</td><td>Coming soon</td></tr>
+                <tr><th scope="row">Faith plans, devotionals and a prayer journal</th><td>—</td><td>Coming soon</td></tr>
+                <tr><th scope="row">Guided audio, meditations and sleep stories</th><td>—</td><td>Coming soon</td></tr>
+                <tr><th scope="row">Themes and a custom dashboard</th><td>—</td><td>Coming soon</td></tr>
+                <tr><th scope="row">Photo and voice journal attachments</th><td>—</td><td>Coming soon</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </div>
+      <p class="callout">If Plus ends, nothing you saved is deleted. The app shows your last 7 days, and you can still export or delete everything.</p>
       <p class="callout">Hopewick Plus is an individual subscription. It is not counselling and not a crisis service. In an emergency call <a href="tel:000">000</a>.</p>
       <p class="callout">The first subscription is a 7-day trial. A card is collected by Stripe at the start. The monthly charge is the AU$20 price when the trial ends. A second checkout has no trial. Cancel in My Account stops the next renewal and leaves Plus in place until the end of the current period. We do not give a partial refund of a period already charged, except where the Australian Consumer Law requires it. Deleting the account cancels Plus straight away.</p>
     </div>

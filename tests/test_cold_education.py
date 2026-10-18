@@ -177,6 +177,7 @@ def test_cold_education_plus_gate_phone():
                 page.click("#coldPlusBtn")
             page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
+            page.evaluate("() => document.querySelectorAll('#accountDlg details').forEach((d) => { d.open = true; })")  # sections start collapsed
             account = page.inner_text("#accountDlg")
             assert "Ice baths and recovery spa notes — plain language, Plus only" in account
             assert "15 messages/day" in account
