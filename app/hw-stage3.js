@@ -122,7 +122,11 @@
     { id: 'hard', label: 'Hard moments' },
     { id: 'low', label: 'Low mood' },
   ];
-  const tools = () => (Array.isArray(window.HW_COPING_TOOLS) ? window.HW_COPING_TOOLS : []);
+  /** The 12 launch tools (public file) plus scheduled tools this account can open (from /api/content/releases). */
+  const releaseTools = () => (st.releases || []).filter((r) => r.kind === 'coping' && !r.core && r.available && r.content)
+    .map((r) => Object.assign({ key: r.key, title: r.title, short: r.teaser, minutes: 3, tags: [], icon: 'heart' }, r.content, { release: r }));
+  const tools = () => (Array.isArray(window.HW_COPING_TOOLS) ? window.HW_COPING_TOOLS : []).concat(releaseTools());
+  const lockedTools = () => (st.releases || []).filter((r) => r.kind === 'coping' && !r.core && !r.available);
   const toolByKey = (k) => tools().find((t) => t.key === k) || null;
   HW3.toolByKey = toolByKey;
 
@@ -133,8 +137,12 @@
     key: '', loading: null, loaded: false, error: '',
     settings: { shareCheckinsWithHope: false, journalAiAlways: false, nextStepFollowUps: false, journalImport: 'pending', plansImport: 'pending' },
     checkins: [], legacy: [], activities: [], goals: [], steps: [], journal: [], journalTotal: 0, plans: null,
+    windows: {}, weekly: [], safety: null, releases: [], releasesFor: null, insights: null,
   };
   HW3.state = st;
+  /** Same constant as HISTORY_WINDOW_DAYS in server/wellbeing/plan-rules.js (the server decides; this is for wording). */
+  const HISTORY_WINDOW_DAYS = 7;
+  HW3.HISTORY_WINDOW_DAYS = HISTORY_WINDOW_DAYS;
   const demo = () => { try { return !!isDemo; } catch (_) { return false; } };
   const signedIn = () => { try { return !!(billingState && billingState.signedIn); } catch (_) { return false; } };
   const online = () => signedIn() && !demo();
@@ -171,6 +179,7 @@
 
   /** Load everything for this account + profile once; refresh on demand. */
   async function sync(force) {
+    if (demo() || !online()) loadReleases().then(() => repaint()).catch(() => {});
     if (demo()) {
       if (!st.loaded) {
         // Demo: show the sample check-ins in the trend (nothing is saved).
@@ -190,9 +199,10 @@
     st.key = key;
     st.loading = (async () => {
       try {
-        const [settings, checkins, activities, goals, steps, journal, plans] = await Promise.all([
+        const [settings, checkins, activities, goals, steps, journal, plans, weekly, safety] = await Promise.all([
           api('GET', '/api/me/settings'), api('GET', '/api/me/checkins'), api('GET', '/api/me/activities'),
           api('GET', '/api/me/goals'), api('GET', '/api/me/next-steps'), api('GET', '/api/me/journal'), api('GET', '/api/me/plans'),
+          api('GET', '/api/me/weekly-plans'), api('GET', '/api/me/safety-plan'), loadReleases(),
         ]);
         if (st.key !== key) return st;
         st.settings = Object.assign({}, st.settings, settings.settings || {});
@@ -204,6 +214,10 @@
         st.journal = journal.entries || [];
         st.journalTotal = journal.total || 0;
         st.plans = plans.plans || null;
+        st.weekly = weekly.plans || [];
+        st.safety = safety.safety || null;
+        st.windows = { checkins: checkins.window, journal: journal.window, activities: activities.window, steps: steps.window, weekly: weekly.window };
+        st.insights = null;
         st.loaded = true;
         st.error = '';
         adoptJournal();
@@ -220,9 +234,23 @@
     return st.loading;
   }
   HW3.sync = (force) => sync(force).catch(() => st);
+  /** Content release schedule for this account (Plus early access). Public endpoint; signed out counts as free. */
+  async function loadReleases() {
+    const who = `${signedIn() && !demo() ? (billingState.id || '') : 'anon'}:${plus() ? 'plus' : 'free'}`;
+    if (st.releasesFor === who) return st.releases;
+    try {
+      const res = await fetch('/api/content/releases', { credentials: 'include', headers: { Accept: 'application/json' } });
+      const data = res.ok ? await res.json() : { items: [] };
+      st.releases = Array.isArray(data.items) ? data.items : [];
+      st.releasesFor = who;
+    } catch (_) { st.releases = st.releases || []; }
+    return st.releases;
+  }
+  HW3.loadReleases = loadReleases;
   function reset() {
     st.key = ''; st.loaded = false; st.error = ''; st.loading = null;
     st.checkins = []; st.legacy = []; st.activities = []; st.goals = []; st.steps = []; st.journal = []; st.journalTotal = 0; st.plans = null;
+    st.windows = {}; st.weekly = []; st.safety = null; st.insights = null; st.releasesFor = null;
     st.settings = { shareCheckinsWithHope: false, journalAiAlways: false, nextStepFollowUps: false, journalImport: 'pending', plansImport: 'pending' };
   }
   HW3.reset = reset;
@@ -333,6 +361,7 @@
       return s;
     }
     if (method === 'POST') { const s = (await api('POST', '/api/me/next-steps', body)).step; st.steps.unshift(s); return s; }
+    // (weekly plans have their own writer below: weeklyWrite)
     if (method === 'DELETE') { await api('DELETE', `/api/me/next-steps/${id}`); st.steps = st.steps.filter((s) => s.id !== id); return null; }
     const s = (await api('PATCH', `/api/me/next-steps/${id}`, body)).step;
     st.steps = st.steps.map((x) => (x.id === id ? s : x));
@@ -343,7 +372,7 @@
   /* ------------------------------------------------------------------ */
   /* Views                                                               */
   /* ------------------------------------------------------------------ */
-  HW3.views = ['checkin', 'coping', 'mygoals', 'nextstep'];
+  HW3.views = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
   const ui = { checkinDate: null, draft: null, trendRange: 'week', toolFilter: 'all', player: null, goalFilter: 'active', goalEdit: null, stepEdit: false };
   HW3.ui = ui;
 
@@ -390,6 +419,8 @@
     else if (tab === 'coping') renderCoping(root);
     else if (tab === 'mygoals') renderGoals(root);
     else if (tab === 'nextstep') renderSteps(root);
+    else if (tab === 'compare') renderCompare(root);
+    else if (tab === 'safety') renderSafety(root);
     root.appendChild(crisisLine());
     if (scroller) scroller.scrollTop = keepScroll;
   }
@@ -560,7 +591,10 @@
     if (saved && ui.justSaved === date) root.appendChild(afterSaveCard(saved));
     root.appendChild(shareCard());
     root.appendChild(trendsCard());
+    const plusCard = insightsCard();
+    if (plusCard) root.appendChild(plusCard);
     root.appendChild(historyCard());
+    root.appendChild(myDataCard());
   }
 
   /** A gentle, rule-based suggestion. Not a judgement about the person. */
@@ -688,6 +722,16 @@
     tabs.children[0].id = 'hw3TrendWeek';
     tabs.children[1].id = 'hw3TrendMonth';
     const have = days.some((d) => d.score != null);
+    if (!plus()) {
+      tabs.children[1].appendChild(h('span', { class: 'hw3-plus-tag', text: 'Plus' }));
+      tabs.children[1].setAttribute('aria-label', 'Month (Hopewick Plus)');
+    }
+    if (range === 'month' && !plus()) {
+      return h('section', { class: 'hw-card hw3-card', id: 'hw3Trends', 'aria-labelledby': 'hw3TrendsTitle' },
+        h('div', { class: 'hw3-row-between' }, h('h2', { class: 'hw3-h2', id: 'hw3TrendsTitle', text: 'Your trends' }), tabs),
+        plusInfo('hw3MonthPlus', 'The month view, your full history and monthly insights are part of Hopewick Plus. Your last 7 days are always here, free, and every check-in you save is kept.', 'See your full history with Plus'),
+        h('p', { class: 'hw-hint', text: 'Trends show what you recorded. They are not a diagnosis and do not predict anything.' }));
+    }
     const table = h('table', { class: 'hw3-table' },
       h('caption', { class: 'hw-sr-only', text: 'Check-ins by day' }),
       h('thead', {}, h('tr', {}, h('th', { scope: 'col', text: 'Day' }), h('th', { scope: 'col', text: 'Mood' }), h('th', { scope: 'col', text: 'Intensity' }), h('th', { scope: 'col', text: 'Noted' }))),
@@ -710,6 +754,8 @@
   function historyCard() {
     const list = st.checkins.slice(0, 14);
     const sec = h('section', { class: 'hw-card hw3-card', 'aria-labelledby': 'hw3HistTitle' }, h('h2', { class: 'hw3-h2', id: 'hw3HistTitle', text: 'Recent check-ins' }));
+    const older = windowNote(st.windows.checkins, 'check-in', 'check-ins', 'hw3CheckinWindow');
+    if (older) sec.appendChild(older);
     if (!list.length) {
       sec.appendChild(h('div', { class: 'hw-empty hw-empty--inline' }, h('p', { class: 'hw-empty__title', text: 'No check-ins saved yet' }), h('p', { class: 'hw-empty__body', text: 'Your saved check-ins will be listed here so you can look back, edit or delete them.' })));
       if (st.legacy.length) sec.appendChild(h('p', { class: 'hw-hint', text: `Your ${st.legacy.length} earlier quick check-ins are included in the trends above.` }));
@@ -780,12 +826,15 @@
       grid.appendChild(h('li', { class: 'hw-card hw3-tool' },
         h('div', { class: 'hw3-tool__head' }, h('span', { class: 'hw-icon-badge' }, icon(t.icon)),
           h('div', {}, h('h2', { class: 'hw3-tool__title', text: t.title }),
-            h('p', { class: 'hw-hint', text: `About ${t.minutes} min${t.badge ? ' · ' : ''}` }, t.badge ? h('span', { class: 'hw3-badge', text: t.badge }) : null))),
+            h('p', { class: 'hw-hint', text: `About ${t.minutes} min${t.badge ? ' · ' : ''}` }, t.badge ? h('span', { class: 'hw3-badge', text: t.badge }) : null),
+            t.release ? releaseBadges(t.release) : null)),
         h('p', { class: 'hw3-tool__short', text: t.short }),
         lastDone ? h('p', { class: 'hw-hint', text: `Last done ${whenLabel(lastDone.completedAt)}` }) : null,
         h('div', { class: 'hw-card__actions' }, btn(lastDone ? 'Do it again' : 'Start', () => openTool(t.key), { kind: 'primary', attrs: { 'aria-label': `${lastDone ? 'Do again' : 'Start'}: ${t.title}`, dataset: undefined } }))));
     }
     root.appendChild(grid);
+    const locked = lockedTools();
+    if (locked.length) root.appendChild(teaserSection('hw3CopeSoon', 'New in Hopewick Plus', locked));
     root.appendChild(h('p', { class: 'hw-hint', text: 'Tools marked "DBT-informed" draw on skills from dialectical behaviour therapy. Using them here is not therapy.' }));
     root.appendChild(activityHistory());
   }
@@ -793,6 +842,8 @@
   function activityHistory() {
     const done = st.activities.filter((a) => a.status === 'completed').slice(0, 12);
     const sec = h('section', { class: 'hw-card hw3-card', 'aria-labelledby': 'hw3ActHist' }, h('h2', { class: 'hw3-h2', id: 'hw3ActHist', text: 'Your history' }));
+    const older = windowNote(st.windows.activities, 'finished exercise', 'finished exercises', 'hw3ActWindow');
+    if (older) sec.appendChild(older);
     if (!done.length) {
       sec.appendChild(h('div', { class: 'hw-empty hw-empty--inline' }, h('p', { class: 'hw-empty__title', text: 'Nothing completed yet' }), h('p', { class: 'hw-empty__body', text: 'Exercises you finish are saved here, with whether they helped if you tell us.' })));
       return sec;
@@ -1183,8 +1234,11 @@
       }
     }
     root.appendChild(card);
+    root.appendChild(weeklyPlanCard());
     const past = st.steps.filter((s) => s.status !== 'open').slice(0, 15);
     const sec = h('section', { class: 'hw-card hw3-card', 'aria-labelledby': 'hw3PastSteps' }, h('h2', { class: 'hw3-h2', id: 'hw3PastSteps', text: 'Earlier steps' }));
+    const older = windowNote(st.windows.steps, 'earlier step', 'earlier steps', 'hw3StepWindow');
+    if (older) sec.appendChild(older);
     if (!past.length) sec.appendChild(h('p', { class: 'hw-hint', text: 'Steps you finish or change are kept here.' }));
     else {
       sec.appendChild(h('ul', { class: 'hw3-list' }, past.map((s) => h('li', { class: 'hw3-list__item' },
@@ -1317,7 +1371,7 @@
   const jKey = () => { try { return pk(profile.id, 'journal'); } catch (_) { return null; } };
   const localJournal = () => { const k = jKey(); if (!k) return []; try { const v = load(k, []); return Array.isArray(v) ? v : []; } catch (_) { return []; } };
   function fromServer(e) {
-    return { id: e.id, clientId: e.clientId || null, title: e.title || '', body: e.body || '', refined: e.refined || '', emotions: e.emotions || '', kind: e.kind || 'free', prompt: e.prompt || '', entryDate: e.entryDate || '', created: Date.parse(e.createdAt) || Date.now(), updated: Date.parse(e.updatedAt) || Date.now(), server: true };
+    return { id: e.id, clientId: e.clientId || null, title: e.title || '', body: e.body || '', refined: e.refined || '', emotions: e.emotions || '', kind: e.kind || 'free', prompt: e.prompt || '', packId: e.packId || null, entryDate: e.entryDate || '', created: Date.parse(e.createdAt) || Date.now(), updated: Date.parse(e.updatedAt) || Date.now(), server: true };
   }
   const serverMode = () => online() && st.loaded;
   HW3.journalServerMode = serverMode;
@@ -1347,7 +1401,7 @@
   /** Save (create or update) one entry. Returns the entry in the app's journal shape. */
   HW3.journalSave = async function journalSave(fields, existing) {
     if (!serverMode() || (existing && existing.localOnly)) return null; // caller uses the device path
-    const body = { title: fields.title || '', body: fields.body, kind: fields.kind || 'free', prompt: fields.prompt || '', entryDate: fields.entryDate || todayIso() };
+    const body = { title: fields.title || '', body: fields.body, kind: fields.kind || 'free', prompt: fields.prompt || '', entryDate: fields.entryDate || todayIso(), packId: fields.packId || null };
     if (fields.refined !== undefined) body.refined = fields.refined;
     if (fields.emotions !== undefined) body.emotions = fields.emotions;
     const out = existing && existing.server
@@ -1454,7 +1508,9 @@
       h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: 'hw3JFrom', text: 'From' }), from),
       h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: 'hw3JTo', text: 'To' }), to),
       h('div', { class: 'hw-field hw3-jtools__clear' }, btn('Clear', () => { Object.assign(f, { q: '', kind: '', from: '', to: '' }); HW3.paintJournalTools(host, onFilter); onFilter(); }, { kind: 'ghost' }))));
-    const any = Array.isArray(journal) && journal.length;
+    const olderJ = windowNote(st.windows.journal, 'journal entry', 'journal entries', 'hw3JournalWindow');
+    if (olderJ) host.appendChild(olderJ);
+    const any = (Array.isArray(journal) && journal.length) || st.journalTotal > 0;
     host.appendChild(h('div', { class: 'hw-card__actions hw3-jexport' },
       any ? btn('Export as JSON', () => HW3.journalExport('json'), { attrs: { id: 'hw3JExportJson' } }) : null,
       any ? btn('Export as Markdown', () => HW3.journalExport('md'), { attrs: { id: 'hw3JExportMd' } }) : null));
@@ -1550,4 +1606,392 @@
     const grid = document.getElementById('dashGrid');
     if (card && grid) grid.before(card);
   }
+
+  /* ------------------------------------------------------------------ */
+  /* Free and Plus: kind wording, history window, upgrade                */
+  /* ------------------------------------------------------------------ */
+  /** Opens the existing Plus checkout flow (startCheckout signs in first when needed). */
+  function upgrade() {
+    try { if (typeof startCheckout === 'function') { startCheckout(); return; } } catch (_) { /* fall back */ }
+    try { openAccountDlg(); } catch (_) { /* account dialog missing */ }
+  }
+  HW3.upgrade = upgrade;
+  /** A calm note about a Plus feature with one button. Never shown to Plus. */
+  function plusInfo(id, text, label) {
+    if (plus()) return null;
+    return h('div', { class: 'hw3-plusinfo', id, role: 'note' },
+      h('p', { text }),
+      h('div', { class: 'hw-card__actions' },
+        btn(label || 'See Hopewick Plus', () => upgrade(), { attrs: { id: `${id}Btn` } }),
+        btn('Compare free and Plus', () => { try { setAppTab('compare'); } catch (_) { /* */ } }, { kind: 'ghost' })));
+  }
+  HW3.plusInfo = plusInfo;
+  /** "N older items are saved" for the free history window. Nothing is deleted or locked. */
+  function windowNote(win, one, many, id) {
+    if (!win || !win.limited || !win.hiddenCount || plus()) return null;
+    const n = win.hiddenCount;
+    return h('div', { class: 'hw3-window', id, role: 'note' },
+      h('p', { text: `${n} older ${n === 1 ? one : many} ${n === 1 ? 'is' : 'are'} saved. The free plan shows the last ${win.days || HISTORY_WINDOW_DAYS} days here. Your export always includes everything.` }),
+      h('div', { class: 'hw-card__actions' },
+        btn('See your full history with Plus', () => upgrade(), { attrs: { id: `${id}Plus` } }),
+        btn('Export everything', () => exportAll(), { kind: 'ghost' })));
+  }
+  HW3.windowNote = windowNote;
+  function exportAll() {
+    if (!online()) { say('Sign in to export what is saved to your account.', true); return; }
+    const a = h('a', { href: `/api/me/export?profileId=${encodeURIComponent(pid())}`, download: '' });
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  HW3.exportAll = exportAll;
+  const DELETE_AREAS = [
+    { id: 'checkins', label: 'check-ins' }, { id: 'journal', label: 'journal entries' }, { id: 'activities', label: 'coping history' },
+    { id: 'steps', label: 'next steps' }, { id: 'weekly-plans', label: 'weekly plans' }, { id: 'goals', label: 'personal goals' },
+  ];
+  async function deleteArea(area, label) {
+    if (!online()) return;
+    const sure = area === 'all'
+      ? confirm('Delete everything Hopewick has saved for this profile on your account? This cannot be undone. Your account and plan stay as they are.')
+      : confirm(`Delete all your ${label}? This cannot be undone.`);
+    if (!sure) return;
+    try {
+      await api('DELETE', `/api/me/data/${area}?confirm=${area}`);
+      if (area === 'all' || area === 'checkins') { try { moods.filter((m) => checkinOwnedHere(m)).forEach((m) => { m.mood = null; m.craving = null; m.updated = Date.now(); }); saveMoods(); } catch (_) { /* */ } }
+      say('Deleted');
+      await HW3.sync(true);
+    } catch (e) { say(failMessage(e), true); }
+  }
+  HW3.deleteArea = deleteArea;
+  /** Export and delete: free on every plan, never limited. */
+  function myDataCard() {
+    const sec = h('section', { class: 'hw-card hw3-card', id: 'hw3MyData', 'aria-labelledby': 'hw3MyDataT' },
+      h('h2', { class: 'hw3-h2', id: 'hw3MyDataT', text: 'Your data' }));
+    if (!online()) {
+      sec.appendChild(h('p', { class: 'hw-hint', text: demo() ? 'Demo mode: nothing is saved.' : 'Sign in to export or delete what is saved to your account.' }));
+      return sec;
+    }
+    sec.appendChild(h('p', { class: 'hw-hint', text: 'Everything you save is yours. Export or delete it at any time, on any plan. Hopewick never deletes your data because of your plan.' }));
+    const sel = h('select', { class: 'hw-input', id: 'hw3DelArea', 'aria-label': 'What to delete' },
+      DELETE_AREAS.map((a) => h('option', { value: a.id, text: `All ${a.label}` })), h('option', { value: 'all', text: 'Everything for this profile' }));
+    sec.appendChild(h('div', { class: 'hw-card__actions' },
+      btn('Export everything (JSON)', () => exportAll(), { kind: 'primary', attrs: { id: 'hw3ExportAll' } })));
+    sec.appendChild(h('div', { class: 'hw3-row' }, sel,
+      btn('Delete', () => { const a = DELETE_AREAS.find((x) => x.id === sel.value); deleteArea(sel.value, a ? a.label : 'data'); }, { kind: 'ghost', attrs: { id: 'hw3DelBtn' } })));
+    return sec;
+  }
+  HW3.myDataCard = myDataCard;
+
+  /* ----- content release badges and teasers ----- */
+  function releaseBadges(r) {
+    if (!r || !r.badges) return null;
+    const out = [];
+    if (r.badges.newForPlus) out.push(h('span', { class: 'hw3-badge hw3-badge--new', text: 'New for Plus this week' }));
+    if (r.badges.comingToFree) out.push(h('span', { class: 'hw3-badge hw3-badge--soon', text: `Coming to free in ${r.badges.comingToFree}` }));
+    return out.length ? h('p', { class: 'hw3-badges' }, out) : null;
+  }
+  HW3.releaseBadges = releaseBadges;
+  function teaserSection(id, title, items) {
+    return h('section', { class: 'hw-card hw3-card hw3-teasers', id, 'aria-labelledby': `${id}T` },
+      h('h2', { class: 'hw3-h2', id: `${id}T`, text: title }),
+      h('p', { class: 'hw-hint', text: 'New tools arrive in Hopewick Plus first and come to the free plan later. Every tool above stays free.' }),
+      h('ul', { class: 'hw3-list' }, items.map((r) => h('li', { class: 'hw3-list__item hw3-teaser' },
+        h('div', {}, h('p', { class: 'hw3-list__title', text: r.title }), h('p', { class: 'hw-hint', text: r.teaser }), releaseBadges(r))))),
+      plus() ? null : h('div', { class: 'hw-card__actions' }, btn('See Hopewick Plus', () => upgrade(), { attrs: { id: `${id}Btn` } })));
+  }
+
+  /* ----- journal packs (guided series and prompt packs) ----- */
+  HW3.paintJournalPacks = function paintJournalPacks() {
+    const row = document.getElementById('jPackRow');
+    const sel = document.getElementById('jPack');
+    const note = document.getElementById('jPackNote');
+    if (!row || !sel) return;
+    const packs = (st.releases || []).filter((r) => r.kind === 'journal-pack');
+    row.hidden = !packs.length;
+    const keep = sel.value;
+    sel.replaceChildren(h('option', { value: '', text: 'None' }));
+    for (const r of packs) {
+      const o = h('option', { value: r.key, text: r.available ? r.title : `${r.title} (Plus${r.badges && r.badges.comingToFree ? `, free from ${r.badges.comingToFree}` : ''})` });
+      if (!r.available) o.disabled = true;
+      sel.appendChild(o);
+    }
+    sel.value = packs.some((r) => r.key === keep && r.available) ? keep : '';
+    const show = () => {
+      const r = packs.find((x) => x.key === sel.value);
+      if (note) {
+        note.replaceChildren();
+        if (r) note.append(r.teaser, ' ', releaseBadges(r) || '');
+        else if (packs.some((x) => !x.available)) note.textContent = 'Guided series and prompt packs arrive in Hopewick Plus first and come to the free plan later.';
+      }
+    };
+    if (!sel.dataset.bound) {
+      sel.dataset.bound = '1';
+      sel.addEventListener('change', () => {
+        const r = (st.releases || []).find((x) => x.kind === 'journal-pack' && x.key === sel.value);
+        show();
+        if (!r || !r.content) return;
+        const used = (Array.isArray(journal) ? journal : []).filter((e) => e.packId === r.key).length;
+        const list = r.content.prompts || [];
+        const pr = list[r.content.series ? Math.min(used, list.length - 1) : used % list.length];
+        const kind = document.getElementById('jKind');
+        if (kind) kind.value = 'prompt';
+        const t = document.getElementById('jPromptText');
+        const clear = document.getElementById('jPromptClear');
+        if (t && pr) { t.textContent = `${pr.title}: ${pr.text}`; t.hidden = false; if (clear) clear.hidden = false; }
+        const title = document.getElementById('jTitle');
+        if (title && pr && !title.value) title.value = pr.title;
+      });
+    }
+    show();
+  };
+
+  /* ----- Plus: monthly insights and the printable report ----- */
+  function monthIso() { return todayIso().slice(0, 7); }
+  function monthName(m) { const [y, mo] = m.split('-').map(Number); return new Intl.DateTimeFormat('en-AU', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, mo - 1, 1))); }
+  function insightsCard() {
+    if (!plus() || !(online() || demo())) return null;
+    const m = ui.insightMonth || monthIso();
+    const sec = h('section', { class: 'hw-card hw3-card', id: 'hw3Insights', 'aria-labelledby': 'hw3InsightsT' },
+      h('div', { class: 'hw3-row-between' }, h('h2', { class: 'hw3-h2', id: 'hw3InsightsT', text: `Monthly insights · ${monthName(m)}` }),
+        h('div', { class: 'hw-chips', role: 'group', 'aria-label': 'Month' },
+          btn('Previous month', () => { const [y, mo] = m.split('-').map(Number); const d = new Date(Date.UTC(y, mo - 2, 1)); ui.insightMonth = d.toISOString().slice(0, 7); st.insights = null; render('checkin'); focusId('hw3InsightsT'); }, { kind: 'ghost', attrs: { id: 'hw3InsPrev' } }),
+          m < monthIso() ? btn('Next month', () => { const [y, mo] = m.split('-').map(Number); const d = new Date(Date.UTC(y, mo, 1)); ui.insightMonth = d.toISOString().slice(0, 7); st.insights = null; render('checkin'); focusId('hw3InsightsT'); }, { kind: 'ghost' }) : null)));
+    const ins = st.insights && st.insights.month === m ? st.insights : null;
+    if (demo()) {
+      sec.appendChild(h('p', { class: 'hw-hint', text: 'Demo: insights summarise what you saved in a month, in plain words. Nothing is saved in the demo.' }));
+    } else if (!ins) {
+      sec.appendChild(h('p', { class: 'hw-hint', text: 'Loading…' }));
+      api('GET', `/api/me/insights?month=${m}`).then((d) => { st.insights = d.insights; render('checkin'); }).catch((e) => { st.insights = { month: m, lines: [failMessage(e)], error: true }; render('checkin'); });
+    } else {
+      sec.appendChild(h('ul', { class: 'hw3-insights' }, (ins.lines || []).map((l) => h('li', { text: l }))));
+      if (ins.note) sec.appendChild(h('p', { class: 'hw-hint', text: ins.note }));
+    }
+    sec.appendChild(h('div', { class: 'hw-card__actions' },
+      btn('Printable report', () => printReport(), { kind: 'primary', attrs: { id: 'hw3ReportBtn' } })));
+    return sec;
+  }
+  HW3.insightsCard = insightsCard;
+
+  async function printReport(range) {
+    if (!plus()) { upgrade(); return; }
+    if (demo()) { say('The report uses what you save to your account. Nothing is saved in the demo.'); return; }
+    let rep;
+    const to = (range && range.to) || todayIso();
+    const from = (range && range.from) || addDays(to, -29);
+    try { rep = (await api('GET', `/api/me/report?from=${from}&to=${to}`)).report; } catch (e) { say(failMessage(e), true); return; }
+    const old = document.getElementById('hw3Print'); if (old) old.remove();
+    let clean = null;
+    try { const d = soberDaysCount(); if (d != null) clean = `${d} ${d === 1 ? 'day' : 'days'} ${settings.soberWhat || 'clean'}`; } catch (_) { clean = null; }
+    let who = '';
+    try { who = (profile && profile.name) || ''; } catch (_) { who = ''; }
+    const kv = (obj) => Object.entries(obj || {}).map(([k, v]) => `${k}: ${v}`).join(', ') || 'none recorded';
+    const sheet = h('section', { id: 'hw3Print', class: 'hw3-print', 'aria-label': 'Printable mood and recovery report' },
+      h('h1', { text: 'Hopewick mood and recovery report' }),
+      h('p', { text: `${who ? `${who} · ` : ''}${dayLabel(rep.from)} to ${dayLabel(rep.to)} · made ${whenLabel(rep.generatedAt)}` }),
+      clean ? h('p', { text: `Clean time (from the tracker on this device): ${clean}` }) : null,
+      h('h2', { text: 'Summary' }),
+      h('ul', {}, (rep.lines || []).map((l) => h('li', { text: l }))),
+      h('h2', { text: 'Check-ins' }),
+      h('p', { text: `Days checked in: ${rep.checkins.days}. Moods: ${kv(rep.checkins.moods)}. Cravings: ${kv(rep.checkins.cravings)}.${rep.checkins.averageIntensity != null ? ` Average intensity: ${rep.checkins.averageIntensity}/10.` : ''}` }),
+      rep.days.length ? h('table', {},
+        h('thead', {}, h('tr', {}, ['Day', 'Mood', 'Intensity', 'Cravings', 'Noted'].map((t) => h('th', { scope: 'col', text: t })))),
+        h('tbody', {}, rep.days.map((d) => h('tr', {}, h('td', { text: dayLabel(d.date) }), h('td', { text: d.moodLabel || '–' }), h('td', { text: d.intensity == null ? '–' : `${d.intensity}/10` }), h('td', { text: d.craving || '–' }), h('td', { text: (d.triggers || []).join(', ') || '–' }))))) : null,
+      h('h2', { text: 'Coping, steps and goals' }),
+      h('p', { text: `Coping tools finished: ${rep.coping.completed} (helpful: ${rep.coping.helpful}, somewhat: ${rep.coping.somewhat}). Next steps done: ${rep.nextSteps.done}. Weekly plan steps done: ${rep.weeklyPlans.stepsDone}. Goals completed: ${rep.goals.completed}. Journal entries written: ${rep.journal.entries}.` }),
+      h('p', { class: 'hw3-print__note', text: rep.note }),
+      h('p', { class: 'hw3-print__note', text: 'Need help now? Lifeline 13 11 14 (24/7). In an emergency call 000.' }),
+      h('div', { class: 'hw-card__actions hw3-print__actions' }, btn('Print or save as PDF', () => window.print(), { kind: 'primary', attrs: { id: 'hw3PrintNow' } }), btn('Close report', () => closePrint(), { attrs: { id: 'hw3PrintClose' } })));
+    document.body.appendChild(sheet);
+    document.body.classList.add('hw3-printing');
+    focusId('hw3PrintNow');
+    try { window.print(); } catch (_) { /* the buttons stay */ }
+  }
+  function closePrint() {
+    const n = document.getElementById('hw3Print'); if (n) n.remove();
+    document.body.classList.remove('hw3-printing');
+    focusId('hw3ReportBtn');
+  }
+  HW3.printReport = printReport;
+  HW3.closePrint = closePrint;
+
+  /* ----- Plus: weekly multi-step plans in My Next Step ----- */
+  function weekStartIso() {
+    const t = todayIso();
+    const [y, m, d] = t.split('-').map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    dt.setUTCDate(dt.getUTCDate() - dt.getUTCDay());
+    return dt.toISOString().slice(0, 10);
+  }
+  const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  async function weeklyWrite(method, id, body) {
+    if (demo()) {
+      if (method === 'POST') { const p = Object.assign({ id: demoId(), status: 'active', weekStart: weekStartIso(), createdAt: nowIso(), updatedAt: nowIso(), completedAt: null }, body, { steps: body.steps.map((t, i) => (typeof t === 'string' ? { id: `s${i + 1}`, title: t, day: null, done: false, doneAt: null } : t)) }); st.weekly.unshift(p); return p; }
+      if (method === 'DELETE') { st.weekly = st.weekly.filter((p) => p.id !== id); return null; }
+      const p = Object.assign({}, st.weekly.find((x) => x.id === id), body, { updatedAt: nowIso() });
+      st.weekly = st.weekly.map((x) => (x.id === id ? p : x));
+      return p;
+    }
+    if (method === 'POST') { const p = (await api('POST', '/api/me/weekly-plans', body)).plan; st.weekly.unshift(p); return p; }
+    if (method === 'DELETE') { await api('DELETE', `/api/me/weekly-plans/${id}`); st.weekly = st.weekly.filter((p) => p.id !== id); return null; }
+    const p = (await api('PATCH', `/api/me/weekly-plans/${id}`, body)).plan;
+    st.weekly = st.weekly.map((x) => (x.id === id ? p : x));
+    return p;
+  }
+  HW3.weeklyWrite = weeklyWrite;
+  function weeklyForm(onSave) {
+    const title = h('input', { class: 'hw-input', id: 'hw3WeekTitle', type: 'text', maxlength: '120', placeholder: 'For example: A steadier week' });
+    const steps = h('textarea', { class: 'hw-textarea', id: 'hw3WeekSteps', rows: '5', placeholder: 'One small step per line, up to 10.\nCall Sam on Tuesday\nGo to a meeting on Thursday\nCook dinner twice' });
+    return h('form', { class: 'hw3-form', id: 'hw3WeekForm', onsubmit: async (ev) => {
+      ev.preventDefault();
+      const list = steps.value.split('\n').map((x) => x.trim()).filter(Boolean).slice(0, 10);
+      if (!title.value.trim()) { title.focus(); say('Give your plan a short name', true); return; }
+      if (!list.length) { steps.focus(); say('Add at least one step', true); return; }
+      try { await onSave(title.value.trim(), list); } catch (e) { say(failMessage(e), true); }
+    } },
+    h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: 'hw3WeekTitle', text: 'Name for this week' }), title),
+    h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: 'hw3WeekSteps', text: 'Steps for this week' }), steps),
+    h('div', { class: 'hw-card__actions' }, h('button', { type: 'submit', class: 'hw-btn hw-btn--primary hw-btn--sm', id: 'hw3WeekSave', text: 'Save weekly plan' })));
+  }
+  function weeklyPlanCard() {
+    const sec = h('section', { class: 'hw-card hw3-card', id: 'hw3Weekly', 'aria-labelledby': 'hw3WeeklyT' },
+      h('h2', { class: 'hw3-h2', id: 'hw3WeeklyT', text: 'This week’s plan' }));
+    const ws = weekStartIso();
+    const current = st.weekly.find((p) => p.status !== 'archived' && p.weekStart === ws) || null;
+    const others = st.weekly.filter((p) => p !== current).slice(0, 6);
+    if (!plus() && !current && !others.length) {
+      sec.appendChild(h('p', { class: 'hw-hint', text: 'Break a week into a few small steps and tick them off. Weekly plans are part of Hopewick Plus. Your single next step above stays free.' }));
+      sec.appendChild(h('div', { class: 'hw-card__actions' }, btn('Compare free and Plus', () => setAppTab('compare'), { kind: 'ghost', attrs: { id: 'hw3WeeklyCompare' } })));
+      return sec;
+    }
+    sec.appendChild(h('p', { class: 'hw-hint', text: `Week of ${dayLabel(ws)}. Hopewick does not send reminders or messages about this plan.` }));
+    if (current) {
+      const done = current.steps.filter((x) => x.done).length;
+      sec.appendChild(h('p', { class: 'hw3-list__title', id: 'hw3WeeklyName', text: `${current.title} · ${done} of ${current.steps.length} done` }));
+      const ul = h('ul', { class: 'hw3-checklist', 'aria-label': current.title });
+      current.steps.forEach((stp, i) => {
+        const cb = h('input', { type: 'checkbox', id: `hw3Wk-${i}` });
+        cb.checked = !!stp.done;
+        cb.disabled = !plus();
+        cb.addEventListener('change', async () => {
+          const steps = current.steps.map((x, j) => (j === i ? Object.assign({}, x, { done: cb.checked }) : x));
+          const allDone = steps.every((x) => x.done);
+          try { await weeklyWrite('PATCH', current.id, Object.assign({ steps }, allDone ? { status: 'done' } : (current.status === 'done' ? { status: 'active' } : {}))); render('nextstep'); announce(cb.checked ? `Done: ${stp.title}` : `Not done: ${stp.title}`); focusId(`hw3Wk-${i}`); } catch (e) { cb.checked = !cb.checked; say(failMessage(e), true); }
+        });
+        ul.appendChild(h('li', {}, h('label', { class: 'hw3-check', for: `hw3Wk-${i}` }, cb, ` ${stp.title}${stp.day != null ? ` (${DAY_NAMES[stp.day]})` : ''}`)));
+      });
+      sec.appendChild(ul);
+      sec.appendChild(h('div', { class: 'hw-card__actions' },
+        btn('Delete plan', async () => { if (!confirm('Delete this weekly plan?')) return; try { await weeklyWrite('DELETE', current.id); render('nextstep'); say('Deleted'); } catch (e) { say(failMessage(e), true); } }, { kind: 'ghost', attrs: { id: 'hw3WeeklyDelete' } })));
+      if (!plus()) sec.appendChild(h('p', { class: 'hw-hint', text: 'Your plan is kept. Ticking steps and new plans are part of Hopewick Plus.' }));
+    } else if (plus()) {
+      sec.appendChild(weeklyForm(async (title, steps) => { await weeklyWrite('POST', null, { title, steps, weekStart: ws }); say('Weekly plan saved'); render('nextstep'); focusId('hw3WeeklyName'); }));
+    }
+    if (others.length) {
+      sec.appendChild(h('h3', { class: 'hw3-h3', text: 'Earlier weeks' }));
+      sec.appendChild(h('ul', { class: 'hw3-list' }, others.map((p) => h('li', { class: 'hw3-list__item' },
+        h('div', {}, h('p', { class: 'hw3-list__title', text: p.title }), h('p', { class: 'hw-hint', text: `Week of ${dayLabel(p.weekStart)} · ${p.steps.filter((x) => x.done).length} of ${p.steps.length} done` })),
+        h('div', { class: 'hw3-list__actions' }, btn('Delete', async () => { try { await weeklyWrite('DELETE', p.id); render('nextstep'); say('Deleted'); } catch (e) { say(failMessage(e), true); } }, { kind: 'ghost', attrs: { 'aria-label': `Delete weekly plan: ${p.title}` } }))))));
+    }
+    const older = windowNote(st.windows.weekly, 'weekly plan', 'weekly plans', 'hw3WeeklyWindow');
+    if (older) sec.appendChild(older);
+    return sec;
+  }
+  HW3.weeklyPlanCard = weeklyPlanCard;
+
+  /* ----- Always free: safety plan essentials ----- */
+  const SAFETY_PARTS = [
+    { id: 'warningSigns', label: 'My warning signs', hint: 'Thoughts, feelings or situations that tell me things are getting hard.' },
+    { id: 'copingThings', label: 'Things I can do on my own', hint: 'For example: a coping tool, a walk, a shower, music.' },
+    { id: 'people', label: 'People I can contact', hint: 'Names and numbers of people who help.' },
+    { id: 'safePlaces', label: 'Places that feel safe', hint: 'Somewhere I can go to feel calmer or safer.' },
+    { id: 'reasons', label: 'Reasons to keep going', hint: 'What matters to me.' },
+  ];
+  const safetyKey = () => { try { return pk(profile.id, 'safety'); } catch (_) { return null; } };
+  function readSafety() {
+    if (online()) return st.safety || {};
+    if (demo()) return st.safety || {};
+    try { return load(safetyKey(), {}) || {}; } catch (_) { return {}; }
+  }
+  async function saveSafety(doc) {
+    if (demo()) { st.safety = doc; return doc; }
+    if (online()) { st.safety = (await api('PUT', '/api/me/safety-plan', { safety: doc })).safety; return st.safety; }
+    const k = safetyKey(); if (k) save(k, doc);
+    return doc;
+  }
+  function renderSafety(root) {
+    root.appendChild(header('My safety plan', 'The essentials for a hard moment, in one place. Always free. It is not a replacement for crisis support or a plan made with a clinician.'));
+    root.appendChild(h('div', { class: 'hw3-support', role: 'note' },
+      h('p', { class: 'hw3-h3', text: 'If you are in danger or might act on thoughts of suicide, call 000 now.' }),
+      h('div', { class: 'hw-card__actions' }, h('a', { class: 'hw-btn hw-btn--danger hw-btn--sm', href: 'tel:000', text: 'Call 000' }), h('a', { class: 'hw-btn hw-btn--sm', href: 'tel:131114', text: 'Lifeline 13 11 14' }), h('a', { class: 'hw-btn hw-btn--sm', href: 'tel:1800250015', text: 'ADIS 1800 250 015' }),
+        btn('Get help now', () => { try { openHelp(); } catch (_) { /* */ } }))));
+    const note = stateNote();
+    if (note && online()) root.appendChild(note);
+    const cur = readSafety();
+    const form = h('form', { class: 'hw-card hw3-card hw3-form', id: 'hw3SafetyForm', 'aria-labelledby': 'hw3SafetyT', onsubmit: async (ev) => {
+      ev.preventDefault();
+      const doc = {};
+      for (const part of SAFETY_PARTS) doc[part.id] = document.getElementById(`hw3Safe-${part.id}`).value.split('\n').map((x) => x.trim()).filter(Boolean).slice(0, 10);
+      try { await saveSafety(doc); say(online() ? 'Safety plan saved to your account' : demo() ? 'Saved for this demo only' : 'Saved in this browser'); render('safety'); focusId('hw3SafetyT'); } catch (e) { say(failMessage(e), true); }
+    } }, h('h2', { class: 'hw3-h2', id: 'hw3SafetyT', tabindex: '-1', text: 'My plan' }));
+    for (const part of SAFETY_PARTS) {
+      const ta = h('textarea', { class: 'hw-textarea', id: `hw3Safe-${part.id}`, rows: '3', 'aria-describedby': `hw3SafeH-${part.id}` });
+      ta.value = (cur[part.id] || []).join('\n');
+      form.appendChild(h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: `hw3Safe-${part.id}`, text: part.label }), h('p', { class: 'hw-hint', id: `hw3SafeH-${part.id}`, text: `${part.hint} One per line.` }), ta));
+    }
+    form.appendChild(h('div', { class: 'hw-card__actions' }, h('button', { type: 'submit', class: 'hw-btn hw-btn--primary hw-btn--sm', id: 'hw3SafetySave', text: 'Save my safety plan' })));
+    form.appendChild(h('p', { class: 'hw-hint', text: online() ? 'Saved privately to your account. Free on every plan.' : demo() ? 'Demo mode: nothing is saved.' : 'Signed out: saved in this browser only.' }));
+    root.appendChild(form);
+  }
+
+  /* ----- Free and Plus comparison ----- */
+  /** Only features that exist today are marked available. The rest say "Coming soon". */
+  const COMPARE_ROWS = [
+    { group: 'Always free, never capped' },
+    { name: 'Get help now, crisis lines and domestic and family violence support', free: 'Yes', plus: 'Yes' },
+    { name: 'My safety plan essentials', free: 'Yes', plus: 'Yes' },
+    { name: 'Daily check-in', free: 'Yes', plus: 'Yes' },
+    { name: 'Coping toolkit (the 12 core tools)', free: 'Yes', plus: 'Yes' },
+    { name: 'My next step', free: 'Yes', plus: 'Yes' },
+    { name: 'Read, export and delete everything you save', free: 'Yes', plus: 'Yes' },
+    { name: 'Account and privacy controls', free: 'Yes', plus: 'Yes' },
+    { name: 'Clean time tracker, Bible & SOAP, 12-step outline', free: 'Yes', plus: 'Yes' },
+    { group: 'Day to day' },
+    { name: 'Chat with Hope', free: '15 messages a day', plus: 'No daily limit' },
+    { name: 'Journal: free writing and daily reflection prompts', free: 'Yes', plus: 'Yes' },
+    { name: 'Journal: gratitude and recovery entries, Deepen with Hope', free: '—', plus: 'Yes' },
+    { name: 'Trends and history in the app', free: `Last ${HISTORY_WINDOW_DAYS} days (everything is kept and exportable)`, plus: 'Full history' },
+    { name: 'Monthly insights (descriptive, not a diagnosis)', free: '—', plus: 'Yes' },
+    { name: 'Printable mood and recovery report', free: '—', plus: 'Yes' },
+    { name: 'Weekly multi-step plans in My next step', free: '—', plus: 'Yes' },
+    { name: 'Personal goals and SMART goals', free: '—', plus: 'Yes' },
+    { name: 'Relapse and exit plans', free: '—', plus: 'Yes' },
+    { name: 'More than one profile', free: '—', plus: 'Yes' },
+    { group: 'New content' },
+    { name: 'New coping tools, guided journal series and prompt packs', free: 'Arrive 6 to 12 months after Plus', plus: 'First, from release day' },
+    { name: 'Resume builder, nutrition, gut and brain-habit notes, Going Deeper', free: '—', plus: 'Yes' },
+    { group: 'Coming soon (not available yet)' },
+    { name: 'Learning courses (first lesson free)', free: 'Coming soon', plus: 'Coming soon' },
+    { name: 'Recovery tracker extras: milestone calendar, habits, meeting log, certificates', free: '—', plus: 'Coming soon' },
+    { name: 'Faith plans, devotionals and prayer journal', free: '—', plus: 'Coming soon' },
+    { name: 'Guided audio, meditations and sleep stories', free: '—', plus: 'Coming soon' },
+    { name: 'Themes and a custom dashboard', free: '—', plus: 'Coming soon' },
+    { name: 'Photo and voice journal attachments', free: '—', plus: 'Coming soon' },
+  ];
+  HW3.COMPARE_ROWS = COMPARE_ROWS;
+  function renderCompare(root) {
+    root.appendChild(header('Free and Plus', 'Hopewick is free to use, and it stays that way for the things that matter most in a hard moment. Hopewick Plus adds more history, insights and new content first.'));
+    const table = h('table', { class: 'hw3-table hw3-compare', id: 'hw3CompareTable' },
+      h('caption', { class: 'hw-sr-only', text: 'What is included on the free plan and with Hopewick Plus' }),
+      h('thead', {}, h('tr', {}, h('th', { scope: 'col', text: 'Feature' }), h('th', { scope: 'col', text: 'Free' }), h('th', { scope: 'col', text: 'Plus' }))),
+      h('tbody', {}, COMPARE_ROWS.map((r) => (r.group
+        ? h('tr', { class: 'hw3-compare__group' }, h('th', { scope: 'colgroup', colspan: '3', text: r.group }))
+        : h('tr', {}, h('th', { scope: 'row', text: r.name }), h('td', { text: r.free }), h('td', { text: r.plus }))))));
+    root.appendChild(h('section', { class: 'hw-card hw3-card', 'aria-labelledby': 'hw3CompareT' },
+      h('h2', { class: 'hw3-h2', id: 'hw3CompareT', text: 'What’s included' }), h('div', { class: 'hw3-table-wrap' }, table)));
+    const price = h('section', { class: 'hw-card hw-card--tinted hw3-card', 'aria-labelledby': 'hw3PriceT' },
+      h('h2', { class: 'hw3-h2', id: 'hw3PriceT', text: 'Hopewick Plus' }),
+      h('p', { text: 'AU$20 a month, with a 7-day free trial. Cancel anytime. If Plus ends, nothing you saved is deleted: the app shows your last 7 days, and you can still export or delete everything.' }));
+    if (plus()) price.appendChild(h('p', { class: 'hw3-list__title', id: 'hw3CompareHave', text: 'You have Hopewick Plus. Thank you.' }));
+    else price.appendChild(h('div', { class: 'hw-card__actions' }, btn('Start 7-day free trial', () => upgrade(), { kind: 'primary', attrs: { id: 'hw3CompareUpgrade' } })));
+    root.appendChild(price);
+  }
+  HW3.renderCompare = renderCompare;
 })();

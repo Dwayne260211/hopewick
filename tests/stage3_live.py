@@ -67,4 +67,4 @@ def sign_in(page, base, email=PLUS_EMAIL, name="Sam", seed=None):
 
 def go(page, tab):
     page.evaluate("(t) => setAppTab(t)", tab)
-    page.wait_for_selector(f"#hw3Inner[data-tab='{tab}']" if tab in ("checkin", "coping", "mygoals", "nextstep") else "body")
+    page.wait_for_selector(f"#hw3Inner[data-tab='{tab}']" if tab in ("checkin", "coping", "mygoals", "nextstep", "compare", "safety") else "body")

@@ -1846,7 +1846,7 @@ h1, h2, h3 { font-family: var(--font-display); }
       </button>
       <button class="btn btn-ghost" type="button" data-open="journal" id="sideJournalBtn" aria-current="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Journal <span class="plus-pill" id="journalSidePlusPill">Plus</span>
+        Journal
       </button>
       <button class="btn btn-ghost" type="button" data-open="goals" id="sideGoalsBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
@@ -2215,11 +2215,59 @@ h1, h2, h3 { font-family: var(--font-display); }
     <section class="journal-view" id="journalView" hidden aria-label="Journal">
       <div class="journal-inner">
         <div class="home-hero">
-          <h1 id="journalTitle" tabindex="-1">Journal <span class="plus-pill" id="journalPlusPill">Plus</span></h1>
-          <p id="journalLede">A private place for your thoughts. Writing, editing, and deepening a reflection are part of Hopewick Plus. This tab stays here so you can see what’s included.</p>
+          <h1 id="journalTitle" tabindex="-1">Journal</h1>
+          <p id="journalLede">A private place for your thoughts. Write freely or pick a prompt.</p>
         </div>
         <div id="journalGate" class="nut-gate plus-feature-gate"></div>
-        <div id="journalEditorMount"></div>
+        <div id="journalEditorMount">
+        <div id="journalWorkspace">
+        <div id="journalCompose">
+          <div class="j-meta-row">
+            <div class="field">
+              <label for="jKind">Kind of entry</label>
+              <select id="jKind">
+                <option value="free">Free writing</option>
+                <option value="prompt">Daily reflection</option>
+                <option value="gratitude" data-plus="1">Gratitude (Plus)</option>
+                <option value="recovery" data-plus="1">Recovery reflection (Plus)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="jDate">Date</label>
+              <input id="jDate" type="date">
+            </div>
+          </div>
+          <div class="field j-pack-row" id="jPackRow" hidden>
+            <label for="jPack">Guided series or prompt pack <span class="help">(optional)</span></label>
+            <select id="jPack"><option value="">None</option></select>
+            <p class="help" id="jPackNote" aria-live="polite"></p>
+          </div>
+          <div class="j-prompt-row">
+            <p class="j-prompt" id="jPromptText" hidden></p>
+            <div class="row" style="gap:8px;flex-wrap:wrap">
+              <button class="btn btn-sm" type="button" id="jPromptBtn">Give me a prompt</button>
+              <button class="btn btn-ghost btn-sm" type="button" id="jPromptClear" hidden>Remove prompt</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="jTitle">Title <span class="help">(optional)</span></label>
+            <input id="jTitle" type="text" maxlength="120" placeholder="What's on your mind?">
+          </div>
+          <div class="field">
+            <label for="jBody">Entry</label>
+            <textarea id="jBody" rows="6" maxlength="20000" placeholder="Write freely…"></textarea>
+          </div>
+          <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" type="button" id="jSaveBtn">Save entry</button>
+            <button class="btn" type="button" id="jRefineBtn">Deepen reflection</button>
+            <button class="btn btn-ghost" type="button" id="jCancelEdit" hidden>Cancel edit</button>
+          </div>
+          <p class="help" id="jRefineHelp">Deepen reflection sends this entry to Hope (an AI) only after you say yes.</p>
+          <p class="help j-plus-note" id="jPlusNote" hidden></p>
+          <div id="jRefineOut" hidden></div>
+        </div>
+        </div>
+        </div>
         <div id="journalEntries" hidden>
           <h2 class="journal-entries-title" id="journalEntriesTitle">Your entries</h2>
           <div id="hw3JournalTools"></div>
@@ -3605,7 +3653,7 @@ const LEGACY_DEFAULT_NAMES = ['Eden', 'Hopewick']; // old defaults → migrate t
    --------------------------------------------------------------------------- */
 const K = { shared: 'eden.shared.v1', profiles: 'eden.profiles.v1', onboarding: 'eden.onboarding.v1' };
 const LEGACY = { settings: 'eden.settings.v1', convos: 'eden.conversations.v1', memories: 'eden.memories.v1', active: 'eden.activeConversation.v1' };
-const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'nutrition', 'resume', 'active'];
+const PK = ['settings', 'convos', 'memories', 'moods', 'gratitude', 'journal', 'goals', 'plans', 'safety', 'steps', 'bible', 'deeper', 'breakers', 'selfcare', 'nutrition', 'resume', 'active'];
 const pk = (pid, what) => `eden.p.${pid}.${what}`;
 /* Signed-out visits use sessionStorage. localStorage is only for a signed-in account. */
 let accountStorageOn = false;
@@ -5102,8 +5150,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep'];
-  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
   const changed = appTab !== next;
   appTab = next;
@@ -5209,7 +5257,7 @@ function setAppTab(tab, opts = {}) {
 /** Which bottom-bar / sidebar section a screen belongs to. */
 function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
-  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep') return 'tools';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety') return 'tools';
   if (tab === 'learn' || tab === 'info') return 'learn';
   if (tab === 'home' || tab === 'checkin') return 'home';
   return '';
@@ -6204,6 +6252,7 @@ function renderHome() {
     : 'You have not started a relapse or exit plan yet. A plan helps when things get hard.', 'help'));
   safe.appendChild(dashActions(
     dashBtn('Get help now', () => openHelp(), { dataset: { dash: 'help' } }),
+    dashBtn('My safety plan', () => setAppTab('safety'), { dataset: { dash: 'safety' } }),
     dashBtn('Relapse and exit plans', () => openPlans(), { plus: true, dataset: { dash: 'plans' } }),
     dashBtn('Not safe at home', () => setAppTab('dv'), { dataset: { dash: 'dv' } }),
   ));
@@ -6283,6 +6332,7 @@ function renderToolsHub() {
   hubSection(box, 'Right now', [
     { id: 'help', title: 'Get help now', desc: 'Crisis lines and AOD support. Always free.', icon: 'phone', tone: 'crisis', action: () => openHelp() },
     { id: 'dv', title: 'Domestic and family violence', desc: 'Not safe at home? Free Australian services. Always free.', icon: 'ring', tone: 'crisis', action: () => setAppTab('dv') },
+    { id: 'safety', title: 'My safety plan', desc: 'Warning signs, people to call, what helps. Always free.', icon: 'shield', tone: 'crisis', action: () => setAppTab('safety') },
     { id: 'breakers', title: 'Circuit breakers', desc: 'Quick things to do when a craving hits.', icon: 'bolt', tone: 'warm', action: () => openBreakers() },
   ]);
   hubSection(box, 'Coping tools', [
@@ -6293,13 +6343,14 @@ function renderToolsHub() {
   ]);
   hubSection(box, 'Track and reflect', [
     { id: 'checkin', title: 'Daily check-in', desc: 'Mood, feelings, triggers and trends. Always free.', icon: 'chart', action: () => setAppTab('checkin') },
-    { id: 'nextstep', title: 'My next step', desc: 'One small step you have chosen.', icon: 'step', action: () => setAppTab('nextstep') },
+    { id: 'nextstep', title: 'My next step', desc: 'One small step you have chosen. Always free. Plus adds weekly plans.', icon: 'step', action: () => setAppTab('nextstep') },
     { id: 'mygoals', title: 'Personal goals', desc: 'Wellbeing, recovery and growth goals, at your pace.', icon: 'target', plus: true, action: () => setAppTab('mygoals') },
     { id: 'cleantime', title: 'Clean time', desc: 'Your days and milestones.', icon: 'sprout', action: () => openCleanTime() },
-    { id: 'journal', title: 'Journal', desc: 'Write it down, with prompts. Private to your account.', icon: 'book', plus: true, action: () => openJournal() },
+    { id: 'journal', title: 'Journal', desc: 'Write it down, with prompts. Free. Plus adds guided series and Deepen with Hope.', icon: 'book', action: () => openJournal() },
     { id: 'goals', title: 'SMART goals', desc: 'One or two small goals for this week.', icon: 'target', plus: true, action: () => openGoals() },
     { id: 'memories', title: 'Memories', desc: 'What ' + companionName() + ' remembers about you.', icon: 'leaf', action: () => openMemories() },
     { id: 'chats', title: 'Your chats', desc: 'Open or delete saved conversations.', icon: 'list', action: () => setAppTab('chats') },
+    { id: 'compare', title: 'Free and Plus', desc: 'What is always free and what Hopewick Plus adds.', icon: 'list', action: () => setAppTab('compare') },
   ]);
   hubSection(box, 'Plans and next steps', [
     { id: 'plans', title: 'Relapse and exit plans', desc: 'Warning signs, people to call, what helps.', icon: 'check', plus: true, action: () => openPlans() },
@@ -7320,29 +7371,45 @@ function renderPlusFeatureGate(host, spec) {
 }
 function syncPlusFeaturePills() {
   const plus = subscriptionPlus();
-  ['nutritionPlusPill', 'journalPlusPill', 'journalSidePlusPill', 'goalsPlusPill', 'goalsTitlePill', 'plansPlusPill', 'plansTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
+  ['nutritionPlusPill', 'goalsPlusPill', 'goalsTitlePill', 'plansPlusPill', 'plansTitlePill', 'resumePlusPill', 'resumeSidePlusPill'].forEach((id) => {
     const pill = document.getElementById(id);
     if (pill) pill.hidden = plus;
   });
 }
 function syncJournalGate() {
+  // Basic journal entries are free (Hopewick Plus adds gratitude and recovery
+  // entries, guided series and prompt packs, and Deepen with Hope). The server
+  // enforces the same rules.
   const plus = subscriptionPlus();
   const workspace = $('#journalWorkspace');
-  if (workspace) workspace.hidden = !plus;
+  if (workspace) workspace.hidden = !profile;
   const lede = $('#journalLede');
-  if (lede) lede.textContent = plus
-    ? 'A private place for your thoughts. Write freely or pick a prompt. ' + (billingState.signedIn && !isDemo ? 'Entries are saved privately to your account.' : 'Entries stay in this browser.')
-    : 'A private place for your thoughts. Writing, editing, and deepening a reflection are part of Hopewick Plus. You can still read, export and delete entries you already have.';
+  if (lede) lede.textContent = 'A private place for your thoughts. Write freely or pick a prompt. ' + (billingState.signedIn && !isDemo ? 'Entries are saved privately to your account.' : (isDemo ? 'Demo: nothing is saved.' : 'Entries stay in this browser until you sign in.'));
   const entries = $('#journalEntries');
-  // Reading, exporting and deleting your own entries stays free; writing is Plus.
-  if (entries) entries.hidden = !(plus || (Array.isArray(journal) && journal.length));
-  renderPlusFeatureGate($('#journalGate'), {
-    lead: 'The journal is part of Hopewick Plus. This tab stays on Free so you can see what’s here. Writing, editing, and deepening a reflection need Plus.',
-    items: ['Write a private entry', 'Edit or delete what you wrote', 'Deepen a reflection with Hope'],
-    listLabel: 'Journal tools with Hopewick Plus',
-    buttonId: 'journalPlusBtn',
-    help: '7 days free, then AU$20/month. Cancel anytime. Today’s Readings, Get help, and domestic and family violence support stay free.',
-  });
+  if (entries) entries.hidden = false;
+  const gate = $('#journalGate');
+  if (gate) { gate.hidden = true; gate.replaceChildren(); }
+  const kind = $('#jKind');
+  if (kind) {
+    [...kind.options].forEach((o) => { if (o.dataset.plus) { o.disabled = !plus; o.textContent = o.textContent.replace(/ \(Plus\)$/, '') + (plus ? '' : ' (Plus)'); } });
+    if (!plus && kind.selectedOptions[0] && kind.selectedOptions[0].disabled) kind.value = 'free';
+  }
+  const refine = $('#jRefineBtn');
+  if (refine) refine.hidden = !plus;
+  const refineHelp = $('#jRefineHelp');
+  if (refineHelp) refineHelp.hidden = !plus;
+  const note = $('#jPlusNote');
+  if (note) {
+    note.hidden = plus;
+    if (!plus && !note.childElementCount) {
+      note.append('Writing here is free. Hopewick Plus adds gratitude and recovery entries, guided series and prompt packs, and Deepen with Hope. ');
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'hw3-link'; b.id = 'jComparePlus'; b.textContent = 'Compare free and Plus';
+      b.addEventListener('click', () => setAppTab('compare'));
+      note.appendChild(b);
+    }
+  }
+  if (window.HW3 && HW3.paintJournalPacks) HW3.paintJournalPacks();
   syncPlusFeaturePills();
 }
 function prepareJournalCompose() {
@@ -7378,7 +7445,6 @@ function renderJournalList() {
   const plus = subscriptionPlus();
   if (window.HW3) HW3.paintJournalTools($('#hw3JournalTools'), () => renderJournalListItems());
   renderJournalListItems();
-  if (!plus && !journal.length) list.innerHTML = '';
 }
 function renderJournalListItems() {
   const list = $('#journalList');
@@ -7404,7 +7470,7 @@ function renderJournalListItems() {
     li.innerHTML = `<h3></h3><div class="meta"><span class="j-kind"></span><span class="j-when"></span>${e.localOnly ? ' <span class="j-local">On this device only</span>' : ''}</div>${e.prompt ? '<p class="j-prompt"></p>' : ''}<div class="body"></div>
       ${e.refined ? `<div class="refine-box"><h4>Deepened reflection</h4><div class="body refined"></div>${e.emotions ? `<p class="help" style="margin:6px 0 0">Emotions noticed: ${escapeHtml(e.emotions)}</p>` : ''}</div>` : ''}
       <div class="actions">
-        ${plus ? '<button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button><button class="btn btn-sm" type="button" data-act="edit">Edit</button>' : ''}
+        ${plus ? '<button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button>' : ''}<button class="btn btn-sm" type="button" data-act="edit">Edit</button>
         <button class="btn btn-sm btn-danger" type="button" data-act="del">Delete</button>
       </div>`;
     $('h3', li).textContent = e.title || 'Untitled entry';
@@ -7450,10 +7516,12 @@ function journalComposeMeta() {
   const kind = $('#jKind');
   const date = $('#jDate');
   const prompt = $('#jPromptText');
+  const pack = $('#jPack');
   return {
     kind: kind ? kind.value : 'free',
     entryDate: date && date.value ? date.value : brisbaneDateISO(),
     prompt: prompt && !prompt.hidden ? prompt.textContent.trim() : '',
+    packId: pack && pack.value ? pack.value : null,
   };
 }
 function setJournalComposeMeta(e) {
@@ -7461,6 +7529,8 @@ function setJournalComposeMeta(e) {
   const date = $('#jDate');
   const prompt = $('#jPromptText');
   if (kind) kind.value = (e && e.kind) || 'free';
+  const pack = $('#jPack');
+  if (pack) { const v = (e && e.packId) || ''; if (v && ![...pack.options].some((o) => o.value === v)) { const o = document.createElement('option'); o.value = v; o.textContent = v; pack.appendChild(o); } pack.value = v; }
   if (date) { date.max = brisbaneDateISO(); date.value = (e && journalEntryDate(e)) || brisbaneDateISO(); }
   if (prompt) { prompt.textContent = (e && e.prompt) || ''; prompt.hidden = !(e && e.prompt); }
   const clear = $('#jPromptClear');
@@ -7518,7 +7588,6 @@ function bindJournalUi() {
   $('#jRefineOut').hidden = true;
 });
 $('#jSaveBtn').addEventListener('click', async () => {
-  if (!subscriptionPlus()) { openAccountDlg(); return; }
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write something first.', true); $('#jBody').focus(); return; }
@@ -7538,7 +7607,7 @@ $('#jSaveBtn').addEventListener('click', async () => {
   renderJournalList();
 });
 $('#jRefineBtn').addEventListener('click', async () => {
-  if (!subscriptionPlus()) { openAccountDlg(); return; }
+  if (!subscriptionPlus()) { setAppTab('compare'); return; }
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write an entry first, then deepen it.', true); return; }
@@ -14096,8 +14165,8 @@ const plusAccess = {
   words: null,
   jft: null,
 };
+// The journal editor is in the page for everyone (basic entries are free); only Plus editors are mounted.
 const PLUS_EDITOR_MOUNTS = {
-  journal: 'journalEditorMount',
   resume: 'resumeEditorMount',
   goals: 'goalsEditorMount',
   plans: 'plansEditorMount',
