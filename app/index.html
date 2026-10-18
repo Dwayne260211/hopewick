@@ -40,6 +40,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <link rel="stylesheet" href="/assets/hopewick-ui.css">
 <link rel="stylesheet" href="hw-stage3.css">
 <link rel="stylesheet" href="hw-stage4.css">
+<link rel="stylesheet" href="hw-fitness.css">
 <script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
@@ -3619,6 +3620,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 <script src="data/coping-tools.js"></script>
 <script src="hw-stage3.js"></script>
 <script src="hw-stage4.js"></script>
+<script src="hw-fitness.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -5157,8 +5159,10 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules'];
-  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move'];
+  // Move & Recover only exists while the server flag is on for this person (FEATURE_FITNESS_PROTOCOLS).
+  if (tab === 'move' && !(window.HWFIT && HWFIT.enabled())) tab = 'home';
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
   const changed = appTab !== next;
   appTab = next;
@@ -5176,9 +5180,10 @@ function setAppTab(tab, opts = {}) {
   const hwView = document.getElementById('hwFeatureView');
   if (hwView) {
     hwView.hidden = !HW3_TAB.includes(next);
-    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules' }[next] || 'Wellbeing tools');
+    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules', move: 'Move and Recover' }[next] || 'Wellbeing tools');
   }
   if (window.HW3 && next !== 'coping') HW3.stopTimers();
+  if (window.HWFIT && next !== 'move') HWFIT.stop();
   if (el.toolsView) el.toolsView.hidden = next !== 'tools';
   if (el.learnView) el.learnView.hidden = next !== 'learn';
   if (el.homeView) el.homeView.hidden = next !== 'home';
@@ -5217,6 +5222,8 @@ function setAppTab(tab, opts = {}) {
   syncMoreTab(el.app.classList.contains('sidebar-open'));
   if (next === 'home') {
     renderHome();
+  } else if (next === 'move') {
+    HWFIT.show(opts);
   } else if (HW3_TAB.includes(next)) {
     if (window.HW3) HW3.show(next, opts);
   } else if (next === 'tools' || next === 'learn') {
@@ -5264,7 +5271,7 @@ function setAppTab(tab, opts = {}) {
 /** Which bottom-bar / sidebar section a screen belongs to. */
 function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
-  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety' || tab === 'recovery') return 'tools';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety' || tab === 'recovery' || tab === 'move') return 'tools';
   if (tab === 'learn' || tab === 'info' || tab === 'modules') return 'learn';
   if (tab === 'home' || tab === 'checkin') return 'home';
   return '';
@@ -6347,6 +6354,7 @@ function renderToolsHub() {
     { id: 'skills', title: 'Skills', desc: 'Grounding, urge surfing, breathing and more.', icon: 'smile', action: () => openSkills() },
     { id: 'selfcare', title: 'Self-care', desc: 'A daily checklist you can make your own.', icon: 'heart', action: () => openSelfCare() },
     { id: 'chat', title: 'Talk to ' + companionName(), desc: 'Talk it through with your AI companion.', icon: 'chat', action: () => setAppTab('chat') },
+    window.HWFIT ? HWFIT.hubItem() : null,
   ]);
   hubSection(box, 'Track and reflect', [
     { id: 'checkin', title: 'Daily check-in', desc: 'Mood, feelings, triggers and trends. Always free.', icon: 'chart', action: () => setAppTab('checkin') },

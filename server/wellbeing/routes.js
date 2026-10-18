@@ -525,6 +525,7 @@ export async function handleWellbeingApi(ctx, req, res, url) {
     if (area === 'export' && method === 'GET' && !sub) {
       // Everything for this profile, on every plan. The history window never applies here.
       const out = await exportAll(ctx, uid, profileId);
+      if (typeof ctx.extendExport === 'function') out.moveAndRecover = await ctx.extendExport(uid, profileId);
       const stamp = brisbaneToday();
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Content-Disposition': `attachment; filename="hopewick-my-data-${stamp}.json"` });
       res.end(JSON.stringify(out, null, 2));
@@ -536,6 +537,7 @@ export async function handleWellbeingApi(ctx, req, res, url) {
       if (!DELETE_AREAS.includes(sub)) throw new ValidationError(`Choose one of: ${DELETE_AREAS.join(', ')}.`, 'area');
       if (q.get('confirm') !== sub) throw new ValidationError('Confirm the delete by sending confirm=<area>.', 'confirm');
       const removed = await wellbeing.clearArea(uid, profileId, sub);
+      if (sub === 'all' && typeof ctx.onClearAll === 'function') await ctx.onClearAll(uid, profileId);
       if (sub === 'all' && ctx.checkins && typeof ctx.checkins.merge === 'function') {
         // Older device-synced mood days, gratitude and weekly SMART goals for this profile.
         try { ctx.checkins.merge(uid, profileId, { clearedAt: Date.now() }); } catch { /* nothing synced for this profile */ }

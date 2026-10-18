@@ -67,6 +67,9 @@ import { createChatStore, validProfileId } from './chats.js';
 import { createCheckinStore } from './checkins.js';
 import { createWellbeingStore } from './wellbeing/index.js';
 import { handleWellbeingApi } from './wellbeing/routes.js';
+import { createFitnessStore } from './fitness/store.js';
+import { handleFitnessApi, fitnessExportFor } from './fitness/routes.js';
+import { fitnessFlagMode, fitnessEnabledFor } from './fitness/flag.js';
 import { createReleaseCatalog } from './content-releases.js';
 
 // Plus early access schedule (server/library/content-releases.json). Read once, on first use.
@@ -969,8 +972,23 @@ function serveStatic(root, req, res, urlPath) {
   res.end(req.method === 'HEAD' ? undefined : body);
 }
 
-async function handleApi(store, chats, checkins, visits, req, res, url, wellbeing) {
+async function handleApi(store, chats, checkins, visits, req, res, url, wellbeing, fitness) {
   const route = url.pathname;
+
+  if (route === '/api/fitness' || route.startsWith('/api/fitness/')) {
+    // Move & Recover. Behind FEATURE_FITNESS_PROTOCOLS (default off: 404). See server/fitness/routes.js.
+    const user = currentUser(req, store);
+    await handleFitnessApi({
+      fitness, wellbeing, checkins, user, plus: user ? publicUser(user).plus === true : false, readBody, json,
+      profileAllowed: async (profileId) => {
+        if (!user || publicUser(user).plus === true) return true;
+        const ids = new Set(wellbeing ? await wellbeing.profileIds(user.id) : []);
+        for (const p of checkins.list(user.id) || []) if (p && p.id) ids.add(p.id);
+        return ids.size === 0 || ids.has(profileId);
+      },
+    }, req, res, url);
+    return;
+  }
 
   if (route.startsWith('/api/me/') && wellbeing) {
     const user = currentUser(req, store);
@@ -982,6 +1000,10 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
       releases,
       readBody,
       json,
+      // Move & Recover hooks (no-ops while FEATURE_FITNESS_PROTOCOLS is off for this person,
+      // except "delete all", which always clears any saved fitness data).
+      extendExport: fitness && fitnessEnabledFor(user) ? fitnessExportFor(fitness) : null,
+      onClearAll: fitness ? (uid, profileId) => fitness.clear(uid, profileId) : null,
       profileAllowed: async (profileId) => {
         if (!user || publicUser(user).plus === true) return true;
         const ids = new Set(await wellbeing.profileIds(user.id));
@@ -1594,14 +1616,14 @@ async function verifyGoogleCredential(credential) {
   }
 
   if (url.pathname.startsWith('/api/account')) {
-    await handleAccountApi(store, chats, checkins, req, res, route, wellbeing);
+    await handleAccountApi(store, chats, checkins, req, res, route, wellbeing, fitness);
     return;
   }
 
   json(res, 404, { error: 'Not found.' });
 }
 
-async function handleAccountApi(store, chats, checkins, req, res, route, wellbeing) {
+async function handleAccountApi(store, chats, checkins, req, res, route, wellbeing, fitness) {
   if (req.method === 'GET' && route === '/api/account') {
     const user = requireSession(req, res, store);
     if (!user) return;
@@ -1810,6 +1832,9 @@ async function handleAccountApi(store, chats, checkins, req, res, route, wellbei
       checkins.forget(user.id);
       if (wellbeing) {
         try { await wellbeing.forget(user.id); } catch (err) { console.error('Hopewick wellbeing delete failed:', err && err.name ? err.name : 'error'); }
+      }
+      if (fitness) {
+        try { await fitness.forget(user.id); } catch (err) { console.error('Hopewick fitness delete failed:', err && err.name ? err.name : 'error'); }
       }
     }
     deleteAttempts.delete(user.id);
@@ -2121,12 +2146,14 @@ export function unavailableStores(...stores) {
 
 const STORE_UNAVAILABLE_MESSAGE = 'Hopewick accounts are paused for maintenance. Nothing has been lost. Get help and the crisis numbers still work. In an emergency call 000, or Lifeline on 13 11 14.';
 
-export function createApp({ store, chats, checkins, visits, wellbeing, root = REPO_ROOT } = {}) {
+export function createApp({ store, chats, checkins, visits, wellbeing, fitness, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   const checkinStore = checkins || createCheckinStore(path.join(REPO_ROOT, 'server', 'data', 'checkins.json'));
   const visitCounter = visits || createVisitCounter(path.join(REPO_ROOT, 'server', 'data', 'visits.json'));
   const wellbeingStore = wellbeing || createWellbeingStore({ filePath: path.join(REPO_ROOT, 'server', 'data', 'wellbeing.json') });
+  // Move & Recover keeps its own file and answers 503 itself, so a problem there never pauses the rest of the app.
+  const fitnessStore = fitness || createFitnessStore({ filePath: path.join(REPO_ROOT, 'server', 'data', 'fitness.json') });
   const broken = unavailableStores(store, chatStore, checkinStore, visitCounter, wellbeingStore);
   return async function onRequest(req, res) {
     installSecurityHeaders(req, res);
@@ -2157,7 +2184,7 @@ export function createApp({ store, chats, checkins, visits, wellbeing, root = RE
           json(res, 403, { error: 'That request was blocked.' });
           return;
         }
-        await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url, wellbeingStore);
+        await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url, wellbeingStore, fitnessStore);
         return;
       }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -2179,6 +2206,7 @@ export function startServer({
   checkinsPath,
   visitsPath,
   wellbeingPath,
+  fitnessPath,
   root = REPO_ROOT,
 } = {}) {
   const store = createStore(storePath);
@@ -2195,7 +2223,9 @@ export function startServer({
   if (broken.length) {
     console.error(`HOPEWICK STORE ERROR: ${broken.join(', ')} could not be loaded. The files were not changed. /api/health and the account API return 503 until they are fixed. See server/json-file.js for recovery steps.`);
   }
-  const server = http.createServer(createApp({ store, chats, checkins, visits, wellbeing, root }));
+  const fitnessFile = fitnessPath || process.env.FITNESS_STORE || path.join(path.dirname(storePath), 'fitness.json');
+  const fitness = createFitnessStore({ filePath: fitnessFile });
+  const server = http.createServer(createApp({ store, chats, checkins, visits, wellbeing, fitness, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));
   });
@@ -2219,6 +2249,7 @@ if (isMain) {
     console.log(encryptionStartupLine(process.env, { backend: String(process.env.DATABASE_URL || '').trim() ? 'Postgres' : 'JSON file' }));
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
+    if (fitnessFlagMode() !== 'off') console.log(`Move & Recover (FEATURE_FITNESS_PROTOCOLS) is ${fitnessFlagMode() === 'founder' ? 'on for founder accounts only' : 'ON'}. Content is pending clinical review.`);
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
       console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');
     }
