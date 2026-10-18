@@ -12,8 +12,19 @@
  * snapshots. Free accounts can open the latest chat (FREE_HISTORY_KEEP).
  * Older chats stay stored until this rule or a user delete. Account delete
  * still removes that account's chats immediately.
+ *
+ * Encryption at rest (server/db/crypto.js, AES-256-GCM, hwenc:v1, HOPEWICK_DATA_KEY):
+ * chat titles, message text, the study-focus extra text, the passage label and
+ * the profile name are sealed before they reach chats.json, bound to
+ * "<userId>:chat.<field>". Reads accept plain text (chats saved before this
+ * change) and ciphertext. Any write for an account seals that account's chats,
+ * so older plain-text chats are encrypted the next time that person's chats
+ * are written. There is no bulk rewrite job. Ids, timestamps, roles and flags
+ * stay plain so expiry (`updated`), sorting and the free-plan view still work.
+ * Without a key (local development) text is stored as it is.
  */
 import { createJsonFile } from './json-file.js';
+import { encryptText, decryptText, isEncrypted } from './db/crypto.js';
 
 const MAX_PROFILES = 12;
 /** Free accounts may open this many recent chats. Older ones stay stored. */
@@ -143,18 +154,64 @@ export function mergeConversations(localList, remoteList) {
     .slice(0, MAX_CONVOS);
 }
 
-function publicProfile(id, row, plus) {
+function publicProfile(id, row, plus, open = null) {
   const stored = Array.isArray(row.conversations) ? row.conversations : [];
+  const visible = conversationsForViewer(stored, plus === true);
   return {
     id,
-    name: row.name || '',
+    name: (open ? open.name(row.name) : row.name) || '',
     updated: row.updated || 0,
     activeId: row.activeId || null,
-    conversations: conversationsForViewer(stored, plus === true),
+    conversations: open ? visible.map(open.convo) : visible,
   };
 }
 
-export function createChatStore(filePath) {
+/** Fields holding the person's own words. Everything else is ids, numbers, flags or fixed labels. */
+export const CHAT_SEALED_FIELDS = Object.freeze({ conversation: ['title', 'systemExtra', 'passage'], message: ['content'], profile: ['name'] });
+
+/**
+ * Seal / open helpers for one account. Shared shape for any chat backend:
+ * the same associated data ("<userId>:chat.<field>") is used wherever chats are stored.
+ */
+export function chatSealer(env = process.env) {
+  const aad = (userId, field) => `${userId}:chat.${field}`;
+  const seal = (userId, field, value) => {
+    if (typeof value !== 'string' || value === '' || isEncrypted(value)) return value;
+    return encryptText(value, env, aad(userId, field));
+  };
+  const open = (userId, field, value) => (isEncrypted(value) ? decryptText(value, env, aad(userId, field)) : value);
+  const mapConvo = (fn, userId, convo) => {
+    if (!convo || typeof convo !== 'object') return convo;
+    const out = { ...convo };
+    for (const f of CHAT_SEALED_FIELDS.conversation) if (out[f] !== undefined) out[f] = fn(userId, f, out[f]);
+    if (Array.isArray(convo.messages)) {
+      out.messages = convo.messages.map((m) => {
+        if (!m || typeof m !== 'object') return m;
+        const mm = { ...m };
+        for (const f of CHAT_SEALED_FIELDS.message) if (mm[f] !== undefined) mm[f] = fn(userId, f, mm[f]);
+        return mm;
+      });
+    }
+    return out;
+  };
+  return {
+    sealConversation: (userId, convo) => mapConvo(seal, userId, convo),
+    openConversation: (userId, convo) => mapConvo(open, userId, convo),
+    sealProfileName: (userId, name) => seal(userId, 'name', name),
+    openProfileName: (userId, name) => open(userId, 'name', name),
+  };
+}
+
+/** True when any sealed field of a stored conversation is still plain text. */
+export function conversationHasPlaintext(convo) {
+  if (!convo || typeof convo !== 'object') return false;
+  const plain = (v) => typeof v === 'string' && v !== '' && !isEncrypted(v);
+  if (CHAT_SEALED_FIELDS.conversation.some((f) => plain(convo[f]))) return true;
+  return Array.isArray(convo.messages) && convo.messages.some((m) => m && CHAT_SEALED_FIELDS.message.some((f) => plain(m[f])));
+}
+
+export function createChatStore(filePath, { env = process.env } = {}) {
+  const sealer = chatSealer(env);
   const file = createJsonFile(filePath, {
     label: 'chats.json',
     isValid: (parsed) => Boolean(parsed) && typeof parsed === 'object' && Boolean(parsed.users) && typeof parsed.users === 'object',
@@ -175,6 +232,21 @@ export function createChatStore(filePath) {
     return data.users[userId];
   }
 
+  const openerFor = (userId) => ({
+    name: (n) => sealer.openProfileName(userId, n),
+    convo: (c) => sealer.openConversation(userId, c),
+  });
+  /** Seal every plain-text field this account still has (older chats get encrypted on this write). */
+  function sealUser(userId) {
+    const row = data.users[userId];
+    if (!row || !row.profiles) return;
+    for (const profile of Object.values(row.profiles)) {
+      if (!profile || typeof profile !== 'object') continue;
+      if (profile.name) profile.name = sealer.sealProfileName(userId, profile.name);
+      if (Array.isArray(profile.conversations)) profile.conversations = profile.conversations.map((c) => sealer.sealConversation(userId, c));
+    }
+  }
+
   return {
     health: () => file.health(),
     list(userId, options) {
@@ -192,10 +264,11 @@ export function createChatStore(filePath) {
           changed = true;
         }
       }
-      if (changed) persist();
+      if (changed) { sealUser(userId); persist(); }
       const plus = !!(options && options.plus);
+      const open = openerFor(userId);
       return Object.entries(row.profiles)
-        .map(([id, profile]) => publicProfile(id, profile, plus))
+        .map(([id, profile]) => publicProfile(id, profile, plus, open))
         .sort((a, b) => (b.updated || 0) - (a.updated || 0))
         .slice(0, MAX_PROFILES);
     },
@@ -206,7 +279,10 @@ export function createChatStore(filePath) {
         throw err;
       }
       const row = userRow(userId);
-      const prev = row.profiles[profileId] || { conversations: [], activeId: null, name: '', updated: 0 };
+      const open = openerFor(userId);
+      const stored = row.profiles[profileId] || { conversations: [], activeId: null, name: '', updated: 0 };
+      // Work on readable text; seal again before it is written.
+      const prev = { ...stored, name: open.name(stored.name), conversations: (Array.isArray(stored.conversations) ? stored.conversations : []).map(open.convo) };
       let conversations = mergeConversations(incoming && incoming.conversations, prev.conversations);
       const removed = Array.isArray(incoming && incoming.removedIds) ? incoming.removedIds : [];
       if (removed.length) {
@@ -229,8 +305,9 @@ export function createChatStore(filePath) {
       if (ids.length > MAX_PROFILES) {
         row.profiles = Object.fromEntries(ids.slice(0, MAX_PROFILES));
       }
+      sealUser(userId);
       persist();
-      return publicProfile(profileId, row.profiles[profileId], !!(options && options.plus));
+      return publicProfile(profileId, row.profiles[profileId], !!(options && options.plus), open);
     },
     /** Drop this account's saved chats. Other accounts are left as they are. */
     forget(userId) {
