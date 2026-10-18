@@ -144,6 +144,18 @@ exist only in the browser are offered for upload. Nothing moves without a "Yes";
 "No" keeps them on the device and is remembered. The browser copy is never deleted
 by the import.
 
+## Free vs Plus model (migrations/004_free_plus_model.sql)
+
+- `journal_entries.pack_id`: the guided series or prompt pack an entry came from, if any.
+- `weekly_step_plans`: weekly multi-step plans for Plus members. Each row is per user and per profile, with RLS and a policy
+  on `app.user_id` like the other Stage 3 tables. Steps are sealed with the same per-field encryption.
+- The safety plan essentials are stored in the existing plans document under `safety`. No new table is needed.
+- Plan status never deletes rows. The 7-day free history window is applied when data is read
+  (`server/wellbeing/plan-rules.js`).
+
+Migration 004 was applied to the Neon **dev** branch only, on 2026-10-18 AEST, by the db test run. Production needs it
+when `DATABASE_URL` is set there, and that needs founder approval.
+
 ## Before production uses this (needs founder approval)
 
 1. Add `DATABASE_URL` (Neon `main` branch, pooled) and `HOPEWICK_DATA_KEY` to Render
