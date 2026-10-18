@@ -228,7 +228,7 @@ product is copied. Status: **pending clinical review** before it is promoted as 
 | Beyond Blue | 1300 22 4636 | 24/7 | beyondblue.org.au/get-support |
 | 13YARN (Aboriginal and Torres Strait Islander people) | 13 92 76 | 24/7 | 13yarn.org.au |
 | Kids Helpline (ages 5 to 25) | 1800 55 1800 | 24/7 | kidshelpline.com.au |
-| QLife (LGBTIQ+ peer support) | 1800 184 527 | 3pm to midnight local time, daily | qlife.org.au |
+| QLife (LGBTIQ+ peer support) | 1800 184 527 | 3pm to 9pm local time, daily | qlife.org.au |
 | Adis 24/7 Alcohol and Drug Support (QLD) | 1800 177 833 | 24/7 | adis.health.qld.gov.au |
 
 Numbers and hours change. Re-check each official site at least every six months and before any

@@ -26,7 +26,7 @@
     { name: 'Beyond Blue', num: '1300 22 4636', tel: '1300224636', note: '24/7 support for anxiety and depression' },
     { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7, for Aboriginal and Torres Strait Islander people' },
     { name: 'Kids Helpline', num: '1800 55 1800', tel: '1800551800', note: '24/7, for young people aged 5 to 25' },
-    { name: 'QLife', num: '1800 184 527', tel: '1800184527', note: 'LGBTIQ+ peer support, 3pm to midnight daily' },
+    { name: 'QLife', num: '1800 184 527', tel: '1800184527', note: 'LGBTIQ+ peer support, 3pm to 9pm local time, daily' },
     { name: 'Adis 24/7 Alcohol and Drug Support (QLD)', num: '1800 177 833', tel: '1800177833', note: '24/7 alcohol and other drug support' },
   ];
   HW5.SERVICES = HW5_SERVICES;
