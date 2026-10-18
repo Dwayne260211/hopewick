@@ -329,6 +329,23 @@
       "title": "Making room for feelings (ACT acceptance)",
       "teaser": "Practise letting hard feelings be there, without a fight.",
       "plusReleaseDate": "2026-11-15"
+    },
+    {
+      "id": "module-faith-hope-hard-days",
+      "kind": "module",
+      "key": "faith-hope-hard-days",
+      "title": "Faith on hard days",
+      "teaser": "Holding on to hope, and using help, when things are heavy. Part of the optional faith layer.",
+      "plusReleaseDate": "2026-10-18",
+      "core": true
+    },
+    {
+      "id": "module-faith-grace-after-lapse",
+      "kind": "module",
+      "key": "faith-grace-after-lapse",
+      "title": "Grace after a lapse",
+      "teaser": "Shame, grace and getting back on your path. Part of the optional faith layer.",
+      "plusReleaseDate": "2026-11-22"
     }
   ]
 }

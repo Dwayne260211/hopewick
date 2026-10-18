@@ -1,0 +1,157 @@
+{
+  "_readme": "Stage 5 faith layer (optional, OFF by default). Scripture: World English Bible (WEB), public domain, text taken from bible-api.com (WEB). Reflections and prayers are original Hopewick wording. Pending founder and pastoral review. Shown only when the person opts in to faith content with a Christian tradition.",
+  "version": 1,
+  "items": [
+    {
+      "id": "near-in-hard-times",
+      "title": "Close in the hard moments",
+      "contexts": [
+        "home",
+        "checkin"
+      ],
+      "scripture": {
+        "ref": "Psalm 34:18",
+        "text": "Yahweh is near to those who have a broken heart, and saves those who have a crushed spirit.",
+        "translation": "WEB"
+      },
+      "reflection": "Some days feel heavy for no reason you can name. This verse doesn't ask you to feel better first. It says God draws near to people who are hurting, just as they are. If today is a low day, you don't have to pretend it isn't.",
+      "prayer": "God, today is hard. Be near to me in it. Help me take the next small step, and help me reach out to someone if I need to. Amen."
+    },
+    {
+      "id": "rest-for-the-tired",
+      "title": "Rest for the tired",
+      "contexts": [
+        "home",
+        "checkin",
+        "journal"
+      ],
+      "scripture": {
+        "ref": "Matthew 11:28",
+        "text": "Come to me, all you who labor and are heavily burdened, and I will give you rest.",
+        "translation": "WEB"
+      },
+      "reflection": "Jesus invites people who are worn out, not people who have it all together. Recovery can be tiring work. You're allowed to rest, and rest is part of getting well, not a sign you've given up.",
+      "prayer": "Jesus, I'm tired. Thank you that I can come to you as I am. Show me one way to rest well today. Amen."
+    },
+    {
+      "id": "new-every-morning",
+      "title": "New every morning",
+      "contexts": [
+        "home",
+        "checkin"
+      ],
+      "scripture": {
+        "ref": "Lamentations 3:22-23",
+        "text": "It is because of Yahweh’s loving kindnesses that we are not consumed, because his compassion doesn’t fail. They are new every morning. Great is your faithfulness.",
+        "translation": "WEB"
+      },
+      "reflection": "Yesterday doesn't get the final word on today. Whatever happened, this morning is a fresh start with God's compassion already in it. You can begin again, one hour at a time.",
+      "prayer": "Thank you, God, that your kindness is new this morning. Help me let go of yesterday and take today one step at a time. Amen."
+    },
+    {
+      "id": "grace-in-weakness",
+      "title": "Strength when you feel weak",
+      "contexts": [
+        "coping",
+        "journal"
+      ],
+      "scripture": {
+        "ref": "2 Corinthians 12:9",
+        "text": "He has said to me, “My grace is sufficient for you, for my power is made perfect in weakness.” Most gladly therefore I will rather glory in my weaknesses, that the power of Christ may rest on me.",
+        "translation": "WEB"
+      },
+      "reflection": "Feeling weak isn't failure. Paul learnt that God's grace meets people right where they struggle. Using a coping tool, asking for help or calling a support line is not a lack of faith. It can be one of the ways grace shows up.",
+      "prayer": "Lord, I don't feel strong right now. Let your grace be enough for this moment, and help me use the help that's around me. Amen."
+    },
+    {
+      "id": "refuge-and-strength",
+      "title": "A safe place to turn",
+      "contexts": [
+        "coping",
+        "checkin"
+      ],
+      "scripture": {
+        "ref": "Psalm 46:1",
+        "text": "God is our refuge and strength, a very present help in trouble.",
+        "translation": "WEB"
+      },
+      "reflection": "When everything feels loud, it can help to remember there is somewhere to turn. Take a slow breath. Notice where you are. You can pray, and you can also call someone. Both are good.",
+      "prayer": "God, be my refuge right now. Steady my breathing and my thoughts, and remind me who I can call. Amen."
+    },
+    {
+      "id": "not-afraid",
+      "title": "You are not alone in this",
+      "contexts": [
+        "coping",
+        "home"
+      ],
+      "scripture": {
+        "ref": "Isaiah 41:10",
+        "text": "Don’t you be afraid, for I am with you. Don’t be dismayed, for I am your God. I will strengthen you. Yes, I will help you. Yes, I will uphold you with the right hand of my righteousness.",
+        "translation": "WEB"
+      },
+      "reflection": "Fear and cravings can make you feel very alone. This verse is a promise of company and help. Let it sit beside the practical things too: your safety plan, your supports, and the people who care about you.",
+      "prayer": "God, when I'm afraid, hold me up. Help me remember I'm not alone, and give me courage for the next hour. Amen."
+    },
+    {
+      "id": "worries-handed-over",
+      "title": "Handing over the worries",
+      "contexts": [
+        "journal",
+        "checkin"
+      ],
+      "scripture": {
+        "ref": "1 Peter 5:7",
+        "text": "Casting all your worries on him, because he cares for you.",
+        "translation": "WEB"
+      },
+      "reflection": "Writing a worry down is one way of putting it somewhere outside your head. You could see it as handing it over. You don't have to carry every worry by yourself tonight.",
+      "prayer": "God, here is what's on my mind. I hand it to you. Help me sleep, and help me deal with tomorrow when it comes. Amen."
+    },
+    {
+      "id": "peace-that-guards",
+      "title": "Peace for an anxious mind",
+      "contexts": [
+        "coping",
+        "journal"
+      ],
+      "scripture": {
+        "ref": "Philippians 4:6-7",
+        "text": "In nothing be anxious, but in everything, by prayer and petition with thanksgiving, let your requests be made known to God. And the peace of God, which surpasses all understanding, will guard your hearts and your thoughts in Christ Jesus.",
+        "translation": "WEB"
+      },
+      "reflection": "This isn't a rule that says anxious people are doing faith wrong. It's an invitation to bring every worry to God, along with anything you're thankful for. Many people find that naming things in prayer, or on paper, loosens their grip a little.",
+      "prayer": "God, I bring you my worries, big and small. Thank you for the good things today too. Guard my heart and my thoughts. Amen."
+    },
+    {
+      "id": "nothing-can-separate",
+      "title": "Still loved after a slip",
+      "contexts": [
+        "journal",
+        "home"
+      ],
+      "scripture": {
+        "ref": "Romans 8:38-39",
+        "text": "For I am persuaded that neither death, nor life, nor angels, nor principalities, nor things present, nor things to come, nor powers, nor height, nor depth, nor any other created thing, will be able to separate us from God’s love, which is in Christ Jesus our Lord.",
+        "translation": "WEB"
+      },
+      "reflection": "A lapse can bring shame. These verses say nothing in all creation can separate you from God's love, and that includes a hard day or a slip. You're still loved, and you can take the next right step.",
+      "prayer": "God, thank you that I am still loved, even now. Help me be honest, be gentle with myself, and get support for what comes next. Amen."
+    },
+    {
+      "id": "be-strong-be-kind",
+      "title": "Courage for today",
+      "contexts": [
+        "home",
+        "checkin"
+      ],
+      "scripture": {
+        "ref": "Joshua 1:9",
+        "text": "Haven’t I commanded you? Be strong and courageous. Don’t be afraid. Don’t be dismayed, for Yahweh your God is with you wherever you go.",
+        "translation": "WEB"
+      },
+      "reflection": "Courage doesn't mean you never feel scared or unsure. It means taking the next step anyway, knowing you're not doing it alone. What is one brave, small thing you could do today?",
+      "prayer": "God, give me courage for today, and be with me wherever I go. Amen."
+    }
+  ]
+}

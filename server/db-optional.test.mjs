@@ -54,7 +54,14 @@ test('user ids are validated before any query', () => {
 test('migrations are numbered, contiguous and cover every planned table', () => {
   const list = listMigrations();
   assert.ok(list.length >= 2);
-  list.forEach((m, i) => assert.equal(m.version, i + 1, `${m.file} out of sequence`));
+  // 006 is reserved by the fitness-protocols branch; Stage 5 uses 007. Any other gap is a mistake.
+  const RESERVED = new Set([6]);
+  let expect = 1;
+  for (const m of list) {
+    while (RESERVED.has(expect) && m.version !== expect) expect++;
+    assert.equal(m.version, expect, `${m.file} out of sequence`);
+    expect++;
+  }
   const sql = list.map((m) => m.sql).join('\n');
   for (const t of ['app_users', 'user_profiles', 'consent_preferences', 'mood_entries', 'recovery_milestones', 'goals',
     'journal_entries', 'guided_activity_history', 'learning_progress', 'safety_plans', 'next_step_items',

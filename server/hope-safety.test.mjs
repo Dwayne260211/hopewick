@@ -246,7 +246,7 @@ test('context is mapped to server text; free text is flattened and capped', () =
     focus: { kind: 'steps', step: 99 },
   }, new Date('2026-10-18T00:00:00Z'));
   assert.equal(ctx.mode, 'counsellor');
-  assert.equal(ctx.faith, 'general');
+  assert.equal(ctx.faith, 'none'); // Stage 5: faith is off unless chosen
   assert.equal(ctx.style, 'balanced');
   assert.deepEqual(ctx.traits, ['Warm']);
   assert.equal(ctx.userName.includes('\n'), false);

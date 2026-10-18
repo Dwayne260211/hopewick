@@ -31,6 +31,10 @@ import { addIsoDays } from '../checkins.js';
 import {
   normalizeRecoveryGoal, normalizeRecoveryLog, normalizeLearning, assertModuleId, goalStats, recoveryInsights, MILESTONES,
 } from './recovery.js';
+import {
+  normalizePreferencesPatch, mergePreferences, faithOn, christianLayerOn, FAITH_CONTEXTS, pickForDay,
+} from './personal.js';
+import { SAFETY_FIELDS } from './validate.js';
 
 const PLUS_MESSAGES = {
   journal: 'Writing in the journal stays free. Gratitude and recovery entry types, guided series and prompt packs, and Deepen with Hope are part of Hopewick Plus.',
@@ -96,14 +100,15 @@ function legacyDays(checkins, userId, profileId, haveDates) {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-const DELETE_AREAS = Object.freeze(['checkins', 'journal', 'activities', 'goals', 'steps', 'weekly-plans', 'plans', 'recovery', 'learning', 'all']);
+const DELETE_AREAS = Object.freeze(['checkins', 'journal', 'activities', 'goals', 'steps', 'weekly-plans', 'plans', 'recovery', 'learning', 'preferences', 'all']);
 
 async function exportAll(ctx, uid, profileId) {
   const w = ctx.wellbeing;
-  const [settings, checkins, activities, goals, journal, plans, steps, weeklyPlans, recoveryGoals, recoveryLogs, learning] = await Promise.all([
+  const [settings, checkins, activities, goals, journal, plans, steps, weeklyPlans, recoveryGoals, recoveryLogs, learning, preferences, safetyHistory] = await Promise.all([
     w.getSettings(uid), w.listCheckins(uid, profileId, {}), w.listActivities(uid, profileId, { limit: LIMITS.activities }), w.listGoals(uid, profileId),
     w.listJournal(uid, profileId), w.getPlans(uid, profileId), w.listSteps(uid, profileId), w.listWeeklyPlans(uid, profileId),
     w.listRecoveryGoals(uid, profileId), w.listRecoveryLogs(uid, profileId), w.listLearning(uid, profileId),
+    w.getPreferences(uid, profileId), w.listSafetyVersions(uid, profileId),
   ]);
   const have = new Set(checkins.map((c) => c.date));
   return {
@@ -112,6 +117,7 @@ async function exportAll(ctx, uid, profileId) {
     settings, checkins, olderCheckins: legacyDays(ctx.checkins, uid, profileId, have),
     activities, goals, journal, plans: plans || null, nextSteps: steps, weeklyPlans,
     recoveryTracker: { goals: recoveryGoals, logs: recoveryLogs }, learning,
+    preferences, safetyPlanHistory: safetyHistory,
   };
 }
 
@@ -435,9 +441,71 @@ export async function handleWellbeingApi(ctx, req, res, url) {
         const doc = existing ? { relapse: existing.relapse || null, exits: existing.exits || {}, custom: existing.custom || [] } : { relapse: null, exits: {}, custom: [] };
         doc.safety = safety;
         await wellbeing.putPlans(uid, profileId, doc);
-        json(res, 200, { safety });
+        const { version } = await wellbeing.addSafetyVersion(uid, profileId, safety, { reason: 'save' });
+        json(res, 200, { safety, version });
         return true;
       }
+    }
+    /*
+     * Stage 5: safety plan version history. Always free. Every save keeps a copy
+     * (the last 20); an older copy can be looked at or restored (a restore is a
+     * new save, so nothing is lost). Sharing is done by the person in the app;
+     * Hopewick never sends the plan to anyone.
+     */
+    if (area === 'safety-plan' && sub === 'versions') {
+      const third = parts[2];
+      const fourth = parts[3];
+      if (method === 'GET' && !third) {
+        const list = await wellbeing.listSafetyVersions(uid, profileId);
+        json(res, 200, { versions: list.map((v) => ({ version: v.version, savedAt: v.savedAt, reason: v.reason, items: SAFETY_FIELDS.reduce((n, f) => n + ((v.safety && v.safety[f]) || []).length, 0) })) });
+        return true;
+      }
+      if (third && /^\d{1,6}$/.test(third)) {
+        const n = Number(third);
+        const v = (await wellbeing.listSafetyVersions(uid, profileId)).find((x) => x.version === n);
+        if (!v) throw new NotFoundError('That version of your safety plan was not found.');
+        if (method === 'GET' && !fourth) { json(res, 200, { version: v.version, savedAt: v.savedAt, reason: v.reason, safety: normalizeSafety(v.safety) }); return true; }
+        if (method === 'POST' && fourth === 'restore') {
+          const safety = normalizeSafety(v.safety);
+          const existing = await wellbeing.getPlans(uid, profileId);
+          const doc = existing ? { relapse: existing.relapse || null, exits: existing.exits || {}, custom: existing.custom || [] } : { relapse: null, exits: {}, custom: [] };
+          doc.safety = safety;
+          await wellbeing.putPlans(uid, profileId, doc);
+          const { version } = await wellbeing.addSafetyVersion(uid, profileId, safety, { reason: 'restore' });
+          json(res, 200, { safety, version, restoredFrom: n });
+          return true;
+        }
+      }
+    }
+
+    /*
+     * Stage 5: personal preferences. Only what the person chose; nothing inferred.
+     * The faith opt-in is OFF until they switch it on. DELETE resets everything.
+     */
+    if (area === 'preferences' && !sub) {
+      if (method === 'GET') { json(res, 200, { preferences: await wellbeing.getPreferences(uid, profileId) }); return true; }
+      if (method === 'PUT' || method === 'PATCH') {
+        const patch = normalizePreferencesPatch(body);
+        const prev = await wellbeing.getPreferences(uid, profileId);
+        json(res, 200, { preferences: await wellbeing.putPreferences(uid, profileId, mergePreferences(prev, patch)) });
+        return true;
+      }
+      if (method === 'DELETE') { await wellbeing.deletePreferences(uid, profileId); json(res, 200, { preferences: await wellbeing.getPreferences(uid, profileId) }); return true; }
+    }
+
+    /*
+     * Stage 5: the optional Christian faith layer. With faith off (the default)
+     * this returns nothing at all. Reflections are free; faith modules follow the
+     * release schedule like other modules.
+     */
+    if (area === 'faith' && !sub && method === 'GET') {
+      const prefs = await wellbeing.getPreferences(uid, profileId);
+      if (!christianLayerOn(prefs) || !ctx.faithContent) { json(res, 200, { enabled: false, items: [] }); return true; }
+      const context = q.get('context') || 'home';
+      if (!FAITH_CONTEXTS.includes(context)) throw new ValidationError(`context must be one of ${FAITH_CONTEXTS.join(', ')}.`, 'context');
+      const items = ctx.faithContent().filter((x) => x.contexts.includes(context));
+      json(res, 200, { enabled: true, context, today: pickForDay(items, brisbaneToday()), items, translation: 'World English Bible (public domain)', review: 'pending' });
+      return true;
     }
 
     if (area === 'weekly-plans') {
@@ -496,7 +564,8 @@ export async function handleWellbeingApi(ctx, req, res, url) {
       if (sub && method === 'PUT') {
         const moduleId = assertModuleId(sub);
         // Nobody hears about a module before its Plus date; free accounts wait for its free date.
-        const item = ctx.releases ? ctx.releases.list({ plus }).find((x) => x.kind === 'module' && x.key === moduleId) : null;
+        const faith = faithOn(await wellbeing.getPreferences(uid, profileId));
+        const item = ctx.releases ? ctx.releases.list({ plus, faith }).find((x) => x.kind === 'module' && x.key === moduleId) : null;
         if (!item) throw new NotFoundError('That learning module was not found.');
         if (!item.available) { json(res, 403, { error: PLUS_MESSAGES.module, code: 'plus' }); return true; }
         json(res, 200, { progress: await wellbeing.saveLearning(uid, profileId, moduleId, normalizeLearning(body)) });
