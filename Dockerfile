@@ -12,7 +12,9 @@ ENV NODE_ENV=production \
     PORT=8787 \
     BILLING_STORE=/var/data/users.json
 
-COPY package.json ./
+# Production dependencies only (pg). Dev tools (Neon WebSocket driver) are not installed.
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 COPY . .
 
 EXPOSE 8787

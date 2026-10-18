@@ -900,7 +900,7 @@ async function handleWebhook(store, raw) {
   return { received: true, ignored: true };
 }
 
-const PRIVATE_DIRS = new Set(['server', 'tests', 'tools', 'docs', 'node_modules']);
+const PRIVATE_DIRS = new Set(['server', 'tests', 'tools', 'docs', 'node_modules', 'migrations']);
 const PRIVATE_FILES = new Set([
   'package.json',
   'package-lock.json',
@@ -2054,6 +2054,15 @@ if (isMain) {
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
       console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');
+    }
+    // Postgres (Hopewick 2.0) is optional and not used for requests yet. Only when
+    // DATABASE_URL is set: check it is reachable and migrated. Never fatal, host only.
+    if (String(process.env.DATABASE_URL || '').trim()) {
+      import('./db/index.js').then(async ({ probeDatabase, databaseHost }) => {
+        const probe = await probeDatabase();
+        if (probe.ok) console.log(`Postgres reachable at ${databaseHost()} (schema version ${probe.schemaVersion}); not used for requests yet.`);
+        else console.log(`Postgres at ${databaseHost()} not reachable or not migrated (${probe.error}). The JSON store is in use.`);
+      }).catch((err) => console.log(`Postgres check skipped: ${err.message}`));
     }
   });
 }
