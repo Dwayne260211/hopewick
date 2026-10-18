@@ -25,7 +25,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="AOD recovery support between sessions.">
-<meta name="theme-color" content="#3f8f5f">
+<meta name="theme-color" content="#0b1b37">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Hopewick">
@@ -33,57 +33,17 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Hopewick · AI recovery companion</title>
-<!-- Inline favicon (avoids a 404 when served statically) -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='35%25' cy='30%25'%3E%3Cstop offset='0' stop-color='%23d9f7c8'/%3E%3Cstop offset='.5' stop-color='%237cc49a'/%3E%3Cstop offset='1' stop-color='%232f7a50'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='28' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
+<link rel="stylesheet" href="/assets/hopewick-tokens.css">
+<link rel="stylesheet" href="/assets/hopewick-ui.css">
+<script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
-   Theme tokens
+   Theme tokens: /assets/hopewick-tokens.css (shared with the site).
+   Only app-specific layout values live here.
    ========================================================================== */
-:root {
-  --bg: #f3f7f1;
-  --bg-glow-1: rgba(124, 196, 154, .28);
-  --bg-glow-2: rgba(232, 214, 150, .22);
-  --surface: #ffffff;
-  --surface-2: #edf4ea;
-  --surface-3: #e2ede0;
-  --text: #1d2b22;
-  --muted: #5d7064;
-  --accent: #3b8a5a;
-  --accent-strong: #2c6e46;
-  --accent-soft: #d6ecdc;
-  --accent-contrast: #ffffff;
-  --border: #d8e5d9;
-  --danger: #b4443a;
-  --danger-soft: #f8e1dd;
-  --shadow: 0 10px 30px rgba(35, 70, 45, .10), 0 2px 6px rgba(35, 70, 45, .06);
-  --radius: 18px;
-  --radius-sm: 11px;
-  --focus: 0 0 0 3px rgba(59, 138, 90, .45);
-  --sidebar-w: 280px;
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color-scheme: light;
-}
-:root[data-theme="dark"] {
-  --bg: #0e1612;
-  --bg-glow-1: rgba(80, 160, 115, .16);
-  --bg-glow-2: rgba(170, 150, 80, .08);
-  --surface: #151f19;
-  --surface-2: #1b2821;
-  --surface-3: #223228;
-  --text: #e3eee6;
-  --muted: #93a99a;
-  --accent: #6cc190;
-  --accent-strong: #8fd6ab;
-  --accent-soft: #1f3a2a;
-  --accent-contrast: #0c1a12;
-  --border: #26372d;
-  --danger: #ef8a7f;
-  --danger-soft: #3a1f1c;
-  --shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 2px 6px rgba(0, 0, 0, .25);
-  --focus: 0 0 0 3px rgba(108, 193, 144, .5);
-  color-scheme: dark;
-}
 
 /* ==========================================================================
    Base
@@ -105,7 +65,7 @@ body {
 }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
-:focus-visible { outline: none; box-shadow: var(--focus); }
+:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; box-shadow: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip-link { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--accent); color: var(--accent-contrast); padding: 8px 14px; border-radius: 10px; text-decoration: none; }
 .skip-link:focus { top: 12px; }
@@ -137,7 +97,7 @@ svg { flex: none; }
   -webkit-overflow-scrolling: touch;
 }
 .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 8px; }
-.brand-mark { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e3f9d2, #7cc49a 50%, #2f7a50); box-shadow: 0 0 14px rgba(124,196,154,.6); }
+.brand-mark { width: 36px; height: auto; flex: none; display: block; }
 .brand-name { font-weight: 700; font-size: 1.2rem; letter-spacing: .02em; }
 .brand-sub { font-size: .75rem; color: var(--muted); }
 
@@ -216,31 +176,27 @@ svg { flex: none; }
    The companion's orb avatar (states: idle / thinking / speaking / listening)
    ========================================================================== */
 .orb {
+  /* Hopewick 2.0: the companion avatar is the founder logo mark, not the old green orb. */
   --size: 44px;
-  width: var(--size); height: var(--size); border-radius: 50%; position: relative; flex: none;
-  background: radial-gradient(circle at 34% 28%, #eafbe0 0%, #a5dcb6 28%, #4fa373 62%, #256a43 100%);
-  box-shadow: 0 0 18px rgba(124, 196, 154, .55), inset -4px -6px 12px rgba(20, 60, 35, .35);
-  animation: breathe 5s ease-in-out infinite;
+  width: var(--size); height: var(--size); position: relative; flex: none;
+  background: url("/brand/hopewick-mark-96.png") center / contain no-repeat;
+  border-radius: 0;
 }
 .orb::before, .orb::after {
   content: ""; position: absolute; inset: -6px; border-radius: 50%;
-  border: 2px solid rgba(124, 196, 154, .45); opacity: 0; pointer-events: none;
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); opacity: 0; pointer-events: none;
 }
-.orb .shine { position: absolute; inset: 14% 40% 52% 18%; border-radius: 50%; background: rgba(255,255,255,.55); filter: blur(2px); }
-.orb.lg { --size: 116px; margin: 0 auto; }
-.orb.md { --size: 72px; margin: 0 auto; }
-.orb.sm { --size: 30px; box-shadow: 0 0 10px rgba(124,196,154,.45), inset -2px -3px 6px rgba(20,60,35,.35); animation: none; }
-.orb[data-state="thinking"] { animation: think 1.4s ease-in-out infinite; background: radial-gradient(circle at 60% 30%, #f3fbe6 0%, #b8e3a6 30%, #53a576 62%, #22603d 100%); }
-.orb[data-state="thinking"]::before { opacity: 1; border-style: dashed; animation: spin 3s linear infinite; }
-.orb[data-state="speaking"] { animation: speak .45s ease-in-out infinite alternate; }
+.orb .shine { display: none; }
+.orb.lg { --size: 116px; margin: 0 auto; background-image: url("/brand/hopewick-mark.png"); }
+.orb.md { --size: 72px; margin: 0 auto; background-image: url("/brand/hopewick-mark.png"); }
+.orb.sm { --size: 30px; }
+.orb[data-state="thinking"] { animation: think 1.6s ease-in-out infinite; }
+.orb[data-state="speaking"] { animation: speak .6s ease-in-out infinite alternate; }
 .orb[data-state="speaking"]::before { animation: ripple 1.2s ease-out infinite; }
-.orb[data-state="speaking"]::after { animation: ripple 1.2s ease-out .6s infinite; }
-.orb[data-state="listening"] { background: radial-gradient(circle at 34% 28%, #fff7dd 0%, #f0d98e 30%, #7fb77a 64%, #2e6f47 100%); }
-.orb[data-state="listening"]::before { border-color: rgba(240, 200, 100, .6); animation: ripple 1.6s ease-out infinite; }
-.orb[data-state="listening"]::after { border-color: rgba(240, 200, 100, .6); animation: ripple 1.6s ease-out .8s infinite; }
-@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
-@keyframes think { 0%,100% { transform: scale(.95) rotate(0deg); filter: hue-rotate(0deg); } 50% { transform: scale(1.05) rotate(8deg); filter: hue-rotate(-18deg); } }
-@keyframes speak { from { transform: scale(.97); } to { transform: scale(1.09); } }
+.orb[data-state="listening"]::before { border-color: color-mix(in srgb, var(--gold) 70%, transparent); animation: ripple 1.6s ease-out infinite; }
+.orb[data-state="listening"]::after { border-color: color-mix(in srgb, var(--gold) 70%, transparent); animation: ripple 1.6s ease-out .8s infinite; }
+@keyframes think { 0%,100% { transform: scale(.97); opacity: .85; } 50% { transform: scale(1.03); opacity: 1; } }
+@keyframes speak { from { transform: scale(.98); } to { transform: scale(1.05); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes ripple { 0% { opacity: .9; transform: scale(.9); } 100% { opacity: 0; transform: scale(1.6); } }
 
@@ -292,7 +248,7 @@ svg { flex: none; }
 }
 .msg.assistant .bubble { border-bottom-left-radius: 6px; }
 .msg.user .bubble {
-  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, #2a6d8a));
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: var(--accent-contrast); border-color: transparent; border-bottom-right-radius: 6px; white-space: pre-wrap;
 }
 .msg.error .bubble { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 40%, var(--border)); white-space: pre-wrap; }
@@ -344,8 +300,8 @@ svg { flex: none; }
 .composer .icon-btn { width: 42px; height: 42px; border-radius: 16px; }
 .send-btn { background: var(--accent) !important; color: var(--accent-contrast) !important; }
 .send-btn:hover { background: var(--accent-strong) !important; }
-.mic-btn.listening { background: #f3d77f !important; color: #3d2f00 !important; animation: micpulse 1.4s infinite; }
-@keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 rgba(240,200,100,.6); } 50% { box-shadow: 0 0 0 7px rgba(240,200,100,0); } }
+.mic-btn.listening { background: var(--accent-gold-soft) !important; color: var(--accent-gold) !important; animation: micpulse 1.4s infinite; }
+@keyframes micpulse { 0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 60%, transparent); } 50% { box-shadow: 0 0 0 7px transparent; } }
 .composer-hint { max-width: 780px; margin: 4px auto 0; font-size: .72rem; color: var(--muted); text-align: center; line-height: 1.35; }
 .composer-hint-short { display: none; }
 @media (max-width: 899px) {
@@ -386,10 +342,10 @@ svg { flex: none; }
 dialog {
   width: min(640px, calc(100vw - 24px)); max-height: min(88vh, 900px); padding: 0;
   border: 1px solid var(--border); border-radius: 22px; background: var(--surface); color: var(--text);
-  box-shadow: 0 30px 80px rgba(0,0,0,.3);
+  box-shadow: var(--shadow-lg);
 }
 dialog[open] { display: flex; flex-direction: column; animation: pop .2s ease; }
-dialog::backdrop { background: rgba(12, 25, 18, .45); backdrop-filter: blur(3px); }
+dialog::backdrop { background: var(--scrim); backdrop-filter: blur(3px); }
 @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
 .dlg-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px 10px; border-bottom: 1px solid var(--border); margin: 0; }
 .dlg-head h2 { margin: 0; font-size: 1.15rem; }
@@ -431,7 +387,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 /* Toasts */
 .toasts { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 200; pointer-events: none; width: max-content; max-width: calc(100vw - 24px); }
 .toast { background: var(--text); color: var(--bg); padding: 9px 16px; border-radius: 12px; font-size: .9rem; box-shadow: var(--shadow); animation: fadeUp .25s ease both; }
-.toast.bad { background: var(--danger); color: #fff; }
+.toast.bad { background: var(--danger); color: var(--danger-contrast); }
 
 
 /* ==========================================================================
@@ -638,7 +594,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .resume-preview-wrap h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
 .resume-paper {
   background: #fff;
-  color: #1d2b22;
+  color: #0b1b37;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px 16px 18px;
@@ -647,22 +603,22 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   line-height: 1.4;
 }
 .resume-paper h3 { margin: 0 0 2px; font-size: 1.25rem; line-height: 1.2; }
-.resume-paper .rp-contact { color: #3d5246; font-size: .8rem; margin: 0 0 8px; }
+.resume-paper .rp-contact { color: #3c4a64; font-size: .8rem; margin: 0 0 8px; }
 .resume-paper h4 {
   margin: 12px 0 4px;
   font-size: .72rem;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: #2c6e46;
-  border-bottom: 1px solid #d8e5d9;
+  color: #233a55;
+  border-bottom: 1px solid #d3dbe8;
   padding-bottom: 2px;
 }
 .resume-paper p { margin: 0 0 6px; }
 .resume-paper ul { margin: 4px 0 0; padding-left: 1.15em; }
 .resume-entry { margin: 0 0 8px; }
 .resume-entry .rp-line { display: flex; justify-content: space-between; gap: 8px; font-weight: 700; }
-.resume-entry .rp-dates { font-weight: 500; color: #5d7064; font-size: .78rem; white-space: nowrap; }
-.resume-preview-empty { margin: 0; color: #5d7064; }
+.resume-entry .rp-dates { font-weight: 500; color: #4a5875; font-size: .78rem; white-space: nowrap; }
+.resume-preview-empty { margin: 0; color: #4a5875; }
 @media (max-width: 860px) {
   .resume-layout { grid-template-columns: 1fr; }
   .resume-preview-wrap { order: -1; }
@@ -934,7 +890,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 @media (max-width: 860px) {
   .sidebar { position: fixed; inset: 0 auto 0 0; width: min(var(--sidebar-w), 88vw); height: 100%; max-height: 100dvh; overflow-y: auto; -webkit-overflow-scrolling: touch; transform: translateX(-105%); box-shadow: var(--shadow); background: var(--surface); visibility: hidden; transition: transform .28s ease, visibility 0s .28s; }
   .app.sidebar-open .sidebar { transform: none; visibility: visible; transition: transform .28s ease; }
-  .app.sidebar-open .scrim { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 25; }
+  .app.sidebar-open .scrim { display: block; position: fixed; inset: 0; background: var(--scrim); z-index: 25; }
   .menu-btn { display: inline-grid; }
   .bubble-wrap { max-width: 88%; }
   .msg.assistant .orb.sm { display: none; }
@@ -957,7 +913,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
    v2 additions: profiles, counsellor mode, help, recovery counter
    ========================================================================== */
 .avatar {
-  --c: #3b8a5a;
+  --c: #233a55;
   width: 30px; height: 30px; border-radius: 50%; flex: none; display: inline-grid; place-items: center;
   background: var(--c); color: #fff; font-weight: 700; font-size: .9rem; text-transform: uppercase;
   box-shadow: inset 0 -2px 4px rgba(0,0,0,.15);
@@ -966,8 +922,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .switch-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 12px 4px 4px; font-size: .9rem; }
 .switch-btn:hover { background: var(--surface-2); }
 .help-btn {
-  display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 7px 12px; font-size: .88rem; font-weight: 650;
-  border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border)); background: var(--danger-soft); color: var(--danger);
+  /* Persistent crisis entry: always visible, never behind sign-in or Plus. */
+  display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 7px 12px; font-size: .88rem; font-weight: 700; min-height: 40px;
+  border: 1px solid var(--danger); background: var(--danger); color: var(--danger-contrast);
 }
 .help-btn:hover { filter: brightness(.97); }
 
@@ -1034,7 +991,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .invite-form input:focus { outline: none; box-shadow: var(--focus); border-color: var(--accent); }
 .invite-status { min-height: 1.2em; font-size: .85rem; color: var(--muted); margin: 0; }
-.invite-status.bad { color: #b42318; }
+.invite-status.bad { color: var(--danger); }
 .invite-status.ok { color: var(--accent-strong); }
 .invite-privacy, .hosted-privacy {
   font-size: .76rem; color: var(--muted); margin: 10px 0 0; line-height: 1.4;
@@ -1085,7 +1042,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 #accountCreatePanel { margin-top: 8px; }
 #accountCreatePanel[hidden] { display: none !important; }
 .account-status { min-height: 1.2em; font-size: .88rem; color: var(--muted); margin: 8px 0 0; }
-.account-status.bad { color: #b42318; }
+.account-status.bad { color: var(--danger); }
 .account-status.ok { color: var(--accent-strong); }
 .account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .account-google-host {
@@ -1250,7 +1207,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   border: 0; background: transparent; padding: 2px; border-radius: 10px; color: inherit; font: inherit;
 }
 .mood-week .day:hover { background: var(--surface-2); }
-.mood-week .day:focus-visible { outline: none; box-shadow: var(--focus); }
+.mood-week .day:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; box-shadow: none; }
 .mood-week .day .e {
   width: 28px; height: 28px; border-radius: 50%;
   display: grid; place-items: center; font-size: 1rem; line-height: 1;
@@ -1279,13 +1236,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 /* v4: clean time, gratitude, journal, steps, bible */
 .soap-hero {
-  background: linear-gradient(145deg, #1a3d2e 0%, #24553f 55%, #2d6a4f 100%);
+  background: linear-gradient(145deg, #0b1b37 0%, #1a3354 55%, #233a55 100%);
   color: #f4f0e4;
   border-radius: 16px;
   padding: 16px 16px 14px;
   margin: 12px 0 10px;
-  border: 1px solid color-mix(in srgb, #c9a227 45%, #1a3d2e);
-  box-shadow: 0 8px 24px rgba(26, 61, 46, .22);
+  border: 1px solid color-mix(in srgb, var(--accent-gold-bright) 45%, var(--brand-primary-strong));
+  box-shadow: 0 8px 24px rgba(15, 29, 54, .22);
 }
 .soap-hero .soap-kicker { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #e4c65a; font-weight: 700; margin: 0 0 6px; }
 .soap-hero h3 { margin: 0 0 4px; font-size: 1.2rem; color: #fff8e7; }
@@ -1296,7 +1253,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .soap-letters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 12px; }
 @media (min-width: 520px) { .soap-letters { grid-template-columns: repeat(4, 1fr); } }
 .soap-letter {
-  border: 1px solid color-mix(in srgb, #c9a227 35%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--border));
   background: var(--surface-2);
   border-radius: 12px;
   padding: 10px 10px 8px;
@@ -1304,15 +1261,15 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .soap-letter .ltr {
   display: inline-flex; align-items: center; justify-content: center;
   width: 28px; height: 28px; border-radius: 8px;
-  background: #1f4a38; color: #f0d56a; font-weight: 800; font-size: .95rem; margin-bottom: 4px;
+  background: #0b1b37; color: #f0d56a; font-weight: 800; font-size: .95rem; margin-bottom: 4px;
 }
 .soap-letter strong { display: block; font-size: .88rem; margin-bottom: 2px; }
 .soap-letter span { font-size: .78rem; color: var(--muted); line-height: 1.35; }
-.bible-card.done { border-color: color-mix(in srgb, #c9a227 50%, var(--accent)); }
+.bible-card.done { border-color: color-mix(in srgb, var(--gold) 50%, var(--accent)); }
 .bible-card .badge { font-size: .72rem; font-weight: 700; color: var(--accent-strong); }
 .soap-log-form .field { margin-bottom: 8px; }
 .soap-log-form textarea { width: 100%; min-height: 52px; border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 8px 10px; font: inherit; resize: vertical; }
-.soap-entry { border-left: 3px solid #c9a227; }
+.soap-entry { border-left: 3px solid var(--gold); }
 
 /* v5.5: in-app WEB Bible reader (public domain) */
 /* v5.6: Diving Deeper Finding Jesus (full Protestant canon) */
@@ -1321,7 +1278,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   padding: 12px 14px;
   border-radius: 12px;
   background: color-mix(in srgb, #fff8e7 8%, var(--surface-2));
-  border: 1px solid color-mix(in srgb, #c9a227 28%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, var(--border));
   max-height: 280px;
   overflow: auto;
 }
@@ -1343,13 +1300,13 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .bible-verse .vn {
   font-size: .72rem;
   font-weight: 700;
-  color: #c9a227;
+  color: var(--accent-gold);
   text-align: right;
   padding-top: .2em;
   user-select: none;
 }
 .bible-verse.highlight {
-  background: color-mix(in srgb, #c9a227 18%, transparent);
+  background: color-mix(in srgb, var(--gold) 18%, transparent);
   border-radius: 8px;
   margin-left: -6px;
   margin-right: -6px;
@@ -1367,8 +1324,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .reader-chapters .chip { min-width: 2.4em; justify-content: center; cursor: pointer; }
 .reader-chapters .chip[aria-current="true"] {
-  background: color-mix(in srgb, #1f4a38 88%, #c9a227);
-  color: #f7e7a1; border-color: #c9a227;
+  background: color-mix(in srgb, #0b1b37 88%, var(--gold));
+  color: #f7e7a1; border-color: var(--gold);
 }
 .reader-body {
   border: 1px solid var(--border);
@@ -1392,8 +1349,8 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 }
 .book-grid .chip { cursor: pointer; justify-content: flex-start; font-size: .82rem; }
 .book-grid .chip[aria-current="true"] {
-  background: color-mix(in srgb, #1f4a38 88%, #c9a227);
-  color: #f7e7a1; border-color: #c9a227;
+  background: color-mix(in srgb, #0b1b37 88%, var(--gold));
+  color: #f7e7a1; border-color: var(--gold);
 }
 .soap-optional-links { font-size: .82rem; color: var(--muted); margin: 8px 0 0; }
 .soap-optional-links a { color: var(--accent-strong); }
@@ -1403,14 +1360,14 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .dd-section-nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
 .dd-section-nav .chip { cursor: pointer; font-size: .78rem; }
 .dd-section-nav .chip[aria-current="true"] {
-  background: color-mix(in srgb, #1f4a38 88%, #c9a227);
-  color: #f7e7a1; border-color: #c9a227;
+  background: color-mix(in srgb, #0b1b37 88%, var(--gold));
+  color: #f7e7a1; border-color: var(--gold);
 }
 .dd-prog { font-size: .82rem; color: var(--muted); margin: 0 0 8px; text-align: center; }
 .dd-week { margin: 0 0 14px; }
 .dd-week h3 {
   margin: 0 0 8px; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
-  color: #c9a227; font-weight: 700;
+  color: var(--accent-gold); font-weight: 700;
 }
 .dd-row {
   display: flex; align-items: flex-start; gap: 10px;
@@ -1419,7 +1376,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
   font: inherit; color: inherit;
 }
 .dd-row:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
-.dd-row.done { border-color: color-mix(in srgb, #c9a227 45%, var(--accent)); background: var(--accent-soft); }
+.dd-row.done { border-color: color-mix(in srgb, var(--gold) 45%, var(--accent)); background: var(--accent-soft); }
 .dd-row input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
 .dd-row .dd-body { flex: 1; min-width: 0; }
 .dd-row .dd-main { font-weight: 600; font-size: .95rem; }
@@ -1430,10 +1387,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .dd-passage-block {
   border: 1px solid var(--border); background: var(--surface-2); border-radius: 12px; padding: 10px 12px;
 }
-.dd-passage-block h4 { margin: 0 0 6px; font-size: .95rem; color: #c9a227; }
+.dd-passage-block h4 { margin: 0 0 6px; font-size: .95rem; color: var(--accent-gold); }
 .dd-passage-block .bp-status { font-size: .82rem; color: var(--muted); margin: 0 0 6px; }
 .dd-finding {
-  margin: 12px 0; border: 1px solid color-mix(in srgb, #c9a227 35%, var(--border));
+  margin: 12px 0; border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--border));
   background: color-mix(in srgb, var(--accent-soft) 70%, var(--surface)); border-radius: 12px; padding: 10px 12px;
 }
 .dd-finding summary { cursor: pointer; font-weight: 700; color: var(--accent-strong); }
@@ -1476,9 +1433,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .dlg-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
 .dlg-tabs .chip { cursor: pointer; }
 .dlg-tabs .chip[aria-selected="true"], .dlg-tabs .chip.active {
-  background: color-mix(in srgb, #1f4a38 88%, #c9a227);
+  background: color-mix(in srgb, #0b1b37 88%, var(--gold));
   color: #f7e7a1;
-  border-color: #c9a227;
+  border-color: var(--gold);
 }
 .side-tools { display: flex; flex-direction: column; gap: 2px; }
 .empty-hint { color: var(--muted); font-size: .9rem; padding: 12px 4px; text-align: center; }
@@ -1699,16 +1656,16 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
 }
 .aod-filters .chip[aria-pressed="true"] {
-  border-color: var(--accent, #3f8f5f);
+  border-color: var(--accent);
   background: var(--accent-soft, color-mix(in srgb, var(--accent) 18%, transparent));
-  color: var(--accent, #3f8f5f);
+  color: var(--accent);
 }
-.aod-filters .chip:focus-visible { outline: none; box-shadow: var(--focus); }
+.aod-filters .chip:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; box-shadow: none; }
 .aod-offer-chips { display:flex; flex-wrap:wrap; gap:6px; margin: 0 0 10px; }
 .aod-offer-chips span {
   font-size: .75rem; font-weight: 600; padding: 3px 9px; border-radius: 999px;
-  background: color-mix(in srgb, var(--accent, #3f8f5f) 12%, var(--surface-2));
-  color: var(--text); border: 1px solid color-mix(in srgb, var(--accent, #3f8f5f) 28%, var(--border));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
+  color: var(--text); border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
 }
 .aod-scope { font-size: .78rem; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
 .aod-national {
@@ -1767,6 +1724,78 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   .mode-badge { display: none; }
   .who-name { font-size: 1rem; }
 }
+
+/* ==========================================================================
+   Hopewick 2.0: dashboard, hubs and responsive navigation
+   (components come from /assets/hopewick-ui.css; tokens from hopewick-tokens.css)
+   ========================================================================== */
+body { font-family: var(--font); }
+h1, h2, h3 { font-family: var(--font-display); }
+.btn { border-radius: var(--radius-sm); min-height: 40px; font-weight: 600; }
+.btn-sm { min-height: 34px; }
+.chip, .starter, .need-chip, .mood-btn { min-height: 36px; }
+.home-inner { max-width: 1040px; gap: var(--space-4); }
+.dash-hero { display: flex; align-items: center; gap: var(--space-4); text-align: left; padding: var(--space-2) 0 0; }
+.dash-hero .orb.md { --size: 56px; margin: 0; flex: none; }
+.dash-hero h1 { margin: 0 0 2px !important; font-size: clamp(1.35rem, 3.4vw, 1.8rem); letter-spacing: -.02em; }
+.dash-hero p { margin: 0 !important; max-width: none !important; font-size: var(--text-sm) !important; }
+.home-view .need-now, .home-view .today-card { border-radius: var(--radius-lg); }
+.dash-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); align-items: start; }
+.dash-card { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4) var(--space-5) var(--space-5); }
+.dash-card > .hw-card__head { margin-bottom: 0; justify-content: flex-start; }
+.dash-head-text { min-width: 0; }
+.dash-card .hw-card__actions { margin-top: 0; }
+.dash-card .mood-card, .dash-card .grat-card, .dash-card .deeper-home, .dash-card .home-week-card, .dash-card .home-midweek, .dash-embedded {
+  margin: 0; box-shadow: none; border: 0; padding: 0; background: transparent; max-width: none;
+}
+.dash-card .mood-card h2, .dash-card .grat-card h2, .dash-card .deeper-home h2, .dash-card .home-week-card h2 { font-size: var(--text-base); }
+.dash-card .mood-row { justify-content: flex-start; }
+.dash-card .home-sober { background: var(--accent-soft); border-color: transparent; }
+.dash-list { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; }
+.dash-recent { list-style: none; padding: 0; }
+.dash-recent-btn { display: flex; justify-content: space-between; gap: var(--space-3); width: 100%; min-height: var(--tap); padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--text); text-align: left; font: inherit; }
+.dash-recent-btn:hover { border-color: var(--accent); }
+.dash-recent-btn .t { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-recent-btn .m { color: var(--muted); font-size: var(--text-sm); flex: none; }
+.dash-card .plus-pill { margin-left: 6px; }
+.dash-card .hw-empty { margin: 0; }
+@media (min-width: 900px) {
+  /* Two balanced columns; cards keep DOM (and keyboard) order down each column. */
+  .dash-grid { display: block; columns: 2; column-gap: var(--space-4); }
+  .dash-grid > .dash-card { break-inside: avoid; margin: 0 0 var(--space-4); }
+}
+@media (min-width: 1280px) {
+  .home-inner { max-width: 1120px; }
+}
+
+.hub-view { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 10px 16px 16px; }
+.hub-view[hidden] { display: none !important; }
+.hub-inner { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-5); }
+.hub-head h1 { margin: var(--space-2) 0 var(--space-1); font-size: clamp(1.4rem, 3.4vw, 1.9rem); letter-spacing: -.02em; }
+.hub-head p { margin: 0; color: var(--muted); }
+.hub-section h2 { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 var(--space-2); }
+.hub-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+@media (min-width: 640px) { .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .hub-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.hub-card { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
+.hub-text { display: flex; flex-direction: column; min-width: 0; }
+.hub-title { font-weight: 700; color: var(--text); }
+.hub-desc { font-size: var(--text-sm); color: var(--muted); line-height: 1.35; }
+.app.tab-tools .composer-wrap, .app.tab-learn .composer-wrap,
+.app.tab-tools .messages, .app.tab-learn .messages { display: none !important; }
+
+/* Navigation: bottom bar on phones and tablets, sidebar on desktop */
+.side-primary { padding: 0 0 var(--space-2); border-bottom: 1px solid var(--border); }
+.side-primary .hw-nav-item { min-height: 42px; }
+.side-theme-toggle { padding: 0 10px; justify-content: flex-start; width: 100%; font-weight: 500; }
+.plus-pill { background: var(--accent-gold-soft); color: var(--accent-gold); }
+@media (max-width: 860px) {
+  .side-primary { display: none; }
+}
+@media (min-width: 861px) {
+  .bottom-nav { display: none !important; }
+  .toasts { bottom: 24px; }
+}
 </style>
 </head>
 <body>
@@ -1776,12 +1805,19 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
   <!-- ============================ Sidebar ============================ -->
   <aside class="sidebar" id="sidebar" aria-label="Conversations">
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true"></div>
+      <img class="brand-mark" src="../brand/hopewick-mark-96.png" alt="" width="36" height="30" aria-hidden="true">
       <div>
         <div class="brand-name" id="brandName" data-brand>Hopewick</div>
         <div class="brand-sub" id="brandSub">AI recovery companion</div>
       </div>
     </div>
+    <nav class="side-primary hw-sidebar-nav" id="sidePrimaryNav" aria-label="Main sections">
+      <button type="button" class="hw-nav-item" id="sideNavHome" data-nav="home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span>Home</span></button>
+      <button type="button" class="hw-nav-item" id="sideNavChat" data-nav="chat" aria-current="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>Chat with <span data-companion>Hope</span></span></button>
+      <button type="button" class="hw-nav-item" id="sideNavTools" data-nav="tools" aria-current="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-1.5 3-5 4.5-5 8.5a5 5 0 0 0 10 0C17 7.5 13.5 6 12 3z"/><path d="M12 13v8M8.5 21h7"/></svg><span>Tools</span></button>
+      <button type="button" class="hw-nav-item" id="sideNavLearn" data-nav="learn" aria-current="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.5 12 3l10 3.5-10 3.5L2 6.5z"/><path d="M6 8.5V14c0 1.7 2.7 3 6 3s6-1.3 6-3V8.5"/><path d="M22 6.5V12"/></svg><span>Learn</span></button>
+      <button type="button" class="hw-nav-item" id="sideNavChats" data-nav="chats" aria-current="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Your chats</span></button>
+    </nav>
     <button class="btn btn-primary" id="newChatBtn" type="button">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
       New chat
@@ -1891,6 +1927,10 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         Get help now
       </button>
       <div class="side-section-label">Settings</div>
+      <button type="button" class="hw-toggle side-theme-toggle" id="sideThemeToggle" role="switch" aria-checked="false">
+        <span class="hw-toggle__track" aria-hidden="true"></span>
+        <span>Dark mode</span>
+      </button>
       <button class="btn btn-ghost" type="button" id="sideMyAccountBtn" data-open="myaccount">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 19.2a7 7 0 0 1 14 0"/></svg>
         My Account
@@ -1935,7 +1975,7 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
         </div>
       </div>
       <div class="topbar-actions">
-        <button class="help-btn" id="helpBtn" type="button" aria-haspopup="dialog">
+        <button class="help-btn hw-crisis-btn" id="helpBtn" type="button" aria-haspopup="dialog" aria-label="Get help now. Crisis lines, always free">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span>Get help<span class="htext-long"> now</span></span>
         </button>
@@ -2025,6 +2065,26 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
 
     <section class="home-view" id="homeView" aria-label="Home">
       <div class="home-inner" id="homeInner"></div>
+    </section>
+
+    <section class="hub-view" id="toolsView" hidden aria-labelledby="toolsTitle">
+      <div class="hub-inner">
+        <header class="hub-head">
+          <h1 id="toolsTitle" tabindex="-1">Tools</h1>
+          <p>Practical support, any time you need it. Crisis lines are always free.</p>
+        </header>
+        <div id="toolsHub"></div>
+      </div>
+    </section>
+
+    <section class="hub-view" id="learnView" hidden aria-labelledby="learnTitle">
+      <div class="hub-inner">
+        <header class="hub-head">
+          <h1 id="learnTitle" tabindex="-1">Learn and grow</h1>
+          <p>Readings, study and short lessons for real life.</p>
+        </header>
+        <div id="learnHub"></div>
+      </div>
     </section>
 
     <section class="info-view" id="infoView" hidden aria-label="News &amp; resources">
@@ -2258,28 +2318,24 @@ h1 .plus-pill, .bottom-nav-btn .plus-pill { font-size: .62rem; }
       <p class="composer-hint" id="composerHint"><span class="composer-hint-short">Not emergency care · 000</span><span class="composer-hint-full"><span data-companion>Hope</span> is not emergency or medical care · Emergency 000</span><span class="composer-hint-copy"><br><span class="copyright" data-copyright></span></span></p>
     </div>
 
-    <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
-      <button type="button" class="bottom-nav-btn" id="appTabHome" data-tab="home" aria-current="page" aria-pressed="true">
+    <nav class="bottom-nav hw-bottom-nav" id="bottomNav" aria-label="Main navigation">
+      <button type="button" class="bottom-nav-btn hw-tab" id="appTabHome" data-tab="home" aria-current="page" aria-pressed="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
         <span>Home</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabChat" data-tab="chat" aria-current="false" aria-pressed="false">
+      <button type="button" class="bottom-nav-btn hw-tab" id="appTabChat" data-tab="chat" aria-current="false" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
         <span>Chat</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabChats" data-tab="chats" aria-current="false" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-        <span>Chats</span>
+      <button type="button" class="bottom-nav-btn hw-tab" id="appTabTools" data-tab="tools" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-1.5 3-5 4.5-5 8.5a5 5 0 0 0 10 0C17 7.5 13.5 6 12 3z"/><path d="M12 13v8M8.5 21h7"/></svg>
+        <span>Tools</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabDv" data-tab="dv" aria-current="false" aria-pressed="false" aria-label="Domestic and family violence">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></svg>
-        <span>Safety</span>
+      <button type="button" class="bottom-nav-btn hw-tab" id="appTabLearn" data-tab="learn" aria-current="false" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.5 12 3l10 3.5-10 3.5L2 6.5z"/><path d="M6 8.5V14c0 1.7 2.7 3 6 3s6-1.3 6-3V8.5"/><path d="M22 6.5V12"/></svg>
+        <span>Learn</span>
       </button>
-      <button type="button" class="bottom-nav-btn" id="appTabJournal" data-tab="journal" aria-current="false" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span>Journal</span>
-      </button>
-      <button type="button" class="bottom-nav-btn" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-expanded="false" aria-controls="sidebar" aria-haspopup="true">
+      <button type="button" class="bottom-nav-btn hw-tab" id="appTabMore" data-tab="more" aria-current="false" aria-pressed="false" aria-expanded="false" aria-controls="sidebar" aria-haspopup="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
         <span>More</span>
       </button>
@@ -3842,7 +3898,7 @@ let profile = null;        // the active person {id, name, pin, created}
 let settings = {};         // merged view: profile settings + shared provider settings
 let convos = [];
 let memories = [];
-let appTab = 'home';       // 'home' | 'chat' | 'chats' | 'dv' | 'journal' | 'info' | 'resume' — More opens sidebar, not a tab destination
+let appTab = 'home';       // 'home' | 'chat' | 'chats' | 'tools' | 'learn' | 'dv' | 'journal' | 'info' | 'resume' | 'account' — More opens sidebar, not a tab destination
 let launchPrefsOpen = false;
 let pendingStartChat = false;
 let moods = [];            // [{date:'YYYY-MM-DD', mood:{e,l}, craving}]
@@ -3889,7 +3945,9 @@ const el = {
   keyBanner: $('#keyBanner'), homeView: $('#homeView'), homeInner: $('#homeInner'),
   infoView: $('#infoView'), dvView: $('#dvView'), resumeView: $('#resumeView'), journalView: $('#journalView'), chatsView: $('#chatsView'), myAccountView: $('#myAccountView'), launchPrefs: $('#launchPrefs'),
   messages: $('#messages'), inner: $('#messagesInner'), composerWrap: document.querySelector('.composer-wrap'),
-  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabChats: $('#appTabChats'), tabDv: $('#appTabDv'), tabJournal: $('#appTabJournal'), tabMore: $('#appTabMore'),
+  bottomNav: $('#bottomNav'), tabHome: $('#appTabHome'), tabChat: $('#appTabChat'), tabTools: $('#appTabTools'), tabLearn: $('#appTabLearn'), tabMore: $('#appTabMore'),
+  tabChats: null, tabDv: null, tabJournal: null, // moved off the bottom bar in Hopewick 2.0 (Chat, Tools and More reach them)
+  toolsView: $('#toolsView'), learnView: $('#learnView'), toolsHub: $('#toolsHub'), learnHub: $('#learnHub'),
   sideDvBtn: $('#sideDvBtn'), sideResumeBtn: $('#sideResumeBtn'), sideJournalBtn: $('#sideJournalBtn'), sideInfoBtn: $('#sideInfoBtn'),
   composer: $('#composer'), input: $('#input'), inputLabel: $('#inputLabel'), send: $('#sendBtn'), sendIcon: $('#sendIcon'), mic: $('#micBtn'),
   convoBtn: $('#convoModeBtn'), convoBar: $('#convoBar'), convoBarText: $('#convoBarText'), convoStop: $('#convoStopBtn'),
@@ -4467,7 +4525,7 @@ function pinHash(pid, pin) {
   return h.toString(16);
 }
 
-const AVATAR_COLOURS = ['#3b8a5a', '#8a5a9e', '#c0713a', '#2f7fa0', '#a0485a', '#6b7a2f', '#5a62b0'];
+const AVATAR_COLOURS = ['#233a55', '#8a5a9e', '#c0713a', '#2f7fa0', '#a0485a', '#6b7a2f', '#5a62b0'];
 function avatarColour(p) {
   let n = 0; for (const ch of p.id) n = (n * 31 + ch.charCodeAt(0)) >>> 0;
   return AVATAR_COLOURS[n % AVATAR_COLOURS.length];
@@ -4620,14 +4678,27 @@ function toSpeakable(md) {
    Theme
    --------------------------------------------------------------------------- */
 const mqDark = window.matchMedia('(prefers-color-scheme: dark)');
-function resolvedTheme() { return (settings.theme || 'system') === 'system' ? (mqDark.matches ? 'dark' : 'light') : settings.theme; }
+// A profile set to light/dark wins. "System" follows the device-wide choice saved by the
+// landing pages or the sidebar switch (hopewick.theme), then prefers-color-scheme.
+function deviceTheme() {
+  try { const v = localStorage.getItem('hopewick.theme'); return v === 'light' || v === 'dark' ? v : null; } catch (e) { return null; }
+}
+function resolvedTheme() {
+  const pref = settings.theme || 'system';
+  if (pref === 'light' || pref === 'dark') return pref;
+  return deviceTheme() || (mqDark.matches ? 'dark' : 'light');
+}
 function applyTheme() {
   const t = resolvedTheme();
   document.documentElement.dataset.theme = t;
+  const toggle = document.getElementById('sideThemeToggle');
+  if (toggle) toggle.setAttribute('aria-checked', t === 'dark' ? 'true' : 'false');
   const meta = $('meta[name="theme-color"]');
-  if (meta) meta.content = t === 'dark' ? '#0e1612' : '#3f8f5f';
+  if (meta) meta.content = t === 'dark' ? '#0a1426' : '#0b1b37';
+  // Share the choice with the landing and legal pages (assets/theme.js).
+  try { const pref = settings.theme || 'system'; if (pref === 'light' || pref === 'dark') localStorage.setItem('hopewick.theme', pref); } catch (e) {}
 }
-mqDark.addEventListener('change', () => { if (settings.theme === 'system') applyTheme(); });
+mqDark.addEventListener('change', () => { if ((settings.theme || 'system') === 'system') applyTheme(); });
 
 /* ---------------------------------------------------------------------------
    Orb / status
@@ -5007,7 +5078,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const next = tab === 'chat' ? 'chat' : tab === 'chats' ? 'chats' : tab === 'info' ? 'info' : tab === 'dv' ? 'dv' : tab === 'resume' ? 'resume' : tab === 'journal' ? 'journal' : tab === 'account' ? 'account' : 'home';
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account'];
+  const next = KNOWN_TABS.includes(tab) ? tab : 'home';
   const changed = appTab !== next;
   appTab = next;
   el.app.classList.toggle('tab-home', next === 'home');
@@ -5018,6 +5090,10 @@ function setAppTab(tab, opts = {}) {
   el.app.classList.toggle('tab-resume', next === 'resume');
   el.app.classList.toggle('tab-journal', next === 'journal');
   el.app.classList.toggle('tab-account', next === 'account');
+  el.app.classList.toggle('tab-tools', next === 'tools');
+  el.app.classList.toggle('tab-learn', next === 'learn');
+  if (el.toolsView) el.toolsView.hidden = next !== 'tools';
+  if (el.learnView) el.learnView.hidden = next !== 'learn';
   if (el.homeView) el.homeView.hidden = next !== 'home';
   if (el.infoView) el.infoView.hidden = next !== 'info';
   if (el.dvView) el.dvView.hidden = next !== 'dv';
@@ -5033,11 +5109,16 @@ function setAppTab(tab, opts = {}) {
     btn.setAttribute('aria-current', on ? 'page' : 'false');
     btn.setAttribute('aria-pressed', String(!!on));
   };
-  mark(el.tabHome, next === 'home');
-  mark(el.tabChat, next === 'chat');
-  mark(el.tabChats, next === 'chats');
-  mark(el.tabDv, next === 'dv');
-  mark(el.tabJournal, next === 'journal');
+  // Each screen belongs to one bottom-bar section, so the bar always shows where you are.
+  const section = navSectionFor(next);
+  mark(el.tabHome, section === 'home');
+  mark(el.tabChat, section === 'chat');
+  mark(el.tabTools, section === 'tools');
+  mark(el.tabLearn, section === 'learn');
+  $$('#sidePrimaryNav [data-nav]').forEach((b) => {
+    const on = b.dataset.nav === 'chats' ? next === 'chats' : (b.dataset.nav === section && next !== 'chats');
+    b.setAttribute('aria-current', on ? 'page' : 'false');
+  });
   if (el.sideDvBtn) el.sideDvBtn.setAttribute('aria-current', next === 'dv' ? 'page' : 'false');
   if (el.sideResumeBtn) el.sideResumeBtn.setAttribute('aria-current', next === 'resume' ? 'page' : 'false');
   if (el.sideJournalBtn) el.sideJournalBtn.setAttribute('aria-current', next === 'journal' ? 'page' : 'false');
@@ -5049,6 +5130,12 @@ function setAppTab(tab, opts = {}) {
   syncMoreTab(el.app.classList.contains('sidebar-open'));
   if (next === 'home') {
     renderHome();
+  } else if (next === 'tools' || next === 'learn') {
+    if (next === 'tools') renderToolsHub(); else renderLearnHub();
+    if (!opts.skipFocus) {
+      const title = $(next === 'tools' ? '#toolsTitle' : '#learnTitle');
+      if (title) setTimeout(() => title.focus(), 60);
+    }
   } else if (next === 'dv') {
     renderInfoRegion();
   } else if (next === 'resume') {
@@ -5079,6 +5166,15 @@ function setAppTab(tab, opts = {}) {
     renderMessages();
     if (!opts.skipFocus) focusInput();
   }
+}
+
+/** Which bottom-bar / sidebar section a screen belongs to. */
+function navSectionFor(tab) {
+  if (tab === 'chat' || tab === 'chats') return 'chat';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume') return 'tools';
+  if (tab === 'learn' || tab === 'info') return 'learn';
+  if (tab === 'home') return 'home';
+  return '';
 }
 
 function moodCardEl(opts = {}) {
@@ -5495,6 +5591,8 @@ function startDeeperChat(track, day) {
   setAppTab('chat', { skipFocus: true });
   const c = newConversation();
   c.kind = 'deeper';
+  c.deeperTrackId = track.id;
+  c.deeperDayId = day.id;
   c.title = 'Going Deeper · ' + track.title;
   c.systemExtra = [
     `You are sitting with ${userName()} after an optional Going Deeper study day. This is not clinical care.`,
@@ -5762,44 +5860,169 @@ function needNowEl() {
   section.appendChild(chips);
   return section;
 }
+/* ---------------------------------------------------------------------------
+   Hopewick 2.0 dashboard (Home), Tools hub and Learn hub.
+   Every number shown here comes from data already saved for this profile
+   (check-ins, clean time, goals, journal, plans, chats). Nothing is invented:
+   a card with no data shows an honest empty state and a way to start.
+   --------------------------------------------------------------------------- */
+const DASH_ICON = {
+  chat: '<path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>',
+  step: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  sprout: '<path d="M12 21V11"/><path d="M12 11c0-4 3-7 7-8-1 5-4 8-7 8z"/><path d="M12 11c0-4-3-7-7-8 1 5 4 8 7 8z"/>',
+  chart: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
+  target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>',
+  learn: '<path d="M2 6.5 12 3l10 3.5-10 3.5L2 6.5z"/><path d="M6 8.5V14c0 1.7 2.7 3 6 3s6-1.3 6-3V8.5"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  user: '<circle cx="12" cy="8" r="3.2"/><path d="M5 19.2a7 7 0 0 1 14 0"/>',
+  bolt: '<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.7z"/>',
+  smile: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/>',
+  check: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  people: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  home: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  church: '<path d="M18 2H6v4H2v16h20V6h-4V2z"/><path d="M12 2v4M12 10v8M8 14h8"/>',
+  phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+  ring: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M4.9 19.1l4.3-4.3"/>',
+  list: '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/>',
+  cup: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>',
+  snow: '<path d="M12 2v20M4.9 7.5l14.2 9M19.1 7.5 4.9 16.5"/>',
+  news: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/>',
+  steps: '<path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.2 16.2l2.8 2.8M2 12h4M18 12h4"/>',
+  chev: '<path d="m9 6 6 6-6 6"/>',
+};
+function dashSvg(name, size = 20) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${DASH_ICON[name] || ''}</svg>`;
+}
+/** A dashboard card: <section> with a heading, optional body nodes and actions. */
+function dashCard({ id, title, icon, tone = '', meta = '', wide = false }) {
+  const card = document.createElement('section');
+  card.className = 'hw-card dash-card' + (wide ? ' dash-wide' : '') + (tone === 'crisis' ? ' hw-card--crisis' : '');
+  if (id) card.id = id;
+  const hid = (id || 'dash' + Math.random().toString(36).slice(2, 7)) + 'Title';
+  card.setAttribute('aria-labelledby', hid);
+  const head = document.createElement('div');
+  head.className = 'hw-card__head';
+  head.innerHTML = `<span class="hw-icon-badge${tone ? ' hw-icon-badge--' + tone : ''}">${dashSvg(icon)}</span><div class="dash-head-text"><h2 class="hw-card__title" id="${hid}"></h2><p class="hw-card__meta"></p></div>`;
+  $('h2', head).textContent = title;
+  const metaEl = $('.hw-card__meta', head);
+  if (meta) metaEl.textContent = meta; else metaEl.remove();
+  card.appendChild(head);
+  return card;
+}
+function dashBtn(label, action, { primary = false, plus = false, dataset = {} } = {}) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'hw-btn hw-btn--sm ' + (primary ? 'hw-btn--primary' : 'hw-btn--secondary');
+  b.textContent = label;
+  if (plus && !subscriptionPlus()) {
+    const pill = document.createElement('span');
+    pill.className = 'plus-pill';
+    pill.textContent = 'Plus';
+    b.appendChild(pill);
+  }
+  for (const [k, v] of Object.entries(dataset)) b.dataset[k] = v;
+  b.addEventListener('click', action);
+  return b;
+}
+function dashActions(...btns) {
+  const row = document.createElement('div');
+  row.className = 'hw-card__actions';
+  btns.filter(Boolean).forEach((b) => row.appendChild(b));
+  return row;
+}
+function dashEmpty(title, body) {
+  const box = document.createElement('div');
+  box.className = 'hw-empty hw-empty--inline';
+  box.innerHTML = '<p class="hw-empty__title"></p><p class="hw-empty__body"></p>';
+  $('.hw-empty__title', box).textContent = title;
+  $('.hw-empty__body', box).textContent = body;
+  return box;
+}
+function dashText(text, cls = 'hw-card__body') {
+  const p = document.createElement('p');
+  p.className = cls;
+  p.textContent = text;
+  return p;
+}
+const MILESTONES = [1, 7, 14, 30, 60, 90, 180, 270, 365, 548, 730, 1095, 1825, 3650];
+function nextMilestone(days) {
+  for (const m of MILESTONES) if (m > days) return m;
+  return Math.ceil((days + 1) / 365) * 365;
+}
+function milestoneLabel(d) {
+  if (d % 365 === 0) return d / 365 === 1 ? '1 year' : `${d / 365} years`;
+  if (d === 548) return '18 months';
+  return d === 1 ? '1 day' : `${d} days`;
+}
+function thisWeekGoals() {
+  adoptGoalsAccount();
+  const week = goalsState.weeks && goalsState.weeks[weekStartSunday()];
+  if (!week || !checkinWeekOwned(week) || !Array.isArray(week.goals)) return [];
+  return week.goals.filter(goalHasText).map(goalShortText).filter(Boolean);
+}
+/** One suggested next step, chosen from what this profile has (and hasn't) done today. */
+function myNextStep() {
+  const today = todaysCheckin();
+  if (settings.moodCheck && !(today && today.mood)) {
+    return { text: 'Start with today’s check-in. It takes ten seconds.', label: 'Check in now', action: () => { const c = document.getElementById('homeMoodQ'); if (c) { c.scrollIntoView({ block: 'center' }); const first = c.parentElement && c.parentElement.querySelector('.mood-btn'); if (first) first.focus(); } } };
+  }
+  if (soberDaysCount() === null) {
+    return { text: 'Set the date your recovery started, so you can see your milestones.', label: 'Set clean time', action: () => openCleanTime() };
+  }
+  if (!thisWeekGoals().length) {
+    return { text: 'Pick one or two small goals for this week.', label: 'Set this week’s goals', action: () => openGoals(), plus: true };
+  }
+  if (settings.gratCheck !== false && !todaysGratitude()) {
+    return { text: 'Note one thing you are grateful for today.', label: 'Add gratitude', action: () => { const g = document.querySelector('#dashCheckin .grat-card input'); if (g) { g.scrollIntoView({ block: 'center' }); g.focus(); } else openTodayReading(); } };
+  }
+  return { text: 'You have done today’s basics. Read today’s reflection or talk it through with ' + companionName() + '.', label: 'Read today’s reflection', action: () => openTodayReading() };
+}
+function relapsePlanStarted() {
+  const r = plansState && plansState.relapse;
+  if (!r) return false;
+  return !!(String(r.warnings || '').trim() || String(r.helps || '').trim() || String(r.avoid || '').trim() || String(r.ifSlip || '').trim()
+    || (Array.isArray(r.firstTen) && r.firstTen.some(x => String(x || '').trim()))
+    || (Array.isArray(r.people) && r.people.some(p => p && String(p.name || '').trim())));
+}
+function accountSummaryText() {
+  if (isDemo) return 'Demo mode. Nothing is saved.';
+  if (!billingState.signedIn) return 'Not signed in. Sign in to chat with ' + companionName() + ' and keep your chats with your account.';
+  if (billingState.founder || billingState.complimentary) return 'Hopewick Plus (complimentary).';
+  if (subscriptionPlus()) return billingState.subscriptionStatus === 'trialing' ? 'Hopewick Plus free trial.' : 'Hopewick Plus is active.';
+  return 'Free plan. Hopewick Plus is 7 days free, then AU$20/month.';
+}
+
 function renderHome() {
   if (!el.homeInner) return;
   const counsellor = isCounsellor();
   const box = el.homeInner;
   box.innerHTML = '';
 
+  // 1. Welcome
   const hero = document.createElement('div');
-  hero.className = 'home-hero';
-  hero.innerHTML = '<div class="orb md" data-state="idle" aria-hidden="true"><span class="shine"></span></div><h1></h1><p></p>';
-  $('h1', hero).textContent = greeting() + ' 🌿';
-  $('p', hero).textContent = 'Pick what you need. Today’s reading is just below.';
+  hero.className = 'home-hero dash-hero';
+  hero.innerHTML = '<div class="orb md" data-state="idle" aria-hidden="true"><span class="shine"></span></div><div class="dash-hero-text"><h1></h1><p></p></div>';
+  $('h1', hero).textContent = greeting();
+  $('p', hero).textContent = 'Support for your next step. Pick what you need, or start with today’s check-in.';
   box.appendChild(hero);
   box.appendChild(needNowEl());
   box.appendChild(todayCardEl());
-  box.appendChild(goingDeeperHomeEl());
-  box.appendChild(todayPlusNoteEl());
 
-  const days = soberDaysCount();
-  if (days !== null) {
-    const sober = document.createElement('button');
-    sober.type = 'button';
-    sober.className = 'home-sober';
-    const what = settings.soberWhat || (counsellor ? 'on your journey' : 'clean');
-    sober.innerHTML = `<span class="days"></span><span class="lbl"></span>`;
-    $('.days', sober).textContent = days;
-    $('.lbl', sober).textContent = `${days === 1 ? 'day' : 'days'} ${what === 'days' ? '' : what}`.trim() + ' 🌱 — tap to update';
-    sober.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || 'clean'}. Open clean time tracker.`);
-    sober.addEventListener('click', () => openCleanTime());
-    box.appendChild(sober);
-  } else {
-    const setClean = document.createElement('button');
-    setClean.type = 'button';
-    setClean.className = 'btn';
-    setClean.textContent = 'Set clean time';
-    setClean.addEventListener('click', () => openCleanTime());
-    box.appendChild(setClean);
-  }
+  const grid = document.createElement('div');
+  grid.className = 'dash-grid';
+  grid.id = 'dashGrid';
+  box.appendChild(grid);
+  const add = (node) => { if (node) grid.appendChild(node); return node; };
 
+  // 2. Daily check-in (+ gratitude)
+  const check = add(dashCard({ id: 'dashCheckin', title: 'Daily check-in', icon: 'smile', meta: 'Mood and cravings. Optional, private to this profile.' }));
   if (settings.moodCheck) {
     const today = todaysCheckin();
     if (today && today.mood) {
@@ -5808,30 +6031,95 @@ function renderHome() {
       const parts = [`Today: ${today.mood.e} ${today.mood.l}`];
       if (today.craving) parts.push(`${today.craving} cravings`);
       done.textContent = parts.join(' · ');
-      box.appendChild(done);
-      // Still allow changing via the full card beneath (collapsed feel: show card too for edit)
-      box.appendChild(moodCardEl({ titleId: 'homeMoodQ' }));
-    } else {
-      box.appendChild(moodCardEl({ titleId: 'homeMoodQ' }));
+      check.appendChild(done);
     }
+    check.appendChild(moodCardEl({ titleId: 'homeMoodQ' }));
+  } else {
+    check.appendChild(dashEmpty('Daily check-in is turned off', 'You can turn it on in Preferences whenever you like.'));
+    check.appendChild(dashActions(dashBtn('Open Preferences', () => showLaunchPrefs())));
   }
-
   if (settings.gratCheck !== false && !todaysGratitude()) {
-    box.appendChild(gratitudeCardEl());
+    check.appendChild(gratitudeCardEl());
   } else if (settings.gratCheck !== false && todaysGratitude()) {
-    const g = todaysGratitude();
-    const note = document.createElement('p');
-    note.className = 'help';
-    note.style.textAlign = 'center';
-    note.textContent = 'Today you’re grateful for: ' + g.items.join(' · ');
-    box.appendChild(note);
+    check.appendChild(dashText('Today you’re grateful for: ' + todaysGratitude().items.join(' · '), 'help'));
   }
 
-  const weekOverview = weeklyOverviewEl();
-  if (weekOverview) box.appendChild(weekOverview);
-  const halfway = halfwayGoalEl();
-  if (halfway) box.appendChild(halfway);
+  // 3. Talk to Hope + My Next Step
+  const talk = add(dashCard({ id: 'dashHope', title: 'Talk to ' + companionName(), icon: 'chat', meta: 'Your AI recovery companion. Not a crisis service.' }));
+  talk.appendChild(dashActions(
+    dashBtn('Open chat', () => setAppTab('chat'), { primary: true, dataset: { dash: 'chat' } }),
+    dashBtn('Your chats', () => setAppTab('chats'), { dataset: { dash: 'chats' } }),
+  ));
+  const step = myNextStep();
+  const next = add(dashCard({ id: 'dashNextStep', title: 'My next step', icon: 'step', tone: 'gold', meta: 'Suggested from what you have done today.' }));
+  next.appendChild(dashText(step.text));
+  next.appendChild(dashActions(dashBtn(step.label, step.action, { primary: true, plus: !!step.plus, dataset: { dash: 'next' } })));
 
+  // 4. Recovery milestones
+  const days = soberDaysCount();
+  const miles = add(dashCard({ id: 'dashMilestones', title: 'Recovery milestones', icon: 'sprout' }));
+  if (days !== null) {
+    const sober = document.createElement('button');
+    sober.type = 'button';
+    sober.className = 'home-sober';
+    const what = settings.soberWhat || (counsellor ? 'on your journey' : 'clean');
+    sober.innerHTML = `<span class="days"></span><span class="lbl"></span>`;
+    $('.days', sober).textContent = days;
+    $('.lbl', sober).textContent = `${days === 1 ? 'day' : 'days'} ${what === 'days' ? '' : what}`.trim() + ' — tap to update';
+    sober.setAttribute('aria-label', `${days} ${days === 1 ? 'day' : 'days'} ${settings.soberWhat || 'clean'}. Open clean time tracker.`);
+    sober.addEventListener('click', () => openCleanTime());
+    miles.appendChild(sober);
+    const m = nextMilestone(days);
+    miles.appendChild(dashText(`Next milestone: ${milestoneLabel(m)}, in ${m - days} ${m - days === 1 ? 'day' : 'days'}.`, 'help'));
+  } else {
+    miles.appendChild(dashEmpty('No start date yet', 'Add the date your recovery started to see your days and milestones. You can change it any time.'));
+    miles.appendChild(dashActions(dashBtn('Set clean time', () => openCleanTime(), { primary: true, dataset: { dash: 'cleantime' } })));
+  }
+
+  // 5. Mood trends (last 7 days, real check-ins only)
+  const trends = add(dashCard({ id: 'dashMood', title: 'Mood trends', icon: 'chart', meta: 'Your check-ins over the last 7 days.' }));
+  const week = weeklyOverviewEl();
+  const anyRecent = moods.some(m => checkinOwnedHere(m) && (m.mood || m.craving) && (Date.now() - (parseLocalDate(m.date) || 0)) < 7 * 86400000);
+  if (anyRecent) {
+    trends.appendChild(moodWeekEl());
+    if (week) { week.classList.add('dash-embedded'); trends.appendChild(week); }
+  } else {
+    trends.appendChild(dashEmpty('No check-ins this week yet', 'When you check in, your last 7 days will show here.'));
+  }
+
+  // 6. Goals
+  const goals = add(dashCard({ id: 'dashGoals', title: 'This week’s goals', icon: 'target' }));
+  const halfway = halfwayGoalEl();
+  const list = thisWeekGoals();
+  if (halfway) { halfway.classList.add('dash-embedded'); goals.appendChild(halfway); }
+  else if (list.length) {
+    const ul = document.createElement('ul');
+    ul.className = 'dash-list';
+    for (const g of list) { const li = document.createElement('li'); li.textContent = g; ul.appendChild(li); }
+    goals.appendChild(ul);
+  } else {
+    goals.appendChild(dashEmpty('No goals set for this week', 'SMART goals help you pick one or two small, doable steps.'));
+  }
+  goals.appendChild(dashActions(dashBtn('Open SMART goals', () => openGoals(), { plus: true, dataset: { dash: 'goals' } })));
+
+  // 7. Journal
+  const jr = add(dashCard({ id: 'dashJournal', title: 'Journal', icon: 'book' }));
+  const entries = Array.isArray(journal) ? journal.length : 0;
+  if (entries) {
+    const last = Math.max(...journal.map(e => e.updated || e.created || 0));
+    jr.appendChild(dashText(`${entries} ${entries === 1 ? 'entry' : 'entries'} on this device. Last written ${relTime(last)}.`));
+  } else {
+    jr.appendChild(dashEmpty('No journal entries yet', 'Write whatever is on your mind. Entries stay on this device.'));
+  }
+  jr.appendChild(dashActions(dashBtn(entries ? 'Open journal' : 'Write an entry', () => openJournal(), { plus: true, dataset: { dash: 'journal' } })));
+
+  // 8. Coping exercises
+  const cope = add(dashCard({ id: 'dashCoping', title: 'Coping exercises', icon: 'leaf', meta: 'Practical tools for cravings and hard moments.' }));
+  cope.appendChild(dashActions(
+    dashBtn('Skills', () => openSkills()),
+    dashBtn('Circuit breakers', () => openBreakers()),
+    dashBtn('Self-care', () => openSelfCare()),
+  ));
   if (counsellor) {
     const skillsRow = document.createElement('div');
     skillsRow.className = 'starters skills-chips';
@@ -5839,7 +6127,6 @@ function renderHome() {
     const lbl = document.createElement('span');
     lbl.className = 'help';
     lbl.style.width = '100%';
-    lbl.style.textAlign = 'center';
     lbl.textContent = 'Craving skills — practise with ' + companionName() + ':';
     skillsRow.appendChild(lbl);
     const showAll = (todaysCheckin() && todaysCheckin().craving === 'Strong') || isDemo;
@@ -5850,12 +6137,154 @@ function renderHome() {
       b.addEventListener('click', () => { setAppTab('chat', { skipFocus: true }); startSkill(sk); });
       skillsRow.appendChild(b);
     }
-    const brk = document.createElement('button');
-    brk.type = 'button'; brk.className = 'starter skill-chip'; brk.textContent = 'Try a circuit breaker';
-    brk.addEventListener('click', openBreakers);
-    skillsRow.appendChild(brk);
-    box.appendChild(skillsRow);
+    cope.appendChild(skillsRow);
   }
+
+  // 9. Learning pathways
+  const learn = add(dashCard({ id: 'dashLearn', title: 'Learning pathways', icon: 'learn' }));
+  const stepNo = Number(stepsProgress && stepsProgress.currentStep) || 1;
+  const stepsDone = Object.values((stepsProgress && stepsProgress.completed) || {}).filter(Boolean).length;
+  learn.appendChild(dashText(stepsDone ? `12 Steps: ${stepsDone} of 12 marked done. You are on Step ${stepNo}.` : '12 Steps: not started yet. Step 1 is waiting when you are ready.'));
+  learn.appendChild(goingDeeperHomeEl());
+  learn.appendChild(dashActions(dashBtn('Open 12 Steps', () => openSteps()), dashBtn('All learning', () => setAppTab('learn'), { dataset: { dash: 'learn' } })));
+  const plusNote = todayPlusNoteEl();
+  if (plusNote) learn.appendChild(plusNote);
+
+  // 10. Support & safety plan (crisis help is always free)
+  const safe = add(dashCard({ id: 'dashSafety', title: 'Support and safety plan', icon: 'shield', tone: 'crisis', meta: 'Crisis lines are free and always here. In an emergency call 000.' }));
+  const crisisRow = document.createElement('div');
+  crisisRow.className = 'hw-card__actions';
+  crisisRow.innerHTML = '<a class="hw-btn hw-btn--danger hw-btn--sm" href="tel:000">Call 000</a><a class="hw-btn hw-btn--sm" href="tel:131114">Lifeline 13 11 14</a>';
+  safe.appendChild(crisisRow);
+  safe.appendChild(dashText(relapsePlanStarted()
+    ? 'Your relapse plan is started. Review it when things feel shaky.'
+    : 'You have not started a relapse or exit plan yet. A plan helps when things get hard.', 'help'));
+  safe.appendChild(dashActions(
+    dashBtn('Get help now', () => openHelp(), { dataset: { dash: 'help' } }),
+    dashBtn('Relapse and exit plans', () => openPlans(), { plus: true, dataset: { dash: 'plans' } }),
+    dashBtn('Not safe at home', () => setAppTab('dv'), { dataset: { dash: 'dv' } }),
+  ));
+
+  // 11. Recent activity (real saved chats only)
+  const recent = add(dashCard({ id: 'dashRecent', title: 'Recent activity', icon: 'clock' }));
+  const chatsNow = listedConvos().filter(c => c && c.messages && c.messages.length).slice(0, 3);
+  if (chatsNow.length) {
+    const ul = document.createElement('ul');
+    ul.className = 'dash-list dash-recent';
+    for (const c of chatsNow) {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'dash-recent-btn';
+      b.innerHTML = '<span class="t"></span><span class="m"></span>';
+      $('.t', b).textContent = c.title || 'New chat';
+      $('.m', b).textContent = relTime(c.updated);
+      b.setAttribute('aria-label', `Open chat: ${c.title || 'New chat'}, ${relTime(c.updated)}`);
+      b.addEventListener('click', () => openConversation(c.id));
+      li.appendChild(b);
+      ul.appendChild(li);
+    }
+    recent.appendChild(ul);
+  } else {
+    recent.appendChild(dashEmpty('Nothing here yet', 'Your recent chats with ' + companionName() + ' will show here.'));
+  }
+
+  // 12. Account & subscription
+  const acct = add(dashCard({ id: 'dashAccount', title: 'Account and subscription', icon: 'user' }));
+  acct.appendChild(dashText(accountSummaryText()));
+  acct.appendChild(dashActions(
+    dashBtn('My Account', () => openMyAccount(), { dataset: { dash: 'account' } }),
+    dashBtn('Preferences', () => showLaunchPrefs()),
+  ));
+}
+
+/** Tools and Learn hubs: link cards to features that already work. */
+function hubCard({ id, title, desc, icon, action, plus = false, tone = '' }) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'hw-card hw-card--link hub-card';
+  b.dataset.hub = id;
+  b.innerHTML = `<span class="hw-icon-badge${tone ? ' hw-icon-badge--' + tone : ''}">${dashSvg(icon)}</span><span class="hub-text"><span class="hub-title"></span><span class="hub-desc"></span></span><span class="hw-card__chev">${dashSvg('chev', 18)}</span>`;
+  $('.hub-title', b).textContent = title;
+  $('.hub-desc', b).textContent = desc;
+  if (plus && !subscriptionPlus()) {
+    const pill = document.createElement('span');
+    pill.className = 'plus-pill';
+    pill.textContent = 'Plus';
+    $('.hub-title', b).appendChild(pill);
+  }
+  b.addEventListener('click', action);
+  return b;
+}
+function hubSection(container, title, cards) {
+  const sec = document.createElement('section');
+  sec.className = 'hub-section';
+  const id = 'hub' + title.replace(/[^a-z]/gi, '');
+  sec.setAttribute('aria-labelledby', id);
+  const h = document.createElement('h2');
+  h.id = id;
+  h.textContent = title;
+  const grid = document.createElement('div');
+  grid.className = 'hub-grid';
+  cards.filter(Boolean).forEach((c) => grid.appendChild(hubCard(c)));
+  sec.append(h, grid);
+  container.appendChild(sec);
+}
+function renderToolsHub() {
+  const box = el.toolsHub;
+  if (!box) return;
+  box.innerHTML = '';
+  const faith = settings.faith !== 'none';
+  hubSection(box, 'Right now', [
+    { id: 'help', title: 'Get help now', desc: 'Crisis lines and AOD support. Always free.', icon: 'phone', tone: 'crisis', action: () => openHelp() },
+    { id: 'dv', title: 'Domestic and family violence', desc: 'Not safe at home? Free Australian services. Always free.', icon: 'ring', tone: 'crisis', action: () => setAppTab('dv') },
+    { id: 'breakers', title: 'Circuit breakers', desc: 'Quick things to do when a craving hits.', icon: 'bolt', tone: 'warm', action: () => openBreakers() },
+  ]);
+  hubSection(box, 'Coping tools', [
+    { id: 'skills', title: 'Skills', desc: 'Grounding, urge surfing, breathing and more.', icon: 'smile', action: () => openSkills() },
+    { id: 'selfcare', title: 'Self-care', desc: 'A daily checklist you can make your own.', icon: 'heart', action: () => openSelfCare() },
+    { id: 'chat', title: 'Talk to ' + companionName(), desc: 'Talk it through with your AI companion.', icon: 'chat', action: () => setAppTab('chat') },
+  ]);
+  hubSection(box, 'Track and reflect', [
+    { id: 'checkin', title: 'Daily check-in', desc: 'Mood, cravings and gratitude, on Home.', icon: 'chart', action: () => { setAppTab('home'); setTimeout(() => { const c = document.getElementById('dashCheckin'); if (c) c.scrollIntoView({ block: 'start' }); }, 60); } },
+    { id: 'cleantime', title: 'Clean time', desc: 'Your days and milestones.', icon: 'sprout', action: () => openCleanTime() },
+    { id: 'journal', title: 'Journal', desc: 'Write it down. Entries stay on this device.', icon: 'book', plus: true, action: () => openJournal() },
+    { id: 'goals', title: 'SMART goals', desc: 'One or two small goals for this week.', icon: 'target', plus: true, action: () => openGoals() },
+    { id: 'memories', title: 'Memories', desc: 'What ' + companionName() + ' remembers about you.', icon: 'leaf', action: () => openMemories() },
+    { id: 'chats', title: 'Your chats', desc: 'Open or delete saved conversations.', icon: 'list', action: () => setAppTab('chats') },
+  ]);
+  hubSection(box, 'Plans and next steps', [
+    { id: 'plans', title: 'Relapse and exit plans', desc: 'Warning signs, people to call, what helps.', icon: 'check', plus: true, action: () => openPlans() },
+    { id: 'resume', title: 'Resume builder', desc: 'Build a resume and save it as a PDF.', icon: 'file', plus: true, action: () => setAppTab('resume') },
+  ]);
+  hubSection(box, 'Find support near you', [
+    { id: 'nearby', title: 'Find nearby help', desc: 'Meals, shelter and showers.', icon: 'pin', action: () => openNearby() },
+    { id: 'meetings', title: 'Find a meeting', desc: 'AA, NA and SMART Recovery.', icon: 'people', action: () => openMeetings() },
+    { id: 'treatment', title: 'Find treatment or rehab', desc: 'Official finders and helplines.', icon: 'home', action: () => openTreatment() },
+    { id: 'aod', title: 'Find AOD services', desc: 'Community AOD services such as QuIHN and Drug ARM.', icon: 'people', action: () => openAodServices() },
+    faith ? { id: 'church', title: 'Find a church', desc: 'Official Australian church finders.', icon: 'church', action: () => openChurch() } : null,
+  ]);
+}
+function renderLearnHub() {
+  const box = el.learnHub;
+  if (!box) return;
+  box.innerHTML = '';
+  const faith = settings.faith !== 'none';
+  hubSection(box, 'Daily', [
+    { id: 'today', title: 'Today’s readings', desc: 'Word for the day and Just for today.', icon: 'sun', tone: 'gold', action: () => openTodayReading() },
+    { id: 'news', title: 'News and resources', desc: 'Drug alerts, naloxone and trusted sources.', icon: 'news', action: () => setAppTab('info') },
+  ]);
+  hubSection(box, 'Recovery pathways', [
+    { id: 'steps', title: '12 Steps', desc: 'Work through the steps at your own pace.', icon: 'steps', action: () => openSteps() },
+    { id: 'deeper', title: 'Going Deeper', desc: 'Study tracks on values, identity and change.', icon: 'learn', plus: true, action: () => openGoingDeeper() },
+    faith ? { id: 'bible', title: 'Bible and SOAP', desc: 'Optional scripture study and reflection.', icon: 'book', tone: 'gold', action: () => setAppTab('bible') } : null,
+  ]);
+  hubSection(box, 'Body and mind', [
+    { id: 'nutrition', title: 'Nutrition', desc: 'Food, energy and small experiments.', icon: 'cup', plus: true, action: () => openNutrition() },
+    { id: 'gut', title: 'Gut health', desc: 'How gut health links to mood.', icon: 'leaf', plus: true, action: () => openGut() },
+    { id: 'brain', title: 'Brain habits', desc: 'How habits and the brain change in recovery.', icon: 'chart', plus: true, action: () => openBrain() },
+    { id: 'cold', title: 'Ice baths and spas', desc: 'What the evidence says, and staying safe.', icon: 'snow', plus: true, action: () => openCold() },
+  ]);
 }
 
 /* ---------------------------------------------------------------------------
@@ -6228,6 +6657,43 @@ function buildSystemPrompt(convo) { return isCounsellor() ? counsellorPrompt(con
 
 const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. End with exactly one line: TOOLS: help — or TOOLS: help, dv if this is domestic or family violence. Do not offer Plus, resume, journal, Bible, nutrition, gut health, or brain-habit notes in that moment.';
 
+/**
+ * Structured options for hosted Hope. The server owns every instruction
+ * (server/hope-prompts.js) and only reads these ids and short personal
+ * details; it never accepts system text from the browser.
+ */
+function hopeFocus(convo) {
+  if (!convo) return null;
+  if (convo.kind === 'steps' && convo.step) return { kind: 'steps', step: convo.step };
+  if (convo.lessonId) return { kind: 'lesson', id: convo.lessonId };
+  if (convo.soap) return { kind: 'soap', planDay: convo.planDay || 1 };
+  if (convo.divingDeeper && convo.ddDayId) return { kind: 'finding-jesus', dayId: convo.ddDayId };
+  if (convo.kind === 'deeper' && convo.deeperTrackId) return { kind: 'deeper', trackId: convo.deeperTrackId, dayId: convo.deeperDayId || '' };
+  return null;
+}
+function hopeContext(convo) {
+  const grat = todaysGratitude();
+  return {
+    mode: isCounsellor() ? 'counsellor' : 'friend',
+    faith: settings.faith,
+    faithLevel: settings.faithLevel,
+    style: settings.style,
+    hereFor: settings.hereFor || '',
+    traits: Array.isArray(settings.traits) ? settings.traits : [],
+    traitsCustom: settings.traitsCustom || '',
+    custom: settings.custom || '',
+    userName: userName(),
+    companionName: companionName(),
+    soberStart: soberDaysCount() !== null ? settings.soberStart : '',
+    soberWhat: settings.soberWhat || '',
+    memories: memories.slice(-80).map(m => m.text),
+    gratitude: grat && Array.isArray(grat.items) ? grat.items : [],
+    mood: convo && convo.mood ? { l: convo.mood.l } : null,
+    craving: convo && convo.craving ? convo.craving : '',
+    focus: hopeFocus(convo),
+  };
+}
+
 function buildMessages(convo) {
   const history = convo.messages.filter(m => !m.error && !m.card).slice(-30).map(m => ({
     role: m.role,
@@ -6309,10 +6775,13 @@ async function providerChatCompletion(messages, opts = {}) {
 async function hostedChatCompletion(messages, opts = {}) {
   const { onToken, signal } = opts;
   const wantStream = !!opts.stream;
+  // Hosted Hope: the server writes the system prompt. Send only the
+  // conversation turns and structured options, never system text.
   const body = {
-    messages,
+    messages: messages.filter(m => m && (m.role === 'user' || m.role === 'assistant')),
     temperature: opts.temperature ?? 0.7,
-    purpose: opts.purpose === 'memory' ? 'memory' : 'chat',
+    purpose: opts.purpose === 'memory' || opts.purpose === 'refine' ? opts.purpose : 'chat',
+    context: opts.context || hopeContext(activeConvo()),
   };
   if (opts.max_tokens) body.max_tokens = opts.max_tokens;
   if (wantStream) body.stream = true;
@@ -6467,6 +6936,7 @@ async function generateReply(c) {
 
   try {
     const reply = await chatCompletion(buildMessages(c), {
+      context: hopeContext(c),
       stream: settings.stream,
       signal: abortCtrl.signal,
       onToken: (t) => { acc += t; if (!raf) raf = requestAnimationFrame(paint); },
@@ -6551,7 +7021,7 @@ async function extractMemories(pid, userText, assistantText, crisis) {
     { role: 'user', content: `Already known:\n${known}\n\nLatest exchange:\nUser: ${userText}\nAssistant: ${assistantText.slice(0, 1500)}` },
   ];
   try {
-    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300, purpose: 'memory' });
+    const raw = await chatCompletion(messages, { stream: false, temperature: 0, max_tokens: 300, purpose: 'memory', context: { mode: isCounsellor() ? 'counsellor' : 'friend', crisis: !!crisis } });
     const match = raw.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
     if (!match) return;
     const parsed = JSON.parse(match[0]);
@@ -6983,7 +7453,7 @@ async function refineJournalEntry(entry, showInCompose) {
       const raw = await chatCompletion([
         { role: 'system', content: journalRefineSystemPrompt(crisis) },
         { role: 'user', content: `Title: ${entry.title || '(none)'}\n\nEntry:\n${entry.body}` },
-      ], { stream: false, temperature: 0.6, max_tokens: 500 });
+      ], { stream: false, temperature: 0.6, max_tokens: 500, purpose: 'refine', context: { userName: userName(), companionName: companionName(), crisis } });
       parsed = parseRefineResponse(raw);
     } catch (e) {
       toast('Couldn’t deepen right now: ' + (e.message || 'error'), true);
@@ -11328,6 +11798,8 @@ $('#settingsSave').addEventListener('click', () => {
   if (pin && !/^\d{4}$/.test(pin)) { toast('The PIN needs to be exactly 4 digits.', true); $('#setPin').focus(); return; }
   const wasCounsellor = isCounsellor();
   settings = readSettingsForm();
+  // Choosing "System" in Settings also clears the device-wide light/dark choice.
+  if (settings.theme === 'system') { try { localStorage.removeItem('hopewick.theme'); } catch (e) {} }
   settingsThemeBefore = settings.theme;
   saveSettings();
   profile.name = newName;
@@ -12139,9 +12611,22 @@ el.menuBtn.addEventListener('click', () => el.app.classList.contains('sidebar-op
 
 el.tabHome?.addEventListener('click', () => setAppTab('home'));
 el.tabChat?.addEventListener('click', () => setAppTab('chat'));
-el.tabChats?.addEventListener('click', () => setAppTab('chats'));
-el.tabDv?.addEventListener('click', () => setAppTab('dv'));
-el.tabJournal?.addEventListener('click', () => setAppTab('journal'));
+el.tabTools?.addEventListener('click', () => setAppTab('tools'));
+el.tabLearn?.addEventListener('click', () => setAppTab('learn'));
+$$('#sidePrimaryNav [data-nav]').forEach((b) => b.addEventListener('click', () => { closeSidebar(); setAppTab(b.dataset.nav); }));
+const sideThemeToggle = $('#sideThemeToggle');
+function syncThemeToggle() {
+  if (sideThemeToggle) sideThemeToggle.setAttribute('aria-checked', resolvedTheme() === 'dark' ? 'true' : 'false');
+}
+if (sideThemeToggle) {
+  sideThemeToggle.addEventListener('click', () => {
+    settings.theme = resolvedTheme() === 'dark' ? 'light' : 'dark';
+    applyTheme();
+    if (profile) saveSettings();
+    syncThemeToggle();
+    toast(settings.theme === 'dark' ? 'Dark mode on' : 'Light mode on');
+  });
+}
 el.tabMore?.addEventListener('click', () => setAppTab('more'));
 
 el.scrim.addEventListener('click', closeSidebar);

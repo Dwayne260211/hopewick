@@ -7,8 +7,7 @@
  * Passwords are never stored in plaintext.
  */
 import crypto from 'node:crypto';
-import fs from 'node:fs';
-import path from 'node:path';
+import { createJsonFile } from './json-file.js';
 
 export function hashToken(token) {
   return crypto.createHash('sha256').update(String(token)).digest('hex');
@@ -35,28 +34,26 @@ export function newId() {
   return crypto.randomBytes(16).toString('hex');
 }
 
+/**
+ * A users.json that exists but does not parse (or has no users array) is
+ * never treated as empty and never overwritten: the store is marked
+ * unavailable and the server answers 503. See json-file.js.
+ */
 export function createStore(filePath) {
-  let data = { users: [] };
-
-  function load() {
-    try {
-      const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (parsed && Array.isArray(parsed.users)) data = parsed;
-    } catch {
-      data = { users: [] };
-    }
-  }
+  const file = createJsonFile(filePath, {
+    label: 'users.json',
+    isValid: (parsed) => Boolean(parsed) && typeof parsed === 'object' && Array.isArray(parsed.users),
+    empty: () => ({ users: [] }),
+    serialize: (value) => JSON.stringify(value, null, 2),
+  });
+  let data = file.initial;
 
   function persist() {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    const tmp = `${filePath}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, JSON.stringify(data, null, 2), { mode: 0o600 });
-    fs.renameSync(tmp, filePath);
+    file.write(data);
   }
 
-  load();
-
   function save(user) {
+    file.assertWritable();
     const i = data.users.findIndex((u) => u.id === user.id);
     if (i >= 0) data.users[i] = user;
     else data.users.push(user);
@@ -65,6 +62,8 @@ export function createStore(filePath) {
   }
 
   return {
+    filePath,
+    health: () => file.health(),
     findByEmail(email) {
       const e = String(email || '').trim().toLowerCase();
       return data.users.find((u) => u.email === e) || null;
@@ -114,6 +113,7 @@ export function createStore(filePath) {
       });
     },
     remove(id) {
+      file.assertWritable();
       const before = data.users.length;
       data.users = data.users.filter((u) => u.id !== id);
       if (data.users.length !== before) persist();

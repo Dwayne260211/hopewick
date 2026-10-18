@@ -57,10 +57,10 @@ def test_static_header_and_info():
     assert 'id="themeBtn"' not in topbar
     assert 'id="autoSpeakBtn"' not in topbar
     assert 'id="launchPrefs"' in text
-    assert 'id="appTabJournal"' in text
+    assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="sideInfoBtn"' in text
     assert 'id="journalView"' in text
-    assert 'id="appTabDv"' in text
+    assert "{ id: 'dv', title: 'Domestic and family violence'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="sideDvBtn"' in text
     assert 'id="dvView"' in text
     assert 'id="helpDvBtn"' not in text
@@ -132,15 +132,17 @@ def test_launch_prefs_and_info_ui():
             page.wait_for_selector("#homeView:not([hidden])")
 
             nav = " ".join(page.inner_text("#bottomNav").split())
-            assert "Journal" in nav
+            assert "Tools" in nav  # Journal lives under Tools (Hopewick 2.0)
             assert "News" not in nav
-            assert "Safety" in nav
+            assert page.locator("#helpBtn").is_visible()  # crisis entry always on screen (Hopewick 2.0)
+            assert page.locator('#needNow [data-need="dv"]').count() == 1  # DV one tap from Home
             assert "Info" not in nav
             assert page.is_visible("#helpBtn")
 
-            page.click("#appTabJournal")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert "Journal" in page.inner_text("#journalTitle")
             page.click("#appTabMore")
             page.wait_for_selector("#app.sidebar-open")
@@ -159,9 +161,10 @@ def test_launch_prefs_and_info_ui():
             assert page.is_hidden("#dvView")
             page.screenshot(path=str(shot_dir / "v513-news-resources-mobile.png"))
 
-            page.click("#appTabDv")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="dv"]')
             page.wait_for_selector("#dvView:not([hidden])")
-            assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert page.locator("#sideDvBtn").get_attribute("aria-current") == "page"
             assert page.is_hidden("#infoView")
             dv_body = page.inner_text("#dvView")
@@ -202,21 +205,26 @@ def test_launch_prefs_and_info_ui():
             page.click("#sideDvBtn")
             page.wait_for_function("() => !document.getElementById('app').classList.contains('sidebar-open')")
             page.wait_for_selector("#dvView:not([hidden])")
-            page.locator("#appTabJournal").focus()
+            # Keyboard: the bottom bar works with Enter, and the hub cards are real buttons.
+            page.locator("#appTabTools").focus()
+            page.keyboard.press("Enter")
+            page.wait_for_selector("#toolsView:not([hidden])")
+            assert page.locator("#appTabTools").get_attribute("aria-pressed") == "true"
+            page.locator('#toolsHub [data-hub="journal"]').focus()
             page.keyboard.press("Enter")
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#appTabJournal").get_attribute("aria-pressed") == "true"
+            assert page.locator("#appTabTools").get_attribute("aria-pressed") == "true"
 
             page.set_viewport_size({"width": 1280, "height": 900})
-            page.click("#appTabMore")
-            assert page.locator("#appTabMore").get_attribute("aria-pressed") == "true"
-            assert page.locator("#appTabMore").get_attribute("aria-expanded") == "true"
+            # Desktop: the sidebar is always open (no More button) and the bottom bar is hidden.
+            assert page.locator("#bottomNav").is_hidden()
+            assert page.locator("#sidePrimaryNav").is_visible()
             assert page.locator("#sidebarTools").is_visible()
             assert page.locator("#sideInfoBtn").is_visible()
             assert "News & resources" in page.inner_text("#sidebarTools")
             page.click("#sideDvBtn")
             page.wait_for_selector("#dvView:not([hidden])")
-            assert page.locator("#appTabDv").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             page.screenshot(path=str(shot_dir / "v513-dv-desktop.png"))
             page.click("#sideInfoBtn")
             page.wait_for_selector("#infoView:not([hidden])")
@@ -231,7 +239,7 @@ def test_launch_prefs_and_info_ui():
             assert page.locator(".topbar-actions > button").count() == 4
             page.click("#launchPrefsContinue")
             page.wait_for_selector("#launchPrefs", state="hidden")
-            page.click("#appTabHome")
+            page.click("#sideNavHome")
             page.wait_for_selector("#homeView:not([hidden])")
             page.screenshot(path=str(shot_dir / "v513-home-desktop.png"))
             browser.close()

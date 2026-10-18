@@ -1,0 +1,216 @@
+/* ==========================================================================
+   Hopewick design tokens (Hopewick 2.0)
+   One file shared by the landing page, the app and the legal pages.
+
+   BRAND PALETTE (founder-approved logo, variant F "mockup navy", 18 Oct 2026)
+   deep navy #0b1b37 / #233a55, secondary navy #344f6f, river blue #acd2e9,
+   gold #e3ab54 / #ebc78b, white. No saturated red as a brand colour: crisis
+   red is the semantic --danger token only.
+   Every colour on the site comes from the "BRAND PALETTE" blocks below (one
+   for light, one for dark, the dark one duplicated for the OS rule). To
+   re-colour, change those values only; everything else derives from them.
+   After a change, run `npm run test:contrast` - it checks WCAG 2.2 AA
+   contrast for every key text/background pair in all themes.
+
+   Theme: light by default, dark when the OS prefers it, and a user choice
+   (saved in localStorage "hopewick.theme" by /assets/theme.js) wins via
+   <html data-theme="light|dark">.
+   ========================================================================== */
+
+:root {
+  /* ---------- BRAND PALETTE (light) - swap here ---------- */
+  --brand-primary: #233a55;          /* navy: primary buttons, links */
+  --brand-primary-strong: #0b1b37;   /* deep navy: hover / pressed / headings */
+  --brand-primary-soft: #e8f2f9;     /* river-tinted backgrounds, selected states */
+  --brand-ink: #0b1b37;              /* body text */
+  --brand-secondary: #344f6f;        /* secondary navy: icons, charts */
+  --brand-river: #acd2e9;            /* soft river blue: decorative fills, never text on white */
+  --brand-river-soft: #eef6fb;
+  --on-river: #0b1b37;               /* text on a river-blue fill */
+  --accent-warm: #9a4a3a;            /* muted warm accent for alerts (not a brand red) */
+  --accent-warm-soft: #f8ebe6;
+  --accent-gold: #7f5a14;            /* gold, darkened so it is text-safe on light */
+  --accent-gold-bright: #e3ab54;     /* logo gold: rules, dots, badges, never body text */
+  --accent-gold-light: #ebc78b;      /* logo light gold */
+  --accent-gold-soft: #fbf2e2;
+
+  /* ---------- Semantic colours (derived) ---------- */
+  --bg: #f5f7fb;
+  --bg-glow-1: rgba(172, 210, 233, .30);
+  --bg-glow-2: rgba(227, 171, 84, .12);
+  --surface: #ffffff;
+  --surface-2: #eef2f8;
+  --surface-3: #e2e8f2;
+  --text: var(--brand-ink);
+  --muted: #4a5875;
+  --accent: var(--brand-primary);
+  --accent-strong: var(--brand-primary-strong);
+  --accent-soft: var(--brand-primary-soft);
+  --accent-contrast: #ffffff;
+  --border: #d3dbe8;
+  --border-strong: #8592ab;          /* inputs, toggles: 3:1 against surface */
+  --danger: #a3271d;                 /* crisis / destructive. Semantic, not brand */
+  --danger-soft: #fbe9e7;
+  --danger-contrast: #ffffff;
+  --success: #1d6b45;
+  --success-soft: #e3f3ea;
+  --gold: var(--accent-gold-bright);
+  --focus-color: #1f5fd6;
+  --focus: 0 0 0 3px var(--surface), 0 0 0 6px var(--focus-color);
+  --scrim: rgba(10, 20, 40, .45);
+
+  /* ---------- Typography ---------- */
+  --font: "Inter", "Segoe UI Variable Text", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Inter", "Segoe UI Variable Display", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+  --text-display: clamp(2.2rem, 6vw, 3.25rem);
+  --leading-tight: 1.2;
+  --leading: 1.6;
+  --weight-regular: 400;
+  --weight-medium: 550;
+  --weight-semibold: 650;
+  --weight-bold: 750;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---------- Radii ---------- */
+  --radius-xs: 6px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius: 18px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-sm: 0 1px 2px rgba(15, 29, 54, .06);
+  --shadow: 0 8px 24px rgba(15, 29, 54, .08), 0 2px 6px rgba(15, 29, 54, .05);
+  --shadow-lg: 0 24px 60px rgba(15, 29, 54, .18);
+
+  /* ---------- Motion ---------- */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast: .15s;
+  --dur: .25s;
+
+  /* ---------- Layout ---------- */
+  --tap: 44px;                       /* WCAG 2.2 target size (we exceed 24px) */
+  --sidebar-w: 280px;
+  --content-max: 1120px;
+
+  color-scheme: light;
+}
+
+/* Dark theme values. Duplicated for the OS-preference rule below; keep both in sync
+   (tests/design-tokens.test.mjs fails if they differ). */
+:root[data-theme="dark"] {
+  /* ---------- BRAND PALETTE (dark) - swap here ---------- */
+  --brand-primary: #acd2e9;
+  --brand-primary-strong: #d6e9f5;
+  --brand-primary-soft: #1a3354;
+  --brand-ink: #eef3f9;
+  --brand-secondary: #8fb0d0;
+  --brand-river: #acd2e9;
+  --brand-river-soft: #13294a;
+  --on-river: #0b1b37;
+  --accent-warm: #f0a596;
+  --accent-warm-soft: #3a2220;
+  --accent-gold: #ebc78b;
+  --accent-gold-bright: #e3ab54;
+  --accent-gold-light: #ebc78b;
+  --accent-gold-soft: #33280f;
+
+  --bg: #0a1426;
+  --bg-glow-1: rgba(172, 210, 233, .10);
+  --bg-glow-2: rgba(227, 171, 84, .07);
+  --surface: #101d36;
+  --surface-2: #162643;
+  --surface-3: #1d3053;
+  --text: var(--brand-ink);
+  --muted: #aab6cc;
+  --accent: var(--brand-primary);
+  --accent-strong: var(--brand-primary-strong);
+  --accent-soft: var(--brand-primary-soft);
+  --accent-contrast: #0a1426;
+  --border: #253a60;
+  --border-strong: #6e7f9f;
+  --danger: #ff9e92;
+  --danger-soft: #3b1c1d;
+  --danger-contrast: #2a0c0a;
+  --success: #86d6a8;
+  --success-soft: #12301f;
+  --gold: var(--accent-gold-bright);
+  --focus-color: #8fb6ff;
+  --scrim: rgba(0, 0, 0, .55);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+  --shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 2px 6px rgba(0, 0, 0, .25);
+  --shadow-lg: 0 30px 80px rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand-primary: #acd2e9;
+    --brand-primary-strong: #d6e9f5;
+    --brand-primary-soft: #1a3354;
+    --brand-ink: #eef3f9;
+    --brand-secondary: #8fb0d0;
+    --brand-river: #acd2e9;
+    --brand-river-soft: #13294a;
+    --on-river: #0b1b37;
+  --on-river: #0b1b37;
+    --accent-warm: #f0a596;
+    --accent-warm-soft: #3a2220;
+    --accent-gold: #ebc78b;
+    --accent-gold-bright: #e3ab54;
+    --accent-gold-light: #ebc78b;
+    --accent-gold-soft: #33280f;
+
+    --bg: #0a1426;
+    --bg-glow-1: rgba(172, 210, 233, .10);
+    --bg-glow-2: rgba(227, 171, 84, .07);
+    --surface: #101d36;
+    --surface-2: #162643;
+    --surface-3: #1d3053;
+    --text: var(--brand-ink);
+    --muted: #aab6cc;
+    --accent: var(--brand-primary);
+    --accent-strong: var(--brand-primary-strong);
+    --accent-soft: var(--brand-primary-soft);
+    --accent-contrast: #0a1426;
+    --border: #253a60;
+    --border-strong: #6e7f9f;
+    --danger: #ff9e92;
+    --danger-soft: #3b1c1d;
+    --danger-contrast: #2a0c0a;
+    --success: #86d6a8;
+    --success-soft: #12301f;
+    --gold: var(--accent-gold-bright);
+    --focus-color: #8fb6ff;
+    --scrim: rgba(0, 0, 0, .55);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+    --shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 2px 6px rgba(0, 0, 0, .25);
+    --shadow-lg: 0 30px 80px rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0s; --dur: 0s; }
+}

@@ -48,12 +48,14 @@ def test_phone_gates_free_then_plus():
             assert "Word for the day" in today
             assert "Just for today" in today
 
-            page.click("#appTabDv")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="dv"]')
             page.wait_for_selector("#dvView:not([hidden])")
             assert "1800 737 732" in page.inner_text("#dvView")
             assert page.locator("#journalGate").count() == 1
 
-            page.click("#appTabJournal")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
             assert page.locator("#journalWorkspace").is_hidden()
             assert page.locator("#jBody").is_hidden()
@@ -137,7 +139,8 @@ def test_phone_gates_free_then_plus():
             page.keyboard.press("Escape")
 
             _grant_plus(page, True)
-            page.click("#appTabJournal")
+            page.click("#appTabTools")
+            page.click('#toolsHub [data-hub="journal"]')
             page.evaluate("() => { syncJournalGate(); renderJournalList(); }")
             page.wait_for_selector("#journalWorkspace:not([hidden])")
             assert page.locator("#journalGate").is_hidden()

@@ -24,8 +24,9 @@ def test_chats_tab_and_tab_switch_keeps_conversation():
     from playwright.sync_api import sync_playwright
 
     text = (ROOT / "app" / "index.html").read_text(encoding="utf-8")
-    assert 'id="appTabChats"' in text
-    assert ">Chats<" in text
+    # Hopewick 2.0: saved chats live behind Home ("Your chats"), Tools and the desktop sidebar.
+    assert 'id="sideNavChats"' in text
+    assert "dashBtn('Your chats'" in text
     tab = text.split("function setAppTab", 1)[1].split("function moodCardEl", 1)[0]
     assert "newConversation" not in tab
 
@@ -79,16 +80,25 @@ def test_chats_tab_and_tab_switch_keeps_conversation():
             assert "Sam" in page.evaluate("() => localStorage.getItem('eden.profiles.v1')")
             assert before["convos"][0]["messages"][0]["content"] == "hello from yesterday"
 
-            for tab_id in ("#appTabHome", "#appTabChats", "#appTabJournal", "#appTabDv", "#appTabChat"):
-                page.click(tab_id)
+            def open_chats():
+                page.click("#appTabTools")
+                page.click('#toolsHub [data-hub="chats"]')
+
+            for tab_id in ("#appTabHome", "#appTabTools", "#appTabLearn", "chats", "#appTabChat"):
+                if tab_id == "chats":
+                    open_chats()
+                else:
+                    page.click(tab_id)
                 snap = stored()
                 assert snap["active"] == "c1", tab_id
                 assert len(snap["convos"]) == 1, tab_id
                 assert snap["convos"][0]["id"] == "c1"
 
-            page.click("#appTabChats")
+            page.click("#appTabHome")
+            page.click('[data-dash="chats"]')
             page.wait_for_selector("#chatsView:not([hidden])")
-            assert page.locator("#appTabChats").get_attribute("aria-current") == "page"
+            # Your chats belongs to the Chat section of the bottom bar.
+            assert page.locator("#appTabChat").get_attribute("aria-current") == "page"
             assert "Evening check-in" in page.inner_text("#chatsList")
             assert "hello from yesterday" in page.inner_text("#chatsList")
             page.click("#chatsList .open-chat")
@@ -96,7 +106,7 @@ def test_chats_tab_and_tab_switch_keeps_conversation():
             assert "hello from yesterday" in page.inner_text("#messagesInner")
             assert page.locator("#appTabChat").get_attribute("aria-current") == "page"
 
-            page.click("#appTabChats")
+            open_chats()
             page.click("#chatsNewBtn")
             page.wait_for_function("() => appTab === 'chat'")
             after = stored()

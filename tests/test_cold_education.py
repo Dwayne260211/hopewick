@@ -150,7 +150,7 @@ def test_cold_education_plus_gate_phone():
             _enter_demo(page, base)
 
             nav = page.inner_text("#bottomNav")
-            assert "Home" in nav and "Chat" in nav and "Journal" in nav and "More" in nav
+            assert all(t in nav for t in ("Home", "Chat", "Tools", "Learn", "More"))  # Hopewick 2.0 bottom bar
             assert page.locator('#needNow [data-need="cold"]').count() == 0
             assert page.locator('#appTabHome').count() == 1
             assert page.evaluate("() => document.getElementById('coldPlusPill').hidden") is False

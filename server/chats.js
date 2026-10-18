@@ -13,8 +13,7 @@
  * Older chats stay stored until this rule or a user delete. Account delete
  * still removes that account's chats immediately.
  */
-import fs from 'node:fs';
-import path from 'node:path';
+import { createJsonFile } from './json-file.js';
 
 const MAX_PROFILES = 12;
 /** Free accounts may open this many recent chats. Older ones stay stored. */
@@ -101,6 +100,17 @@ export function normalizeConversation(raw) {
   if (raw.craving) convo.craving = clip(raw.craving, 24);
   if (raw.kind) convo.kind = clip(raw.kind, 40);
   if (raw.systemExtra) convo.systemExtra = clip(raw.systemExtra, MAX_EXTRA);
+  // Study-focus ids. Hosted Hope rebuilds the focus prompt on the server from
+  // these, so they must survive a sync. Optional and additive.
+  const step = Number(raw.step);
+  if (Number.isInteger(step) && step >= 1 && step <= 12) convo.step = step;
+  const planDay = Number(raw.planDay);
+  if (Number.isInteger(planDay) && planDay >= 1 && planDay <= 400) convo.planDay = planDay;
+  if (raw.soap === true) convo.soap = true;
+  if (raw.divingDeeper === true) convo.divingDeeper = true;
+  for (const key of ['lessonId', 'ddDayId', 'deeperTrackId', 'deeperDayId', 'passage']) {
+    if (typeof raw[key] === 'string' && raw[key]) convo[key] = clip(raw[key], 80);
+  }
   if (raw.accountId && validProfileId(raw.accountId)) convo.accountId = String(raw.accountId);
   return convo;
 }
@@ -145,25 +155,17 @@ function publicProfile(id, row, plus) {
 }
 
 export function createChatStore(filePath) {
-  let data = { users: {} };
-
-  function load() {
-    try {
-      const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (parsed && parsed.users && typeof parsed.users === 'object') data = parsed;
-    } catch {
-      data = { users: {} };
-    }
-  }
+  const file = createJsonFile(filePath, {
+    label: 'chats.json',
+    isValid: (parsed) => Boolean(parsed) && typeof parsed === 'object' && Boolean(parsed.users) && typeof parsed.users === 'object',
+    empty: () => ({ users: {} }),
+    serialize: (value) => JSON.stringify(value),
+  });
+  let data = file.initial;
 
   function persist() {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    const tmp = `${filePath}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, JSON.stringify(data), { mode: 0o600 });
-    fs.renameSync(tmp, filePath);
+    file.write(data);
   }
-
-  load();
 
   function userRow(userId) {
     if (!data.users[userId]) data.users[userId] = { profiles: {} };
@@ -174,6 +176,7 @@ export function createChatStore(filePath) {
   }
 
   return {
+    health: () => file.health(),
     list(userId, options) {
       const row = data.users[userId];
       if (!row || !row.profiles) return [];

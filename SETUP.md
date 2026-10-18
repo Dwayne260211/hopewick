@@ -28,7 +28,26 @@ Signing in is required before Checkout. A free account does not delete older cha
 
 The free daily message limit (15 messages/day) is enforced by the account server on hosted Hope (`POST /api/hope/chat`). Hopewick Plus, a 7-day trial, and complimentary founder emails have no daily message cap. A crisis reply under that cap still uses one daily message and may call the model. When the cap is already used, crisis returns static text, does not call the model, and does not add another count. Get help as a screen does not call the model and is not counted. The crisis card and Get help stay available at the cap. The marketing site and the Hopewick Plus screen use the same numbers. `HOPEWICK_FREE_DAILY` can override the free number. `HOPEWICK_PLUS_DAILY` is not used.
 
-## Environment variables
+### Hope's instructions are server-owned
+
+The server builds every system prompt for hosted Hope in `server/hope-prompts.js`, including the safety section, the Australian crisis contacts (000, Lifeline 13 11 14, Suicide Call Back Service, the AOD hotlines, 1800RESPECT, 13YARN) and the extra crisis instruction when the latest message matches the crisis pattern. The browser sends only `user` and `assistant` turns plus a `context` object of structured options (mode, faith, faith level, style, preset traits, "here for", companion and profile name, sober start date, memories, today's gratitude, mood, craving, a study-focus id, and the short free-text preferences). Any `system` or `developer` message from a client is dropped, and other roles are refused. Personal free text is flattened to one line and capped, and a fixed safety footer always comes last. The prompt copy left in `app/index.html` is only used by the founder-only "own key" developer path, which never calls this server.
+
+Request limits (constants in `server/hope-chat.js`, `HOPE_LIMITS`): at most 40 turns; the latest message must be from the person and at most 8,000 characters for chat (20,000 for journal "deepen", memory notes are cut at 24,000); older turns are cut at 12,000 characters, and the oldest turns are dropped until the whole history fits in 60,000 characters.
+
+**Plus fair use.** Plus, trial and complimentary accounts still have no daily message limit in the app and on the marketing site. As an anti-abuse guard (for example a stolen session or a script), the server pauses new replies after `PLUS_FAIR_USE_DAILY_DEFAULT` = **300** model calls in one Brisbane day (`HOPEWICK_PLUS_FAIR_USE_DAILY` overrides it). Normal use is nowhere near this. Over the ceiling a crisis message still gets the static crisis reply, and the response code is `fair_use` (HTTP 429). The 15/day free allowance and billing are unchanged.
+
+### Store files fail loudly
+
+`users.json`, `chats.json`, `checkins.json` and `visits.json` (on the Render disk at `/var/data`) are loaded by `server/json-file.js`:
+
+- A missing file starts empty (first run), as before.
+- A file that exists but cannot be read, is not valid JSON, or does not have the expected shape is **never** treated as empty and **never** written to. The server logs `HOPEWICK STORE ERROR: ...`, leaves the original exactly as it was, saves a copy beside it as `<file>.corrupt-<UTC time>`, and answers **503** on `/api/health` and every `/api/*` route. Static pages (including Get help and the crisis numbers) still load. On Render a failing health check stops the new deploy from taking traffic.
+- Writes are atomic: temp file, `fsync`, rename, folder `fsync` (mode 0600).
+- `<file>.bak` is a rolling last-known-good copy on the same disk, refreshed at start-up after a clean load and before a write when the last refresh is more than 10 minutes old (`BACKUP_INTERVAL_MS`). It is not an off-site backup; Render disk snapshots remain the main backup.
+
+To recover: look at the `.corrupt-*` copy, then fix the file or copy `<file>.bak` over it, and restart. Do not delete the original until it is understood.
+
+
 
 Copy `.env.example` to `.env` in the repo root (gitignored).
 

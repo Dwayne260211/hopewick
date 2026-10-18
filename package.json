@@ -5,12 +5,28 @@
   "engines": {
     "node": ">=20"
   },
-  "description": "Hopewick static site plus the account and Stripe billing server.",
+  "description": "Hopewick static site plus the account and Stripe billing server, with an optional Postgres layer (DATABASE_URL).",
   "scripts": {
     "start": "node server/index.js",
     "test:billing": "node --test --test-concurrency=1 server/billing.test.mjs",
     "test:play": "node --test --test-concurrency=1 server/play-billing.test.mjs",
     "test:visits": "node --test server/visits.test.mjs",
-    "test:resume": "node --test tests/resume-pdf.test.mjs"
+    "test:resume": "node --test tests/resume-pdf.test.mjs",
+    "test:hope": "node --test --test-concurrency=1 server/hope-safety.test.mjs",
+    "test:store": "node --test --test-concurrency=1 server/store-safety.test.mjs",
+    "test:brand": "node --test tests/brand-assets.test.mjs",
+    "test:db": "node --test --test-concurrency=1 server/db.test.mjs server/db-optional.test.mjs server/db-crypto.test.mjs",
+    "test:tokens": "node --test tests/design-tokens.test.mjs",
+    "test:node": "node --test --test-concurrency=1 server/*.test.mjs tests/*.test.mjs",
+    "test:contrast": "node tools/design/contrast.mjs",
+    "db:migrate": "node server/db/migrate.js",
+    "db:migrate:status": "node server/db/migrate.js --status"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "ws": "^8.22.0"
   }
 }

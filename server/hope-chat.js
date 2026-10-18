@@ -6,11 +6,29 @@
 import { publicUser } from './store.js';
 
 export const FREE_DAILY_DEFAULT = 15;
+/**
+ * Fair-use ceiling for Plus, trial and complimentary accounts: model calls
+ * per Brisbane day. Plus is still sold and shown as "no daily message limit";
+ * this only stops a stolen session or a script using Hope as a free general
+ * AI proxy. 300 a day is roughly one message every 3 minutes for 15 hours,
+ * far above normal use. Override with HOPEWICK_PLUS_FAIR_USE_DAILY.
+ * Crisis messages over the ceiling still get the static crisis reply.
+ */
+export const PLUS_FAIR_USE_DAILY_DEFAULT = 300;
 /** Free count rolls over at midnight in Australia/Brisbane (no daylight saving). */
 export const HOPE_RESET_LABEL = 'midnight, Brisbane time';
-const MAX_MESSAGES = 40;
-const MAX_CONTENT = 12000;
+/** Server-side limits for one /api/hope/chat request (see SETUP.md). */
+export const HOPE_LIMITS = Object.freeze({
+  maxTurns: 40, // user/assistant turns kept per request (the app sends 30)
+  maxTurnChars: 12000, // older turns are cut to this
+  maxHistoryChars: 60000, // oldest turns are dropped until the rest fits
+  // Latest user message. Chat and journal refine refuse longer text;
+  // memory notes (an app-built summary) are cut instead.
+  maxLatestChars: { chat: 8000, refine: 20000, memory: 24000 },
+});
 const MAX_TOKENS = 600;
+/** Instruction roles. Only the server writes these; client copies are dropped. */
+const INSTRUCTION_ROLES = new Set(['system', 'developer']);
 
 /** Same pattern as CRISIS_RE in app/index.html. Server must be at least this broad. */
 export const CRISIS_RE = /\b(suicid\w*|kill(ing)? (myself|me)|end(ing)? (it all|my life)|want(ed)? to die|don'?t want to (live|be here|wake up)|better off dead|self[- ]?harm\w*|hurt(ing)? myself|cut(ting)? myself|overdos\w*|over dose|od'?d|od'?ing|about to (use|relapse|drink|score)|going to (use|relapse|drink|score)|can'?t stop myself (from )?(using|drinking|scoring)|extreme craving|craving is (so )?(bad|extreme|out of control)|not safe|unsafe|in danger|going to hurt|hurt (someone|them|him|her|my kids?)|someone (else )?(is |in )?danger|partner (is )?(hurting|hitting|abusing) (me|us)|my (partner|husband|wife|boyfriend|girlfriend|ex) (hurt|hit|hits|hurting|hitting|abused|abusing)|domestic violence|family violence|he'?s hurting me|she'?s hurting me|no reason to live)\b/i;
@@ -25,6 +43,10 @@ export function dailyCap(name, fallback) {
 
 export function freeDailyCap() {
   return dailyCap('HOPEWICK_FREE_DAILY', FREE_DAILY_DEFAULT);
+}
+
+export function plusFairUseCap() {
+  return dailyCap('HOPEWICK_PLUS_FAIR_USE_DAILY', PLUS_FAIR_USE_DAILY_DEFAULT);
 }
 
 /** Plus, a 7-day trial, and complimentary founder accounts have no daily message cap. */
@@ -97,32 +119,69 @@ export const CRISIS_FALLBACK = [
   'Hope is an AI recovery companion, not a crisis service. Get help in this app stays free.',
 ].join(' ');
 
-export function sanitizeMessages(input) {
+function badRequest(message, code) {
+  const err = new Error(message);
+  err.status = 400;
+  if (code) err.code = code;
+  return err;
+}
+
+/**
+ * Keep only user/assistant turns. Any client system/developer message is
+ * dropped: the server builds every instruction itself (hope-prompts.js).
+ * Older app versions still send one, so dropping (not refusing) keeps them
+ * working with the server's own safety prompt.
+ * Returns { turns, droppedInstructions }.
+ */
+export function sanitizeTurns(input, { purpose = 'chat' } = {}) {
   if (!Array.isArray(input) || input.length === 0) {
-    const err = new Error('Send a short conversation to Hope.');
-    err.status = 400;
-    throw err;
+    throw badRequest('Send a short conversation to Hope.');
   }
-  if (input.length > MAX_MESSAGES) {
-    const err = new Error('That conversation is too long to send in one go.');
-    err.status = 400;
-    throw err;
+  if (input.length > HOPE_LIMITS.maxTurns + 4) {
+    throw badRequest('That conversation is too long to send in one go.');
   }
-  return input.map((msg) => {
+  let droppedInstructions = 0;
+  const turns = [];
+  for (const msg of input) {
     const role = msg && msg.role;
-    if (role !== 'system' && role !== 'user' && role !== 'assistant') {
-      const err = new Error('A message had an unexpected role.');
-      err.status = 400;
-      throw err;
+    if (INSTRUCTION_ROLES.has(role)) { droppedInstructions += 1; continue; }
+    if (role !== 'user' && role !== 'assistant') {
+      throw badRequest('A message had an unexpected role.');
     }
-    const content = String(msg.content || '').slice(0, MAX_CONTENT);
-    if (!content.trim()) {
-      const err = new Error('A message was empty.');
-      err.status = 400;
-      throw err;
+    if (typeof msg.content !== 'string' && typeof msg.content !== 'number') {
+      throw badRequest('A message was empty.');
     }
-    return { role, content };
-  });
+    const content = String(msg.content);
+    if (!content.trim()) throw badRequest('A message was empty.');
+    turns.push({ role, content });
+  }
+  if (!turns.length) throw badRequest('Send a short conversation to Hope.');
+  if (turns.length > HOPE_LIMITS.maxTurns) {
+    throw badRequest('That conversation is too long to send in one go.');
+  }
+  if (turns[turns.length - 1].role !== 'user') {
+    throw badRequest('The last message to Hope should be yours.');
+  }
+  const kind = purpose === 'memory' || purpose === 'refine' ? purpose : 'chat';
+  const latestMax = HOPE_LIMITS.maxLatestChars[kind];
+  const last = turns[turns.length - 1];
+  if (last.content.length > latestMax) {
+    if (kind === 'memory') last.content = last.content.slice(0, latestMax);
+    else throw badRequest(`That message is too long for Hope. Please keep it under ${latestMax.toLocaleString('en-AU')} characters.`, 'too_long');
+  }
+  for (let i = 0; i < turns.length - 1; i += 1) {
+    if (turns[i].content.length > HOPE_LIMITS.maxTurnChars) turns[i].content = turns[i].content.slice(0, HOPE_LIMITS.maxTurnChars);
+  }
+  let total = turns.reduce((n, t) => n + t.content.length, 0);
+  while (turns.length > 1 && total > HOPE_LIMITS.maxHistoryChars) {
+    total -= turns.shift().content.length;
+  }
+  return { turns, droppedInstructions };
+}
+
+/** Back-compatible wrapper: user/assistant turns only. */
+export function sanitizeMessages(input, options) {
+  return sanitizeTurns(input, options).turns;
 }
 
 export function clampNumber(value, min, max, fallback) {
@@ -174,6 +233,14 @@ export function admitHopeCall(user, { purpose, crisis, now = new Date() } = {}) 
   if (limit != null && usage.count >= limit) {
     return { ok: false, status: 429, code: 'daily_cap', usage, limit };
   }
+  if (limit == null) {
+    // Plus fair use: a ceiling the app never shows, far above normal use.
+    const ceiling = plusFairUseCap();
+    if (usage.count >= ceiling) {
+      if (crisis) return { ok: true, staticOnly: true, spend: 'none', usage, limit, crisis: true };
+      return { ok: false, status: 429, code: 'fair_use', usage, limit };
+    }
+  }
   return { ok: true, spend: 'chat', usage, limit, crisis: crisis === true };
 }
 
@@ -190,6 +257,8 @@ export function rollbackSpend(user, admission) {
   if (admission.spend === 'memory' && admission.usage.memory > 0) admission.usage.memory -= 1;
   user.hopeUsage = admission.usage;
 }
+
+export const FAIR_USE_MESSAGE = 'Hope has had a very busy day on this account, so new replies are paused until midnight, Brisbane time. This fair-use pause protects the service and is far above normal use. Today’s Readings, crisis support, and Get help stay available. If this looks wrong, email hello@hopewick.com.au.';
 
 export function capMessage(user, limit) {
   const n = limit == null ? freeDailyCap() : limit;

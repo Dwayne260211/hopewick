@@ -76,11 +76,13 @@ def test_static_education_copy_and_gate():
     assert "cold: { label: 'Open ice baths & spas'" in text
     assert 'data-need="cold"' not in text
     assert "Do not add plus, resume, bible, or nutrition on a crisis reply." in text
-    assert 'id="appTabJournal"' in text
+    assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="appTabHome"' in text
     assert "data-need=\"gut\"" not in text
     assert "data-need=\"brain\"" not in text
-    assert "id: 'nutrition'" not in text
+    # Not a Home chip (it lives in the Learn hub in Hopewick 2.0).
+    need_now = text.split("function needNowEl", 1)[1].split("\nfunction ", 1)[0].split("\n/*", 1)[0]
+    assert "id: 'nutrition'" not in need_now
     for title in GUT_TITLES + BRAIN_TITLES:
         assert title in cards
     edu_stub = text.split("const GUT_CARDS = [", 1)[1].split("function syncEducationPlusPills", 1)[0]
@@ -184,8 +186,9 @@ def test_education_plus_gate_phone():
             _enter_demo(page, base)
 
             nav = page.inner_text("#bottomNav")
-            assert "Home" in nav and "Chat" in nav and "Journal" in nav and "More" in nav
-            assert "Safety" in nav
+            assert all(t in nav for t in ("Home", "Chat", "Tools", "Learn", "More"))  # Hopewick 2.0 bottom bar
+            assert page.locator("#helpBtn").is_visible()  # crisis entry always on screen (Hopewick 2.0)
+            assert page.locator('#needNow [data-need="dv"]').count() == 1  # DV one tap from Home
             assert page.locator('#needNow [data-need="gut"]').count() == 0
             assert page.locator('#needNow [data-need="brain"]').count() == 0
             assert page.locator('#needNow [data-need="nutrition"]').count() == 0
@@ -280,7 +283,7 @@ def test_education_plus_gate_phone():
             page.wait_for_selector('#brainDlg[open] button:has-text("Open journal")')
             page.click('#brainDlg button:has-text("Open journal")')
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#appTabJournal").get_attribute("aria-current") == "page"
+            assert page.locator("#appTabTools").get_attribute("aria-current") == "page"
             assert "Journal" in page.inner_text("#journalTitle")
 
             page.click("#appTabHome")

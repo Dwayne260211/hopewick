@@ -8,6 +8,11 @@
  * Hosted Hope chat is POST /api/hope/chat. The OpenAI key stays in
  * OPENAI_API_KEY on this server (the same key can already exist on the
  * Azure invite proxy). The browser never receives it.
+ * The server builds every system prompt itself (server/hope-prompts.js),
+ * including the safety and crisis instructions. The browser sends only
+ * user/assistant turns and structured options; any client system message is
+ * dropped. Plus has a hidden fair-use ceiling (PLUS_FAIR_USE_DAILY_DEFAULT,
+ * 300 a day) that normal use never reaches.
  *
  * Plus Checkout includes a 7-day trial, then the existing monthly price.
  * Daily caps: Free is 15 messages. Hopewick Plus, a 7-day trial, and
@@ -67,15 +72,17 @@ import {
   lastUserText,
   isCrisisText,
   CRISIS_FALLBACK,
-  sanitizeMessages,
+  sanitizeTurns,
   completionBody,
   openAiEndpoint,
   admitHopeCall,
   commitSpend,
   rollbackSpend,
   capMessage,
+  FAIR_USE_MESSAGE,
   HOPE_RESET_LABEL,
 } from './hope-chat.js';
+import { buildHopeMessages } from './hope-prompts.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = path.resolve(__dirname, '..');
@@ -893,7 +900,7 @@ async function handleWebhook(store, raw) {
   return { received: true, ignored: true };
 }
 
-const PRIVATE_DIRS = new Set(['server', 'tests', 'tools', 'docs', 'node_modules']);
+const PRIVATE_DIRS = new Set(['server', 'tests', 'tools', 'docs', 'node_modules', 'migrations']);
 const PRIVATE_FILES = new Set([
   'package.json',
   'package-lock.json',
@@ -1822,15 +1829,19 @@ async function handleHopeChat(store, req, res) {
     return;
   }
 
-  let messages;
-  try { messages = sanitizeMessages(body.messages); } catch (err) {
-    json(res, err.status || 400, { error: { message: err.message } });
+  // Journal "deepen reflection" is 'refine' and spends a message like chat.
+  const purpose = body.purpose === 'memory' ? 'memory' : (body.purpose === 'refine' ? 'refine' : 'chat');
+  let turns;
+  try { ({ turns } = sanitizeTurns(body.messages, { purpose })); } catch (err) {
+    json(res, err.status || 400, { error: err.code ? { message: err.message, code: err.code } : { message: err.message } });
     return;
   }
 
-  const purpose = body.purpose === 'memory' ? 'memory' : 'chat';
   const stream = body.stream === true && purpose === 'chat';
-  const crisis = purpose === 'chat' && isCrisisText(lastUserText(messages));
+  const crisis = purpose !== 'memory' && isCrisisText(lastUserText(turns));
+  // The server writes every system instruction. The client only sends turns
+  // and structured options (body.context); see server/hope-prompts.js.
+  const messages = buildHopeMessages({ purpose, turns, context: body.context, crisis });
   if (crisis && !hopeConfigured()) {
     if (stream) writeSse(res, CRISIS_FALLBACK);
     else json(res, 200, completionJson(CRISIS_FALLBACK));
@@ -1849,13 +1860,15 @@ async function handleHopeChat(store, req, res) {
   if (!admission.ok) {
     const message = admission.code === 'daily_cap'
       ? capMessage(user, admission.limit)
-      : 'Hope can only note memories for messages you have already sent today.';
+      : admission.code === 'fair_use'
+        ? FAIR_USE_MESSAGE
+        : 'Hope can only note memories for messages you have already sent today.';
     json(res, admission.status, {
       error: { message, code: admission.code },
       limit: admission.limit,
       used: admission.usage.count,
       remaining: admission.limit == null ? null : Math.max(0, admission.limit - admission.usage.count),
-      resetLabel: admission.code === 'daily_cap' ? HOPE_RESET_LABEL : null,
+      resetLabel: admission.code === 'daily_cap' || admission.code === 'fair_use' ? HOPE_RESET_LABEL : null,
     });
     return;
   }
@@ -1934,11 +1947,25 @@ async function handleHopeChat(store, req, res) {
   }
 }
 
+/**
+ * Store files that failed to load (exist but do not parse). Empty when all
+ * are fine. A failed store never writes, so the original stays untouched.
+ */
+export function unavailableStores(...stores) {
+  return stores
+    .map((s) => (s && typeof s.health === 'function' ? s.health() : { ok: true }))
+    .filter((h) => !h.ok)
+    .map((h) => h.label || 'store');
+}
+
+const STORE_UNAVAILABLE_MESSAGE = 'Hopewick accounts are paused for maintenance. Nothing has been lost. Get help and the crisis numbers still work. In an emergency call 000, or Lifeline on 13 11 14.';
+
 export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
   const checkinStore = checkins || createCheckinStore(path.join(REPO_ROOT, 'server', 'data', 'checkins.json'));
   const visitCounter = visits || createVisitCounter(path.join(REPO_ROOT, 'server', 'data', 'visits.json'));
+  const broken = unavailableStores(store, chatStore, checkinStore, visitCounter);
   return async function onRequest(req, res) {
     installSecurityHeaders(req, res);
     try {
@@ -1948,6 +1975,17 @@ export function createApp({ store, chats, checkins, visits, root = REPO_ROOT } =
       if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
         res.writeHead(204, { 'Cache-Control': 'no-store' });
         res.end();
+        return;
+      }
+      if (url.pathname.startsWith('/api/') && broken.length) {
+        // Fail loudly: health check and the account API answer 503 rather
+        // than run on an empty store. Static pages (Get help) still load.
+        req.resume();
+        if (url.pathname === '/api/health') {
+          json(res, 503, { ok: false, error: 'store_unavailable', stores: broken });
+        } else {
+          json(res, 503, { error: STORE_UNAVAILABLE_MESSAGE, code: 'store_unavailable' });
+        }
         return;
       }
       if (url.pathname.startsWith('/api/')) {
@@ -1987,6 +2025,10 @@ export function startServer({
   const chats = createChatStore(chatFile);
   const checkins = createCheckinStore(checkinFile);
   const visits = createVisitCounter(visitFile);
+  const broken = unavailableStores(store, chats, checkins, visits);
+  if (broken.length) {
+    console.error(`HOPEWICK STORE ERROR: ${broken.join(', ')} could not be loaded. The files were not changed. /api/health and the account API return 503 until they are fixed. See server/json-file.js for recovery steps.`);
+  }
   const server = http.createServer(createApp({ store, chats, checkins, visits, root }));
   return new Promise((resolve) => {
     server.listen(port, host, () => resolve(server));
@@ -2012,6 +2054,15 @@ if (isMain) {
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
       console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');
+    }
+    // Postgres (Hopewick 2.0) is optional and not used for requests yet. Only when
+    // DATABASE_URL is set: check it is reachable and migrated. Never fatal, host only.
+    if (String(process.env.DATABASE_URL || '').trim()) {
+      import('./db/index.js').then(async ({ probeDatabase, databaseHost }) => {
+        const probe = await probeDatabase();
+        if (probe.ok) console.log(`Postgres reachable at ${databaseHost()} (schema version ${probe.schemaVersion}); not used for requests yet.`);
+        else console.log(`Postgres at ${databaseHost()} not reachable or not migrated (${probe.error}). The JSON store is in use.`);
+      }).catch((err) => console.log(`Postgres check skipped: ${err.message}`));
     }
   });
 }

@@ -5,8 +5,7 @@
  * Goals stay free. This file is not a Plus gate.
  * Week is Sunday–Saturday. Halfway is Wednesday–Saturday in Australia/Brisbane.
  */
-import fs from 'node:fs';
-import path from 'node:path';
+import { createJsonFile } from './json-file.js';
 
 const MAX_PROFILES = 12;
 export const MAX_MOOD_DAYS = 400;
@@ -262,25 +261,17 @@ function publicProfile(id, row) {
 }
 
 export function createCheckinStore(filePath) {
-  let data = { users: {} };
-
-  function load() {
-    try {
-      const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (parsed && parsed.users && typeof parsed.users === 'object') data = parsed;
-    } catch {
-      data = { users: {} };
-    }
-  }
+  const file = createJsonFile(filePath, {
+    label: 'checkins.json',
+    isValid: (parsed) => Boolean(parsed) && typeof parsed === 'object' && Boolean(parsed.users) && typeof parsed.users === 'object',
+    empty: () => ({ users: {} }),
+    serialize: (value) => JSON.stringify(value),
+  });
+  let data = file.initial;
 
   function persist() {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    const tmp = `${filePath}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, JSON.stringify(data), { mode: 0o600 });
-    fs.renameSync(tmp, filePath);
+    file.write(data);
   }
-
-  load();
 
   function userRow(userId) {
     if (!data.users[userId]) data.users[userId] = { profiles: {} };
@@ -291,6 +282,7 @@ export function createCheckinStore(filePath) {
   }
 
   return {
+    health: () => file.health(),
     list(userId) {
       const row = data.users[userId];
       if (!row || !row.profiles) return [];

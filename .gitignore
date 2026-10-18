@@ -9,3 +9,4 @@ __pycache__/
 
 # Hopewick Plus account store (emails and subscription status)
 server/data/
+node_modules/
