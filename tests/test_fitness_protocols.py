@@ -83,6 +83,53 @@ def test_flag_off_shows_nothing_and_api_is_404(browser):
         assert not [e for e in _quiet(errors) if "fitness" in e.lower()]
 
 
+def _wait_side_move(page, visible=True):
+    page.wait_for_function(
+        "(v) => { const b = document.getElementById('sideMoveBtn'); return !!b && b.hidden === !v; }",
+        arg=visible)
+
+
+def test_side_menu_entry_hidden_when_flag_off(browser):
+    with live_server({"FEATURE_FITNESS_PROTOCOLS": ""}) as (base, _):
+        page, _errors = _page(browser, width=1280, height=900)
+        sign_in(page, base, email=PLUS_EMAIL)
+        page.wait_for_timeout(900)
+        assert page.locator("#sideMoveBtn").is_hidden()
+        assert "Move & Recover" not in page.inner_text("#sidebarTools")
+
+
+def test_side_menu_entry_free_shows_plus_pill_and_opens_move(browser):
+    with live_server({"FEATURE_FITNESS_PROTOCOLS": "1"}) as (base, _):
+        # Phone: the entry lives in the More drawer (the same sidebar).
+        page, errors = _page(browser)
+        sign_in(page, base, email="fit-side-free@example.test")
+        _wait_side_move(page, True)
+        page.click("#appTabMore")
+        page.wait_for_selector("#sideMoveBtn", state="visible")
+        assert page.locator("#movePlusPill").is_visible(), "free users see the Plus pill, like other Plus items"
+        page.click("#sideMoveBtn")
+        page.wait_for_selector("#hwfPlusCard")
+        assert page.evaluate("() => appTab") == "move"
+        assert page.get_attribute("#sideMoveBtn", "aria-current") == "page"
+        assert not _quiet(errors), errors
+
+
+def test_side_menu_entry_plus_desktop_no_pill(browser):
+    with live_server({"FEATURE_FITNESS_PROTOCOLS": "1"}) as (base, _):
+        page, errors = _page(browser, width=1280, height=900)
+        sign_in(page, base, email=PLUS_EMAIL)  # founder comp counts as Plus
+        _wait_side_move(page, True)
+        page.wait_for_function("() => document.getElementById('movePlusPill').hidden")
+        assert page.locator("#sideMoveBtn").is_visible()
+        # The Tools hub card stays too.
+        _tools(page)
+        page.wait_for_selector("[data-hub=move]")
+        page.click("#sideMoveBtn")
+        page.wait_for_selector("#hwfTitle")
+        assert page.evaluate("() => appTab") == "move"
+        assert not _quiet(errors), errors
+
+
 def test_flag_on_free_sees_safety_rules_and_one_plus_card(browser):
     with live_server({"FEATURE_FITNESS_PROTOCOLS": "1"}) as (base, _):
         page, errors = _page(browser)

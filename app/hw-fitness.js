@@ -2,7 +2,7 @@
  *
  * Behind the server flag FEATURE_FITNESS_PROTOCOLS (default off). While the
  * flag is off for this person every /api/fitness/* route answers 404, so
- * HWFIT.enabled() stays false and nothing renders: no hub card, no tab, no teaser.
+ * HWFIT.enabled() stays false and nothing renders: no hub card, no side menu entry, no tab, no teaser.
  *
  * The server decides everything that matters (Plus, release drops, the safety
  * screen outcome, the 24-hour pause, the pre-session check). This file only
@@ -110,6 +110,7 @@
         // 404 = the flag is off for this person: show nothing at all.
         st.enabled = false; st.status = null;
       } finally { st.loading = null; }
+      F.syncNav();
       if (was !== st.enabled) {
         try { if (curTab() === 'tools') renderToolsHub(); } catch (_) { /* hub not ready */ }
         if (!st.enabled && curTab() === 'move') { try { setAppTab('home'); } catch (_) { /* */ } }
@@ -120,6 +121,21 @@
     return st.loading;
   }
   F.refresh = (force) => refresh(force).catch(() => st);
+
+  /** Side menu entry (#sideMoveBtn, also the phone "More" drawer): shown only while the
+   * flag is on for this person. Runs after every status call, so it appears as soon as
+   * enabled() flips. The Plus pill follows the other Plus items (hidden for Plus,
+   * which includes founder comp, trial and paid). */
+  F.syncNav = () => {
+    const b = document.getElementById('sideMoveBtn');
+    if (b) {
+      b.hidden = !st.enabled;
+      if (!st.enabled) b.setAttribute('aria-current', 'false');
+      else b.setAttribute('aria-current', curTab() === 'move' ? 'page' : 'false');
+    }
+    const pill = document.getElementById('movePlusPill');
+    if (pill) pill.hidden = plusNow() || !!(st.status && st.status.plus);
+  };
 
   /** Tools hub card, or null (flag off). Called by renderToolsHub. */
   F.hubItem = () => {
