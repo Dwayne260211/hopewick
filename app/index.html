@@ -8,7 +8,7 @@
    tagline and copyright owner are defined for the app.
    (Internal storage keys stay "eden.*" on purpose so existing data survives.)
    ============================================================================ */
-const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery support between sessions', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, founder: 'Dwayne Stevens' };
+const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your next step', company: 'BRIDGE&BITE.CO PTY LTD', abn: '83 692 080 792', year: 2026, founder: 'Dwayne Stevens' };
 </script>
 <script>
 /* First-party visit count. One landing per tab session. The number is not shown. */
@@ -32,7 +32,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
-<title>Hopewick · AI recovery companion</title>
+<title>Hopewick · Support for your next step</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
@@ -191,8 +191,8 @@ svg { flex: none; }
   border: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); opacity: 0; pointer-events: none;
 }
 .orb .shine { display: none; }
-.orb.lg { --size: 116px; margin: 0 auto; background-image: url("/brand/hopewick-mark.png"); }
-.orb.md { --size: 72px; margin: 0 auto; background-image: url("/brand/hopewick-mark.png"); }
+.orb.lg { --size: 116px; margin: 0 auto; background-image: url("/brand/hopewick-mark-256.png"); background-image: image-set(url("/brand/hopewick-mark-256.webp") type("image/webp"), url("/brand/hopewick-mark-256.png") type("image/png")); }
+.orb.md { --size: 72px; margin: 0 auto; background-image: url("/brand/hopewick-mark-256.png"); background-image: image-set(url("/brand/hopewick-mark-256.webp") type("image/webp"), url("/brand/hopewick-mark-256.png") type("image/png")); }
 .orb.sm { --size: 30px; }
 .orb[data-state="thinking"] { animation: think 1.6s ease-in-out infinite; }
 .orb[data-state="speaking"] { animation: speak .6s ease-in-out infinite alternate; }
@@ -1836,7 +1836,7 @@ h1, h2, h3 { font-family: var(--font-display); }
     </button>
     <div class="history-label" id="historyLabel">Conversations</div>
     <p class="history-device" id="historyDeviceNote">Kept on this device. Signed in, this profile’s chats are also saved to your account.</p>
-    <ul class="history" id="historyList" aria-labelledby="historyLabel"></ul>
+    <ul class="history" id="historyList" aria-labelledby="historyLabel" tabindex="0"></ul>
     <div class="sidebar-foot" id="sidebarTools" tabindex="-1" aria-label="More tools, settings, and education">
       <div class="side-section-label">Recovery tools</div>
       <button class="btn btn-ghost" type="button" data-open="skills">
@@ -1988,7 +1988,7 @@ h1, h2, h3 { font-family: var(--font-display); }
           <span>Get help<span class="htext-long"> now</span></span>
         </button>
         <button class="switch-btn" id="switchBtn" type="button" title="Switch profile">
-          <span class="avatar" id="switchAvatar" aria-hidden="true">?</span><span class="sname" id="switchName"></span>
+          <span class="avatar" id="switchAvatar" aria-hidden="true">?</span><span class="sname" id="switchName"></span><span class="sr-only" id="switchHint">, switch person</span>
         </button>
         <button class="icon-btn" id="myAccountBtn" type="button" aria-pressed="false" aria-label="My Account" title="My Account">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5 19.2a7 7 0 0 1 14 0"/></svg>
@@ -6674,7 +6674,10 @@ function renderAll() {
   el.switchAvatar.textContent = (userName()[0] || '?');
   el.switchAvatar.style.setProperty('--c', avatarColour(profile));
   el.switchName.textContent = userName();
-  el.switchBtn.setAttribute('aria-label', isDemo ? 'Exit demo and choose a person' : `Switch person (currently ${userName()})`);
+  // No aria-label: the visible name is the accessible name (WCAG 2.5.3); the hint adds the action for screen readers.
+  el.switchBtn.removeAttribute('aria-label');
+  const hint = document.getElementById('switchHint');
+  if (hint) hint.textContent = isDemo ? ' Exit demo and choose a person' : ', switch person';
   if (!busy) setOrb('idle');
   renderSober();
   renderHistory();

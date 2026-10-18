@@ -4,6 +4,13 @@ Status: **plan only. No production data has been moved.** Production keeps the J
 files on the Render disk until every step below has been rehearsed on a Neon
 development branch and the founder approves the cut-over.
 
+> **Stage 6 update (18 Oct 2026):** the importer exists as `tools/migrate-json-to-postgres.mjs`
+> and was rehearsed on synthetic data. It migrates the wellbeing and Move & Recover stores (the two
+> stores that switch to Postgres with `DATABASE_URL`); `users.json`, `chats.json`, `checkins.json`
+> and `visits.json` stay on the disk because the server reads them in both modes. The step-by-step
+> procedure is **`docs/DB-CUTOVER-RUNBOOK.md`**; it supersedes steps 1–3 below. The dual-write idea
+> (steps 4–6) is not implemented.
+
 ## What moves, and what does not
 
 | Today (Render disk / browser) | Postgres table | Notes |

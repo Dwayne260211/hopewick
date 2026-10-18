@@ -221,4 +221,4 @@ It is not applied to `main` or used in production (production runs the JSON stor
 2. Decide the Neon plan (the free plan suspends compute when idle and has limited
    history/backup retention; a paid plan gives longer point-in-time restore).
 3. Consider latency: Render runs in Singapore, the database is in Sydney.
-4. Follow `docs/DB-MIGRATION-PLAN.md`.
+4. Follow `docs/DB-CUTOVER-RUNBOOK.md` (tool: `tools/migrate-json-to-postgres.mjs`; background in `docs/DB-MIGRATION-PLAN.md`).

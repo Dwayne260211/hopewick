@@ -87,10 +87,11 @@ export async function withUser(userId, fn, env = process.env) {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    await client.query("SELECT set_config('app.user_id', $1, true)", [userId]);
     // The login role may have BYPASSRLS (Neon owner roles do). Drop to the
     // NOLOGIN, NOBYPASSRLS role from migrations/002 for this transaction only.
-    await client.query('SET LOCAL ROLE hopewick_rls');
+    // set_config('role', ..., true) is SET LOCAL ROLE; doing both in one statement
+    // saves a round trip per request (Render Singapore <-> Neon is ~90 ms each way).
+    await client.query("SELECT set_config('app.user_id', $1, true), set_config('role', 'hopewick_rls', true)", [userId]);
     const out = await fn(client);
     await client.query('COMMIT');
     return out;

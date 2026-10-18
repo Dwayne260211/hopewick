@@ -175,6 +175,7 @@
    wordmark and tagline recoloured to near-white (tools/brand/build_logo_assets.py). */
 .hw-lockup { display: block; margin: 0; line-height: 0; }
 .hw-lockup img { display: block; width: 100%; height: auto; }
+.hw-lockup picture { display: contents; }
 .hw-lockup__dark { display: none !important; }
 :root[data-theme="dark"] .hw-lockup__light { display: none !important; }
 :root[data-theme="dark"] .hw-lockup__dark { display: block !important; }
