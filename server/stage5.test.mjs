@@ -19,7 +19,7 @@ import { createWellbeingStore } from './wellbeing/index.js';
 import { normalizeSafety, SAFETY_FIELDS, SAFETY_VERSIONS_KEPT, ValidationError } from './wellbeing/validate.js';
 import {
   defaultPreferences, normalizePreferencesPatch, mergePreferences, readPreferences, faithOn, christianLayerOn,
-  normalizeFaithContent, pickForDay,
+  normalizeFaithContent, pickForDay, faithPromptDue, FAITH_ASK_AGAIN_DAYS,
 } from './wellbeing/personal.js';
 import { createReleaseCatalog } from './content-releases.js';
 import { buildHopeMessages, normalizeContext, CRISIS_INSTRUCTION } from './hope-prompts.js';
@@ -68,6 +68,38 @@ test('preferences: strict types, nothing inferred, faith off by default, reset c
   assert.equal(christianLayerOn(on), true);
   assert.equal(christianLayerOn(mergePreferences(d, normalizePreferencesPatch({ faithOptIn: true, faithTradition: 'buddhist' }))), false, 'Christian content only for a Christian tradition');
   assert.equal(readPreferences({ faithOptIn: 'true' }).faithOptIn, false);
+});
+
+test('faith question: Yes / No thanks / Decide later, asked again at most once, never after an answer', () => {
+  const t0 = new Date('2026-10-18T09:00:00Z');
+  const fresh = readPreferences(null);
+  assert.equal(fresh.faithAnswer, null);
+  assert.equal(faithPromptDue(fresh, t0), true, 'a new or existing account that never answered is asked');
+  assert.throws(() => normalizePreferencesPatch({ faithAnswer: 'maybe' }), ValidationError);
+  const yes = readPreferences(mergePreferences(fresh, normalizePreferencesPatch({ faithAnswer: 'yes' }), t0));
+  assert.equal(yes.faithOptIn, true);
+  assert.equal(yes.faithTradition, 'christian');
+  assert.equal(faithOn(yes), true);
+  assert.equal(faithPromptDue(yes, t0), false);
+  const no = readPreferences(mergePreferences(fresh, normalizePreferencesPatch({ faithAnswer: 'no' }), t0));
+  assert.equal(no.faithOptIn, false);
+  assert.equal(faithPromptDue(no, new Date('2030-01-01')), false, 'No thanks is never asked again');
+  const later1 = readPreferences(mergePreferences(fresh, normalizePreferencesPatch({ faithAnswer: 'later' }), t0));
+  assert.equal(later1.faithOptIn, false, 'Decide later means faith is off');
+  assert.equal(later1.faithLaterCount, 1);
+  assert.equal(faithPromptDue(later1, new Date(t0.getTime() + 86400000)), false, 'not straight away');
+  const back = new Date(t0.getTime() + FAITH_ASK_AGAIN_DAYS * 86400000);
+  assert.equal(faithPromptDue(later1, back), true, 'comes back once, gently, later');
+  const later2 = readPreferences(mergePreferences(later1, normalizePreferencesPatch({ faithAnswer: 'later' }), back));
+  assert.equal(later2.faithLaterCount, 2);
+  assert.equal(faithPromptDue(later2, new Date('2030-01-01')), false, 'two dismissals end the asking');
+  // Switching faith on or off in About you also counts as an answer.
+  const viaSettings = readPreferences(mergePreferences(fresh, normalizePreferencesPatch({ faithOptIn: false }), t0));
+  assert.equal(viaSettings.faithAnswer, 'no');
+  assert.equal(faithPromptDue(viaSettings, t0), false);
+  // A later "Decide later" never undoes an earlier answer.
+  const keep = readPreferences(mergePreferences(no, normalizePreferencesPatch({ faithAnswer: 'later' }), t0));
+  assert.equal(keep.faithAnswer, 'no');
 });
 
 test('faith content: public-domain translation only, original reflections, pending review', () => {
@@ -316,6 +348,28 @@ async function httpSuite(t, backend) {
       assert.equal(reset.body.preferences.preferredName, '');
       assert.equal(reset.body.preferences.faithOptIn, false);
       assert.equal((await u('PATCH', '/api/me/preferences', { profileId: 'main', tone: 'shouty' })).status, 400);
+    });
+
+    await t.test(`${backend} http: the faith question is due until answered, and each answer saves`, async () => {
+      for (const [answer, on] of [['yes', true], ['no', false], ['later', false]]) {
+        const u = await fresh(`ask-${answer}`);
+        const g = await u('GET', '/api/me/preferences?profileId=main');
+        assert.equal(g.body.faithPromptDue, true, 'never answered: ask');
+        const r = await u('PATCH', '/api/me/preferences', { profileId: 'main', faithAnswer: answer });
+        assert.equal(r.status, 200, JSON.stringify(r.body));
+        assert.equal(r.body.preferences.faithOptIn, on, answer);
+        assert.equal(r.body.faithPromptDue, false, `${answer}: not asked again straight away`);
+        assert.equal((await u('GET', '/api/me/faith?profileId=main&context=home')).body.enabled, on, `${answer}: faith content follows the answer`);
+        const again = await u('GET', '/api/me/preferences?profileId=main');
+        assert.equal(again.body.preferences.faithAnswer, answer);
+        assert.equal(again.body.faithPromptDue, false);
+        // Reset in About you does not bring the question back.
+        const reset = await u('DELETE', '/api/me/preferences?profileId=main');
+        assert.equal(reset.body.preferences.faithOptIn, false);
+        assert.equal(reset.body.faithPromptDue, false);
+      }
+      const u = await fresh('ask-bad');
+      assert.equal((await u('PATCH', '/api/me/preferences', { profileId: 'main', faithAnswer: 'perhaps' })).status, 400);
     });
 
     await t.test(`${backend} http: Hope uses saved preferences, not what the browser claims`, async () => {

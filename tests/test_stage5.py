@@ -68,8 +68,13 @@ def test_faith_off_shows_nothing(server, browser, width, label):
     page, errors = _page(browser, width=width)
     sign_in(page, base, email=f"s5-off-{label}@example.test")
     assert page.evaluate("() => settings.faith") == "none", "faith is off by default"
-    prefs = _api(page, "GET", "/api/me/preferences")["body"]["preferences"]
-    assert prefs["faithOptIn"] is False
+    got = _api(page, "GET", "/api/me/preferences")["body"]
+    assert got["preferences"]["faithOptIn"] is False
+    assert got["faithPromptDue"] is True, "never answered, so the question is due"
+    # The one exception is the optional question itself, on Home. Everything else stays faith-free.
+    page.evaluate("() => setAppTab('home')")
+    page.wait_for_selector("#dashFaithAsk")
+    page.add_style_tag(content="#dashFaithAsk { display: none !important; }")
     for tab in SCREENS:
         page.evaluate("(t) => setAppTab(t)", tab)
         page.wait_for_timeout(500)
@@ -322,4 +327,169 @@ def test_app_without_slash_redirects(server, browser):
     page.goto(f"{base}/app?tab=safety", wait_until="domcontentloaded")
     assert page.url == f"{base}/app/?tab=safety"
     assert page.evaluate("() => !!window.HW5 && !!window.HW3")
+    assert _quiet(errors) == []
+
+
+# ---------------------------------------------------------------------------
+# The faith question at sign-up (new accounts) and once for existing accounts
+# ---------------------------------------------------------------------------
+FAITH_Q = "Hopewick can include optional Christian encouragement, such as short Bible reflections and prayers. Would you like that?"
+
+
+def _new_account_to_faith_step(page, base, email):
+    r = page.context.request.post(f"{base}/api/auth/magic-link", data={"email": email}, headers={"Origin": base})
+    assert r.status == 200, r.text()
+    page.goto(r.json()["devLink"], wait_until="domcontentloaded")
+    page.wait_for_selector("#onboardingDlg[open]", timeout=20000)
+    page.wait_for_timeout(400)
+    page.evaluate("() => { const d = document.getElementById('plusChoiceDlg'); if (d && d.open) d.close(); }")
+    page.click("#onboardYesBtn")
+    page.click("#onboardReasonContinue")
+    page.wait_for_selector("#onboardStepFaith:not([hidden])")
+
+
+def _finish_profile(page, name="Sam"):
+    page.wait_for_selector("#pickerDlg[open] #addPersonBtn")
+    if not page.is_visible("#addPersonForm"):
+        page.click("#addPersonBtn")
+    page.fill("#addPersonInput", name)
+    page.locator("#addPersonForm button[type=submit]").click()
+    page.wait_for_function("() => typeof profile !== 'undefined' && !!profile", timeout=20000)
+    if page.locator("#launchPrefs:not([hidden])").count():
+        page.click("#launchPrefsContinue")
+    page.evaluate("() => document.querySelectorAll('dialog[open]').forEach((d) => d.close())")
+    page.wait_for_function("() => window.HW3 && HW3.state.loaded", timeout=20000)
+
+
+@pytest.mark.parametrize("answer,on", [("yes", True), ("no", False), ("later", False)])
+def test_new_signup_asks_the_faith_question_and_saves_each_answer(server, browser, answer, on):
+    base, _ = server
+    page, errors = _page(browser)
+    _new_account_to_faith_step(page, base, f"s5-signup-{answer}@example.test")
+    step = page.inner_text("#onboardStepFaith")
+    assert FAITH_Q in step
+    assert "change this any time in About you" in step
+    # Three answers, styled the same: none looks preferred, none is pre-chosen or focused.
+    classes = page.evaluate("() => [...document.querySelectorAll('#onboardStepFaith [data-faith-answer]')].map((b) => [b.textContent.trim(), b.className])")
+    assert [c[0] for c in classes] == ["Yes, include it", "No thanks", "Decide later"]
+    assert len({c[1] for c in classes}) == 1 and "btn-primary" not in classes[0][1]
+    assert page.evaluate("() => document.activeElement && document.activeElement.id") == "onboardFaithQ"
+    assert page.is_visible("#onboardCrisis a[href='tel:000']")
+    if answer == "yes":
+        page.mouse.move(2, 2)
+        shot(page, "signup-faith-step-mobile")
+    page.click(f"#onboardStepFaith [data-faith-answer='{answer}']")
+    _finish_profile(page)
+    page.wait_for_function("(a) => window.HW5 && HW5.prefs().faithAnswer === a", arg=answer, timeout=15000)
+    got = _api(page, "GET", "/api/me/preferences")["body"]
+    assert got["preferences"]["faithOptIn"] is on
+    assert got["preferences"]["faithAnswer"] == answer
+    assert got["faithPromptDue"] is False, "answered at sign-up, so no card straight after"
+    assert page.evaluate("() => settings.faith") == ("christian" if on else "none")
+    assert _api(page, "GET", "/api/me/faith?context=home")["body"]["enabled"] is on
+    page.evaluate("() => setAppTab('home')")
+    page.wait_for_selector("#dashForYou")
+    assert page.locator("#dashFaithAsk").count() == 0
+    assert _quiet(errors) == []
+
+
+@pytest.mark.parametrize("width,scheme", [(390, "dark"), (1280, "light"), (1280, "dark")])
+def test_signup_faith_step_screens(server, browser, width, scheme):
+    base, _ = server
+    page, errors = _page(browser, width=width, color_scheme=scheme)
+    _new_account_to_faith_step(page, base, f"s5-signup-shot-{width}-{scheme}@example.test")
+    page.mouse.move(2, 2)
+    shot(page, f"signup-faith-step-{'mobile' if width < 600 else 'desktop'}-{scheme}")
+    assert _quiet(errors) == []
+
+
+def test_crisis_help_reachable_on_every_onboarding_screen(server, browser):
+    base, _ = server
+    page, errors = _page(browser)
+    r = page.context.request.post(f"{base}/api/auth/magic-link", data={"email": "s5-crisis-onboard@example.test"}, headers={"Origin": base})
+    page.goto(r.json()["devLink"], wait_until="domcontentloaded")
+    page.wait_for_selector("#onboardingDlg[open]", timeout=20000)
+    page.wait_for_timeout(400)
+
+    def check(crisis_id, dlg):
+        assert page.is_visible(f"#{crisis_id} a[href='tel:000']")
+        assert page.is_visible(f"#{crisis_id} a[href='tel:131114']")
+        page.click(f"#{crisis_id} [data-open-help]")
+        page.wait_for_selector("#helpDlg[open]")
+        assert "000" in page.inner_text("#helpDlg")
+        assert not page.is_visible("#helpSafetyPlanBtn"), "no profile yet, so no dead-end safety plan button"
+        page.evaluate("() => document.getElementById('helpDlg').close()")
+        assert page.evaluate("(d) => document.getElementById(d).open", dlg), f"{dlg} still open after Get help"
+
+    if page.evaluate("() => document.getElementById('plusChoiceDlg').open"):
+        check("plusChoiceCrisis", "plusChoiceDlg")
+        page.evaluate("() => document.getElementById('plusChoiceDlg').close()")
+    check("onboardCrisis", "onboardingDlg")          # welcome
+    page.click("#onboardYesBtn")
+    check("onboardCrisis", "onboardingDlg")          # what brings you here
+    page.click("#onboardReasonContinue")
+    check("onboardCrisis", "onboardingDlg")          # faith question
+    shot(page, "signup-faith-step-crisis-mobile")
+    page.click("#onboardFaithLater")
+    page.wait_for_selector("#pickerDlg[open]")
+    check("pickerCrisis", "pickerDlg")               # profile set-up
+    assert _quiet(errors) == []
+
+
+@pytest.mark.parametrize("scheme", ["light", "dark"])
+def test_existing_user_card_asks_once_and_dismiss_means_off(server, browser, scheme):
+    base, _ = server
+    page, errors = _page(browser, color_scheme=scheme)
+    sign_in(page, base, email=f"s5-existing-{scheme}@example.test")   # skips onboarding, like an existing account
+    page.evaluate("() => setAppTab('home')")
+    page.wait_for_selector("#dashFaithAsk")
+    card = page.inner_text("#dashFaithAsk")
+    assert FAITH_Q in card and "About you" in card
+    assert page.locator("#dashFaithAsk input[type=radio]:checked").count() == 0, "nothing chosen for them"
+    assert page.is_visible("#helpBtn"), "Get help stays reachable while the card shows"
+    assert _api(page, "GET", "/api/me/faith?context=home")["body"]["enabled"] is False, "faith stays off until they answer"
+    shot(page, f"existing-faith-card-home-mobile-{scheme}")
+    if SHOTS.is_dir():
+        page.add_style_tag(content=".toast, #toasts, .toast-wrap { display: none !important; }")
+        page.locator("#dashFaithAsk").screenshot(path=str(SHOTS / f"existing-faith-card-mobile-{scheme}.png"))
+    page.click("#dashFaithAsk .hw5-faithask__close")
+    page.wait_for_function("() => !document.getElementById('dashFaithAsk')")
+    got = _api(page, "GET", "/api/me/preferences")["body"]
+    assert got["preferences"]["faithOptIn"] is False and got["preferences"]["faithLaterCount"] == 1
+    assert got["faithPromptDue"] is False
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_function("() => typeof profile !== 'undefined' && !!profile && window.HW5 && HW5.prefs().faithLaterCount === 1", timeout=20000)
+    page.evaluate("() => setAppTab('home')")
+    page.wait_for_selector("#dashForYou")
+    page.wait_for_timeout(600)
+    assert page.locator("#dashFaithAsk").count() == 0, "not asked again on the next visit"
+    assert _quiet(errors) == []
+
+
+@pytest.mark.parametrize("prior,expect,on", [("christian", "yes", True), ("none", "no", False)])
+def test_existing_user_earlier_device_choice_is_preselected_then_confirmed(server, browser, prior, expect, on):
+    base, _ = server
+    page, errors = _page(browser)
+    sign_in(page, base, email=f"s5-prior-{prior}@example.test")
+    # An account from before Stage 5: the faith choice lived only in this device's settings.
+    page.evaluate("""(f) => { Object.keys(localStorage).filter((k) => k.startsWith('hopewick.hw5.priorFaith.')).forEach((k) => localStorage.removeItem(k));
+      settings.faith = f; saveSettings();
+      if (f === 'none') save(K.onboarding, Object.assign({}, load(K.onboarding, {}), { seen: true, continued: true, faithChoice: 'none' })); }""", prior)
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_function("() => typeof profile !== 'undefined' && !!profile && window.HW5 && HW5.state.prefs", timeout=20000)
+    page.wait_for_timeout(400)
+    page.evaluate("() => document.querySelectorAll('dialog[open]').forEach((d) => d.close())")
+    page.evaluate("() => setAppTab('home')")
+    page.wait_for_selector("#dashFaithAsk #dashFaithAskPrior")
+    assert page.is_checked(f"#hw5FaithAsk-{expect}")
+    assert _api(page, "GET", "/api/me/faith?context=home")["body"]["enabled"] is False, "still off until confirmed"
+    if prior == "christian":
+        if SHOTS.is_dir():
+            page.add_style_tag(content=".toast, #toasts, .toast-wrap { display: none !important; }")
+            page.locator("#dashFaithAsk").screenshot(path=str(SHOTS / "existing-faith-card-preselected-mobile.png"))
+    page.click("#hw5FaithAskSave")
+    page.wait_for_function("(a) => HW5.prefs().faithAnswer === a && !document.getElementById('dashFaithAsk')", arg=expect)
+    got = _api(page, "GET", "/api/me/preferences")["body"]
+    assert got["preferences"]["faithOptIn"] is on and got["faithPromptDue"] is False
+    assert page.evaluate("() => settings.faith") == ("christian" if on else "none")
     assert _quiet(errors) == []

@@ -204,7 +204,8 @@ Migration 006 was applied to the Neon **dev** branch only (`br-wispy-scene-a71x1
   The server keeps the last 20 per profile. Deleting the `plans` area clears it.
 - `user_preferences` (user_id, profile_id): one sealed JSON document (`prefs`, AAD
   `user:user_preferences.prefs`): preferred name, focus areas, tone, faith opt-in and tradition,
-  onboarded and updated times. Nothing is inferred; only what the person chose. Delete area `preferences`.
+  the answer to the faith question (`faithAnswer` yes/no/later, `faithLaterCount`, `faithAskedAt`),
+  onboarded and updated times. No schema change: these live inside the sealed document. Nothing is inferred; only what the person chose. Delete area `preferences`.
 - Both tables: RLS enabled and forced, owner-only policies as in 002, granted to `hopewick_rls`.
 - The JSON store keeps the same data on the profile row (`preferences`, `safetyVersions`), sealed
   with `seal(userId, 'prefs')` and `seal(userId, 'safety.version')`.

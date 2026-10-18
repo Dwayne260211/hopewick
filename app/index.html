@@ -1013,6 +1013,10 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .privacy-card h3 { margin: 0 0 6px; font-size: .98rem; }
 .privacy-card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
 .history-device { margin: 0 10px 8px; font-size: .75rem; color: var(--muted); line-height: 1.35; }
+.onboard-crisis { margin-top: 16px; }
+#onboardFaithQ:focus, #onboardFaithQ:focus-visible { outline: none; } /* focused so screen readers start at the question; not an answer */
+.onboard-crisis .btn { vertical-align: baseline; }
+.faith-ask-choices .btn { border: 1px solid var(--border); }
 .onboard-choices { text-align: left; display: grid; gap: 8px; margin-top: 4px; }
 .onboard-choices label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); cursor: pointer; color: var(--text); }
 .onboard-choices label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
@@ -2437,6 +2441,7 @@ h1, h2, h3 { font-family: var(--font-display); }
       <button class="btn btn-ghost btn-sm" type="button" id="pickerAboutBtn">About <span data-brand>Hopewick</span></button>
       · <a href="../" id="aboutLink">Landing page</a> · <span data-copyright></span>
     </p>
+    <p class="privacy-note onboard-crisis" id="pickerCrisis">Need help right now? If you are in danger, call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>. <button class="btn btn-ghost btn-sm" type="button" data-open-help>Get help</button></p>
   </div>
 </dialog>
 
@@ -2474,6 +2479,7 @@ h1, h2, h3 { font-family: var(--font-display); }
       <button class="btn btn-primary" type="button" id="plusChoiceTrial">Start 7-day free trial</button>
       <button class="btn" type="button" id="plusChoiceFree">Stay on the free account</button>
     </div>
+    <p class="privacy-note onboard-crisis" id="plusChoiceCrisis">Need help right now? If you are in danger, call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>. <button class="btn btn-ghost btn-sm" type="button" data-open-help>Get help</button></p>
   </div>
 </dialog>
 
@@ -2504,18 +2510,18 @@ h1, h2, h3 { font-family: var(--font-display); }
       </div>
     </div>
     <div id="onboardStepFaith" hidden>
-      <p>Faith content is off unless you choose it. You can change this any time in Settings. Theme, voice, model, PIN, and export stay in Settings.</p>
-      <div class="onboard-choices" role="radiogroup" aria-label="Faith preference">
-        <label><input type="radio" name="onboardFaith" value="none" checked> No faith content</label>
-        <label><input type="radio" name="onboardFaith" value="ask"> Christian faith, only when I ask</label>
-        <label><input type="radio" name="onboardFaith" value="woven"> Christian faith, gently woven in</label>
-        <label><input type="radio" name="onboardFaith" value="central"> Christian faith, central</label>
+      <p class="lead" id="onboardFaithQ">Hopewick can include optional Christian encouragement, such as short Bible reflections and prayers. Would you like that?</p>
+      <p>It’s completely up to you, and there’s no right answer. Everything else in Hopewick works the same either way. You can change this any time in About you.</p>
+      <div class="onboard-actions faith-ask-choices" role="group" aria-labelledby="onboardFaithQ">
+        <button class="btn" type="button" id="onboardFaithYes" data-faith-answer="yes">Yes, include it</button>
+        <button class="btn" type="button" id="onboardFaithNo" data-faith-answer="no">No thanks</button>
+        <button class="btn" type="button" id="onboardFaithLater" data-faith-answer="later">Decide later</button>
       </div>
       <div class="onboard-actions">
-        <button class="btn btn-primary" type="button" id="onboardStartBtn">Start talking to Hope</button>
-        <button class="btn" type="button" id="onboardFaithBack">Back</button>
+        <button class="btn btn-ghost" type="button" id="onboardFaithBack">Back</button>
       </div>
     </div>
+    <p class="privacy-note onboard-crisis" id="onboardCrisis">Need help right now? If you are in danger, call <a href="tel:000">000</a>. Lifeline <a href="tel:131114">13 11 14</a>. <button class="btn btn-ghost btn-sm" type="button" data-open-help>Get help</button></p>
   </div>
 </dialog>
 
@@ -12433,7 +12439,12 @@ function renderHelpList() {
     list.appendChild(li);
   }
 }
-function openHelp() { closeSidebar(); if (!el.helpDlg.open) el.helpDlg.showModal(); }
+function openHelp() {
+  closeSidebar();
+  const plan = $('#helpSafetyPlanBtn');
+  if (plan) plan.hidden = !profile;
+  if (!el.helpDlg.open) el.helpDlg.showModal();
+}
 $('#helpBtn').addEventListener('click', openHelp);
 
 function maybeShowDisclaimer() {
@@ -13493,6 +13504,8 @@ $('#pickerAboutBtn').addEventListener('click', openAbout);
 $('#sideAboutBtn').addEventListener('click', () => { closeSidebar(); openAbout(); });
 $('#onboardAboutBtn').addEventListener('click', openAbout);
 
+/** Read by hw-stage5.js to pre-select an earlier on-device faith choice. */
+window.hwOnboardingRecord = () => load(K.onboarding, null);
 function onboardingSeen() {
   const o = load(K.onboarding, null);
   return !!(o && o.seen);
@@ -13510,21 +13523,33 @@ function setOnboardStep(step) {
   const title = $('#onboardTitle');
   if (title) {
     if (step === 'reason') title.textContent = 'What brings you here';
-    else if (step === 'faith') title.textContent = 'Faith preference';
+    else if (step === 'faith') title.textContent = 'Christian encouragement';
     else title.innerHTML = 'Welcome to <span data-brand>Hopewick</span>';
   }
-  const focusId = step === 'reason' ? 'onboardReasonContinue' : step === 'faith' ? 'onboardStartBtn' : 'onboardYesBtn';
+  // On the faith step, focus the question rather than an answer, so no answer looks preferred.
+  if (step === 'faith') { const q = $('#onboardFaithQ'); if (q) q.tabIndex = -1; }
+  const focusId = step === 'reason' ? 'onboardReasonContinue' : step === 'faith' ? 'onboardFaithQ' : 'onboardYesBtn';
   const focus = document.getElementById(focusId);
   if (focus && el.onboardingDlg && el.onboardingDlg.open) focus.focus();
 }
 function applyOnboardingChoices() {
   if (isDemo || !profile) return;
   const o = load(K.onboarding, null);
-  if (!o || !o.faithChoice) return;
+  if (!o || !(o.faithChoice || o.faithAnswer)) return;
   const applied = Object.assign({}, o.appliedTo || {});
   if (applied[profile.id]) return;
   if (o.hereFor) settings.hereFor = o.hereFor;
-  if (o.faithChoice === 'none') {
+  if (o.faithAnswer) {
+    // Stage 5 sign-up question: Yes / No thanks / Decide later. The account (server) keeps the answer.
+    if (o.faithAnswer === 'yes') {
+      if (!settings.faith || settings.faith === 'none' || settings.faith === 'general') settings.faith = 'christian';
+      settings.faithLevel = 'woven';
+    } else {
+      settings.faith = 'none';
+      if (settings.faithLevel === 'central') settings.faithLevel = 'woven';
+    }
+    if (window.HW5) { try { HW5.answerFaith(o.faithAnswer, { source: 'onboarding', quiet: true }); } catch (_) { /* */ } }
+  } else if (o.faithChoice === 'none') {
     settings.faith = 'none';
     settings.faithLevel = 'ask';
   } else if (o.faithChoice === 'ask') {
@@ -13561,16 +13586,17 @@ $('#onboardLaterBtn').addEventListener('click', () => finishOnboarding({ continu
 $('#onboardReasonBack')?.addEventListener('click', () => setOnboardStep('welcome'));
 $('#onboardReasonContinue')?.addEventListener('click', () => setOnboardStep('faith'));
 $('#onboardFaithBack')?.addEventListener('click', () => setOnboardStep('reason'));
-$('#onboardStartBtn')?.addEventListener('click', () => {
+$$('#onboardStepFaith [data-faith-answer]').forEach((b) => b.addEventListener('click', () => {
   const reason = $$('input[name="onboardReason"]').find(r => r.checked);
-  const faith = $$('input[name="onboardFaith"]').find(r => r.checked);
   finishOnboarding({
     continued: true,
     startChat: true,
     hereFor: reason ? reason.value : 'myself',
-    faithChoice: faith ? faith.value : 'none',
+    faithAnswer: b.dataset.faithAnswer,
   });
-});
+}));
+// Crisis help stays one tap away on every sign-up and onboarding screen.
+$$('[data-open-help]').forEach((b) => b.addEventListener('click', () => openHelp()));
 el.onboardingDlg.addEventListener('cancel', (e) => {
   e.preventDefault();
   finishOnboarding({ continued: false, dismissed: true });

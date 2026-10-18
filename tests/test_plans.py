@@ -99,13 +99,13 @@ def test_companion_gates_premium_not_crisis():
     assert 'id="resumeGate"' in app
     assert 'id="goalsGate"' in app
     assert "gut health and neuroplasticity" in app.lower()
-    assert "Start talking to Hope" in app
+    assert "optional Christian encouragement" in app  # the last onboarding step now ends in the faith question
     assert "What brings you here" in app
     assert "saved to your account" in app
     assert "do not get a dashboard of what you told Hope" in app
     assert 'id="sideNavChats"' in app  # saved chats: sidebar, Home and Tools (Hopewick 2.0)
     assert "Recovery myself" in app
-    assert "Christian faith, only when I ask" in app  # Stage 5: faith is opt-in; "No faith content" is the default
+    assert "Yes, include it" in app and "Decide later" in app  # Stage 5: the sign-up faith question; nothing pre-chosen
     enter = app.split("function enterProfile", 1)[1].split("function ", 1)[0]
     assert "showLaunchPrefs()" not in enter
     assert "dwaynesimons1990@gmail.com" not in app

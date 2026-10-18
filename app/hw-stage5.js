@@ -61,12 +61,12 @@
     { id: 'indigenous', label: 'Indigenous spirituality (Hope only)' },
   ];
   const CHRISTIAN = ['christian', 'catholic'];
-  const defaults = () => ({ preferredName: '', focusAreas: [], tone: 'gentle', faithOptIn: false, faithTradition: 'christian', onboardedAt: null, updatedAt: null });
+  const defaults = () => ({ preferredName: '', focusAreas: [], tone: 'gentle', faithOptIn: false, faithTradition: 'christian', faithAnswer: null, faithAskedAt: null, faithLaterCount: 0, onboardedAt: null, updatedAt: null });
 
   /* ------------------------------------------------------------------ */
   /* Preferences and faith state                                         */
   /* ------------------------------------------------------------------ */
-  const s5 = { key: '', prefs: null, loading: null, pending: null, demoPrefs: null, faith: {}, faithLoading: {}, versions: null, versionsKey: '' };
+  const s5 = { faithDue: false, key: '', prefs: null, loading: null, pending: null, demoPrefs: null, faith: {}, faithLoading: {}, versions: null, versionsKey: '' };
   HW5.state = s5;
   const ui = { step: 0, view: 'guided', draft: null, viewing: null, share: false, prefsDraft: null };
   HW5.ui = ui;
@@ -93,6 +93,7 @@
         const d = await api('GET', '/api/me/preferences');
         if (s5.key !== key) return s5.prefs;
         s5.prefs = Object.assign(defaults(), d.preferences || {});
+        s5.faithDue = d.faithPromptDue === true;
         s5.faith = {};
       } catch (_) {
         s5.prefs = s5.prefs || null;
@@ -111,6 +112,7 @@
     try {
       const d = await p;
       s5.prefs = Object.assign(defaults(), d.preferences || {});
+      s5.faithDue = d.faithPromptDue === true;
       s5.faith = {};
       applyFaith();
       return s5.prefs;
@@ -120,6 +122,7 @@
     if (demo()) { s5.demoPrefs = defaults(); s5.prefs = s5.demoPrefs; applyFaith(); return s5.prefs; }
     const d = await api('DELETE', '/api/me/preferences');
     s5.prefs = Object.assign(defaults(), d.preferences || {});
+    s5.faithDue = d.faithPromptDue === true;
     s5.faith = {};
     applyFaith();
     return s5.prefs;
@@ -138,9 +141,84 @@
     savePrefs(patch).catch((e) => say(failMessage(e), true));
   };
 
+  /*
+   * The faith question ("Would you like Christian encouragement?"). New accounts see it
+   * in onboarding; anyone who has not answered sees it once as a card on Home. The server
+   * decides when it is due (faithPromptDue): never after Yes or No, and never after two
+   * "Decide later" answers or dismissals. Until answered, faith stays off.
+   */
+  const ANSWER_SAID = {
+    yes: 'Christian encouragement is on. You can change this any time in About you.',
+    no: 'No worries. Faith content stays off. You can change this any time in About you.',
+    later: 'That’s fine. Faith content stays off for now. You can choose any time in About you.',
+  };
+  HW5.answerFaith = async function (answer, opts) {
+    if (!['yes', 'no', 'later'].includes(answer)) return null;
+    if (demo() || !online()) return null;
+    try {
+      const out = await savePrefs({ faithAnswer: answer });
+      if (!(opts && opts.quiet)) say(ANSWER_SAID[answer]);
+      try { if (appTab === 'home') renderHome(); } catch (_) { /* */ }
+      return out;
+    } catch (e) { say(failMessage(e), true); return null; }
+  };
+  const priorKey = () => `hopewick.hw5.priorFaith.${acctKey()}`;
+  /** Before the account preference first overrides this device's settings, remember what was chosen here. */
+  function stashPrior() {
+    try {
+      if (demo() || !online() || !s5.prefs || s5.prefs.faithAnswer || s5.prefs.faithOptIn) return;
+      if (localStorage.getItem(priorKey()) !== null) return;
+      let onboard = null;
+      try { onboard = typeof window.hwOnboardingRecord === 'function' ? window.hwOnboardingRecord() : null; } catch (_) { onboard = null; }
+      localStorage.setItem(priorKey(), JSON.stringify({ faith: typeof settings.faith === 'string' ? settings.faith : null, choice: onboard && onboard.continued ? onboard.faithChoice || null : null }));
+    } catch (_) { /* storage off */ }
+  }
+  /** The earlier on-device choice, as yes/no, or null when there was none to go on. */
+  function priorAnswer() {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(priorKey()) || 'null'); } catch (_) { d = null; }
+    if (!d) return null;
+    // A Christian tradition was picked on this device: that was a choice.
+    if (CHRISTIAN.includes(d.faith)) return 'yes';
+    // "No faith" counts only when they actually chose it in the old onboarding; on a new profile it is just the default.
+    if (d.choice && d.faith === 'none') return 'no';
+    return null;
+  }
+  HW5.priorAnswer = priorAnswer;
+  function faithAskCard() {
+    if (demo() || !online() || !s5.faithDue) return null;
+    const prior = priorAnswer();
+    const name = 'hw5FaithAsk';
+    const opts = [['yes', 'Yes, include it'], ['no', 'No thanks'], ['later', 'Decide later']];
+    const radios = opts.map(([v, label]) => {
+      const input = h('input', { type: 'radio', name, value: v, id: `${name}-${v}` });
+      if (prior === v) input.checked = true;
+      return h('label', { for: `${name}-${v}` }, input, ` ${label}`);
+    });
+    const close = h('button', { class: 'btn btn-ghost btn-sm hw5-faithask__close', type: 'button', 'aria-label': 'Close, and decide later', text: '✕' });
+    close.addEventListener('click', () => HW5.answerFaith('later'));
+    const save = btn('Save my choice', () => {
+      const pick = card.querySelector(`input[name="${name}"]:checked`);
+      if (!pick) { say('Choose one of the three options, or close this card to decide later.', true); return; }
+      HW5.answerFaith(pick.value);
+    }, { kind: 'secondary', attrs: { id: 'hw5FaithAskSave' } });
+    const card = h('section', { class: 'hw-card dash-card hw5-faithask', id: 'dashFaithAsk', 'aria-labelledby': 'dashFaithAskT' },
+      h('div', { class: 'hw-card__head' },
+        h('div', { class: 'dash-head-text' }, h('h2', { class: 'hw-card__title', id: 'dashFaithAskT', text: 'A quick question, if you’re happy to answer' })),
+        close),
+      h('p', { id: 'dashFaithAskQ', text: 'Hopewick can include optional Christian encouragement, such as short Bible reflections and prayers. Would you like that?' }),
+      h('p', { class: 'hw-hint', text: 'It’s completely up to you, and there’s no right answer. Faith content stays off until you say yes. You can change this any time in About you.' }),
+      prior ? h('p', { class: 'hw-hint', id: 'dashFaithAskPrior', text: 'We’ve ticked what you chose on this device before. Check it’s still right, then save.' }) : null,
+      h('div', { class: 'onboard-choices hw5-faithask__choices', role: 'radiogroup', 'aria-labelledby': 'dashFaithAskQ' }, radios),
+      h('div', { class: 'hw-card__actions' }, save));
+    return card;
+  }
+  HW5.faithAskCard = faithAskCard;
+
   const ORIGINAL = { compare: null };
   /** Make the whole app follow the faith preference. Off means nothing faith-related shows. */
   function applyFaith() {
+    stashPrior();
     const on = faithOn();
     const desired = on ? prefs().faithTradition : 'none';
     let changed = false;
@@ -571,6 +649,8 @@ ${STEPS.map(part).join('\n')}
         btn('Edit About you', () => HW5.openPreferences(), { kind: 'ghost', attrs: { id: 'dashForYouEdit' } })));
     }
     grid.insertBefore(card, grid.firstChild);
+    const ask = faithAskCard();
+    if (ask) grid.insertBefore(ask, grid.firstChild);
     const f = faithCard('home', 'Home');
     if (f) { const today = document.getElementById('todayCard'); if (today && today.parentNode === box) today.after(f); else box.insertBefore(f, grid); }
   };

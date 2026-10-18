@@ -253,4 +253,24 @@ Principles: the faith layer is strictly opt-in (off by default, account-based), 
 never shames, never presents faith as a replacement for professional care, medication or crisis
 support, and always sits beside, never instead of, the help numbers.
 
+**Asking the question (founder feedback on PR #42).** New accounts are asked once, straight after
+sign-up, as the last onboarding step (magic link, password and Google all land in the same
+first-run onboarding): "Hopewick can include optional Christian encouragement, such as short Bible
+reflections and prayers. Would you like that?" with three equally styled buttons, **Yes, include it**,
+**No thanks** and **Decide later**. Nothing is pre-chosen or focused, and it says it can be changed
+any time in About you. Anyone who has not answered (existing accounts, or new accounts that chose
+"Not now, just look around") sees the same question once as a dismissible card at the top of Home;
+it never blocks Get help. If this device holds an earlier faith choice (a Christian tradition in
+Settings, or "No faith content" picked in the old onboarding), that answer is pre-ticked and the
+person still confirms with **Save my choice**.
+
+- **Yes** turns faith on (Christian tradition). **No thanks** and **Decide later** both leave faith off.
+- The server stores the answer in the faith preference (`faithAnswer`, `faithLaterCount`,
+  `faithAskedAt`) and decides when to ask (`faithPromptDue` on `/api/me/preferences`). It is never
+  asked again after Yes or No, after a faith change in About you, or after two "Decide later"
+  answers or dismissals (closing the card counts as "Decide later"). After one "Decide later" it can
+  come back once, gently, no sooner than 7 days later. Reset in About you does not bring it back.
+- Until they answer, no faith content shows anywhere. Crisis help (000, Lifeline and Get help) is on
+  every sign-up and onboarding screen: the trial choice, each onboarding step and the profile step.
+
 Status: **pending founder and pastoral review**. Every item carries `review: "pending"`.

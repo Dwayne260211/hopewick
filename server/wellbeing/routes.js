@@ -32,7 +32,7 @@ import {
   normalizeRecoveryGoal, normalizeRecoveryLog, normalizeLearning, assertModuleId, goalStats, recoveryInsights, MILESTONES,
 } from './recovery.js';
 import {
-  normalizePreferencesPatch, mergePreferences, faithOn, christianLayerOn, FAITH_CONTEXTS, pickForDay,
+  normalizePreferencesPatch, mergePreferences, faithOn, christianLayerOn, faithPromptDue, FAITH_CONTEXTS, pickForDay,
 } from './personal.js';
 import { SAFETY_FIELDS } from './validate.js';
 
@@ -483,14 +483,24 @@ export async function handleWellbeingApi(ctx, req, res, url) {
      * The faith opt-in is OFF until they switch it on. DELETE resets everything.
      */
     if (area === 'preferences' && !sub) {
-      if (method === 'GET') { json(res, 200, { preferences: await wellbeing.getPreferences(uid, profileId) }); return true; }
+      if (method === 'GET') { const pr = await wellbeing.getPreferences(uid, profileId); json(res, 200, { preferences: pr, faithPromptDue: faithPromptDue(pr) }); return true; }
       if (method === 'PUT' || method === 'PATCH') {
         const patch = normalizePreferencesPatch(body);
         const prev = await wellbeing.getPreferences(uid, profileId);
-        json(res, 200, { preferences: await wellbeing.putPreferences(uid, profileId, mergePreferences(prev, patch)) });
+        const saved = await wellbeing.putPreferences(uid, profileId, mergePreferences(prev, patch));
+        json(res, 200, { preferences: saved, faithPromptDue: faithPromptDue(saved) });
         return true;
       }
-      if (method === 'DELETE') { await wellbeing.deletePreferences(uid, profileId); json(res, 200, { preferences: await wellbeing.getPreferences(uid, profileId) }); return true; }
+      if (method === 'DELETE') {
+        // Reset clears everything, but remembers that the faith question was already asked, so it is not asked again.
+        const before = await wellbeing.getPreferences(uid, profileId);
+        await wellbeing.deletePreferences(uid, profileId);
+        if (before.faithAnswer || before.faithLaterCount) {
+          await wellbeing.putPreferences(uid, profileId, {
+            faithAnswer: before.faithAnswer === 'later' ? 'later' : 'no', faithLaterCount: before.faithLaterCount, faithAskedAt: before.faithAskedAt,
+          });
+        }
+        const pr = await wellbeing.getPreferences(uid, profileId); json(res, 200, { preferences: pr, faithPromptDue: faithPromptDue(pr) }); return true; }
     }
 
     /*

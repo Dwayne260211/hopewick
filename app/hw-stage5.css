@@ -68,3 +68,9 @@
   body.hw5-printing .hw5-call { border: 1px solid #000; }
   body.hw5-printing .hw-card { box-shadow: none !important; border: 1px solid #999 !important; break-inside: avoid; }
 }
+
+/* Faith question card (Home). Three equal choices: none is styled as the preferred one. */
+.hw5-faithask .hw-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.hw5-faithask__close { min-width: 44px; min-height: 44px; }
+.hw5-faithask__choices { margin: 10px 0 4px; }
+.hw5-faithask__choices label { min-height: 44px; align-items: center; }

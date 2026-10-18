@@ -20,9 +20,19 @@ export const FAITH_TRADITIONS = Object.freeze(['christian', 'catholic', 'general
 /** The Stage 5 faith content (scripture reflections, prayers, faith modules) is Christian. */
 export const CHRISTIAN_TRADITIONS = Object.freeze(['christian', 'catholic']);
 export const PREFERRED_NAME_MAX = 40;
+/**
+ * The faith question (asked at sign-up, or once for existing accounts):
+ *   yes   -> faith on (Christian unless a Christian tradition was already chosen)
+ *   no    -> faith off, never asked again
+ *   later -> faith off; asked again at most once, no sooner than FAITH_ASK_AGAIN_DAYS
+ * Two "later" answers (or dismissals) end the asking for good.
+ */
+export const FAITH_ANSWERS = Object.freeze(['yes', 'no', 'later']);
+export const FAITH_LATER_LIMIT = 2;
+export const FAITH_ASK_AGAIN_DAYS = 7;
 
 export function defaultPreferences() {
-  return { preferredName: '', focusAreas: [], tone: 'gentle', faithOptIn: false, faithTradition: 'christian', onboardedAt: null, updatedAt: null };
+  return { preferredName: '', focusAreas: [], tone: 'gentle', faithOptIn: false, faithTradition: 'christian', faithAnswer: null, faithAskedAt: null, faithLaterCount: 0, onboardedAt: null, updatedAt: null };
 }
 
 function oneLine(value, max, field) {
@@ -55,6 +65,10 @@ export function normalizePreferencesPatch(raw) {
     if (!FAITH_TRADITIONS.includes(src.faithTradition)) throw new ValidationError('That faith tradition is not one Hopewick offers.', 'faithTradition');
     out.faithTradition = src.faithTradition;
   }
+  if (src.faithAnswer !== undefined) {
+    if (!FAITH_ANSWERS.includes(src.faithAnswer)) throw new ValidationError('faithAnswer must be yes, no or later.', 'faithAnswer');
+    out.faithAnswer = src.faithAnswer;
+  }
   if (src.onboarded !== undefined) {
     if (typeof src.onboarded !== 'boolean') throw new ValidationError('onboarded must be true or false.', 'onboarded');
     out.onboarded = src.onboarded;
@@ -67,6 +81,22 @@ export function mergePreferences(prev, patch, now = new Date()) {
   const base = { ...defaultPreferences(), ...(prev || {}) };
   const next = { ...base };
   for (const k of ['preferredName', 'focusAreas', 'tone', 'faithOptIn', 'faithTradition']) if (patch[k] !== undefined) next[k] = patch[k];
+  if (patch.faithAnswer === 'yes') {
+    next.faithOptIn = true;
+    if (patch.faithTradition === undefined && !CHRISTIAN_TRADITIONS.includes(next.faithTradition)) next.faithTradition = 'christian';
+    next.faithAnswer = 'yes';
+  } else if (patch.faithAnswer === 'no') {
+    next.faithOptIn = false;
+    next.faithAnswer = 'no';
+  } else if (patch.faithAnswer === 'later') {
+    next.faithOptIn = false;
+    next.faithAnswer = base.faithAnswer === 'yes' || base.faithAnswer === 'no' ? base.faithAnswer : 'later';
+    next.faithLaterCount = Math.min(FAITH_LATER_LIMIT, (Number(base.faithLaterCount) || 0) + 1);
+  } else if (patch.faithOptIn !== undefined) {
+    // Switching faith on or off in About you is also an answer: stop asking.
+    next.faithAnswer = patch.faithOptIn ? 'yes' : 'no';
+  }
+  if (patch.faithAnswer !== undefined) next.faithAskedAt = now.toISOString();
   if (patch.onboarded === true && !next.onboardedAt) next.onboardedAt = now.toISOString();
   if (patch.onboarded === false) next.onboardedAt = null;
   next.updatedAt = now.toISOString();
@@ -83,9 +113,24 @@ export function readPreferences(stored) {
     tone: TONES.includes(stored.tone) ? stored.tone : d.tone,
     faithOptIn: stored.faithOptIn === true,
     faithTradition: FAITH_TRADITIONS.includes(stored.faithTradition) ? stored.faithTradition : d.faithTradition,
+    faithAnswer: FAITH_ANSWERS.includes(stored.faithAnswer) ? stored.faithAnswer : null,
+    faithAskedAt: typeof stored.faithAskedAt === 'string' ? stored.faithAskedAt : null,
+    faithLaterCount: Math.max(0, Math.min(FAITH_LATER_LIMIT, Number(stored.faithLaterCount) || 0)),
     onboardedAt: stored.onboardedAt || null,
     updatedAt: stored.updatedAt || null,
   };
+}
+
+/** Should Hopewick ask the faith question now? The server decides. */
+export function faithPromptDue(prefs, now = new Date()) {
+  const p = prefs || defaultPreferences();
+  if (p.faithAnswer === 'yes' || p.faithAnswer === 'no') return false;
+  if (p.faithOptIn === true) return false;
+  const later = Number(p.faithLaterCount) || 0;
+  if (later >= FAITH_LATER_LIMIT) return false;
+  if (later === 0) return true;
+  const at = Date.parse(p.faithAskedAt || '');
+  return !Number.isFinite(at) || now.getTime() - at >= FAITH_ASK_AGAIN_DAYS * 86400000;
 }
 
 /** True only when the person switched faith content on. */
