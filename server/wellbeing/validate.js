@@ -403,7 +403,16 @@ export function normalizeWeeklyPlan(raw, { partial = false } = {}) {
 }
 
 /* ---------- Safety plan essentials (always free) ---------- */
-export const SAFETY_FIELDS = Object.freeze(['warningSigns', 'copingThings', 'people', 'safePlaces', 'reasons']);
+/**
+ * Safety plan sections, in the order of the Stanley-Brown safety planning structure
+ * (Stage 5). The first five keys predate Stage 5 and keep their names so saved plans load.
+ *   1 warningSigns   2 copingThings (things I can do on my own)
+ *   3 safePlaces (people and places that take my mind off things)
+ *   4 people (people I can ask for help)   5 professionals (services and professionals)
+ *   6 safeEnvironment (making my space safer)   7 reasons (reasons for living)
+ */
+export const SAFETY_FIELDS = Object.freeze(['warningSigns', 'copingThings', 'safePlaces', 'people', 'professionals', 'safeEnvironment', 'reasons']);
+export const SAFETY_VERSIONS_KEPT = 20;
 export function normalizeSafety(raw) {
   const src = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
   const out = {};

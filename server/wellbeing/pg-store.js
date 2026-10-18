@@ -9,7 +9,8 @@
  */
 import { withUser, probeDatabase } from '../db/index.js';
 import { encryptText, decryptText, encryptionEnabled, ENC_SCHEME } from '../db/crypto.js';
-import { NotFoundError, ValidationError, LIMITS, defaultSettings, SETTINGS, POLICY_VERSION, isUuid } from './validate.js';
+import { NotFoundError, ValidationError, LIMITS, defaultSettings, SETTINGS, POLICY_VERSION, isUuid, SAFETY_VERSIONS_KEPT } from './validate.js';
+import { readPreferences } from './personal.js';
 import { RECOVERY_LIMITS, mergeLearning } from './recovery.js';
 import { applyActivityPatch, applyGoalPatch, applyStepPatch, applyWeeklyPlanPatch, helpfulToScore, scoreToHelpful } from './model.js';
 
@@ -508,6 +509,54 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
       return true;
     },
 
+    /* ----- Stage 5: personal preferences and safety plan history ----- */
+    async getPreferences(userId, profileId) {
+      return run(userId, async (c) => {
+        const { rows } = await c.query('SELECT prefs FROM user_preferences WHERE user_id = $1 AND profile_id = $2', [userId, profileId]);
+        if (!rows[0]) return readPreferences(null);
+        let doc = null;
+        try { doc = JSON.parse(open(userId, 'user_preferences.prefs', rows[0].prefs) || 'null'); } catch { doc = null; }
+        return readPreferences(doc);
+      });
+    },
+    async putPreferences(userId, profileId, prefs) {
+      const clean = readPreferences(prefs);
+      return run(userId, async (c) => {
+        await ensureUser(c, userId);
+        await c.query(
+          `INSERT INTO user_preferences (user_id, profile_id, prefs, encryption) VALUES ($1, $2, $3, $4)
+           ON CONFLICT (user_id, profile_id) DO UPDATE SET prefs = EXCLUDED.prefs, encryption = EXCLUDED.encryption, updated_at = now()`,
+          [userId, profileId, seal(userId, 'user_preferences.prefs', JSON.stringify(clean)), enc()]);
+        return clean;
+      });
+    },
+    async deletePreferences(userId, profileId) {
+      return run(userId, async (c) => (await c.query('DELETE FROM user_preferences WHERE user_id = $1 AND profile_id = $2', [userId, profileId])).rowCount > 0);
+    },
+    async addSafetyVersion(userId, profileId, safety, { reason = 'save' } = {}) {
+      return run(userId, async (c) => {
+        await ensureUser(c, userId);
+        const { rows } = await c.query(
+          `INSERT INTO safety_plan_versions (user_id, profile_id, version, reason, plan, encryption)
+           VALUES ($1, $2, (SELECT coalesce(max(version), 0) + 1 FROM safety_plan_versions WHERE user_id = $1 AND profile_id = $2), $3, $4, $5)
+           RETURNING version, saved_at`,
+          [userId, profileId, reason, seal(userId, 'safety_plan_versions.plan', JSON.stringify(safety)), enc()]);
+        await c.query(
+          `DELETE FROM safety_plan_versions WHERE user_id = $1 AND profile_id = $2 AND version <= $3`,
+          [userId, profileId, rows[0].version - SAFETY_VERSIONS_KEPT]);
+        return { version: rows[0].version, savedAt: iso(rows[0].saved_at), reason };
+      });
+    },
+    async listSafetyVersions(userId, profileId) {
+      return run(userId, async (c) => (await c.query(
+        `SELECT version, reason, plan, saved_at FROM safety_plan_versions WHERE user_id = $1 AND profile_id = $2 ORDER BY version DESC LIMIT ${SAFETY_VERSIONS_KEPT}`,
+        [userId, profileId])).rows.map((r) => {
+        let safety = {};
+        try { safety = JSON.parse(open(userId, 'safety_plan_versions.plan', r.plan) || '{}') || {}; } catch { safety = {}; }
+        return { version: r.version, savedAt: iso(r.saved_at), reason: r.reason, safety };
+      }));
+    },
+
     /** The person asked to delete one kind of data (or all of it) for this profile. Never called because of plan status. */
     async clearArea(userId, profileId, area) {
       const tables = {
@@ -515,12 +564,13 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
         activities: 'DELETE FROM guided_activity_history WHERE user_id = $1 AND profile_id = $2',
         goals: 'DELETE FROM personal_goals WHERE user_id = $1 AND profile_id = $2',
         journal: 'DELETE FROM journal_entries WHERE user_id = $1 AND profile_id = $2',
-        plans: 'DELETE FROM safety_plans WHERE user_id = $1 AND profile_id = $2',
+        plans: ['DELETE FROM safety_plans WHERE user_id = $1 AND profile_id = $2', 'DELETE FROM safety_plan_versions WHERE user_id = $1 AND profile_id = $2'],
         steps: 'DELETE FROM next_step_items WHERE user_id = $1 AND profile_id = $2',
         'weekly-plans': 'DELETE FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2',
         // recovery_logs first: the goals cascade would also remove them, but logs without a goal need their own delete.
         recovery: ['DELETE FROM recovery_logs WHERE user_id = $1 AND profile_id = $2', 'DELETE FROM recovery_goals WHERE user_id = $1 AND profile_id = $2'],
         learning: 'DELETE FROM module_progress WHERE user_id = $1 AND profile_id = $2',
+        preferences: 'DELETE FROM user_preferences WHERE user_id = $1 AND profile_id = $2',
       };
       const list = (area === 'all' ? Object.values(tables) : [tables[area]]).flat();
       return run(userId, async (c) => {
@@ -536,7 +586,8 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
          UNION SELECT profile_id FROM personal_goals WHERE user_id = $1 UNION SELECT profile_id FROM journal_entries WHERE user_id = $1
          UNION SELECT profile_id FROM safety_plans WHERE user_id = $1 UNION SELECT profile_id FROM next_step_items WHERE user_id = $1
          UNION SELECT profile_id FROM weekly_step_plans WHERE user_id = $1 UNION SELECT profile_id FROM recovery_goals WHERE user_id = $1
-         UNION SELECT profile_id FROM recovery_logs WHERE user_id = $1 UNION SELECT profile_id FROM module_progress WHERE user_id = $1`, [userId])).rows.map((r) => r.profile_id));
+         UNION SELECT profile_id FROM recovery_logs WHERE user_id = $1 UNION SELECT profile_id FROM module_progress WHERE user_id = $1
+         UNION SELECT profile_id FROM safety_plan_versions WHERE user_id = $1 UNION SELECT profile_id FROM user_preferences WHERE user_id = $1`, [userId])).rows.map((r) => r.profile_id));
     },
     async forget(userId) {
       return run(userId, async (c) => (await c.query('DELETE FROM app_users WHERE id = $1', [userId])).rowCount > 0);

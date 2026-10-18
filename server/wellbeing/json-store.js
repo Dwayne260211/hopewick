@@ -13,8 +13,9 @@
 import { createJsonFile } from '../json-file.js';
 import { encryptText, decryptText } from '../db/crypto.js';
 import {
-  LIMITS, NotFoundError, ValidationError, newId, defaultSettings, SETTINGS, POLICY_VERSION,
+  LIMITS, NotFoundError, ValidationError, newId, defaultSettings, SETTINGS, POLICY_VERSION, SAFETY_VERSIONS_KEPT,
 } from './validate.js';
+import { readPreferences } from './personal.js';
 import { applyActivityPatch, applyGoalPatch, applyStepPatch, applyWeeklyPlanPatch } from './model.js';
 import { RECOVERY_LIMITS, mergeLearning } from './recovery.js';
 
@@ -52,13 +53,15 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
     if (!u.profiles[profileId]) {
       if (!create) return null;
       if (Object.keys(u.profiles).length >= MAX_PROFILES) throw new ValidationError('This account already has the most profiles Hopewick keeps.', 'profileId');
-      u.profiles[profileId] = { checkins: {}, activities: [], goals: [], journal: [], plans: null, nextSteps: [], weeklyPlans: [], recoveryGoals: [], recoveryLogs: [], learning: {} };
+      u.profiles[profileId] = { checkins: {}, activities: [], goals: [], journal: [], plans: null, nextSteps: [], weeklyPlans: [], recoveryGoals: [], recoveryLogs: [], learning: {}, preferences: null, safetyVersions: [] };
     }
     const p = u.profiles[profileId];
     if (!Array.isArray(p.weeklyPlans)) p.weeklyPlans = []; // rows saved before weekly plans existed
     if (!Array.isArray(p.recoveryGoals)) p.recoveryGoals = []; // rows saved before Stage 4
     if (!Array.isArray(p.recoveryLogs)) p.recoveryLogs = [];
     if (!p.learning || typeof p.learning !== 'object' || Array.isArray(p.learning)) p.learning = {};
+    if (!Array.isArray(p.safetyVersions)) p.safetyVersions = []; // rows saved before Stage 5
+    if (p.preferences === undefined) p.preferences = null;
     return p;
   }
   function write(fn) {
@@ -447,6 +450,49 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
       return write(() => { delete p.learning[moduleId]; return true; });
     },
 
+    /* ----- Stage 5: personal preferences (one sealed JSON doc per profile) ----- */
+    async getPreferences(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p || !p.preferences) return readPreferences(null);
+      let doc = null;
+      try { doc = JSON.parse(open(userId, 'prefs', p.preferences.doc) || 'null'); } catch { doc = null; }
+      return readPreferences(doc);
+    },
+    async putPreferences(userId, profileId, prefs) {
+      return write(() => {
+        const p = profRow(userId, profileId, true);
+        const clean = readPreferences(prefs);
+        p.preferences = { doc: seal(userId, 'prefs', JSON.stringify(clean)), updatedAt: clean.updatedAt || iso() };
+        return clean;
+      });
+    },
+    async deletePreferences(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p || !p.preferences) return false;
+      return write(() => { p.preferences = null; return true; });
+    },
+
+    /* ----- Stage 5: safety plan version history (newest last on disk; the last SAFETY_VERSIONS_KEPT kept) ----- */
+    async addSafetyVersion(userId, profileId, safety, { reason = 'save' } = {}) {
+      return write(() => {
+        const p = profRow(userId, profileId, true);
+        const last = p.safetyVersions[p.safetyVersions.length - 1];
+        const row = { version: (last ? last.version : 0) + 1, savedAt: iso(), reason, doc: seal(userId, 'safety.version', JSON.stringify(safety)) };
+        p.safetyVersions.push(row);
+        if (p.safetyVersions.length > SAFETY_VERSIONS_KEPT) p.safetyVersions = p.safetyVersions.slice(-SAFETY_VERSIONS_KEPT);
+        return { version: row.version, savedAt: row.savedAt, reason };
+      });
+    },
+    async listSafetyVersions(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p) return [];
+      return p.safetyVersions.slice().reverse().map((r) => {
+        let safety = {};
+        try { safety = JSON.parse(open(userId, 'safety.version', r.doc) || '{}') || {}; } catch { safety = {}; }
+        return { version: r.version, savedAt: r.savedAt, reason: r.reason || 'save', safety };
+      });
+    },
+
     /** The person asked to delete one kind of data (or all of it) for this profile. Never called because of plan status. */
     async clearArea(userId, profileId, area) {
       const p = profRow(userId, profileId, false);
@@ -456,11 +502,12 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
         activities: () => { const n = p.activities.length; p.activities = []; return n; },
         goals: () => { const n = p.goals.length; p.goals = []; return n; },
         journal: () => { const n = p.journal.length; p.journal = []; return n; },
-        plans: () => { const n = p.plans ? 1 : 0; p.plans = null; return n; },
+        plans: () => { const n = (p.plans ? 1 : 0) + p.safetyVersions.length; p.plans = null; p.safetyVersions = []; return n; },
         steps: () => { const n = p.nextSteps.length; p.nextSteps = []; return n; },
         'weekly-plans': () => { const n = p.weeklyPlans.length; p.weeklyPlans = []; return n; },
         recovery: () => { const n = p.recoveryGoals.length + p.recoveryLogs.length; p.recoveryGoals = []; p.recoveryLogs = []; return n; },
         learning: () => { const n = Object.keys(p.learning).length; p.learning = {}; return n; },
+        preferences: () => { const n = p.preferences ? 1 : 0; p.preferences = null; return n; },
       };
       return write(() => {
         if (area === 'all') {

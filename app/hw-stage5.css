@@ -1,0 +1,76 @@
+/* Hopewick 2.0 Stage 5: safety plan builder, About you, optional faith cards.
+   Uses tokens from assets/hopewick-tokens.css and Stage 3 classes. Mobile first. */
+
+.hw5-tabs { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-3) 0; }
+.hw5-step h2:focus { outline: none; }
+.hw5-step h2:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 3px; border-radius: var(--radius-xs); }
+.hw5-progress-label { margin: 0; font-size: var(--text-sm); color: var(--muted); font-weight: var(--weight-semibold); }
+.hw5-progress { height: 8px; border-radius: var(--radius-pill); background: var(--surface-2); border: 1px solid var(--border); overflow: hidden; }
+.hw5-progress__bar { display: block; height: 100%; background: var(--accent); border-radius: var(--radius-pill); }
+.hw5-step__prompt { font-size: var(--text-md); margin: 0; }
+.hw5-examples { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.hw5-example { font-size: var(--text-sm); }
+.hw5-nav { margin-top: var(--space-2); }
+.hw5-steps { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 4px; }
+@media (min-width: 720px) { .hw5-steps { grid-template-columns: 1fr 1fr; } }
+.hw5-steps__btn { width: 100%; min-height: var(--tap); text-align: left; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; font-size: var(--text-sm); cursor: pointer; }
+.hw5-steps__btn:hover { border-color: var(--accent); }
+.hw5-steps__btn:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
+.hw5-steps__btn.is-current { background: var(--accent-soft); border-color: var(--accent); font-weight: var(--weight-semibold); }
+
+.hw5-plan__part { padding: var(--space-2) 0; border-top: 1px solid var(--border); }
+.hw5-plan__part:first-of-type { border-top: 0; }
+.hw5-plan__part ul { margin: var(--space-1) 0 0; padding-left: 1.2em; }
+.hw5-plan__part p { margin: var(--space-1) 0 0; }
+.hw5-plan__urgent { margin-top: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); border: 2px solid var(--danger); background: var(--danger-soft); color: var(--text); }
+.hw5-plan h2:focus { outline: none; }
+.hw5-tel { font-weight: var(--weight-semibold); color: var(--accent-strong, var(--accent)); text-decoration: underline; }
+.hw5-actions { margin: var(--space-3) 0; }
+
+.hw5-services__list { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+@media (min-width: 720px) { .hw5-services__list { grid-template-columns: 1fr 1fr; } }
+.hw5-services__list li { display: flex; flex-direction: column; gap: 2px; }
+.hw5-services__list .hw-hint { margin: 0; }
+.hw5-call { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); min-height: var(--tap); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); text-decoration: none; font-weight: var(--weight-semibold); }
+.hw5-call:hover { border-color: var(--accent); }
+.hw5-call:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
+.hw5-call__num { white-space: nowrap; color: var(--text); }
+.hw5-call--urgent { border: 2px solid var(--danger); background: var(--danger-soft); }
+
+/* About you */
+.hw5-fieldset { border: 0; padding: 0; margin: var(--space-3) 0 0; }
+.hw5-fieldset legend { padding: 0; margin-bottom: var(--space-1); }
+.hw5-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.hw5-radio { display: flex; gap: var(--space-2); align-items: flex-start; min-height: var(--tap); padding: var(--space-1) 0; cursor: pointer; }
+.hw5-radio input { margin-top: 4px; width: 20px; height: 20px; accent-color: var(--accent); }
+.hw5-switch-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.hw5-switch { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--tap); min-width: 88px; padding: 4px 12px 4px 4px; border-radius: var(--radius-pill); border: 1px solid var(--border-strong); background: var(--surface-2); color: var(--text); font: inherit; font-weight: var(--weight-semibold); cursor: pointer; }
+.hw5-switch__knob { width: 28px; height: 28px; border-radius: 50%; background: var(--muted); transition: transform .15s ease; }
+.hw5-switch[aria-checked="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.hw5-switch[aria-checked="true"] .hw5-switch__knob { background: var(--accent); }
+.hw5-switch:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .hw5-switch__knob { transition: none; } }
+
+/* Faith (only rendered when the person turned it on) */
+.hw5-faith { border-left: 4px solid var(--accent-gold); }
+.hw5-faith__kicker { margin: 0; font-size: var(--text-sm); color: var(--muted); }
+.hw5-faith__verse { margin: var(--space-2) 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--surface-2); }
+.hw5-faith__verse p { margin: 0; font-style: italic; }
+.hw5-faith__verse footer { margin-top: var(--space-1); font-size: var(--text-sm); color: var(--muted); }
+.hw5-faith p { margin: var(--space-1) 0 0; }
+.hw5-foryou .hw-card__actions { flex-wrap: wrap; }
+
+/* Print: only the plan and the services list. */
+@media print {
+  body.hw5-printing * { visibility: hidden !important; }
+  body.hw5-printing #hw5Printable, body.hw5-printing #hw5Printable * { visibility: visible !important; }
+  body.hw5-printing #hw5Printable { position: absolute; left: 0; top: 0; width: 100%; }
+  body.hw5-printing .hw5-call { border: 1px solid #000; }
+  body.hw5-printing .hw-card { box-shadow: none !important; border: 1px solid #999 !important; break-inside: avoid; }
+}
+
+/* Faith question card (Home). Three equal choices: none is styled as the preferred one. */
+.hw5-faithask .hw-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.hw5-faithask__close { min-width: 44px; min-height: 44px; }
+.hw5-faithask__choices { margin: 10px 0 4px; }
+.hw5-faithask__choices label { min-height: 44px; align-items: center; }

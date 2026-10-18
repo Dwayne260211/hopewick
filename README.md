@@ -6,7 +6,7 @@ The marketing site and companion are static HTML (no build step, no external CDN
 **Live:**
 - Website: https://hopewick.com.au/
 - App: https://hopewick.com.au/app/
-- Demo (no API key needed, nothing saved): https://hopewick.com.au/app/?demo=1
+- Demo (no API key needed, nothing saved; sign in first): https://hopewick.com.au/app/?demo=1
 
 `https://dwayne260211.github.io/hopewick/` redirects to https://hopewick.com.au/. GitHub Pages is not a second copy of the app.
 
@@ -36,7 +36,7 @@ To rename the product, edit `BRAND` in **both** `index.html` and `app/index.html
 
 ## Sample conversations
 
-`app/?demo=1` still plays scripted sample conversations for a look around (including organisation trials). It is not a button on the public site. The landing page and the person picker open the app. The sample:
+`app/?demo=1` plays scripted sample conversations for a look around (including organisation trials). It needs a signed-in account first (a deliberate rule since "Require a real account before the app or the Plus trial"); signed out, it shows Sign in. It is not a button on the public site. The landing page and the person picker open the app. The sample:
 - makes **no API calls** and needs no key;
 - uses a sample person ("Alex") with a sample recovery counter and a week of check-ins;
 - plays scripted conversations with a streaming animation: a craving (HALT and urge surfing), a slip-up, cutting down, *Pray with me*, and a crisis example that shows the crisis card;
@@ -53,7 +53,7 @@ The landing page has a "Pilot with us" section for services. Organisation and cl
 
 ## Getting help (Australia)
 
-The **Get help now** button is always at the top of the screen. A signed-out visitor with no profile sees **Sign in** first. After that session, profile setup is Welcome, what brings you here, a faith preference, then the profile name. Someone already signed in with a profile goes straight to Home. `?demo=1` still skips account sign-in. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. The national numbers in the table below were checked again on 3 October 2026 against the services’ own sites and were unchanged. The Queensland domestic-violence and legal-information numbers in the next paragraph were not re-checked on that date.
+The **Get help now** button is always at the top of the screen. A signed-out visitor with no profile sees **Sign in** first. After that session, profile setup is Welcome, what brings you here, a faith preference, then the profile name. Someone already signed in with a profile goes straight to Home. `?demo=1` opens the demo only after sign-in. Theme, voice, model, PIN, and export stay in Settings. The demo, and **More → Preferences**, still open the longer preferences screen. The header no longer carries the settings gear, theme toggle, memories button or auto-speak button — those stay in Settings. The national numbers in the table below were checked again on 3 October 2026 against the services’ own sites and were unchanged. The Queensland domestic-violence and legal-information numbers in the next paragraph were not re-checked on that date.
 
 | Service | Number |
 |---|---|
@@ -91,7 +91,7 @@ Add Hopewick to your home screen as a web app today (`app/manifest.webmanifest` 
 
 ## First run
 
-1. **Sign in.** Email and password, or **Email me a sign-in link** to create an account. You stay signed in on that browser until you sign out or you have not used Hopewick for 30 days. This is the first screen when the account service is up and there is no profile yet. `?demo=1` skips it and stays on the local demo.
+1. **Sign in.** Email and password, or **Email me a sign-in link** to create an account. You stay signed in on that browser until you sign out or you have not used Hopewick for 30 days. This is the first screen when the account service is up and there is no profile yet. `?demo=1` does not skip it: sign in first, then the demo opens.
 2. **Profile setup**, only after that session if there is no profile yet: welcome, what brings you here, faith preference, then your name. Each person has their own private chats, memories, check-ins, recovery counter and mode, faith and personality settings. A new device starts with no profiles — nothing is named for you. If you are already signed in and a profile is on this device, Hopewick opens Home instead.
 3. Read the short one-time disclaimer, then chat with Hope. Free is 15 messages a day. Hopewick Plus, including a 7-day trial and complimentary founder access, has no daily message limit. No personal API key. Settings → Developer (own API key, model endpoint, own provider, and invite redeem when that entry is turned on) is visible only when the signed-in account email is on `FOUNDER_PLUS_EMAILS`. A profile name does not unlock it. Guest, free, other Plus accounts, and `admin@bridge-bite-co.com` do not see it and cannot paste a key. A key already in this browser does not replace hosted Hope for those accounts.
 

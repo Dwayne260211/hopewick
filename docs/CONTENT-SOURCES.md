@@ -205,3 +205,72 @@ product information.
 - **[R11] Clinical guidance.** US CDC. Heat and medications: guidance for clinicians. https://www.cdc.gov/heat-health/hcp/clinical-guidance/heat-and-medications-guidance-for-clinicians.html (antipsychotics, anticholinergics, lithium and dehydration toxicity, stimulants, beta-blockers, diuretics).
 - **[R12] Review (Australian).** Nic Ionmhain U, McArdle K, Berling I. Illicit drug induced hyperthermia (IDIH). *Emerg Med Australas* 2025. https://doi.org/10.1111/1742-6723.70065 (MDMA, amphetamines, cocaine and other stimulants).
 - **[R13] Systematic review / regulator advice.** Alinejad S, Kazemi T, Zamani N, Hoffman RS, Mehrpour O. A systematic review of the cardiotoxicity of methadone. *EXCLI J* 2015;14:577–600. https://doi.org/10.17179/excli2015-553 · Medsafe NZ. Cardiac vigilance recommended for methadone. https://www.medsafe.govt.nz/profs/puarticles/methadone.htm (QT prolongation and torsades de pointes). *Pharmacist to confirm against current Australian product information.*
+
+
+# Stage 5: safety plan, help numbers and the optional faith layer
+
+## Safety plan structure
+
+The guided safety plan follows the seven-step structure of the Stanley-Brown Safety Planning
+Intervention (Stanley & Brown, 2012): warning signs, things I can do on my own, people and places
+that take my mind off things, people I can ask for help, professionals and services, making my
+surroundings safer, and reasons for living. **Every prompt, hint and example in Hopewick is
+original wording.** No text from the Stanley-Brown form, the Beyond Now app or any other safety-plan
+product is copied. Status: **pending clinical review** before it is promoted as a clinical tool.
+
+## Australian services shown in the safety plan (checked 18 Oct 2026)
+
+| Service | Number | Hours | Source |
+| --- | --- | --- | --- |
+| Emergency (police, ambulance, fire) | 000 | 24/7 | triplezero.gov.au |
+| Lifeline | 13 11 14 | 24/7 | lifeline.org.au |
+| Suicide Call Back Service | 1300 659 467 | 24/7 | suicidecallbackservice.org.au |
+| Beyond Blue | 1300 22 4636 | 24/7 | beyondblue.org.au/get-support |
+| 13YARN (Aboriginal and Torres Strait Islander people) | 13 92 76 | 24/7 | 13yarn.org.au |
+| Kids Helpline (ages 5 to 25) | 1800 55 1800 | 24/7 | kidshelpline.com.au |
+| QLife (LGBTIQ+ peer support) | 1800 184 527 | 3pm to 9pm local time, daily | qlife.org.au |
+| Adis 24/7 Alcohol and Drug Support (QLD) | 1800 177 833 | 24/7 | adis.health.qld.gov.au |
+
+Numbers and hours change. Re-check each official site at least every six months and before any
+store listing. The list lives in `app/hw-stage5.js` (`HW5_SERVICES`).
+
+## Faith layer: Bible translation and licence
+
+- **Translation:** World English Bible (WEB), https://ebible.org/web/. The WEB is in the **public
+  domain** ("The World English Bible is in the Public Domain. That means that it is not
+  copyrighted."). It may be quoted, copied and published without permission or fees. "World English
+  Bible" is a trademark of eBible.org; we name the translation and do not alter the verse text.
+- **Allowed alternative:** the King James Version (KJV) is public domain in Australia. (In the
+  United Kingdom it is under Crown letters patent; Hopewick does not publish a UK edition of KJV text.)
+- **Not allowed:** NIV, ESV, NLT, NKJV, CSB, NRSV and other modern copyrighted translations.
+  `server/wellbeing/personal.js` refuses any item whose translation is not WEB or KJV.
+- **Verse text** in `server/library/faith-content.json` was taken from the WEB (via bible-api.com,
+  translation=web) on 18 Oct 2026, with only the first letter capitalised and stray quote marks removed.
+- **Reflections, prayers and the two faith modules** (`faith-hope-hard-days`, free core;
+  `faith-grace-after-lapse`, Plus schedule) are original Hopewick writing.
+
+Principles: the faith layer is strictly opt-in (off by default, account-based), never pressures,
+never shames, never presents faith as a replacement for professional care, medication or crisis
+support, and always sits beside, never instead of, the help numbers.
+
+**Asking the question (founder feedback on PR #42).** New accounts are asked once, straight after
+sign-up, as the last onboarding step (magic link, password and Google all land in the same
+first-run onboarding): "Hopewick can include optional Christian encouragement, such as short Bible
+reflections and prayers. Would you like that?" with three equally styled buttons, **Yes, include it**,
+**No thanks** and **Decide later**. Nothing is pre-chosen or focused, and it says it can be changed
+any time in About you. Anyone who has not answered (existing accounts, or new accounts that chose
+"Not now, just look around") sees the same question once as a dismissible card at the top of Home;
+it never blocks Get help. If this device holds an earlier faith choice (a Christian tradition in
+Settings, or "No faith content" picked in the old onboarding), that answer is pre-ticked and the
+person still confirms with **Save my choice**.
+
+- **Yes** turns faith on (Christian tradition). **No thanks** and **Decide later** both leave faith off.
+- The server stores the answer in the faith preference (`faithAnswer`, `faithLaterCount`,
+  `faithAskedAt`) and decides when to ask (`faithPromptDue` on `/api/me/preferences`). It is never
+  asked again after Yes or No, after a faith change in About you, or after two "Decide later"
+  answers or dismissals (closing the card counts as "Decide later"). After one "Decide later" it can
+  come back once, gently, no sooner than 7 days later. Reset in About you does not bring it back.
+- Until they answer, no faith content shows anywhere. Crisis help (000, Lifeline and Get help) is on
+  every sign-up and onboarding screen: the trial choice, each onboarding step and the profile step.
+
+Status: **pending founder and pastoral review**. Every item carries `review: "pending"`.

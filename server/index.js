@@ -71,9 +71,24 @@ import { createFitnessStore } from './fitness/store.js';
 import { handleFitnessApi, fitnessExportFor } from './fitness/routes.js';
 import { fitnessFlagMode, fitnessEnabledFor } from './fitness/flag.js';
 import { createReleaseCatalog } from './content-releases.js';
+import { normalizeFaithContent, faithOn } from './wellbeing/personal.js';
 
 // Plus early access schedule (server/library/content-releases.json). Read once, on first use.
 const releases = createReleaseCatalog();
+// Stage 5 optional faith layer (server/library/faith-content.json). Only reaches people who opted in.
+let faithCache = null;
+function faithContent() {
+  if (!faithCache) faithCache = normalizeFaithContent(JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'library', 'faith-content.json'), 'utf8')));
+  return faithCache;
+}
+/** The person's saved preferences for one profile, or null (signed out, no store, or a read failure). */
+async function preferencesFor(wellbeing, user, profileId) {
+  if (!wellbeing || !user) return null;
+  try { return await wellbeing.getPreferences(user.id, /^[A-Za-z0-9_-]{1,64}$/.test(String(profileId || '')) ? String(profileId) : 'main'); } catch (err) {
+    console.error('Hopewick preferences read failed:', err && err.name ? err.name : 'error');
+    return null;
+  }
+}
 import { createNextStepFilter, extractNextStep } from './next-step.js';
 import { createVisitCounter, visitsPathBeside } from './visits.js';
 import {
@@ -998,6 +1013,7 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
       user,
       plus: user ? publicUser(user).plus === true : false,
       releases,
+      faithContent,
       readBody,
       json,
       // Move & Recover hooks (no-ops while FEATURE_FITNESS_PROTOCOLS is off for this person,
@@ -1057,8 +1073,10 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
     // anything before the Plus date. Signed out counts as free.
     const user = currentUser(req, store);
     const plus = user ? publicUser(user).plus === true : false;
+    // Faith items are listed only for a profile that switched the faith layer on (Stage 5).
+    const faith = faithOn(await preferencesFor(wellbeing, user, url.searchParams.get('profileId')));
     let list;
-    try { list = releases.list({ plus }); } catch (err) {
+    try { list = releases.list({ plus, faith }); } catch (err) {
       console.error('Hopewick content schedule failed to load:', err && err.message ? err.message : 'error');
       json(res, 503, { error: 'New content could not load just now. Everything else still works.', code: 'content_unavailable' });
       return;
@@ -2025,7 +2043,10 @@ async function handleHopeChat(store, req, res, wellbeing) {
     }
   }
   const offerNextStep = purpose === 'chat' && !crisis && body.nextStep !== false;
-  const messages = buildHopeMessages({ purpose, turns, context: body.context, crisis, shareCheckins, nextStep: offerNextStep });
+  // Stage 5: saved preferences (name, tone, focus areas, faith opt-in) are read here, on the
+  // server, and override what the browser sent. Faith stays off unless the person turned it on.
+  const preferences = await preferencesFor(wellbeing, user, body.context && body.context.profileId);
+  const messages = buildHopeMessages({ purpose, turns, context: body.context, crisis, shareCheckins, nextStep: offerNextStep, preferences });
   if (crisis && !hopeConfigured()) {
     if (stream) writeSse(res, CRISIS_FALLBACK);
     else json(res, 200, completionJson(CRISIS_FALLBACK));
@@ -2187,6 +2208,14 @@ export function createApp({ store, chats, checkins, visits, wellbeing, fitness, 
         await handleApi(store, chatStore, checkinStore, visitCounter, req, res, url, wellbeingStore, fitnessStore);
         return;
       }
+      // /app without the trailing slash would load, but its relative CSS and JS would not.
+      // Send people to /app/ and keep the query string (?tab=, ?demo=, ?signedin=).
+      if (url.pathname === '/app' && (req.method === 'GET' || req.method === 'HEAD')) {
+        req.resume();
+        res.writeHead(301, { Location: `/app/${url.search || ''}`, 'Cache-Control': 'public, max-age=3600' });
+        res.end();
+        return;
+      }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
       serveStatic(root, req, res, pathname);
     } catch (err) {
@@ -2249,7 +2278,7 @@ if (isMain) {
     console.log(encryptionStartupLine(process.env, { backend: String(process.env.DATABASE_URL || '').trim() ? 'Postgres' : 'JSON file' }));
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
-    if (fitnessFlagMode() !== 'off') console.log(`Move & Recover (FEATURE_FITNESS_PROTOCOLS) is ${fitnessFlagMode() === 'founder' ? 'on for founder accounts only' : 'ON'}. Content is pending clinical review.`);
+    if (fitnessFlagMode() !== 'off') console.log(`Move & Recover (FEATURE_FITNESS_PROTOCOLS) is ${fitnessFlagMode() === 'founder' ? 'on for founder accounts only' : 'ON'}. Content has been clinically reviewed.`);
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
       console.log('Magic-link email is not configured. Set RESEND_API_KEY and MAGIC_LINK_FROM or sign-in will return 503.');
     }

@@ -2,8 +2,8 @@
  * Move & Recover content: 30-Minute Move, the heat and cold protocols and the
  * free safety information.
  *
- * STATUS: PENDING CLINICAL AND ACCREDITED EXERCISE PHYSIOLOGIST REVIEW.
- * Nothing here is published while FEATURE_FITNESS_PROTOCOLS is off.
+ * STATUS: CLINICALLY REVIEWED (founder confirmed, 18 Oct 2026). Live with
+ * FEATURE_FITNESS_PROTOCOLS=1. Nothing here is published while the flag is off.
  *
  * All wording is original to Hopewick, written from the evidence summary in
  * docs/FITNESS-PROTOCOLS.md (sources in docs/CONTENT-SOURCES.md). No text is
@@ -16,7 +16,7 @@
 import { FITNESS_RULES as R } from './rules.js';
 
 export const CONTENT_VERSION = 'fit-content-v1';
-export const REVIEW_NOTE = 'Draft: pending clinical and exercise physiologist review.';
+export const REVIEW_NOTE = 'Clinically reviewed (October 2026). General information, not personal medical advice. If you are unsure, check with your GP.';
 
 /* ------------------------------------------------------------------ */
 /* Free: safety rules and information (never Plus-gated)               */

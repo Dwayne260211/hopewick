@@ -67,7 +67,7 @@ export function normalizeReleases(doc, { modules = null } = {}) {
       if (!mod) throw new Error(`${where}: module "${key}" is not in learning-modules.json.`);
       if (raw.content) throw new Error(`${where}: module text belongs in learning-modules.json, not the schedule.`);
       content = mod;
-      meta = { minutes: mod.minutes, topic: mod.topic, approach: mod.approach, review: mod.review };
+      meta = { minutes: mod.minutes, topic: mod.topic, approach: mod.approach, review: mod.review, ...(mod.faith ? { faith: true } : {}) };
     }
     if (!title || typeof title !== 'string' || title.length > 120) throw new Error(`${where}: title is required (up to 120 characters).`);
     if (!teaser || typeof teaser !== 'string' || teaser.length > 280) throw new Error(`${where}: teaser is required (up to 280 characters).`);
@@ -115,6 +115,9 @@ export function statusFor(item, { plus = false, today = brisbaneToday() } = {}) 
 export function publicItem(item, opts) {
   const s = statusFor(item, opts);
   if (!s.visible) return null;
+  // Stage 5: faith content is OFF by default. It is never listed, locked or not,
+  // unless this account turned the faith layer on (opts.faith === true).
+  if (item.meta && item.meta.faith && !(opts && opts.faith === true)) return null;
   const out = {
     id: item.id, kind: item.kind, key: item.key, title: item.title, teaser: item.teaser,
     core: item.core, available: s.available, plusOnly: s.plusOnly,
@@ -140,6 +143,7 @@ export function createReleaseCatalog({ file, items, modules } = {}) {
     allows(kind, key, opts) {
       const it = all().find((x) => x.kind === kind && x.key === key);
       if (!it) return kind === 'coping';
+      if (it.meta && it.meta.faith && !(opts && opts.faith === true)) return false;
       return statusFor(it, opts).available;
     },
   };

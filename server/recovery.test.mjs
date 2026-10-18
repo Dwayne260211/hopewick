@@ -149,8 +149,10 @@ test('learning modules: valid, short, sourced, pending clinical review, with one
 test('module schedule: a small free core (about 6, with one ACT module), the rest are weekly Plus drops free 6 months later', () => {
   const cat = createReleaseCatalog();
   const mods = cat.all().filter((i) => i.kind === 'module');
-  const core = mods.filter((i) => i.core);
+  // Faith modules (Stage 5) are opt-in and hidden by default, so they are counted separately.
+  const core = mods.filter((i) => i.core && !(i.meta && i.meta.faith));
   assert.ok(core.length >= 5 && core.length <= 7, `core size ${core.length}`);
+  assert.equal(mods.filter((i) => i.core && i.meta && i.meta.faith).length, 1, 'one small free faith module');
   for (const k of ['cravings-triggers', 'sleep-basics', 'stress-anxiety', 'harm-reduction', 'support-australia', 'cbt-basics', 'act-unhooking']) assert.ok(core.some((c) => c.key === k), k);
   assert.equal(core.filter((c) => c.content.approach === 'ACT').length, 1, 'one ACT module in the free core');
   const later = mods.filter((i) => !i.core).sort((a, b) => (a.plusReleaseDate < b.plusReleaseDate ? -1 : 1));

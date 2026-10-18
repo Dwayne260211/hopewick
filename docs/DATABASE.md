@@ -197,6 +197,23 @@ other production steps below.
 
 Migration 006 was applied to the Neon **dev** branch only (`br-wispy-scene-a71x1uld`), on 2026-10-18 AEST.
 
+## Stage 5: safety plan history and preferences (migrations/007_safety_faith_personal.sql)
+
+- `safety_plan_versions` (user_id, profile_id, version): every safety plan save or restore keeps a
+  sealed copy (`plan`, AAD `user:safety_plan_versions.plan`), `reason` in (save, restore), `saved_at`.
+  The server keeps the last 20 per profile. Deleting the `plans` area clears it.
+- `user_preferences` (user_id, profile_id): one sealed JSON document (`prefs`, AAD
+  `user:user_preferences.prefs`): preferred name, focus areas, tone, faith opt-in and tradition,
+  the answer to the faith question (`faithAnswer` yes/no/later, `faithLaterCount`, `faithAskedAt`),
+  onboarded and updated times. No schema change: these live inside the sealed document. Nothing is inferred; only what the person chose. Delete area `preferences`.
+- Both tables: RLS enabled and forced, owner-only policies as in 002, granted to `hopewick_rls`.
+- The JSON store keeps the same data on the profile row (`preferences`, `safetyVersions`), sealed
+  with `seal(userId, 'prefs')` and `seal(userId, 'safety.version')`.
+- Numbered 007 because 006 is Move & Recover. The runner applies versions in order; neither depends on the other.
+
+Migration 007 was applied to the Neon **dev** branch only (`br-wispy-scene-a71x1uld`), on 2026-10-18 AEST.
+It is not applied to `main` or used in production (production runs the JSON store).
+
 ## Before production uses this (needs founder approval)
 
 1. Add `DATABASE_URL` (Neon `main` branch, pooled) and `HOPEWICK_DATA_KEY` to Render

@@ -239,7 +239,7 @@ def test_cold_education_plus_gate_phone():
             assert "cold" in matched["spa"]
             assert "cold" in matched["contrast"]
             assert "cold" not in matched["cold"]
-            assert matched["crisis"] == ["help"]
+            assert matched["crisis"] == ["help", "safety"]  # Stage 5: crisis replies also offer the safety plan
 
             nav_after = page.inner_text("#bottomNav")
             assert "Home" in nav_after and "Chat" in nav_after and "More" in nav_after

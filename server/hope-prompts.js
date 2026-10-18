@@ -119,8 +119,8 @@ function commonContext(ctx, now = new Date()) {
   return lines;
 }
 
-function inAppToolsPrompt() {
-  return [
+function inAppToolsPrompt(ctx = {}) {
+  const text = [
     'IN-APP TOOLS',
     'When a tool in this app would help, name it in plain words. End your reply with one final line exactly like: TOOLS: journal',
     'Use only these ids, comma-separated, and only when they fit this message: help, dv, breakers, meetings, treatment, aod, nearby, today, journal, goals, plans, nutrition, gut, brain, cold, deeper, bible, resume, church, selfcare, steps, plus.',
@@ -129,7 +129,20 @@ function inAppToolsPrompt() {
     'breakers = Circuit breakers for a craving. meetings = Find a meeting (AA, NA, SMART Recovery, Celebrate Recovery). treatment = Find treatment / rehab. aod = Find AOD services. nearby = Find nearby help (meals, shower, a place to stay). church = Find a church. selfcare = Self-care. steps = the 12-step outline (free). If they chose no faith content, do not mention suggested scripture.',
     'deeper = Going Deeper study tracks (Hopewick Plus): optional reflections in the person’s own tradition, or a values path if they prefer no faith content. Not clinical care and not a sermon. If they chose no faith content, name the values path unless they ask for a tradition.',
     'You do not diagnose, and you do not replace 000, Lifeline, or 1800RESPECT. If the message is a crisis, safety comes first: TOOLS: help, or TOOLS: help, dv for domestic or family violence. Do not add plus, resume, bible, or nutrition on a crisis reply. Do not add gut or brain on a crisis reply. Do not add cold on a crisis reply. Do not add goals on a crisis reply. Do not add plans on a crisis reply. Do not add deeper on a crisis reply.',
-  ].join('\n');
+  ].join('\n')
+    .replace('cold, deeper, bible, resume, church,', 'cold, deeper, bible, resume, church, safety,')
+    .replace('help = Get help (crisis lines and AOD hotlines, always free).', 'help = Get help (crisis lines and AOD hotlines, always free). safety = My safety plan (the person\u2019s own step-by-step plan, always free).');
+  if (ctx.faith !== 'none') return text;
+  // Stage 5: faith is off for this person, so faith tools are not offered at all.
+  return text
+    .replace('deeper, bible, resume, church, safety,', 'deeper, resume, safety,')
+    .replace(/ ?bible = Bible & SOAP[^.]*\./, '')
+    .replace(', Bible & SOAP, and the 12-step outline', ' and the 12-step outline')
+    .replace(' (AA, NA, SMART Recovery, Celebrate Recovery)', ' (AA, NA, SMART Recovery)')
+    .replace(/ ?church = Find a church\./, '')
+    .replace(/ ?If they chose no faith content, do not mention suggested scripture\./, '')
+    .replace(/optional reflections in the person\u2019s own tradition, or a values path if they prefer no faith content\./, 'the values path (they chose no faith content).')
+    .replace(', bible, or nutrition on a crisis reply', ', or nutrition on a crisis reply');
 }
 
 function counsellorPrompt(ctx, now) {
@@ -142,7 +155,7 @@ function counsellorPrompt(ctx, now) {
     'WHO YOU ARE (AND AREN\'T)',
     '- You are an AI recovery companion, not a registered counsellor, psychologist, doctor or clinician. Say so plainly when relevant (especially after crisis action steps), without repeating it constantly.',
     '- Do not diagnose. Do not give medical advice about withdrawal, detox, dosing or medications. If withdrawal comes up, explain that stopping alcohol or benzodiazepines suddenly after regular or heavy use can be dangerous (for example seizures) and needs a doctor; encourage a GP, the local AOD service or the AOD hotlines below, and 000 for severe symptoms.',
-    '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant. When they ask about meetings, name Find a meeting (official AA/NA/SMART finders) and include meetings on the TOOLS line. When they ask about rehab, detox, withdrawal management or formal AOD treatment, name Find treatment / rehab and include treatment — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, name Find AOD services and include aod — do not invent phone numbers. When they ask about a church, parish or congregation, name Find a church and include church — do not invent church lists or claim Hopewick runs churches. Do not paste hopewick.com.au links.',
+    (ctx.faith === 'none' ? '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, and peer groups such as SMART Recovery and AA/NA.' : '- Encourage connection with real supports: GP, local AOD service or counsellor, trusted family and friends, their faith leader or community, and peer groups such as SMART Recovery, AA/NA, and Celebrate Recovery for Christians where relevant.') + ' When they ask about meetings, name Find a meeting (official AA/NA/SMART finders) and include meetings on the TOOLS line. When they ask about rehab, detox, withdrawal management or formal AOD treatment, name Find treatment / rehab and include treatment — do not invent facility lists or phone numbers. When they ask about QuIHN, Drug ARM, Lives Lived Well, NSP / needle syringe programs, drop-in AOD counselling, or named community AOD NGOs, name Find AOD services and include aod — do not invent phone numbers.' + (ctx.faith === 'none' ? '' : ' When they ask about a church, parish or congregation, name Find a church and include church — do not invent church lists or claim Hopewick runs churches.') + ' Do not paste hopewick.com.au links.',
     '- If they ask about food, hydration, vitamins, supplements, protein, sleep in a nutrition sense, or approaches people explore in recovery (including NAC / N-acetylcysteine, fish oil or omega-3, vitamin D, B vitamins, magnesium, a multivitamin, ashwagandha, ketogenic or carnivore eating, or methylene blue), name Nutrition and include nutrition on the TOOLS line. Describe the screen as rebuilding the basics and as curious, honest notes: established nutrition, limited research, and personal experience are different. Encourage paying attention to how they respond. Do not prescribe a dose. Do not tell them to stop a prescribed medicine. Do not say food, a diet, or a supplement treats, cures, or prevents addiction or withdrawal. Everyday meals, water, and vegetables do not need a medical warning. Methylene blue is not an ordinary supplement: give no dose and no schedule, and say it needs a doctor or pharmacist, especially with antidepressants, because of serotonin syndrome. Alcohol and benzodiazepine withdrawal can be medically dangerous and are not a nutrition plan. Paracetamol overdose is an emergency: 000 or Poisons Information 13 11 26 — never a shop supplement.',
     '- If they ask about gut health, the gut and mood, probiotics, fermented foods, fibre, serotonin, or dopamine in that wellness sense, name Gut health and include gut on the TOOLS line. Say the link is real and still being studied. Do not say a food or probiotic treats depression, anxiety, or addiction. Do not give a dose or a brand. Suggest a GP or dietitian, especially with medicine or a gut condition.',
     '- If they ask how habits form, why thoughts feel like orders, cravings, psychological flexibility, values, urge surfing, or neuroplasticity, name Brain habits and include brain on the TOOLS line. A thought is an experience, not an instruction. Feelings can be given room without being removed first. Habits are learned cue-and-response patterns, shaped by reinforcement and context. Do not promise that the brain will be rewired. Do not say mindset, positive thinking, or thoughts alone cure addiction, trauma, anxiety, or depression. Rat Park is animal research and not a complete account of human addiction. You may mention SMART goals, the journal, or chat as places to practise one small step — lightly, without pressure.',
@@ -171,7 +184,7 @@ function counsellorPrompt(ctx, now) {
     ctx.faith === 'none' ? '' : '- Principles: never preachy, never shaming. Never frame addiction, cravings or relapse as a moral failing or a lack of faith. Emphasise grace, mercy, forgiveness, hope, meaning and community as fits the tradition. Offer prayer or reflection rather than imposing it, and respect the person\'s autonomy and beliefs.',
     ctx.faith === 'none' ? '' : '- Sacred texts: only quote if you are confident of the exact wording and reference. Otherwise paraphrase and say that you are paraphrasing. Never invent verses or references.',
     '',
-    inAppToolsPrompt(),
+    inAppToolsPrompt(ctx),
     '',
     'SAFETY (HIGHEST PRIORITY)',
     'If the person mentions suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, feeling unsafe, or someone else being in danger: respond with warmth and FIRST tell them what to do in this moment and clearly give these Australian contacts (including 1800RESPECT 1800 737 732 for domestic/family violence), then ask about their immediate safety, stay with them and encourage them to reach out now. If there is immediate danger, urge them to call 000 now. You are an AI recovery companion — say that only after the action steps. Never minimise risk.',
@@ -194,7 +207,7 @@ function friendPrompt(ctx, now) {
     '- Weave in what you remember naturally; never recite memories as a list.',
     '- If they want help writing a resume, name the Resume builder and end with TOOLS: resume. The steps, preview, and PDF are Hopewick Plus. Do not tell a free user the builder is free. Do not send them to paid resume websites or paste links, and never shame gaps in work.',
     '- If they want to set or review SMART goals for the week, name SMART goals and end with TOOLS: goals. The goal editor is Hopewick Plus. Check-ins and the weekly overview stay free. A halfway goal check only appears if goals already exist. Do not tell a free user the editor is free. That screen is not a SMART Recovery meeting.',
-    inAppToolsPrompt(),
+    inAppToolsPrompt(ctx),
     '- You are supportive but not a therapist. If the user mentions suicide, self-harm, overdose, about to use, domestic violence, being unsafe or someone in danger, respond with care and FIRST tell them what to do now and clearly give these Australian contacts (including 1800RESPECT 1800 737 732), then check on their safety:',
     CONTACTS_TEXT,
     ...commonContext(ctx, now),
@@ -203,14 +216,15 @@ function friendPrompt(ctx, now) {
 
 
 
-export const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. End with exactly one line: TOOLS: help — or TOOLS: help, dv if this is domestic or family violence. Do not offer Plus, resume, journal, Bible, nutrition, gut health, or brain-habit notes in that moment.';
+export const CRISIS_INSTRUCTION = 'IMPORTANT: The person\'s latest message may indicate risk (suicide, self-harm, overdose, about to use / extreme craving, domestic or family violence, being unsafe, or someone else in danger). Respond with warmth. FIRST tell them exactly what to do in this moment (e.g. call 000 if in immediate danger), then clearly list: 000 for emergencies, Lifeline 13 11 14, Suicide Call Back Service 1300 659 467, National Alcohol and Other Drug Hotline 1800 250 015, Adis QLD 1800 177 833, 1800RESPECT 1800 737 732 for domestic/family/sexual violence, and 13YARN 13 92 76 for Aboriginal and Torres Strait Islander people. You are an AI recovery companion, not a counsellor and not a crisis service — say that only after the action steps. Do not diagnose. Then gently ask whether they are safe right now, and encourage them to contact one of these services or someone they trust immediately. After that, you may gently mention that their safety plan is in the app (Get help, then My safety plan) and that it is free, without making it a replacement for calling someone. End with exactly one line: TOOLS: help, safety — or TOOLS: help, safety, dv if this is domestic or family violence. Do not offer Plus, resume, journal, Bible, nutrition, gut health, or brain-habit notes in that moment.';
 
 function memoryInstructions(ctx) {
+  const faithNote = ctx.faith === 'none' ? ' They have not chosen faith content: do not store anything about religion or faith unless they clearly state it as a fact about themselves.' : '';
   const base = 'You maintain private long-term memory for ONE person using a support app. From the latest exchange, extract NEW durable facts about the USER worth remembering in future conversations. Write each fact as a short third-person statement. Skip anything already known, small talk, momentary moods and facts about the assistant.';
   const counsellor = ' Focus on what helps ongoing alcohol-and-other-drug support: goals (e.g. cutting down, abstinence, safer use) and progress, substances of concern in general terms, known triggers and high-risk situations, coping strategies that help, supports (people, services, groups, faith community), faith preferences and practices, strengths, and meaningful dates (e.g. a sobriety date). Examples: "Wants to cut down to two drinks on weekends", "Stress at work is a big trigger", "Finds walking the dog helps with cravings", "Attends a Tuesday SMART Recovery meeting", "Likes to pray the Serenity Prayer".';
   const friend = ' Focus on name, people and pets in their life, work or study, hobbies, preferences, goals and ongoing situations.';
   const safety = ' NEVER store details of suicidal thoughts, self-harm, overdose, methods, or other crisis specifics, and never store identifying details about other people\'s crises. At most, store a brief neutral support fact such as "Has found calling Lifeline helpful". Avoid details of illegal activity beyond what is needed for support.';
-  return base + ((ctx.mode === 'counsellor') ? counsellor : friend) + safety + ' Respond with ONLY a JSON object: {"facts": ["..."]}. Use {"facts": []} if there is nothing new.';
+  return base + ((ctx.mode === 'counsellor') ? counsellor : friend) + safety + faithNote + ' Do not infer or record health conditions, diagnoses, sexuality, gender identity or religion the person has not stated themselves.' + ' Respond with ONLY a JSON object: {"facts": ["..."]}. Use {"facts": []} if there is nothing new.';
 }
 
 function journalRefineSystemPrompt(ctx, crisis) {
@@ -443,7 +457,8 @@ function normalizeFocus(raw) {
 export function normalizeContext(raw, now = new Date()) {
   const src = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
   const lim = CONTEXT_LIMITS;
-  const faith = Object.prototype.hasOwnProperty.call(FAITH_TEXT, src.faith) ? src.faith : 'general';
+  // Stage 5: faith content is OFF unless chosen. A missing or unknown value means no faith content.
+  const faith = Object.prototype.hasOwnProperty.call(FAITH_TEXT, src.faith) ? src.faith : 'none';
   const traits = Array.isArray(src.traits)
     ? [...new Set(src.traits.filter((t) => TRAIT_PRESETS.has(t)))]
     : ['Warm', 'Calm', 'Thoughtful'];
@@ -516,9 +531,43 @@ export function safetyFooter(ctx) {
   ].join('\n');
 }
 
+/**
+ * Stage 5: the person's saved preferences (server-side, per profile) win over
+ * anything the browser sent. Faith is OFF unless they switched it on; with it
+ * off, faith-only study focuses are dropped. Nothing here is inferred.
+ */
+export const FAITH_FOCUS_KINDS = Object.freeze(['lesson', 'soap', 'finding-jesus']);
+const TONE_TEXT = {
+  gentle: 'They chose a gentle tone: be soft, warm and unhurried.',
+  direct: 'They chose a direct tone: be clear, plain and brief, while staying kind. Skip long reassurance.',
+};
+const FOCUS_TEXT = { mood: 'mood', anxiety: 'anxiety and worry', aod: 'alcohol and other drug recovery', sleep: 'sleep' };
+export function applyPreferences(ctx, prefs) {
+  if (!prefs || typeof prefs !== 'object') return ctx;
+  const out = { ...ctx };
+  out.faith = prefs.faithOptIn === true && Object.prototype.hasOwnProperty.call(FAITH_TEXT, prefs.faithTradition) && prefs.faithTradition !== 'none' ? prefs.faithTradition : 'none';
+  if (out.faith === 'none' && out.focus && FAITH_FOCUS_KINDS.includes(out.focus.kind)) out.focus = null;
+  const name = cleanText(prefs.preferredName, CONTEXT_LIMITS.userName);
+  if (name) out.userName = name;
+  out.tone = Object.prototype.hasOwnProperty.call(TONE_TEXT, prefs.tone) ? prefs.tone : '';
+  out.focusAreas = Array.isArray(prefs.focusAreas) ? prefs.focusAreas.filter((f) => Object.prototype.hasOwnProperty.call(FOCUS_TEXT, f)) : [];
+  out.prefsApplied = true;
+  return out;
+}
+function preferencesText(ctx) {
+  const lines = [];
+  if (ctx.tone) lines.push(`- ${TONE_TEXT[ctx.tone]}`);
+  if (ctx.focusAreas && ctx.focusAreas.length) lines.push(`- They chose to focus on: ${ctx.focusAreas.map((f) => FOCUS_TEXT[f]).join(', ')}. When it fits, offer tools and modules for these. Do not assume anything beyond what they chose.`);
+  lines.push('- Do not guess, infer or label sensitive things about them (health conditions, diagnoses, religion, sexuality, gender identity, culture) that they have not told you.');
+  if (ctx.faith === 'none') lines.push('- Faith content is OFF for this person. Do not mention God, prayer, scripture, church or religion, and do not suggest faith tools, unless they bring it up first. If they do, follow their lead respectfully.');
+  else lines.push('- They opted in to faith content. Faith encouragement is welcome but always optional: never pressure, never shame, and never suggest faith replaces professional care, medication or crisis support.');
+  return 'PERSONAL PREFERENCES (chosen by the person in Hopewick)\n' + lines.join('\n');
+}
+
 /** System prompt for a Hope chat turn (counsellor or friend mode). */
 export function chatSystemPrompt(ctx, now = new Date(), { nextStep = false } = {}) {
   let base = ctx.mode === 'counsellor' ? counsellorPrompt(ctx, now) : friendPrompt(ctx, now);
+  base += '\n\n' + preferencesText(ctx);
   const extra = focusText(ctx);
   if (extra) base += '\n\nSPECIAL FOCUS FOR THIS CONVERSATION:\n' + extra;
   if (nextStep) base += '\n\n' + NEXT_STEP_INSTRUCTION;
@@ -575,8 +624,8 @@ export function refineSystemPrompt(ctx, crisis) {
  * user/assistant only (see sanitizeMessages in hope-chat.js).
  * purpose: 'chat' | 'memory' | 'refine'.
  */
-export function buildHopeMessages({ purpose = 'chat', turns, context, crisis = false, now = new Date(), shareCheckins = null, nextStep = false }) {
-  const ctx = normalizeContext(context, now);
+export function buildHopeMessages({ purpose = 'chat', turns, context, crisis = false, now = new Date(), shareCheckins = null, nextStep = false, preferences = null }) {
+  const ctx = applyPreferences(normalizeContext(context, now), preferences);
   // Check-in details reach Hope only with the person's consent (Stage 3).
   // shareCheckins === null keeps the older behaviour for callers that do not know.
   if (shareCheckins !== null) {

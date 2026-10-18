@@ -83,6 +83,7 @@ export function normalizeModules(doc) {
     m.steps.forEach((st, j) => checkStep(st, `${where} step ${j + 1}`));
     if (!m.steps.some((s) => s.type === 'try')) throw new Error(`${where}: every module ends with one practical "try this today" step.`);
     if (!Array.isArray(m.sources) || !m.sources.length) throw new Error(`${where}: list at least one source.`);
+    if (m.faith !== undefined && typeof m.faith !== 'boolean') throw new Error(`${where}: faith must be true or false.`);
     m.sources.forEach((s, j) => {
       if (!str(s.org, 120) || !str(s.title, 200)) throw new Error(`${where} source ${j + 1}: org and title are required.`);
       if (s.url != null && !/^https:\/\/[^\s"<>]+$/.test(s.url)) throw new Error(`${where} source ${j + 1}: url must be https.`);
@@ -90,6 +91,8 @@ export function normalizeModules(doc) {
     out[m.id] = {
       id: m.id, title: m.title, summary: m.summary, topic: m.topic, minutes: m.minutes, approach: m.approach || null,
       review: REVIEW_STATUS, note: m.note || null, steps: m.steps, sources: m.sources,
+      // Stage 5: faith modules are part of the optional faith layer and only reach people who opted in.
+      ...(m.faith === true ? { faith: true } : {}),
     };
   });
   return out;
