@@ -37,7 +37,6 @@ const PLUS_MESSAGES = {
   insights: 'Monthly insights are part of Hopewick Plus. Your check-ins, export and the last 7 days of history stay free.',
   report: 'The printable mood and recovery report is part of Hopewick Plus. You can always export all of your data for free.',
   goals: 'Personal goals are part of Hopewick Plus, like SMART goals. You can still see and delete goals you already saved.',
-  plans: 'Editing relapse and exit plans is part of Hopewick Plus. You can still read what you already saved.',
 };
 
 async function readJsonBody(req, readBody, limit) {
@@ -375,10 +374,10 @@ export async function handleWellbeingApi(ctx, req, res, url) {
       if (sub && method === 'DELETE') { await wellbeing.deleteJournal(uid, profileId, assertId(sub)); json(res, 200, { ok: true }); return true; }
     }
 
+    // Relapse prevention and exit plans are free forever, on every plan (founder decision 2026-10-18).
     if (area === 'plans') {
       if (method === 'GET' && !sub) { json(res, 200, { plans: await wellbeing.getPlans(uid, profileId), plus }); return true; }
       if (method === 'PUT' && !sub) {
-        if (needPlus('plans')) return true;
         const existing = await wellbeing.getPlans(uid, profileId);
         const doc = normalizePlans(body.plans);
         if (existing && existing.safety) doc.safety = existing.safety; // safety plan essentials are saved on their own (free)

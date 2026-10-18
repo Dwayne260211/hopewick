@@ -1549,9 +1549,9 @@
     } catch (_) { /* plans UI not ready */ }
   }
   let plansTimer = null;
-  /** Called from savePlans(): push to the account (Plus only), debounced. */
+  /** Called from savePlans(): push to the account (free on every plan), debounced. */
   HW3.pushPlans = function pushPlans() {
-    if (!serverMode() || !plus()) return;
+    if (!serverMode()) return;
     if (!st.plans && st.settings.plansImport === 'pending' && plansHaveContent(plansState)) return; // waiting for the import answer
     clearTimeout(plansTimer);
     plansTimer = setTimeout(async () => {
@@ -1943,52 +1943,74 @@
 
   /* ----- Free and Plus comparison ----- */
   /** Only features that exist today are marked available. The rest say "Coming soon". */
-  const COMPARE_ROWS = [
-    { group: 'Always free, never capped' },
-    { name: 'Get help now, crisis lines and domestic and family violence support', free: 'Yes', plus: 'Yes' },
-    { name: 'My safety plan essentials', free: 'Yes', plus: 'Yes' },
-    { name: 'Daily check-in', free: 'Yes', plus: 'Yes' },
-    { name: 'Coping toolkit (the 12 core tools)', free: 'Yes', plus: 'Yes' },
-    { name: 'My next step', free: 'Yes', plus: 'Yes' },
-    { name: 'Read, export and delete everything you save', free: 'Yes', plus: 'Yes' },
-    { name: 'Account and privacy controls', free: 'Yes', plus: 'Yes' },
-    { name: 'Clean time tracker, Bible & SOAP, 12-step outline', free: 'Yes', plus: 'Yes' },
-    { group: 'Day to day' },
-    { name: 'Chat with Hope', free: '15 messages a day', plus: 'No daily limit' },
-    { name: 'Journal: free writing and daily reflection prompts', free: 'Yes', plus: 'Yes' },
-    { name: 'Journal: gratitude and recovery entries, Deepen with Hope', free: '—', plus: 'Yes' },
-    { name: 'Trends and history in the app', free: `Last ${HISTORY_WINDOW_DAYS} days (everything is kept and exportable)`, plus: 'Full history' },
-    { name: 'Monthly insights (descriptive, not a diagnosis)', free: '—', plus: 'Yes' },
-    { name: 'Printable mood and recovery report', free: '—', plus: 'Yes' },
-    { name: 'Weekly multi-step plans in My next step', free: '—', plus: 'Yes' },
-    { name: 'Personal goals and SMART goals', free: '—', plus: 'Yes' },
-    { name: 'Relapse and exit plans', free: '—', plus: 'Yes' },
-    { name: 'More than one profile', free: '—', plus: 'Yes' },
-    { group: 'New content' },
-    { name: 'New coping tools, guided journal series and prompt packs', free: 'Arrive 6 to 12 months after Plus', plus: 'First, from release day' },
-    { name: 'Resume builder, nutrition, gut and brain-habit notes, Going Deeper', free: '—', plus: 'Yes' },
-    { group: 'Coming soon (not available yet)' },
-    { name: 'Learning courses (first lesson free)', free: 'Coming soon', plus: 'Coming soon' },
-    { name: 'Recovery tracker extras: milestone calendar, habits, meeting log, certificates', free: '—', plus: 'Coming soon' },
-    { name: 'Faith plans, devotionals and prayer journal', free: '—', plus: 'Coming soon' },
-    { name: 'Guided audio, meditations and sleep stories', free: '—', plus: 'Coming soon' },
-    { name: 'Themes and a custom dashboard', free: '—', plus: 'Coming soon' },
-    { name: 'Photo and voice journal attachments', free: '—', plus: 'Coming soon' },
+  /* One section per category. Every section starts collapsed; the summary
+     line stays visible so the page is short, especially on mobile. Native
+     <details>/<summary> gives keyboard (Enter/Space) and screen reader
+     support (expanded/collapsed) without extra script. */
+  const COMPARE_SECTIONS = [
+    { id: 'free', title: 'Always free', summary: 'Crisis help, your safety plan, relapse and exit plans, and your data. Never capped.', rows: [
+      ['Get help now, crisis lines, domestic and family violence support', 'Yes', 'Yes'],
+      ['My safety plan essentials', 'Yes', 'Yes'],
+      ['Relapse prevention and exit plans', 'Yes', 'Yes'],
+      ['Read, export and delete everything you save', 'Yes', 'Yes'],
+      ['Account and privacy controls', 'Yes', 'Yes'],
+      ['Clean time tracker, Bible & SOAP, 12-step outline', 'Yes', 'Yes'],
+    ] },
+    { id: 'history', title: 'Check-ins and history', summary: `Check in every day, free. Free shows ${HISTORY_WINDOW_DAYS} days; Plus shows it all.`, rows: [
+      ['Daily check-in', 'Yes', 'Yes'],
+      ['History and trends in the app', `Last ${HISTORY_WINDOW_DAYS} days`, 'Full history'],
+      ['Month view', '—', 'Yes'],
+      ['Nothing deleted because of your plan', 'Yes', 'Yes'],
+    ] },
+    { id: 'journal', title: 'Journal', summary: 'Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.', rows: [
+      ['Free writing and daily reflection prompts', 'Yes', 'Yes'],
+      ['Gratitude and recovery entries', '—', 'Yes'],
+      ['Guided series and prompt packs', 'Later', 'First'],
+      ['Deepen with Hope (asks first)', '—', 'Yes'],
+    ] },
+    { id: 'tools', title: 'Tools and new releases', summary: 'The 12 core coping tools are free. Plus gets new tools first.', rows: [
+      ['Coping toolkit (12 core tools)', 'Yes', 'Yes'],
+      ['New coping tools and journal packs', '6 to 12 months later', 'From release day'],
+      ['Chat with Hope', '15 a day', 'No daily limit'],
+      ['Resume builder, nutrition, gut and brain-habit notes, Going Deeper', '—', 'Yes'],
+      ['More than one profile', '—', 'Yes'],
+    ] },
+    { id: 'plans', title: 'Plans and reports', summary: 'My next step is free. Plus adds weekly plans, goals, insights and a report.', rows: [
+      ['My next step', 'Yes', 'Yes'],
+      ['Weekly multi-step plans (no reminders)', '—', 'Yes'],
+      ['Personal goals and SMART goals', '—', 'Yes'],
+      ['Monthly insights (descriptive, not a diagnosis)', '—', 'Yes'],
+      ['Printable mood and recovery report', '—', 'Yes'],
+    ] },
+    { id: 'soon', title: 'Coming soon', summary: 'Extras we are working on. Not available yet.', rows: [
+      ['Learning courses (first lesson free)', 'Coming soon', 'Coming soon'],
+      ['Recovery tracker extras: milestone calendar, habits, meeting log, certificates', '—', 'Coming soon'],
+      ['Faith plans, devotionals and prayer journal', '—', 'Coming soon'],
+      ['Guided audio, meditations and sleep stories', '—', 'Coming soon'],
+      ['Themes and a custom dashboard', '—', 'Coming soon'],
+      ['Photo and voice journal attachments', '—', 'Coming soon'],
+    ] },
   ];
-  HW3.COMPARE_ROWS = COMPARE_ROWS;
+  HW3.COMPARE_SECTIONS = COMPARE_SECTIONS;
+  /** Collapsible free vs Plus comparison, shared by the Free and Plus view and the account dialog. */
+  function compareDetails(prefix) {
+    return h('div', { class: 'hw3-cmp', id: `${prefix}Sections` }, COMPARE_SECTIONS.map((sec) => h('details', { class: 'hw3-cmp__sec', id: `${prefix}-${sec.id}` },
+      h('summary', { class: 'hw3-cmp__sum' },
+        h('span', { class: 'hw3-cmp__title', text: sec.title }),
+        h('span', { class: 'hw3-cmp__line', text: sec.summary })),
+      h('table', { class: 'hw3-cmp__table' },
+        h('caption', { class: 'hw-sr-only', text: `${sec.title}: free and Hopewick Plus` }),
+        h('thead', {}, h('tr', {}, h('th', { scope: 'col', text: 'Feature' }), h('th', { scope: 'col', text: 'Free' }), h('th', { scope: 'col', text: 'Plus' }))),
+        h('tbody', {}, sec.rows.map(([name, free, plusV]) => h('tr', {}, h('th', { scope: 'row', text: name }), h('td', { text: free }), h('td', { text: plusV }))))))));
+  }
+  HW3.compareDetails = compareDetails;
   function renderCompare(root) {
-    root.appendChild(header('Free and Plus', 'Hopewick is free to use, and it stays that way for the things that matter most in a hard moment. Hopewick Plus adds more history, insights and new content first.'));
-    const table = h('table', { class: 'hw3-table hw3-compare', id: 'hw3CompareTable' },
-      h('caption', { class: 'hw-sr-only', text: 'What is included on the free plan and with Hopewick Plus' }),
-      h('thead', {}, h('tr', {}, h('th', { scope: 'col', text: 'Feature' }), h('th', { scope: 'col', text: 'Free' }), h('th', { scope: 'col', text: 'Plus' }))),
-      h('tbody', {}, COMPARE_ROWS.map((r) => (r.group
-        ? h('tr', { class: 'hw3-compare__group' }, h('th', { scope: 'colgroup', colspan: '3', text: r.group }))
-        : h('tr', {}, h('th', { scope: 'row', text: r.name }), h('td', { text: r.free }), h('td', { text: r.plus }))))));
+    root.appendChild(header('Free and Plus', 'The things that matter most in a hard moment stay free. Tap a section to see what is included.'));
     root.appendChild(h('section', { class: 'hw-card hw3-card', 'aria-labelledby': 'hw3CompareT' },
-      h('h2', { class: 'hw3-h2', id: 'hw3CompareT', text: 'What’s included' }), h('div', { class: 'hw3-table-wrap' }, table)));
+      h('h2', { class: 'hw3-h2', id: 'hw3CompareT', text: 'What’s included' }), compareDetails('hw3Compare')));
     const price = h('section', { class: 'hw-card hw-card--tinted hw3-card', 'aria-labelledby': 'hw3PriceT' },
       h('h2', { class: 'hw3-h2', id: 'hw3PriceT', text: 'Hopewick Plus' }),
-      h('p', { text: 'AU$20 a month, with a 7-day free trial. Cancel anytime. If Plus ends, nothing you saved is deleted: the app shows your last 7 days, and you can still export or delete everything.' }));
+      h('p', { text: 'AU$20 a month, with a 7-day free trial. Cancel anytime. If Plus ends, nothing you saved is deleted.' }));
     if (plus()) price.appendChild(h('p', { class: 'hw3-list__title', id: 'hw3CompareHave', text: 'You have Hopewick Plus. Thank you.' }));
     else price.appendChild(h('div', { class: 'hw-card__actions' }, btn('Start 7-day free trial', () => upgrade(), { kind: 'primary', attrs: { id: 'hw3CompareUpgrade' } })));
     root.appendChild(price);

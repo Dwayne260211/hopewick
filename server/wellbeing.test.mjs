@@ -363,7 +363,7 @@ async function httpSuite(t, backend) {
       assert.equal(sum.body.latestCheckin.date, daysAgo(1));
     });
 
-    await t.test(`${backend} http: Plus gates are enforced on the server (journal refinements, goals, plans writes)`, async () => {
+    await t.test(`${backend} http: Plus gates are enforced on the server (journal refinements, goals); relapse and exit plans are free`, async () => {
       for (const kind of ['gratitude', 'recovery']) {
         const j = await free('POST', '/api/me/journal', { profileId: 'main', kind, body: 'free tries a rich kind' });
         assert.equal(j.status, 403, kind);
@@ -372,7 +372,9 @@ async function httpSuite(t, backend) {
       assert.equal((await free('POST', '/api/me/journal', { profileId: 'main', body: 'x', refined: 'a deepened reflection' })).status, 403, 'deepened text is Plus');
       assert.equal((await free('POST', '/api/me/journal', { profileId: 'main', kind: 'prompt', packId: 'first-30-days', prompt: 'Day 1', body: 'x' })).status, 403, 'packs are Plus first');
       assert.equal((await free('POST', '/api/me/goals', { profileId: 'main', title: 'x' })).status, 403);
-      assert.equal((await free('PUT', '/api/me/plans', { profileId: 'main', plans: { relapse: {} } })).status, 403);
+      const fp = await free('PUT', '/api/me/plans', { profileId: 'main', plans: { relapse: { warnings: 'free: tired and skipping meals' }, exits: {}, custom: [] } });
+      assert.equal(fp.status, 200, 'relapse and exit plans are free forever');
+      assert.equal((await free('GET', '/api/me/plans?profileId=main')).body.plans.relapse.warnings, 'free: tired and skipping meals');
       assert.equal((await free('GET', '/api/me/journal?profileId=main')).status, 200, 'reading stays free');
       assert.equal((await free('GET', '/api/me/journal?profileId=main')).body.total, 0, 'nothing was saved by refused writes');
     });
@@ -531,6 +533,38 @@ async function httpSuite(t, backend) {
       // Coming back to Plus shows everything again.
       await setPlan(u, 'active');
       assert.equal((await u('GET', '/api/me/checkins?profileId=main')).body.checkins.length, 6);
+    });
+
+    await t.test(`${backend} http: relapse and exit plans are free forever on every plan (free, trial, paid, founder comp, lapsed)`, async () => {
+      const doc = (w) => ({ relapse: { warnings: w, people: [{ name: 'Sam', phone: '0400 000 000' }] }, exits: { payday: { actions: ['Pay rent first'], note: 'Straight home' } }, custom: [] });
+      const freeU = await fresh('plans-free');
+      const trialU = await fresh('plans-trial'); await setPlan(trialU, 'trialing');
+      const paidU = await fresh('plans-paid'); await setPlan(paidU, 'active');
+      const lapsedU = await fresh('plans-lapsed'); await setPlan(lapsedU, 'active');
+      for (const [name, who] of [['free', freeU], ['trial', trialU], ['paid', paidU], ['founder', plus], ['lapsed', lapsedU]]) {
+        if (name === 'lapsed') {
+          assert.equal((await who('PUT', '/api/me/plans', { profileId: 'main', plans: doc('saved while Plus') })).status, 200);
+          await setPlan(who, 'canceled');
+          assert.equal((await who('GET', '/api/me/plans?profileId=main')).body.plans.relapse.warnings, 'saved while Plus', 'lapsed keeps its plan');
+        }
+        const put = await who('PUT', '/api/me/plans', { profileId: 'main', plans: doc(`${name} warning signs`) });
+        assert.equal(put.status, 200, `${name}: ${JSON.stringify(put.body)}`);
+        const got = (await who('GET', '/api/me/plans?profileId=main')).body.plans;
+        assert.equal(got.relapse.warnings, `${name} warning signs`, name);
+        assert.deepEqual(got.exits.payday.actions, ['Pay rent first'], name);
+      }
+      // The safety plan saved separately is kept when the relapse plan is edited.
+      assert.equal((await freeU('PUT', '/api/me/safety-plan', { profileId: 'main', safety: { people: ['Sam'] } })).status, 200);
+      assert.equal((await freeU('PUT', '/api/me/plans', { profileId: 'main', plans: doc('edited again') })).status, 200);
+      assert.deepEqual((await freeU('GET', '/api/me/safety-plan?profileId=main')).body.safety.people, ['Sam']);
+      // One-time import of browser plans works on free too.
+      const imp = await fresh('plans-import');
+      const r = await imp('POST', '/api/me/plans/import', { profileId: 'main', consent: true, plans: doc('from this phone') });
+      assert.equal(r.status, 200);
+      assert.equal(r.body.imported, true);
+      assert.equal(r.body.plans.relapse.warnings, 'from this phone');
+      // Export includes them.
+      assert.equal((await freeU('GET', '/api/me/export?profileId=main')).body.plans.relapse.warnings, 'edited again');
     });
 
     await t.test(`${backend} http: delete my data works on every plan and needs a matching confirm`, async () => {

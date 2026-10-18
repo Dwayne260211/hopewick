@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Hopewick Plus Plans hub: relapse / lapse prevention and exit plans.
+"""Plans hub: relapse / lapse prevention and exit plans.
 
-Free sees the upgrade tease. Plus can build, review, and keep both plans
-on this device. The tab bar stays Home · Chat · DV · Journal · More.
+Free forever on every plan (founder decision, 18 Oct 2026): free, trial, Plus
+and lapsed accounts can all build, review, and keep both plans. The tab bar stays Home · Chat · DV · Journal · More.
 """
 from __future__ import annotations
 
@@ -30,9 +30,10 @@ def test_static_plans_hub():
     assert 'id="plansDlg"' in text
     assert 'id="plansGate"' in text
     assert 'id="plansDisclaimer"' in text
-    assert 'id="plansWorkspace"' not in text
+    assert 'id="plansWorkspace"' in text  # free forever, so the editor is in the page
     editors = json.loads((ROOT / "server" / "library" / "plus-editors.json").read_text(encoding="utf-8"))
-    assert 'id="plansWorkspace"' in editors["plans"]
+    assert "plans" not in editors
+    assert 'id="plansPlusPill"' not in text and 'id="plansTitlePill"' not in text
     assert 'id="journalWorkspace"' in text  # basic journal entries are free (founder model)
     assert 'id="resumeBuilder"' not in text
     assert 'id="goalsEditor"' not in text
@@ -43,7 +44,7 @@ def test_static_plans_hub():
     assert "Self-help only — not a counsellor or a crisis service" in text
     assert "A lapse is not a failure" in text
     assert "Your clean time tracker is separate" in text
-    assert "Relapse and exit plans are part of Hopewick Plus" in text
+    assert "Relapse and exit plans are part of Hopewick Plus" not in text
     assert "Open Plans" in text
     assert "Do not add plans on a crisis reply." in text
     assert "HALT check" in text
@@ -52,8 +53,8 @@ def test_static_plans_hub():
     assert "Code-word call someone" in text
     assert "Limit money or keys" in text
     assert "My exits" in text
-    assert "Relapse and exit plans — private, on this device or your account" in text
-    assert "Relapse and exit plans — private on this device, or with your account when you choose" in landing
+    assert "Your safety plan, and relapse prevention and exit plans — private, on this device or your account" in text
+    assert "Relapse prevention and exit plans — private on this device, or with your account when you choose" in landing
     # Still under More. Not a new primary tab.
     assert "{ id: 'journal', title: 'Journal'" in text  # Tools hub (Hopewick 2.0)
     assert 'id="appTabHome"' in text
@@ -95,7 +96,7 @@ def _open_plans(page):
     page.wait_for_function("() => document.getElementById('plansDlg')?.open === true")
 
 
-def test_plans_free_gate_and_plus_builders():
+def test_plans_are_free_builders():
     from playwright.sync_api import sync_playwright
 
     httpd = _server()
@@ -122,30 +123,13 @@ def test_plans_free_gate_and_plus_builders():
             assert "A lapse is not a failure" in free_text
             assert "Get help now" in free_text
             assert "13 11 14" in free_text
-            assert "Relapse and exit plans are part of Hopewick Plus" in free_text
-            assert page.locator("#plansWorkspace").is_hidden()
-            assert page.locator("#planWarnings").count() == 0
-            assert page.locator("#planExitActions").count() == 0
-            assert page.locator("#plansPlusBtn").is_visible()
-            assert page.evaluate("() => document.getElementById('plansPlusPill').hidden") is False
-
-            with page.expect_request("**/api/billing/checkout"):
-                page.click("#plansPlusBtn")
-            page.evaluate("() => openAccountDlg()")
-            page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
-            assert "Relapse and exit plans — private, on this device or your account" in page.inner_text("#accountDlg")
-            assert "15 messages/day" in page.inner_text("#accountDlg")
-            page.keyboard.press("Escape")
-            page.wait_for_function("() => document.getElementById('accountDlg')?.open !== true")
-
-            grant_server_session(page, plus=True, founder=False)
-            page.evaluate("() => { renderPlans(); syncPlusFeaturePills(); }")
-            if not page.evaluate("() => document.getElementById('plansDlg').open"):
-                _open_plans(page)
-                page.evaluate("() => { renderPlans(); syncPlusFeaturePills(); }")
+            # Free account: no upgrade tease, the builders are right there.
+            assert "part of Hopewick Plus" not in free_text
+            assert page.evaluate("() => subscriptionPlus()") is False
             page.wait_for_selector("#plansWorkspace:not([hidden])")
-            assert page.evaluate("() => document.getElementById('plansPlusPill').hidden") is True
             assert page.locator("#plansGate").is_hidden()
+            assert page.locator("#plansPlusBtn").count() == 0
+            assert page.locator("#plansPlusPill").count() == 0
             assert "A lapse is not a failure" in page.inner_text("#plansDisclaimer")
 
             dlg = page.locator("#plansDlg")
