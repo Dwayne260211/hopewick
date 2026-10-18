@@ -57,12 +57,15 @@ def test_phone_gates_free_then_plus():
             page.click("#appTabTools")
             page.click('#toolsHub [data-hub="journal"]')
             page.wait_for_selector("#journalView:not([hidden])")
-            assert page.locator("#journalWorkspace").is_hidden()
-            assert page.locator("#jBody").is_hidden()
-            assert page.locator("#journalPlusBtn").is_visible()
+            # Founder model: basic journal entries are free; Plus adds refinements.
+            assert page.locator("#journalWorkspace").is_visible()
+            assert page.locator("#jBody").is_visible()
+            assert page.locator("#jRefineBtn").is_hidden()
+            assert page.locator("#journalGate").is_hidden()
+            assert page.evaluate("() => [...document.querySelectorAll('#jKind option[data-plus]')].every((o) => o.disabled)")
             journal = page.inner_text("#journalView")
-            assert "Start 7-day free trial" in journal
-            assert "part of Hopewick Plus" in journal
+            assert "Writing here is free" in journal
+            assert "Hopewick Plus adds gratitude and recovery entries" in journal
             overflow = page.evaluate(
                 """() => ({
                   sw: document.documentElement.scrollWidth,
@@ -71,8 +74,10 @@ def test_phone_gates_free_then_plus():
             )
             assert overflow["sw"] <= overflow["cw"] + 1
 
+            page.click("#jComparePlus")
+            page.wait_for_selector("#hw3CompareUpgrade")
             with page.expect_request("**/api/billing/checkout") as checkout_req:
-                page.click("#journalPlusBtn")
+                page.click("#hw3CompareUpgrade")
             assert checkout_req.value.method == "POST"
             page.evaluate("() => openAccountDlg()")
             page.wait_for_function("() => document.getElementById('accountDlg')?.open === true")
@@ -168,8 +173,9 @@ def test_phone_gates_free_then_plus():
 
             _grant_plus(page, False)
             page.evaluate("() => { setAppTab('journal'); }")
-            assert page.locator("#journalWorkspace").is_hidden()
-            assert page.locator("#journalPlusBtn").is_visible()
+            assert page.locator("#journalWorkspace").is_visible(), "basic writing stays free"
+            assert page.locator("#jRefineBtn").is_hidden(), "Deepen with Hope is Plus"
+            assert "A line for today" in page.inner_text("#journalList"), "a lapsed account keeps its entries"
             assert not errors, errors
             browser.close()
     finally:

@@ -122,9 +122,12 @@ def test_daily_checkin_save_edit_trends_consent_delete(server, browser):
     page.click("#hw3Trends summary")
     table = page.inner_text("#hw3Trends table")
     assert "Good" in table and "Work or study" in table
-    page.click("#hw3TrendMonth")
-    assert "last 30 days" in page.inner_text("#hw3TrendSummary")
     assert page.locator("#hw3Trends svg[role=img]").count() == 1
+    # The month view is Plus (founder model). Free sees a kind note, not a lock-out.
+    page.click("#hw3TrendMonth")
+    assert "Your last 7 days are always here, free" in page.inner_text("#hw3MonthPlus")
+    page.click("#hw3TrendWeek")
+    page.wait_for_selector("#hw3TrendSummary")
 
     # Consent: off by default, saved on the server, revocable.
     sw = page.locator("#hw3ShareSwitch")

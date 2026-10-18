@@ -1481,9 +1481,12 @@ test('plus library stays off the free page and crisis at the cap does not call t
     const hiddenEditors = await fetch(`${app.base}/server/library/plus-editors.json`);
     assert.equal(hiddenEditors.status, 404);
     const page = await (await fetch(`${app.base}/app/`)).text();
-    for (const id of ['journalWorkspace', 'resumeBuilder', 'goalsEditor', 'plansWorkspace', 'jBody', 'resumeName']) {
+    for (const id of ['resumeBuilder', 'goalsEditor', 'plansWorkspace', 'resumeName']) {
       assert.equal(page.includes(`id="${id}"`), false, id);
     }
+    // Basic journal writing is free (founder model), so its editor is in the page for everyone.
+    assert.equal(page.includes('id="journalWorkspace"'), true);
+    assert.equal(page.includes('id="jBody"'), true);
 
     const trial = await signIn(app.base, 'library-trial@example.com');
     const trialSet = await fetch(`${app.base}/api/billing/dev-set`, {
@@ -1498,7 +1501,7 @@ test('plus library stays off the free page and crisis at the cap does not call t
     assert.equal(trialLib.jft.length, 365);
     assert.ok(trialLib.nutritionCards.length > 0);
     assert.ok(trialLib.goingDeeper.length > 0);
-    assert.match(trialLib.editors.journal, /id="journalWorkspace"/);
+    assert.equal(trialLib.editors.journal, undefined, 'the journal editor is no longer a Plus-only mount');
     assert.match(trialLib.editors.resume, /id="resumeName"/);
     assert.match(trialLib.editors.goals, /id="goalsEditor"/);
     assert.match(trialLib.editors.plans, /id="plansWorkspace"/);
