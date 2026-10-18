@@ -39,6 +39,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <link rel="stylesheet" href="/assets/hopewick-tokens.css">
 <link rel="stylesheet" href="/assets/hopewick-ui.css">
 <link rel="stylesheet" href="hw-stage3.css">
+<link rel="stylesheet" href="hw-stage4.css">
 <script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
@@ -3617,6 +3618,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 <script src="resume.js"></script>
 <script src="data/coping-tools.js"></script>
 <script src="hw-stage3.js"></script>
+<script src="hw-stage4.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -5155,8 +5157,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
-  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules'];
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
   const changed = appTab !== next;
   appTab = next;
@@ -5174,7 +5176,7 @@ function setAppTab(tab, opts = {}) {
   const hwView = document.getElementById('hwFeatureView');
   if (hwView) {
     hwView.hidden = !HW3_TAB.includes(next);
-    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step' }[next] || 'Wellbeing tools');
+    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules' }[next] || 'Wellbeing tools');
   }
   if (window.HW3 && next !== 'coping') HW3.stopTimers();
   if (el.toolsView) el.toolsView.hidden = next !== 'tools';
@@ -5262,8 +5264,8 @@ function setAppTab(tab, opts = {}) {
 /** Which bottom-bar / sidebar section a screen belongs to. */
 function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
-  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety') return 'tools';
-  if (tab === 'learn' || tab === 'info') return 'learn';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety' || tab === 'recovery') return 'tools';
+  if (tab === 'learn' || tab === 'info' || tab === 'modules') return 'learn';
   if (tab === 'home' || tab === 'checkin') return 'home';
   return '';
 }
@@ -6348,9 +6350,10 @@ function renderToolsHub() {
   ]);
   hubSection(box, 'Track and reflect', [
     { id: 'checkin', title: 'Daily check-in', desc: 'Mood, feelings, triggers and trends. Always free.', icon: 'chart', action: () => setAppTab('checkin') },
+    { id: 'recovery', title: 'Recovery tracker', desc: 'Your goals, day counts, milestones, cravings and lapses. Free. Plus adds full history and trends.', icon: 'sprout', action: () => setAppTab('recovery') },
     { id: 'nextstep', title: 'My next step', desc: 'One small step you have chosen. Always free. Plus adds weekly plans.', icon: 'step', action: () => setAppTab('nextstep') },
     { id: 'mygoals', title: 'Personal goals', desc: 'Wellbeing, recovery and growth goals, at your pace.', icon: 'target', plus: true, action: () => setAppTab('mygoals') },
-    { id: 'cleantime', title: 'Clean time', desc: 'Your days and milestones.', icon: 'sprout', action: () => openCleanTime() },
+    { id: 'cleantime', title: 'Clean time', desc: 'A simple day counter from the sober start date in Settings.', icon: 'sprout', action: () => openCleanTime() },
     { id: 'journal', title: 'Journal', desc: 'Write it down, with prompts. Free. Plus adds guided series and Deepen with Hope.', icon: 'book', action: () => openJournal() },
     { id: 'goals', title: 'SMART goals', desc: 'One or two small goals for this week.', icon: 'target', plus: true, action: () => openGoals() },
     { id: 'memories', title: 'Memories', desc: 'What ' + companionName() + ' remembers about you.', icon: 'leaf', action: () => openMemories() },
@@ -6377,6 +6380,9 @@ function renderLearnHub() {
   hubSection(box, 'Daily', [
     { id: 'today', title: 'Today’s readings', desc: 'Word for the day and Just for today.', icon: 'sun', tone: 'gold', action: () => openTodayReading() },
     { id: 'news', title: 'News and resources', desc: 'Drug alerts, naloxone and trusted sources.', icon: 'news', action: () => setAppTab('info') },
+  ]);
+  hubSection(box, 'Learning modules', [
+    { id: 'modules', title: 'Learning modules', desc: 'Cravings, sleep, stress, harm reduction, support, and CBT, ACT and DBT skills. About 5 minutes each. Core modules always free.', icon: 'learn', tone: 'gold', action: () => setAppTab('modules') },
   ]);
   hubSection(box, 'Recovery pathways', [
     { id: 'steps', title: '12 Steps', desc: 'Work through the steps at your own pace.', icon: 'steps', action: () => openSteps() },
@@ -14664,12 +14670,14 @@ function appendPlusOffer(body) {
       'Get Help, crisis support, and domestic and family violence resources',
       'Your safety plan, and relapse prevention and exit plans — private, on this device or your account',
       'The daily check-in, the 12 core coping tools, My next step and the journal',
+      'The recovery tracker (goals, day counts, milestones, cravings and lapses) and 7 core learning modules',
       'Today’s Readings, the clean-time tracker, Bible & SOAP and the 12-step outline',
       'Exporting or deleting everything you saved. If Plus ends, nothing is deleted',
       'Hope chat on Free is 15 messages a day',
     ]],
     ['history', 'Check-ins and history', 'Free shows the last 7 days in the app. Plus shows your full history.', [
       'Full history in the app, and the month view',
+      'Recovery tracker: full log history, and trends over 30 and 90 days',
       'Hopewick Plus can open stored history that is still there. A free account can open the latest chat. Older chats can still be stored. Not seeing them is not deletion.',
     ]],
     ['journal', 'Journal', 'Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.', [
@@ -14678,6 +14686,7 @@ function appendPlusOffer(body) {
     ['tools', 'Tools and new releases', 'No daily message limit with Hope, new tools first, and the learning library.', [
       'No daily message limit with Hope',
       'New coping tools and journal packs first (free 6 to 12 months later)',
+      'New learning modules each week, first (free 6 months later)',
       'Resume builder, kept on this device',
       'Nutrition notes — rebuild the basics, and explore food and supplements with clear evidence',
       'Gut health and neuroplasticity notes — plain language, Plus only',

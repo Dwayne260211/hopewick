@@ -1,0 +1,1403 @@
+{
+ "_readme": "Learning modules for Hopewick education pathways. All wording is original Hopewick text (no third-party text, scripts or worksheets reproduced). Schedule and Plus dates live in content-releases.json (kind: module). See docs/CONTENT-SOURCES.md.",
+ "version": 1,
+ "review": "pending",
+ "modules": [
+  {
+   "id": "cravings-triggers",
+   "title": "Cravings and triggers",
+   "topic": "Recovery",
+   "minutes": 5,
+   "summary": "What a craving is, what sets one off, and a few ways to ride one out.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "What a craving is",
+     "cards": [
+      {
+       "title": "Cravings are common",
+       "body": "Cravings are a normal part of cutting down or stopping. Having one does not mean something has gone wrong, or that you will act on it."
+      },
+      {
+       "title": "They rise and fall",
+       "body": "A craving tends to build, peak and then ease, often within half an hour or so. Knowing it will pass can make it easier to wait it out."
+      },
+      {
+       "title": "Triggers set them off",
+       "body": "A trigger can be a place, a person, a time of day, a feeling, a smell, payday or an argument. Everyone's list is different."
+      },
+      {
+       "title": "A quick HALT check",
+       "body": "Hungry, Angry, Lonely, Tired. Any of these can make a craving louder. Checking in with HALT can point to what you actually need right now."
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "A craving usually…",
+       "options": [
+        "keeps getting stronger until you give in",
+        "rises, peaks and then eases",
+        "means your recovery has failed"
+       ],
+       "answer": 1,
+       "right": "That's it. Cravings tend to move like a wave, even when it doesn't feel that way.",
+       "wrong": "Not quite, and that's okay. Cravings usually rise, peak and ease, even when they feel like they will last forever."
+      },
+      {
+       "q": "Which of these can be a trigger?",
+       "options": [
+        "A place",
+        "A feeling",
+        "A time of day",
+        "Any of these"
+       ],
+       "answer": 3,
+       "right": "Yes. Triggers can be almost anything, which is why noticing your own matters.",
+       "wrong": "Close. All of these can be triggers, and everyone's mix is different."
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "title": "Ways to get through one",
+     "cards": [
+      {
+       "title": "Delay",
+       "body": "Tell yourself you'll decide in 15 minutes. Set a timer. Often the urge has eased by then."
+      },
+      {
+       "title": "Do something else",
+       "body": "Move your body, have a shower, make a cuppa, or do something with your hands."
+      },
+      {
+       "title": "Breathe out slowly",
+       "body": "Make your out-breath longer than your in-breath for a minute or two."
+      },
+      {
+       "title": "Reach out",
+       "body": "Text or call someone you trust. You don't have to explain everything."
+      },
+      {
+       "title": "Surf the urge",
+       "body": "Notice where you feel the craving in your body and watch it change, without acting on it. The urge surfing tool walks you through it."
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Think of a recent craving. What was going on just before it? Where were you, who were you with, and how were you feeling?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Make a 15-minute plan for my next craving",
+      "detail": "Pick one thing to do for 15 minutes when a craving shows up, like a walk, a shower or texting someone.",
+      "copingKey": "urge-surfing"
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Alcohol and Drug Foundation",
+     "title": "Reducing risk",
+     "url": "https://adf.org.au/reducing-risk/"
+    },
+    {
+     "org": "healthdirect",
+     "title": "Drugs and alcohol",
+     "url": "https://www.healthdirect.gov.au/drugs-and-alcohol"
+    },
+    {
+     "org": "Bowen, Chawla and Marlatt",
+     "title": "Mindfulness-Based Relapse Prevention for Addictive Behaviors, 2nd edition (2021). Book reference, concepts only."
+    }
+   ]
+  },
+  {
+   "id": "sleep-basics",
+   "title": "Sleep basics",
+   "topic": "Wellbeing",
+   "minutes": 5,
+   "summary": "Simple habits that help sleep, and why sleep matters in recovery.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "Why sleep matters",
+     "cards": [
+      {
+       "title": "Sleep and mood go together",
+       "body": "When sleep is poor, stress, low mood and cravings can all feel bigger. Small changes to sleep habits often help."
+      },
+      {
+       "title": "Early recovery can be bumpy",
+       "body": "Sleep is often unsettled when someone cuts down or stops drinking or using. It usually settles, but it can take time."
+      },
+      {
+       "title": "Alcohol and sleep",
+       "body": "Alcohol can make you drowsy, but it tends to break up sleep later in the night, so you wake less rested."
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "title": "Habits that help",
+     "cards": [
+      {
+       "title": "Same wake-up time",
+       "body": "Getting up at about the same time every day, weekends included, helps set your body clock."
+      },
+      {
+       "title": "A wind-down hour",
+       "body": "Dim the lights and put screens away for the last part of the evening. Do something calm."
+      },
+      {
+       "title": "Go easy on stimulants",
+       "body": "Caffeine and nicotine can keep you awake for hours. Try to have them earlier in the day."
+      },
+      {
+       "title": "If you can't sleep",
+       "body": "If you've been lying awake for a while, get up and do something quiet in dim light, then go back to bed when you feel sleepy."
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "Which habit helps set your body clock?",
+       "options": [
+        "Sleeping in on weekends to catch up",
+        "Getting up at about the same time each day",
+        "Scrolling in bed until you feel tired"
+       ],
+       "answer": 1,
+       "right": "Yes. A steady wake-up time is one of the simplest things to try.",
+       "wrong": "Not quite. A steady wake-up time, weekends included, is what helps most here."
+      },
+      {
+       "q": "Alcohol before bed…",
+       "options": [
+        "can make you drowsy but tends to break up sleep later",
+        "always gives deeper sleep"
+       ],
+       "answer": 0,
+       "right": "Right. It can feel like it helps, but sleep later in the night is often lighter.",
+       "wrong": "Not quite. Alcohol can help you nod off but usually breaks up sleep later in the night."
+      }
+     ]
+    },
+    {
+     "type": "timer",
+     "title": "A wind-down breath",
+     "intro": "Breathe in gently, then breathe out a little longer. Follow along for about a minute, or stop whenever you like.",
+     "repeat": 6,
+     "phases": [
+      {
+       "label": "Breathe in",
+       "text": "Breathe in gently through your nose.",
+       "seconds": 4
+      },
+      {
+       "label": "Breathe out",
+       "text": "Breathe out slowly, a little longer than the in-breath.",
+       "seconds": 6
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "What's one thing that tends to get in the way of your sleep?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Pick a wake-up time for the next 7 days",
+      "detail": "Choose a time you can stick to most days, and set an alarm for it.",
+      "copingKey": "breathing-calm"
+     }
+    }
+   ],
+   "note": "If sleep problems go on for more than a few weeks, or you are going through withdrawal, talk to your GP.",
+   "sources": [
+    {
+     "org": "Sleep Health Foundation",
+     "title": "Sleep topics and fact sheets",
+     "url": "https://www.sleephealthfoundation.org.au/"
+    },
+    {
+     "org": "healthdirect",
+     "title": "Sleep",
+     "url": "https://www.healthdirect.gov.au/sleep"
+    }
+   ]
+  },
+  {
+   "id": "stress-anxiety",
+   "title": "Stress and anxiety basics",
+   "topic": "Wellbeing",
+   "minutes": 5,
+   "summary": "What stress and anxiety feel like in the body, and small things that can help.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "What's going on",
+     "cards": [
+      {
+       "title": "Stress",
+       "body": "Stress is how we react to pressure, like money worries, work or family. A bit of it is part of life. Too much for too long wears us down."
+      },
+      {
+       "title": "Anxiety",
+       "body": "Anxiety is worry or fear that hangs around, or feels bigger than the situation. It is very common, and support helps."
+      },
+      {
+       "title": "Your body's alarm",
+       "body": "A racing heart, tight chest, fast breathing or an upset stomach are signs your body's alarm system has switched on. It feels awful, and it does settle."
+      },
+      {
+       "title": "Avoiding can keep it going",
+       "body": "Avoiding what makes us anxious brings quick relief, but over time the worry can grow. Small, steady steps towards things usually help more."
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "title": "Small things that help",
+     "cards": [
+      {
+       "title": "Slow your breathing",
+       "body": "A longer out-breath can help your body settle."
+      },
+      {
+       "title": "Move",
+       "body": "A short walk or some stretching can burn off some of the stress energy."
+      },
+      {
+       "title": "Cut back on caffeine",
+       "body": "Caffeine can feel a lot like anxiety in the body."
+      },
+      {
+       "title": "Talk to someone",
+       "body": "Saying it out loud to someone you trust can make it feel more manageable."
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "Which can keep anxiety going over time?",
+       "options": [
+        "Taking small steps towards what worries you",
+        "Avoiding everything that makes you anxious",
+        "Talking to someone you trust"
+       ],
+       "answer": 1,
+       "right": "That's right. Avoiding brings quick relief, but it can make the worry grow.",
+       "wrong": "Not quite. Avoiding helps in the moment, but over time it can keep anxiety going."
+      },
+      {
+       "q": "When might it be time to get more support?",
+       "options": [
+        "When worry gets in the way of daily life for a few weeks",
+        "Only when things are an emergency"
+       ],
+       "answer": 0,
+       "right": "Yes. You don't need to wait for a crisis. A GP is a good first step.",
+       "wrong": "You don't have to wait for an emergency. If worry is getting in the way for a few weeks, a GP or Beyond Blue can help."
+      }
+     ]
+    },
+    {
+     "type": "timer",
+     "title": "Slow breathing",
+     "intro": "Follow the prompts for about a minute. Breathe gently, without forcing it.",
+     "repeat": 6,
+     "phases": [
+      {
+       "label": "Breathe in",
+       "text": "Breathe in gently.",
+       "seconds": 4
+      },
+      {
+       "label": "Breathe out",
+       "text": "Breathe out slowly and let your shoulders drop.",
+       "seconds": 6
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Where do you notice stress or worry in your body? What usually helps, even a little?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Do a five-minute stress reset",
+      "detail": "Take five minutes today for the stress reset tool, or a short walk.",
+      "copingKey": "stress-reset"
+     }
+    }
+   ],
+   "note": "If you have chest pain or trouble breathing and you're not sure why, call 000.",
+   "sources": [
+    {
+     "org": "Beyond Blue",
+     "title": "Stress",
+     "url": "https://www.beyondblue.org.au/mental-health/stress"
+    },
+    {
+     "org": "Beyond Blue",
+     "title": "Anxiety",
+     "url": "https://www.beyondblue.org.au/mental-health/anxiety"
+    },
+    {
+     "org": "Beyond Blue",
+     "title": "Treatments for anxiety",
+     "url": "https://www.beyondblue.org.au/mental-health/anxiety/treatments-for-anxiety"
+    },
+    {
+     "org": "healthdirect",
+     "title": "Stress",
+     "url": "https://www.healthdirect.gov.au/stress"
+    },
+    {
+     "org": "healthdirect",
+     "title": "Anxiety",
+     "url": "https://www.healthdirect.gov.au/anxiety"
+    },
+    {
+     "org": "THIS WAY UP (St Vincent's Hospital Sydney)",
+     "title": "Learning hub",
+     "url": "https://thiswayup.org.au/learning-hub/"
+    }
+   ]
+  },
+  {
+   "id": "harm-reduction",
+   "title": "Staying safer: harm reduction basics",
+   "topic": "Recovery",
+   "minutes": 5,
+   "summary": "Practical ways to lower risk, whether or not you're cutting down or stopping.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "What harm reduction means",
+     "cards": [
+      {
+       "title": "Every safer step counts",
+       "body": "Harm reduction means lowering the risks of drinking or using, wherever you are at. You don't have to be stopping for it to matter."
+      },
+      {
+       "title": "Alcohol guidelines",
+       "body": "Australian guidelines say healthy adults should drink no more than 10 standard drinks a week and no more than 4 on any one day, to reduce health risks. Less is safer."
+      },
+      {
+       "title": "Tolerance drops after a break",
+       "body": "If you've had a break, even a short one, your body may not handle the amount it used to. That raises the risk of overdose."
+      },
+      {
+       "title": "Mixing raises risk",
+       "body": "Mixing drugs, or drugs with alcohol or some medicines, can be much riskier than either alone."
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "title": "If you do use",
+     "cards": [
+      {
+       "title": "Don't use alone",
+       "body": "Let someone you trust know, so they can get help if something goes wrong."
+      },
+      {
+       "title": "Start low, go slow",
+       "body": "Use a smaller amount first and wait, especially if anything is new or you've had a break."
+      },
+      {
+       "title": "Naloxone",
+       "body": "Naloxone can temporarily reverse an opioid overdose. Through the Take Home Naloxone program it's free in Australia, with no prescription, from participating pharmacies and some health services. Always call 000 as well, because it wears off."
+      },
+      {
+       "title": "In an emergency, call 000",
+       "body": "If someone is hard to wake, breathing strangely or not breathing, call 000 straight away. Paramedics are there to help, not to judge."
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "After a break from using, your tolerance…",
+       "options": [
+        "is usually higher than before",
+        "may be lower, which raises the risk of overdose",
+        "stays exactly the same"
+       ],
+       "answer": 1,
+       "right": "Right. This is one of the most important safety points to know.",
+       "wrong": "Not quite. After a break, tolerance can drop, so the old amount can be riskier."
+      },
+      {
+       "q": "Someone is hard to wake and breathing strangely. What's the first thing to do?",
+       "options": [
+        "Let them sleep it off",
+        "Call 000"
+       ],
+       "answer": 1,
+       "right": "Yes. Call 000 straight away.",
+       "wrong": "Please call 000 straight away. It's always okay to call."
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Which one safer step could fit your life right now?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Save the National Alcohol and Other Drug Hotline",
+      "detail": "Put 1800 250 015 in your phone. It's free and confidential, 24 hours a day in most states."
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Alcohol and Drug Foundation",
+     "title": "Reducing risk",
+     "url": "https://adf.org.au/reducing-risk/"
+    },
+    {
+     "org": "National Health and Medical Research Council",
+     "title": "Australian guidelines to reduce health risks from drinking alcohol (2020)",
+     "url": "https://www.nhmrc.gov.au/health-advice/alcohol"
+    },
+    {
+     "org": "Australian Government Department of Health",
+     "title": "Take Home Naloxone program",
+     "url": "https://www.health.gov.au/our-work/take-home-naloxone-program/about-the-take-home-naloxone-program"
+    },
+    {
+     "org": "healthdirect",
+     "title": "Drugs and alcohol",
+     "url": "https://www.healthdirect.gov.au/drugs-and-alcohol"
+    },
+    {
+     "org": "Australian Government Department of Health",
+     "title": "National Alcohol and Other Drug Hotline",
+     "url": "https://www.health.gov.au/contacts/national-alcohol-and-other-drug-hotline"
+    }
+   ]
+  },
+  {
+   "id": "support-australia",
+   "title": "Getting support in Australia",
+   "topic": "Support",
+   "minutes": 4,
+   "summary": "Free and low-cost places to turn, by phone, online or in person.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "Where to start",
+     "cards": [
+      {
+       "title": "Your GP",
+       "body": "A GP can talk through what's going on, check your physical health, and may set up a Mental Health Treatment Plan for Medicare-subsidised sessions with a psychologist or other mental health professional."
+      },
+      {
+       "title": "National Alcohol and Other Drug Hotline",
+       "body": "1800 250 015. Free and confidential, 24 hours a day (in South Australia, 8.30 am to 10 pm). Connects you with the alcohol and drug service in your state or territory."
+      },
+      {
+       "title": "Counselling Online",
+       "body": "Free alcohol and drug counselling by chat or email, any time, at counsellingonline.org.au. Also for family and friends."
+      },
+      {
+       "title": "Beyond Blue",
+       "body": "1300 22 4636 for support with anxiety, depression and stress, any time."
+      },
+      {
+       "title": "13YARN",
+       "body": "13 92 76. For Aboriginal and Torres Strait Islander people, run by Aboriginal and Torres Strait Islander crisis supporters, any time."
+      },
+      {
+       "title": "In a crisis",
+       "body": "Lifeline 13 11 14 (any time), or call 000 if you or someone else is in danger."
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "Who can set up a Mental Health Treatment Plan?",
+       "options": [
+        "A GP",
+        "Only a hospital",
+        "A pharmacist"
+       ],
+       "answer": 0,
+       "right": "Yes. Booking a longer GP appointment gives you time to talk it through.",
+       "wrong": "It's a GP. Booking a longer appointment helps."
+      },
+      {
+       "q": "The National Alcohol and Other Drug Hotline is…",
+       "options": [
+        "only for emergencies",
+        "free and confidential, 24 hours a day in most states"
+       ],
+       "answer": 1,
+       "right": "That's right: 1800 250 015.",
+       "wrong": "It's free and confidential, 24 hours a day in most states: 1800 250 015. You don't need to be in an emergency."
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Who is one person or service you could reach out to this week?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Save one support number in my phone",
+      "detail": "Pick one: 1800 250 015 (alcohol and drugs), 13 11 14 (Lifeline) or your GP's number."
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Australian Government Department of Health",
+     "title": "National Alcohol and Other Drug Hotline",
+     "url": "https://www.health.gov.au/contacts/national-alcohol-and-other-drug-hotline"
+    },
+    {
+     "org": "Counselling Online (Turning Point)",
+     "title": "Free 24/7 alcohol and drug counselling",
+     "url": "https://www.counsellingonline.org.au/"
+    },
+    {
+     "org": "Beyond Blue",
+     "title": "Get support",
+     "url": "https://www.beyondblue.org.au/get-support"
+    },
+    {
+     "org": "13YARN",
+     "title": "13 92 76",
+     "url": "https://www.13yarn.org.au/"
+    },
+    {
+     "org": "Lifeline Australia",
+     "title": "13 11 14",
+     "url": "https://www.lifeline.org.au/"
+    },
+    {
+     "org": "Alcohol and Drug Foundation",
+     "title": "Help and support",
+     "url": "https://adf.org.au/help-support/"
+    }
+   ]
+  },
+  {
+   "id": "cbt-basics",
+   "title": "Thoughts, feelings and actions (CBT basics)",
+   "topic": "Skills",
+   "minutes": 5,
+   "approach": "CBT",
+   "summary": "How thoughts, feelings and actions link up, and how to spot common thinking traps.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "How it fits together",
+     "cards": [
+      {
+       "title": "The link",
+       "body": "Cognitive behavioural therapy (CBT) looks at how what we think, feel and do affect each other. A situation sparks a thought, the thought shapes a feeling, and the feeling pulls us towards an action."
+      },
+      {
+       "title": "Thoughts are not facts",
+       "body": "Thoughts are things our minds offer up, quickly and automatically. Some are helpful, some aren't. They're worth checking before we act on them."
+      },
+      {
+       "title": "Noticing comes first",
+       "body": "You can't change what you don't notice. Catching a thought, and naming it, is the first skill."
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "title": "Common thinking traps",
+     "cards": [
+      {
+       "title": "All-or-nothing",
+       "body": "Seeing things as total success or total failure. \"I slipped once, so it's all ruined.\""
+      },
+      {
+       "title": "Catastrophising",
+       "body": "Jumping to the worst possible outcome. \"If I go to that party, it'll be a disaster.\""
+      },
+      {
+       "title": "Mind reading",
+       "body": "Assuming you know what others think. \"They think I'm hopeless.\""
+      },
+      {
+       "title": "Should statements",
+       "body": "Rigid rules for yourself. \"I should be over this by now.\""
+      },
+      {
+       "title": "Labelling",
+       "body": "Turning one moment into who you are. \"I'm a failure.\""
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "\"I had one drink, so I've blown it completely.\" Which thinking trap is this most like?",
+       "options": [
+        "Mind reading",
+        "All-or-nothing thinking",
+        "Should statements"
+       ],
+       "answer": 1,
+       "right": "Yes. One lapse is one moment, not the whole story.",
+       "wrong": "It's closest to all-or-nothing thinking. One lapse doesn't cancel out everything else."
+      },
+      {
+       "q": "Thoughts are…",
+       "options": [
+        "always true",
+        "ideas our minds offer, worth checking"
+       ],
+       "answer": 1,
+       "right": "Exactly.",
+       "wrong": "Thoughts can feel true, but they're ideas our minds offer. They're worth checking."
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Write down a thought that's been on repeat lately. Does it look like any of the thinking traps?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Catch one thought today",
+      "detail": "When you notice a strong feeling, pause and ask: what was I just thinking? Try the thought reframing tool if it helps.",
+      "copingKey": "thought-reframe"
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Centre for Clinical Interventions (WA Health)",
+     "title": "Looking after yourself: self-help resources",
+     "url": "https://www.cci.health.wa.gov.au/Resources/Looking-After-Yourself"
+    },
+    {
+     "org": "THIS WAY UP (St Vincent's Hospital Sydney)",
+     "title": "Learning hub",
+     "url": "https://thiswayup.org.au/learning-hub/"
+    },
+    {
+     "org": "Beyond Blue",
+     "title": "Treatments for anxiety",
+     "url": "https://www.beyondblue.org.au/mental-health/anxiety/treatments-for-anxiety"
+    },
+    {
+     "org": "Black Dog Institute",
+     "title": "Resources and support",
+     "url": "https://www.blackdoginstitute.org.au/resources-support/"
+    }
+   ]
+  },
+  {
+   "id": "act-unhooking",
+   "title": "Unhooking from difficult thoughts (ACT basics)",
+   "topic": "Skills",
+   "minutes": 6,
+   "approach": "ACT",
+   "summary": "Step back from sticky thoughts and steady yourself when feelings run high.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "A different way to relate to thoughts",
+     "cards": [
+      {
+       "title": "What ACT is",
+       "body": "Acceptance and Commitment Therapy (ACT) helps people make room for hard thoughts and feelings, so they have less pull, and put more energy into what matters to them. These ideas are inspired by the work of Dr Russ Harris, author of The Happiness Trap. The wording here is Hopewick's own."
+      },
+      {
+       "title": "Getting hooked",
+       "body": "Sometimes a thought grabs hold and we act as if it's an order or the whole truth. \"I can't cope\" can feel like a fact, not a thought."
+      },
+      {
+       "title": "Unhooking",
+       "body": "Unhooking means noticing a thought as a thought: words and pictures passing through your mind. You don't have to argue with it or obey it."
+      },
+      {
+       "title": "Dropping anchor",
+       "body": "When feelings are like a storm, an anchor doesn't stop the storm. It holds you steady until it passes. You notice what's here, feel your body, and come back to the room around you."
+      }
+     ]
+    },
+    {
+     "type": "defusion",
+     "title": "Try unhooking",
+     "intro": "Type a thought that's been bothering you. Hopewick will show it back to you in a way that gives you a bit of space from it. Nothing you type here is saved.",
+     "prompt": "A thought that's been bothering me"
+    },
+    {
+     "type": "timer",
+     "title": "Drop anchor (about a minute)",
+     "intro": "Follow each prompt at your own pace. You can pause or stop at any time.",
+     "repeat": 1,
+     "phases": [
+      {
+       "label": "Notice",
+       "text": "Notice what's here right now. Silently name it, like \"here's worry\" or \"here's a craving\".",
+       "seconds": 12
+      },
+      {
+       "label": "Feel your body",
+       "text": "Press your feet into the floor. Sit up a little. Slowly press your fingertips together.",
+       "seconds": 12
+      },
+      {
+       "label": "Look around",
+       "text": "Look around and notice five things you can see. Then notice two things you can hear.",
+       "seconds": 15
+      },
+      {
+       "label": "Both are here",
+       "text": "The hard feelings are here, and so is your body, and so is this room around you.",
+       "seconds": 10
+      },
+      {
+       "label": "Next step",
+       "text": "What's one small thing you could do next, that matters to you?",
+       "seconds": 10
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "Unhooking from a thought means…",
+       "options": [
+        "proving the thought wrong",
+        "noticing it as a thought, without having to obey it",
+        "pushing it away until it stops"
+       ],
+       "answer": 1,
+       "right": "That's it. You give it a bit of space instead of a fight.",
+       "wrong": "Not quite. Unhooking means noticing the thought as a thought. No arguing or pushing away needed."
+      },
+      {
+       "q": "Dropping anchor is meant to…",
+       "options": [
+        "make hard feelings disappear",
+        "help you stay steady while hard feelings are here"
+       ],
+       "answer": 1,
+       "right": "Yes. The storm may keep going for a while, and you can stay steady in it.",
+       "wrong": "It's about staying steady while the feelings are here. They may not go away straight away, and that's okay."
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "What thought tends to hook you most? What happens when you notice it as \"just a thought\"?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Drop anchor once today",
+      "detail": "Next time feelings run high, take one minute: notice, feel your feet, look around.",
+      "copingKey": "grounding-54321"
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Dr Russ Harris",
+     "title": "The Happiness Trap (book and program; concepts only, not reproduced)",
+     "url": "https://thehappinesstrap.com/"
+    },
+    {
+     "org": "Dr Russ Harris, ACT Mindfully",
+     "title": "Free resources (link only, not reproduced)",
+     "url": "https://www.actmindfully.com.au/free-stuff/"
+    },
+    {
+     "org": "Black Dog Institute",
+     "title": "Resources and support",
+     "url": "https://www.blackdoginstitute.org.au/resources-support/"
+    }
+   ]
+  },
+  {
+   "id": "dbt-skills",
+   "title": "Riding out intense moments (DBT skills basics)",
+   "topic": "Skills",
+   "minutes": 6,
+   "approach": "DBT",
+   "summary": "STOP, TIPP, opposite action and wise mind, in plain words.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "About DBT",
+     "cards": [
+      {
+       "title": "What DBT is",
+       "body": "Dialectical behaviour therapy (DBT) was developed by psychologist Marsha Linehan. It teaches skills for getting through intense moments and managing strong emotions. This module is a short, general introduction, not DBT therapy."
+      },
+      {
+       "title": "STOP",
+       "body": "Stop: freeze for a moment. Take a step back and breathe. Observe what's going on inside and around you. Proceed mindfully, choosing what will help."
+      },
+      {
+       "title": "TIPP",
+       "body": "Quick body-based skills: cool your face with cold water, do a short burst of movement, slow your breathing, and tense then relax your muscles. Skip cold water or hard exercise if you have a heart condition or other health concern, and check with your doctor."
+      },
+      {
+       "title": "Opposite action",
+       "body": "When an emotion pushes you to do something that won't help, try gently doing the opposite. If fear says hide, take one small step forward. If shame says withdraw, reach out to one person."
+      },
+      {
+       "title": "Wise mind",
+       "body": "DBT describes an emotion mind (feelings in charge) and a reasonable mind (logic in charge). Wise mind is where both meet, that quiet sense of what's right for you."
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "In STOP, what does the O stand for?",
+       "options": [
+        "Observe",
+        "Overthink",
+        "Obey"
+       ],
+       "answer": 0,
+       "right": "Yes: notice what's going on inside and around you.",
+       "wrong": "It's Observe: notice what's happening inside and around you."
+      },
+      {
+       "q": "Fear is telling you to cancel on a friend. What would opposite action look like?",
+       "options": [
+        "Cancel and stay home",
+        "Go, even for a short time"
+       ],
+       "answer": 1,
+       "right": "That's it. Small steps count.",
+       "wrong": "Opposite action would be going, even briefly. Small steps count."
+      },
+      {
+       "q": "Wise mind is…",
+       "options": [
+        "ignoring your feelings",
+        "where emotion and reason meet"
+       ],
+       "answer": 1,
+       "right": "Right.",
+       "wrong": "Wise mind is where feelings and reason meet, not ignoring either."
+      }
+     ]
+    },
+    {
+     "type": "timer",
+     "title": "Paced breathing",
+     "intro": "Slow breathing is one of the TIPP skills. Follow along for about a minute.",
+     "repeat": 6,
+     "phases": [
+      {
+       "label": "Breathe in",
+       "text": "Breathe in slowly.",
+       "seconds": 4
+      },
+      {
+       "label": "Breathe out",
+       "text": "Breathe out even more slowly.",
+       "seconds": 6
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Which of these skills could you use in your hardest moments? What would help you remember it?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Practise STOP once today",
+      "detail": "Use STOP in a small moment of frustration, so it's easier to reach for in a big one.",
+      "copingKey": "stop-skill"
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Marsha M. Linehan",
+     "title": "DBT Skills Training Manual, 2nd edition (Guilford Press, 2015). Book reference, concepts only."
+    },
+    {
+     "org": "Black Dog Institute",
+     "title": "Resources and support",
+     "url": "https://www.blackdoginstitute.org.au/resources-support/"
+    },
+    {
+     "org": "ReachOut Australia",
+     "title": "ReachOut",
+     "url": "https://au.reachout.com/"
+    }
+   ]
+  },
+  {
+   "id": "thought-record",
+   "title": "Your thought record (CBT)",
+   "topic": "Skills",
+   "minutes": 6,
+   "approach": "CBT",
+   "summary": "Slow a hard moment down on paper and find a more balanced view.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "What a thought record is",
+     "cards": [
+      {
+       "title": "Why write it down",
+       "body": "When a thought is in your head, it can feel like the whole truth. Writing it down helps you look at it from a little distance."
+      },
+      {
+       "title": "How it works",
+       "body": "You note the situation, the thought, and how you felt. Then you look for what supports the thought, what doesn't, and a more balanced way to see it."
+      },
+      {
+       "title": "Balanced, not positive",
+       "body": "The aim isn't to force a happy thought. It's to find something fairer and more helpful that you can actually believe."
+      }
+     ]
+    },
+    {
+     "type": "thought-record",
+     "title": "Fill in a thought record",
+     "intro": "Take your time. You can leave any box empty. If you save it, it's kept privately on your account and encrypted."
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "A balanced thought is…",
+       "options": [
+        "a forced positive thought",
+        "a fairer view you can actually believe"
+       ],
+       "answer": 1,
+       "right": "Yes.",
+       "wrong": "It's a fairer view you can believe, not a forced positive one."
+      },
+      {
+       "q": "Why look for evidence against a thought?",
+       "options": [
+        "To prove you were silly",
+        "To see the whole picture, not just the scary part"
+       ],
+       "answer": 1,
+       "right": "Exactly. It's about seeing more of the picture.",
+       "wrong": "It's not about being hard on yourself. It helps you see the whole picture."
+      }
+     ]
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Do one thought record this week",
+      "detail": "Next time a thought knocks you around, come back and fill one in.",
+      "copingKey": "thought-reframe"
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Centre for Clinical Interventions (WA Health)",
+     "title": "Looking after yourself: self-help resources",
+     "url": "https://www.cci.health.wa.gov.au/Resources/Looking-After-Yourself"
+    },
+    {
+     "org": "THIS WAY UP (St Vincent's Hospital Sydney)",
+     "title": "Learning hub",
+     "url": "https://thiswayup.org.au/learning-hub/"
+    },
+    {
+     "org": "Beyond Blue",
+     "title": "Treatments for anxiety",
+     "url": "https://www.beyondblue.org.au/mental-health/anxiety/treatments-for-anxiety"
+    }
+   ]
+  },
+  {
+   "id": "act-values",
+   "title": "What matters to you (ACT values and committed action)",
+   "topic": "Skills",
+   "minutes": 6,
+   "approach": "ACT",
+   "summary": "Sort your values, then choose one small step guided by them.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "Values and goals",
+     "cards": [
+      {
+       "title": "Values are a direction",
+       "body": "In ACT, values are how you want to be and what you want to stand for, like being caring or honest. They're more like a compass than a finish line."
+      },
+      {
+       "title": "Goals are stops on the way",
+       "body": "A goal can be ticked off. A value can't, but it can guide which goals you pick and how you go about them."
+      },
+      {
+       "title": "Committed action",
+       "body": "Committed action means taking steps guided by your values, even when hard thoughts and feelings come along for the ride."
+      }
+     ]
+    },
+    {
+     "type": "values",
+     "title": "Sort your values",
+     "intro": "For each value, choose how important it feels to you right now. There are no right answers.",
+     "saveAs": "values",
+     "items": [
+      "Being caring",
+      "Being honest",
+      "Family",
+      "Friendship",
+      "Health",
+      "Learning",
+      "Fun",
+      "Courage",
+      "Independence",
+      "Community",
+      "Creativity",
+      "Faith or spirituality",
+      "Nature",
+      "Work or contribution",
+      "Being calm",
+      "Respect"
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "Pick one value that matters most right now. What's one small thing you could do this week that fits it?"
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "Which of these is a value rather than a goal?",
+       "options": [
+        "Run 5 km by December",
+        "Looking after my health"
+       ],
+       "answer": 1,
+       "right": "Yes. You can keep living it, every day.",
+       "wrong": "Running 5 km is a goal. Looking after your health is the value behind it."
+      },
+      {
+       "q": "Committed action means…",
+       "options": [
+        "waiting until you feel ready",
+        "taking steps that matter even when it's uncomfortable"
+       ],
+       "answer": 1,
+       "right": "That's it.",
+       "wrong": "It means taking steps that matter even with discomfort along for the ride."
+      }
+     ]
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Take one small step guided by a value",
+      "detail": "Choose something that takes 10 minutes or less and fits a value you sorted as very important."
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Dr Russ Harris",
+     "title": "The Happiness Trap (book and program; concepts only, not reproduced)",
+     "url": "https://thehappinesstrap.com/"
+    },
+    {
+     "org": "Dr Russ Harris, ACT Mindfully",
+     "title": "Free resources (link only, not reproduced)",
+     "url": "https://www.actmindfully.com.au/free-stuff/"
+    },
+    {
+     "org": "Black Dog Institute",
+     "title": "Resources and support",
+     "url": "https://www.blackdoginstitute.org.au/resources-support/"
+    }
+   ]
+  },
+  {
+   "id": "behavioural-activation",
+   "title": "Doing more of what helps (behavioural activation)",
+   "topic": "Skills",
+   "minutes": 5,
+   "approach": "CBT",
+   "summary": "Break the low-mood cycle with small, planned activities.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "The low-mood cycle",
+     "cards": [
+      {
+       "title": "Doing less, feeling worse",
+       "body": "When mood is low, we often do less. Doing less can mean fewer good moments, which can make mood lower again."
+      },
+      {
+       "title": "Action can come first",
+       "body": "Waiting to feel motivated can mean waiting a long time. Behavioural activation flips it: do a small thing first, and mood often follows a little."
+      },
+      {
+       "title": "Two kinds of activity",
+       "body": "Some activities bring enjoyment (a walk, music, a cuppa with a friend). Others bring a sense of achievement (washing up, paying a bill). Both help."
+      },
+      {
+       "title": "Start tiny",
+       "body": "Pick something so small it feels almost too easy. Plan when you'll do it. Notice how you feel after."
+      }
+     ]
+    },
+    {
+     "type": "values",
+     "title": "Pick some activities",
+     "intro": "Sort these by how likely you'd be to try them this week. Nothing here is saved.",
+     "bins": [
+      "I'd try this",
+      "Maybe",
+      "Not for me"
+     ],
+     "items": [
+      "A 10-minute walk",
+      "Listen to a favourite song",
+      "Text a friend",
+      "Make a simple meal",
+      "Tidy one small space",
+      "Sit in the sun",
+      "Have a shower and get dressed",
+      "Do one small job I've been putting off",
+      "Stretch for 5 minutes",
+      "Water the plants"
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "In behavioural activation, motivation…",
+       "options": [
+        "has to come before action",
+        "often follows a small action"
+       ],
+       "answer": 1,
+       "right": "Yes. Small steps first.",
+       "wrong": "It often works the other way: a small action first, and motivation can follow."
+      },
+      {
+       "q": "A good first step is…",
+       "options": [
+        "something big to make up for lost time",
+        "something small and planned"
+       ],
+       "answer": 1,
+       "right": "That's it.",
+       "wrong": "Small and planned works better than big and hard."
+      }
+     ]
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Plan one small activity for tomorrow",
+      "detail": "Pick one activity, choose a time, and notice how you feel afterwards."
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Centre for Clinical Interventions (WA Health)",
+     "title": "Looking after yourself: self-help resources",
+     "url": "https://www.cci.health.wa.gov.au/Resources/Looking-After-Yourself"
+    },
+    {
+     "org": "THIS WAY UP (St Vincent's Hospital Sydney)",
+     "title": "Learning hub",
+     "url": "https://thiswayup.org.au/learning-hub/"
+    },
+    {
+     "org": "Black Dog Institute",
+     "title": "Resources and support",
+     "url": "https://www.blackdoginstitute.org.au/resources-support/"
+    }
+   ]
+  },
+  {
+   "id": "act-acceptance",
+   "title": "Making room for feelings (ACT acceptance)",
+   "topic": "Skills",
+   "minutes": 6,
+   "approach": "ACT",
+   "summary": "Practise letting hard feelings be there, without a fight.",
+   "steps": [
+    {
+     "type": "cards",
+     "title": "Why make room",
+     "cards": [
+      {
+       "title": "Fighting feelings can backfire",
+       "body": "Pushing a feeling away often makes it louder, and can lead to things we regret, like drinking or using to get rid of it."
+      },
+      {
+       "title": "Acceptance is not giving up",
+       "body": "In ACT, acceptance means letting a feeling be there for now, without liking it or wanting it. It frees up energy for what matters."
+      },
+      {
+       "title": "Expansion",
+       "body": "Expansion is a way to practise this: notice where the feeling is, breathe around it, and give it a bit more space, like loosening a tight belt."
+      }
+     ]
+    },
+    {
+     "type": "timer",
+     "title": "Make room (about a minute)",
+     "intro": "Follow each prompt. If it gets too much, stop and try dropping anchor or calling someone instead.",
+     "repeat": 1,
+     "phases": [
+      {
+       "label": "Find it",
+       "text": "Notice where in your body the feeling is strongest.",
+       "seconds": 12
+      },
+      {
+       "label": "Describe it",
+       "text": "Notice its edges. Is it hot or cool, heavy or light, still or moving?",
+       "seconds": 12
+      },
+      {
+       "label": "Breathe around it",
+       "text": "Breathe slowly, as if your breath is flowing in and around the feeling.",
+       "seconds": 15
+      },
+      {
+       "label": "Give it space",
+       "text": "See if you can let it be there, giving it a little more room.",
+       "seconds": 12
+      },
+      {
+       "label": "Widen out",
+       "text": "Notice the rest of your body too, and the room around you.",
+       "seconds": 10
+      }
+     ]
+    },
+    {
+     "type": "quiz",
+     "title": "Check your understanding",
+     "questions": [
+      {
+       "q": "Acceptance in ACT means…",
+       "options": [
+        "liking a painful feeling",
+        "letting it be there for now, without a fight"
+       ],
+       "answer": 1,
+       "right": "Yes.",
+       "wrong": "It means letting it be there for now. You don't have to like it."
+      },
+      {
+       "q": "If making room gets too much, you can…",
+       "options": [
+        "stop, drop anchor or reach out",
+        "push through no matter what"
+       ],
+       "answer": 0,
+       "right": "Right. You're always in charge of the pace.",
+       "wrong": "You can always stop. Dropping anchor or reaching out is a good choice."
+      }
+     ]
+    },
+    {
+     "type": "reflect",
+     "title": "Your turn (optional)",
+     "prompt": "What did you notice when you gave the feeling a little more room?"
+    },
+    {
+     "type": "try",
+     "title": "Try this today",
+     "step": {
+      "title": "Make room for one feeling today",
+      "detail": "When a hard feeling shows up, spend one minute noticing and breathing around it.",
+      "copingKey": "mindful-minute"
+     }
+    }
+   ],
+   "sources": [
+    {
+     "org": "Dr Russ Harris",
+     "title": "The Happiness Trap (book and program; concepts only, not reproduced)",
+     "url": "https://thehappinesstrap.com/"
+    },
+    {
+     "org": "Dr Russ Harris, ACT Mindfully",
+     "title": "Free resources (link only, not reproduced)",
+     "url": "https://www.actmindfully.com.au/free-stuff/"
+    },
+    {
+     "org": "Black Dog Institute",
+     "title": "Resources and support",
+     "url": "https://www.blackdoginstitute.org.au/resources-support/"
+    }
+   ]
+  }
+ ]
+}

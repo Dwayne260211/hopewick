@@ -16,6 +16,7 @@ import {
   LIMITS, NotFoundError, ValidationError, newId, defaultSettings, SETTINGS, POLICY_VERSION,
 } from './validate.js';
 import { applyActivityPatch, applyGoalPatch, applyStepPatch, applyWeeklyPlanPatch } from './model.js';
+import { RECOVERY_LIMITS, mergeLearning } from './recovery.js';
 
 const MAX_PROFILES = 12;
 
@@ -51,10 +52,13 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
     if (!u.profiles[profileId]) {
       if (!create) return null;
       if (Object.keys(u.profiles).length >= MAX_PROFILES) throw new ValidationError('This account already has the most profiles Hopewick keeps.', 'profileId');
-      u.profiles[profileId] = { checkins: {}, activities: [], goals: [], journal: [], plans: null, nextSteps: [], weeklyPlans: [] };
+      u.profiles[profileId] = { checkins: {}, activities: [], goals: [], journal: [], plans: null, nextSteps: [], weeklyPlans: [], recoveryGoals: [], recoveryLogs: [], learning: {} };
     }
     const p = u.profiles[profileId];
     if (!Array.isArray(p.weeklyPlans)) p.weeklyPlans = []; // rows saved before weekly plans existed
+    if (!Array.isArray(p.recoveryGoals)) p.recoveryGoals = []; // rows saved before Stage 4
+    if (!Array.isArray(p.recoveryLogs)) p.recoveryLogs = [];
+    if (!p.learning || typeof p.learning !== 'object' || Array.isArray(p.learning)) p.learning = {};
     return p;
   }
   function write(fn) {
@@ -96,6 +100,19 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
     ...(s.detail !== undefined ? { detail: seal(u, 'step.detail', s.detail) } : {}),
     ...(s.reflection !== undefined ? { reflection: seal(u, 'step.reflection', s.reflection) } : {}),
   });
+
+  /* ----- Stage 4: recovery tracker and learning (labels, notes and reflections are sealed) ----- */
+  const outRGoal = (u, r) => ({ ...r, label: open(u, 'rgoal.label', r.label) || '', target: open(u, 'rgoal.target', r.target) || '', why: open(u, 'rgoal.why', r.why) || '' });
+  const sealRGoal = (u, g) => ({ ...g, label: seal(u, 'rgoal.label', g.label), target: seal(u, 'rgoal.target', g.target), why: seal(u, 'rgoal.why', g.why) });
+  const outRLog = (u, r) => ({ ...r, triggers: openList(u, 'rlog.triggers', r.triggers), helped: open(u, 'rlog.helped', r.helped) || '', note: open(u, 'rlog.note', r.note) || '' });
+  const sealRLog = (u, l) => ({ ...l, triggers: sealList(u, 'rlog.triggers', l.triggers), helped: seal(u, 'rlog.helped', l.helped), note: seal(u, 'rlog.note', l.note) });
+  const outLearn = (u, id, r) => {
+    let notes = {};
+    if (r.notes) { try { notes = JSON.parse(open(u, 'learn.notes', r.notes) || '{}') || {}; } catch { notes = {}; } }
+    return { moduleId: id, step: r.step || 0, completedAt: r.completedAt || null, quiz: r.quiz || null, notes, startedAt: r.startedAt, updatedAt: r.updatedAt };
+  };
+  const sealLearn = (u, r) => ({ step: r.step, completedAt: r.completedAt, quiz: r.quiz, startedAt: r.startedAt, updatedAt: r.updatedAt, notes: Object.keys(r.notes || {}).length ? seal(u, 'learn.notes', JSON.stringify(r.notes)) : null });
+  const byDateDesc = (a, b) => (a.date === b.date ? (a.createdAt < b.createdAt ? 1 : -1) : (a.date < b.date ? 1 : -1));
 
   function findIn(list, id) {
     const i = list.findIndex((x) => x.id === id);
@@ -349,6 +366,87 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
       return write(() => { p.weeklyPlans.splice(i, 1); return true; });
     },
 
+    async listRecoveryGoals(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p) return [];
+      return p.recoveryGoals.slice().sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)).map((r) => outRGoal(userId, r));
+    },
+    async createRecoveryGoal(userId, profileId, goal) {
+      return write(() => {
+        const p = profRow(userId, profileId, true);
+        if (p.recoveryGoals.length >= RECOVERY_LIMITS.goals) throw new ValidationError(`You can keep up to ${RECOVERY_LIMITS.goals} recovery goals.`, 'goals');
+        const at = iso();
+        const row = { id: newId(), kind: goal.kind, label: goal.label || '', target: goal.target || '', why: goal.why || '', startDate: goal.startDate, status: goal.status || 'active', createdAt: at, updatedAt: at };
+        p.recoveryGoals.push(sealRGoal(userId, row));
+        return row;
+      });
+    },
+    async updateRecoveryGoal(userId, profileId, id, patch) {
+      const p = profRow(userId, profileId, false);
+      if (!p) throw new NotFoundError();
+      const i = findIn(p.recoveryGoals, id);
+      const next = { ...outRGoal(userId, p.recoveryGoals[i]), ...patch, updatedAt: iso() };
+      return write(() => { p.recoveryGoals[i] = sealRGoal(userId, next); return next; });
+    },
+    /** Deleting a goal also deletes the lapse and craving logs attached to it. */
+    async deleteRecoveryGoal(userId, profileId, id) {
+      const p = profRow(userId, profileId, false);
+      if (!p) throw new NotFoundError();
+      const i = findIn(p.recoveryGoals, id);
+      return write(() => { p.recoveryGoals.splice(i, 1); p.recoveryLogs = p.recoveryLogs.filter((l) => l.goalId !== id); return true; });
+    },
+    async listRecoveryLogs(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p) return [];
+      return p.recoveryLogs.slice().sort(byDateDesc).map((r) => outRLog(userId, r));
+    },
+    async createRecoveryLog(userId, profileId, log) {
+      return write(() => {
+        const p = profRow(userId, profileId, true);
+        if (log.goalId && !p.recoveryGoals.some((g) => g.id === log.goalId)) throw new NotFoundError('That recovery goal was not found.');
+        if (p.recoveryLogs.length >= RECOVERY_LIMITS.logs) throw new ValidationError('This profile has the most tracker entries Hopewick keeps. Delete some old ones first.', 'logs');
+        const at = iso();
+        const row = { id: newId(), goalId: log.goalId || null, kind: log.kind, date: log.date, intensity: log.intensity ?? null, triggers: log.triggers || [], outcome: log.outcome || null, helped: log.helped || '', note: log.note || '', createdAt: at, updatedAt: at };
+        p.recoveryLogs.push(sealRLog(userId, row));
+        return row;
+      });
+    },
+    async updateRecoveryLog(userId, profileId, id, patch) {
+      const p = profRow(userId, profileId, false);
+      if (!p) throw new NotFoundError();
+      const i = findIn(p.recoveryLogs, id);
+      if (patch.goalId && !p.recoveryGoals.some((g) => g.id === patch.goalId)) throw new NotFoundError('That recovery goal was not found.');
+      const next = { ...outRLog(userId, p.recoveryLogs[i]), ...patch, kind: p.recoveryLogs[i].kind, updatedAt: iso() };
+      return write(() => { p.recoveryLogs[i] = sealRLog(userId, next); return next; });
+    },
+    async deleteRecoveryLog(userId, profileId, id) {
+      const p = profRow(userId, profileId, false);
+      if (!p) throw new NotFoundError();
+      const i = findIn(p.recoveryLogs, id);
+      return write(() => { p.recoveryLogs.splice(i, 1); return true; });
+    },
+    async listLearning(userId, profileId) {
+      const p = profRow(userId, profileId, false);
+      if (!p) return [];
+      return Object.entries(p.learning).map(([id, r]) => outLearn(userId, id, r)).sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+    },
+    async saveLearning(userId, profileId, moduleId, patch) {
+      return write(() => {
+        const p = profRow(userId, profileId, true);
+        const has = Object.prototype.hasOwnProperty.call(p.learning, moduleId);
+        if (!has && Object.keys(p.learning).length >= RECOVERY_LIMITS.modules) throw new ValidationError('Too many modules tracked.', 'moduleId');
+        const prev = has ? outLearn(userId, moduleId, p.learning[moduleId]) : null;
+        const next = mergeLearning(prev, patch, iso());
+        p.learning[moduleId] = sealLearn(userId, next);
+        return { ...next, moduleId };
+      });
+    },
+    async deleteLearning(userId, profileId, moduleId) {
+      const p = profRow(userId, profileId, false);
+      if (!p || !Object.prototype.hasOwnProperty.call(p.learning, moduleId)) throw new NotFoundError();
+      return write(() => { delete p.learning[moduleId]; return true; });
+    },
+
     /** The person asked to delete one kind of data (or all of it) for this profile. Never called because of plan status. */
     async clearArea(userId, profileId, area) {
       const p = profRow(userId, profileId, false);
@@ -361,6 +459,8 @@ export function createJsonWellbeingStore(filePath, { env = process.env } = {}) {
         plans: () => { const n = p.plans ? 1 : 0; p.plans = null; return n; },
         steps: () => { const n = p.nextSteps.length; p.nextSteps = []; return n; },
         'weekly-plans': () => { const n = p.weeklyPlans.length; p.weeklyPlans = []; return n; },
+        recovery: () => { const n = p.recoveryGoals.length + p.recoveryLogs.length; p.recoveryGoals = []; p.recoveryLogs = []; return n; },
+        learning: () => { const n = Object.keys(p.learning).length; p.learning = {}; return n; },
       };
       return write(() => {
         if (area === 'all') {

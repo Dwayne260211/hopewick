@@ -411,8 +411,12 @@
     if (!root) return;
     // A save that finishes after the person moved to another screen must not repaint this one.
     try { if (appTab !== tab) return; } catch (_) { /* app not booted */ }
+    // Stage 4 screens register here (app/hw-stage4.js). busy(): a guided timer is running, so a background repaint must wait.
+    const ext = HW3.ext[tab];
+    if (ext && ext.busy && ext.busy()) return;
     const scroller = document.getElementById('hwFeatureView') || document.scrollingElement;
     const keepScroll = root.dataset.tab === tab && scroller ? scroller.scrollTop : 0;
+    const focusedId = ext && document.activeElement && root.contains(document.activeElement) ? document.activeElement.id : '';
     root.dataset.tab = tab;
     root.replaceChildren();
     if (tab === 'checkin') renderCheckin(root);
@@ -421,10 +425,15 @@
     else if (tab === 'nextstep') renderSteps(root);
     else if (tab === 'compare') renderCompare(root);
     else if (tab === 'safety') renderSafety(root);
+    else if (ext) ext.render(root);
     root.appendChild(crisisLine());
     if (scroller) scroller.scrollTop = keepScroll;
+    // Stage 4 screens: a background repaint keeps keyboard focus where it was.
+    if (ext && focusedId) { const again = document.getElementById(focusedId); if (again && root.contains(again)) again.focus({ preventScroll: true }); }
   }
   HW3.render = render;
+  /** Extension screens: HW3.ext[tab] = { render(root), busy() }. */
+  HW3.ext = {};
 
   /* ------------------------------------------------------------------ */
   /* 1. Daily check-in                                                   */
@@ -1661,6 +1670,7 @@
     } catch (e) { say(failMessage(e), true); }
   }
   HW3.deleteArea = deleteArea;
+  HW3.DELETE_AREAS = DELETE_AREAS; // Stage 4 adds its own areas
   /** Export and delete: free on every plan, never limited. */
   function myDataCard() {
     const sec = h('section', { class: 'hw-card hw3-card', id: 'hw3MyData', 'aria-labelledby': 'hw3MyDataT' },
@@ -1954,12 +1964,16 @@
       ['Relapse prevention and exit plans', 'Yes', 'Yes'],
       ['Read, export and delete everything you save', 'Yes', 'Yes'],
       ['Account and privacy controls', 'Yes', 'Yes'],
+      ['Recovery tracker: goals, day counts, milestones, cravings and lapses', 'Yes', 'Yes'],
+      ['Core learning modules (7 short ones, including CBT and ACT basics)', 'Yes', 'Yes'],
       ['Clean time tracker, Bible & SOAP, 12-step outline', 'Yes', 'Yes'],
     ] },
     { id: 'history', title: 'Check-ins and history', summary: `Check in every day, free. Free shows ${HISTORY_WINDOW_DAYS} days; Plus shows it all.`, rows: [
       ['Daily check-in', 'Yes', 'Yes'],
       ['History and trends in the app', `Last ${HISTORY_WINDOW_DAYS} days`, 'Full history'],
       ['Month view', '—', 'Yes'],
+      ['Recovery tracker log history', `Last ${HISTORY_WINDOW_DAYS} days`, 'Full history'],
+      ['Recovery trends over 30 and 90 days (not an assessment)', '—', 'Yes'],
       ['Nothing deleted because of your plan', 'Yes', 'Yes'],
     ] },
     { id: 'journal', title: 'Journal', summary: 'Writing is free. Plus adds entry types, prompt packs and Deepen with Hope.', rows: [
@@ -1971,6 +1985,7 @@
     { id: 'tools', title: 'Tools and new releases', summary: 'The 12 core coping tools are free. Plus gets new tools first.', rows: [
       ['Coping toolkit (12 core tools)', 'Yes', 'Yes'],
       ['New coping tools and journal packs', '6 to 12 months later', 'From release day'],
+      ['New learning modules, weekly', '6 months later', 'From release day'],
       ['Chat with Hope', '15 a day', 'No daily limit'],
       ['Resume builder, nutrition, gut and brain-habit notes, Going Deeper', '—', 'Yes'],
       ['More than one profile', '—', 'Yes'],
@@ -1983,7 +1998,6 @@
       ['Printable mood and recovery report', '—', 'Yes'],
     ] },
     { id: 'soon', title: 'Coming soon', summary: 'Extras we are working on. Not available yet.', rows: [
-      ['Learning courses (first lesson free)', 'Coming soon', 'Coming soon'],
       ['Recovery tracker extras: milestone calendar, habits, meeting log, certificates', '—', 'Coming soon'],
       ['Faith plans, devotionals and prayer journal', '—', 'Coming soon'],
       ['Guided audio, meditations and sleep stories', '—', 'Coming soon'],
@@ -2016,4 +2030,7 @@
     root.appendChild(price);
   }
   HW3.renderCompare = renderCompare;
+
+  /* Shared helpers for later stages (app/hw-stage4.js). */
+  HW3.kit = { h, btn, say, announce, icon, todayIso, addDays, dayLabel, whenLabel, header, stateNote, crisisLine, demo, signedIn, online, plus, pid, api, failMessage, focusId, reducedMotion, chipToggle, plusInfo, windowNote, releaseBadges, upgrade, myDataCard, scrollTop };
 })();

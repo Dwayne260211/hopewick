@@ -10,6 +10,7 @@
 import { withUser, probeDatabase } from '../db/index.js';
 import { encryptText, decryptText, encryptionEnabled, ENC_SCHEME } from '../db/crypto.js';
 import { NotFoundError, ValidationError, LIMITS, defaultSettings, SETTINGS, POLICY_VERSION, isUuid } from './validate.js';
+import { RECOVERY_LIMITS, mergeLearning } from './recovery.js';
 import { applyActivityPatch, applyGoalPatch, applyStepPatch, applyWeeklyPlanPatch, helpfulToScore, scoreToHelpful } from './model.js';
 
 const iso = (d) => (d == null ? null : new Date(d).toISOString());
@@ -53,6 +54,26 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
     refined: open(u, 'journal_entries.refined', r.refined), emotions: open(u, 'journal_entries.emotions_text', r.emotions_text),
     createdAt: iso(r.created_at), updatedAt: iso(r.updated_at),
   });
+  const outRGoal = (u, r) => ({
+    id: r.id, kind: r.kind, label: open(u, 'recovery_goals.label', r.label), target: open(u, 'recovery_goals.target', r.target),
+    why: open(u, 'recovery_goals.why', r.why), startDate: day(r.start_date), status: r.status, createdAt: iso(r.created_at), updatedAt: iso(r.updated_at),
+  });
+  const outRLog = (u, r) => {
+    let triggers = [];
+    try { const t = JSON.parse(open(u, 'recovery_logs.triggers', r.triggers) || '[]'); if (Array.isArray(t)) triggers = t; } catch { /* keep [] */ }
+    return {
+      id: r.id, goalId: r.goal_id || null, kind: r.kind, date: day(r.log_date), intensity: r.intensity ?? null, triggers, outcome: r.outcome || null,
+      helped: open(u, 'recovery_logs.helped', r.helped), note: open(u, 'recovery_logs.note', r.note), createdAt: iso(r.created_at), updatedAt: iso(r.updated_at),
+    };
+  };
+  const outLearn = (u, r) => {
+    let notes = {};
+    if (r.notes) { try { notes = JSON.parse(open(u, 'module_progress.notes', r.notes) || '{}') || {}; } catch { notes = {}; } }
+    return {
+      moduleId: r.module_id, step: r.step, completedAt: iso(r.completed_at), quiz: r.quiz_total ? { correct: r.quiz_correct, total: r.quiz_total } : null,
+      notes, startedAt: iso(r.started_at), updatedAt: iso(r.updated_at),
+    };
+  };
   const outWeekly = (u, r) => {
     let steps = [];
     try { const v = JSON.parse(open(u, 'weekly_step_plans.steps', r.steps) || '[]'); if (Array.isArray(v)) steps = v; } catch { /* keep [] */ }
@@ -366,6 +387,127 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
       return true;
     },
 
+    /* ----- Stage 4: recovery tracker ----- */
+    async listRecoveryGoals(userId, profileId) {
+      return run(userId, async (c) => (await c.query(
+        `SELECT * FROM recovery_goals WHERE user_id = $1 AND profile_id = $2 ORDER BY created_at LIMIT ${RECOVERY_LIMITS.goals}`, [userId, profileId])).rows.map((r) => outRGoal(userId, r)));
+    },
+    async createRecoveryGoal(userId, profileId, g) {
+      return run(userId, async (c) => {
+        await ensureUser(c, userId);
+        const count = Number((await c.query('SELECT count(*) AS n FROM recovery_goals WHERE user_id = $1 AND profile_id = $2', [userId, profileId])).rows[0].n);
+        if (count >= RECOVERY_LIMITS.goals) throw new ValidationError(`You can keep up to ${RECOVERY_LIMITS.goals} recovery goals.`, 'goals');
+        const { rows } = await c.query(
+          `INSERT INTO recovery_goals (user_id, profile_id, kind, label, target, why, start_date, status, encryption)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+          [userId, profileId, g.kind, seal(userId, 'recovery_goals.label', g.label), seal(userId, 'recovery_goals.target', g.target),
+            seal(userId, 'recovery_goals.why', g.why), g.startDate, g.status || 'active', enc()]);
+        return outRGoal(userId, rows[0]);
+      });
+    },
+    async updateRecoveryGoal(userId, profileId, id, patch) {
+      needUuid(id);
+      return run(userId, async (c) => {
+        const { rows } = await c.query('SELECT * FROM recovery_goals WHERE user_id = $1 AND profile_id = $2 AND id = $3 FOR UPDATE', [userId, profileId, id]);
+        if (!rows[0]) throw new NotFoundError();
+        const n = { ...outRGoal(userId, rows[0]), ...patch };
+        const out = await c.query(
+          `UPDATE recovery_goals SET kind = $4, label = $5, target = $6, why = $7, start_date = $8, status = $9, encryption = $10, updated_at = now()
+           WHERE user_id = $1 AND profile_id = $2 AND id = $3 RETURNING *`,
+          [userId, profileId, id, n.kind, seal(userId, 'recovery_goals.label', n.label), seal(userId, 'recovery_goals.target', n.target),
+            seal(userId, 'recovery_goals.why', n.why), n.startDate, n.status, enc()]);
+        return outRGoal(userId, out.rows[0]);
+      });
+    },
+    /** Deleting a goal also deletes its lapse and craving logs (ON DELETE CASCADE). */
+    async deleteRecoveryGoal(userId, profileId, id) {
+      needUuid(id);
+      const n = await run(userId, async (c) => (await c.query('DELETE FROM recovery_goals WHERE user_id = $1 AND profile_id = $2 AND id = $3', [userId, profileId, id])).rowCount);
+      if (!n) throw new NotFoundError();
+      return true;
+    },
+    async listRecoveryLogs(userId, profileId) {
+      return run(userId, async (c) => (await c.query(
+        `SELECT * FROM recovery_logs WHERE user_id = $1 AND profile_id = $2 ORDER BY log_date DESC, created_at DESC LIMIT ${RECOVERY_LIMITS.logs}`, [userId, profileId])).rows.map((r) => outRLog(userId, r)));
+    },
+    async createRecoveryLog(userId, profileId, l) {
+      if (l.goalId && !isUuid(l.goalId)) throw new NotFoundError('That recovery goal was not found.');
+      return run(userId, async (c) => {
+        await ensureUser(c, userId);
+        if (l.goalId) {
+          const g = await c.query('SELECT 1 FROM recovery_goals WHERE user_id = $1 AND profile_id = $2 AND id = $3', [userId, profileId, l.goalId]);
+          if (!g.rows[0]) throw new NotFoundError('That recovery goal was not found.');
+        }
+        const count = Number((await c.query('SELECT count(*) AS n FROM recovery_logs WHERE user_id = $1 AND profile_id = $2', [userId, profileId])).rows[0].n);
+        if (count >= RECOVERY_LIMITS.logs) throw new ValidationError('This profile has the most tracker entries Hopewick keeps. Delete some old ones first.', 'logs');
+        const { rows } = await c.query(
+          `INSERT INTO recovery_logs (user_id, profile_id, goal_id, kind, log_date, intensity, outcome, triggers, helped, note, encryption)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+          [userId, profileId, l.goalId || null, l.kind, l.date, l.intensity ?? null, l.outcome || null,
+            seal(userId, 'recovery_logs.triggers', JSON.stringify(l.triggers || [])), seal(userId, 'recovery_logs.helped', l.helped),
+            seal(userId, 'recovery_logs.note', l.note), enc()]);
+        return outRLog(userId, rows[0]);
+      });
+    },
+    async updateRecoveryLog(userId, profileId, id, patch) {
+      needUuid(id);
+      if (patch.goalId && !isUuid(patch.goalId)) throw new NotFoundError('That recovery goal was not found.');
+      return run(userId, async (c) => {
+        const { rows } = await c.query('SELECT * FROM recovery_logs WHERE user_id = $1 AND profile_id = $2 AND id = $3 FOR UPDATE', [userId, profileId, id]);
+        if (!rows[0]) throw new NotFoundError();
+        if (patch.goalId) {
+          const g = await c.query('SELECT 1 FROM recovery_goals WHERE user_id = $1 AND profile_id = $2 AND id = $3', [userId, profileId, patch.goalId]);
+          if (!g.rows[0]) throw new NotFoundError('That recovery goal was not found.');
+        }
+        const n = { ...outRLog(userId, rows[0]), ...patch };
+        const out = await c.query(
+          `UPDATE recovery_logs SET goal_id = $4, log_date = $5, intensity = $6, outcome = $7, triggers = $8, helped = $9, note = $10, encryption = $11, updated_at = now()
+           WHERE user_id = $1 AND profile_id = $2 AND id = $3 RETURNING *`,
+          [userId, profileId, id, n.goalId || null, n.date, n.intensity ?? null, n.outcome || null,
+            seal(userId, 'recovery_logs.triggers', JSON.stringify(n.triggers || [])), seal(userId, 'recovery_logs.helped', n.helped),
+            seal(userId, 'recovery_logs.note', n.note), enc()]);
+        return outRLog(userId, out.rows[0]);
+      });
+    },
+    async deleteRecoveryLog(userId, profileId, id) {
+      needUuid(id);
+      const n = await run(userId, async (c) => (await c.query('DELETE FROM recovery_logs WHERE user_id = $1 AND profile_id = $2 AND id = $3', [userId, profileId, id])).rowCount);
+      if (!n) throw new NotFoundError();
+      return true;
+    },
+
+    /* ----- Stage 4: learning progress ----- */
+    async listLearning(userId, profileId) {
+      return run(userId, async (c) => (await c.query(
+        `SELECT * FROM module_progress WHERE user_id = $1 AND profile_id = $2 ORDER BY updated_at DESC LIMIT ${RECOVERY_LIMITS.modules}`, [userId, profileId])).rows.map((r) => outLearn(userId, r)));
+    },
+    async saveLearning(userId, profileId, moduleId, patch) {
+      return run(userId, async (c) => {
+        await ensureUser(c, userId);
+        const { rows } = await c.query('SELECT * FROM module_progress WHERE user_id = $1 AND profile_id = $2 AND module_id = $3 FOR UPDATE', [userId, profileId, moduleId]);
+        if (!rows[0]) {
+          const count = Number((await c.query('SELECT count(*) AS n FROM module_progress WHERE user_id = $1 AND profile_id = $2', [userId, profileId])).rows[0].n);
+          if (count >= RECOVERY_LIMITS.modules) throw new ValidationError('Too many modules tracked.', 'moduleId');
+        }
+        const at = new Date().toISOString();
+        const n = mergeLearning(rows[0] ? outLearn(userId, rows[0]) : null, patch, at);
+        const notes = Object.keys(n.notes || {}).length ? seal(userId, 'module_progress.notes', JSON.stringify(n.notes)) : null;
+        const out = await c.query(
+          `INSERT INTO module_progress (user_id, profile_id, module_id, step, quiz_correct, quiz_total, notes, encryption, completed_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+           ON CONFLICT (user_id, profile_id, module_id) DO UPDATE SET step = EXCLUDED.step, quiz_correct = EXCLUDED.quiz_correct,
+             quiz_total = EXCLUDED.quiz_total, notes = EXCLUDED.notes, encryption = EXCLUDED.encryption, completed_at = EXCLUDED.completed_at, updated_at = now()
+           RETURNING *`,
+          [userId, profileId, moduleId, n.step || 0, n.quiz ? n.quiz.correct : null, n.quiz ? n.quiz.total : null, notes, enc(), n.completedAt]);
+        return outLearn(userId, out.rows[0]);
+      });
+    },
+    async deleteLearning(userId, profileId, moduleId) {
+      const n = await run(userId, async (c) => (await c.query('DELETE FROM module_progress WHERE user_id = $1 AND profile_id = $2 AND module_id = $3', [userId, profileId, moduleId])).rowCount);
+      if (!n) throw new NotFoundError();
+      return true;
+    },
+
     /** The person asked to delete one kind of data (or all of it) for this profile. Never called because of plan status. */
     async clearArea(userId, profileId, area) {
       const tables = {
@@ -376,8 +518,11 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
         plans: 'DELETE FROM safety_plans WHERE user_id = $1 AND profile_id = $2',
         steps: 'DELETE FROM next_step_items WHERE user_id = $1 AND profile_id = $2',
         'weekly-plans': 'DELETE FROM weekly_step_plans WHERE user_id = $1 AND profile_id = $2',
+        // recovery_logs first: the goals cascade would also remove them, but logs without a goal need their own delete.
+        recovery: ['DELETE FROM recovery_logs WHERE user_id = $1 AND profile_id = $2', 'DELETE FROM recovery_goals WHERE user_id = $1 AND profile_id = $2'],
+        learning: 'DELETE FROM module_progress WHERE user_id = $1 AND profile_id = $2',
       };
-      const list = area === 'all' ? Object.values(tables) : [tables[area]];
+      const list = (area === 'all' ? Object.values(tables) : [tables[area]]).flat();
       return run(userId, async (c) => {
         let n = 0;
         for (const sql of list) n += (await c.query(sql, [userId, profileId])).rowCount;
@@ -390,7 +535,8 @@ export function createPgWellbeingStore({ env = process.env } = {}) {
         `SELECT profile_id FROM mood_entries WHERE user_id = $1 UNION SELECT profile_id FROM guided_activity_history WHERE user_id = $1
          UNION SELECT profile_id FROM personal_goals WHERE user_id = $1 UNION SELECT profile_id FROM journal_entries WHERE user_id = $1
          UNION SELECT profile_id FROM safety_plans WHERE user_id = $1 UNION SELECT profile_id FROM next_step_items WHERE user_id = $1
-         UNION SELECT profile_id FROM weekly_step_plans WHERE user_id = $1`, [userId])).rows.map((r) => r.profile_id));
+         UNION SELECT profile_id FROM weekly_step_plans WHERE user_id = $1 UNION SELECT profile_id FROM recovery_goals WHERE user_id = $1
+         UNION SELECT profile_id FROM recovery_logs WHERE user_id = $1 UNION SELECT profile_id FROM module_progress WHERE user_id = $1`, [userId])).rows.map((r) => r.profile_id));
     },
     async forget(userId) {
       return run(userId, async (c) => (await c.query('DELETE FROM app_users WHERE id = $1', [userId])).rowCount > 0);

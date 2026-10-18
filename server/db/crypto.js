@@ -76,3 +76,25 @@ export function decryptText(value, env = process.env, aad = '') {
   decipher.setAuthTag(raw.subarray(12, 28));
   return Buffer.concat([decipher.update(raw.subarray(28)), decipher.final()]).toString('utf8');
 }
+
+/**
+ * Encryption status for the startup log. Never includes key material: only
+ * whether a key is set, its short id, and whether a previous key is loaded.
+ */
+export function encryptionStatus(env = process.env) {
+  try {
+    const { current, keys } = loadKeys(env);
+    return { state: current ? 'on' : 'off', keyId: current, previousKeys: keys.size - (current ? 1 : 0) };
+  } catch (err) {
+    // loadKeys messages name the variable, never its value.
+    return { state: 'misconfigured', keyId: null, previousKeys: 0, error: err && err.message ? err.message : 'invalid key settings' };
+  }
+}
+export function encryptionStartupLine(env = process.env, { backend = 'JSON file' } = {}) {
+  const s = encryptionStatus(env);
+  if (s.state === 'on') {
+    return `Wellbeing encryption: on (${ENC_SCHEME}, key id ${s.keyId}${s.previousKeys ? `, ${s.previousKeys} previous key loaded for reading` : ''}). Sensitive wellbeing text is sealed before it reaches the ${backend} store.`;
+  }
+  if (s.state === 'off') return `Wellbeing encryption: OFF. HOPEWICK_DATA_KEY is not set, so wellbeing text in the ${backend} store has no app-level encryption.`;
+  return `Wellbeing encryption: MISCONFIGURED (${s.error}). Saving wellbeing data will fail until this is fixed.`;
+}

@@ -20,6 +20,8 @@ saved stays, can be exported, and can be deleted at any time.
 | Your data | Read, export everything (`/api/me/export`), and delete by area or all (`DELETE /api/me/data/:area?confirm=:area`). |
 | Account and privacy controls | Including AI consent. |
 | Hope (AI) | 15 messages a day. |
+| Recovery tracker | Unlimited goals (AOD or wellbeing, optional label), Day N, days that went to plan, milestones, craving and lapse logging, triggers, what helped, the after-a-lapse card, export and delete. `/api/me/recovery`. Day counts always use every log. |
+| Core learning modules | 7 modules of about 5 minutes: cravings and triggers, sleep, stress and anxiety, harm reduction, support in Australia, CBT basics, and ACT unhooking. Progress, private reflections (encrypted) and "try this today" are free. |
 
 **History window.** Free accounts see the last `HISTORY_WINDOW_DAYS = 7` days
 in the app (`server/wellbeing/plan-rules.js`). This is a view rule only. Older
@@ -41,14 +43,16 @@ in-progress activity, the active weekly plan) always show.
 | Journal: guided series and prompt packs | Available | Plus first, free later (see `CONTENT-RELEASES.md`). |
 | New coping tools first | Available | Weekly drops, free 6 to 12 months later. |
 | Unlimited Hope | Available | |
+| Recovery tracker: full log history | Available | Free sees logs from the last 7 days (view only; nothing is deleted). |
+| Recovery trends over 30, 90 and 365 days | Available | `/api/me/recovery/insights`. Craving counts by week, average strength, top triggers and what helped. Not an assessment or a diagnosis. |
+| New learning modules first | Available | Weekly releases (DBT skills, thought record, ACT values, behavioural activation, ACT acceptance). Free 6 months after each Plus date. |
 | Personal goals, resume builder, nutrition library | Available | Unchanged from earlier stages. |
 
 ## Plus: later extras (coming soon, not built)
 
 | Extra | Status | Notes |
 | --- | --- | --- |
-| Learning courses | Coming soon | The first lesson of each course is free. |
-| Recovery tracker extras: milestone calendar, habits, meeting log, printable certificates | Coming soon | Clean time itself stays free. |
+| Recovery tracker extras: milestone calendar, habits, meeting log, printable certificates | Coming soon | The tracker and clean time stay free. |
 | Faith plans, devotionals, prayer journal | Coming soon | Optional, opt-in. |
 | Guided audio, meditations, sleep stories | Coming soon | Needs recording, licensing and clinical review. |
 | Themes and a custom dashboard | Coming soon | |
@@ -67,5 +71,6 @@ visible on each header.
   `server/next-step.test.mjs`, `server/hope-safety.test.mjs`,
   `tests/content-releases.test.mjs`, `tests/coping-tools.test.mjs`. These
   cover free, paid Plus, trial, founder comp, and lapsed Plus keeping its data.
+- Stage 4: `server/recovery.test.mjs` (JSON and Postgres), `tests/test_stage4.py` (browser).
 - Browser: `tests/test_free_plus_model.py`, `tests/test_plus_gates.py`,
   `tests/test_stage3_features.py`.

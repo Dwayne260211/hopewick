@@ -52,6 +52,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { encryptionStartupLine } from './db/crypto.js';
 import { fileURLToPath } from 'node:url';
 
 import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, isReviewerEmail, REAUTH_MS } from './store.js';
@@ -295,7 +296,9 @@ function contentSecurityPolicy(req) {
     "frame-ancestors 'none'",
     "form-action 'self'",
     "script-src 'self' 'unsafe-inline' https://accounts.google.com",
-    "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
+    // Google Identity Services loads its button stylesheet from accounts.google.com.
+    // Allow the host, not only /gsi/style: CSP drops the path after a redirect.
+    "style-src 'self' 'unsafe-inline' https://accounts.google.com",
     "img-src 'self' data:",
     "frame-src https://accounts.google.com",
     "font-src 'self' data:",
@@ -2213,6 +2216,7 @@ if (isMain) {
     console.log(`Health: http://${host}:${addr.port}/api/health`);
     console.log(`Account file: ${storePath}`);
     console.log(`Visit counter: ${process.env.VISITS_STORE || visitsPathBeside(storePath)}`);
+    console.log(encryptionStartupLine(process.env, { backend: String(process.env.DATABASE_URL || '').trim() ? 'Postgres' : 'JSON file' }));
     if (!stripeConfigured()) console.log('Stripe checkout is not configured yet (STRIPE_SECRET_KEY, STRIPE_PRICE_ID).');
     if (devMode()) console.log('Developer mode is on: magic links are printed here and returned to the browser.');
     else if (!process.env.RESEND_API_KEY || !process.env.MAGIC_LINK_FROM) {
