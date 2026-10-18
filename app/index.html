@@ -38,6 +38,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'AOD recovery supp
 <link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
 <link rel="stylesheet" href="/assets/hopewick-tokens.css">
 <link rel="stylesheet" href="/assets/hopewick-ui.css">
+<link rel="stylesheet" href="hw-stage3.css">
 <script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
@@ -2219,9 +2220,20 @@ h1, h2, h3 { font-family: var(--font-display); }
         </div>
         <div id="journalGate" class="nut-gate plus-feature-gate"></div>
         <div id="journalEditorMount"></div>
+        <div id="journalEntries" hidden>
+          <h2 class="journal-entries-title" id="journalEntriesTitle">Your entries</h2>
+          <div id="hw3JournalTools"></div>
+          <p class="help" id="journalCount" aria-live="polite"></p>
+          <ul class="journal-list" id="journalList" aria-labelledby="journalEntriesTitle"></ul>
+        </div>
 
       </div>
     </section>
+
+    <section class="hw3-view" id="hwFeatureView" hidden aria-label="Wellbeing tools">
+      <div class="hw3-inner" id="hw3Inner"></div>
+    </section>
+    <div id="hw3Live" class="hw-sr-only" aria-live="polite" aria-atomic="true"></div>
 
     <section class="my-account-view" id="myAccountView" hidden aria-label="My Account">
       <div class="my-account-inner">
@@ -3550,6 +3562,8 @@ h1, h2, h3 { font-family: var(--font-display); }
 
 <script src="data/going-deeper.js"></script>
 <script src="resume.js"></script>
+<script src="data/coping-tools.js"></script>
+<script src="hw-stage3.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -4267,7 +4281,12 @@ function saveGratitude() {
   save(pk(profile.id, 'gratitude'), gratitude);
   scheduleCheckinSync();
 }
-function saveJournal() { if (isDemo) return; save(pk(profile.id, 'journal'), journal); }
+function saveJournal() {
+  if (isDemo) return;
+  // Signed in, entries live on the account; only device-only entries are written back here.
+  if (window.HW3 && HW3.journalServerMode()) { HW3.saveLocalJournal(); return; }
+  save(pk(profile.id, 'journal'), journal);
+}
 function goalsSavedLine() {
   if (isDemo) return 'This demo visit only — not saved on this device.';
   if (billingState.signedIn) return 'Saved on this device and your account.';
@@ -4510,6 +4529,7 @@ function savePlans() {
   if (isDemo || !profile) return;
   plansState = normalizePlans(plansState);
   save(pk(profile.id, 'plans'), plansState);
+  if (window.HW3) HW3.pushPlans();
   const note = $('#plansSaved');
   if (note && el.plansDlg && el.plansDlg.open) note.textContent = plansStatusText();
 }
@@ -4945,6 +4965,10 @@ function messageEl(msg) {
   }
   if (msg.error) tools.appendChild(toolBtn(ICON_RETRY, 'Try again', () => retryLast()));
   wrap.appendChild(tools);
+  if (msg.role === 'assistant' && msg.nextStep && window.HW3) {
+    const offer = HW3.nextStepCard(msg, () => { persistConvos(); renderMessages(); });
+    if (offer) wrap.appendChild(offer);
+  }
 
   if (msg.role !== 'user') {
     const orb = document.createElement('div');
@@ -5078,7 +5102,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep'];
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
   const changed = appTab !== next;
   appTab = next;
@@ -5092,6 +5117,13 @@ function setAppTab(tab, opts = {}) {
   el.app.classList.toggle('tab-account', next === 'account');
   el.app.classList.toggle('tab-tools', next === 'tools');
   el.app.classList.toggle('tab-learn', next === 'learn');
+  el.app.classList.toggle('tab-hw3', HW3_TAB.includes(next));
+  const hwView = document.getElementById('hwFeatureView');
+  if (hwView) {
+    hwView.hidden = !HW3_TAB.includes(next);
+    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step' }[next] || 'Wellbeing tools');
+  }
+  if (window.HW3 && next !== 'coping') HW3.stopTimers();
   if (el.toolsView) el.toolsView.hidden = next !== 'tools';
   if (el.learnView) el.learnView.hidden = next !== 'learn';
   if (el.homeView) el.homeView.hidden = next !== 'home';
@@ -5130,6 +5162,8 @@ function setAppTab(tab, opts = {}) {
   syncMoreTab(el.app.classList.contains('sidebar-open'));
   if (next === 'home') {
     renderHome();
+  } else if (HW3_TAB.includes(next)) {
+    if (window.HW3) HW3.show(next, opts);
   } else if (next === 'tools' || next === 'learn') {
     if (next === 'tools') renderToolsHub(); else renderLearnHub();
     if (!opts.skipFocus) {
@@ -5152,7 +5186,11 @@ function setAppTab(tab, opts = {}) {
       if (changed) prepareJournalCompose();
       renderJournalList();
       if (!opts.skipFocus) setTimeout(() => { const body = $('#jBody'); if (body) body.focus(); }, 60);
-    } else if (!opts.skipFocus) {
+    } else {
+      renderJournalList();
+    }
+    if (window.HW3) HW3.sync(false);
+    if (!subscriptionPlus() && !opts.skipFocus) {
       const title = $('#journalTitle');
       if (title) setTimeout(() => title.focus(), 60);
     }
@@ -5171,9 +5209,9 @@ function setAppTab(tab, opts = {}) {
 /** Which bottom-bar / sidebar section a screen belongs to. */
 function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
-  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume') return 'tools';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep') return 'tools';
   if (tab === 'learn' || tab === 'info') return 'learn';
-  if (tab === 'home') return 'home';
+  if (tab === 'home' || tab === 'checkin') return 'home';
   return '';
 }
 
@@ -5874,6 +5912,11 @@ const DASH_ICON = {
   target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
   book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
   leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>',
+  lungs: '<path d="M12 4v8"/><path d="M12 12c-1.5 0-3-1-3-3V7.5C7 8 4 11 4 16c0 2.5 1.5 4 3.5 4S11 18.5 11 16v-3"/><path d="M12 12c1.5 0 3-1 3-3V7.5C17 8 20 11 20 16c0 2.5-1.5 4-3.5 4S13 18.5 13 16v-3"/>',
+  wave: '<path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 6c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>',
+  body: '<circle cx="12" cy="4.5" r="2.5"/><path d="M12 7v7"/><path d="M6 10h12"/><path d="M9 21l3-7 3 7"/>',
+  brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h0a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h0a3 3 0 0 1-3-3"/>',
+  hand: '<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-6-2.4l-3.6-3.6a2 2 0 0 1 2.8-2.8L7 15"/>',
   learn: '<path d="M2 6.5 12 3l10 3.5-10 3.5L2 6.5z"/><path d="M6 8.5V14c0 1.7 2.7 3 6 3s6-1.3 6-3V8.5"/>',
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
@@ -6109,7 +6152,7 @@ function renderHome() {
     const last = Math.max(...journal.map(e => e.updated || e.created || 0));
     jr.appendChild(dashText(`${entries} ${entries === 1 ? 'entry' : 'entries'} on this device. Last written ${relTime(last)}.`));
   } else {
-    jr.appendChild(dashEmpty('No journal entries yet', 'Write whatever is on your mind. Entries stay on this device.'));
+    jr.appendChild(dashEmpty('No journal entries yet', billingState.signedIn ? 'Write whatever is on your mind. Entries are saved privately to your account.' : 'Write whatever is on your mind. Signed out, entries stay in this browser.'));
   }
   jr.appendChild(dashActions(dashBtn(entries ? 'Open journal' : 'Write an entry', () => openJournal(), { plus: true, dataset: { dash: 'journal' } })));
 
@@ -6196,6 +6239,8 @@ function renderHome() {
     dashBtn('My Account', () => openMyAccount(), { dataset: { dash: 'account' } }),
     dashBtn('Preferences', () => showLaunchPrefs()),
   ));
+  // Hopewick 2.0: account-backed check-in, next step, trends, goals, journal and coping cards.
+  if (window.HW3) { try { HW3.paintDashSlots(); } catch (err) { console.error(err); } HW3.sync(false); }
 }
 
 /** Tools and Learn hubs: link cards to features that already work. */
@@ -6241,14 +6286,17 @@ function renderToolsHub() {
     { id: 'breakers', title: 'Circuit breakers', desc: 'Quick things to do when a craving hits.', icon: 'bolt', tone: 'warm', action: () => openBreakers() },
   ]);
   hubSection(box, 'Coping tools', [
+    { id: 'coping', title: 'Coping toolkit', desc: 'Breathing, grounding, urge surfing and more. Always free.', icon: 'leaf', action: () => setAppTab('coping') },
     { id: 'skills', title: 'Skills', desc: 'Grounding, urge surfing, breathing and more.', icon: 'smile', action: () => openSkills() },
     { id: 'selfcare', title: 'Self-care', desc: 'A daily checklist you can make your own.', icon: 'heart', action: () => openSelfCare() },
     { id: 'chat', title: 'Talk to ' + companionName(), desc: 'Talk it through with your AI companion.', icon: 'chat', action: () => setAppTab('chat') },
   ]);
   hubSection(box, 'Track and reflect', [
-    { id: 'checkin', title: 'Daily check-in', desc: 'Mood, cravings and gratitude, on Home.', icon: 'chart', action: () => { setAppTab('home'); setTimeout(() => { const c = document.getElementById('dashCheckin'); if (c) c.scrollIntoView({ block: 'start' }); }, 60); } },
+    { id: 'checkin', title: 'Daily check-in', desc: 'Mood, feelings, triggers and trends. Always free.', icon: 'chart', action: () => setAppTab('checkin') },
+    { id: 'nextstep', title: 'My next step', desc: 'One small step you have chosen.', icon: 'step', action: () => setAppTab('nextstep') },
+    { id: 'mygoals', title: 'Personal goals', desc: 'Wellbeing, recovery and growth goals, at your pace.', icon: 'target', plus: true, action: () => setAppTab('mygoals') },
     { id: 'cleantime', title: 'Clean time', desc: 'Your days and milestones.', icon: 'sprout', action: () => openCleanTime() },
-    { id: 'journal', title: 'Journal', desc: 'Write it down. Entries stay on this device.', icon: 'book', plus: true, action: () => openJournal() },
+    { id: 'journal', title: 'Journal', desc: 'Write it down, with prompts. Private to your account.', icon: 'book', plus: true, action: () => openJournal() },
     { id: 'goals', title: 'SMART goals', desc: 'One or two small goals for this week.', icon: 'target', plus: true, action: () => openGoals() },
     { id: 'memories', title: 'Memories', desc: 'What ' + companionName() + ' remembers about you.', icon: 'leaf', action: () => openMemories() },
     { id: 'chats', title: 'Your chats', desc: 'Open or delete saved conversations.', icon: 'list', action: () => setAppTab('chats') },
@@ -6785,6 +6833,11 @@ async function hostedChatCompletion(messages, opts = {}) {
   };
   if (opts.max_tokens) body.max_tokens = opts.max_tokens;
   if (wantStream) body.stream = true;
+  if (opts.aiConsent) body.aiConsent = opts.aiConsent;
+  if (opts.nextStep === false) body.nextStep = false;
+  if (body.context && typeof body.context === 'object' && !body.context.profileId && profile) {
+    try { body.context = Object.assign({}, body.context, { profileId: chatProfileId() }); } catch (_) { /* profile id unavailable */ }
+  }
   let res;
   try {
     res = await fetch('/api/hope/chat', {
@@ -6824,15 +6877,16 @@ async function hostedChatCompletion(messages, opts = {}) {
     if (typeof used === 'number') err.hopeUsed = used;
     throw err;
   }
-  const text = await readCompletionResponse(res, { onToken, wantStream });
+  const text = await readCompletionResponse(res, { onToken, wantStream, meta: opts.meta });
   refreshHopeUsage().catch(() => {});
   return text;
 }
 
-async function readCompletionResponse(res, { onToken, wantStream }) {
+async function readCompletionResponse(res, { onToken, wantStream, meta }) {
   const ctype = res.headers.get('content-type') || '';
   if (!wantStream || !res.body || !/event-stream/i.test(ctype)) {
     const data = await res.json();
+    if (meta && data && data.hopewick && data.hopewick.nextStep) meta.nextStep = data.hopewick.nextStep;
     const choice = data.choices && data.choices[0];
     const text = (choice && ((choice.message && choice.message.content) ?? choice.text)) || '';
     if (onToken && text) onToken(text);
@@ -6849,6 +6903,8 @@ async function readCompletionResponse(res, { onToken, wantStream }) {
     let j;
     try { j = JSON.parse(payload); } catch (_) { return false; }
     if (j.error) throw new ApiError(j.error.message || 'The provider reported a streaming error.', 500);
+    // Hopewick's own event: a suggested next step the server pulled out of the reply.
+    if (j.hopewick) { if (meta && j.hopewick.nextStep) meta.nextStep = j.hopewick.nextStep; return false; }
     const choice = j.choices && j.choices[0];
     const delta = choice ? ((choice.delta && choice.delta.content) || (choice.message && choice.message.content) || '') : '';
     if (delta) { full += delta; if (onToken) onToken(delta); }
@@ -6934,9 +6990,11 @@ async function generateReply(c) {
   const paint = () => { raf = 0; bubble.innerHTML = renderMarkdown(replyForDisplay(acc)); bubble.classList.add('cursor'); scrollToBottom(); };
   const finish = () => { setBusy(false); abortCtrl = null; if (!speaking) setOrb(listening ? 'listening' : 'idle'); };
 
+  const replyMeta = {};
   try {
     const reply = await chatCompletion(buildMessages(c), {
       context: hopeContext(c),
+      meta: replyMeta,
       stream: settings.stream,
       signal: abortCtrl.signal,
       onToken: (t) => { acc += t; if (!raf) raf = requestAnimationFrame(paint); },
@@ -6978,7 +7036,12 @@ async function generateReply(c) {
   if (raf) cancelAnimationFrame(raf);
   if (!profile || profile.id !== pid) { finish(); return; }
 
-  c.messages.push({ role: 'assistant', content: acc, ts: Date.now() });
+  const replyMsg = { role: 'assistant', content: acc, ts: Date.now() };
+  const lastAsked = [...c.messages].reverse().find(m => m.role === 'user');
+  if (replyMeta.nextStep && replyMeta.nextStep.title && !(lastAsked && lastAsked.crisis)) {
+    replyMsg.nextStep = { title: String(replyMeta.nextStep.title).slice(0, 140), detail: String(replyMeta.nextStep.detail || '').slice(0, 300), copingKey: replyMeta.nextStep.tool || replyMeta.nextStep.copingKey || null, state: 'offered' };
+  }
+  c.messages.push(replyMsg);
   c.updated = Date.now();
   persistConvos();
   finish();
@@ -7266,6 +7329,9 @@ function syncJournalGate() {
   const plus = subscriptionPlus();
   const workspace = $('#journalWorkspace');
   if (workspace) workspace.hidden = !plus;
+  const entries = $('#journalEntries');
+  // Reading, exporting and deleting your own entries stays free; writing is Plus.
+  if (entries) entries.hidden = !(plus || (Array.isArray(journal) && journal.length));
   renderPlusFeatureGate($('#journalGate'), {
     lead: 'The journal is part of Hopewick Plus. This tab stays on Free so you can see what’s here. Writing, editing, and deepening a reflection need Plus.',
     items: ['Write a private entry', 'Edit or delete what you wrote', 'Deepen a reflection with Hope'],
@@ -7287,57 +7353,148 @@ function prepareJournalCompose() {
   if (cancel) cancel.hidden = true;
   if (out) { out.hidden = true; out.innerHTML = ''; }
   if (saveBtn) saveBtn.textContent = 'Save entry';
+  setJournalComposeMeta(null);
 }
 function openJournal() {
   if (!profile) return;
   closeSidebar();
   setAppTab('journal');
 }
+function journalEntryDate(e) {
+  return e.entryDate || brisbaneDateISO(new Date(e.created || Date.now()));
+}
+function journalKindLabel(kind) {
+  const k = (window.HW3 && HW3.journalKinds || []).find(x => x.id === kind);
+  return k ? k.label : 'Free writing';
+}
 function renderJournalList() {
   syncJournalGate();
-  if (!subscriptionPlus()) return;
   const list = $('#journalList');
   if (!list) return;
+  const plus = subscriptionPlus();
+  if (window.HW3) HW3.paintJournalTools($('#hw3JournalTools'), () => renderJournalListItems());
+  renderJournalListItems();
+  if (!plus && !journal.length) list.innerHTML = '';
+}
+function renderJournalListItems() {
+  const list = $('#journalList');
+  if (!list) return;
+  const plus = subscriptionPlus();
   list.innerHTML = '';
-  const sorted = [...journal].sort((a, b) => (b.updated || b.created) - (a.updated || a.created));
+  const all = [...journal].sort((a, b) => journalEntryDate(b).localeCompare(journalEntryDate(a)) || (b.updated || b.created) - (a.updated || a.created));
+  const sorted = window.HW3 ? HW3.filterJournal(all) : all;
+  const count = $('#journalCount');
+  if (count) count.textContent = all.length ? (sorted.length === all.length ? `${all.length} ${all.length === 1 ? 'entry' : 'entries'}` : `Showing ${sorted.length} of ${all.length} entries`) : '';
+  if (!all.length) {
+    list.innerHTML = '<li class="empty-hint">No entries yet. Write whatever is on your mind, or pick a prompt.</li>';
+    return;
+  }
   if (!sorted.length) {
-    list.innerHTML = '<li class="empty-hint">No entries yet — write whatever is on your mind.</li>';
+    list.innerHTML = '<li class="empty-hint">No entries match. Try a different word or clear the filters.</li>';
     return;
   }
   for (const e of sorted) {
     const li = document.createElement('li');
     li.className = 'j-item';
-    const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(e.updated || e.created));
-    li.innerHTML = `<h3></h3><div class="meta"></div><div class="body"></div>
+    const when = new Intl.DateTimeFormat('en-AU', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(journalEntryDate(e) + 'T00:00:00Z'));
+    li.innerHTML = `<h3></h3><div class="meta"><span class="j-kind"></span><span class="j-when"></span>${e.localOnly ? ' <span class="j-local">On this device only</span>' : ''}</div>${e.prompt ? '<p class="j-prompt"></p>' : ''}<div class="body"></div>
       ${e.refined ? `<div class="refine-box"><h4>Deepened reflection</h4><div class="body refined"></div>${e.emotions ? `<p class="help" style="margin:6px 0 0">Emotions noticed: ${escapeHtml(e.emotions)}</p>` : ''}</div>` : ''}
       <div class="actions">
-        <button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button>
-        <button class="btn btn-sm" type="button" data-act="edit">Edit</button>
+        ${plus ? '<button class="btn btn-sm" type="button" data-act="refine">Deepen reflection</button><button class="btn btn-sm" type="button" data-act="edit">Edit</button>' : ''}
         <button class="btn btn-sm btn-danger" type="button" data-act="del">Delete</button>
       </div>`;
     $('h3', li).textContent = e.title || 'Untitled entry';
-    $('.meta', li).textContent = when;
+    $('.j-kind', li).textContent = journalKindLabel(e.kind);
+    $('.j-when', li).textContent = when;
+    if (e.prompt) $('.j-prompt', li).textContent = e.prompt;
     $('.body', li).textContent = e.body;
     const refEl = $('.refined', li);
     if (refEl) refEl.textContent = e.refined;
-    $('[data-act="refine"]', li).addEventListener('click', () => refineJournalEntry(e));
-    $('[data-act="edit"]', li).addEventListener('click', () => {
-      journalEditId = e.id;
-      $('#jTitle').value = e.title || '';
-      $('#jBody').value = e.body || '';
-      $('#jCancelEdit').hidden = false;
-      $('#jSaveBtn').textContent = 'Update entry';
-      $('#jTitle').focus();
-    });
-    $('[data-act="del"]', li).addEventListener('click', () => {
-      if (!confirm('Delete this journal entry?')) return;
-      journal = journal.filter(x => x.id !== e.id);
-      saveJournal();
+    const label = e.title || `entry from ${when}`;
+    const refineB = $('[data-act="refine"]', li);
+    if (refineB) { refineB.setAttribute('aria-label', `Deepen reflection: ${label}`); refineB.addEventListener('click', () => refineJournalEntry(e)); }
+    const editB = $('[data-act="edit"]', li);
+    if (editB) {
+      editB.setAttribute('aria-label', `Edit ${label}`);
+      editB.addEventListener('click', () => {
+        journalEditId = e.id;
+        $('#jTitle').value = e.title || '';
+        $('#jBody').value = e.body || '';
+        setJournalComposeMeta(e);
+        $('#jCancelEdit').hidden = false;
+        $('#jSaveBtn').textContent = 'Update entry';
+        $('#jTitle').focus();
+      });
+    }
+    const delB = $('[data-act="del"]', li);
+    delB.setAttribute('aria-label', `Delete ${label}`);
+    delB.addEventListener('click', async () => {
+      if (!confirm('Delete this journal entry? This cannot be undone.')) return;
+      try {
+        const done = window.HW3 ? await HW3.journalDelete(e) : false;
+        if (!done) { journal = journal.filter(x => x.id !== e.id); saveJournal(); }
+      } catch (err) { toast('Could not delete that just now. Please try again.', true); return; }
+      if (journalEditId === e.id) prepareJournalCompose();
       renderJournalList();
       toast('Entry deleted');
     });
     list.appendChild(li);
   }
+}
+/** Kind, prompt and date fields in the Plus journal editor (if it is mounted). */
+function journalComposeMeta() {
+  const kind = $('#jKind');
+  const date = $('#jDate');
+  const prompt = $('#jPromptText');
+  return {
+    kind: kind ? kind.value : 'free',
+    entryDate: date && date.value ? date.value : brisbaneDateISO(),
+    prompt: prompt && !prompt.hidden ? prompt.textContent.trim() : '',
+  };
+}
+function setJournalComposeMeta(e) {
+  const kind = $('#jKind');
+  const date = $('#jDate');
+  const prompt = $('#jPromptText');
+  if (kind) kind.value = (e && e.kind) || 'free';
+  if (date) { date.max = brisbaneDateISO(); date.value = (e && journalEntryDate(e)) || brisbaneDateISO(); }
+  if (prompt) { prompt.textContent = (e && e.prompt) || ''; prompt.hidden = !(e && e.prompt); }
+  const clear = $('#jPromptClear');
+  if (clear) clear.hidden = !(e && e.prompt);
+}
+let journalPromptTurn = 0;
+function showJournalPrompt(next) {
+  const kind = $('#jKind') ? $('#jKind').value : 'prompt';
+  const prompt = $('#jPromptText');
+  if (!prompt || !window.HW3) return;
+  if (next) journalPromptTurn += 1;
+  const day = Number(brisbaneDateISO().replace(/-/g, '')) || 0;
+  prompt.textContent = HW3.journalPrompt(kind === 'free' ? 'prompt' : kind, day + journalPromptTurn);
+  prompt.hidden = false;
+  const clear = $('#jPromptClear');
+  if (clear) clear.hidden = false;
+}
+/** Save the entry in the editor: to the account when signed in, else this browser. */
+async function persistJournalEntry({ title, body, refined, emotions, existing, meta: givenMeta }) {
+  const meta = givenMeta || journalComposeMeta();
+  if (window.HW3) {
+    const saved = await HW3.journalSave(Object.assign({ title, body }, meta, refined !== undefined ? { refined, emotions } : {}), existing || null);
+    if (saved) return saved;
+  }
+  const now = Date.now();
+  if (existing) {
+    Object.assign(existing, { title, body, updated: now }, meta);
+    if (refined !== undefined) { existing.refined = refined; existing.emotions = emotions; }
+    journal = journal.slice(0, 200);
+    saveJournal();
+    return existing;
+  }
+  const entry = Object.assign({ id: uid(), title, body, created: now, updated: now }, meta);
+  if (window.HW3 && HW3.journalServerMode()) entry.localOnly = true;
+  journal.unshift(entry);
+  journal = journal.slice(0, 200);
+  saveJournal();
+  return entry;
 }
 function bindJournalUi() {
   const root = document.getElementById('journalWorkspace');
@@ -7349,34 +7506,31 @@ function bindJournalUi() {
   root.dataset.bound = '1';
   cancel.addEventListener('click', () => {
   journalEditId = null;
+  setJournalComposeMeta(null);
   $('#jTitle').value = '';
   $('#jBody').value = '';
   $('#jCancelEdit').hidden = true;
   $('#jSaveBtn').textContent = 'Save entry';
   $('#jRefineOut').hidden = true;
 });
-$('#jSaveBtn').addEventListener('click', () => {
+$('#jSaveBtn').addEventListener('click', async () => {
   if (!subscriptionPlus()) { openAccountDlg(); return; }
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write something first.', true); $('#jBody').focus(); return; }
-  const now = Date.now();
-  if (journalEditId) {
-    const e = journal.find(x => x.id === journalEditId);
-    if (e) { e.title = title; e.body = body; e.updated = now; }
-    journalEditId = null;
-    $('#jCancelEdit').hidden = true;
-    $('#jSaveBtn').textContent = 'Save entry';
-    toast('Entry updated');
-  } else {
-    journal.unshift({ id: uid(), title, body, created: now, updated: now });
-    toast('Entry saved');
+  const saveBtn = $('#jSaveBtn');
+  saveBtn.disabled = true;
+  try {
+    const existing = journalEditId ? journal.find(x => x.id === journalEditId) : null;
+    await persistJournalEntry({ title, body, existing });
+    toast(existing ? 'Entry updated' : 'Entry saved');
+  } catch (err) {
+    saveBtn.disabled = false;
+    toast(err && err.message ? err.message : 'Could not save that just now. Your words are still here.', true);
+    return;
   }
-  journal = journal.slice(0, 200);
-  saveJournal();
-  $('#jTitle').value = '';
-  $('#jBody').value = '';
-  $('#jRefineOut').hidden = true;
+  saveBtn.disabled = false;
+  prepareJournalCompose();
   renderJournalList();
 });
 $('#jRefineBtn').addEventListener('click', async () => {
@@ -7384,23 +7538,28 @@ $('#jRefineBtn').addEventListener('click', async () => {
   const title = $('#jTitle').value.trim();
   const body = $('#jBody').value.trim();
   if (!body) { toast('Write an entry first, then deepen it.', true); return; }
-  // Save draft if needed, then refine
+  // Save first, then deepen (only if they agree to send it to Hope).
   let entry;
-  if (journalEditId) entry = journal.find(x => x.id === journalEditId);
-  if (!entry) {
-    const now = Date.now();
-    entry = { id: uid(), title, body, created: now, updated: now };
-    journal.unshift(entry);
-    journalEditId = entry.id;
-    $('#jCancelEdit').hidden = false;
-    $('#jSaveBtn').textContent = 'Update entry';
-    saveJournal();
-  } else {
-    entry.title = title; entry.body = body; entry.updated = Date.now();
-    saveJournal();
+  try {
+    const existing = journalEditId ? journal.find(x => x.id === journalEditId) : null;
+    entry = await persistJournalEntry({ title, body, existing });
+  } catch (err) {
+    toast(err && err.message ? err.message : 'Could not save that just now. Your words are still here.', true);
+    return;
   }
+  journalEditId = entry.id;
+  $('#jCancelEdit').hidden = false;
+  $('#jSaveBtn').textContent = 'Update entry';
+  renderJournalList();
   await refineJournalEntry(entry, true);
 });
+const kindSel = $('#jKind');
+if (kindSel) kindSel.addEventListener('change', () => { if (kindSel.value !== 'free') showJournalPrompt(false); });
+const promptBtn = $('#jPromptBtn');
+if (promptBtn) promptBtn.addEventListener('click', () => showJournalPrompt(!$('#jPromptText').hidden));
+const promptClear = $('#jPromptClear');
+if (promptClear) promptClear.addEventListener('click', () => { const t = $('#jPromptText'); t.textContent = ''; t.hidden = true; promptClear.hidden = true; $('#jPromptBtn').focus(); });
+setJournalComposeMeta(null);
 }
 bindJournalUi();
 
@@ -7448,12 +7607,15 @@ async function refineJournalEntry(entry, showInCompose) {
       : 'Deepen reflection needs Hope. ' + HOSTED_SIGNIN_COPY);
     return;
   } else {
+    // The entry only goes to Hope with a yes for this use, or the journal setting turned on.
+    const consent = window.HW3 ? await HW3.askJournalAi() : 'once';
+    if (!consent) { toast('Okay. Your entry stays private.'); return; }
     try {
       toast('Deepening your reflection…');
       const raw = await chatCompletion([
         { role: 'system', content: journalRefineSystemPrompt(crisis) },
         { role: 'user', content: `Title: ${entry.title || '(none)'}\n\nEntry:\n${entry.body}` },
-      ], { stream: false, temperature: 0.6, max_tokens: 500, purpose: 'refine', context: { userName: userName(), companionName: companionName(), crisis } });
+      ], { stream: false, temperature: 0.6, max_tokens: 500, purpose: 'refine', aiConsent: 'once', context: { userName: userName(), companionName: companionName(), crisis } });
       parsed = parseRefineResponse(raw);
     } catch (e) {
       toast('Couldn’t deepen right now: ' + (e.message || 'error'), true);
@@ -7476,26 +7638,26 @@ async function refineJournalEntry(entry, showInCompose) {
     </div></div>`;
   $('#jOrigPreview').textContent = entry.body;
   $('#jRefPreview').textContent = parsed.refined;
-  $('#jKeepRefined').addEventListener('click', () => {
-    entry.body = parsed.refined;
-    entry.refined = parsed.refined;
-    entry.emotions = parsed.emotions;
-    entry.updated = Date.now();
-    saveJournal();
-    $('#jBody').value = entry.body;
+  const keepRefine = async (replaceBody) => {
+    const current = journal.find(x => x.id === entry.id) || entry;
+    try {
+      const saved = await persistJournalEntry({
+        title: current.title || '', body: replaceBody ? parsed.refined : current.body,
+        refined: parsed.refined, emotions: parsed.emotions, existing: current,
+        meta: { kind: current.kind || 'free', entryDate: journalEntryDate(current), prompt: current.prompt || '' },
+      });
+      if (journalEditId === entry.id) journalEditId = saved.id;
+      if (replaceBody && $('#jBody')) $('#jBody').value = saved.body;
+    } catch (err) {
+      toast(err && err.message ? err.message : 'Could not save that just now.', true);
+      return;
+    }
     out.hidden = true;
     renderJournalList();
-    toast('Kept the deepened version');
-  });
-  $('#jKeepBoth').addEventListener('click', () => {
-    entry.refined = parsed.refined;
-    entry.emotions = parsed.emotions;
-    entry.updated = Date.now();
-    saveJournal();
-    out.hidden = true;
-    renderJournalList();
-    toast('Saved both original and deepened');
-  });
+    toast(replaceBody ? 'Kept the deepened version' : 'Saved both original and deepened');
+  };
+  $('#jKeepRefined').addEventListener('click', () => keepRefine(true));
+  $('#jKeepBoth').addEventListener('click', () => keepRefine(false));
   $('#jDismissRefine').addEventListener('click', () => { out.hidden = true; });
   if (!showInCompose) renderJournalList();
 }
@@ -12077,6 +12239,7 @@ function enterProfile(pid) {
     pullAccountChats(true).catch(() => {});
     pullAccountCheckins(true).catch(() => {});
   }
+  if (window.HW3) { HW3.reset(); HW3.sync(true); }
 }
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
@@ -12880,6 +13043,7 @@ function enterDemo() {
   [el.pickerDlg, el.signInDlg, el.onboardingDlg, el.settingsDlg, el.memoriesDlg, el.disclaimerDlg, el.cleanTimeDlg, el.goalsDlg, el.plansDlg, el.stepsDlg, el.bibleDlg, el.deeperDlg, el.nearbyDlg, el.nutritionDlg, el.skillsDlg, el.circuitBreakerDlg, el.selfCareDlg, el.aboutDlg].forEach(d => { if (d && d.open) d.close(); });
   isDemo = true;
   demoRun++;
+  if (window.HW3) HW3.reset();
   profile = Object.assign({}, DEMO_PERSON);
   const sample = demoSampleData();
   settings = Object.assign({}, DEFAULT_PROFILE_SETTINGS, DEFAULT_SHARED, {
@@ -14259,6 +14423,7 @@ async function refreshBilling() {
     chatPullKey = '';
     checkinPullKey = '';
   }
+  if (window.HW3 && profile) HW3.sync(false);
   try {
     if (profile || isDemo) {
       renderHistory();
@@ -14270,7 +14435,7 @@ async function refreshBilling() {
       if (el.deeperDlg && el.deeperDlg.open) renderGoingDeeper();
       if (appTab === 'journal') {
         syncJournalGate();
-        if (subscriptionPlus()) renderJournalList();
+        renderJournalList();
       }
       if (appTab === 'resume') showResume(false);
       if (el.goalsDlg && el.goalsDlg.open) renderGoals();
