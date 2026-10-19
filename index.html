@@ -26,8 +26,8 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 </script>
 <script src="/assets/theme.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hopewick — Support for your next step</title>
-<meta name="description" content="Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a support chat. Built in Australia. Not a medical or crisis service.">
+<title>Hopewick: Recovery Support App Australia | Between Sessions</title>
+<meta name="description" content="Talk to Hope, a free AI recovery companion for Australians in drug and alcohol recovery. Journal, check in and find your next step. Not a medical service.">
 <meta name="build" content="hopewick-v5.27">
 <meta name="theme-color" content="#0b1b37">
 <meta name="mobile-web-app-capable" content="yes">
@@ -38,8 +38,8 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 <link rel="canonical" href="https://hopewick.com.au/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hopewick">
-<meta property="og:title" content="Hopewick — Support for your next step">
-<meta property="og:description" content="Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a support chat. Built in Australia. Not a medical or crisis service.">
+<meta property="og:title" content="Hopewick: keeping hope lit between sessions">
+<meta property="og:description" content="A recovery companion built in Australia by someone in recovery. Talk to Hope, journal, check in and find support. Not a medical or crisis service.">
 <meta property="og:url" content="https://hopewick.com.au/">
 <meta property="og:image" content="https://hopewick.com.au/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -47,8 +47,8 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 <meta property="og:image:alt" content="Hopewick logo: a heart held by a blue hand and a red hand, with a sunrise and a river. Support for your next step.">
 <meta property="og:locale" content="en_AU">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hopewick — Support for your next step">
-<meta name="twitter:description" content="Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a support chat. Built in Australia. Not a medical or crisis service.">
+<meta name="twitter:title" content="Hopewick: keeping hope lit between sessions">
+<meta name="twitter:description" content="A recovery companion built in Australia by someone in recovery. Talk to Hope, journal, check in and find support. Not a medical or crisis service.">
 <meta name="twitter:image" content="https://hopewick.com.au/og-image.png">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="icon" type="image/png" sizes="32x32" href="app/icon-32.png">
@@ -224,15 +224,43 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Hopewick",
-  "legalName": "BRIDGE&BITE.CO PTY LTD",
-  "url": "https://hopewick.com.au/",
-  "logo": "https://hopewick.com.au/brand/hopewick-lockup-600.png",
-  "description": "Addiction recovery support between appointments for people in recovery, families, and Australian rehabs and AOD services. Not a crisis service. Not affiliated with the cancelled HOPEWICK PTY. LTD. (ABN 98 010 417 124).",
-  "taxID": "83 692 080 792",
-  "address": { "@type": "PostalAddress", "addressCountry": "AU", "addressRegion": "QLD" },
-  "founder": { "@type": "Person", "name": "Dwayne Stevens" }
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://hopewick.com.au/#org",
+      "name": "Hopewick",
+      "legalName": "BRIDGE&BITE.CO PTY LTD",
+      "url": "https://hopewick.com.au/",
+      "logo": "https://hopewick.com.au/brand/hopewick-lockup-600.png",
+      "email": "hello@hopewick.com.au",
+      "taxID": "83 692 080 792",
+      "areaServed": "AU",
+      "address": { "@type": "PostalAddress", "addressCountry": "AU", "addressRegion": "QLD" },
+      "founder": { "@type": "Person", "name": "Dwayne Stevens" },
+      "description": "Recovery support between appointments for people in drug and alcohol recovery, families, and Australian rehabs and AOD services. Not a medical, clinical or crisis service. Not affiliated with the cancelled HOPEWICK PTY. LTD. (ABN 98 010 417 124)."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://hopewick.com.au/#website",
+      "url": "https://hopewick.com.au/",
+      "name": "Hopewick",
+      "inLanguage": "en-AU",
+      "publisher": { "@id": "https://hopewick.com.au/#org" }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "Hopewick",
+      "url": "https://hopewick.com.au/app/",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any (web browser)",
+      "inLanguage": "en-AU",
+      "publisher": { "@id": "https://hopewick.com.au/#org" },
+      "offers": [
+        { "@type": "Offer", "name": "Hopewick Free", "price": "0", "priceCurrency": "AUD" },
+        { "@type": "Offer", "name": "Hopewick Plus", "price": "20", "priceCurrency": "AUD", "description": "Per month. 7-day free trial on first subscription, subject to eligibility." }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -482,6 +510,9 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
           <li><a href="/complaints.html">Complaints</a></li>
           <li><a href="/data.html">Data</a></li>
           <li><a href="/how-it-fits.html">For services</a></li>
+          <li><a href="/recovery-support-between-sessions.html">Support between sessions</a></li>
+          <li><a href="/gratitude-journal-for-recovery.html">Gratitude journal for recovery</a></li>
+          <li><a href="/recovery-app-australia.html">Recovery app Australia</a></li>
           <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
         </ul>
         <p>Contact <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a></p>
@@ -494,16 +525,9 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 <script>
 'use strict';
 (function applyBrand() {
-  const title = `${BRAND.name} — ${BRAND.tagline}`;
-  document.title = title;
+  // SEO title, description and OG/Twitter tags are static in <head> (crawlers and share previews read them); only the site name is synced here.
   const setMeta = (sel, val) => { const m = document.querySelector(sel); if (m) m.setAttribute('content', val); };
-  const description = 'Hopewick is an AI-powered support companion for addiction recovery, mental wellbeing and personal growth: daily check-ins, coping tools and Hope, a support chat. Built in Australia. Not a medical or crisis service.';
-  setMeta('meta[property="og:title"]', title);
-  setMeta('meta[name="twitter:title"]', title);
   setMeta('meta[property="og:site_name"]', BRAND.name);
-  setMeta('meta[name="description"]', description);
-  setMeta('meta[property="og:description"]', description);
-  setMeta('meta[name="twitter:description"]', description);
   document.querySelectorAll('[data-brand]').forEach(e => { e.textContent = BRAND.name; });
   document.querySelectorAll('[data-companion]').forEach(e => { e.textContent = BRAND.companion; });
   document.querySelectorAll('[data-tagline]').forEach(e => { e.textContent = BRAND.tagline; });

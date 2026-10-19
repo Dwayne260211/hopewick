@@ -89,7 +89,7 @@ test('manifest uses the navy theme colour', () => {
 
 test('tagline: Hopewick, Support for your next step', () => {
   const html = read('index.html');
-  assert.match(html, /<title>Hopewick — Support for your next step<\/title>/);
+  assert.match(html, /<title>Hopewick: Recovery Support App Australia \| Between Sessions<\/title>/);
   assert.match(html, /Support for your next step\./);
 });
 

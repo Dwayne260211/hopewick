@@ -1,4 +1,7 @@
+# robots.txt for https://hopewick.com.au
 User-agent: *
 Allow: /
+# API endpoints (incl. one-time sign-in links) should never be crawled
+Disallow: /api/
 
 Sitemap: https://hopewick.com.au/sitemap.xml
