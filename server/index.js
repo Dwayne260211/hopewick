@@ -945,6 +945,8 @@ function blockedStatic(rel) {
   if (!norm) return false;
   const segments = norm.split('/').filter(Boolean);
   if (!segments.length) return false;
+  // Android App Links (Google Play): the only dot-path served. Every other dotfile stays blocked.
+  if (norm === '.well-known/assetlinks.json') return false;
   if (segments.some((seg) => seg.startsWith('.'))) return true;
   if (PRIVATE_DIRS.has(segments[0].toLowerCase())) return true;
   if (segments.length === 1 && PRIVATE_FILES.has(segments[0].toLowerCase())) return true;
