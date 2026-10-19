@@ -37,6 +37,27 @@
 .hw5-call__num { white-space: nowrap; color: var(--text); }
 .hw5-call--urgent { border: 2px solid var(--danger); background: var(--danger-soft); }
 
+/* Suicide prevention plan: calm entry, quick add (name + phone), prefilled services */
+.hw5-about { margin-top: var(--space-3); }
+.hw5-about__summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-height: var(--tap); border-radius: var(--radius-sm); }
+.hw5-about__summary::-webkit-details-marker { display: none; }
+.hw5-about__summary::after { content: '+'; font-size: 1.4rem; line-height: 1; color: var(--muted); }
+.hw5-about[open] > .hw5-about__summary::after { content: '\2212'; }
+.hw5-about__summary:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 3px; }
+.hw5-about__summary .hw3-h2 { margin: 0; }
+.hw5-about p { margin: var(--space-2) 0 0; }
+.hw5-quick { border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3) var(--space-3); margin: var(--space-3) 0 0; }
+.hw5-quick legend { padding: 0 var(--space-1); font-weight: var(--weight-semibold); }
+.hw5-quick__row { display: grid; grid-template-columns: 1fr; gap: var(--space-2); margin-bottom: var(--space-2); }
+@media (min-width: 560px) { .hw5-quick__row { grid-template-columns: 3fr 2fr; } }
+.hw5-quick .hw-input { width: 100%; box-sizing: border-box; min-height: var(--tap); }
+.hw5-prefilled { margin-top: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--surface-2); border: 1px solid var(--border); }
+.hw5-prefilled .hw-label { margin: 0; }
+.hw5-plan__services { list-style: none; margin: var(--space-1) 0 0; padding: 0 !important; display: grid; gap: var(--space-1); }
+.hw5-plan__services li { margin: 0; }
+.hw5-plan__services .hw5-tel { display: inline-flex; align-items: center; min-height: var(--tap); }
+.hw5-plan__services .hw-hint { display: block; margin: 0; }
+
 /* About you */
 .hw5-fieldset { border: 0; padding: 0; margin: var(--space-3) 0 0; }
 .hw5-fieldset legend { padding: 0; margin-bottom: var(--space-1); }
@@ -66,6 +87,7 @@
   body.hw5-printing #hw5Printable, body.hw5-printing #hw5Printable * { visibility: visible !important; }
   body.hw5-printing #hw5Printable { position: absolute; left: 0; top: 0; width: 100%; }
   body.hw5-printing .hw5-call { border: 1px solid #000; }
+  body.hw5-printing .hw5-plan__services .hw5-tel { min-height: 0; }
   body.hw5-printing .hw-card { box-shadow: none !important; border: 1px solid #999 !important; break-inside: avoid; }
 }
 
