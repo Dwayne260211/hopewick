@@ -1,8 +1,9 @@
 /* Hopewick 2.0 Stage 5: safety plan builder, optional faith layer, personalisation.
  *
  * Loaded after hw-stage4.js. Uses HW3.kit and registers through HW3.ext:
- *   safety       Step-by-step safety plan (always free), with services, print,
- *                an offline copy, share (only when the person taps it) and history.
+ *   safety       Step-by-step suicide prevention safety plan (always free), in the
+ *                seven Stanley-Brown steps, with services, print / save as PDF, an
+ *                offline copy, share (only when the person taps it) and history.
  *   preferences  "About you": preferred name, focus areas, tone, faith opt-in.
  * The faith layer is OFF unless the person switches it on. With it off, no faith
  * content is shown anywhere. The server decides (GET /api/me/preferences, /api/me/faith).
@@ -17,29 +18,34 @@
   window.HW5 = HW5;
 
   /* ------------------------------------------------------------------ */
-  /* Australian services (checked 18 Oct 2026; sources in docs/CONTENT-SOURCES.md) */
+  /* Australian services (re-checked 19 Oct 2026 on each service's own site;  */
+  /* sources in docs/CONTENT-SOURCES.md). `plan: true` = prefilled in step 5. */
   /* ------------------------------------------------------------------ */
   const HW5_SERVICES = [
-    { name: 'Emergency', num: '000', tel: '000', note: 'Police, ambulance or fire. If life is in danger.', urgent: true },
-    { name: 'Lifeline', num: '13 11 14', tel: '131114', note: '24/7 crisis support' },
-    { name: 'Suicide Call Back Service', num: '1300 659 467', tel: '1300659467', note: '24/7 counselling for anyone affected by suicide' },
-    { name: 'Beyond Blue', num: '1300 22 4636', tel: '1300224636', note: '24/7 support for anxiety and depression' },
-    { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7, for Aboriginal and Torres Strait Islander people' },
-    { name: 'Kids Helpline', num: '1800 55 1800', tel: '1800551800', note: '24/7, for young people aged 5 to 25' },
+    { name: 'Emergency (Triple Zero)', num: '000', tel: '000', note: 'Police, ambulance or fire, if you or someone else is in immediate danger', urgent: true, plan: true },
+    { name: 'Lifeline', num: '13 11 14', tel: '131114', note: '24/7 crisis support. You can also text 0477 13 11 14', plan: true },
+    { name: 'Suicide Call Back Service', num: '1300 659 467', tel: '1300659467', note: '24/7 phone counselling for anyone affected by suicide', plan: true },
+    { name: '13YARN', num: '13 92 76', tel: '139276', note: '24/7 crisis support for Aboriginal and Torres Strait Islander people', plan: true },
+    { name: 'Kids Helpline', num: '1800 55 1800', tel: '1800551800', note: '24/7, for young people aged 5 to 25 (under-25s)', plan: true },
+    { name: 'Beyond Blue', num: '1300 22 4636', tel: '1300224636', note: '24/7 support for anxiety, depression and feeling low', plan: true },
     { name: 'QLife', num: '1800 184 527', tel: '1800184527', note: 'LGBTIQ+ peer support, 3pm to 9pm local time, daily' },
     { name: 'Adis 24/7 Alcohol and Drug Support (QLD)', num: '1800 177 833', tel: '1800177833', note: '24/7 alcohol and other drug support' },
   ];
   HW5.SERVICES = HW5_SERVICES;
+  /** Prefilled on every plan (step 5). Kept here, not in the saved plan, so a number change reaches every plan. */
+  const PLAN_SERVICES = HW5_SERVICES.filter((sv) => sv.plan);
+  const MORE_SERVICES = HW5_SERVICES.filter((sv) => !sv.plan);
+  HW5.PLAN_SERVICES = PLAN_SERVICES;
 
   /* Seven steps in the Stanley-Brown order. All wording here is original. */
   const STEPS = [
     { id: 'warningSigns', title: 'My warning signs', prompt: 'What tells you a hard time might be starting?', hint: 'Thoughts, feelings, moods, situations or things you do.', examples: ['Not sleeping', 'Pulling away from people', 'Thinking "what’s the point"', 'Payday'] },
-    { id: 'copingThings', title: 'Things I can do on my own', prompt: 'What can you do by yourself to take the edge off, even a little?', hint: 'Small, doable things. They don’t have to fix it.', examples: ['Box breathing', 'A walk around the block', 'A cold shower', 'Music with headphones'] },
-    { id: 'safePlaces', title: 'People and places that take my mind off things', prompt: 'Where can you go, or who can you be around, for a change of scene?', hint: 'You don’t need to talk about how you feel. Just be around others.', examples: ['The library', 'A café', 'My cousin’s place', 'The gym'] },
-    { id: 'people', title: 'People I can ask for help', prompt: 'Who could you tell that you’re having a hard time?', hint: 'Add a name and number. Numbers become tap-to-call on your plan.', examples: ['Sam 0400 000 000', 'My sponsor', 'Mum'] },
-    { id: 'professionals', title: 'Professionals and services', prompt: 'Which professionals or services can you contact?', hint: 'Your GP, counsellor, AOD worker or mental health team. The national lines are below.', examples: ['My GP', 'My AOD worker', 'Lifeline 13 11 14'] },
-    { id: 'safeEnvironment', title: 'Making my surroundings safer', prompt: 'What can you do to make things safer around you in a hard moment?', hint: 'For example, asking someone to hold onto things for a while.', examples: ['Medicines kept by someone I trust', 'No alcohol at home', 'Car keys with a friend'] },
-    { id: 'reasons', title: 'My reasons for living', prompt: 'What matters to you, and what keeps you going?', hint: 'People, pets, plans, hopes, beliefs. Big or small.', examples: ['My kids', 'My dog', 'Seeing the ocean again'] },
+    { id: 'copingThings', title: 'Things I can do on my own to cope or distract', prompt: 'What can you do by yourself to take the edge off or take your mind off things, even a little?', hint: 'Small, doable things. They don’t have to fix it.', examples: ['Box breathing', 'A walk around the block', 'A cold shower', 'Music with headphones'] },
+    { id: 'safePlaces', title: 'People and places that help take my mind off things', prompt: 'Where can you go, or who can you be around, for a change of scene?', hint: 'You don’t need to talk about how you feel. Just be around others.', examples: ['The library', 'A café', 'My cousin’s place', 'The gym'] },
+    { id: 'people', title: 'People I can ask for help', prompt: 'Who could you tell that you’re having a hard time?', hint: 'Add a name and a phone number. Numbers become tap-to-call on your plan.', examples: ['My sponsor', 'Mum', 'My best mate'], quickAdd: [{ id: 'person', legend: 'Add a person', nameLabel: 'Their name', prefix: '' }] },
+    { id: 'professionals', title: 'Professionals and services', prompt: 'Which professionals or services can you contact?', hint: 'Your GP, caseworker, counsellor, AOD worker or mental health team. The national services are already on your plan.', examples: ['My AOD worker', 'My counsellor', 'My mental health team'], quickAdd: [{ id: 'gp', legend: 'My GP', nameLabel: 'GP or clinic name', prefix: 'GP: ' }, { id: 'case', legend: 'My caseworker or counsellor', nameLabel: 'Their name', prefix: 'Caseworker: ' }] },
+    { id: 'safeEnvironment', title: 'Making my space safer', prompt: 'What can you do to make things safer around you in a hard moment?', hint: 'For example, asking someone to hold onto things for a while.', examples: ['Medicines kept by someone I trust', 'No alcohol at home', 'Car keys with a friend'] },
+    { id: 'reasons', title: 'My reasons for living and what matters to me', prompt: 'What matters to you, and what keeps you going?', hint: 'People, pets, plans, hopes, beliefs. Big or small.', examples: ['My kids', 'My dog', 'Seeing the ocean again'] },
   ];
   HW5.STEPS = STEPS;
 
@@ -252,7 +258,7 @@
       ORIGINAL.compare = secs.map((s) => s.rows.slice());
       const free = secs.find((s) => s.id === 'free');
       if (free) {
-        free.rows.splice(2, 0, ['Step-by-step safety plan: services, print, offline copy, share and history', 'Yes', 'Yes']);
+        free.rows.splice(2, 0, ['Step-by-step suicide prevention safety plan: services, print or PDF, offline copy, share and history', 'Yes', 'Yes']);
         free.rows.push(['About you: your name, focus areas and tone, used by Hope', 'Yes', 'Yes']);
         ORIGINAL.compare = secs.map((s) => s.rows.slice());
       }
@@ -348,11 +354,11 @@
   function draft() { if (!ui.draft) ui.draft = current(); return ui.draft; }
   const filled = (plan) => STEPS.filter((s) => (plan[s.id] || []).length).length;
 
-  function servicesCard(id) {
+  function servicesCard(id, list, title) {
     return h('section', { class: 'hw-card hw3-card hw5-services', id: id || 'hw5Services', 'aria-labelledby': `${id || 'hw5Services'}T` },
-      h('h2', { class: 'hw3-h2', id: `${id || 'hw5Services'}T`, text: 'Services you can call' }),
+      h('h2', { class: 'hw3-h2', id: `${id || 'hw5Services'}T`, text: title || 'Services you can call' }),
       h('p', { class: 'hw-hint', text: 'Free, confidential Australian services. Tap to call.' }),
-      h('ul', { class: 'hw5-services__list' }, HW5_SERVICES.map((sv) => h('li', {},
+      h('ul', { class: 'hw5-services__list' }, (list || HW5_SERVICES).map((sv) => h('li', {},
         h('a', { class: `hw5-call${sv.urgent ? ' hw5-call--urgent' : ''}`, href: `tel:${sv.tel}`, 'aria-label': `Call ${sv.name} on ${sv.num}` },
           h('span', { class: 'hw5-call__name', text: sv.name }), h('span', { class: 'hw5-call__num', text: sv.num })),
         h('span', { class: 'hw-hint', text: sv.note })))));
@@ -360,11 +366,55 @@
   HW5.servicesCard = servicesCard;
 
   function urgentBox() {
-    return h('div', { class: 'hw3-support', role: 'note' },
-      h('p', { class: 'hw3-h3', text: 'If you are in danger or might act on thoughts of suicide, call 000 now.' }),
+    return h('div', { class: 'hw3-support', role: 'note', id: 'hw5Urgent' },
+      h('p', { class: 'hw3-h3', text: 'Call 000 if you are in immediate danger.' }),
+      h('p', { text: 'That includes if you feel you might act on thoughts of suicide. Lifeline is there any time on 13 11 14.' }),
       h('div', { class: 'hw-card__actions' }, h('a', { class: 'hw-btn hw-btn--danger hw-btn--sm', href: 'tel:000', text: 'Call 000' }), h('a', { class: 'hw-btn hw-btn--sm', href: 'tel:131114', text: 'Lifeline 13 11 14' }),
         btn('Get help now', () => { try { openHelp(); } catch (_) { /* */ } })));
   }
+  /** Calm entry: what this plan is, in plain words. Shown at the top of the plan. */
+  function aboutCard(open) {
+    // Open the first time; once the plan has something in it, it folds away (one tap to reopen).
+    return h('details', { class: 'hw-card hw-card--tinted hw3-card hw5-about', id: 'hw5About', open: open !== false },
+      h('summary', { class: 'hw5-about__summary' }, h('h2', { class: 'hw3-h2', id: 'hw5AboutT', text: 'A plan for when things feel too much' })),
+      h('p', { text: 'This is your suicide prevention safety plan. Lots of people have thoughts of suicide or of not wanting to be here, especially when things pile up. Writing a plan while things feel a bit steadier means it’s ready if a hard moment comes.' }),
+      h('p', { text: 'It follows the seven steps of the Stanley-Brown Safety Planning Intervention, which research shows can help people stay safe. Work through them in order when you need to: if one step doesn’t help, move to the next.' }),
+      h('p', { class: 'hw-hint', text: 'Every part is optional. Go at your own pace, save and come back. Hopewick is not a crisis service, and Hope (the AI) never reads this plan.' }));
+  }
+  HW5.aboutCard = aboutCard;
+
+  /** Name + phone fields that add one line to the step's list (stored as text, so saved plans stay compatible). */
+  function quickAdd(step, ta) {
+    return (step.quickAdd || []).map((q) => {
+      const nid = `hw5QA-${q.id}-name`;
+      const tid = `hw5QA-${q.id}-phone`;
+      const fs = h('fieldset', { class: 'hw5-quick', id: `hw5QA-${q.id}` },
+        h('legend', { class: 'hw-label', text: q.legend }),
+        h('div', { class: 'hw5-quick__row' },
+          h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: nid, text: q.nameLabel }), h('input', { class: 'hw-input', id: nid, type: 'text', maxlength: '120', autocomplete: 'off' })),
+          h('div', { class: 'hw-field' }, h('label', { class: 'hw-label', for: tid, text: 'Phone' }), h('input', { class: 'hw-input', id: tid, type: 'tel', inputmode: 'tel', maxlength: '20', autocomplete: 'off' }))),
+        btn(`Add to my list`, () => {
+          const n = document.getElementById(nid); const t = document.getElementById(tid);
+          const name = (n.value || '').trim(); const phone = (t.value || '').replace(/[^\d+\s()-]/g, '').trim();
+          if (!name && !phone) { say('Add a name or a phone number first.', true); n.focus(); return; }
+          const line = `${q.prefix}${[name, phone].filter(Boolean).join(', ')}`.slice(0, 300);
+          const lines = ta.value.split('\n').map((v) => v.trim()).filter(Boolean);
+          if (lines.length >= 10) { say('You can keep up to 10 in each step.', true); return; }
+          if (!lines.includes(line)) lines.push(line);
+          ta.value = lines.join('\n');
+          n.value = ''; t.value = '';
+          announce(`Added ${line}`);
+          n.focus();
+        }, { attrs: { id: `hw5QA-${q.id}-add`, 'aria-label': `Add to my list: ${q.legend}` } }));
+      return fs;
+    });
+  }
+  function planServicesList(id, cls) {
+    return h('ul', { class: cls || 'hw5-plan__services', id }, PLAN_SERVICES.map((sv) => h('li', {},
+      h('a', { href: `tel:${sv.tel}`, class: 'hw5-tel', 'aria-label': `Call ${sv.name} on ${sv.num}`, text: `${sv.name}: ${sv.num}` }),
+      h('span', { class: 'hw-hint', text: ` ${sv.note}` }))));
+  }
+
   function savedWhere() {
     return online() ? 'Saved privately to your account. Free on every plan, forever.' : demo() ? 'Demo mode: nothing is saved.' : 'Signed out: saved in this browser only. Sign in to keep it with your account and get version history.';
   }
@@ -410,7 +460,13 @@
     form.appendChild(h('div', { class: 'hw5-examples' }, h('span', { class: 'hw-hint', text: 'Ideas (tap to add): ' }), s.examples.map((x) => h('button', {
       type: 'button', class: 'hw-chip hw5-example', onclick: () => { const lines = ta.value.split('\n').map((v) => v.trim()).filter(Boolean); if (!lines.includes(x)) lines.push(x); ta.value = lines.join('\n'); ta.focus(); },
     }, x))));
-    if (s.id === 'professionals') form.appendChild(h('p', { class: 'hw-hint', text: 'The national services are listed below this plan, with tap-to-call.' }));
+    quickAdd(s, ta).forEach((fs) => form.appendChild(fs));
+    if (s.id === 'professionals') {
+      form.appendChild(h('div', { class: 'hw5-prefilled', id: 'hw5StepServices' },
+        h('p', { class: 'hw-label', text: 'Already on your plan (tap to call)' }),
+        planServicesList('hw5StepServicesList', 'hw5-plan__services'),
+        h('p', { class: 'hw-hint', text: 'Kids Helpline is for young people up to 25. Call 000 in an emergency.' })));
+    }
     const last = ui.step === STEPS.length - 1;
     form.appendChild(h('div', { class: 'hw-card__actions hw5-nav' },
       ui.step > 0 ? btn('Back', () => { readStep(); ui.step -= 1; HW3.render('safety'); focusId('hw5StepT'); }, { attrs: { id: 'hw5Back' } }) : null,
@@ -431,27 +487,39 @@
       when ? h('p', { class: 'hw-hint', text: when }) : null,
       STEPS.map((s, i) => h('div', { class: 'hw5-plan__part' },
         h('h3', { class: 'hw3-h3', text: `${i + 1}. ${s.title}` }),
-        (plan[s.id] || []).length ? h('ul', {}, plan[s.id].map((x) => itemEl(x, s.id === 'people' || s.id === 'professionals'))) : h('p', { class: 'hw-hint', text: 'Nothing here yet.' }))),
-      h('div', { class: 'hw5-plan__urgent' }, h('strong', { text: 'In an emergency call 000. ' }), 'Lifeline 13 11 14, any time.'));
+        (plan[s.id] || []).length ? h('ul', {}, plan[s.id].map((x) => itemEl(x, s.id === 'people' || s.id === 'professionals'))) : (s.id === 'professionals' ? null : h('p', { class: 'hw-hint', text: 'Nothing here yet.' })),
+        s.id === 'professionals' ? planServicesList(`${id}Services`) : null)),
+      h('div', { class: 'hw5-plan__urgent' }, h('strong', { text: 'Call 000 if you are in immediate danger. ' }), 'Lifeline 13 11 14, any time.'));
   }
 
   function planText(plan) {
     const lines = ['My safety plan (Hopewick)', ''];
-    STEPS.forEach((s, i) => { lines.push(`${i + 1}. ${s.title}`); (plan[s.id] || []).forEach((x) => lines.push(`   - ${x}`)); if (!(plan[s.id] || []).length) lines.push('   -'); lines.push(''); });
-    lines.push('Services:');
-    HW5_SERVICES.forEach((sv) => lines.push(`   ${sv.name}: ${sv.num} (${sv.note})`));
-    lines.push('', 'In an emergency call 000.');
+    STEPS.forEach((s, i) => {
+      lines.push(`${i + 1}. ${s.title}`);
+      (plan[s.id] || []).forEach((x) => lines.push(`   - ${x}`));
+      if (s.id === 'professionals') PLAN_SERVICES.forEach((sv) => lines.push(`   - ${sv.name}: ${sv.num} (${sv.note})`));
+      else if (!(plan[s.id] || []).length) lines.push('   -');
+      lines.push('');
+    });
+    lines.push('More services:');
+    MORE_SERVICES.forEach((sv) => lines.push(`   ${sv.name}: ${sv.num} (${sv.note})`));
+    lines.push('', 'Call 000 if you are in immediate danger.');
     return lines.join('\n');
   }
   HW5.planText = planText;
   const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   function offlineHtml(plan) {
-    const part = (s, i) => `<h2>${i + 1}. ${esc(s.title)}</h2>${(plan[s.id] || []).length ? `<ul>${plan[s.id].map((x) => { const t = (s.id === 'people' || s.id === 'professionals') ? telOf(x) : null; return `<li>${t ? esc(x.slice(0, x.indexOf(t.match))) + `<a href="tel:${esc(t.tel)}">${esc(t.match.trim())}</a>` + esc(x.slice(x.indexOf(t.match) + t.match.length)) : esc(x)}</li>`; }).join('')}</ul>` : '<p class="e">Nothing here yet.</p>'}`;
+    const svc = (sv) => `<li><a href="tel:${sv.tel}">${esc(sv.name)}: ${esc(sv.num)}</a> (${esc(sv.note)})</li>`;
+    const mine = (s) => (plan[s.id] || []).map((x) => { const t = (s.id === 'people' || s.id === 'professionals') ? telOf(x) : null; return `<li>${t ? esc(x.slice(0, x.indexOf(t.match))) + `<a href="tel:${esc(t.tel)}">${esc(t.match.trim())}</a>` + esc(x.slice(x.indexOf(t.match) + t.match.length)) : esc(x)}</li>`; }).join('');
+    const part = (s, i) => {
+      const items = mine(s) + (s.id === 'professionals' ? PLAN_SERVICES.map(svc).join('') : '');
+      return `<h2>${i + 1}. ${esc(s.title)}</h2>${items ? `<ul>${items}</ul>` : '<p class="e">Nothing here yet.</p>'}`;
+    };
     return `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My safety plan</title>
 <style>body{font:16px/1.5 system-ui,sans-serif;max-width:40rem;margin:1rem auto;padding:0 1rem;color:#1d2a26;background:#fff}h1{font-size:1.5rem}h2{font-size:1.05rem;margin:1.2rem 0 .3rem}a{color:#0b5e4a;font-weight:600}.u{border:2px solid #b3261e;border-radius:10px;padding:.6rem .8rem}.e{color:#5b6b66}li{margin:.2rem 0}@media (prefers-color-scheme:dark){body{background:#101614;color:#e7efec}a{color:#7fd6bd}.e{color:#a6b5b0}}</style></head><body>
-<h1>My safety plan</h1><p class="u"><strong>In an emergency call <a href="tel:000">000</a>.</strong> Lifeline <a href="tel:131114">13 11 14</a>, any time.</p>
+<h1>My safety plan</h1><p>My suicide prevention safety plan. When things feel too much, work through the steps in order.</p><p class="u"><strong>Call <a href="tel:000">000</a> if you are in immediate danger.</strong> Lifeline <a href="tel:131114">13 11 14</a>, any time.</p>
 ${STEPS.map(part).join('\n')}
-<h2>Services you can call</h2><ul>${HW5_SERVICES.map((sv) => `<li><a href="tel:${sv.tel}">${esc(sv.name)}: ${esc(sv.num)}</a> (${esc(sv.note)})</li>`).join('')}</ul>
+<h2>More services</h2><ul>${MORE_SERVICES.map(svc).join('')}</ul>
 <p class="e">Saved from Hopewick on ${esc(new Date().toLocaleDateString('en-AU'))}. Keep it somewhere you can find it. This plan does not replace crisis support or care from a clinician.</p></body></html>`;
   }
   HW5.offlineHtml = offlineHtml;
@@ -497,13 +565,14 @@ ${STEPS.map(part).join('\n')}
         h('div', { class: 'hw-card__actions' }, btn('Start step by step', () => { ui.view = 'guided'; ui.step = 0; HW3.render('safety'); focusId('hw5StepT'); }, { kind: 'primary', attrs: { id: 'hw5Start' } }))));
       return;
     }
-    const wrap = h('div', { id: 'hw5Printable' }, planBlock(plan), servicesCard('hw5PrintServices'));
+    const wrap = h('div', { id: 'hw5Printable' }, planBlock(plan), servicesCard('hw5PrintServices', MORE_SERVICES, 'More services you can call'));
     root.appendChild(wrap);
     root.appendChild(h('div', { class: 'hw-card__actions hw5-actions' },
       btn('Edit step by step', () => { ui.view = 'guided'; ui.step = 0; ui.draft = null; HW3.render('safety'); focusId('hw5StepT'); }, { attrs: { id: 'hw5Edit' } }),
-      btn('Print', () => printPlan(), { attrs: { id: 'hw5Print' } }),
+      btn('Print or save as PDF', () => printPlan(), { attrs: { id: 'hw5Print', 'aria-describedby': 'hw5PrintHint' } }),
       btn('Download offline copy', () => downloadPlan(plan), { attrs: { id: 'hw5Download' } }),
       btn('Share with someone I trust', () => { ui.share = true; HW3.render('safety'); focusId('hw5ShareT'); }, { attrs: { id: 'hw5ShareBtn' } })));
+    root.appendChild(h('p', { class: 'hw-hint', id: 'hw5PrintHint', text: 'To save a PDF, choose “Save as PDF” as the printer. Keep a copy on your phone or on the fridge.' }));
     if (ui.share) root.appendChild(sharePanel(plan));
     root.appendChild(h('p', { class: 'hw-hint', text: `${n} of ${STEPS.length} steps filled in. ${savedWhere()}` }));
   }
@@ -551,8 +620,9 @@ ${STEPS.map(part).join('\n')}
   }
 
   function renderSafety(root) {
-    root.appendChild(header('My safety plan', 'Your plan for a hard moment, one step at a time. Always free. It does not replace crisis support or a plan made with a clinician.'));
+    root.appendChild(header('My safety plan', 'Your suicide prevention safety plan, one step at a time. Always free. It does not replace crisis support or a plan made with a clinician.'));
     root.appendChild(urgentBox());
+    root.appendChild(aboutCard(!filled(current())));
     const note = K.stateNote();
     if (note && online()) root.appendChild(note);
     if (ui.view === 'history' && !online()) ui.view = 'summary';

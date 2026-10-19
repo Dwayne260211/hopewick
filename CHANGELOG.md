@@ -32,6 +32,15 @@ Hopewick 2.0 was built in six stages, each reviewed by the founder before it wen
 * Optional faith layer, off by default; asked once at sign-up (Yes / No thanks / Decide later).
 * "About you" preferences used by Hope.
 
+### Suicide prevention safety plan (feature/suicide-safety-plan)
+* "My safety plan" is now clearly the person's suicide prevention safety plan (Stanley-Brown steps):
+  a calm intro card, "Call 000 if you are in immediate danger", step titles in plain words, name and
+  phone fields for people (step 4) and for a GP and caseworker (step 5), and Lifeline, Suicide Call
+  Back Service, 13YARN, Kids Helpline (under-25s), Beyond Blue and 000 prefilled in step 5 with
+  tap-to-call (numbers re-checked 19 Oct 2026). "Print or save as PDF". Same saved data, same
+  privacy, free on every plan, never sent to Hope.
+* Reached from Get help ("My safety plan (suicide prevention)"), the chat crisis card, Tools and Home.
+
 ### Stage 6 — QA, migration and release readiness (this release, PR #44)
 * Full QA pass: `docs/STAGE6-QA-REPORT.md`.
 * Accessibility: "Call 000" button contrast, theme toggle and profile button names, keyboard access to

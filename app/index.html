@@ -2583,13 +2583,14 @@ h1, h2, h3 { font-family: var(--font-display); }
     <p style="margin:12px 0 0"><strong>Here’s what you can do now.</strong> If you or someone else is in immediate danger, <strong>call 000 now</strong>. Then use a free, confidential Australian line below:</p>
     <ul class="help-list" id="helpList"></ul>
     <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-primary" type="button" id="helpSafetyPlanBtn">My safety plan</button>
+      <button class="btn btn-primary" type="button" id="helpSafetyPlanBtn" aria-describedby="helpSafetyPlanNote">My safety plan (suicide prevention)</button>
       <button class="btn" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
       <button class="btn" type="button" id="helpAodBtn">Find AOD services — QuIHN, Drug ARM &amp; more</button>
       <button class="btn" type="button" id="helpChurchBtn" hidden>Find a church — official AU finders</button>
     </div>
+    <p class="help" id="helpSafetyPlanNote" style="margin-top:8px">Your own step-by-step plan for when things feel too much: warning signs, what helps, people to call. Free, always.</p>
     <p class="help" style="margin-top:12px"><span data-companion>Hope</span> is an AI recovery companion, not a counsellor or doctor. For withdrawal, detox or medication questions please speak with a GP or your local AOD service.</p>
   </div>
 </dialog>
@@ -4997,7 +4998,7 @@ function messageEl(msg) {
     const plan = document.createElement('button');
     plan.type = 'button';
     plan.className = 'btn btn-sm';
-    plan.textContent = 'My safety plan';
+    plan.textContent = 'My safety plan (suicide prevention)';
     plan.dataset.crisisSafety = '1';
     plan.addEventListener('click', () => setAppTab('safety'));
     opens.appendChild(plan);
@@ -6382,7 +6383,7 @@ function renderToolsHub() {
   hubSection(box, 'Right now', [
     { id: 'help', title: 'Get help now', desc: 'Crisis lines and AOD support. Always free.', icon: 'phone', tone: 'crisis', action: () => openHelp() },
     { id: 'dv', title: 'Domestic and family violence', desc: 'Not safe at home? Free Australian services. Always free.', icon: 'ring', tone: 'crisis', action: () => setAppTab('dv') },
-    { id: 'safety', title: 'My safety plan', desc: 'Warning signs, people to call, what helps. Always free.', icon: 'shield', tone: 'crisis', action: () => setAppTab('safety') },
+    { id: 'safety', title: 'My safety plan', desc: 'Your suicide prevention plan: warning signs, people to call, what helps. Always free.', icon: 'shield', tone: 'crisis', action: () => setAppTab('safety') },
     { id: 'breakers', title: 'Circuit breakers', desc: 'Quick things to do when a craving hits.', icon: 'bolt', tone: 'warm', action: () => openBreakers() },
   ]);
   hubSection(box, 'Coping tools', [
@@ -12454,6 +12455,8 @@ function openHelp() {
   closeSidebar();
   const plan = $('#helpSafetyPlanBtn');
   if (plan) plan.hidden = !profile;
+  const planNote = $('#helpSafetyPlanNote');
+  if (planNote) planNote.hidden = !profile;
   if (!el.helpDlg.open) el.helpDlg.showModal();
 }
 $('#helpBtn').addEventListener('click', openHelp);

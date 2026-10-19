@@ -213,8 +213,12 @@ product information.
 
 The guided safety plan follows the seven-step structure of the Stanley-Brown Safety Planning
 Intervention (Stanley & Brown, 2012): warning signs, things I can do on my own, people and places
-that take my mind off things, people I can ask for help, professionals and services, making my
-surroundings safer, and reasons for living. **Every prompt, hint and example in Hopewick is
+that help take my mind off things, people I can ask for help, professionals and services, making
+my space safer, and reasons for living and what matters to me. Since 19 Oct 2026 the plan is
+presented in the app as the person's **suicide prevention safety plan** (calm intro card, "Call 000
+if you are in immediate danger" notice, name + phone fields in steps 4 and 5, and the national
+services prefilled in step 5). It is the same plan and the same saved data, not a second plan.
+**Every prompt, hint and example in Hopewick is
 original wording.** No text from the Stanley-Brown form, the Beyond Now app or any other safety-plan
 product is copied. Status: **pending clinical review** before it is promoted as a clinical tool.
 
@@ -230,6 +234,23 @@ product is copied. Status: **pending clinical review** before it is promoted as 
 | Kids Helpline (ages 5 to 25) | 1800 55 1800 | 24/7 | kidshelpline.com.au |
 | QLife (LGBTIQ+ peer support) | 1800 184 527 | 3pm to 9pm local time, daily | qlife.org.au |
 | Adis 24/7 Alcohol and Drug Support (QLD) | 1800 177 833 | 24/7 | adis.health.qld.gov.au |
+
+Re-checked 19 Oct 2026 on each service's own website (the six prefilled in step 5 of the plan):
+
+| Service | Number | What the official site says | Source |
+| --- | --- | --- | --- |
+| Triple Zero | 000 | "How to call Triple Zero (000)"; Lifeline: "If life is in danger, call Triple Zero (000)" | https://www.triplezero.gov.au/ |
+| Lifeline | 13 11 14 (text 0477 13 11 14) | "Call us 13 11 14", "Support 24/7" | https://www.lifeline.org.au/ |
+| Suicide Call Back Service | 1300 659 467 | "Call 1300 659 467", "24/7 phone and online counselling" | https://www.suicidecallbackservice.org.au/ |
+| 13YARN | 13 92 76 | "Call 13 92 76, 24/7 crisis support for Aboriginal and Torres Strait Islander people" | https://www.13yarn.org.au/ |
+| Kids Helpline | 1800 55 1800 | "free support and counselling to people aged five to 25", "24/7" | https://kidshelpline.com.au/ |
+| Beyond Blue | 1300 22 4636 | "Call 1300 22 4636", "open 24/7 for everyone in Australia" | https://www.beyondblue.org.au/get-support/talk-to-a-counsellor |
+
+QLife (1800 184 527, 3pm to 9pm daily) was also seen unchanged on qlife.org.au on 19 Oct 2026.
+Adis was not re-checked on that date.
+
+The prefilled services are kept in the app (`PLAN_SERVICES`), not copied into each person's saved
+plan, so a number change reaches every plan, every print and every offline copy made after it.
 
 Numbers and hours change. Re-check each official site at least every six months and before any
 store listing. The list lives in `app/hw-stage5.js` (`HW5_SERVICES`).
