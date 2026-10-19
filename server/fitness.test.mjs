@@ -166,10 +166,10 @@ test('JSON backend contract, encrypted at rest (no answers, no plain lock time)'
   const store = createJsonFitnessStore(file, { env });
   await contract(t, store, { A: 'ua', B: 'ub' });
   await store.saveScreen('uc', 'main', mergeScreen(null, 'heat-cold', evaluateScreen('heat-cold', { ...HC_OK, B12: true }, { agree: true })));
-  await store.setLock('uc', 'main', '2026-10-19T00:00:00.000Z');
+  await store.setLock('uc', 'main', '2027-03-01T00:00:00.000Z');
   await store.createSession('uc', 'main', { kind: 'workout', planKey: 'strength-a', detail: { moodBefore: 1 } });
   const raw = fs.readFileSync(file, 'utf8');
-  assert.ok(!/red|amber|green|2026-10-19|moodBefore|withdraw/i.test(raw), 'sensitive values are ciphertext');
+  assert.ok(!/red|amber|green|2027-03-01|moodBefore|withdraw/i.test(raw), 'sensitive values are ciphertext');
   assert.match(raw, /hwenc:v1:fit1:/);
   const reopened = createJsonFitnessStore(file, { env });
   assert.equal((await reopened.getProfile('uc', 'main')).screen.areas.sauna.outcome, 'red');
