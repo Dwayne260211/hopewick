@@ -1148,6 +1148,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 
 /* Help panel */
 .help-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.help-plan[hidden] { display: none; }
+.help-plan .btn { width: 100%; justify-content: center; }
+@media (min-width: 720px) { .help-plan .btn { width: auto; } }
 .help-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); }
 .help-item.urgent { border-color: color-mix(in srgb, var(--danger) 50%, var(--border)); background: var(--danger-soft); }
 .help-item .hi-text { flex: 1; min-width: 0; }
@@ -2581,10 +2584,13 @@ h1, h2, h3 { font-family: var(--font-display); }
   </form>
   <div class="dlg-body">
     <p style="margin:12px 0 0"><strong>Here’s what you can do now.</strong> If you or someone else is in immediate danger, <strong>call 000 now</strong>. Then use a free, confidential Australian line below:</p>
-    <ul class="help-list" id="helpList"></ul>
-    <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
+    <ul class="help-list" id="helpList" aria-label="Call now"></ul>
+    <div class="help-plan" id="helpSafetyPlanRow" style="margin-top:10px">
       <button class="btn btn-primary" type="button" id="helpSafetyPlanBtn" aria-describedby="helpSafetyPlanNote">My safety plan (suicide prevention)</button>
-      <p class="help" id="helpSafetyPlanNote" style="flex-basis:100%;margin:0 0 6px">Your own step-by-step plan for when things feel too much: warning signs, what helps, people to call. Free, always.</p>
+      <p class="help" id="helpSafetyPlanNote" style="margin:6px 0 0">Your own step-by-step plan for when things feel too much: warning signs, what helps, people to call. Free, always.</p>
+    </div>
+    <ul class="help-list" id="helpListMore" aria-label="More crisis lines"></ul>
+    <div class="row" style="margin-top:14px;gap:8px;flex-wrap:wrap">
       <button class="btn" type="button" id="helpNearbyBtn">Find nearby help — meals, shelter, showers</button>
       <button class="btn" type="button" id="helpMeetingBtn">Find a meeting — AA / NA / SMART</button>
       <button class="btn" type="button" id="helpTreatmentBtn">Find treatment / rehab — official finders</button>
@@ -12435,9 +12441,13 @@ $('#sideSwitchBtn').addEventListener('click', showPicker);
    Help panel & first-use disclaimer
    --------------------------------------------------------------------------- */
 function renderHelpList() {
-  const list = $('#helpList');
-  list.innerHTML = '';
-  for (const c of HELP_CONTACTS) {
+  // Emergency calling first (000, then Lifeline), then the safety plan button, then the other lines.
+  const first = $('#helpList');
+  const more = $('#helpListMore');
+  first.innerHTML = '';
+  if (more) more.innerHTML = '';
+  HELP_CONTACTS.forEach((c, i) => {
+    const list = i < 2 || !more ? first : more;
     const li = document.createElement('li');
     li.className = 'help-item' + (c.urgent ? ' urgent' : '');
     li.innerHTML = `<div class="hi-text"><div class="hi-name"></div><div class="hi-note"></div></div><a class="btn btn-sm call"></a>`;
@@ -12449,14 +12459,14 @@ function renderHelpList() {
     a.setAttribute('aria-label', `Call ${c.name} on ${c.num}`);
     if (c.urgent) a.classList.add('btn-danger');
     list.appendChild(li);
-  }
+  });
 }
 function openHelp() {
   closeSidebar();
   const plan = $('#helpSafetyPlanBtn');
   if (plan) plan.hidden = !profile;
-  const planNote = $('#helpSafetyPlanNote');
-  if (planNote) planNote.hidden = !profile;
+  const planRow = $('#helpSafetyPlanRow');
+  if (planRow) planRow.hidden = !profile;
   if (!el.helpDlg.open) el.helpDlg.showModal();
 }
 $('#helpBtn').addEventListener('click', openHelp);

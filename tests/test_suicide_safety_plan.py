@@ -63,6 +63,15 @@ def test_free_user_reaches_builds_saves_and_reloads_the_plan(server, browser):
     page.wait_for_selector("#helpDlg[open]")
     assert "suicide prevention" in page.inner_text("#helpSafetyPlanBtn")
     assert page.is_visible("#helpSafetyPlanNote")
+    # Emergency calling first: 000, then Lifeline, then the plan button, then the longer list.
+    order = page.evaluate("""() => {
+      const top = (s) => document.querySelector(s).getBoundingClientRect().top;
+      const calls = [...document.querySelectorAll('#helpList a.call')].map((a) => a.getAttribute('href'));
+      return { calls, more: document.querySelectorAll('#helpListMore a.call').length,
+        ok: top('#helpList') < top('#helpSafetyPlanBtn') && top('#helpSafetyPlanBtn') < top('#helpListMore') };
+    }""")
+    assert order["calls"] == ["tel:000", "tel:131114"], order
+    assert order["more"] >= 5 and order["ok"], order
     page.click("#helpSafetyPlanBtn")
     page.wait_for_selector("#hw3Inner[data-tab='safety']")
     page.wait_for_selector("#hw5StepForm")
