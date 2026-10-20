@@ -54,7 +54,19 @@
     { id: 'anxiety', label: 'Anxiety and worry' },
     { id: 'aod', label: 'Alcohol and other drug recovery' },
     { id: 'sleep', label: 'Sleep' },
+    { id: 'anger', label: 'Anger' },
+    { id: 'relationships', label: 'Relationships' },
   ];
+  HW5.FOCUS = FOCUS;
+  /* Where the person says they are in recovery (server/wellbeing/personal.js RECOVERY_STAGES). */
+  const STAGES = [
+    { id: 'week', label: 'First week', hint: 'Extra simple screens and the basics.' },
+    { id: 'month', label: 'First month', hint: '' },
+    { id: 'early', label: '1 to 3 months', hint: '' },
+    { id: 'later', label: '3 months or more', hint: '' },
+    { id: 'unsure', label: 'Not sure', hint: 'That’s okay.' },
+  ];
+  HW5.STAGES = STAGES;
   const TRADITIONS = [
     { id: 'christian', label: 'Christian' },
     { id: 'catholic', label: 'Catholic' },
@@ -67,7 +79,7 @@
     { id: 'indigenous', label: 'Indigenous spirituality (Hope only)' },
   ];
   const CHRISTIAN = ['christian', 'catholic'];
-  const defaults = () => ({ preferredName: '', focusAreas: [], tone: 'gentle', faithOptIn: false, faithTradition: 'christian', faithAnswer: null, faithAskedAt: null, faithLaterCount: 0, onboardedAt: null, updatedAt: null });
+  const defaults = () => ({ preferredName: '', focusAreas: [], recoveryStage: '', tone: 'gentle', faithOptIn: false, faithTradition: 'christian', faithAnswer: null, faithAskedAt: null, faithLaterCount: 0, onboardedAt: null, updatedAt: null });
 
   /* ------------------------------------------------------------------ */
   /* Preferences and faith state                                         */
@@ -658,7 +670,7 @@ ${STEPS.map(part).join('\n')}
     const form = h('form', { class: 'hw-card hw3-card hw3-form', id: 'hw5PrefsForm', 'aria-labelledby': 'hw5PrefsT', onsubmit: async (e) => {
       e.preventDefault();
       try {
-        await savePrefs({ preferredName: p.preferredName || '', focusAreas: p.focusAreas || [], tone: p.tone, faithOptIn: !!p.faithOptIn, faithTradition: p.faithTradition, onboarded: true });
+        await savePrefs({ preferredName: p.preferredName || '', focusAreas: p.focusAreas || [], recoveryStage: p.recoveryStage || '', tone: p.tone, faithOptIn: !!p.faithOptIn, faithTradition: p.faithTradition, onboarded: true });
         ui.prefsDraft = null; say('Saved'); announce('Preferences saved'); HW3.render('preferences'); focusId('hw5PrefsT');
       } catch (ex) { say(failMessage(ex), true); }
     } },
@@ -671,6 +683,9 @@ ${STEPS.map(part).join('\n')}
           c.id = `hw5Focus-${f.id}`;
           return c;
         }))),
+      h('fieldset', { class: 'hw-field hw5-fieldset', id: 'hw5StageSet' }, h('legend', { class: 'hw-label', text: 'Where are you in recovery?' }),
+        h('p', { class: 'hw-hint', text: 'Optional. Your daily tips fit where you are. First week keeps things extra simple.' }),
+        STAGES.map((sg) => h('label', { class: 'hw5-radio' }, h('input', { type: 'radio', name: 'hw5Stage', value: sg.id, id: `hw5Stage-${sg.id}`, checked: p.recoveryStage === sg.id, onchange: () => { p.recoveryStage = sg.id; } }), h('span', {}, h('strong', { text: sg.label }), sg.hint ? ' ' : '', sg.hint ? h('span', { class: 'hw-hint', text: sg.hint }) : null)))),
       h('fieldset', { class: 'hw-field hw5-fieldset' }, h('legend', { class: 'hw-label', text: 'How should Hope talk with you?' }),
         tone('gentle', 'Gentle', 'Soft, warm and unhurried.'), tone('direct', 'Direct', 'Clear and to the point, still kind.')),
       h('fieldset', { class: 'hw-field hw5-fieldset', id: 'hw5FaithSet' }, h('legend', { class: 'hw-label', text: 'Faith content' }),
@@ -698,7 +713,9 @@ ${STEPS.map(part).join('\n')}
     mood: [['Daily check-in', () => setAppTab('checkin')], ['Self-compassion and mood tools', () => setAppTab('coping')]],
     anxiety: [['Calm breathing', () => setAppTab('coping', { tool: 'breathing-calm' })], ['Stress and anxiety module', () => HW3.openModule('stress-anxiety')]],
     aod: [['Recovery tracker', () => setAppTab('recovery')], ['Cravings and triggers module', () => HW3.openModule('cravings-triggers')], ['Relapse and exit plans', () => openPlans()]],
-    sleep: [['Sleep basics module', () => HW3.openModule('sleep-basics')], ['Muscle relaxation', () => setAppTab('coping', { tool: 'muscle-relaxation' })]],
+    anger: [['Anger: steady in the moment', () => setAppTab('topic', { topic: 'anger' })], ['Calm breathing', () => setAppTab('coping', { tool: 'breathing-calm' })]],
+    relationships: [['Relationships: people and boundaries', () => setAppTab('topic', { topic: 'relationships' })]],
+    sleep: [['Body basics', () => setAppTab('bodybasics')], ['Sleep basics module', () => HW3.openModule('sleep-basics')], ['Muscle relaxation', () => setAppTab('coping', { tool: 'muscle-relaxation' })]],
   };
   HW5.paintHome = function (box, grid) {
     if (!box || !grid) return;

@@ -12,8 +12,10 @@
  */
 import { ValidationError } from './validate.js';
 
-export const FOCUS_AREAS = Object.freeze(['mood', 'anxiety', 'aod', 'sleep']);
-export const FOCUS_LABELS = Object.freeze({ mood: 'mood', anxiety: 'anxiety and worry', aod: 'alcohol and other drug recovery', sleep: 'sleep' });
+export const FOCUS_AREAS = Object.freeze(['mood', 'anxiety', 'aod', 'sleep', 'anger', 'relationships']);
+export const FOCUS_LABELS = Object.freeze({ mood: 'mood', anxiety: 'anxiety and worry', aod: 'alcohol and other drug recovery', sleep: 'sleep', anger: 'anger', relationships: 'relationships' });
+/** Where the person says they are in recovery. Chosen by them, never worked out. '' = not chosen. */
+export const RECOVERY_STAGES = Object.freeze(['week', 'month', 'early', 'later', 'unsure']);
 export const TONES = Object.freeze(['gentle', 'direct']);
 /** Traditions Hope already knows (server/hope-prompts.js FAITH_TEXT), minus "none". */
 export const FAITH_TRADITIONS = Object.freeze(['christian', 'catholic', 'general', 'islamic', 'jewish', 'buddhist', 'hindu', 'sikh', 'indigenous']);
@@ -32,7 +34,7 @@ export const FAITH_LATER_LIMIT = 2;
 export const FAITH_ASK_AGAIN_DAYS = 7;
 
 export function defaultPreferences() {
-  return { preferredName: '', focusAreas: [], tone: 'gentle', faithOptIn: false, faithTradition: 'christian', faithAnswer: null, faithAskedAt: null, faithLaterCount: 0, onboardedAt: null, updatedAt: null };
+  return { preferredName: '', focusAreas: [], recoveryStage: '', tone: 'gentle', faithOptIn: false, faithTradition: 'christian', faithAnswer: null, faithAskedAt: null, faithLaterCount: 0, onboardedAt: null, updatedAt: null };
 }
 
 function oneLine(value, max, field) {
@@ -52,6 +54,10 @@ export function normalizePreferencesPatch(raw) {
     if (!Array.isArray(src.focusAreas)) throw new ValidationError('focusAreas must be a list.', 'focusAreas');
     for (const f of src.focusAreas) if (!FOCUS_AREAS.includes(f)) throw new ValidationError(`Choose focus areas from: ${FOCUS_AREAS.join(', ')}.`, 'focusAreas');
     out.focusAreas = FOCUS_AREAS.filter((f) => src.focusAreas.includes(f));
+  }
+  if (src.recoveryStage !== undefined) {
+    if (src.recoveryStage !== '' && !RECOVERY_STAGES.includes(src.recoveryStage)) throw new ValidationError(`Choose a recovery stage from: ${RECOVERY_STAGES.join(', ')}.`, 'recoveryStage');
+    out.recoveryStage = src.recoveryStage;
   }
   if (src.tone !== undefined) {
     if (!TONES.includes(src.tone)) throw new ValidationError('tone must be gentle or direct.', 'tone');
@@ -80,7 +86,7 @@ export function normalizePreferencesPatch(raw) {
 export function mergePreferences(prev, patch, now = new Date()) {
   const base = { ...defaultPreferences(), ...(prev || {}) };
   const next = { ...base };
-  for (const k of ['preferredName', 'focusAreas', 'tone', 'faithOptIn', 'faithTradition']) if (patch[k] !== undefined) next[k] = patch[k];
+  for (const k of ['preferredName', 'focusAreas', 'recoveryStage', 'tone', 'faithOptIn', 'faithTradition']) if (patch[k] !== undefined) next[k] = patch[k];
   if (patch.faithAnswer === 'yes') {
     next.faithOptIn = true;
     if (patch.faithTradition === undefined && !CHRISTIAN_TRADITIONS.includes(next.faithTradition)) next.faithTradition = 'christian';
@@ -110,6 +116,7 @@ export function readPreferences(stored) {
   return {
     preferredName: typeof stored.preferredName === 'string' ? stored.preferredName.slice(0, PREFERRED_NAME_MAX) : '',
     focusAreas: Array.isArray(stored.focusAreas) ? FOCUS_AREAS.filter((f) => stored.focusAreas.includes(f)) : [],
+    recoveryStage: RECOVERY_STAGES.includes(stored.recoveryStage) ? stored.recoveryStage : '',
     tone: TONES.includes(stored.tone) ? stored.tone : d.tone,
     faithOptIn: stored.faithOptIn === true,
     faithTradition: FAITH_TRADITIONS.includes(stored.faithTradition) ? stored.faithTradition : d.faithTradition,

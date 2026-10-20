@@ -43,6 +43,7 @@ const BRAND = { name: 'Hopewick', companion: 'Hope', tagline: 'Support for your 
 <link rel="stylesheet" href="hw-stage4.css">
 <link rel="stylesheet" href="hw-fitness.css">
 <link rel="stylesheet" href="hw-stage5.css">
+<link rel="stylesheet" href="hw-care.css">
 <script src="/assets/theme.js"></script>
 <style>
 /* ==========================================================================
@@ -3642,6 +3643,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 <script src="hw-stage4.js"></script>
 <script src="hw-fitness.js"></script>
 <script src="hw-stage5.js"></script>
+<script src="hw-care.js"></script>
 <script>
 'use strict';
 /* =============================================================================
@@ -5189,8 +5191,8 @@ function setAppTab(tab, opts = {}) {
   }
   if (launchPrefsOpen) dismissLaunchPrefs();
   // Switching tabs only changes which screen is visible. It must not create or delete a conversation.
-  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move', 'preferences'];
-  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move', 'preferences'];
+  const KNOWN_TABS = ['chat', 'chats', 'tools', 'learn', 'info', 'dv', 'resume', 'journal', 'account', 'checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move', 'preferences', 'topic', 'bodybasics', 'share'];
+  const HW3_TAB = ['checkin', 'coping', 'mygoals', 'nextstep', 'compare', 'safety', 'recovery', 'modules', 'move', 'preferences', 'topic', 'bodybasics', 'share'];
   // Move & Recover only exists while the server flag is on for this person (FEATURE_FITNESS_PROTOCOLS).
   if (tab === 'move' && !(window.HWFIT && HWFIT.enabled())) tab = 'home';
   const next = KNOWN_TABS.includes(tab) ? tab : 'home';
@@ -5210,7 +5212,7 @@ function setAppTab(tab, opts = {}) {
   const hwView = document.getElementById('hwFeatureView');
   if (hwView) {
     hwView.hidden = !HW3_TAB.includes(next);
-    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules', preferences: 'About you', move: 'Move and Recover' }[next] || 'Wellbeing tools');
+    hwView.setAttribute('aria-label', { checkin: 'Daily check-in', coping: 'Coping toolkit', mygoals: 'Personal goals', nextstep: 'My next step', recovery: 'Recovery tracker', modules: 'Learning modules', preferences: 'About you', move: 'Move and Recover', topic: 'Help topic', bodybasics: 'Body basics', share: 'Share with my worker' }[next] || 'Wellbeing tools');
   }
   if (window.HW3 && next !== 'coping') HW3.stopTimers();
   if (window.HWFIT && next !== 'move') HWFIT.stop();
@@ -5256,6 +5258,7 @@ function setAppTab(tab, opts = {}) {
   } else if (next === 'move') {
     HWFIT.show(opts);
   } else if (HW3_TAB.includes(next)) {
+    if (window.HWC && opts.topic) HWC.ui.topic = opts.topic;
     if (window.HW3) HW3.show(next, opts);
   } else if (next === 'tools' || next === 'learn') {
     if (next === 'tools') renderToolsHub(); else renderLearnHub();
@@ -5302,7 +5305,7 @@ function setAppTab(tab, opts = {}) {
 /** Which bottom-bar / sidebar section a screen belongs to. */
 function navSectionFor(tab) {
   if (tab === 'chat' || tab === 'chats') return 'chat';
-  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety' || tab === 'recovery' || tab === 'move') return 'tools';
+  if (tab === 'tools' || tab === 'journal' || tab === 'dv' || tab === 'resume' || tab === 'coping' || tab === 'mygoals' || tab === 'nextstep' || tab === 'compare' || tab === 'safety' || tab === 'recovery' || tab === 'move' || tab === 'topic' || tab === 'bodybasics' || tab === 'share') return 'tools';
   if (tab === 'learn' || tab === 'info' || tab === 'modules') return 'learn';
   if (tab === 'home' || tab === 'checkin' || tab === 'preferences') return 'home';
   return '';
@@ -6348,6 +6351,7 @@ function renderHome() {
   // Hopewick 2.0: account-backed check-in, next step, trends, goals, journal and coping cards.
   if (window.HW3) { try { HW3.paintDashSlots(); } catch (err) { console.error(err); } HW3.sync(false); }
   if (window.HW5) { try { HW5.paintHome(box, grid); } catch (err) { console.error(err); } }
+  if (window.HWC) { try { HWC.paintHome(box, grid); } catch (err) { console.error(err); } }
 }
 
 /** Tools and Learn hubs: link cards to features that already work. */
@@ -6396,6 +6400,9 @@ function renderToolsHub() {
   hubSection(box, 'Coping tools', [
     { id: 'coping', title: 'Coping toolkit', desc: 'Breathing, grounding, urge surfing and more. Always free.', icon: 'leaf', action: () => setAppTab('coping') },
     { id: 'skills', title: 'Skills', desc: 'Grounding, urge surfing, breathing and more.', icon: 'smile', action: () => openSkills() },
+    { id: 'bodybasics', title: 'Body basics', desc: 'Water, sleep, food, movement and caffeine. Simple daily ticks if you want them.', icon: 'heart', action: () => setAppTab('bodybasics') },
+    { id: 'anger', title: 'Anger', desc: 'Notice early signs, pause, and repair afterwards.', icon: 'bolt', action: () => setAppTab('topic', { topic: 'anger' }) },
+    { id: 'relationships', title: 'Relationships', desc: 'Boundaries, asking for support, trust and loneliness.', icon: 'heart', action: () => setAppTab('topic', { topic: 'relationships' }) },
     { id: 'selfcare', title: 'Self-care', desc: 'A daily checklist you can make your own.', icon: 'heart', action: () => openSelfCare() },
     { id: 'chat', title: 'Talk to ' + companionName(), desc: 'Talk it through with your AI companion.', icon: 'chat', action: () => setAppTab('chat') },
     window.HWFIT ? HWFIT.hubItem() : null,
@@ -6414,6 +6421,7 @@ function renderToolsHub() {
   ]);
   hubSection(box, 'Plans and next steps', [
     { id: 'plans', title: 'Relapse and exit plans', desc: 'Warning signs, people to call, what helps.', icon: 'check', action: () => openPlans() },
+    { id: 'share', title: 'Share with my worker', desc: 'Pick what to share, preview it, then print, save as PDF or copy. Nothing is sent unless you send it.', icon: 'file', action: () => setAppTab('share') },
     { id: 'resume', title: 'Resume builder', desc: 'Build a resume and save it as a PDF.', icon: 'file', plus: true, action: () => setAppTab('resume') },
   ]);
   hubSection(box, 'Find support near you', [

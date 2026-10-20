@@ -1,0 +1,33 @@
+/* Help topics, tip for today, first-week mode, Body basics, Share with my worker. */
+.hwc-safety { margin: 8px 0 14px; padding: 10px 14px; border-radius: var(--radius-sm, 10px); background: var(--brand-river-soft, #eef6fb); color: var(--brand-ink, #10213F); font-weight: 600; }
+.hwc-safety a { color: inherit; text-decoration: underline; }
+.hwc-list { margin: 6px 0 0; padding-left: 1.2em; line-height: 1.55; }
+.hwc-list li + li { margin-top: 4px; }
+.hwc-tip__text { font-size: 1.08rem; line-height: 1.5; margin: 6px 0; }
+.hwc-tip { border-left: 4px solid var(--accent-gold-bright, #A57519); }
+.hwc-ticks { display: grid; gap: 8px; margin: 8px 0; }
+.hwc-tick { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); cursor: pointer; }
+.hwc-tick input { width: 22px; height: 22px; flex: none; accent-color: var(--brand-primary); }
+.hwc-dates { display: flex; flex-wrap: wrap; gap: 12px; }
+.hwc-dates .hw-field { flex: 1 1 150px; }
+.hwc-privacy { padding: 12px 14px; border-radius: 12px; border: 2px solid var(--brand-primary); background: var(--surface); font-weight: 600; }
+.hwc-preview pre { white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: .95rem; line-height: 1.5; max-height: 420px; overflow: auto; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--brand-river-soft, #eef6fb); color: var(--brand-ink); }
+.hwc-big-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.hwc-gp { margin-top: 14px; font-weight: 600; }
+.hwc-week__list { font-size: 1.12rem; line-height: 1.6; padding-left: 1.2em; }
+
+/* First-week mode: fewer things on Home, bigger buttons, more space. */
+body.hwc-firstweek #dashGoals, body.hwc-firstweek #dashMood, body.hwc-firstweek #dashJournal,
+body.hwc-firstweek #dashNextStep, body.hwc-firstweek #todayCard { display: none !important; }
+body.hwc-firstweek .hwc-big-actions .hw-btn,
+body.hwc-firstweek #hw3Inner .hw-btn { min-height: 56px; font-size: 1.1rem; padding: 12px 22px; }
+body.hwc-firstweek .hwc-big-actions { flex-direction: column; }
+body.hwc-firstweek .hwc-big-actions .hw-btn { width: 100%; }
+body.hwc-firstweek #hw3Inner p, body.hwc-firstweek #hw3Inner li { font-size: 1.08rem; }
+
+@media print {
+  body.hwc-printing * { visibility: hidden !important; }
+  body.hwc-printing #hwcPrintable, body.hwc-printing #hwcPrintable * { visibility: visible !important; }
+  body.hwc-printing #hwcPrintable { position: absolute; left: 0; top: 0; width: 100%; }
+  body.hwc-printing #hwcPrintable pre { max-height: none; overflow: visible; border: 0; background: #fff; color: #000; font-size: 11pt; }
+}

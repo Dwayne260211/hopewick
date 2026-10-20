@@ -541,7 +541,14 @@ const TONE_TEXT = {
   gentle: 'They chose a gentle tone: be soft, warm and unhurried.',
   direct: 'They chose a direct tone: be clear, plain and brief, while staying kind. Skip long reassurance.',
 };
-const FOCUS_TEXT = { mood: 'mood', anxiety: 'anxiety and worry', aod: 'alcohol and other drug recovery', sleep: 'sleep' };
+const FOCUS_TEXT = { mood: 'mood', anxiety: 'anxiety and worry', aod: 'alcohol and other drug recovery', sleep: 'sleep', anger: 'anger (noticing early signs, pausing, walking away, HALT, repair afterwards)', relationships: 'relationships (boundaries, asking for support, rebuilding trust, loneliness)' };
+const STAGE_TEXT = {
+  week: 'They said they are in their first week of recovery. Keep replies very short and simple, one idea at a time. Gently cover basics (water, food, sleep, going easy on caffeine later in the day, reaching out to a real person). It is normal that reading and concentrating are hard right now.',
+  month: 'They said they are in their first month of recovery. Keep things simple and practical, with small daily routines and people they can lean on.',
+  early: 'They said they are 1 to 3 months into recovery. Support building routines, noticing triggers and planning for harder days.',
+  later: 'They said they are more than 3 months into recovery. Support keeping steady, growth, relationships and watching for complacency without lecturing.',
+  unsure: 'They are not sure where they are in recovery. That is fine; do not push them to define it.',
+};
 export function applyPreferences(ctx, prefs) {
   if (!prefs || typeof prefs !== 'object') return ctx;
   const out = { ...ctx };
@@ -551,6 +558,7 @@ export function applyPreferences(ctx, prefs) {
   if (name) out.userName = name;
   out.tone = Object.prototype.hasOwnProperty.call(TONE_TEXT, prefs.tone) ? prefs.tone : '';
   out.focusAreas = Array.isArray(prefs.focusAreas) ? prefs.focusAreas.filter((f) => Object.prototype.hasOwnProperty.call(FOCUS_TEXT, f)) : [];
+  out.recoveryStage = Object.prototype.hasOwnProperty.call(STAGE_TEXT, prefs.recoveryStage) ? prefs.recoveryStage : '';
   out.prefsApplied = true;
   return out;
 }
@@ -558,6 +566,7 @@ function preferencesText(ctx) {
   const lines = [];
   if (ctx.tone) lines.push(`- ${TONE_TEXT[ctx.tone]}`);
   if (ctx.focusAreas && ctx.focusAreas.length) lines.push(`- They chose to focus on: ${ctx.focusAreas.map((f) => FOCUS_TEXT[f]).join(', ')}. When it fits, offer tools and modules for these. Do not assume anything beyond what they chose.`);
+  if (ctx.recoveryStage) lines.push(`- ${STAGE_TEXT[ctx.recoveryStage]}`);
   lines.push('- Do not guess, infer or label sensitive things about them (health conditions, diagnoses, religion, sexuality, gender identity, culture) that they have not told you.');
   if (ctx.faith === 'none') lines.push('- Faith content is OFF for this person. Do not mention God, prayer, scripture, church or religion, and do not suggest faith tools, unless they bring it up first. If they do, follow their lead respectfully.');
   else lines.push('- They opted in to faith content. Faith encouragement is welcome but always optional: never pressure, never shame, and never suggest faith replaces professional care, medication or crisis support.');
