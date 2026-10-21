@@ -163,13 +163,20 @@ def test_app_requires_sign_in_and_trial_needs_account():
             free.fill("#accountEmail", "sam@example.com")
             free.fill("#accountPassword", "correct-horse")
             free.click("#accountSignInBtn")
-            free.wait_for_selector("#plusChoiceDlg[open]", timeout=15000)
-            assert free_state["checkout"] == 0
-            free.click("#plusChoiceFree")
-            free.wait_for_function("() => document.getElementById('plusChoiceDlg')?.open !== true")
-            assert free_state["checkout"] == 0
-            assert free.locator("#signInDlg[open]").count() == 0
+            # Value before subscription info: a new account meets Hope first; no Plus pop-up during onboarding.
             free.wait_for_selector("#onboardingDlg[open]", timeout=15000)
+            assert free.locator("#signInDlg[open]").count() == 0
+            assert free.locator("#plusChoiceDlg[open]").count() == 0
+            welcome = free.inner_text("#onboardStepWelcome")
+            for bit in ("What Hope helps with", "What AI can’t replace", "Your privacy", "000"):
+                assert bit in welcome, bit
+            assert "AU$" not in welcome and "trial" not in welcome.lower()
+            free.click("#onboardYesBtn")
+            free.click("#onboardReasonContinue")
+            free.click("#onboardFaithLater")
+            free.wait_for_selector("#pickerDlg[open] #addPersonForm:not([hidden])", timeout=15000)
+            assert free.locator("#plusChoiceDlg[open]").count() == 0
+            assert free_state["checkout"] == 0
             assert not errors, errors
             free.close()
 
