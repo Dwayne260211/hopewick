@@ -217,6 +217,13 @@ h2 { font-size: clamp(1.65rem, 4vw, 2.4rem); font-weight: 800; }
   .card-grid--4 { grid-template-columns: 1fr; }
   .hero-logo { width: 120px; }
 }
+.play-badge { display: inline-block; line-height: 0; border-radius: 10px; }
+.play-badge img { display: block; width: auto; height: auto; }
+.play-badge--hero { margin-top: 14px; }
+.play-badge--hero img { height: 62px; margin: -9px; }
+.play-badge--footer img { height: 54px; margin: -8px 0 -8px -8px; }
+.play-badge:focus-visible { outline: 3px solid #A57519; outline-offset: 2px; }
+@media (max-width: 900px) { .hero-copy .play-badge--hero { display: table; margin-left: auto; margin-right: auto; } }
 </style>
 <script type="application/ld+json">
 {
@@ -308,6 +315,7 @@ h2 { font-size: clamp(1.65rem, 4vw, 2.4rem); font-weight: 800; }
           <a class="hw-btn hw-btn--primary" href="app/" id="launchApp">Start Free</a>
           <a class="hw-btn" href="our-story.html">Discover Our Story</a>
         </div>
+        <a class="play-badge play-badge--hero" href="https://play.google.com/store/apps/details?id=com.bridgebite.hopewick" target="_blank" rel="noopener" aria-label="Get Hopewick on Google Play"><img src="/img/google-play-badge.png" alt="Get it on Google Play" width="646" height="250" loading="lazy"></a>
         <p class="free-pill">Free plan · No card needed</p>
       </div>
       <figure class="hero-shot">
@@ -580,6 +588,7 @@ h2 { font-size: clamp(1.65rem, 4vw, 2.4rem); font-weight: 800; }
           <li><a href="/recovery-app-australia.html">Recovery app Australia</a></li>
           <li><a href="https://github.com/Dwayne260211/hopewick/blob/main/LICENSE">Licence</a></li>
         </ul>
+        <p class="play-badge-wrap"><a class="play-badge play-badge--footer" href="https://play.google.com/store/apps/details?id=com.bridgebite.hopewick" target="_blank" rel="noopener" aria-label="Get Hopewick on Google Play"><img src="/img/google-play-badge.png" alt="Get it on Google Play" width="646" height="250" loading="lazy"></a></p>
         <p>Contact <a href="mailto:hello@hopewick.com.au">hello@hopewick.com.au</a></p>
         <p class="copyright">Hopewick is operated by BRIDGE&amp;BITE.CO PTY LTD. © 2026 BRIDGE&amp;BITE.CO PTY LTD (ABN 83 692 080 792). All rights reserved.</p>
       </nav>
