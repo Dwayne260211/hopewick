@@ -220,7 +220,10 @@
         h('ul', { class: 'hwc-list' }, (short ? sec.items.slice(0, 2) : sec.items).map((x) => h('li', { text: x })))));
     });
     root.appendChild(h('div', { class: 'hw-card__actions hwc-big-actions' }, tp.tools.map(([l, fn], i) => btn(l, fn, { kind: i === 0 ? 'primary' : 'secondary', size: 'md' }))));
-    root.appendChild(h('p', { class: 'hw-hint', text: tp.note }));
+    var noteParts = String(tp.note).split(/(1800 737 732|1300 766 491)/).map(function (part) {
+      return /^1[38]00 \d{3} \d{3}$/.test(part) ? h('a', { href: 'tel:' + part.replace(/ /g, ''), text: part }) : part;
+    });
+    root.appendChild(h.apply(null, ['p', { class: 'hw-hint' }].concat(noteParts)));
     root.appendChild(h('p', { class: 'hw-hint', text: 'This is general self-help information, not professional advice. A counsellor, AOD worker or GP can help with what fits you.' }));
   }
   HW3.ext.topic = { render: renderTopic, busy: () => false };
