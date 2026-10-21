@@ -1,0 +1,10 @@
+{
+  "appId": "com.bridgebite.hopewick",
+  "appName": "Hopewick",
+  "webDir": "www",
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "automatic" },
+  "plugins": {
+    "LocalNotifications": { "smallIcon": "ic_stat_hopewick", "iconColor": "#2356A8" }
+  }
+}

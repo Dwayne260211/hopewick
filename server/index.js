@@ -286,6 +286,7 @@ function clientIp(req) {
 function originAllowed(req) {
   const origin = req.headers.origin;
   if (!origin) return true;
+  if (NATIVE_ORIGINS.has(origin) && isNativeClient(req)) return true;
   let url;
   try { url = new URL(origin); } catch { return false; }
   if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
@@ -382,7 +383,39 @@ function publicBase(req) {
   return configured || requestOrigin(req);
 }
 
+/* Native apps (Capacitor, iPhone and Android) cannot rely on the httpOnly cookie from
+   https://localhost or capacitor://localhost, so they send X-Hopewick-Client: native and
+   get the same session token back in the JSON body, then send it as Authorization: Bearer.
+   The website keeps the cookie and never receives the token in a body. */
+export const NATIVE_ORIGINS = new Set(['https://localhost', 'capacitor://localhost', 'ionic://localhost']);
+function isNativeClient(req) {
+  return !!req && String(req.headers['x-hopewick-client'] || '').toLowerCase() === 'native';
+}
+function bearerToken(req) {
+  const raw = String((req && req.headers.authorization) || '');
+  const m = /^Bearer\s+([A-Fa-f0-9]{64})$/.exec(raw.trim());
+  return m ? m[1].toLowerCase() : '';
+}
+function sessionTokenFrom(req) {
+  return cookies(req)[SESSION_COOKIE] || bearerToken(req) || '';
+}
+function nativeCorsHeaders(req) {
+  const origin = req.headers.origin;
+  if (!origin || !NATIVE_ORIGINS.has(origin)) return null;
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Authorization, Content-Type, Accept, X-Hopewick-Client',
+    'Access-Control-Max-Age': '600',
+    Vary: 'Origin',
+  };
+}
+
 function json(res, status, body, extraHeaders) {
+  const req = res && res.req;
+  if (req && req.hwIssuedSession && isNativeClient(req) && body && typeof body === 'object' && !Array.isArray(body)) {
+    body = { ...body, sessionToken: req.hwIssuedSession };
+  }
   const payload = JSON.stringify(body);
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -462,7 +495,7 @@ export function sessionEpoch() {
 }
 
 function currentUser(req, store) {
-  const user = store.findBySession(cookies(req)[SESSION_COOKIE]);
+  const user = store.findBySession(sessionTokenFrom(req));
   if (!user || !user.session || user.session.epoch !== sessionEpoch()) return null;
   return user;
 }
@@ -484,16 +517,20 @@ function startSession(user, req, store) {
   // Replacing the hash ends the previous cookie. The raw token is not stored.
   user.session = { hash: hashToken(session), expiresAt: now + SESSION_MS, reauthAt: now, epoch: sessionEpoch() };
   store.save(user);
+  // Native apps receive this token in the JSON reply (see json()); browsers only get the cookie.
+  if (isNativeClient(req)) req.hwIssuedSession = session;
   return sessionCookie(session, req, sessionMaxAgeSec());
 }
 
 /** Slide the same httpOnly cookie forward so a return visit does not force a new email. */
 function touchSession(user, req, store) {
-  const token = cookies(req)[SESSION_COOKIE];
+  const cookieToken = cookies(req)[SESSION_COOKIE];
+  const token = cookieToken || bearerToken(req);
   if (!user || !user.session || !token) return null;
   user.session.expiresAt = Date.now() + SESSION_MS;
   store.save(user);
-  return sessionCookie(token, req, sessionMaxAgeSec());
+  // A bearer (native app) session slides forward too, but there is no cookie to send.
+  return cookieToken ? sessionCookie(token, req, sessionMaxAgeSec()) : null;
 }
 
 function safeNext(value) {
@@ -2202,6 +2239,8 @@ export function createApp({ store, chats, checkins, visits, wellbeing, fitness, 
       if (maybeCanonicalRedirect(req, res)) return;
       const host = req.headers.host || '127.0.0.1';
       const url = new URL(req.url || '/', `http://${host}`);
+      const cors = url.pathname.startsWith('/api/') ? nativeCorsHeaders(req) : null;
+      if (cors) for (const [k, v] of Object.entries(cors)) res.setHeader(k, v);
       if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
         res.writeHead(204, { 'Cache-Control': 'no-store' });
         res.end();
