@@ -32,7 +32,7 @@ def test_marketing_plans_copy():
     assert "Email me a sign-in link" in page
     assert "crisis" in page.lower()
     assert page.count("Use Hopewick now in your browser or add it to your home screen.") == 1
-    assert page.count("iPhone and Android store apps are coming soon.") == 1
+    assert page.count("The iPhone app is coming soon.") == 1
     assert "The Play Store app isn’t ready yet." not in page
     assert "Try the free demo" not in page
     assert "Join waitlist" not in page
@@ -48,16 +48,18 @@ def test_marketing_plans_copy():
 
 
 def test_marketing_mobile_coming_soon():
-    """One calm mention. No store links, and no second copy of the same line."""
+    """One calm mention: Android on Google Play (official listing), iPhone still coming soon."""
     page = public_copy()
     assert 'id="mobile"' in page
     assert 'id="practices"' not in page
     section = page.split('id="mobile"', 1)[1].split("</section>", 1)[0]
     assert "Use Hopewick now in your browser or add it to your home screen." in section
-    assert "iPhone and Android store apps are coming soon." in section
+    assert "The Android app is now on Google Play. The iPhone app is coming soon." in section
     assert "apps.apple.com" not in section
-    assert "play.google.com" not in section
-    assert page.count("iPhone and Android store apps are coming soon.") == 1
+    assert "https://play.google.com/store/apps/details?id=com.bridgebite.hopewick" in section
+    assert "/img/google-play-badge.png" in section
+    assert "store apps are coming soon" not in page
+    assert page.count("The iPhone app is coming soon.") == 1
     assert "Coming soon to the app" not in page
     assert "Cognitive Behavioural Therapy" not in page
     assert "Dialectical Behaviour Therapy" not in page

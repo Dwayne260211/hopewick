@@ -257,6 +257,10 @@ a:hover { color: var(--accent-strong); }
   .nav-toggle { padding: 8px 10px; }
   .nav .hw-crisis-btn { padding: 8px 10px; }
 }
+.mobile-badge { margin: 10px 0 0; }
+.play-badge { display: inline-block; line-height: 0; border-radius: 10px; }
+.play-badge img { display: block; height: 54px; width: auto; margin: -8px 0 -8px -8px; }
+.play-badge:focus-visible { outline: 3px solid #A57519; outline-offset: 2px; }
 </style>
 <link rel="stylesheet" href="/assets/site.css">
 </head>
@@ -464,7 +468,8 @@ a:hover { color: var(--accent-strong); }
   <section id="mobile" aria-labelledby="mobileTitle">
     <div class="wrap">
       <h2 id="mobileTitle" class="sr-only">Hopewick on your phone</h2>
-      <p class="mobile-note">Use Hopewick now in your browser or add it to your home screen. iPhone and Android store apps are coming soon.</p>
+      <p class="mobile-note">Use Hopewick now in your browser or add it to your home screen. The Android app is now on Google Play. The iPhone app is coming soon.</p>
+      <p class="mobile-badge"><a class="play-badge" href="https://play.google.com/store/apps/details?id=com.bridgebite.hopewick" target="_blank" rel="noopener" aria-label="Get Hopewick on Google Play"><img src="/img/google-play-badge.png" alt="Get it on Google Play" width="646" height="250" loading="lazy"></a></p>
     </div>
   </section>
 </main>
