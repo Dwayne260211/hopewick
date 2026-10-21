@@ -113,7 +113,8 @@ test('new public pages use the shared theme script and toggle, and the hero copy
     assert.match(html, /data-theme-toggle/, `${page} theme toggle`);
   }
   const home = read('index.html');
-  assert.match(home, /Hope, your support chat\./);
+  assert.match(home, /Recovery is a journey\. <span class="gold">You don’t have to walk it alone\.<\/span>/);
+  assert.match(home, /Hope is AI, not a person/);
   assert.doesNotMatch(home, /private support chat/);
   const css = read('assets/site.css');
   assert.match(css, /:root\[data-theme="dark"\] \.hw-home/);

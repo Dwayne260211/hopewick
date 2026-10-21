@@ -1016,6 +1016,7 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 .privacy-card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
 .history-device { margin: 0 10px 8px; font-size: .75rem; color: var(--muted); line-height: 1.35; }
 .onboard-crisis { margin-top: 16px; }
+.onboard-points { text-align: left; margin: 0 0 4px; padding-left: 1.1em; display: grid; gap: 8px; color: var(--text); line-height: 1.45; font-size: .95rem; }
 #onboardFaithQ:focus, #onboardFaithQ:focus-visible { outline: none; } /* focused so screen readers start at the question; not an answer */
 .onboard-crisis .btn { vertical-align: baseline; }
 .faith-ask-choices .btn { border: 1px solid var(--border); }
@@ -2499,9 +2500,14 @@ h1, h2, h3 { font-family: var(--font-display); }
     <h2 id="onboardTitle">Welcome to <span data-brand>Hopewick</span></h2>
     <div id="onboardStepWelcome">
       <p class="lead">A private place to talk through cravings and hard days between sessions.</p>
-      <p><span data-companion>Hope</span> is an <strong>AI recovery companion</strong> for you — not another human, and not a crisis line. Your chats stay on this device.</p>
+      <ul class="onboard-points">
+        <li><strong>What <span data-companion>Hope</span> helps with:</strong> talking things through, reflecting, coping with cravings and finding a next step.</li>
+        <li><strong>What AI can’t replace:</strong> <span data-companion>Hope</span> is an AI, not a counsellor, doctor or clinician, and it can make mistakes. It can’t advise on withdrawal, detox or medications.</li>
+        <li><strong>Your privacy:</strong> chats are kept on this device and saved, encrypted, to your account. Messages are sent to our AI provider to write a reply. Staff don’t read your conversations, and you can export or delete your data any time.</li>
+        <li><strong>Real help:</strong> in an emergency call <a href="tel:000">000</a>. <strong>Get help</strong> is always at the top of the screen and always free.</li>
+      </ul>
       <div class="onboard-actions">
-        <button class="btn btn-primary" type="button" id="onboardYesBtn">Continue</button>
+        <button class="btn btn-primary" type="button" id="onboardYesBtn">I understand, continue</button>
         <button class="btn" type="button" id="onboardLaterBtn">Not now — just look around</button>
         <button class="btn btn-ghost" type="button" id="onboardAboutBtn">About <span data-brand>Hopewick</span></button>
       </div>
@@ -12480,7 +12486,16 @@ function openHelp() {
 }
 $('#helpBtn').addEventListener('click', openHelp);
 
+function applyOnboardingSafetyAck() {
+  if (isDemo || !profile || settings.disclaimerAck) return;
+  const o = load(K.onboarding, null);
+  if (!o || !o.safetyAck || o.safetyAckUsed) return;
+  settings.disclaimerAck = true;
+  saveSettings();
+  save(K.onboarding, Object.assign({}, o, { safetyAckUsed: profile.id }));
+}
 function maybeShowDisclaimer() {
+  applyOnboardingSafetyAck();
   if (profile && isCounsellor() && !settings.disclaimerAck && !el.disclaimerDlg.open) el.disclaimerDlg.showModal();
 }
 $('#discOkBtn').addEventListener('click', () => {
@@ -13602,8 +13617,11 @@ function applyOnboardingChoices() {
   save(K.onboarding, Object.assign({}, o, { appliedTo: applied }));
   saveSettings();
 }
+let onboardedThisVisit = false;
 function finishOnboarding(extra) {
   markOnboardingSeen(extra);
+  onboardedThisVisit = true;
+  try { if (billingState.id) localStorage.setItem(PLUS_PROMPT_KEY, billingState.id); } catch (_) {}
   pendingStartChat = !!(extra && extra.startChat);
   if (el.onboardingDlg.open) el.onboardingDlg.close();
   if (profile && pendingStartChat) {
@@ -13615,7 +13633,8 @@ function finishOnboarding(extra) {
   }
   showPicker();
 }
-$('#onboardYesBtn').addEventListener('click', () => setOnboardStep('reason'));
+let onboardSafetyAck = false;
+$('#onboardYesBtn').addEventListener('click', () => { onboardSafetyAck = true; setOnboardStep('reason'); });
 $('#onboardLaterBtn').addEventListener('click', () => finishOnboarding({ continued: false }));
 $('#onboardReasonBack')?.addEventListener('click', () => setOnboardStep('welcome'));
 $('#onboardReasonContinue')?.addEventListener('click', () => setOnboardStep('faith'));
@@ -13625,6 +13644,7 @@ $$('#onboardStepFaith [data-faith-answer]').forEach((b) => b.addEventListener('c
   finishOnboarding({
     continued: true,
     startChat: true,
+    safetyAck: onboardSafetyAck,
     hereFor: reason ? reason.value : 'myself',
     faithAnswer: b.dataset.faithAnswer,
   });
@@ -15999,6 +16019,11 @@ function declinePlusOffer() {
   if (dlg && dlg.open) dlg.close();
 }
 function showPlusChoice() {
+  // Value before subscription info: never offer Plus before or during first-run onboarding on this device.
+  // A new account that goes through onboarding here is not shown this pop-up at all; Plus is offered
+  // where it is relevant (a Plus feature, the daily Hope limit, My Account, the pricing page).
+  if (!onboardingSeen() || onboardedThisVisit) return;
+  if (document.querySelector('dialog[open]')) return;
   if (!realSession() || isDemo || subscriptionPlus() || pendingTrialCheckout || declinedPlusForThisAccount()) return;
   const dlg = $('#plusChoiceDlg');
   if (!dlg || dlg.open) return;

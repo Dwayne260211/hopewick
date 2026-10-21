@@ -63,13 +63,14 @@ body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Ro
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--hw-royal); text-underline-offset: 3px; }
 h1, h2, h3 { color: var(--hw-navy); line-height: 1.15; letter-spacing: -.02em; margin: 0; }
-h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
+h2 { font-size: clamp(1.65rem, 4vw, 2.4rem); font-weight: 800; }
 .section { padding: 72px 0; }
 .section--white { background: #fff; }
 .section--soft { background: linear-gradient(180deg, #EEF5FA, var(--hw-off)); }
 .eyebrow { display: inline-block; margin: 0 0 10px; font-size: .82rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--hw-gold-text); }
 .section-head { max-width: 40em; margin: 0 0 32px; }
 .section-head p { color: var(--hw-muted); margin: 12px 0 0; font-size: 1.08rem; }
+.center-cta { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
 
 .welcome-back { display: none; background: var(--hw-soft); }
 .welcome-back.show { display: block; }
@@ -77,25 +78,51 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 .welcome-back p { margin: 0; flex: 1 1 16rem; }
 
 /* 1 Hero */
-.hero { position: relative; overflow: hidden; background: radial-gradient(700px 480px at 8% 10%, #D6E7F3 0%, transparent 70%), radial-gradient(640px 420px at 92% 0%, #F7E9CF 0%, transparent 70%), linear-gradient(180deg, #F3F7FB, #F6F9FC); padding: 56px 0 40px; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 48px; align-items: center; }
-.hero-logo { margin: 0 auto; width: min(100%, 480px); }
-.hero-copy h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.02; }
+.hero { position: relative; overflow: hidden; background: radial-gradient(700px 480px at 8% 10%, #D6E7F3 0%, transparent 70%), radial-gradient(640px 420px at 92% 0%, #F7E9CF 0%, transparent 70%), linear-gradient(180deg, #F3F7FB, #F6F9FC); padding: 56px 0 56px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 56px; align-items: center; }
+.hero-brand { margin: 0 0 18px; }
+.hero-logo { width: 190px; }
+.hero-copy h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.06; }
 .hero-copy h1 .gold { color: var(--hw-gold); }
-.hero-sub { font-size: clamp(1.08rem, 2vw, 1.3rem); color: #2E4467; margin: 16px 0 0; max-width: 30em; line-height: 1.5; }
-.hero-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; margin-top: 28px; }
-.hero-actions { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.hero-sub { font-size: clamp(1.05rem, 1.8vw, 1.22rem); color: #2E4467; margin: 18px 0 0; max-width: 34em; line-height: 1.55; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .hero-actions .hw-btn { min-height: 54px; font-size: 1.08rem; padding: 14px 28px; }
-.free-pill { display: inline-flex; align-items: center; gap: 8px; align-self: center; padding: 8px 16px; border-radius: 999px; background: var(--hw-gold-soft); border: 1px solid #E7CF9C; color: var(--hw-gold-text); font-weight: 700; font-size: .95rem; }
+.free-pill { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; padding: 6px 14px; border-radius: 999px; background: var(--hw-gold-soft); border: 1px solid #E7CF9C; color: var(--hw-gold-text); font-weight: 700; font-size: .92rem; }
 .free-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--hw-gold); }
+.hero-shot { margin: 0; justify-self: center; width: min(100%, 300px); }
+.hero-shot figcaption, .shot-label { margin-top: 12px; text-align: center; color: var(--hw-muted); font-size: .88rem; }
 
+.crisis-strip { background: #fff; border-top: 1px solid var(--hw-line); border-bottom: 1px solid var(--hw-line); }
+.crisis-strip p { margin: 0 auto; padding: 10px 20px; text-align: center; font-size: 1.02rem; color: var(--hw-navy); }
+.crisis-strip a { color: var(--hw-navy); font-weight: 800; display: inline-block; padding: 8px 4px; min-height: 44px; line-height: 28px; }
+
+/* Cards (shared by reasons, tools, safety) */
+.card-grid { display: grid; gap: 18px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.help-card { background: #fff; border: 1px solid var(--hw-line); border-radius: var(--hw-radius); padding: 24px 22px; }
+.help-card h3 { font-size: 1.18rem; margin: 14px 0 8px; }
+.help-card p { margin: 0; color: var(--hw-muted); }
+.help-card ul { margin: 10px 0 0; padding-left: 1.1em; color: var(--hw-muted); }
+.help-card li { margin: 4px 0; }
+.help-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: #E8F1F8; color: var(--hw-royal); }
+.help-icon svg { width: 26px; height: 26px; }
+.more-note { color: var(--hw-muted); margin: 22px 0 0; }
+
+/* 3 How it works */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; counter-reset: step; }
+.steps li { position: relative; background: #fff; border: 1px solid var(--hw-line); border-radius: var(--hw-radius); padding: 22px 22px 22px 76px; counter-increment: step; }
+.steps li::before { content: counter(step); position: absolute; left: 22px; top: 22px; width: 38px; height: 38px; border-radius: 50%; background: var(--hw-navy); color: #fff; font-weight: 800; display: grid; place-items: center; }
+.steps h3 { font-size: 1.12rem; margin: 0 0 6px; }
+.steps p { margin: 0; color: var(--hw-muted); }
+
+/* Box breathing (try a tool now) */
+.try-tool { margin-top: 26px; max-width: 560px; }
 .breath { background: #fff; border: 1px solid var(--hw-line); border-radius: 20px; box-shadow: var(--hw-shadow); padding: 18px 20px; min-width: 0; }
 .breath-top { display: flex; gap: 12px; align-items: flex-start; }
 .breath-icon { flex: none; width: 44px; height: 44px; border-radius: 12px; background: #E8F1F8; display: grid; place-items: center; color: var(--hw-navy); }
-.breath h2 { font-size: 1.15rem; letter-spacing: -.01em; }
+.breath h3 { font-size: 1.15rem; letter-spacing: -.01em; }
 .breath-time { margin: 0; color: var(--hw-muted); font-size: .9rem; }
 .breath-text { margin: 10px 0 12px; }
-.breath-run[hidden] { display: none; }
 .breath-run { display: grid; grid-template-columns: 76px 1fr; gap: 14px; align-items: center; margin: 4px 0 12px; }
 .breath-box { width: 76px; height: 76px; border-radius: 14px; border: 3px solid var(--hw-royal); display: grid; place-items: center; font-weight: 800; font-size: 1.4rem; color: var(--hw-navy); background: #F1F6FB; transform: scale(.82); transition: transform 4s linear; }
 .breath-box[data-phase="in"] { transform: scale(1); }
@@ -107,21 +134,10 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 .breath-controls { display: flex; flex-wrap: wrap; gap: 8px; }
 .breath-controls .hw-btn { min-height: 44px; padding: 8px 18px; font-size: .95rem; }
 .breath-note { margin: 10px 0 0; font-size: .85rem; color: var(--hw-muted); }
+.breath [hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { .breath-box { transition: none !important; transform: none !important; } }
 
-.crisis-strip { background: #fff; border-top: 1px solid var(--hw-line); border-bottom: 1px solid var(--hw-line); }
-.crisis-strip p { margin: 0 auto; padding: 10px 20px; text-align: center; font-size: 1.02rem; color: var(--hw-navy); }
-.crisis-strip a { color: var(--hw-navy); font-weight: 800; display: inline-block; padding: 8px 4px; min-height: 44px; line-height: 28px; }
-
-/* 2 Helps */
-.help-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
-.help-card { background: #fff; border: 1px solid var(--hw-line); border-radius: var(--hw-radius); padding: 24px 22px; }
-.help-card h3 { font-size: 1.2rem; margin: 14px 0 8px; }
-.help-card p { margin: 0; color: var(--hw-muted); }
-.help-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: #E8F1F8; color: var(--hw-royal); }
-.help-icon svg { width: 26px; height: 26px; }
-
-/* 3 In action */
+/* 5 App preview */
 .shots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin: 0; padding: 0; list-style: none; }
 .shot figure { margin: 0; }
 .phone { background: var(--hw-navy); border-radius: 34px; padding: 9px; box-shadow: 0 18px 40px rgba(16,33,63,.18); }
@@ -129,10 +145,8 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 .shot figcaption { margin-top: 14px; }
 .shot figcaption strong { display: block; color: var(--hw-navy); font-size: 1.05rem; }
 .shot figcaption span { color: var(--hw-muted); font-size: .95rem; }
-.shots-note { color: var(--hw-muted); font-size: .92rem; margin: 22px 0 0; }
-.center-cta { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; }
 
-/* 4 Story */
+/* 6 Story */
 .story-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: center; }
 .story-photo { margin: 0; border-radius: 26px; overflow: hidden; box-shadow: var(--hw-shadow); }
 .story-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 22% 45%; }
@@ -140,7 +154,7 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 .story-quote p { margin: 0 0 12px; font-size: 1.06rem; }
 .founder-meta { color: var(--hw-muted); font-size: .92rem; margin: 14px 0 20px; }
 
-/* 5 Pricing */
+/* 7 Plans */
 .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; max-width: 980px; }
 .plan { background: #fff; border: 1px solid var(--hw-line); border-radius: 22px; padding: 28px; display: flex; flex-direction: column; }
 .plan--plus { border: 2px solid var(--hw-royal); box-shadow: var(--hw-shadow); }
@@ -155,25 +169,37 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
 .plan-fine { color: var(--hw-muted); font-size: .9rem; margin: 12px 0 0; }
 .pricing-more { margin: 22px 0 0; color: var(--hw-muted); }
 
-/* 6 Final CTA */
+/* 9 Final CTA */
 .final { background: linear-gradient(135deg, #10213F, #1B3A72); color: #fff; text-align: center; padding: 72px 0; }
 .final h2 { color: #fff; }
 .final p { font-size: 1.15rem; margin: 12px auto 26px; max-width: 30em; color: #E1E8F3; }
 .final .hw-btn--primary { background: #fff; color: var(--hw-navy); border-color: #fff; min-height: 54px; padding: 14px 32px; font-size: 1.1rem; }
 .final .hw-btn--primary:hover { background: var(--hw-soft); color: var(--hw-navy); }
 .final .hw-btn--primary:focus-visible { outline-color: #fff; }
+.final .final-link { display: inline-block; margin-top: 16px; color: #fff; font-weight: 700; padding: 10px 6px; }
+
+:root[data-theme="dark"] .hw-home .steps li { background: #101D36; border-color: #253A60; }
+:root[data-theme="dark"] .hw-home .steps p, :root[data-theme="dark"] .hw-home .help-card ul, :root[data-theme="dark"] .hw-home .more-note, :root[data-theme="dark"] .hw-home .hero-shot figcaption { color: #AAB6CC; }
+:root[data-theme="dark"] .hw-home .steps li::before { background: #DCEAF3; color: var(--hw-navy); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hw-home .steps li { background: #101D36; border-color: #253A60; }
+  :root:not([data-theme="light"]) .hw-home .steps p, :root:not([data-theme="light"]) .hw-home .help-card ul, :root:not([data-theme="light"]) .hw-home .more-note, :root:not([data-theme="light"]) .hw-home .hero-shot figcaption { color: #AAB6CC; }
+  :root:not([data-theme="light"]) .hw-home .steps li::before { background: #DCEAF3; color: var(--hw-navy); }
+}
 
 @media (max-width: 1080px) {
-  .help-grid, .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card-grid--4, .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
-  .hero { padding: 20px 0 28px; }
-  .hero-grid, .story-grid { grid-template-columns: 1fr; gap: 18px; }
-  .hero-logo { width: min(62vw, 250px); }
+  .hero { padding: 28px 0 40px; }
+  .hero-grid, .story-grid { grid-template-columns: 1fr; gap: 28px; }
   .hero-copy { text-align: center; }
+  .hero-brand { display: flex; justify-content: center; }
+  .hero-logo { width: 150px; }
   .hero-sub { margin-left: auto; margin-right: auto; }
-  .hero-tools { grid-template-columns: 1fr; text-align: left; gap: 16px; margin-top: 20px; }
-  .free-pill { justify-self: center; }
+  .hero-actions { justify-content: center; }
+  .hero-shot { width: min(70vw, 260px); }
+  .card-grid, .steps { grid-template-columns: 1fr; }
   .story-photo { max-width: 560px; }
 }
 @media (max-width: 640px) {
@@ -183,43 +209,14 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
   .shots { gap: 16px; }
   .phone { border-radius: 24px; padding: 6px; }
   .phone img { border-radius: 19px; }
-  .hero-copy h1 { font-size: clamp(2.3rem, 11vw, 3rem); }
   .plan { padding: 22px; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-copy h1 { font-size: clamp(1.9rem, 8.4vw, 2.4rem); }
 }
-@media (max-width: 420px) {
-  .hero-sub { font-size: 1.02rem; }
-  .help-grid { grid-template-columns: 1fr; }
-  .hero-logo { width: min(52vw, 200px); }
+@media (max-width: 480px) {
+  .card-grid--4 { grid-template-columns: 1fr; }
+  .hero-logo { width: 120px; }
 }
-@media (max-height: 700px) and (max-width: 640px) { .hero-logo { width: 170px; } }
-/* Small phones (iPhone SE 375x667, 360-wide Android): keep the mobile order but fit Start Free and See How It Works on the first screen */
-@media (max-width: 640px) and (max-height: 820px) {
-  .hw-nav { min-height: 58px; }
-  html { scroll-padding-top: 66px; }
-  .hero { padding: 10px 0 16px; }
-  .hero-grid { gap: 8px; }
-  .hero-logo { width: 150px; }
-  .hero-copy h1 { font-size: 2rem; white-space: nowrap; }
-  .hero-sub { font-size: .95rem; line-height: 1.42; margin-top: 6px; }
-  .hero-tools { gap: 10px; margin-top: 12px; }
-  .breath { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; align-items: center; padding: 10px 12px; border-radius: 16px; }
-  .breath-top { gap: 10px; align-items: center; }
-  .breath-icon { width: 36px; height: 36px; border-radius: 10px; }
-  .breath-icon svg { width: 20px; height: 20px; }
-  .breath h2 { font-size: 1.02rem; }
-  .breath-time { font-size: .82rem; line-height: 1.3; }
-  .breath-text { grid-column: 1 / -1; margin: 6px 0 0; font-size: .88rem; line-height: 1.4; }
-  .breath-controls { grid-column: 2; grid-row: 1; }
-  .breath-controls .hw-btn { padding: 8px 16px; }
-  .breath-run, .breath-note { grid-column: 1 / -1; }
-  .breath:has(#breathRun:not([hidden])) .breath-controls { grid-column: 1 / -1; grid-row: auto; }
-  .hero-actions { gap: 8px; }
-  .free-pill { padding: 4px 12px; font-size: .86rem; }
-  .hero-actions .hw-btn { min-height: 48px; padding: 10px 24px; font-size: 1.02rem; }
-}
-
-.breath [hidden] { display: none !important; }
-@media (min-width: 901px) { .hero-copy h1 { font-size: clamp(3rem, 4.5vw, 4.1rem); white-space: nowrap; } }
 </style>
 <script type="application/ld+json">
 {
@@ -294,100 +291,146 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
   <!-- 1. Hero -->
   <section class="hero" aria-labelledby="heroTitle">
     <div class="wrap hero-grid">
-      <div class="hero-brand">
-        <picture class="hero-logo-light">
-          <source type="image/webp" srcset="/brand/hopewick-hero-480.webp 480w, /brand/hopewick-hero-960.webp 960w" sizes="(max-width: 900px) 250px, 480px">
-          <img class="hero-logo" src="/brand/hopewick-hero-480.png" alt="Hopewick. Support for your next step. Mental health, addiction recovery, personal growth." width="480" height="338" fetchpriority="high">
-        </picture>
-        <picture class="hero-logo-dark">
-          <source type="image/webp" srcset="/brand/hopewick-lockup-dark-600.webp 600w" sizes="(max-width: 900px) 250px, 480px">
-          <img class="hero-logo" src="/brand/hopewick-lockup-dark-600.png" alt="Hopewick. Support for your next step. Mental health, addiction recovery, personal growth." width="600" height="422" loading="lazy">
-        </picture>
-      </div>
       <div class="hero-copy">
-        <h1 id="heroTitle">Small steps <span class="gold">count.</span></h1>
-        <p class="hero-sub">Daily check-ins, coping tools and Hope, your support chat. Built in Australia to support recovery, wellbeing and personal growth.</p>
-        <div class="hero-tools">
-          <section class="breath" id="breathCard" aria-labelledby="breathTitle">
-            <div class="breath-top">
-              <span class="breath-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12h8M12 8v8" opacity=".35"/></svg></span>
-              <div>
-                <h2 id="breathTitle">Box Breathing</h2>
-                <p class="breath-time">About 3 minutes</p>
-              </div>
-            </div>
-            <p class="breath-text">Breathe in a steady square: in, hold, out, hold.</p>
-            <div class="breath-run" id="breathRun" hidden>
-              <div class="breath-box" id="breathBox" aria-hidden="true"><span id="breathCount"></span></div>
-              <div>
-                <p class="breath-phase" id="breathPhase" aria-live="polite">Press Start when you are ready</p>
-                <p class="breath-round" id="breathRound">11 rounds of 4-4-4-4</p>
-              </div>
-            </div>
-            <div class="breath-controls">
-              <button class="hw-btn hw-btn--navy" type="button" id="breathStart">Start</button>
-              <button class="hw-btn" type="button" id="breathReset" hidden>Reset</button>
-              <button class="hw-btn" type="button" id="breathExit" hidden>Exit</button>
-            </div>
-            <p class="breath-note" id="breathNote" hidden>Breathe through your nose if that is comfortable. Stop if you feel dizzy and go back to normal breathing.</p>
-          </section>
-          <div class="hero-actions">
-            <p class="free-pill">Free plan · No card needed</p>
-            <a class="hw-btn hw-btn--primary" href="app/" id="launchApp">Start Free</a>
-            <a class="hw-btn" href="#see-hopewick">See How It Works</a>
-          </div>
+        <div class="hero-brand">
+          <picture class="hero-logo-light">
+            <source type="image/webp" srcset="/brand/hopewick-hero-480.webp 480w, /brand/hopewick-hero-960.webp 960w" sizes="190px">
+            <img class="hero-logo" src="/brand/hopewick-hero-480.png" alt="Hopewick. Support for your next step." width="480" height="338" fetchpriority="high">
+          </picture>
+          <picture class="hero-logo-dark">
+            <source type="image/webp" srcset="/brand/hopewick-lockup-dark-600.webp 600w" sizes="190px">
+            <img class="hero-logo" src="/brand/hopewick-lockup-dark-600.png" alt="Hopewick. Support for your next step." width="600" height="422" loading="lazy">
+          </picture>
         </div>
+        <h1 id="heroTitle">Recovery is a journey. <span class="gold">You don’t have to walk it alone.</span></h1>
+        <p class="hero-sub">Hopewick is an AI-powered recovery-support companion built with lived experience at its heart. A space to reflect, find encouragement, build healthy habits and take the next step forward.</p>
+        <div class="hero-actions">
+          <a class="hw-btn hw-btn--primary" href="app/" id="launchApp">Start Free</a>
+          <a class="hw-btn" href="our-story.html">Discover Our Story</a>
+        </div>
+        <p class="free-pill">Free plan · No card needed</p>
       </div>
+      <figure class="hero-shot">
+        <div class="phone"><img src="/img/app/home-300.webp" srcset="/img/app/home-300.webp 300w, /img/app/home-600.webp 600w" sizes="(max-width: 900px) 70vw, 300px" alt="The Hopewick app home screen: a What do you need right now panel with Get help, Talk to Hope, Journal and other shortcuts." width="300" height="649" decoding="async"></div>
+        <figcaption>Real app screen, shown in demo mode.</figcaption>
+      </figure>
     </div>
   </section>
   <div class="crisis-strip" role="note" aria-label="Crisis information">
     <p class="wrap">Not a crisis service. In crisis? Call <a href="tel:000">000</a> or Lifeline <a href="tel:131114">13 11 14</a>.</p>
   </div>
 
-  <!-- 2. How Hopewick helps -->
-  <section class="section section--white" id="how-it-helps" aria-labelledby="helpsTitle">
+  <!-- 2. Why Hopewick exists -->
+  <section class="section section--white" id="why" aria-labelledby="whyTitle">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">How Hopewick helps</p>
-        <h2 id="helpsTitle">Support for the hours in between</h2>
+        <p class="eyebrow">Why Hopewick exists</p>
+        <h2 id="whyTitle">For the hours in between</h2>
       </div>
-      <div class="help-grid">
+      <div class="card-grid">
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <h3>Help is often a wait away</h3>
+          <p>Appointments, caseworkers and meetings matter. Nights and weekends can still be long. Hopewick is somewhere to turn while you wait.</p>
+        </article>
         <article class="help-card">
           <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
-          <h3>Talk to Hope</h3>
-          <p>A supportive AI companion to help you reflect, explore challenges and identify practical next steps.</p>
+          <h3>Asking is hard</h3>
+          <p>Talking things through without worrying how anyone will react can help you find the words, then take them to the right person.</p>
         </article>
         <article class="help-card">
-          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg></span>
-          <h3>Track Your Progress</h3>
-          <p>Daily check-ins, journalling and recovery milestones. Personal goals come with Plus.</p>
-        </article>
-        <article class="help-card">
-          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4l-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/></svg></span>
-          <h3>Build Practical Skills</h3>
-          <p>Guided coping exercises, recovery resources and personal growth tools.</p>
-        </article>
-        <article class="help-card">
-          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c2-6 5-4 7-9s5-6 7-7"/><circle cx="5" cy="20" r="1.5"/><path d="M15 4h4v4"/></svg></span>
-          <h3>Find Your Next Step</h3>
-          <p>Turn reflection into achievable actions and connect with real-world support.</p>
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></span>
+          <h3>Built from lived experience</h3>
+          <p>Made in Australia by someone in recovery, around harm minimisation. It meets you where you’re at.</p>
         </article>
       </div>
-      <p class="center-cta"><a class="hw-btn" href="how-it-works.html">More on how it works</a></p>
     </div>
   </section>
 
-  <!-- 3. See Hopewick in action -->
+  <!-- 3. How it works -->
+  <section class="section section--soft" id="how-it-works" aria-labelledby="howTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 id="howTitle">Three steps to begin</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Start free</h3><p>Create a free account with your email or Google. No card needed.</p></li>
+        <li><h3>Meet Hope</h3><p>A short welcome explains what Hope can help with, what it can’t, and how your privacy works.</p></li>
+        <li><h3>Take one small step</h3><p>Talk something through, check in, write a few lines or try a coping tool.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. Four main tools -->
+  <section class="section section--white" id="how-it-helps" aria-labelledby="helpsTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What’s inside</p>
+        <h2 id="helpsTitle">Four ways Hopewick helps</h2>
+      </div>
+      <div class="card-grid card-grid--4">
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
+          <h3>Talk with Hope</h3>
+          <p>AI recovery conversations for reflection, encouragement and practical ways to cope with cravings and hard days.</p>
+        </article>
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/></svg></span>
+          <h3>Track Your Recovery</h3>
+          <p>Daily check-ins, a clean-time tracker with milestones, and a journal with reflection prompts.</p>
+        </article>
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span>
+          <h3>Build Your Plan</h3>
+          <p>A safety plan, relapse prevention and exit plans, coping tools and wellbeing basics. SMART goals and weekly plans come with Plus.</p>
+        </article>
+        <article class="help-card">
+          <span class="help-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <h3>Find Support</h3>
+          <p>Crisis lines, meetings, treatment and AOD services, practical help, and a way to share a summary with your worker.</p>
+        </article>
+      </div>
+      <p class="more-note">Also inside: daily readings, short learning modules, recovery-stage support, anger and relationships topics, and optional Christian encouragement. <a href="how-it-works.html">See everything in detail</a>.</p>
+      <section class="try-tool" aria-labelledby="breathTitle">
+        <div class="breath" id="breathCard">
+          <div class="breath-top">
+            <span class="breath-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12h8M12 8v8" opacity=".35"/></svg></span>
+            <div>
+              <h3 id="breathTitle">Try one now: Box Breathing</h3>
+              <p class="breath-time">About 3 minutes. No account needed.</p>
+            </div>
+          </div>
+          <p class="breath-text">Breathe in a steady square: in, hold, out, hold.</p>
+          <div class="breath-run" id="breathRun" hidden>
+            <div class="breath-box" id="breathBox" aria-hidden="true"><span id="breathCount"></span></div>
+            <div>
+              <p class="breath-phase" id="breathPhase" aria-live="polite">Press Start when you are ready</p>
+              <p class="breath-round" id="breathRound">11 rounds of 4-4-4-4</p>
+            </div>
+          </div>
+          <div class="breath-controls">
+            <button class="hw-btn hw-btn--navy" type="button" id="breathStart">Start</button>
+            <button class="hw-btn" type="button" id="breathReset" hidden>Reset</button>
+            <button class="hw-btn" type="button" id="breathExit" hidden>Exit</button>
+          </div>
+          <p class="breath-note" id="breathNote" hidden>Breathe through your nose if that is comfortable. Stop if you feel dizzy and go back to normal breathing.</p>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- 5. Genuine app preview -->
   <section class="section section--soft" id="see-hopewick" aria-labelledby="actionTitle">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">See Hopewick in action</p>
+        <p class="eyebrow">See the app</p>
         <h2 id="actionTitle">The real app, on your phone</h2>
         <p>Screens from the Hopewick app in its built-in demo mode. Demo replies are pre-written examples, and “Alex” is the demo name, not a real person.</p>
       </div>
       <ul class="shots">
+        <li class="shot"><figure><div class="phone"><img src="/img/app/chat-300.webp" srcset="/img/app/chat-300.webp 300w, /img/app/chat-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="A demo chat with Hope about a craving. Hope suggests texting a support person and lists the National Alcohol and Other Drug Hotline." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Talk with Hope</strong><span>Work through a hard moment and find a next step.</span></figcaption></figure></li>
         <li class="shot"><figure><div class="phone"><img src="/img/app/home-300.webp" srcset="/img/app/home-300.webp 300w, /img/app/home-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="Hopewick home screen: a What do you need right now panel with Get help, Talk to Hope, Journal and other shortcuts, and Today’s reflections." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Home</strong><span>Shortcuts to help, Hope, the journal and today’s readings.</span></figcaption></figure></li>
-        <li class="shot"><figure><div class="phone"><img src="/img/app/chat-300.webp" srcset="/img/app/chat-300.webp 300w, /img/app/chat-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="A demo chat with Hope about a craving. Hope suggests texting a support person and lists the National Alcohol and Other Drug Hotline." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Talk to Hope</strong><span>Work through a hard moment and find a next step.</span></figcaption></figure></li>
         <li class="shot"><figure><div class="phone"><img src="/img/app/tools-300.webp" srcset="/img/app/tools-300.webp 300w, /img/app/tools-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="Tools screen: Get help now, domestic and family violence support, My safety plan, circuit breakers and the coping toolkit." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Tools</strong><span>Crisis lines, your safety plan and coping tools. Always free.</span></figcaption></figure></li>
         <li class="shot"><figure><div class="phone"><img src="/img/app/learn-300.webp" srcset="/img/app/learn-300.webp 300w, /img/app/learn-600.webp 600w" sizes="(max-width: 640px) 45vw, 260px" alt="Learn and grow screen: today’s readings, news and resources, learning modules, 12 Steps and Going Deeper." width="300" height="649" loading="lazy" decoding="async"></div><figcaption><strong>Learn and grow</strong><span>Short lessons, daily readings and recovery pathways.</span></figcaption></figure></li>
       </ul>
@@ -395,7 +438,7 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
     </div>
   </section>
 
-  <!-- 4. Why Hopewick exists -->
+  <!-- 6. Founder story intro -->
   <section class="section section--white" id="founder" aria-labelledby="founderTitle">
     <div class="wrap story-grid">
       <figure class="story-photo">
@@ -405,12 +448,12 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
         </picture>
       </figure>
       <div>
-        <p class="eyebrow">Why Hopewick exists</p>
+        <p class="eyebrow">Our story</p>
         <h2 id="founderTitle">Built from lived experience. Created with purpose.</h2>
         <blockquote class="story-quote">
           <p>For years, trauma and addiction ran my life. I was the quietest person in the room. I thought I had to carry everything on my own.</p>
-          <p>That’s when I started using AI. It gave me somewhere to get my thoughts out, ask questions and work out what I was feeling when there was nobody around to talk to. It never replaced counselling, treatment or people. What it did was give me the courage to walk up to the staff on site and say, “I’m really struggling.”</p>
-          <p>My faith in Jesus Christ has played a significant role in my recovery. It gave me hope, purpose and a reason to keep going. But Hopewick isn’t about asking people to believe what I believe. Whatever you believe, you’re welcome here.</p>
+          <p>That’s when I started using AI. It never replaced counselling, treatment or people. What it did was give me the courage to walk up to the staff on site and say, “I’m really struggling.”</p>
+          <p>Hopewick isn’t about asking people to believe what I believe. Whatever you believe, you’re welcome here.</p>
         </blockquote>
         <p class="founder-meta">Dwayne Stevens, founder. In recovery myself. Completed the coursework and practical placement for the TAFE Queensland Dual Diploma of Mental Health and Alcohol and Other Drugs, graduation expected January 2027. I’m not a doctor, psychologist or registered counsellor.</p>
         <a class="hw-btn hw-btn--navy" href="our-story.html">Read Our Story</a>
@@ -418,13 +461,13 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
     </div>
   </section>
 
-  <!-- 5. Simple pricing -->
+  <!-- 7. Free vs Plus -->
   <section class="section section--soft" id="plans" aria-labelledby="plansTitle">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Simple pricing</p>
-        <h2 id="plansTitle">Start free. Upgrade if it helps.</h2>
-        <p>Essential support stays free. Crisis help and your safety plan are never behind a paywall.</p>
+        <p class="eyebrow">Free and Plus</p>
+        <h2 id="plansTitle">Start free. Upgrade only if it helps.</h2>
+        <p>Crisis help, your safety plan and the core tools are never behind a paywall.</p>
       </div>
       <div class="plans">
         <article class="plan">
@@ -435,11 +478,10 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
             <li>15 Hope messages a day</li>
             <li>Daily check-in, clean-time tracker and milestones</li>
             <li>Journal with daily reflection prompts</li>
-            <li>Your safety plan, relapse prevention and exit plans</li>
-            <li>12 core coping tools, core learning modules and My next step</li>
-            <li>Find meetings, treatment, AOD services and practical help</li>
-            <li>The last 7 days of history, and your latest saved chat</li>
-            <li>Safety and crisis information, always available</li>
+            <li>Safety plan, relapse prevention and exit plans</li>
+            <li>12 core coping tools and core learning modules</li>
+            <li>Find meetings, treatment and AOD services</li>
+            <li>The last 7 days of history and your latest saved chat</li>
           </ul>
           <a class="hw-btn hw-btn--navy" href="app/">Start Free</a>
         </article>
@@ -451,11 +493,9 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
             <li>Everything in Free</li>
             <li>No daily message limit with Hope</li>
             <li>Full history, older saved chats, monthly insights and a printable report</li>
-            <li>SMART goals, personal goals and weekly plans</li>
-            <li>Extra private profiles on a shared device</li>
+            <li>SMART goals and weekly plans</li>
             <li>Journal extras, including Deepen with Hope</li>
-            <li>New coping tools and learning modules first</li>
-            <li>Recovery learning library, resume builder, Going Deeper and the full year of readings</li>
+            <li>Learning library, resume builder, Going Deeper and new tools first</li>
           </ul>
           <a class="hw-btn hw-btn--primary" href="app/?trial=1">Start 7-day free trial</a>
           <p class="plan-fine">A card is collected by Stripe at the start. The AU$20 monthly charge begins when the trial ends. See the <a href="terms.html">terms</a>.</p>
@@ -465,12 +505,37 @@ h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); font-weight: 800; }
     </div>
   </section>
 
-  <!-- 6. Final CTA -->
+  <!-- 8. Safety, privacy and AI transparency -->
+  <section class="section section--white" id="safety-privacy" aria-labelledby="trustTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Safety, privacy and AI</p>
+        <h2 id="trustTitle">Honest about what Hopewick is</h2>
+      </div>
+      <div class="card-grid">
+        <article class="help-card">
+          <h3>Hope is AI, not a person</h3>
+          <p>Hope is not a counsellor, doctor or clinician, and it can make mistakes. It sits alongside your psychologist, caseworker, rehab or GP. It doesn’t replace them.</p>
+        </article>
+        <article class="help-card">
+          <h3>Not a crisis service</h3>
+          <p>If you or someone else is in danger, call <a href="tel:000">000</a>. Lifeline is <a href="tel:131114">13 11 14</a>. Crisis numbers are always free in the app and below.</p>
+        </article>
+        <article class="help-card">
+          <h3>Your data, your choice</h3>
+          <p>Chats are saved to your account and encrypted at rest. To write a reply, your messages are sent to our AI provider. Staff have no inbox of your conversations. You can export or delete your data at any time. <a href="privacy.html">Privacy policy</a>.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Final CTA -->
   <section class="final" aria-labelledby="finalTitle">
     <div class="wrap">
       <h2 id="finalTitle">Your next step starts here.</h2>
       <p>You don’t need to have everything figured out to begin.</p>
-      <a class="hw-btn hw-btn--primary" href="app/">Get Started Free</a>
+      <a class="hw-btn hw-btn--primary" href="app/">Start Free</a><br>
+      <a class="final-link" href="#get-help">Need help right now? See crisis lines</a>
     </div>
   </section>
 </main>
