@@ -16,7 +16,7 @@ def test_marketing_plans_copy():
     assert "Essential support stays free" in page
     assert "Daily message limits" in page
     assert "15 messages/day" in page
-    assert "No daily limit" in page
+    assert "no daily message limit (fair use applies)" in page
     assert "No daily message limit" in page
     assert "20 messages/day" not in page
     assert "200 messages/day" not in page
