@@ -1407,7 +1407,7 @@
       "minutes": 5,
       "faith": true,
       "summary": "For people who opted in to faith content: holding on to hope, and using help, when things are heavy.",
-      "note": "Optional faith layer. Pending founder and pastoral review. Faith sits alongside professional care, never instead of it.",
+      "note": "Optional faith layer. Faith sits alongside professional care, never instead of it.",
       "steps": [
         {
           "type": "cards",
@@ -1497,7 +1497,7 @@
       "minutes": 5,
       "faith": true,
       "summary": "For people who opted in to faith content: shame, grace and getting back on your path after a slip.",
-      "note": "Optional faith layer. Pending founder and pastoral review. Faith sits alongside professional care, never instead of it.",
+      "note": "Optional faith layer. Faith sits alongside professional care, never instead of it.",
       "steps": [
         {
           "type": "cards",

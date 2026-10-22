@@ -113,7 +113,9 @@ def test_faith_on_shows_reflections_and_modules_then_off_again(server, browser):
     page.evaluate("() => setAppTab('home')")
     page.wait_for_selector("#hw5FaithHome")
     home = page.inner_text("#hw5FaithHome")
-    assert "World English Bible" in home and "pastoral review" in home
+    assert "World English Bible" in home
+    assert "never replaces your GP, counsellor or crisis help" in home
+    assert "pastoral review" not in home and "Draft" not in home
     assert page.evaluate("() => !!todayCardEl().querySelector('.today-word')"), "Word for the day is back with faith on"
     shot(page, "faith-on-home-mobile")
     go(page, "checkin")
