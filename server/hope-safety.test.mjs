@@ -312,3 +312,29 @@ test('saved chats keep study-focus ids so the server can rebuild the focus after
   assert.equal(convo.deeperTrackId, 'christian');
   assert.equal(normalizeConversation({ id: 'abc124', step: 'x', messages: [] }).step, undefined);
 });
+
+test('chat reply is trimmed: reply text only, no upstream id, model or usage', async () => {
+  const app = await listen();
+  const prev = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    if (String(url).endsWith('/chat/completions')) {
+      return new Response(JSON.stringify({
+        id: 'chatcmpl-secret', object: 'chat.completion', model: 'gpt-4o-mini-2024-07-18', system_fingerprint: 'fp_x',
+        usage: { total_tokens: 9 }, choices: [{ index: 0, message: { role: 'assistant', content: 'Hello from Hope' }, finish_reason: 'stop', logprobs: null }],
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+    return prev(url, opts);
+  };
+  try {
+    const cookie = await signIn(app.base, 'trim@example.com');
+    const res = await chat(app.base, cookie, { messages: [{ role: 'user', content: 'Hi' }] });
+    assert.equal(res.status, 200);
+    const data = await res.json();
+    assert.equal(data.reply, 'Hello from Hope');
+    assert.equal(data.choices[0].message.content, 'Hello from Hope');
+    const flat = JSON.stringify(data);
+    for (const leak of ['chatcmpl', 'gpt-4o', 'model', 'usage', 'system_fingerprint', '"id"']) assert.equal(flat.includes(leak), false, leak);
+  } finally {
+    await app.close();
+  }
+});
