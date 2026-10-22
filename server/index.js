@@ -1901,11 +1901,16 @@ async function handleAccountApi(store, chats, checkins, req, res, route, wellbei
 }
 
 function completionJson(text) {
-  return {
-    id: 'hopewick-hosted',
-    object: 'chat.completion',
-    choices: [{ index: 0, message: { role: 'assistant', content: text }, finish_reason: 'stop' }],
-  };
+  return { reply: text, choices: [{ index: 0, message: { role: 'assistant', content: text } }] };
+}
+
+/** Only what the app reads: the reply text (and an optional next-step). No upstream id, model or usage. */
+function publicCompletion(data) {
+  const choice = data && Array.isArray(data.choices) ? data.choices[0] : null;
+  const text = choice && choice.message && typeof choice.message.content === 'string' ? choice.message.content : '';
+  const out = completionJson(text);
+  if (data && data.hopewick && data.hopewick.nextStep) out.hopewick = { nextStep: data.hopewick.nextStep };
+  return out;
 }
 
 function writeSse(res, text) {
@@ -2161,7 +2166,7 @@ async function handleHopeChat(store, req, res, wellbeing) {
     }
     const data = await upstream.json();
     if (purpose === 'chat') attachNextStep(data, offerNextStep);
-    json(res, 200, data);
+    json(res, 200, publicCompletion(data));
   } catch (err) {
     console.error('Hosted Hope response failed:', err && err.name ? err.name : 'error');
     if (!res.headersSent) {
