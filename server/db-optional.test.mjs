@@ -9,6 +9,10 @@ import { fileURLToPath } from 'node:url';
 import { dbEnabled, getPool, assertUserId, databaseHost, probeDatabase } from './db/index.js';
 import { listMigrations } from './db/migrate.js';
 
+import { createRequire } from 'node:module';
+let pgInstalled = true;
+try { createRequire(import.meta.url).resolve('pg'); } catch { pgInstalled = false; }
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 test('dbEnabled is false without DATABASE_URL and getPool refuses', async () => {
@@ -19,7 +23,7 @@ test('dbEnabled is false without DATABASE_URL and getPool refuses', async () => 
   assert.equal(probe.enabled, false);
 });
 
-test('importing the server db module does not load pg', () => {
+test('importing the server db module does not load pg', { skip: pgInstalled ? false : 'pg is not installed' }, () => {
   // A resolve hook reports any attempt to load 'pg' (or the dev WebSocket driver).
   const code = `
     import { register } from 'node:module';
