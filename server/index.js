@@ -808,7 +808,7 @@ async function sendMagicEmail(email, link, savingPassword = false) {
           : 'After you open it you stay signed in on this device until you sign out or you have not used Hopewick for 30 days.',
         '',
         'If you did not ask for this, you can ignore this email. Your password will not change.',
-        'Hopewick is an AI recovery companion, not a crisis service. In an emergency call 000.',
+        'Hopewick is an AI recovery companion, not a crisis service. In an emergency call 000. For crisis support, call Lifeline on 13 11 14.',
       ].join('\n'),
     }),
   });
