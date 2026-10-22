@@ -15809,6 +15809,52 @@ function paintAccount() {
     body.appendChild(dev);
   }
 }
+let signUpDismissed = false;
+function signUpMode() {
+  if (signUpDismissed) return false;
+  const q = new URLSearchParams(location.search);
+  return q.get('signup') === '1' && !pendingTrialCheckout && q.get('demo') !== '1';
+}
+function switchToSignIn() {
+  signUpDismissed = true;
+  const body = $('#signInBody');
+  if (body) body.replaceChildren();
+  showSignInGate();
+}
+function mountSignUpForm(body) {
+  const form = document.createElement('form');
+  form.className = 'account-form';
+  form.id = 'accountSignUpForm';
+  form.noValidate = true;
+  form.innerHTML = '<label for="accountEmail">Email<input id="accountEmail" type="email" autocomplete="email" required maxlength="120" placeholder="you@example.com"></label>'
+    + '<button type="button" id="accountCreateToggle" aria-expanded="true" hidden></button>'
+    + '<label for="accountNewPassword">Choose a password<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label>'
+    + '<label for="accountConfirmPassword">Confirm password<input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" maxlength="200"></label>'
+    + '<p class="help">At least 8 characters. Opening the link we email saves your password. The link lasts 30 minutes.</p>'
+    + '<button class="btn btn-primary" type="submit" id="accountSignUpBtn">Create my free account</button>';
+  body.appendChild(form);
+  const status = document.createElement('p');
+  status.className = 'account-status';
+  status.id = 'accountStatus';
+  status.setAttribute('role', 'status');
+  body.appendChild(status);
+  const dev = document.createElement('div');
+  dev.className = 'account-dev';
+  dev.id = 'accountDevLink';
+  dev.hidden = true;
+  body.appendChild(dev);
+  const already = document.createElement('p');
+  already.className = 'help account-signin-switch';
+  already.innerHTML = 'Already have an account? <button type="button" class="linkish" id="accountSwitchSignIn">Sign in</button>';
+  body.appendChild(already);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const a = ($('#accountNewPassword') && $('#accountNewPassword').value) || '';
+    if (!a) { accountStatus('Choose a password of at least 8 characters.', 'bad'); return; }
+    requestMagicLink({ includePassword: true });
+  });
+  $('#accountSwitchSignIn').addEventListener('click', switchToSignIn);
+}
 function mountSignInForm(body) {
   const form = document.createElement('form');
   form.className = 'account-form';
@@ -16290,7 +16336,14 @@ function showSignInGate() {
         ? 'Sign in to open the demo. The demo needs an account, and nothing you do in it is saved.'
         : 'Sign in or create an account to use Hopewick. You can stay on the free account afterwards. Hope on Free is 15 messages a day.');
   }
-  if (!body.childElementCount) mountSignInForm(body);
+  const title = $('#signInTitle');
+  const wantSignUp = signUpMode();
+  if (title) title.textContent = wantSignUp ? 'Create your free account' : 'Sign in';
+  if (lead && wantSignUp) lead.textContent = 'It’s free, with no card needed. Enter your email and choose a password, and we’ll email you a link to finish setting up. Hope on Free is 15 messages a day.';
+  if (!body.childElementCount) {
+    if (wantSignUp) mountSignUpForm(body);
+    else mountSignInForm(body);
+  }
   if (!billingState.reachable && billingState.loaded) {
     accountStatus('Sign-in needs the Hopewick account service on this site. The crisis numbers above still work.', 'bad');
   }
