@@ -12,7 +12,7 @@
   var PREFS_KEY = 'hopewick.native.prefs';
   var REMINDER_ID = 4201;
   var P = {};
-  ['Preferences', 'LocalNotifications', 'Share', 'Haptics', 'App', 'AppLauncher', 'Network', 'BiometricAuthNative'].forEach(function (name) {
+  ['SecureStoragePlugin', 'HopewickBilling', 'Preferences', 'LocalNotifications', 'Share', 'Haptics', 'App', 'AppLauncher', 'Network', 'BiometricAuthNative'].forEach(function (name) {
     try { P[name] = (Cap.Plugins && Cap.Plugins[name]) || (Cap.registerPlugin ? Cap.registerPlugin(name) : null); } catch (_) { P[name] = null; }
   });
   var platform = Cap.getPlatform ? Cap.getPlatform() : 'native';
@@ -23,16 +23,36 @@
      The web app keeps its httpOnly cookie. The apps cannot rely on cookies from
      https://localhost / capacitor://localhost, so the server returns the same
      session token in the JSON body when X-Hopewick-Client: native is sent. */
+  /* Stored in the iOS Keychain / Android Keystore-backed storage (SecureStoragePlugin).
+     Phase 1 kept it in localStorage + Preferences; that copy is moved across once and deleted. */
   var token = null;
-  try { token = localStorage.getItem(TOKEN_KEY); } catch (_) {}
-  var tokenReady = (P.Preferences ? P.Preferences.get({ key: TOKEN_KEY }).then(function (r) {
-    if (r && r.value) token = r.value;
-  }).catch(function () {}) : Promise.resolve());
+  var SS = P.SecureStoragePlugin;
+  function clearLegacy() {
+    try { localStorage.removeItem(TOKEN_KEY); } catch (_) {}
+    if (P.Preferences) P.Preferences.remove({ key: TOKEN_KEY }).catch(function () {});
+  }
+  function legacyToken() {
+    var t = null;
+    try { t = localStorage.getItem(TOKEN_KEY); } catch (_) {}
+    if (t || !P.Preferences) return Promise.resolve(t);
+    return P.Preferences.get({ key: TOKEN_KEY }).then(function (r) { return (r && r.value) || null; }).catch(function () { return null; });
+  }
+  var tokenReady = (SS
+    ? SS.get({ key: TOKEN_KEY }).then(function (r) { return (r && r.value) || null; }).catch(function () { return null; })
+    : Promise.resolve(null)
+  ).then(function (secure) {
+    if (secure) { token = secure; clearLegacy(); return; }
+    return legacyToken().then(function (old) {
+      if (!old) return;
+      token = old;
+      if (SS) return SS.set({ key: TOKEN_KEY, value: old }).then(clearLegacy).catch(function () {});
+    });
+  });
   function setToken(t) {
     token = t || null;
-    try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch (_) {}
-    // TODO(native): move to Keychain / Android Keystore (secure storage plugin) before wide release.
-    if (P.Preferences) (t ? P.Preferences.set({ key: TOKEN_KEY, value: t }) : P.Preferences.remove({ key: TOKEN_KEY })).catch(function () {});
+    clearLegacy();
+    if (!SS) return; // no secure store: keep the token in memory only for this launch
+    (t ? SS.set({ key: TOKEN_KEY, value: t }) : SS.remove({ key: TOKEN_KEY })).catch(function () {});
   }
 
   var nativeFetch = window.fetch.bind(window);
@@ -61,6 +81,71 @@
       return res;
     });
   };
+
+  /* ---------------- Google Play Billing (Android app) ----------------
+     The web app's existing TWA code talks to the Digital Goods API and PaymentRequest.
+     Here both are backed by the native HopewickBilling plugin, so the same subscribe,
+     restore and "Manage in Google Play" code runs unchanged and the purchase token still
+     goes to /api/billing/play/verify. Stripe stays hidden in the app as in the TWA. */
+  var PLAY_METHOD = 'https://play.google.com/billing';
+  var B = P.HopewickBilling;
+  if (platform === 'android' && B) {
+    var playService = {
+      listPurchases: function () {
+        return B.listPurchases().then(function (r) { return (r && r.purchases) || []; });
+      },
+      getDetails: function () { return Promise.resolve([]); },
+    };
+    window.getDigitalGoodsService = function (method) {
+      if (method !== PLAY_METHOD) return Promise.reject(new Error('Unsupported payment method.'));
+      return Promise.resolve(playService);
+    };
+    var OrigPR = window.PaymentRequest;
+    var PlayPaymentRequest = function (methods, details, options) {
+      var m = (methods || []).filter(function (x) { return x && x.supportedMethods === PLAY_METHOD; })[0];
+      if (!m) {
+        if (typeof OrigPR !== 'function') throw new TypeError('PaymentRequest is not available.');
+        return new OrigPR(methods, details, options);
+      }
+      var sku = m.data && m.data.sku;
+      return {
+        show: function () {
+          return B.purchase({ productId: sku }).catch(function (err) {
+            var code = err && err.code;
+            if (code === 'USER_CANCELED') { var e = new Error('cancelled'); e.name = 'AbortError'; throw e; }
+            if (code === 'ITEM_ALREADY_OWNED') {
+              // Already subscribed on this Google account: hand back that purchase so it is restored.
+              return playService.listPurchases().then(function (list) {
+                var mine = list.filter(function (p) { return p.itemId === sku; })[0];
+                if (!mine) throw err;
+                return mine;
+              });
+            }
+            throw err;
+          }).then(function (p) {
+            tap('MEDIUM');
+            return { details: { purchaseToken: p.purchaseToken }, complete: function () { return Promise.resolve(); } };
+          });
+        },
+        abort: function () { return Promise.resolve(); },
+        canMakePayment: function () { return Promise.resolve(true); },
+      };
+    };
+    window.PaymentRequest = PlayPaymentRequest;
+  }
+
+  /* ---------------- iPhone: App Store subscription (not active) ----------------
+     App Store rule 3.1.1: Plus cannot be sold with Stripe inside the iPhone app.
+     Until StoreKit is switched on, the iPhone app hides web checkout; Plus bought
+     elsewhere still works after sign-in. Crisis help and free features are unaffected.
+     TODO(ios-storekit): once Apple approves the account,
+       1. create the auto-renewing subscription in App Store Connect (AU$20/month, 7-day trial,
+          product id to be decided, e.g. hopewick_plus_monthly) and the Paid Apps agreement;
+       2. add a StoreKit 2 plugin (native/ios) exposing purchase/listPurchases like HopewickBilling;
+       3. add POST /api/billing/apple/verify on the server (App Store Server API);
+       4. set IOS_STOREKIT_ENABLED = true and wire it the same way as the Play polyfill above. */
+  var IOS_STOREKIT_ENABLED = false;
+  var iosStoreKit = { enabled: IOS_STOREKIT_ENABLED, productId: null /* TODO(ios-storekit) */ };
 
   /* ---------------- Crisis numbers: always tap-to-call, never gated ---------------- */
   document.addEventListener('click', function (ev) {
@@ -239,6 +324,8 @@
     scheduleReminder: function () { return scheduleReminder(prefs()); },
     flushOutbox: flushOutbox,
     outboxSize: function () { return outbox().length; },
+    iosStoreKit: iosStoreKit,
+    playBilling: !!(platform === 'android' && B),
   };
 
   /* ---------------- Phone settings in the Settings dialog ---------------- */
@@ -274,6 +361,7 @@
     var s = document.createElement('style');
     s.textContent = '#hwNativeLock{position:fixed;inset:0;z-index:99999;background:#10213F;color:#fff;display:flex;align-items:center;justify-content:center;padding:24px}' +
       '#hwNativeLock[hidden]{display:none}#hwNativeLock .hwn-lock-card{max-width:22rem;text-align:center}#hwNativeLock a{color:#f3d48a;font-weight:700}' +
+      '.hw-native-ios [data-web-billing]{display:none!important}' +
       '.hwn-settings{border-top:1px solid rgba(16,33,63,.15);margin-top:16px;padding-top:12px}.hwn-row{display:flex;gap:8px;align-items:center;margin:8px 0}.hwn-note{font-size:.9em;opacity:.8}';
     document.head.appendChild(s);
   }
@@ -282,6 +370,16 @@
     addStyles();
     addSettingsSection();
     patchJournal();
+    if (platform === 'ios' && !IOS_STOREKIT_ENABLED && typeof window.startCheckout === 'function') {
+      var origCheckout = window.startCheckout;
+      window.startCheckout = function () {
+        var signedIn = false;
+        try { signedIn = typeof window.realSession === 'function' && window.realSession(); } catch (_) {}
+        if (!signedIn) return origCheckout.apply(this, arguments); // shows the sign-in step as usual
+        try { window.toast('Hopewick Plus in the iPhone app is coming soon. If you already have Plus, it works here once you sign in.', false, 6000); } catch (_) {}
+        return Promise.resolve();
+      };
+    }
     if (typeof window.loadGoogleIdentity === 'function') {
       window.loadGoogleIdentity = function () { return window.HopewickNative.signInWithGoogle(); };
     }

@@ -90,3 +90,14 @@ Done on the branch. It is not merged, not deployed and not uploaded anywhere.
   - Before releasing the Capacitor build to Play, add a native billing plugin (RevenueCat or `cordova-plugin-purchase`). Use the same product `hopewick_plus_monthly` and verify through the existing `/api/billing/play/verify`.
   - For iOS: an App Store subscription (AU$20/month, 7-day trial), Apple receipt checks on the server, and Stripe hidden on iOS.
 - **minSdk:** 24 (Android 7). Check in Play Console whether anyone on Android 5–6 has the TWA installed.
+
+## Phase 2 status (branch `native-app`, 22 Oct 2026)
+- **Android Play Billing:** added as a small in-app Capacitor plugin (`HopewickBillingPlugin.java`, Google Play Billing Library 8.3.0, free, no sign-up).
+  - `hw-native.js` makes that plugin look like the TWA's Digital Goods API + PaymentRequest, so the existing `/app/` subscribe, restore and "Manage in Google Play" code runs unchanged.
+  - It uses the same `hopewick_plus_monthly` product and the same `/api/billing/play/verify` (the server verifies and acknowledges).
+  - It picks the offer with a free-trial phase when Play offers one.
+  - If the subscription is already owned, it restores that purchase instead of failing.
+  - Web/Stripe is unchanged.
+- **Session token:** now held in Keychain / Android Keystore storage (`capacitor-secure-storage-plugin`). A phase 1 copy in localStorage/Preferences is moved across once and deleted.
+- **iOS:** `IOS_STOREKIT_ENABLED = false`. The iPhone app hides web checkout (App Store 3.1.1). Existing Plus works after sign-in. TODO list is in `hw-native.js`: App Store product, StoreKit 2 plugin, `/api/billing/apple/verify`.
+- **Android build:** versionCode 7 / 2.0.1.
