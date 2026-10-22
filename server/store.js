@@ -23,9 +23,49 @@ export function hashToken(token) {
  */
 export const REAUTH_MS = 10 * 60 * 1000;
 
-export function sessionReauthFresh(user, now = Date.now()) {
-  if (!user || !user.session) return false;
-  const at = Number(user.session.reauthAt);
+/** Most sessions one account keeps at once (website, phones, tablets). Oldest go first. */
+export const MAX_SESSIONS = 10;
+
+/**
+ * Sessions live in user.sessions (one entry per signed-in device). Older records
+ * kept a single user.session; it is moved into the array, never dropped, so a
+ * device that was signed in before this change stays signed in.
+ */
+export function normalizeSessions(user) {
+  if (!user || typeof user !== 'object') return [];
+  if (!Array.isArray(user.sessions)) user.sessions = [];
+  const legacy = user.session;
+  if (legacy && typeof legacy === 'object' && legacy.hash) {
+    if (!user.sessions.some((s) => s && s.hash === legacy.hash)) user.sessions.push({ ...legacy });
+  }
+  if ('session' in user) user.session = null;
+  user.sessions = user.sessions.filter((s) => s && typeof s.hash === 'string');
+  return user.sessions;
+}
+
+/** Add a session, drop expired ones, and keep at most MAX_SESSIONS (oldest removed). */
+export function addSession(user, session, now = Date.now()) {
+  const list = normalizeSessions(user).filter((s) => Number(s.expiresAt) > now);
+  list.push(session);
+  list.sort((a, b) => Number(a.createdAt || 0) - Number(b.createdAt || 0));
+  while (list.length > MAX_SESSIONS) list.shift();
+  user.sessions = list;
+  return session;
+}
+
+export function removeSession(user, hash) {
+  user.sessions = normalizeSessions(user).filter((s) => s.hash !== hash);
+}
+
+/** Password change or reset, account deletion: every device is signed out. */
+export function clearSessions(user) {
+  normalizeSessions(user);
+  user.sessions = [];
+}
+
+export function sessionReauthFresh(session, now = Date.now()) {
+  if (!session) return false;
+  const at = Number(session.reauthAt);
   if (!Number.isFinite(at)) return false;
   return now >= at && now - at <= REAUTH_MS;
 }
@@ -47,6 +87,8 @@ export function createStore(filePath) {
     serialize: (value) => JSON.stringify(value, null, 2),
   });
   let data = file.initial;
+  // Move any single legacy session into the sessions array (in memory; written on next save).
+  if (data && Array.isArray(data.users)) for (const u of data.users) normalizeSessions(u);
 
   function persist() {
     file.write(data);
@@ -54,6 +96,7 @@ export function createStore(filePath) {
 
   function save(user) {
     file.assertWritable();
+    normalizeSessions(user);
     const i = data.users.findIndex((u) => u.id === user.id);
     if (i >= 0) data.users[i] = user;
     else data.users.push(user);
@@ -71,11 +114,20 @@ export function createStore(filePath) {
     findById(id) {
       return data.users.find((u) => u.id === id) || null;
     },
-    findBySession(token) {
+    /** The account and the one device session a token belongs to, or null. */
+    findSession(token) {
       if (!token) return null;
       const h = hashToken(token);
       const now = Date.now();
-      return data.users.find((u) => u.session && u.session.hash === h && u.session.expiresAt > now) || null;
+      for (const u of data.users) {
+        const s = normalizeSessions(u).find((x) => x.hash === h && x.expiresAt > now);
+        if (s) return { user: u, session: s };
+      }
+      return null;
+    },
+    findBySession(token) {
+      const found = this.findSession(token);
+      return found ? found.user : null;
     },
     findByStripeCustomer(customerId) {
       if (!customerId) return null;
@@ -100,7 +152,7 @@ export function createStore(filePath) {
         email: String(email).trim().toLowerCase(),
         createdAt: new Date().toISOString(),
         magic: null,
-        session: null,
+        sessions: [],
         name: '',
         phone: '',
         passwordHash: null,
@@ -207,7 +259,7 @@ export function publicUser(user) {
     founder,
     hasPassword: Boolean(user.passwordHash),
     emailChangeSupported: false,
-    reauthFresh: sessionReauthFresh(user),
+    reauthFresh: false, // filled in per device session by json() in index.js
     billingProvider: user.billingProvider === 'google_play' ? 'google_play' : (user.stripeCustomerId ? 'stripe' : null),
   };
 }

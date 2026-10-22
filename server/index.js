@@ -56,7 +56,7 @@ import crypto from 'node:crypto';
 import { encryptionStartupLine } from './db/crypto.js';
 import { fileURLToPath } from 'node:url';
 
-import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, isReviewerEmail, REAUTH_MS } from './store.js';
+import { createStore, hashToken, publicUser, isPlusStatus, isFounderPlusEmail, isReviewerEmail, REAUTH_MS, sessionReauthFresh, addSession, removeSession, clearSessions } from './store.js';
 import { hashPassword, verifyPassword, passwordError } from './password.js';
 import { stripeConfigured, stripeKeyHealth, stripeRequest, verifyStripeEvent } from './stripe-client.js';
 import {
@@ -416,6 +416,10 @@ function json(res, status, body, extraHeaders) {
   if (req && req.hwIssuedSession && isNativeClient(req) && body && typeof body === 'object' && !Array.isArray(body)) {
     body = { ...body, sessionToken: req.hwIssuedSession };
   }
+  // reauthFresh belongs to the device session this request used, not to the account.
+  if (req && body && typeof body === 'object' && !Array.isArray(body) && 'reauthFresh' in body) {
+    body = { ...body, reauthFresh: Boolean(req.hwSession) && sessionReauthFresh(req.hwSession) };
+  }
   const payload = JSON.stringify(body);
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -495,9 +499,11 @@ export function sessionEpoch() {
 }
 
 function currentUser(req, store) {
-  const user = store.findBySession(sessionTokenFrom(req));
-  if (!user || !user.session || user.session.epoch !== sessionEpoch()) return null;
-  return user;
+  const found = store.findSession(sessionTokenFrom(req));
+  if (!found || found.session.epoch !== sessionEpoch()) return null;
+  // The device session this request is using (sign-out, sliding expiry, reauth window).
+  if (req) req.hwSession = found.session;
+  return found.user;
 }
 
 /** Free accounts keep the profile(s) already on the server; another profile is Plus. */
@@ -514,9 +520,12 @@ function startSession(user, req, store) {
   const session = crypto.randomBytes(32).toString('hex');
   const now = Date.now();
   // reauthAt is the fresh-check flag for passwordless sensitive actions.
-  // Replacing the hash ends the previous cookie. The raw token is not stored.
-  user.session = { hash: hashToken(session), expiresAt: now + SESSION_MS, reauthAt: now, epoch: sessionEpoch() };
+  // Each device gets its own session; other devices stay signed in (capped at MAX_SESSIONS).
+  // The raw token is not stored, only its hash.
+  const record = { hash: hashToken(session), createdAt: now, expiresAt: now + SESSION_MS, reauthAt: now, epoch: sessionEpoch() };
+  addSession(user, record, now);
   store.save(user);
+  if (req) req.hwSession = record;
   // Native apps receive this token in the JSON reply (see json()); browsers only get the cookie.
   if (isNativeClient(req)) req.hwIssuedSession = session;
   return sessionCookie(session, req, sessionMaxAgeSec());
@@ -526,8 +535,9 @@ function startSession(user, req, store) {
 function touchSession(user, req, store) {
   const cookieToken = cookies(req)[SESSION_COOKIE];
   const token = cookieToken || bearerToken(req);
-  if (!user || !user.session || !token) return null;
-  user.session.expiresAt = Date.now() + SESSION_MS;
+  const current = req && req.hwSession;
+  if (!user || !current || !token || current.hash !== hashToken(token)) return null;
+  current.expiresAt = Date.now() + SESSION_MS;
   store.save(user);
   // A bearer (native app) session slides forward too, but there is no cookie to send.
   return cookieToken ? sessionCookie(token, req, sessionMaxAgeSec()) : null;
@@ -633,7 +643,8 @@ async function requireReauth(user, body, res) {
     }
     return true;
   }
-  const at = user.session && Number(user.session.reauthAt);
+  const current = res && res.req && res.req.hwSession;
+  const at = current && Number(current.reauthAt);
   const now = Date.now();
   const fresh = Number.isFinite(at) && now >= at && now - at <= REAUTH_MS;
   if (!fresh) {
@@ -1291,8 +1302,9 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
 
   if (req.method === 'POST' && route === '/api/auth/logout') {
     const user = currentUser(req, store);
-    if (user) {
-      user.session = null;
+    if (user && req.hwSession) {
+      // Sign out ends only this device's session.
+      removeSession(user, req.hwSession.hash);
       store.save(user);
     }
     json(res, 200, { ok: true }, { 'Set-Cookie': clearCookie(req) });
@@ -1394,9 +1406,15 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
     user.passwordHash = await hashPassword(password);
     passwordChangeFailures.delete(user.id);
     user.pendingPassword = null;
-    // A change replaces the session so the previous cookie no longer matches.
-    // The first password on this account keeps the current session.
-    const cookie = hadPassword ? startSession(user, req, store) : touchSession(user, req, store);
+    // A change signs out every device, then this device gets a fresh session.
+    // The first password on this account keeps the current session (and the others).
+    let cookie;
+    if (hadPassword) {
+      clearSessions(user);
+      cookie = startSession(user, req, store);
+    } else {
+      cookie = touchSession(user, req, store);
+    }
     json(res, 200, { ok: true, hasPassword: true }, cookie ? { 'Set-Cookie': cookie } : undefined);
     return;
   }
@@ -1533,6 +1551,8 @@ async function verifyGoogleCredential(credential) {
     const pending = match.pendingPassword;
     match.magic = null;
     if (pending && pending.hash && pending.magicHash === magicHash) {
+      // Password set or reset by email link: every other device is signed out.
+      if (match.passwordHash) clearSessions(match);
       match.passwordHash = pending.hash;
     }
     match.pendingPassword = null;
@@ -1901,6 +1921,7 @@ async function handleAccountApi(store, chats, checkins, req, res, route, wellbei
         }
       }
     }
+    clearSessions(user);
     const removed = store.remove(user.id);
     if (removed) {
       chats.forget(user.id);

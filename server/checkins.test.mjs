@@ -429,7 +429,7 @@ test('one-time sign-out: a session from before the epoch is refused and account 
     // Simulate a session issued before epochs existed.
     const disk = JSON.parse(fs.readFileSync(app.storePath, 'utf8'));
     const user = disk.users.find((u) => u.email === 'old@example.com');
-    delete user.session.epoch;
+    for (const s of user.sessions) delete s.epoch;
     fs.writeFileSync(app.storePath, JSON.stringify(disk));
     const fresh = await startServer({ port: 0, host: '127.0.0.1', storePath: app.storePath, chatsPath: app.storePath.replace('users.json', 'chats.json'), checkinsPath: app.checkinsPath });
     try {
