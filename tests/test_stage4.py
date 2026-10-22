@@ -69,8 +69,13 @@ def test_free_tracker_goal_craving_lapse_gentle_counts(server, browser):
     page.click("#hw4AddFirst")
     page.wait_for_selector("#hw4GoalForm")
     # The goal kind is a real radio group: arrow keys move the choice.
-    page.focus("#hw4Kind-abstain")
-    page.keyboard.press("ArrowRight")
+    # The form can re-render once right after it opens (background sync), so retry the key press on the fresh node.
+    for _ in range(5):
+        page.wait_for_timeout(200)
+        page.focus("#hw4Kind-abstain")
+        page.keyboard.press("ArrowRight")
+        if page.get_attribute("#hw4Kind-reduce", "aria-checked") == "true":
+            break
     assert page.get_attribute("#hw4Kind-reduce", "aria-checked") == "true"
     page.wait_for_function("() => document.activeElement && document.activeElement.id === 'hw4Kind-reduce'")
     page.keyboard.press("ArrowLeft")
