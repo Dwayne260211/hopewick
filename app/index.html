@@ -1020,6 +1020,9 @@ input[type="range"] { accent-color: var(--accent); width: 100%; }
 #onboardFaithQ:focus, #onboardFaithQ:focus-visible { outline: none; } /* focused so screen readers start at the question; not an answer */
 .onboard-crisis .btn { vertical-align: baseline; }
 .faith-ask-choices .btn { border: 1px solid var(--border); }
+#pickerDlg .picker-body, #onboardingDlg .onboard-body { position: relative; }
+.first-run-close { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface, #fff); color: inherit; font-size: 18px; line-height: 1; cursor: pointer; z-index: 2; }
+.first-run-close:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .onboard-choices { text-align: left; display: grid; gap: 8px; margin-top: 4px; }
 .onboard-choices label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); cursor: pointer; color: var(--text); }
 .onboard-choices label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
@@ -2424,6 +2427,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 <!-- ============================ Profile picker ============================ -->
 <dialog id="pickerDlg" aria-labelledby="pickerTitle">
   <div class="picker-body" id="pickerBody">
+    <button class="first-run-close" type="button" id="pickerCloseBtn" aria-label="Close">✕</button>
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:84px"><span class="shine"></span></div>
     <h2 id="pickerTitle">Chat with <span data-companion>Hope</span></h2>
     <p class="picker-guide"><strong><span data-companion>Hope</span> — an AI recovery companion</strong> private to you — not a person in rehab, and not messaging someone else. Open <strong>your profile</strong> below (or add one) to keep chats on this device.</p>
@@ -2497,6 +2501,7 @@ h1, h2, h3 { font-family: var(--font-display); }
 <!-- ============================ Soft onboarding ============================ -->
 <dialog id="onboardingDlg" aria-labelledby="onboardTitle">
   <div class="onboard-body">
+    <button class="first-run-close" type="button" id="onboardCloseBtn" aria-label="Close">✕</button>
     <div class="orb lg" data-state="idle" aria-hidden="true" style="--size:72px"><span class="shine"></span></div>
     <h2 id="onboardTitle">Welcome to <span data-brand>Hopewick</span></h2>
     <div id="onboardStepWelcome">
@@ -12310,7 +12315,17 @@ function syncProfileAddUi() {
     if (form) form.hidden = true;
   }
 }
-function showPicker() {
+const PICKER_DISMISS_KEY = 'hopewick.pickerDismissed.v1';
+function pickerDismissed() {
+  try { return !!localStorage.getItem(PICKER_DISMISS_KEY); } catch (_) { return false; }
+}
+function dismissFirstRunDialogs() {
+  if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
+  if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
+}
+function showPicker(opts) {
+  // Automatic first-run prompts stay away once dismissed; tapping Switch profile still opens it.
+  if (opts && opts.auto && pickerDismissed()) return;
   if (isDemo) exitDemo();
   dismissLaunchPrefs();
   if (busy) stopGeneration();
@@ -12386,6 +12401,11 @@ function enterProfile(pid) {
   if (window.HWFIT) HWFIT.refresh(false);
   if (window.HW5) { try { HW5.applyFaith(); HW5.load(true); } catch (_) { /* */ } }
 }
+$('#pickerCloseBtn').addEventListener('click', () => {
+  try { localStorage.setItem(PICKER_DISMISS_KEY, String(Date.now())); } catch (_) {}
+  el.pickerDlg.close();
+});
+$('#onboardCloseBtn').addEventListener('click', () => finishOnboarding({ continued: false, dismissed: true, closed: true }));
 el.pickerDlg.addEventListener('cancel', (e) => {
   e.preventDefault();                  // someone must be chosen…
   if (profile) el.pickerDlg.close();   // …unless we're just returning to the current person
@@ -12479,6 +12499,7 @@ function renderHelpList() {
 }
 function openHelp() {
   closeSidebar();
+  dismissFirstRunDialogs();
   const plan = $('#helpSafetyPlanBtn');
   if (plan) plan.hidden = !profile;
   const planRow = $('#helpSafetyPlanRow');
@@ -13625,6 +13646,7 @@ function finishOnboarding(extra) {
   try { if (billingState.id) localStorage.setItem(PLUS_PROMPT_KEY, billingState.id); } catch (_) {}
   pendingStartChat = !!(extra && extra.startChat);
   if (el.onboardingDlg.open) el.onboardingDlg.close();
+  if (extra && extra.closed) return;
   if (profile && pendingStartChat) {
     applyOnboardingChoices();
     pendingStartChat = false;
@@ -13632,7 +13654,7 @@ function finishOnboarding(extra) {
     focusInput();
     return;
   }
-  showPicker();
+  showPicker({ auto: true });
 }
 let onboardSafetyAck = false;
 $('#onboardYesBtn').addEventListener('click', () => { onboardSafetyAck = true; setOnboardStep('reason'); });
@@ -14152,7 +14174,7 @@ function enterAccountIfReady() {
   if (el.pickerDlg && el.pickerDlg.open) el.pickerDlg.close();
   const last = findProfile(profilesState.lastId) || profilesState.list[0];
   if (last && !last.pin) enterProfile(last.id);
-  else showPicker();
+  else showPicker({ auto: true });
 }
 function adoptVisitOntoAccount() {
   if (!billingState.signedIn || !billingState.id || isDemo) return;
@@ -14861,6 +14883,7 @@ let myAccountReturnTab = 'home';
 let accountRenderToken = 0;
 
 function openMyAccount(section) {
+  dismissFirstRunDialogs();
   if (appTab !== 'account') {
     myAccountReturnTab = (appTab && appTab !== 'more' && appTab !== 'account') ? appTab : 'home';
   }
@@ -16373,11 +16396,11 @@ function routeFirstRun() {
       enterProfile(last.id);
       return;
     }
-    showPicker();
+    showPicker({ auto: true });
     return;
   }
   if (!onboardingSeen()) showOnboarding();
-  else showPicker();
+  else showPicker({ auto: true });
 }
 if (el.signInDlg) {
   el.signInDlg.addEventListener('cancel', (e) => {
@@ -16422,7 +16445,7 @@ refreshBilling().then(() => {
     if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
     openAccountDlg();
   }
-  if (q.get('myaccount') === '1' && !settingUp) {
+  if (q.get('myaccount') === '1' && realSession()) {
     if (!onboardingSeen()) markOnboardingSeen({ via: 'account' });
     if (el.onboardingDlg && el.onboardingDlg.open) el.onboardingDlg.close();
     openMyAccount(q.get('section') || 'menu');
