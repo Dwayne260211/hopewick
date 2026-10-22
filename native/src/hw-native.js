@@ -69,7 +69,14 @@
     return tokenReady.then(function () {
       if (token) headers.set('Authorization', 'Bearer ' + token);
       opts.headers = headers;
-      return nativeFetch(API_ORIGIN + url, opts);
+      return nativeFetch(API_ORIGIN + url, opts).catch(function (err) {
+        // A CORS refusal or no network both surface as a bare "Failed to fetch".
+        var e = new TypeError(navigator.onLine === false
+          ? 'You are offline. Check your internet connection and try again.'
+          : 'Can\'t reach the Hopewick server right now. Please try again shortly.');
+        e.cause = err;
+        throw e;
+      });
     }).then(function (res) {
       if (/^\/api\/auth\/logout/.test(url)) setToken(null);
       else if (res.status === 401 && /^\/api\/auth\/me/.test(url)) setToken(null);
