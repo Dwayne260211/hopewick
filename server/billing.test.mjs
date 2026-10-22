@@ -903,7 +903,7 @@ test('session cookie is a 30-day inactivity limit and slides on /api/auth/me', a
     assert.match(setCookie, new RegExp(`Max-Age=${maxAge}\\b`));
     const session = setCookie.split(';')[0];
 
-    const before = JSON.parse(fs.readFileSync(app.storePath, 'utf8')).users[0].session.expiresAt;
+    const before = JSON.parse(fs.readFileSync(app.storePath, 'utf8')).users[0].sessions[0].expiresAt;
     await new Promise((resolve) => setTimeout(resolve, 30));
     const meRes = await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } });
     const refreshed = meRes.headers.get('set-cookie') || '';
@@ -915,7 +915,7 @@ test('session cookie is a 30-day inactivity limit and slides on /api/auth/me', a
     assert.equal(me.hasPassword, false);
     assert.equal(me.passwordHash, undefined);
     assert.equal(me.session, undefined);
-    const after = JSON.parse(fs.readFileSync(app.storePath, 'utf8')).users[0].session.expiresAt;
+    const after = JSON.parse(fs.readFileSync(app.storePath, 'utf8')).users[0].sessions[0].expiresAt;
     assert.ok(after > before);
     assert.ok(after - Date.now() > SESSION_MS - 60_000);
 
@@ -930,7 +930,7 @@ test('session cookie is a 30-day inactivity limit and slides on /api/auth/me', a
     const gone = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: session } })).json();
     assert.equal(gone.signedIn, false);
     const disk = JSON.parse(fs.readFileSync(app.storePath, 'utf8'));
-    assert.equal(disk.users[0].session, null);
+    assert.deepEqual(disk.users[0].sessions, []);
   } finally {
     await app.close();
   }
@@ -1010,8 +1010,8 @@ test('set password, password login, magic link still works, and sign-out clears 
     const viaLink = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: again } })).json();
     assert.equal(viaLink.signedIn, true);
     assert.equal(viaLink.hasPassword, true);
-    const replaced = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: next } })).json();
-    assert.equal(replaced.signedIn, false);
+    const otherDevice = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: next } })).json();
+    assert.equal(otherDevice.signedIn, true); // several devices stay signed in at once
     assert.equal(fs.readFileSync(app.storePath, 'utf8').includes(secret), false);
 
     const out2 = await fetch(`${app.base}/api/auth/logout`, {
@@ -1121,8 +1121,8 @@ test('optional password on the first sign-in link is saved, and magic link still
     const kept = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: plainSession } })).json();
     assert.equal(kept.signedIn, true);
     assert.equal(kept.hasPassword, true);
-    const previous = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: loggedIn } })).json();
-    assert.equal(previous.signedIn, false);
+    const otherDevice = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: loggedIn } })).json();
+    assert.equal(otherDevice.signedIn, true); // several devices stay signed in at once
 
     await fetch(`${app.base}/api/auth/logout`, { method: 'POST', headers: { cookie: plainSession } });
     const after = await (await fetch(`${app.base}/api/auth/me`, { headers: { cookie: plainSession } })).json();
