@@ -33,5 +33,7 @@ jobs:
           python-version: '3.12'
       - run: pip install pytest playwright
       - run: python -m playwright install --with-deps chromium
+      # Some tests save screenshots under /workspace (the ops box layout); fonts-liberation gives Arial-like metrics like most phones/desktops.
+      - run: sudo mkdir -p /workspace && sudo chown "$USER" /workspace && sudo apt-get install -y fonts-liberation
       # Python + Playwright suite (onboarding, crisis help, account flows) against a local dev server.
       - run: python -m pytest tests -q -p no:cacheprovider

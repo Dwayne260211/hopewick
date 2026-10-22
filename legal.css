@@ -35,4 +35,9 @@ footer p { margin: 6px 0; color: var(--muted); }
   .nav a.quiet[href="./#safety"] { display: none; }  /* Get help is the safety entry on phones */
   .logo { font-size: 1.05rem; gap: 6px; }
 }
+@media (max-width: 400px) {
+  /* Keep Get help fully on screen when the phone's default font runs wide. */
+  .nav { gap: 4px; }
+  .nav .hw-crisis-btn { padding: 8px 10px; }
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
