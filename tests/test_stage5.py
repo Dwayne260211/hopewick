@@ -509,3 +509,33 @@ def test_signed_out_shows_no_faith_buttons(server, browser, width):
     page.wait_for_selector("#helpDlg[open]")
     assert not page.is_visible("#helpChurchBtn")
     assert _faith_hits(page) == []
+
+
+def test_first_run_close_buttons_keep_crisis_help_and_account_reachable(server, browser):
+    base, _ = server
+    page, errors = _page(browser)
+    r = page.context.request.post(f"{base}/api/auth/magic-link", data={"email": "s5-close-first-run@example.test"}, headers={"Origin": base})
+    page.goto(r.json()["devLink"], wait_until="domcontentloaded")
+    page.wait_for_selector("#onboardingDlg[open]", timeout=20000)
+    if page.evaluate("() => document.getElementById('plusChoiceDlg').open"):
+        page.evaluate("() => document.getElementById('plusChoiceDlg').close()")
+    page.click("#onboardCloseBtn")
+    assert not page.evaluate("() => document.getElementById('onboardingDlg').open")
+    assert not page.evaluate("() => document.getElementById('pickerDlg').open"), "closing the welcome does not open another pop-up"
+    assert page.is_visible("#helpBtn")
+    page.click("#helpBtn")
+    page.wait_for_selector("#helpDlg[open]")
+    assert "131114" in page.inner_html("#helpDlg") and "000" in page.inner_text("#helpDlg")
+    page.evaluate("() => document.getElementById('helpDlg').close()")
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_selector("#pickerDlg[open]", timeout=20000)
+    assert not page.evaluate("() => document.getElementById('onboardingDlg').open"), "welcome stays dismissed"
+    page.click("#pickerCloseBtn")
+    page.reload(wait_until="domcontentloaded")
+    page.wait_for_timeout(2500)
+    assert not page.evaluate("() => document.getElementById('pickerDlg').open"), "profile pop-up stays dismissed"
+    page.evaluate("() => openMyAccount('menu')")
+    page.wait_for_selector("#myAccountDelete", state="visible")
+    page.click("#myAccountDelete")
+    page.wait_for_selector("#deleteAccountDlg[open]")
+    assert _quiet(errors) == []
