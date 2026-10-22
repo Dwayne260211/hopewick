@@ -17,3 +17,21 @@ jobs:
       - run: npm ci
       # The pg-import test skips itself when pg is not installed.
       - run: node --test --test-concurrency=1 server/*.test.mjs tests/*.test.mjs
+
+  python-browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest playwright
+      - run: python -m playwright install --with-deps chromium
+      # Python + Playwright suite (onboarding, crisis help, account flows) against a local dev server.
+      - run: python -m pytest tests -q -p no:cacheprovider
