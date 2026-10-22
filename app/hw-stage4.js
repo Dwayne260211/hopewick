@@ -777,7 +777,7 @@
     const step = m.steps[i];
     root.appendChild(btn('← All modules', () => { stopTimer(); ui.module = null; rerender(); focusId('hw3Title'); }, { kind: 'ghost', attrs: { id: 'hw4ModBack', class: 'hw-btn hw-btn--sm hw-btn--ghost hw3-back' } }));
     const sec = h('section', { class: 'hw-card hw3-card hw4-player', 'aria-labelledby': 'hw4ModT' },
-      h('p', { class: 'hw-hint', text: `${metaLine(r)} · Pending clinical review` }),
+      h('p', { class: 'hw-hint', text: (m.faith || r.faith || (r.meta && r.meta.faith)) ? metaLine(r) : `${metaLine(r)} · Pending clinical review` }),
       h('h1', { class: 'hw3-h1', id: 'hw4ModT', tabindex: '-1', text: m.title }),
       h('div', { class: 'hw-progress', role: 'progressbar', 'aria-label': 'Module progress', 'aria-valuemin': '0', 'aria-valuemax': String(n), 'aria-valuenow': String(i + 1), 'aria-valuetext': `Step ${i + 1} of ${n}` },
         h('span', { class: 'hw-progress__bar', style: `width:${Math.round(((i + 1) / n) * 100)}%` })),

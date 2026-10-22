@@ -317,7 +317,7 @@
       h('blockquote', { class: 'hw5-faith__verse' }, h('p', { text: t.scripture.text }), h('footer', { text: `${t.scripture.ref} (World English Bible)` })),
       h('p', { text: t.reflection }),
       h('p', { class: 'hw5-faith__prayer' }, h('strong', { text: 'A short prayer: ' }), t.prayer),
-      h('p', { class: 'hw-hint', text: 'Faith is one support among many. It never replaces your GP, counsellor or crisis help. Draft: pending founder and pastoral review.' }));
+      h('p', { class: 'hw-hint', text: 'Faith is one support among many. It never replaces your GP, counsellor or crisis help.' }));
   }
   HW5.faithCard = faithCard;
 
