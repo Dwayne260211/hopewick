@@ -1,11 +1,13 @@
 /**
  * Page visit counter for the public homepage and the app entry.
- * A number only. No names, emails, IP addresses, or page paths.
+ * visits.json: a number only. No names, emails, IP addresses, or page paths.
+ * Daily aggregate counts by page and UTM live in visits-daily.json (visit-stats.js).
  * Lives beside the account file (production: /var/data/visits.json).
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { createJsonFile } from './json-file.js';
+import { createDailyVisits, dailyVisitsPathBeside } from './visit-stats.js';
 
 export function visitsPathBeside(storePath) {
   return path.join(path.dirname(storePath), 'visits.json');
@@ -29,8 +31,11 @@ export function createVisitCounter(filePath) {
 
   if (!file.failed && !fs.existsSync(filePath)) persist();
 
+  const daily = createDailyVisits(dailyVisitsPathBeside(filePath));
+
   return {
     filePath,
+    daily,
     health: () => file.health(),
     count() {
       return visits;

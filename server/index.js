@@ -92,6 +92,10 @@ async function preferencesFor(wellbeing, user, profileId) {
 }
 import { createNextStepFilter, extractNextStep } from './next-step.js';
 import { createVisitCounter, visitsPathBeside } from './visits.js';
+import { isBot } from './visit-stats.js';
+import { statsToken, tokenMatches, accountStats } from './admin-stats.js';
+
+const statsHitsByIp = new Map(); // rate limit for GET /api/admin/stats
 import {
   hopeConfigured,
   freeDailyCap,
@@ -1096,6 +1100,37 @@ async function handleApi(store, chats, checkins, visits, req, res, url, wellbein
         return ids.size === 0 || ids.has(profileId);
       },
     }, req, res, url);
+    return;
+  }
+
+  if (route === '/api/admin/stats') {
+    req.resume();
+    const expected = statsToken();
+    if (!expected || req.method !== 'GET') {
+      json(res, 404, { error: 'Not found.' });
+      return;
+    }
+    const ip = clientIp(req);
+    if (!underLimit(statsHitsByIp, ip, positiveIntEnv('HOPEWICK_STATS_LIMIT', 30), HOUR_MS)) {
+      json(res, 429, { error: 'Too many requests.' }, { 'Retry-After': '3600' });
+      return;
+    }
+    recordHit(statsHitsByIp, ip, HOUR_MS);
+    const m = /^Bearer\s+(.+)$/i.exec(String(req.headers.authorization || ''));
+    if (!m || !tokenMatches(m[1].trim(), expected)) {
+      json(res, 401, { error: 'Unauthorised.' });
+      return;
+    }
+    const days = Math.min(Math.max(Number(url.searchParams.get('days')) || 30, 1), 90);
+    const now = new Date();
+    json(res, 200, {
+      generatedAt: now.toISOString(),
+      timezone: 'Australia/Brisbane',
+      visitsAllTime: visits.count(),
+      visitsNote: 'visitsPerDay counts public HTML pages served (GET, non-bot, server-side) since this feature shipped. visitsAllTime is the homepage once-per-tab counter.',
+      visitsPerDay: visits.daily ? visits.daily.days(days, now) : [],
+      ...accountStats(store.list(), { days, now }),
+    }, { 'Cache-Control': 'no-store' });
     return;
   }
 
@@ -2250,6 +2285,20 @@ export function unavailableStores(...stores) {
 
 const STORE_UNAVAILABLE_MESSAGE = 'Hopewick accounts are paused for maintenance. Nothing has been lost. Get help and the crisis numbers still work. In an emergency call 000, or Lifeline on 13 11 14.';
 
+/** Aggregate page count for public HTML pages that exist. No per-person data. */
+function countPageView(root, req, url, pathname, visits) {
+  try {
+    if (req.method !== 'GET' || !visits || !visits.daily) return;
+    if (isBot(req.headers['user-agent'])) return;
+    let page = pathname;
+    if (page.endsWith('/')) page += 'index.html';
+    if (!page.endsWith('.html')) return;
+    if (page.includes('..') || page.startsWith('/server/') || page.startsWith('/tests/') || page.startsWith('/node_modules/')) return;
+    if (!fs.existsSync(path.join(root, page))) return;
+    visits.daily.record(page, url.searchParams);
+  } catch { /* counting never breaks a page */ }
+}
+
 export function createApp({ store, chats, checkins, visits, wellbeing, fitness, root = REPO_ROOT } = {}) {
   if (!store) throw new Error('createApp requires a store');
   const chatStore = chats || createChatStore(path.join(REPO_ROOT, 'server', 'data', 'chats.json'));
@@ -2265,7 +2314,7 @@ export function createApp({ store, chats, checkins, visits, wellbeing, fitness, 
       if (maybeCanonicalRedirect(req, res)) return;
       const host = req.headers.host || '127.0.0.1';
       const url = new URL(req.url || '/', `http://${host}`);
-      const cors = url.pathname.startsWith('/api/') ? nativeCorsHeaders(req) : null;
+      const cors = url.pathname.startsWith('/api/') && !url.pathname.startsWith('/api/admin/') ? nativeCorsHeaders(req) : null;
       if (cors) for (const [k, v] of Object.entries(cors)) res.setHeader(k, v);
       if (req.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
         res.writeHead(204, { 'Cache-Control': 'no-store' });
@@ -2302,6 +2351,7 @@ export function createApp({ store, chats, checkins, visits, wellbeing, fitness, 
         return;
       }
       const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
+      countPageView(root, req, url, pathname, visitCounter);
       serveStatic(root, req, res, pathname);
     } catch (err) {
       const status = err.status || 500;
