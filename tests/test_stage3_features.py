@@ -525,3 +525,29 @@ def test_demo_mode_is_memory_only(browser):
         assert not _quiet(errors), errors
     finally:
         httpd.shutdown()
+
+
+@pytest.mark.parametrize("tz", ["America/Los_Angeles", "UTC"])
+def test_todays_checkin_uses_brisbane_date_in_any_time_zone(server, browser, tz):
+    # 14:30 UTC on 24 Oct 2026 is 00:30 on 25 Oct in Brisbane, but still 24 Oct in UTC and Los Angeles.
+    base, _ = server
+    page, _errors = _page(browser, timezone_id=tz)
+    page.clock.set_fixed_time("2026-10-24T14:30:00Z")
+    sign_in(page, base, email=f"tz-{tz.replace('/', '-').lower()}@example.test")
+    assert page.evaluate("() => localDate()") == "2026-10-24"
+    assert page.evaluate("() => checkinDate()") == "2026-10-25"
+
+    # Save through the check-in screen (dated by Brisbane), then the app finds it as today's.
+    page.click('#dashCheckin [data-mood="4"]')
+    page.wait_for_selector("#hw3Inner[data-tab='checkin']")
+    page.click("#hw3CheckinSave")
+    page.wait_for_selector("#hw3AfterSaveTitle")
+    today = page.evaluate("() => todaysCheckin()")
+    assert today is not None and today["date"] == "2026-10-25" and today["mood"]["l"] == "Good"
+
+    # The older quick path writes to the same Brisbane day rather than adding a second row.
+    page.evaluate("() => recordCheckin({ craving: 'Mild' })")
+    rows = page.evaluate("() => moods.filter(m => checkinOwnedHere(m)).map(m => m.date)")
+    assert rows == ["2026-10-25"]
+    assert page.evaluate("() => todaysCheckin().craving") == "Mild"
+    page.context.close()

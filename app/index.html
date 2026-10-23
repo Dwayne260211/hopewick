@@ -6472,7 +6472,9 @@ function renderLearnHub() {
 /* ---------------------------------------------------------------------------
    Welcome screen, daily check-in & mood history
    --------------------------------------------------------------------------- */
-function todaysCheckin() { return moods.find(m => m.date === localDate() && checkinOwnedHere(m)) || null; }
+/** Check-ins are dated by the Brisbane calendar (same as the check-in screen saves them), whatever the device time zone. */
+function checkinDate(d = new Date()) { return brisbaneDateISO(d); }
+function todaysCheckin() { return moods.find(m => m.date === checkinDate() && checkinOwnedHere(m)) || null; }
 
 function renderWelcome() {
   const counsellor = isCounsellor();
@@ -6577,10 +6579,12 @@ function moodWeekEl() {
   detail.className = 'mood-week-detail';
   detail.hidden = true;
   detail.setAttribute('aria-live', 'polite');
-  const todayKey = localDate();
+  const checkinDayFmt = new Intl.DateTimeFormat('en-AU', { weekday: 'short', timeZone: 'Australia/Brisbane' });
+  const todayKey = checkinDate();
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const dateKey = localDate(d);
+    // Brisbane has no daylight saving, so whole days back are exact.
+    const d = new Date(Date.now() - i * 86400000);
+    const dateKey = checkinDate(d);
     const entry = moods.find(m => m.date === dateKey && checkinOwnedHere(m));
     const has = !!(entry && (entry.mood || entry.craving));
     const day = document.createElement('button');
@@ -6588,8 +6592,8 @@ function moodWeekEl() {
     day.className = 'day' + (has ? ' has-checkin' : '') + (dateKey === todayKey ? ' is-today' : '');
     day.innerHTML = `<span class="e" aria-hidden="true"></span><span></span>`;
     day.firstChild.textContent = has && entry.mood ? entry.mood.e : '';
-    day.lastChild.textContent = dayFmt.format(d);
-    const when = dayFmt.format(d);
+    day.lastChild.textContent = checkinDayFmt.format(d);
+    const when = checkinDayFmt.format(d);
     const summary = formatCheckinSummary(entry);
     day.title = summary || 'No check-in';
     day.setAttribute('aria-label', summary ? `${when}: ${summary}` : `${when}: no check-in`);
@@ -6612,7 +6616,7 @@ function moodWeekEl() {
 }
 
 function recordCheckin(patch) {
-  const date = localDate();
+  const date = checkinDate();
   let entry = moods.find(m => m.date === date && checkinOwnedHere(m));
   if (!entry) { entry = { date, mood: null, craving: null, updated: 0 }; moods.push(entry); }
   Object.assign(entry, patch);
