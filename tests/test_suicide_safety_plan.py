@@ -89,6 +89,9 @@ def test_free_user_reaches_builds_saves_and_reloads_the_plan(server, browser):
     page.fill("#hw5Step-warningSigns", "Thinking what's the point sspui")
     page.click(".hw5-steps__btn >> nth=3")
     page.wait_for_selector("#hw5QA-person-name")
+    # render() moves focus to #hw3Title after a 60 ms timer; let that land first so it can't
+    # steal focus mid-typing on a slow CI runner.
+    page.wait_for_timeout(250)
     assert page.inner_text("label[for='hw5QA-person-name']") == "Their name"
     assert page.inner_text("label[for='hw5QA-person-phone']") == "Phone"
     page.focus("#hw5QA-person-name")
