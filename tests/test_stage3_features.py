@@ -35,6 +35,9 @@ def browser():
 
 
 def _page(browser, width=390, height=900, **kw):
+    # Check-ins are dated by the Brisbane calendar; pin the browser clock zone so CI (UTC) agrees
+    # with it even when the UTC and Brisbane dates differ (14:00-24:00 UTC).
+    kw.setdefault("timezone_id", "Australia/Brisbane")
     ctx = browser.new_context(viewport={"width": width, "height": height}, accept_downloads=True, **kw)
     page = ctx.new_page()
     page.set_default_timeout(10000)
