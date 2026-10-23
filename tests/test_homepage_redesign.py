@@ -39,7 +39,7 @@ def test_honest_content_rules():
     for banned in ("abbey", "testimonial", "users trust", "thousands of", "clinically proven", "therapist", "unlimited"):
         assert banned not in low, banned
     assert "not a counsellor, doctor or clinician" in PAGE
-    assert "graduation expected January 2027" in PAGE and "not a doctor, psychologist or registered counsellor" in PAGE
+    assert "finishing January 2027" in PAGE and "not a doctor, psychologist or registered counsellor" in PAGE
     # Every features list stays reachable from the homepage.
     for bit in ("recovery-stage support", "anger and relationships", "share a summary with your worker", "wellbeing basics"):
         assert bit in PAGE, bit

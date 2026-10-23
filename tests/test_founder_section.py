@@ -20,7 +20,7 @@ def test_founder_section_before_pricing():
     assert "wife" in section and "partner" not in section.lower()
     # Short excerpt quoted from our-story.html, with the photo; the full story is on our-story.html.
     assert "Dwayne Stevens, founder" in section
-    assert "Dual Diploma of Mental Health and Alcohol and Other Drugs" in section
+    assert "Dual Diploma of Mental Health and AOD" in section
     assert "I’m not a doctor, psychologist or registered counsellor." in section
     assert 'href="our-story.html"' in section
     assert "<img" in section.lower() and 'alt="' in section
