@@ -161,7 +161,7 @@ def test_free_coping_teaser_and_plus_sees_new_drop(server, browser):
     page.wait_for_selector("#hw3CopeSoon")
     soon = page.inner_text("#hw3CopeSoon")
     assert "Self-compassion break" in soon
-    assert "New for Plus this week" in soon and "Coming to free in April 2027" in soon
+    assert "Coming to free in April 2027" in soon  # the "New for Plus this week" badge expires after 7 days, so it is tested with fixed dates in content-releases.test.mjs
     assert page.locator('[aria-label$=": Self-compassion break"]').count() == 0
     assert page.locator('#hw3ToolList > li').count() == 12
     assert not _quiet(errors), errors
@@ -171,7 +171,6 @@ def test_free_coping_teaser_and_plus_sees_new_drop(server, browser):
     go(plus, "coping")
     plus.wait_for_selector('[aria-label$=": Self-compassion break"]')
     assert plus.locator("#hw3CopeSoon").count() == 0
-    assert "New for Plus this week" in plus.inner_text("#hw3ToolList")
     plus.click('[aria-label$=": Self-compassion break"]')
     plus.wait_for_selector("#hw3PlayerTitle")
     assert "Self-compassion break" in plus.inner_text("#hw3PlayerTitle")
